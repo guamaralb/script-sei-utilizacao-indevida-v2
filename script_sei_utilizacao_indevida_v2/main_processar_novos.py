@@ -1,3 +1,4 @@
+# LINE-LENGHT ----------------------------------------------------------------
 import logging
 import os
 from datetime import datetime
@@ -9,6 +10,7 @@ from dotenv import load_dotenv
 from sei_automacao.auth.login import efetuar_login
 from sei_automacao.documento import obter_conteudo_doc
 from sei_automacao.driver import iniciar_driver
+from sei_automacao.processo import adicionar_marcador
 from sei_automacao.processo.arvore import (
     listar_documentos_arvore,
     selecionar_doc_arvore,
@@ -44,6 +46,15 @@ logging.basicConfig(
 
 logger = logging.getLogger()
 
+SINALIZADORES_DE_PROCESSO_NOVO = [
+    'entileza realizar o levantamento de utilização de procedimentos na sa',
+    ', o levantamento dos valores de utilização indevida da assistência à sa',
+]
+
+SINALIZADORES_DE_PROCESSO_A_REFAZER = [
+    'atualização do levantamento',
+    'realizar novo levantamento',
+]
 _LEN_DATA_MM_AAAA = 7
 
 _TRANSLATE_FROM = 'ÁÀÂÃÄáàâãäÉÈÊËéèêëÍÌÎÏíìîïÓÒÔÕÖóòôõöÚÙÛÜúùûüÇç'
@@ -60,7 +71,7 @@ def main():
         efetuar_login(driver, SEI_LOGIN, SEI_SENHA, SEI_ORGAO)
 
         df_processos_nao_processados = pd.read_excel(
-            io=ARQ_PROCESSOS_NAO_PROCESSADOS, sheet_name='processos'
+            io=ARQ_PROCESSOS_NAO_PROCESSADOS, sheet_name='processos_reais'
         )
 
         for _, linha in df_processos_nao_processados.iterrows():
@@ -69,15 +80,46 @@ def main():
 
             acessar_processo(driver, num_processo)
 
-            docs = listar_documentos_arvore(driver)
+            tds_docs = listar_documentos_arvore(driver)
 
-            ultimo_doc = docs[-1]
+            memos = [
+                doc
+                for doc in tds_docs
+                if 'IPSEMG/GEACS - Utilização' in doc['unidade']
+            ]
+
+            ultimo_doc = memos[-1]
 
             selecionar_doc_arvore(driver, numero_sei=ultimo_doc['numero_sei'])
 
-            doc_text = obter_conteudo_doc(driver, formato='web_element')
+            doc_text = obter_conteudo_doc(driver, formato='texto')
 
-            print(doc_text)
+            flag_refazer = False
+            flag_novo = False
+
+            for trecho in SINALIZADORES_DE_PROCESSO_A_REFAZER:
+                if trecho in doc_text:
+                    print(trecho)
+                    flag_refazer = True
+                    break
+
+            if not flag_refazer:
+                for trecho in SINALIZADORES_DE_PROCESSO_NOVO:
+                    if trecho in doc_text:
+                        print(trecho)
+                        flag_novo = True
+                        break
+
+            if flag_refazer and not flag_novo:
+                adicionar_marcador(driver, 'TESTE - Refazer')
+            elif not flag_refazer and flag_novo:
+                adicionar_marcador(driver, 'TESTE - Novo')
+            elif flag_refazer and flag_novo:
+                raise Exception('Processo marcado como novo e refazer')
+            else:
+                raise Exception(
+                    'Processo não marcado nem como novo nem como refazer'
+                )
 
     except Exception:
         logger.error('Erro critico na execução do main')
