@@ -4,10 +4,11 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-# from time import sleep
 import pandas as pd
 from dotenv import load_dotenv
+from memorandos import MemoDisa
 from sei_automacao.auth.login import efetuar_login
+from sei_automacao.documento import inserir_bloco_ass
 from sei_automacao.driver import iniciar_driver
 from sei_automacao.processo import adicionar_marcador, incluir_doc_sei_memo
 from sei_automacao.processo.arvore import (
@@ -88,22 +89,28 @@ def main():
 
             # Se NÃO HOUVER documentos gerados pela GEACS:
             if len(docs_geacs) > 0:
-                adicionar_marcador(driver, 'TESTE - Velho')
+                adicionar_marcador(driver, 'Script v2 - Processo VELHO')
                 continue
 
-            # Se HOUVER documentos gerados pela GEACS:
-            adicionar_marcador(driver, 'TESTE - Novo')
+            adicionar_marcador(driver, 'Script v2 - Processo NOVO')
+
+            # Memorando DISA
+            incluir_doc_sei_memo(driver, **MemoDisa.para_kwargs_inserir_doc())
+            inserir_bloco_ass(driver, 7697744)
+
+            # Memorando COPA
             incluir_doc_sei_memo(
                 driver,
                 vocativo='Prezado',
-                destinatario_nome='Diretor da DISA',
-                assunto='DISA',
+                destinatario_nome='COPA',
+                assunto='COPA',
                 texto_principal='Texto',
                 nivel_acesso='Restrito',
                 hipotese_legal=(
                     'Informação Pessoal (Art. 31 da Lei nº 12.527/2011)'
                 ),
             )
+            inserir_bloco_ass(driver, 7697744)
 
     except Exception:
         logger.error('Erro critico na execução do main')
