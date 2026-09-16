@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 from dotenv import load_dotenv
-from memorandos import MemoDisa
+from memorandos.DadosProcesso import DadosProcesso
 from sei_automacao.auth.login import efetuar_login
 from sei_automacao.documento import inserir_bloco_ass
 from sei_automacao.driver import iniciar_driver
@@ -15,6 +15,9 @@ from sei_automacao.processo.arvore import (
     listar_documentos_arvore,
 )
 from sei_automacao.ubiquo.busca import acessar_processo
+
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import MemoDeproc
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import MemoDisa
 
 load_dotenv()
 
@@ -94,22 +97,29 @@ def main():
 
             adicionar_marcador(driver, 'Script v2 - Processo NOVO')
 
+            dados_processo = DadosProcesso(
+                nome_titular='Titular',
+                matricula_titular='Matricula',
+                periodo_titular='Periodo',
+                matriculas_dependentes='Matriculas',
+                periodo_dependentes='PeriodoDeps',
+            )
             # Memorando DISA
-            incluir_doc_sei_memo(driver, **MemoDisa.para_kwargs_inserir_doc())
+            memo_disa = MemoDisa(
+                dados=dados_processo,
+                nome_signatario='Bruna Miiller Lavarini',
+                cargo_signatario='Gerência de Auditoria e Contas da Saúde',
+            )
+            incluir_doc_sei_memo(driver, **memo_disa.para_kwargs_inserir_doc())
             inserir_bloco_ass(driver, 7697744)
 
-            # Memorando COPA
-            incluir_doc_sei_memo(
-                driver,
-                vocativo='Prezado',
-                destinatario_nome='COPA',
-                assunto='COPA',
-                texto_principal='Texto',
-                nivel_acesso='Restrito',
-                hipotese_legal=(
-                    'Informação Pessoal (Art. 31 da Lei nº 12.527/2011)'
-                ),
+            # Memorando DEPROC
+            memo_disa = MemoDeproc(
+                dados=dados_processo,
+                nome_signatario='Bruna Miiller Lavarini',
+                cargo_signatario='Gerência de Auditoria e Contas da Saúde',
             )
+            incluir_doc_sei_memo(driver, **memo_disa.para_kwargs_inserir_doc())
             inserir_bloco_ass(driver, 7697744)
 
     except Exception:

@@ -42,7 +42,7 @@ preview = true
 select = ['I', 'F', 'E', 'W', 'PL', 'PT', 'FAST']
 
 [tool.ruff.lint.per-file-ignores]
-"script_sei_utilizacao_indevida_v2/memorandos.py" = ["E501"]
+"script_sei_utilizacao_indevida_v2/memorandos/*" = ["E501"]
 
 [tool.ruff.format]
 preview = true
