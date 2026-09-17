@@ -1,5 +1,6 @@
-from memorandos.DadosProcesso import DadosProcesso
 from sei_automacao.classes.Memorando import Memorando
+
+from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
 
 def _par_1():
@@ -68,13 +69,9 @@ def _par_12():
     return 'Após o levantamento, solicita-se o retorno do processo à IPSEMG/GEACS-Utilização, para continuidade da apuração.'
 
 
-def _par_13():
-    return 'Atenciosamente,'
-
-
 class MemoDisa(Memorando):
     def __init__(
-        self, dados: DadosProcesso, nome_signatario: str, cargo_signatario: str
+        self, dados: DadosUI, nome_signatario: str, cargo_signatario: str
     ):
         super().__init__(
             destinatario_nome='IPSEMG/DISA-UTI-INDEV',
@@ -103,6 +100,5 @@ class MemoDisa(Memorando):
                 _par_10(),
                 _par_11(),
                 _par_12(),
-                _par_13(),
             ],
         )

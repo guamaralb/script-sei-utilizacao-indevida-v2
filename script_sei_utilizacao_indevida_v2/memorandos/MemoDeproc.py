@@ -1,5 +1,6 @@
-from memorandos.DadosProcesso import DadosProcesso
 from sei_automacao.classes.Memorando import Memorando
+
+from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
 
 def _par_1():
@@ -40,13 +41,9 @@ def _par_5():
     return 'Após o levantamento, solicita-se o retorno do processo à unidade <strong>IPSEMG/GEACS-Utilização</strong>, para consolidação da apuração e prosseguimento do fluxo.'
 
 
-def _par_6():
-    return 'Atenciosamente'
-
-
 class MemoDeproc(Memorando):
     def __init__(
-        self, dados: DadosProcesso, nome_signatario: str, cargo_signatario: str
+        self, dados: DadosUI, nome_signatario: str, cargo_signatario: str
     ):
         super().__init__(
             destinatario_nome='IPSEMG/DEPROC',
@@ -68,6 +65,5 @@ class MemoDeproc(Memorando):
                 _par_3(),
                 _par_4(),
                 _par_5(),
-                _par_6(),
             ],
         )

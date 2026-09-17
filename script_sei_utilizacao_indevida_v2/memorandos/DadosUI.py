@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class DadosProcesso:
+class DadosUI:
     nome_titular: str
     matricula_titular: str
     periodo_titular: str
