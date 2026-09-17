@@ -21,6 +21,9 @@ from sei_automacao.ubiquo.busca import acessar_processo
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import MemoDeproc
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import MemoDisa
 
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import MemoDeproc
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import MemoDisa
+
 load_dotenv()
 
 SEI_LOGIN = os.getenv('SEI_LOGIN')
