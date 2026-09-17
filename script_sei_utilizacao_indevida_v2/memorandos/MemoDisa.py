@@ -69,6 +69,10 @@ def _par_12():
     return 'Após o levantamento, solicita-se o retorno do processo à IPSEMG/GEACS-Utilização, para continuidade da apuração.'
 
 
+def _par_13():
+    return 'Atenciosamente,'
+
+
 class MemoDisa(Memorando):
     def __init__(
         self, dados: DadosUI, nome_signatario: str, cargo_signatario: str
@@ -100,5 +104,6 @@ class MemoDisa(Memorando):
                 _par_10(),
                 _par_11(),
                 _par_12(),
+                _par_13(),
             ],
         )

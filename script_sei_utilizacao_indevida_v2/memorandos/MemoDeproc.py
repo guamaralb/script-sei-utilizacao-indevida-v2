@@ -41,6 +41,10 @@ def _par_5():
     return 'Após o levantamento, solicita-se o retorno do processo à unidade <strong>IPSEMG/GEACS-Utilização</strong>, para consolidação da apuração e prosseguimento do fluxo.'
 
 
+def _par_6():
+    return 'Atenciosamente,'
+
+
 class MemoDeproc(Memorando):
     def __init__(
         self, dados: DadosUI, nome_signatario: str, cargo_signatario: str
@@ -65,5 +69,6 @@ class MemoDeproc(Memorando):
                 _par_3(),
                 _par_4(),
                 _par_5(),
+                _par_6(),
             ],
         )

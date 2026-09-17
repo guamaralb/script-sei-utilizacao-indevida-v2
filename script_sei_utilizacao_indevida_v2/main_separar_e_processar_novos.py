@@ -165,7 +165,7 @@ def main():
 
     try:
         logger.info('================= INÍCIO DA EXECUÇÃO =================')
-        driver = iniciar_driver(driver_type='chrome')
+        driver = iniciar_driver(driver_type='edge')
         driver.maximize_window()
         driver.get('https://www.sei.mg.gov.br')
 
