@@ -16,6 +16,7 @@ def processar_novo(
     registro: RegistroSepararProecessarNovos,
     tds_docs: list[dict],
     marcador_periodo_var_dep: str,
+    marcador_memos_no_bloco: str,
 ) -> dict:
     try:
         memos = [doc for doc in tds_docs if 'Memorando' in doc['nome_arvore']]
@@ -68,6 +69,9 @@ def processar_novo(
 
         inserir_bloco_ass(driver, 7697744)
         registro.memo_deproc_inserido_bloco = True
+
+        adicionar_marcador(driver, marcador_memos_no_bloco)
+        registro.marcador_memos_no_bloco = True
 
         registro.prox_acao = 'Assinar memorandos e encaminhar'
 

@@ -13,6 +13,9 @@ class RegistroSepararProecessarNovos:
     marcador_processo_novo: bool = False
     marcador_processo_velho: bool = False
 
+    marcador_planilhado: bool = False
+    marcador_ui_inserida: bool = False
+
     ult_memo_obtido: bool = False
     conteudo_ult_memo_obtido: bool = False
     dados_ui: DadosUI | None = None
@@ -23,6 +26,8 @@ class RegistroSepararProecessarNovos:
 
     memo_deproc_criado: bool = False
     memo_deproc_inserido_bloco: bool = False
+
+    marcador_memos_no_bloco: bool = False
 
     erro: str | None = None
 
@@ -48,6 +53,8 @@ class RegistroSepararProecessarNovos:
             'qnt_docs_geacs_na_arvore': self.qnt_docs_geacs_na_arvore,
             'marcador_processo_novo': self.marcador_processo_novo,
             'marcador_processo_velho': self.marcador_processo_velho,
+            'marcador_planilhado': self.marcador_planilhado,
+            'marcador_ui_inserida': self.marcador_ui_inserida,
             'ult_memo_obtido': self.ult_memo_obtido,
             'conteudo_ult_memo_obtido': self.conteudo_ult_memo_obtido,
             'marcador_periodo_variavel_deps': self.marcador_periodo_var_deps,
@@ -55,5 +62,6 @@ class RegistroSepararProecessarNovos:
             'memo_disa_inserido_bloco': self.memo_disa_inserido_bloco,
             'memo_deproc_criado': self.memo_deproc_criado,
             'memo_deproc_inserido_bloco': (self.memo_deproc_inserido_bloco),
+            'marcador_memos_no_bloco': (self.marcador_memos_no_bloco),
             'erro': self.erro,
         }

@@ -43,6 +43,7 @@ _NUM_MEMOS_PROCESSO_NOVO = 2
 _MARCADOR_PROCESSO_NOVO = 'Script v2 - Processo NOVO'
 _MARCADOR_PROCESSO_VELHO = 'Script v2 - Processo VELHO'
 _MARCADOR_PERIODO_VAR_DEP = 'Script v2 - Período Variável Para Dependentes'
+_MARCADOR_MEMOS_NO_BLOCO = 'Script v2 - Memos DISA e DEPROC no bloco'
 _MARCADOR_PLANILHADO = 'PLANILHADO'
 _MARCADOR_UI_INSERIDA = 'UTILIZAÇÃO INSERIDA'
 
@@ -89,11 +90,15 @@ def _tratar_sem_marcadores(ctx, registro):
     adicionar_marcador(ctx.driver, _MARCADOR_PROCESSO_NOVO)
     registro.marcador_processo_novo = True
     return processar_novo(
-        ctx.driver, registro, ctx.tds_docs, _MARCADOR_PERIODO_VAR_DEP
+        ctx.driver,
+        registro,
+        ctx.tds_docs,
+        _MARCADOR_PERIODO_VAR_DEP,
+        _MARCADOR_MEMOS_NO_BLOCO,
     )
 
 
-def _tratar_marcador_novo(ctx, registro):
+def _tratar_marcador_novo_sem_marcador_memos_no_bloco(ctx, registro):
     registro.marcador_processo_novo = True
     quant_docs_geacs = ctx.quant_docs_geacs
 
@@ -103,7 +108,11 @@ def _tratar_marcador_novo(ctx, registro):
 
     if quant_docs_geacs == 0:
         return processar_novo(
-            ctx.driver, registro, ctx.tds_docs, _MARCADOR_PERIODO_VAR_DEP
+            ctx.driver,
+            registro,
+            ctx.tds_docs,
+            _MARCADOR_PERIODO_VAR_DEP,
+            _MARCADOR_MEMOS_NO_BLOCO,
         )
 
     registro.erro = f'Identificados {quant_docs_geacs} docs da geacs'
@@ -118,13 +127,24 @@ def _classificar_e_processar(ctx, registro):
     ):
         return _tratar_sem_marcadores(ctx, registro)
 
-    if _MARCADOR_PROCESSO_VELHO in ctx.marcadores:
+    if registro.marcador_processo_velho:
         registro.marcador_processo_velho = True
         registro.prox_acao = 'Processar processos VELHOS'
         return registro
 
-    if _MARCADOR_PROCESSO_NOVO in ctx.marcadores:
-        return _tratar_marcador_novo(ctx, registro)
+    if registro.marcador_processo_novo:
+        if registro.marcador_memos_no_bloco:
+            if registro.qnt_docs_geacs_na_arvore == _NUM_MEMOS_PROCESSO_NOVO:
+                registro.prox_acao = 'Assinar memorandos e encaminhar'
+            else:
+                registro.prox_acao = (
+                    'Processo NOVO com marcador de memos no bloco, mas '
+                    f'quantidade de docs da GEACS na árvore é '
+                    f'{registro.qnt_docs_geacs_na_arvore}. Verificar.'
+                )
+            return _tratar_marcador_novo_sem_marcador_memos_no_bloco(
+                ctx, registro
+            )
 
     registro.erro = f'Marcadores não reconhecidos: {ctx.marcadores}'
     return registro
@@ -147,6 +167,20 @@ def _processar_linha(driver, num_processo):
             docs_geacs=docs_geacs,
             marcadores=marcadores,
         )
+
+        for marcador in marcadores:
+            if marcador == _MARCADOR_PROCESSO_NOVO:
+                registro.marcador_processo_novo = True
+            if marcador == _MARCADOR_PROCESSO_VELHO:
+                registro.marcador_processo_velho = True
+            if marcador == _MARCADOR_PLANILHADO:
+                registro.marcador_planilhado = True
+            if marcador == _MARCADOR_UI_INSERIDA:
+                registro.marcador_ui_inserida = True
+            if marcador == _MARCADOR_PERIODO_VAR_DEP:
+                registro.marcador_periodo_var_deps = True
+            if marcador == _MARCADOR_MEMOS_NO_BLOCO:
+                registro.marcador_memos_no_bloco = True
 
         registro = _classificar_e_processar(ctx, registro)
 
