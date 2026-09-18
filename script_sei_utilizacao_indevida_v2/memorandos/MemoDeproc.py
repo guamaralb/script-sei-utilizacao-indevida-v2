@@ -4,7 +4,7 @@ from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
 
 def _par_1():
-    return 'No âmbito do fluxo de apuração dos valores referentes à utilização indevida da assistência à saúde, formalizado no Processo SEI nº <strong>2010.01.0058549/2026-56,</strong>, encaminha-se o presente processo para levantamento dos <strong>valores de coparticipação</strong> referentes ao titular e aos dependentes abaixo indicados, nos respectivos períodos informados pela Assessoria de Políticas e Informações em Saúde - APIS:'
+    return 'Solicita-se ao Departamento de Processamento de Contas e Coparticipação - Deproc, no âmbito de suas competências institucionais previstas no art. 66 do Decreto Estadual nº 48.823, de 16 de maio de 2024, o levantamento dos valores de coparticipação referentes aos atendimentos efetivamente realizados pelo titular e seus dependentes abaixo indicados, nos respectivos períodos informados pela Assessoria de Políticas e Informações em Saúde - APIS:'
 
 
 def _par_2(
@@ -30,18 +30,14 @@ def _par_2(
 
 
 def _par_3():
-    return 'Solicita-se a consolidação dos valores de coparticipação identificados para cada beneficiário no período correspondente, de forma a subsidiar a composição do demonstrativo final solicitado pela APIS.'
-
-
-def _par_4():
     return 'Caso não sejam identificados valores de coparticipação no período, solicita-se o registro dessa informação no processo.'
 
 
+def _par_4():
+    return 'Após o levantamento, solicita-se o retorno do processo à unidade IPSEMG/GEACS-Utilização, para consolidação da apuração e prosseguimento do fluxo.'
+
+
 def _par_5():
-    return 'Após o levantamento, solicita-se o retorno do processo à unidade <strong>IPSEMG/GEACS-Utilização</strong>, para consolidação da apuração e prosseguimento do fluxo.'
-
-
-def _par_6():
     return 'Atenciosamente,'
 
 
@@ -68,7 +64,9 @@ class MemoDeproc(Memorando):
                 ),
                 _par_3(),
                 _par_4(),
+                '',
+                '',
+                '',
                 _par_5(),
-                _par_6(),
             ],
         )
