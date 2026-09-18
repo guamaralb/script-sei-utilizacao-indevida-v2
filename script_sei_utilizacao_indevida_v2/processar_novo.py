@@ -21,8 +21,11 @@ def processar_novo(
         memos = [doc for doc in tds_docs if 'Memorando' in doc['nome_arvore']]
 
         ultimo_doc = memos[-1]
+        registro.ult_memo_obtido = True
+
         selecionar_doc_arvore(driver, numero_sei=ultimo_doc['numero_sei'])
         doc_text = obter_conteudo_doc(driver, formato='texto')
+        registro.conteudo_ult_memo_obtido = True
 
         try:
             dados_ui = extrair_dados_ui(doc_text)

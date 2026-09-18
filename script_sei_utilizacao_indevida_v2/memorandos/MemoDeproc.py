@@ -4,7 +4,7 @@ from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
 
 def _par_1():
-    return 'Solicita-se ao Departamento de Processamento de Contas e Coparticipação - Deproc, no âmbito de suas competências institucionais previstas no art. 66 do Decreto Estadual nº 48.823, de 16 de maio de 2024, o levantamento dos valores de coparticipação referentes aos atendimentos efetivamente realizados pelo titular e seus dependentes abaixo indicados, nos respectivos períodos informados pela Assessoria de Políticas e Informações em Saúde - APIS:'
+    return 'Solicita-se ao Departamento de Processamento de Contas e Coparticipação - Deproc, no âmbito de suas competências institucionais previstas no art. 66 do Decreto Estadual nº 48.823, de 16 de maio de 2024, o levantamento dos <strong>valores de coparticipação</strong> referentes aos atendimentos efetivamente realizados pelo titular e seus dependentes abaixo indicados, nos respectivos períodos informados pela Assessoria de Políticas e Informações em Saúde - APIS:'
 
 
 def _par_2(
@@ -34,7 +34,7 @@ def _par_3():
 
 
 def _par_4():
-    return 'Após o levantamento, solicita-se o retorno do processo à unidade IPSEMG/GEACS-Utilização, para consolidação da apuração e prosseguimento do fluxo.'
+    return 'Após o levantamento, solicita-se o retorno do processo à unidade <strong>IPSEMG/GEACS-Utilização</strong>, para consolidação da apuração e prosseguimento do fluxo.'
 
 
 def _par_5():

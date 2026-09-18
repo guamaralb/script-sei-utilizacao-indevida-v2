@@ -24,10 +24,14 @@ SEI_ORGAO = os.getenv('SEI_ORGAO')
 AGORA = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
 DIR_BASE = Path(__file__).resolve().parent.parent
+
 DIR_DADOS = DIR_BASE / 'dados'
 DIR_INPUTS = DIR_DADOS / 'inputs'
-DIR_LOG = DIR_BASE / 'logs'
 DIR_CONTROLE = DIR_DADOS / 'controle'
+DIR_LOG = DIR_BASE / 'logs'
+
+for diretorio in [DIR_DADOS, DIR_INPUTS, DIR_CONTROLE, DIR_LOG]:
+    diretorio.mkdir(parents=True, exist_ok=True)
 
 ARQ_PROCESSOS_NAO_PROCESSADOS = DIR_INPUTS / 'processos_nao_processados.xlsx'
 ARQ_PROCESSOS_PROCESSADOS = (
@@ -41,6 +45,7 @@ _MARCADOR_PROCESSO_VELHO = 'Script v2 - Processo VELHO'
 _MARCADOR_PERIODO_VAR_DEP = 'Script v2 - Período Variável Para Dependentes'
 _MARCADOR_PLANILHADO = 'PLANILHADO'
 _MARCADOR_UI_INSERIDA = 'UTILIZAÇÃO INSERIDA'
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -165,7 +170,7 @@ def main():
 
     try:
         logger.info('================= INÍCIO DA EXECUÇÃO =================')
-        driver = iniciar_driver(driver_type='edge')
+        driver = iniciar_driver(driver_type='chrome')
         driver.maximize_window()
         driver.get('https://www.sei.mg.gov.br')
 
