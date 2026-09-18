@@ -26,7 +26,9 @@ _MARCADORES_OBRIGATORIOS_NOVOS_VELHOS: Dict[str, str] = {
     'campo "Segurado(a)"': r'Segurad[oa]:',
     'campo "Matrícula" (titular)': r'Matr[íi]cula:',
     'período(s) do titular': (
-        r'per[íi]odos?\s+de\s+\d{2}/\d{2}/\d{4}\s+a\s+\d{2}/\d{2}/\d{4}'
+        r'per[íi]odos?\s*,?\s+'
+        r'de\s+\d{2}/\d{2}/\d{4}\s+a\s+\d{2}/\d{2}/\d{4}'
+        r'(?:\s*,\s*de\s+\d{2}/\d{2}/\d{4}\s+a\s+\d{2}/\d{2}/\d{4})*'
     ),
 }
 
@@ -96,11 +98,15 @@ def validar_template(doc_text: str) -> Literal['novo', 'velho']:
         return 'velho'
 
     raise FormatoMemorandoInvalido(
-        msg=('O texto não corresponde a nenhum dos modelos esperados')
+        msg=(
+            'O texto não corresponde a nenhum dos modelos esperados:\n'
+            f'Modelo "novo": faltam os marcadores {ausentes_novos_novos}\n'
+            f'Modelo "velho": faltam os marcadores {ausentes_novos_velhos}'
+        )
     )
 
 
-def _extrair_campo_novo_novo(
+def _extrair_campo(
     padroes: list[re.Pattern],
     doc_text: str,
     nome_campo: str,
@@ -122,7 +128,7 @@ def _extrair_campo_novo_novo(
 
 
 def _extrair_matriculas_dependentes(doc_text: str) -> str:
-    valor_bruto = _extrair_campo_novo_novo(
+    valor_bruto = _extrair_campo(
         [_PADRAO_MATRICULAS_DEPENDENTES_NOVO],
         doc_text,
         'Matrícula dos dependentes',
@@ -210,15 +216,16 @@ def _extrair_periodo_dependentes_velho(doc_text: str) -> str:
 def extrair_dados_ui(doc_text: str) -> DadosUI:
 
     tipo = validar_template(doc_text)
+    print(tipo)
 
     if tipo == 'novo':
-        nome_titular = _extrair_campo_novo_novo(
+        nome_titular = _extrair_campo(
             _PADROES_NOME_TITULAR_NOVO, doc_text, 'Nome completo'
         )
-        matricula_titular = _extrair_campo_novo_novo(
+        matricula_titular = _extrair_campo(
             _PADROES_MATRICULA_TITULAR_NOVO, doc_text, 'Matrícula'
         )
-        periodo_titular = _extrair_campo_novo_novo(
+        periodo_titular = _extrair_campo(
             _PADROES_PERIODO_TITULAR_NOVO,
             doc_text,
             'Período de apuração do titular',
@@ -227,13 +234,13 @@ def extrair_dados_ui(doc_text: str) -> DadosUI:
         periodo_dependentes = _detectar_periodo_dependentes(doc_text)
 
     elif tipo == 'velho':
-        nome_titular = _extrair_campo_novo_novo(
+        nome_titular = _extrair_campo(
             _PADROES_NOME_TITULAR_VELHO, doc_text, 'Segurado(a)'
         )
-        matricula_titular = _extrair_campo_novo_novo(
+        matricula_titular = _extrair_campo(
             _PADROES_MATRICULA_TITULAR_VELHO, doc_text, 'Matrícula'
         )
-        periodo_titular = _extrair_campo_novo_novo(
+        periodo_titular = _extrair_campo(
             [_PADRAO_PERIODO_TITULAR_VELHO],
             doc_text,
             'Período(s) do titular',

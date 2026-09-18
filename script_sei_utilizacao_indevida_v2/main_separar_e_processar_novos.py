@@ -148,10 +148,9 @@ def _classificar_e_processar(ctx, registro):
             return _tratar_marcador_novo_sem_marcador_memos_no_bloco(
                 ctx, registro
             )
-    
-    else:
-        if registro.marcador_memos_no_bloco:
-            registro.erro = 'Marcador de memos_no_bloco sem processo_novo'
+
+    elif registro.marcador_memos_no_bloco:
+        registro.erro = 'Marcador de memos_no_bloco sem processo_novo'
 
     registro.erro = f'Combinação de marcadores não tratados: {ctx.marcadores}'
     return registro
