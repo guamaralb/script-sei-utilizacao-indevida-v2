@@ -42,7 +42,7 @@ _PADROES_PERIODO_TITULAR_NOVO = [
     re.compile(r'Per[íi]odo de apura[çc][ãa]o do titular:\s*(.+)')
 ]
 _PADRAO_MATRICULAS_DEPENDENTES_NOVO = re.compile(
-    r'Matr[íi]cula dos dependentes:\s*(.+)'
+    r'Matr[íi]culas? d(?:o|os) dependentes?:\s*(.+)'
 )
 _PADRAO_ASSINATURA_ELETRONICA = re.compile(
     r'Documento assinado eletronicamente', flags=re.IGNORECASE

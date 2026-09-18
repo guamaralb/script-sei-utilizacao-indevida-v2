@@ -7,26 +7,8 @@ def _par_1():
     return 'Solicita-se ao Departamento de Processamento de Contas e Coparticipação - Deproc, no âmbito de suas competências institucionais previstas no art. 66 do Decreto Estadual nº 48.823, de 16 de maio de 2024, o levantamento dos <strong>valores de coparticipação</strong> referentes aos atendimentos efetivamente realizados pelo titular e seus dependentes abaixo indicados, nos respectivos períodos informados pela Assessoria de Políticas e Informações em Saúde - APIS:'
 
 
-def _par_2(
-    nome_titular,
-    matricula_titular,
-    periodo_titular,
-    matriculas_dependentes,
-    periodo_dependentes,
-):
-    infos_dep_html = ''
-
-    if matriculas_dependentes:
-        infos_dep_html = f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Matrículas dos dependentes:</strong> {matriculas_dependentes}</p>'
-        if periodo_dependentes:
-            infos_dep_html += '<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração dos dependentes:</strong> [ANALISAR]</p>'
-
-    return (
-        f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Nome do titular:</strong> {nome_titular}</p>'
-        f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Matrícula:</strong> {matricula_titular}</p>'
-        f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração do titular:</strong> {periodo_titular}</p>'
-        + infos_dep_html
-    )
+def _par_2(dados: DadosUI):
+    return dados.texto_levantamento_html()
 
 
 def _par_3():
@@ -55,13 +37,7 @@ class MemoDeproc(Memorando):
             hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
             paragrafos=[
                 _par_1(),
-                _par_2(
-                    dados.nome_titular,
-                    dados.matricula_titular,
-                    dados.periodo_titular,
-                    dados.matriculas_dependentes,
-                    dados.periodo_dependentes,
-                ),
+                _par_2(dados),
                 _par_3(),
                 _par_4(),
                 '',

@@ -16,8 +16,8 @@ selenium = "^4.39.0"
 python-dotenv = "^1.2.1"
 reportlab = "^4.4.10"
 # PATH do sei-automacao: Alterar para seu PC
-# sei-automacao = { path = "../../../sei-automacao", develop = true }
-sei-automacao = { path = "../sei-automacao", develop = true }
+sei-automacao = { path = "../../../sei-automacao", develop = true }
+# sei-automacao = { path = "../sei-automacao", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 taskipy = "^1.14.1"

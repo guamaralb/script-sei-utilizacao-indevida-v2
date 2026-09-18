@@ -136,17 +136,24 @@ def _classificar_e_processar(ctx, registro):
         if registro.marcador_memos_no_bloco:
             if registro.qnt_docs_geacs_na_arvore == _NUM_MEMOS_PROCESSO_NOVO:
                 registro.prox_acao = 'Assinar memorandos e encaminhar'
+                return registro
             else:
                 registro.prox_acao = (
                     'Processo NOVO com marcador de memos no bloco, mas '
                     f'quantidade de docs da GEACS na árvore é '
                     f'{registro.qnt_docs_geacs_na_arvore}. Verificar.'
                 )
+                return registro
+        else:
             return _tratar_marcador_novo_sem_marcador_memos_no_bloco(
                 ctx, registro
             )
+    
+    else:
+        if registro.marcador_memos_no_bloco:
+            registro.erro = 'Marcador de memos_no_bloco sem processo_novo'
 
-    registro.erro = f'Marcadores não reconhecidos: {ctx.marcadores}'
+    registro.erro = f'Combinação de marcadores não tratados: {ctx.marcadores}'
     return registro
 
 

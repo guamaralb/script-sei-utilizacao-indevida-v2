@@ -7,26 +7,8 @@ def _par_1():
     return 'Solicita-se à Diretoria de Saúde - DISA, no âmbito de suas competências institucionais previstas nos arts. 68 e 73 do Decreto Estadual nº 48.823, de 16 de maio de 2024, e conforme fluxo de apuração formalizado nos Memorandos IPSEMG/APIS-UTILIZAÇÃO nº. 467/2026 (142545421) e nº 468/2026 (142545891), o levantamento dos valores de utilização indevida da assistência à saúde referentes ao titular e dependentes indicados, na forma e nas etapas ali definidas, abrangendo <strong>os atendimentos de internação e de pronto atendimento realizados na Rede Própria</strong>, no período de apuração informado abaixo. '
 
 
-def _par_2(
-    nome_titular,
-    matricula_titular,
-    periodo_titular,
-    matriculas_dependentes,
-    periodo_dependentes,
-):
-    infos_dep_html = ''
-
-    if matriculas_dependentes:
-        infos_dep_html = f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Matrículas dos dependentes:</strong> {matriculas_dependentes}</p>'
-        if periodo_dependentes:
-            infos_dep_html += '<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração dos dependentes:</strong> [ANALISAR]</p>'
-
-    return (
-        f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Nome do titular:</strong> {nome_titular}</p>'
-        f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Matrícula:</strong> {matricula_titular}</p>'
-        f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração do titular:</strong> {periodo_titular}</p>'
-        + infos_dep_html
-    )
+def _par_2(dados: DadosUI):
+    return dados.texto_levantamento_html()
 
 
 def _par_3():
@@ -67,13 +49,7 @@ class MemoDisa(Memorando):
             hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
             paragrafos=[
                 _par_1(),
-                _par_2(
-                    dados.nome_titular,
-                    dados.matricula_titular,
-                    dados.periodo_titular,
-                    dados.matriculas_dependentes,
-                    dados.periodo_dependentes,
-                ),
+                _par_2(dados),
                 _par_3(),
                 _par_4(),
                 _par_5(),

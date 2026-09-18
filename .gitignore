@@ -100,7 +100,7 @@ dmypy.json
 # Logs
 # =========================
 
-*.log
+# *.log
 
 # =========================
 # OS generated files
