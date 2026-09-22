@@ -72,7 +72,7 @@ _PADROES_DATA = re.compile(r'\b\d{2}/\d{2}/\d{4}\b')
 
 def validar_template(doc_text: str) -> Literal['novo', 'velho']:
     """
-    Verifica se `doc_text` contém todos os marcadores esperados de algum
+    Verifica se `doc_text` contém todos os tags esperados de algum
     dos modelos de Memorando IPSEMG/APIS-UTILIZAÇÃO conhecidos ("novo" ou
     "velho").
 
@@ -100,8 +100,8 @@ def validar_template(doc_text: str) -> Literal['novo', 'velho']:
     raise FormatoMemorandoInvalido(
         msg=(
             'O texto não corresponde a nenhum dos modelos esperados:\n'
-            f'Modelo "novo": faltam os marcadores {ausentes_novos_novos}\n'
-            f'Modelo "velho": faltam os marcadores {ausentes_novos_velhos}'
+            f'Modelo "novo": faltam os tags {ausentes_novos_novos}\n'
+            f'Modelo "velho": faltam os tags {ausentes_novos_velhos}'
         )
     )
 
@@ -152,7 +152,7 @@ def _detectar_periodo_dependentes(doc_text: str) -> bool:
     eletrônica ("Documento assinado eletronicamente..."). Qualquer
     quantidade de datas encontrada nessa janela (uma ou mais) faz
     retornar True.
-    Se o marcador de assinatura eletrônica não for encontrado, a busca
+    Se o tag de assinatura eletrônica não for encontrado, a busca
     considera o restante do texto até o final.
     """
     match_dependentes = _PADRAO_MATRICULAS_DEPENDENTES_NOVO.search(doc_text)
@@ -190,7 +190,7 @@ def _extrair_periodo_dependentes_velho(doc_text: str) -> str:
     todas as datas (dd/mm/aaaa) encontradas entre essa menção e o início
     do bloco de assinatura eletrônica ("Documento assinado
     eletronicamente..."), unidas por "; ".
-    Se o marcador de assinatura eletrônica não for encontrado, a busca
+    Se o tag de assinatura eletrônica não for encontrado, a busca
     considera o restante do texto até o final.
     Retorna None se não houver menção a dependentes ou se não houver
     nenhuma data na janela.

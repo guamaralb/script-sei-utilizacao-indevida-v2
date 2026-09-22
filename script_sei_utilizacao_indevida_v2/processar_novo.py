@@ -1,5 +1,5 @@
 from extrator_dados_ui import FormatoMemorandoInvalido, extrair_dados_ui
-from Registro import RegistroSepararProecessarNovos
+from Registro import RegistroMain
 from sei_automacao.documento import inserir_bloco_ass, obter_conteudo_doc
 from sei_automacao.processo import adicionar_marcador, incluir_doc_sei_memo
 from sei_automacao.processo.arvore import (
@@ -13,10 +13,10 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import MemoDisa
 
 def processar_novo(
     driver: webdriver.Remote,
-    registro: RegistroSepararProecessarNovos,
+    registro: RegistroMain,
     tds_docs: list[dict],
-    marcador_periodo_var_dep: str,
-    marcador_memos_no_bloco: str,
+    tag_periodo_var_dep: str,
+    tag_memos_no_bloco: str,
 ) -> dict:
     try:
         memos = [doc for doc in tds_docs if 'Memorando' in doc['nome_arvore']]
@@ -43,8 +43,8 @@ def processar_novo(
         registro.dados_ui = dados_ui
 
         if dados_ui.periodo_dependentes:
-            adicionar_marcador(driver, marcador_periodo_var_dep)
-            registro.marcador_periodo_variavel_deps = True
+            adicionar_marcador(driver, tag_periodo_var_dep)
+            registro.tag_periodo_variavel_deps = True
 
         # Memorando DISA
         memo_disa = MemoDisa(
@@ -70,8 +70,8 @@ def processar_novo(
         inserir_bloco_ass(driver, 7697744)
         registro.memo_deproc_inserido_bloco = True
 
-        adicionar_marcador(driver, marcador_memos_no_bloco)
-        registro.marcador_memos_no_bloco = True
+        adicionar_marcador(driver, tag_memos_no_bloco)
+        registro.tag_memos_no_bloco = True
 
         registro.prox_acao = 'Assinar memorandos e encaminhar'
 
