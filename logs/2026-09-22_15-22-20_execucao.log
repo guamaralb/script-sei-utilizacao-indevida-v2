@@ -1,0 +1,18 @@
+2026-09-22 15:22:20,781 - INFO - ================= INÍCIO DA EXECUÇÃO =================
+2026-09-22 15:22:20,781 - INFO - Iniciando Google Chrome...
+2026-09-22 15:22:20,781 - INFO - Obtendo ChromeDriver...
+2026-09-22 15:22:20,781 - INFO - ====== WebDriver manager ======
+2026-09-22 15:22:21,247 - INFO - Driver [C:\Users\m755247\.wdm\drivers\chromedriver\win64\153.0.8010.52\chromedriver-win64/chromedriver.exe] found in cache by browser version
+2026-09-22 15:22:21,248 - INFO - Inicializando WebDriver do Chrome...
+2026-09-22 15:22:21,944 - INFO - Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-09-22 15:22:24,295 - INFO - 2010.01.0061068/2025-43 - PROCESSAMENTO INICIADO
+2026-09-22 15:22:25,251 - ERROR - 2010.01.0061068/2025-43 - erro durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 231, in _processar_linha
+    registro = _classificar_e_processar(driver, ctx, registro)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 159, in _classificar_e_processar
+    if registro.tag_rel_ui_transformado_pdf:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'RegistroMain' object has no attribute 'tag_rel_ui_transformado_pdf'. Did you mean: 'tag_rel_ui_transformado_pdf'?
+2026-09-22 15:22:25,254 - ERROR - Erro critico na execução do main
+2026-09-22 15:22:27,394 - INFO - ================== FIM DA EXECUÇÃO ==================
