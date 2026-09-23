@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, field
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
@@ -71,3 +71,33 @@ class RegistroMain:
             'tag_novo_rel_ui_gerado': (self.tag_novo_rel_ui_gerado),
             'erro': self.erro,
         }
+
+
+@dataclass
+class RegistroMainAddMemoNaoUsouRedePropria:
+    num_processo: str
+    matricula_titular: str | None = None
+    matriculas_dependentes: str | None = None
+
+    tag_processo_novo: bool = False
+    tag_processo_velho: bool = False
+    tag_avaliado_se_usou_rede_propria: bool = False
+
+    # Titular: ambos False => não encontrado na base
+    tit_usou: bool = False
+    tit_nao_usou: bool = False
+    deps_que_usaram: list[str] = field(default_factory=list)
+    deps_que_nao_usaram: list[str] = field(default_factory=list)
+
+    tag_memo_nao_usou_rede_propria_add: bool = False
+
+    erro: str | None = None
+
+    def to_dict(self) -> dict:
+        dados = asdict(self)
+        for campo in (
+            'deps_que_usaram',
+            'deps_que_nao_usaram',
+        ):
+            dados[campo] = '; '.join(getattr(self, campo))
+        return dados

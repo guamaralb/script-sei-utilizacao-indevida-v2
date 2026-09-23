@@ -240,7 +240,7 @@ def _salvar_resultado(registros_processados):
 def main():
     registros_processados: list[dict] = []
     driver = None
-
+    t_ini_geral = datetime.now()
     try:
         logger.info('================= INÍCIO DA EXECUÇÃO =================')
         driver = iniciar_driver(

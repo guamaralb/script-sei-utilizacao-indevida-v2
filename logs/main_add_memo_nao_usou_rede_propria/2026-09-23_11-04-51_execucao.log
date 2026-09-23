@@ -1,0 +1,57 @@
+2026-09-23 11:04:51,018 - INFO - ================= INÍCIO DA EXECUÇÃO =================
+2026-09-23 11:04:51,367 - INFO - Iniciando Google Chrome...
+2026-09-23 11:04:51,367 - INFO - Obtendo ChromeDriver...
+2026-09-23 11:04:51,367 - INFO - ====== WebDriver manager ======
+2026-09-23 11:04:51,679 - INFO - Get LATEST chromedriver version for google-chrome
+2026-09-23 11:04:51,838 - INFO - Get LATEST chromedriver version for google-chrome
+2026-09-23 11:04:52,079 - INFO - WebDriver version 153.0.8010.52 selected
+2026-09-23 11:04:52,082 - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/153.0.8010.52/linux64/chromedriver-linux64.zip
+2026-09-23 11:04:52,083 - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/153.0.8010.52/linux64/chromedriver-linux64.zip
+2026-09-23 11:04:52,392 - INFO - Driver downloading response is 200
+2026-09-23 11:04:54,196 - INFO - Driver has been saved in cache [/home/guamaralb/.wdm/drivers/chromedriver/linux64/153.0.8010.52]
+2026-09-23 11:04:54,197 - INFO - Inicializando WebDriver do Chrome...
+2026-09-23 11:04:55,708 - INFO - Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-09-23 11:04:56,030 - ERROR - Erro crítico na execução do main
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 286, in main
+    driver.maximize_window()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 678, in maximize_window
+    self.execute(command, None)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: JavaScript code failed
+from unknown command: 'Runtime.evaluate' wasn't found
+  (Session info: chrome=153.0.8010.52)
+Stacktrace:
+#0 0x5d71eb7239fa <unknown>
+#1 0x5d71eb0595b9 <unknown>
+#2 0x5d71eb0404ba <unknown>
+#3 0x5d71eb03e80b <unknown>
+#4 0x5d71eb03f1ef <unknown>
+#5 0x5d71eb06f15b <unknown>
+#6 0x5d71eb062ba1 <unknown>
+#7 0x5d71eb062a9c <unknown>
+#8 0x5d71eb03036c <unknown>
+#9 0x5d71eb02e7af <unknown>
+#10 0x5d71eb10f03c <unknown>
+#11 0x5d71eb0f98de <unknown>
+#12 0x5d71eb0a2b8b <unknown>
+#13 0x5d71eb0a3971 <unknown>
+#14 0x5d71eb6e6667 <unknown>
+#15 0x5d71eb6e4e95 <unknown>
+#16 0x5d71eb6cff55 <unknown>
+#17 0x5d71eb6e5aea <unknown>
+#18 0x5d71eb6b86c9 <unknown>
+#19 0x5d71eb70d9a8 <unknown>
+#20 0x5d71eb70db45 <unknown>
+#21 0x5d71eb722353 <unknown>
+#22 0x70be294a3dfa <unknown>
+#23 0x70be295375cc <unknown>
+
+2026-09-23 11:04:56,095 - INFO - Duração total da execução: 0:00:05.076972
+2026-09-23 11:04:56,095 - INFO - ================== FIM DA EXECUÇÃO ==================

@@ -1,0 +1,51 @@
+2026-09-23 15:58:44,968 - INFO - ================= INÍCIO DA EXECUÇÃO =================
+2026-09-23 15:58:45,491 - INFO - Iniciando Google Chrome...
+2026-09-23 15:58:45,491 - INFO - Obtendo ChromeDriver...
+2026-09-23 15:58:45,491 - INFO - ====== WebDriver manager ======
+2026-09-23 15:58:45,759 - INFO - Driver [/home/guamaralb/.wdm/drivers/chromedriver/linux64/153.0.8010.52/chromedriver-linux64/chromedriver] found in cache by browser version
+2026-09-23 15:58:45,760 - INFO - Inicializando WebDriver do Chrome...
+2026-09-23 15:58:46,444 - INFO - Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-09-23 15:59:00,184 - INFO - 2010.01.0025713/2026-48 - PROCESSAMENTO INICIADO
+2026-09-23 15:59:00,184 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['36364070'] | Não encontrados: []
+2026-09-23 15:59:00,185 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | Não encontrados: ['4036285']
+2026-09-23 15:59:49,714 - INFO - 2010.01.0025713/2026-48 - PROCESSAMENTO FINALIZADO (0:00:49.529493)
+2026-09-23 15:59:49,714 - INFO - 2010.01.0011785/2026-35 - PROCESSAMENTO INICIADO
+2026-09-23 15:59:49,714 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['37583786'] | Não encontrados: []
+2026-09-23 15:59:49,714 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | Não encontrados: ['3790813', '3790817']
+2026-09-23 16:00:26,877 - INFO - 2010.01.0011785/2026-35 - PROCESSAMENTO FINALIZADO (0:00:37.162664)
+2026-09-23 16:00:26,877 - INFO - 2010.01.0011781/2026-46 - PROCESSAMENTO INICIADO
+2026-09-23 16:00:26,877 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['35204907'] | Não encontrados: []
+2026-09-23 16:00:26,877 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | Não encontrados: ['0']
+2026-09-23 16:01:02,841 - INFO - 2010.01.0011781/2026-46 - PROCESSAMENTO FINALIZADO (0:00:35.963378)
+2026-09-23 16:01:02,841 - INFO - 2010.01.0011765/2026-90 - PROCESSAMENTO INICIADO
+2026-09-23 16:01:02,841 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['30105773'] | Não encontrados: []
+2026-09-23 16:01:02,841 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | Não encontrados: ['3826911', '3826912']
+2026-09-23 16:01:14,925 - ERROR - 2010.01.0011765/2026-90 - ERRO NO PROCESSAMENTO
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 275, in _processar_linha
+    _avaliar_processo(driver, linha, bases, registro)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 253, in _avaliar_processo
+    reabrir_processo(driver)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 248, in reabrir_processo
+    raise ValueError('Processo não foi carregado corretamente')
+ValueError: Processo não foi carregado corretamente
+2026-09-23 16:01:14,930 - INFO - 2010.01.0011765/2026-90 - PROCESSAMENTO FINALIZADO (0:00:12.088706)
+2026-09-23 16:01:14,930 - INFO - 2010.01.0011759/2026-58 - PROCESSAMENTO INICIADO
+2026-09-23 16:01:14,930 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['23167700'] | Não encontrados: []
+2026-09-23 16:01:14,930 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | Não encontrados: ['3628959']
+2026-09-23 16:01:26,981 - ERROR - 2010.01.0011759/2026-58 - ERRO NO PROCESSAMENTO
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 275, in _processar_linha
+    _avaliar_processo(driver, linha, bases, registro)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 253, in _avaliar_processo
+    reabrir_processo(driver)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 248, in reabrir_processo
+    raise ValueError('Processo não foi carregado corretamente')
+ValueError: Processo não foi carregado corretamente
+2026-09-23 16:01:26,981 - INFO - 2010.01.0011759/2026-58 - PROCESSAMENTO FINALIZADO (0:00:12.051057)
+2026-09-23 16:01:27,068 - INFO - Duração total da execução: 0:02:42.100060
+2026-09-23 16:01:27,068 - INFO - ================== FIM DA EXECUÇÃO ==================

@@ -1,0 +1,21 @@
+2026-09-23 16:24:52,658 - INFO - ================= INÍCIO DA EXECUÇÃO =================
+2026-09-23 16:24:53,017 - INFO - Iniciando Google Chrome...
+2026-09-23 16:24:53,017 - INFO - Obtendo ChromeDriver...
+2026-09-23 16:24:53,017 - INFO - ====== WebDriver manager ======
+2026-09-23 16:24:53,072 - INFO - Driver [/home/guamaralb/.wdm/drivers/chromedriver/linux64/153.0.8010.52/chromedriver-linux64/chromedriver] found in cache by browser version
+2026-09-23 16:24:53,072 - INFO - Inicializando WebDriver do Chrome...
+2026-09-23 16:24:53,455 - INFO - Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-09-23 16:25:05,537 - INFO - 2010.01.0011781/2026-46 - PROCESSAMENTO INICIADO
+2026-09-23 16:25:07,874 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['35204907'] | Não encontrados: []
+2026-09-23 16:25:07,874 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | Não encontrados: ['0']
+2026-09-23 16:25:57,735 - INFO - 2010.01.0011781/2026-46 - PROCESSAMENTO FINALIZADO (0:00:52.198494)
+2026-09-23 16:25:57,736 - INFO - 2010.01.0011765/2026-90 - PROCESSAMENTO INICIADO
+2026-09-23 16:26:00,708 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['30105773'] | Não encontrados: []
+2026-09-23 16:26:00,708 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | Não encontrados: ['3826911', '3826912']
+2026-09-23 16:26:41,533 - INFO - 2010.01.0011765/2026-90 - PROCESSAMENTO FINALIZADO (0:00:43.797373)
+2026-09-23 16:26:41,534 - INFO - 2010.01.0011759/2026-58 - PROCESSAMENTO INICIADO
+2026-09-23 16:26:44,051 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['23167700'] | Não encontrados: []
+2026-09-23 16:26:44,051 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | Não encontrados: ['3628959']
+2026-09-23 16:27:23,137 - INFO - 2010.01.0011759/2026-58 - PROCESSAMENTO FINALIZADO (0:00:41.603759)
+2026-09-23 16:27:23,220 - INFO - Duração total da execução: 0:02:30.562758
+2026-09-23 16:27:23,221 - INFO - ================== FIM DA EXECUÇÃO ==================
