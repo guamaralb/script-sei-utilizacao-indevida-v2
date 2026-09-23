@@ -3,86 +3,104 @@ from typing import Dict, Literal
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
-# Ajuste o import acima conforme o pacote real do projeto, por exemplo:
-# from memorandos.MemoDisa import DadosBeneficiario
-
 
 class FormatoMemorandoInvalido(ValueError):
     def __init__(self, msg):
         super().__init__(msg)
 
 
-# Marcadores que precisam existir no texto para que ele seja considerado
-# aderente ao modelo do Memorando IPSEMG/APIS-UTILIZAÇÃO.
-_MARCADORES_OBRIGATORIOS_NOVOS_NOVOS: Dict[str, str] = {
-    'remetente IPSEMG/APIS-UTILIZAÇÃO': r'IPSEMG/APIS-UTILIZA[ÇC][ÃA]O',
-    'campo "Nome completo"': r'Nome completo:',
-    'campo "Matrícula" (titular)': r'Matr[íi]cula:',
-    'campo "Período titular"': r'Per[íi]odo de apura[çc][ãa]o do titular:',
-}
+# ---------------------------------------------------------------------------
+# Padrões únicos por campo — usados tanto para validar quanto para extrair.
+# Definir uma única vez evita que a checagem de presença (validar_template)
+# e a extração (_extrair_campo) divirjam entre si.
+# ---------------------------------------------------------------------------
 
-_MARCADORES_OBRIGATORIOS_NOVOS_VELHOS: Dict[str, str] = {
-    'remetente IPSEMG/APIS-UTILIZAÇÃO': r'IPSEMG/APIS-UTILIZA[ÇC][ÃA]O',
-    'campo "Segurado(a)"': r'Segurad[oa]:',
-    'campo "Matrícula" (titular)': r'Matr[íi]cula:',
-    'período(s) do titular': (
-        r'per[íi]odos?\s*,?\s+'
-        r'de\s+\d{2}/\d{2}/\d{4}\s+a\s+\d{2}/\d{2}/\d{4}'
-        r'(?:\s*,\s*de\s+\d{2}/\d{2}/\d{4}\s+a\s+\d{2}/\d{2}/\d{4})*'
-    ),
-}
-
-# Padrões para extração de cada campo (modelo "novo"). Cada um captura o
-# restante da linha após o rótulo (o "." não casa com quebra de linha, então
-# a captura para automaticamente no fim da linha).
-_PADROES_NOME_TITULAR_NOVO = [
-    re.compile(r'Nome completo:\s*(.+)'),
-    re.compile(r'Matr[íi]cula:\s*\d{5,10}-\d'),
-]
-_PADROES_MATRICULA_TITULAR_NOVO = [re.compile(r'Matr[íi]cula:\s*(.+)')]
-_PADROES_PERIODO_TITULAR_NOVO = [
-    re.compile(r'Per[íi]odo de apura[çc][ãa]o do titular:\s*(.+)')
-]
-_PADRAO_MATRICULAS_DEPENDENTES_NOVO = re.compile(
-    r'Matr[íi]culas? d(?:o|os) dependentes?:\s*(.+)'
+_PADRAO_REMETENTE = re.compile(
+    r'IPSEMG/APIS-UTILIZA[ÇC][ÃA]O', flags=re.IGNORECASE
 )
+
+# --- Modelo "novo" ---
+_PADRAO_NOME_TITULAR_NOVO = re.compile(
+    r'Nome completo:\s*(.+)', flags=re.IGNORECASE
+)
+_PADRAO_MATRICULA_NOVO_FALLBACK = re.compile(
+    r'Matr[íi]cula:\s*(\d{5,10}-\d)', flags=re.IGNORECASE
+)
+_PADRAO_MATRICULA_TITULAR_NOVO = re.compile(
+    r'Matr[íi]cula:\s*(.+)', flags=re.IGNORECASE
+)
+_PADRAO_PERIODO_TITULAR_NOVO = re.compile(
+    r'Per[íi]odo de apura[çc][ãa]o do titular:\s*(.+)', flags=re.IGNORECASE
+)
+
+_PADROES_NOME_TITULAR_NOVO = [
+    _PADRAO_NOME_TITULAR_NOVO,
+    _PADRAO_MATRICULA_NOVO_FALLBACK,
+]
+_PADROES_MATRICULA_TITULAR_NOVO = [_PADRAO_MATRICULA_TITULAR_NOVO]
+_PADROES_PERIODO_TITULAR_NOVO = [_PADRAO_PERIODO_TITULAR_NOVO]
+
+
 _PADRAO_ASSINATURA_ELETRONICA = re.compile(
     r'Documento assinado eletronicamente', flags=re.IGNORECASE
 )
 
-# Padrões para extração de cada campo (modelo "velho"). Neste modelo os
-# dados vêm em texto corrido, não em campos rotulados isoladamente.
-_PADROES_NOME_TITULAR_VELHO = [re.compile(r'Segurad[oa]:\s*(.+)')]
-_PADROES_MATRICULA_TITULAR_VELHO = [re.compile(r'Matr[íi]cula:\s*(.+)')]
-_PADRAO_PERIODO_TITULAR_VELHO = re.compile(
-    r'per[íi]odos?\s+de\s+([^.]+)\.', flags=re.IGNORECASE
+_MARCADORES_OBRIGATORIOS_NOVOS_NOVOS: Dict[str, re.Pattern] = {
+    'remetente IPSEMG/APIS-UTILIZAÇÃO': _PADRAO_REMETENTE,
+    'campo "Nome completo"': _PADRAO_NOME_TITULAR_NOVO,
+    'campo "Matrícula" (titular)': _PADRAO_MATRICULA_TITULAR_NOVO,
+    'campo "Período titular"': _PADRAO_PERIODO_TITULAR_NOVO,
+}
+
+# --- Modelo "velho" ---
+_PADRAO_NOME_TITULAR_VELHO = re.compile(
+    r'Segurad[oa]:\s*(.+)', flags=re.IGNORECASE
 )
+_PADRAO_MATRICULA_TITULAR_VELHO = re.compile(
+    r'Matr[íi]cula:\s*(.+)', flags=re.IGNORECASE
+)
+# Grupo de captura agora abrange exatamente os intervalos de data — o mesmo
+# trecho que é validado como "presente" também é o que é extraído depois.
+_PADRAO_PERIODO_TITULAR_VELHO = re.compile(
+    r'per[íi]odos?\s*,?\s+de\s+'
+    r'(\d{2}/\d{2}/\d{4}\s+a\s+\d{2}/\d{2}/\d{4}'
+    r'(?:\s*,\s*de\s+\d{2}/\d{2}/\d{4}\s+a\s+\d{2}/\d{2}/\d{4})*)',
+    flags=re.IGNORECASE,
+)
+
+_PADROES_NOME_TITULAR_VELHO = [_PADRAO_NOME_TITULAR_VELHO]
+_PADROES_MATRICULA_TITULAR_VELHO = [_PADRAO_MATRICULA_TITULAR_VELHO]
+
 _PADRAO_MENCAO_DEPENDENTES_VELHO = re.compile(
     r'dependentes?', flags=re.IGNORECASE
 )
 
-# Valor fixo usado quando há menção a dependentes no modelo "velho", mas o
-# texto não traz a matrícula deles explicitamente.
+_MARCADORES_OBRIGATORIOS_NOVOS_VELHOS: Dict[str, re.Pattern] = {
+    'remetente IPSEMG/APIS-UTILIZAÇÃO': _PADRAO_REMETENTE,
+    'campo "Segurado(a)"': _PADRAO_NOME_TITULAR_VELHO,
+    'campo "Matrícula" (titular)': _PADRAO_MATRICULA_TITULAR_VELHO,
+    'período(s) do titular': _PADRAO_PERIODO_TITULAR_VELHO,
+}
+
 _VALOR_MATRICULA_DEPENDENTE_AVERIGUAR = 'AVERIGUAR'
 
-# Data no formato dd/mm/aaaa (ex.: 01/12/2023), usada para detectar/extrair
-# período informado para os dependentes após o respectivo campo/menção.
 _PADROES_DATA = re.compile(r'\b\d{2}/\d{2}/\d{4}\b')
+_PADRAO_MATRICULAS_DEPENDENTES_NOVO = re.compile(
+    r'Matr[íi]culas? d(?:o|os) dependentes?:\s*'
+    r'(\d{3,10}(?:(?:\s*[,;:/.]\s*|\s+e\s+|\s+)\d{3,10})*|)',
+    flags=re.IGNORECASE,
+)
+
+_PADRAO_SEPARADOR_MATRICULAS = re.compile(
+    r'\s+e\s+|[;,:/.]+|\s+', flags=re.IGNORECASE
+)
 
 
 def validar_template(doc_text: str) -> Literal['novo', 'velho']:
-    """
-    Verifica se `doc_text` contém todos os marcadores esperados de algum
-    dos modelos de Memorando IPSEMG/APIS-UTILIZAÇÃO conhecidos ("novo" ou
-    "velho").
-
-    Levanta FormatoMemorandoInvalido caso o texto não corresponda a
-    nenhum dos modelos esperados.
-    """
     ausentes_novos_novos = [
         descricao
         for descricao, padrao in _MARCADORES_OBRIGATORIOS_NOVOS_NOVOS.items()
-        if not re.search(padrao, doc_text, flags=re.IGNORECASE)
+        if not padrao.search(doc_text)
     ]
 
     if not ausentes_novos_novos:
@@ -91,7 +109,7 @@ def validar_template(doc_text: str) -> Literal['novo', 'velho']:
     ausentes_novos_velhos = [
         descricao
         for descricao, padrao in _MARCADORES_OBRIGATORIOS_NOVOS_VELHOS.items()
-        if not re.search(padrao, doc_text, flags=re.IGNORECASE)
+        if not padrao.search(doc_text)
     ]
 
     if not ausentes_novos_velhos:
@@ -134,15 +152,17 @@ def _extrair_matriculas_dependentes(doc_text: str) -> str:
         'Matrícula dos dependentes',
         valido_none=True,
     )
-    if valor_bruto:
-        matriculas = [
-            matricula
-            for matricula in re.split(r'[;,\s]+', valor_bruto.strip())
-            if matricula
-        ]
-        return '; '.join(matriculas)
-    else:
+    if not valor_bruto:
         return None
+
+    matriculas = [
+        matricula
+        for matricula in _PADRAO_SEPARADOR_MATRICULAS.split(
+            valor_bruto.strip()
+        )
+        if matricula
+    ]
+    return '; '.join(matriculas)
 
 
 def _detectar_periodo_dependentes(doc_text: str) -> bool:
@@ -216,7 +236,6 @@ def _extrair_periodo_dependentes_velho(doc_text: str) -> str:
 def extrair_dados_ui(doc_text: str) -> DadosUI:
 
     tipo = validar_template(doc_text)
-    print(tipo)
 
     if tipo == 'novo':
         nome_titular = _extrair_campo(

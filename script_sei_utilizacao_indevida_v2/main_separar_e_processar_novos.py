@@ -210,6 +210,8 @@ def main():
 
     try:
         logger.info('================= INÍCIO DA EXECUÇÃO =================')
+        t_ini_geral = datetime.now()
+
         driver = iniciar_driver(driver_type='chrome')
         driver.maximize_window()
         driver.get('https://www.sei.mg.gov.br')
@@ -223,12 +225,18 @@ def main():
 
         for _, linha in df_processos.iterrows():
             num_processo = linha['num_sei']
+            t_ini = datetime.now()
             logger.info(f'{num_processo} - PROCESSAMENTO INICIADO')
 
             registro = _processar_linha(driver, num_processo)
 
             registros_processados.append(registro.to_dict())
-            logger.info(f'{num_processo} - PROCESSAMENTO FINALIZADO')
+
+            t_fim = datetime.now()
+            duracao = t_fim - t_ini
+            logger.info(
+                f'{num_processo} - PROCESSAMENTO FINALIZADO ({duracao})'
+            )
 
     except Exception:
         logger.error('Erro critico na execução do main')
@@ -238,6 +246,9 @@ def main():
         _salvar_resultado(registros_processados)
         if driver is not None:
             driver.quit()
+        t_fim_geral = datetime.now()
+        duracao_geral = t_fim_geral - t_ini_geral
+        logger.info(f'Duração total da execução: {duracao_geral}')
         logger.info('================== FIM DA EXECUÇÃO ==================')
 
 
