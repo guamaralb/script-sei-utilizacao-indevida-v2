@@ -123,6 +123,18 @@ def _tratar_tag_novo_rel_ui_gerado(ctx: ContextoLinha, registro: RegistroMain):
     return registro
 
 
+def _tratar_tag_transformar_excel_em_pdf(ctx: ContextoLinha, registro: RegistroMain):
+    # TODO: implementar
+    registro.prox_acao = 'Processo VELHO: transformar Excel em PDF (fluxo ainda não implementado)'
+    return registro
+
+
+def _tratar_tag_refazer_rel_ui(ctx: ContextoLinha, registro: RegistroMain):
+    # TODO: implementar
+    registro.prox_acao = 'Processo VELHO: refazer relatório de UI (fluxo ainda não implementado)'
+    return registro
+
+
 def _tratar_velho(ctx: ContextoLinha, registro: RegistroMain):
     if registro.tag_rel_ui_transformado_pdf:
         logger.info('Fluxo: VELHO com relatório de UI transformado em PDF')
@@ -130,6 +142,14 @@ def _tratar_velho(ctx: ContextoLinha, registro: RegistroMain):
     if registro.tag_novo_rel_ui_gerado:
         logger.info('Fluxo: VELHO com novo relatório de UI gerado')
         return _tratar_tag_novo_rel_ui_gerado(ctx, registro)
+    if registro.tag_transformar_excel_em_pdf and registro.tag_refazer_rel_ui:
+        raise ErroAvaliacao('Processo VELHO marcado para transformar Excel em PDF e para refazer o relatório de UI')
+    if registro.tag_transformar_excel_em_pdf:
+        logger.info('Fluxo: VELHO pendente de transformar Excel em PDF')
+        return _tratar_tag_transformar_excel_em_pdf(ctx, registro)
+    if registro.tag_refazer_rel_ui:
+        logger.info('Fluxo: VELHO pendente de refazer relatório de UI')
+        return _tratar_tag_refazer_rel_ui(ctx, registro)
     logger.info('Fluxo: VELHO - identificação das instruções da APIS')
     return processar_velho(ctx.driver, registro, ctx.docs_geacs, ctx.tds_docs)
 

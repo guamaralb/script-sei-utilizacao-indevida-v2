@@ -6,7 +6,10 @@ TODO:
     - Avaliar o uso da rede própria antes da pesquisa
       (rede_propria.avaliar_uso). Dependentes citados sem matrícula
       explícita ("AVERIGUAR") já geram ErroAvaliacao.
-    - Implementar os fluxos de cada instrução.
+    - Implementar os fluxos de cada instrução. Por enquanto o processo só
+      recebe o marcador da pendência:
+        - sem instrução de nova pesquisa: TAG_TRANSFORMAR_EXCEL_EM_PDF;
+        - com instrução de nova pesquisa: TAG_REFAZER_REL_UI.
 """
 
 import logging
@@ -15,8 +18,10 @@ import re
 from docs_processo import ler_texto_doc, obter_memos_apis_apos_email
 from rede_propria import ErroAvaliacao
 from Registro import RegistroMain
+from sei_automacao.processo import adicionar_marcador
 from sei_automacao.processo.arvore import selecionar_doc_arvore
 from selenium import webdriver
+from tags import TAG_REFAZER_REL_UI, TAG_TRANSFORMAR_EXCEL_EM_PDF
 
 logger = logging.getLogger(__name__)
 
@@ -65,24 +70,26 @@ def _baixar_planilhas_antigas(driver: webdriver.Remote, docs_geacs: list[dict]) 
             selecionar_doc_arvore(driver, planilha['numero_sei'])
 
 
-def _tratar_atualizar_pesquisa(
-    driver: webdriver.Remote,
-    registro: RegistroMain,
-    docs_geacs: list[dict],
-    memos_apis: list[dict],
-) -> None:
-    # TODO: implementar
-    registro.prox_acao = 'Processo VELHO (atualizar pesquisa): fluxo ainda não implementado'
+def _marcar_transformar_excel_em_pdf(driver: webdriver.Remote, registro: RegistroMain) -> None:
+    """Sem instrução de nova pesquisa: o relatório de UI antigo será
+    transformado em PDF (fluxo ainda não implementado)."""
+    adicionar_marcador(driver, TAG_TRANSFORMAR_EXCEL_EM_PDF)
+    registro.tag_transformar_excel_em_pdf = True
+    logger.info(f'Marcador adicionado: "{TAG_TRANSFORMAR_EXCEL_EM_PDF}"')
+    registro.prox_acao = 'Processo VELHO: transformar Excel em PDF (fluxo ainda não implementado)'
 
 
-def _tratar_nova_pesquisa(
-    driver: webdriver.Remote,
-    registro: RegistroMain,
-    docs_geacs: list[dict],
-    memos_apis: list[dict],
-) -> None:
-    # TODO: implementar
-    registro.prox_acao = 'Processo VELHO (nova pesquisa): fluxo ainda não implementado'
+def _marcar_refazer_rel_ui(driver: webdriver.Remote, registro: RegistroMain) -> None:
+    """Com instrução de nova pesquisa: o relatório de UI será refeito
+    (fluxo ainda não implementado).
+
+    TODO: antes da pesquisa, executar a consulta à DISA e à DEPROC
+    (avaliar_uso e memos no bloco 7697744), como no fluxo dos NOVOS.
+    """
+    adicionar_marcador(driver, TAG_REFAZER_REL_UI)
+    registro.tag_refazer_rel_ui = True
+    logger.info(f'Marcador adicionado: "{TAG_REFAZER_REL_UI}"')
+    registro.prox_acao = 'Processo VELHO: refazer relatório de UI (fluxo ainda não implementado)'
 
 
 def processar_velho(
@@ -104,13 +111,17 @@ def processar_velho(
 
     # TODO: avaliar uso da rede própria aqui (ver docstring do módulo)
 
-    if instrucoes == [_INSTRUCAO_ATUALIZAR_PESQUISA]:
-        _tratar_atualizar_pesquisa(driver, registro, docs_geacs, memos_apis)
-    elif instrucoes == [_INSTRUCAO_NOVA_PESQUISA]:
-        _tratar_nova_pesquisa(driver, registro, docs_geacs, memos_apis)
-    elif not instrucoes:
-        registro.prox_acao = 'Processo VELHO: nenhuma instrução identificada nos memos da APIS (critérios ainda em definição)'
-    else:
+    if len(instrucoes) > 1:
         raise ErroAvaliacao(f'Instruções conflitantes nos memos da APIS: {instrucoes}')
+
+    if _INSTRUCAO_NOVA_PESQUISA in instrucoes:
+        _marcar_refazer_rel_ui(driver, registro)
+    elif instrucoes or _MARCADORES_INSTRUCOES[_INSTRUCAO_NOVA_PESQUISA]:
+        _marcar_transformar_excel_em_pdf(driver, registro)
+    else:
+        # Enquanto os critérios de "nova pesquisa" não forem definidos, não
+        # é possível afirmar que o processo não tem essa instrução. Sem o
+        # marcador, o processo é reavaliado na próxima execução.
+        registro.prox_acao = 'Processo VELHO: nenhuma instrução identificada nos memos da APIS (critérios ainda em definição)'
 
     return registro

@@ -5,7 +5,7 @@ from sei_automacao.classes.Memorando import Memorando
 
 _CLASSE_PARAGRAFO = 'Texto_Justificado_Recuo_Primeira_Linha'
 
-REFERENCIA_PLANILHA_REDE_PROPRIA = 'Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (SEI nº 149768791), disponibilizada no processo 2010.01.0058549/2026-56'
+REFERENCIA_PLANILHA_REDE_PROPRIA = '<strong>Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (SEI nº 149768791)</strong>, disponibilizada no processo 2010.01.0058549/2026-56'
 
 ASSUNTO_MEMO_USO_REDE = 'Relação de Beneficiários Quanto ao Uso da Rede Própria'
 
@@ -67,6 +67,10 @@ def _par_intro():
     return f'Conforme a {REFERENCIA_PLANILHA_REDE_PROPRIA}, verificou-se a seguinte situação quanto aos beneficiários relacionados ao presente processo:'
 
 
+def _par_conclusao():
+    return 'Diante da informação disponibilizada, não se faz necessária a análise anteriormente solicitada à DISA dos beneficiários que NÃO utilizaram a Rede Própria.'
+
+
 def _par_fecho():
     return 'Atenciosamente,'
 
@@ -96,6 +100,7 @@ class MemoDisaUsoRede(Memorando):
             paragrafos=[
                 _par_intro(),
                 uso.situacao_uso_html(),
+                _par_conclusao(),
                 '',
                 '',
                 '',

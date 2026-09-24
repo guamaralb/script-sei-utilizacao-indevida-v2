@@ -46,6 +46,8 @@ class RegistroMain:
 
     # VELHOS
     instrucoes_velho: str | None = None
+    tag_transformar_excel_em_pdf: bool = False
+    tag_refazer_rel_ui: bool = False
     tag_rel_ui_transformado_pdf: bool = False
     tag_novo_rel_ui_gerado: bool = False
 
@@ -86,6 +88,8 @@ class RegistroMain:
             'memo_uso_rede_na_arvore': self.memo_uso_rede_na_arvore,
             'tag_memo_nao_usou_rede_propria_no_bloco': (self.tag_memo_nao_usou_rede_propria_no_bloco),
             'instrucoes_velho': self.instrucoes_velho,
+            'tag_transformar_excel_em_pdf': self.tag_transformar_excel_em_pdf,
+            'tag_refazer_rel_ui': self.tag_refazer_rel_ui,
             'tag_rel_ui_transformado_pdf': self.tag_rel_ui_transformado_pdf,
             'tag_novo_rel_ui_gerado': self.tag_novo_rel_ui_gerado,
             'erro': self.erro,
