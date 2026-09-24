@@ -16,8 +16,8 @@ selenium = "^4.39.0"
 python-dotenv = "^1.2.1"
 reportlab = "^4.4.10"
 # PATH do sei-automacao: Alterar para seu PC
-# sei-automacao = { path = "../../../sei-automacao", develop = true }
-sei-automacao = { path = "../sei-automacao", develop = true }
+sei-automacao = { path = "../../../sei-automacao", develop = true }
+# sei-automacao = { path = "../sei-automacao", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 taskipy = "^1.14.1"
@@ -38,11 +38,12 @@ run = 'python script_sei_utilizacao_indevida_v2/main.py'
 run_extra = 'python script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py'
 
 [tool.ruff]
-line-length = 79
+line-length = 200
 extend-exclude = ['migrations']
 
 [tool.ruff.lint]
 preview = true
+ignore = ['PLR0917', 'PLR0913']
 select = ['I', 'F', 'E', 'W', 'PL', 'PT', 'FAST']
 
 [tool.ruff.lint.per-file-ignores]

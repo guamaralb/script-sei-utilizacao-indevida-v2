@@ -1,6 +1,8 @@
 import re
 from typing import Dict, Literal
 
+from constantes import VALOR_MATRICULA_DEPENDENTE_AVERIGUAR
+
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
 
@@ -15,35 +17,19 @@ class FormatoMemorandoInvalido(ValueError):
 # e a extração (_extrair_campo) divirjam entre si.
 # ---------------------------------------------------------------------------
 
-_PADRAO_REMETENTE = re.compile(
-    r'IPSEMG/APIS-UTILIZA[ÇC][ÃA]O', flags=re.IGNORECASE
-)
+_PADRAO_REMETENTE = re.compile(r'IPSEMG/APIS-UTILIZA[ÇC][ÃA]O', flags=re.IGNORECASE)
 
 # --- Modelo "novo" ---
-_PADRAO_NOME_TITULAR_NOVO = re.compile(
-    r'Nome completo:\s*(.+)', flags=re.IGNORECASE
-)
-_PADRAO_MATRICULA_NOVO_FALLBACK = re.compile(
-    r'Matr[íi]cula:\s*(\d{5,10}-\d)', flags=re.IGNORECASE
-)
-_PADRAO_MATRICULA_TITULAR_NOVO = re.compile(
-    r'Matr[íi]cula:\s*(.+)', flags=re.IGNORECASE
-)
-_PADRAO_PERIODO_TITULAR_NOVO = re.compile(
-    r'Per[íi]odo de apura[çc][ãa]o do titular:\s*(.+)', flags=re.IGNORECASE
-)
+_PADRAO_NOME_TITULAR_NOVO = re.compile(r'Nome completo:\s*(.+)', flags=re.IGNORECASE)
+_PADRAO_MATRICULA_TITULAR_NOVO = re.compile(r'Matr[íi]cula:\s*(.+)', flags=re.IGNORECASE)
+_PADRAO_PERIODO_TITULAR_NOVO = re.compile(r'Per[íi]odo de apura[çc][ãa]o do titular:\s*(.+)', flags=re.IGNORECASE)
 
-_PADROES_NOME_TITULAR_NOVO = [
-    _PADRAO_NOME_TITULAR_NOVO,
-    _PADRAO_MATRICULA_NOVO_FALLBACK,
-]
+_PADROES_NOME_TITULAR_NOVO = [_PADRAO_NOME_TITULAR_NOVO]
 _PADROES_MATRICULA_TITULAR_NOVO = [_PADRAO_MATRICULA_TITULAR_NOVO]
 _PADROES_PERIODO_TITULAR_NOVO = [_PADRAO_PERIODO_TITULAR_NOVO]
 
 
-_PADRAO_ASSINATURA_ELETRONICA = re.compile(
-    r'Documento assinado eletronicamente', flags=re.IGNORECASE
-)
+_PADRAO_ASSINATURA_ELETRONICA = re.compile(r'Documento assinado eletronicamente', flags=re.IGNORECASE)
 
 _MARCADORES_OBRIGATORIOS_NOVOS_NOVOS: Dict[str, re.Pattern] = {
     'remetente IPSEMG/APIS-UTILIZAÇÃO': _PADRAO_REMETENTE,
@@ -53,12 +39,8 @@ _MARCADORES_OBRIGATORIOS_NOVOS_NOVOS: Dict[str, re.Pattern] = {
 }
 
 # --- Modelo "velho" ---
-_PADRAO_NOME_TITULAR_VELHO = re.compile(
-    r'Segurad[oa]:\s*(.+)', flags=re.IGNORECASE
-)
-_PADRAO_MATRICULA_TITULAR_VELHO = re.compile(
-    r'Matr[íi]cula:\s*(.+)', flags=re.IGNORECASE
-)
+_PADRAO_NOME_TITULAR_VELHO = re.compile(r'Segurad[oa]:\s*(.+)', flags=re.IGNORECASE)
+_PADRAO_MATRICULA_TITULAR_VELHO = re.compile(r'Matr[íi]cula:\s*(.+)', flags=re.IGNORECASE)
 # Grupo de captura agora abrange exatamente os intervalos de data — o mesmo
 # trecho que é validado como "presente" também é o que é extraído depois.
 _PADRAO_PERIODO_TITULAR_VELHO = re.compile(
@@ -71,9 +53,7 @@ _PADRAO_PERIODO_TITULAR_VELHO = re.compile(
 _PADROES_NOME_TITULAR_VELHO = [_PADRAO_NOME_TITULAR_VELHO]
 _PADROES_MATRICULA_TITULAR_VELHO = [_PADRAO_MATRICULA_TITULAR_VELHO]
 
-_PADRAO_MENCAO_DEPENDENTES_VELHO = re.compile(
-    r'dependentes?', flags=re.IGNORECASE
-)
+_PADRAO_MENCAO_DEPENDENTES_VELHO = re.compile(r'dependentes?', flags=re.IGNORECASE)
 
 _MARCADORES_OBRIGATORIOS_NOVOS_VELHOS: Dict[str, re.Pattern] = {
     'remetente IPSEMG/APIS-UTILIZAÇÃO': _PADRAO_REMETENTE,
@@ -82,8 +62,6 @@ _MARCADORES_OBRIGATORIOS_NOVOS_VELHOS: Dict[str, re.Pattern] = {
     'período(s) do titular': _PADRAO_PERIODO_TITULAR_VELHO,
 }
 
-_VALOR_MATRICULA_DEPENDENTE_AVERIGUAR = 'AVERIGUAR'
-
 _PADROES_DATA = re.compile(r'\b\d{2}/\d{2}/\d{4}\b')
 _PADRAO_MATRICULAS_DEPENDENTES_NOVO = re.compile(
     r'Matr[íi]culas? d(?:o|os) dependentes?:\s*'
@@ -91,36 +69,22 @@ _PADRAO_MATRICULAS_DEPENDENTES_NOVO = re.compile(
     flags=re.IGNORECASE,
 )
 
-_PADRAO_SEPARADOR_MATRICULAS = re.compile(
-    r'\s+e\s+|[;,:/.]+|\s+', flags=re.IGNORECASE
-)
+_PADRAO_SEPARADOR_MATRICULAS = re.compile(r'\s+e\s+|[;,:/.]+|\s+', flags=re.IGNORECASE)
 
 
 def validar_template(doc_text: str) -> Literal['novo', 'velho']:
-    ausentes_novos_novos = [
-        descricao
-        for descricao, padrao in _MARCADORES_OBRIGATORIOS_NOVOS_NOVOS.items()
-        if not padrao.search(doc_text)
-    ]
+    ausentes_novos_novos = [descricao for descricao, padrao in _MARCADORES_OBRIGATORIOS_NOVOS_NOVOS.items() if not padrao.search(doc_text)]
 
     if not ausentes_novos_novos:
         return 'novo'
 
-    ausentes_novos_velhos = [
-        descricao
-        for descricao, padrao in _MARCADORES_OBRIGATORIOS_NOVOS_VELHOS.items()
-        if not padrao.search(doc_text)
-    ]
+    ausentes_novos_velhos = [descricao for descricao, padrao in _MARCADORES_OBRIGATORIOS_NOVOS_VELHOS.items() if not padrao.search(doc_text)]
 
     if not ausentes_novos_velhos:
         return 'velho'
 
     raise FormatoMemorandoInvalido(
-        msg=(
-            'O texto não corresponde a nenhum dos modelos esperados:\n'
-            f'Modelo "novo": faltam os tags {ausentes_novos_novos}\n'
-            f'Modelo "velho": faltam os tags {ausentes_novos_velhos}'
-        )
+        msg=(f'O texto não corresponde a nenhum dos modelos esperados:\nModelo "novo": faltam os tags {ausentes_novos_novos}\nModelo "velho": faltam os tags {ausentes_novos_velhos}')
     )
 
 
@@ -129,7 +93,7 @@ def _extrair_campo(
     doc_text: str,
     nome_campo: str,
     valido_none: bool = False,
-) -> str:
+) -> str | None:
     for padrao in padroes:
         match = padrao.search(doc_text)
         if not match or not match.group(1).strip():
@@ -140,12 +104,10 @@ def _extrair_campo(
     if valido_none:
         return None
     else:
-        raise FormatoMemorandoInvalido(
-            msg=(f'Não foi possível extrair o campo "{nome_campo}" do texto.')
-        )
+        raise FormatoMemorandoInvalido(msg=(f'Não foi possível extrair o campo "{nome_campo}" do texto.'))
 
 
-def _extrair_matriculas_dependentes(doc_text: str) -> str:
+def _extrair_matriculas_dependentes(doc_text: str) -> str | None:
     valor_bruto = _extrair_campo(
         [_PADRAO_MATRICULAS_DEPENDENTES_NOVO],
         doc_text,
@@ -155,13 +117,7 @@ def _extrair_matriculas_dependentes(doc_text: str) -> str:
     if not valor_bruto:
         return None
 
-    matriculas = [
-        matricula
-        for matricula in _PADRAO_SEPARADOR_MATRICULAS.split(
-            valor_bruto.strip()
-        )
-        if matricula
-    ]
+    matriculas = [matricula for matricula in _PADRAO_SEPARADOR_MATRICULAS.split(valor_bruto.strip()) if matricula]
     return '; '.join(matriculas)
 
 
@@ -181,18 +137,14 @@ def _detectar_periodo_dependentes(doc_text: str) -> bool:
 
     inicio_janela = match_dependentes.end()
 
-    match_assinatura = _PADRAO_ASSINATURA_ELETRONICA.search(
-        doc_text, pos=inicio_janela
-    )
-    fim_janela = (
-        match_assinatura.start() if match_assinatura else len(doc_text)
-    )
+    match_assinatura = _PADRAO_ASSINATURA_ELETRONICA.search(doc_text, pos=inicio_janela)
+    fim_janela = match_assinatura.start() if match_assinatura else len(doc_text)
 
     texto_janela = doc_text[inicio_janela:fim_janela]
     return _PADROES_DATA.search(texto_janela) is not None
 
 
-def _extrair_matriculas_dependentes_velho(doc_text: str) -> str:
+def _extrair_matriculas_dependentes_velho(doc_text: str) -> str | None:
     """
     No modelo "velho" não há campo explícito de matrícula dos
     dependentes. Caso o texto mencione a palavra "dependente(s)", marca
@@ -200,11 +152,11 @@ def _extrair_matriculas_dependentes_velho(doc_text: str) -> str:
     contrário, retorna None.
     """
     if _PADRAO_MENCAO_DEPENDENTES_VELHO.search(doc_text):
-        return _VALOR_MATRICULA_DEPENDENTE_AVERIGUAR
+        return VALOR_MATRICULA_DEPENDENTE_AVERIGUAR
     return None
 
 
-def _extrair_periodo_dependentes_velho(doc_text: str) -> str:
+def _extrair_periodo_dependentes_velho(doc_text: str) -> str | None:
     """
     Busca a primeira menção à palavra "dependente(s)" no texto e retorna
     todas as datas (dd/mm/aaaa) encontradas entre essa menção e o início
@@ -221,12 +173,8 @@ def _extrair_periodo_dependentes_velho(doc_text: str) -> str:
 
     inicio_janela = match_dependentes.end()
 
-    match_assinatura = _PADRAO_ASSINATURA_ELETRONICA.search(
-        doc_text, pos=inicio_janela
-    )
-    fim_janela = (
-        match_assinatura.start() if match_assinatura else len(doc_text)
-    )
+    match_assinatura = _PADRAO_ASSINATURA_ELETRONICA.search(doc_text, pos=inicio_janela)
+    fim_janela = match_assinatura.start() if match_assinatura else len(doc_text)
 
     texto_janela = doc_text[inicio_janela:fim_janela]
     datas = _PADROES_DATA.findall(texto_janela)
@@ -238,12 +186,8 @@ def extrair_dados_ui(doc_text: str) -> DadosUI:
     tipo = validar_template(doc_text)
 
     if tipo == 'novo':
-        nome_titular = _extrair_campo(
-            _PADROES_NOME_TITULAR_NOVO, doc_text, 'Nome completo'
-        )
-        matricula_titular = _extrair_campo(
-            _PADROES_MATRICULA_TITULAR_NOVO, doc_text, 'Matrícula'
-        )
+        nome_titular = _extrair_campo(_PADROES_NOME_TITULAR_NOVO, doc_text, 'Nome completo')
+        matricula_titular = _extrair_campo(_PADROES_MATRICULA_TITULAR_NOVO, doc_text, 'Matrícula')
         periodo_titular = _extrair_campo(
             _PADROES_PERIODO_TITULAR_NOVO,
             doc_text,
@@ -253,20 +197,14 @@ def extrair_dados_ui(doc_text: str) -> DadosUI:
         periodo_dependentes = _detectar_periodo_dependentes(doc_text)
 
     elif tipo == 'velho':
-        nome_titular = _extrair_campo(
-            _PADROES_NOME_TITULAR_VELHO, doc_text, 'Segurado(a)'
-        )
-        matricula_titular = _extrair_campo(
-            _PADROES_MATRICULA_TITULAR_VELHO, doc_text, 'Matrícula'
-        )
+        nome_titular = _extrair_campo(_PADROES_NOME_TITULAR_VELHO, doc_text, 'Segurado(a)')
+        matricula_titular = _extrair_campo(_PADROES_MATRICULA_TITULAR_VELHO, doc_text, 'Matrícula')
         periodo_titular = _extrair_campo(
             [_PADRAO_PERIODO_TITULAR_VELHO],
             doc_text,
             'Período(s) do titular',
         )
-        matriculas_dependentes = _extrair_matriculas_dependentes_velho(
-            doc_text
-        )
+        matriculas_dependentes = _extrair_matriculas_dependentes_velho(doc_text)
         periodo_dependentes = _extrair_periodo_dependentes_velho(doc_text)
 
     return DadosUI(

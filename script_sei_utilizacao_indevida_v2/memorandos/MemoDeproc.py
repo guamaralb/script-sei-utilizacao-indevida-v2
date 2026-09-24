@@ -24,9 +24,7 @@ def _par_5():
 
 
 class MemoDeproc(Memorando):
-    def __init__(
-        self, dados: DadosUI, nome_signatario: str, cargo_signatario: str
-    ):
+    def __init__(self, dados: DadosUI, nome_signatario: str, cargo_signatario: str):
         super().__init__(
             destinatario_nome='IPSEMG/DEPROC',
             assunto='Levantamento de coparticipação - utilização indevida da assistência à saúde',

@@ -1,0 +1,29 @@
+2026-09-24 10:01:21,003 - INFO - ================= INÍCIO DA EXECUÇÃO =================
+2026-09-24 10:01:21,472 - INFO - Aba "UI 2025 EX-TITULARES" carregada: 4876 matrículas
+2026-09-24 10:01:21,611 - INFO - Aba "UI 2025 EX-DEPENDENTES" carregada: 4366 matrículas
+2026-09-24 10:01:21,612 - INFO - Iniciando Google Chrome...
+2026-09-24 10:01:21,612 - INFO - Obtendo ChromeDriver...
+2026-09-24 10:01:21,612 - INFO - ====== WebDriver manager ======
+2026-09-24 10:01:22,555 - INFO - Get LATEST chromedriver version for google-chrome
+2026-09-24 10:01:23,299 - INFO - Get LATEST chromedriver version for google-chrome
+2026-09-24 10:01:23,873 - INFO - WebDriver version 153.0.8010.52 selected
+2026-09-24 10:01:23,877 - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/153.0.8010.52/win64/chromedriver-win64.zip
+2026-09-24 10:01:23,877 - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/153.0.8010.52/win64/chromedriver-win64.zip
+2026-09-24 10:01:24,312 - INFO - Driver downloading response is 200
+2026-09-24 10:01:25,809 - INFO - Driver has been saved in cache [C:\Users\m755247\.wdm\drivers\chromedriver\win64\153.0.8010.52]
+2026-09-24 10:01:25,811 - INFO - Inicializando WebDriver do Chrome...
+2026-09-24 10:01:26,486 - INFO - Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-09-24 10:01:28,385 - INFO - 2010.01.0011781/2026-46 - PROCESSAMENTO INICIADO
+2026-09-24 10:01:29,824 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['35204907'] | (dos quais não encontrados na base: [])
+2026-09-24 10:01:29,824 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: [] | (dos quais não encontrados na base: [])
+2026-09-24 10:01:56,652 - INFO - 2010.01.0011781/2026-46 - PROCESSAMENTO FINALIZADO (0:00:28.267296)
+2026-09-24 10:01:56,652 - INFO - 2010.01.0011765/2026-90 - PROCESSAMENTO INICIADO
+2026-09-24 10:01:57,725 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['30105773'] | (dos quais não encontrados na base: [])
+2026-09-24 10:01:57,725 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: ['3826911', '3826912'] | (dos quais não encontrados na base: ['3826911', '3826912'])
+2026-09-24 10:02:21,463 - INFO - 2010.01.0011765/2026-90 - PROCESSAMENTO FINALIZADO (0:00:24.810621)
+2026-09-24 10:02:21,463 - INFO - 2010.01.0011759/2026-58 - PROCESSAMENTO INICIADO
+2026-09-24 10:02:22,564 - INFO - titular pesquisados na base | Usaram: [] | Não usaram: ['23167700'] | (dos quais não encontrados na base: [])
+2026-09-24 10:02:22,564 - INFO - dependente pesquisados na base | Usaram: [] | Não usaram: ['3628959'] | (dos quais não encontrados na base: ['3628959'])
+2026-09-24 10:02:46,582 - INFO - 2010.01.0011759/2026-58 - PROCESSAMENTO FINALIZADO (0:00:25.118471)
+2026-09-24 10:02:48,821 - INFO - Duração total da execução: 0:01:27.817562
+2026-09-24 10:02:48,821 - INFO - ================== FIM DA EXECUÇÃO ==================

@@ -2,12 +2,32 @@ import logging
 import os
 from dataclasses import dataclass
 from datetime import datetime
-from pathlib import Path
 
 import pandas as pd
+from constantes import (
+    ARQ_USO_REDE_PROPRIA,
+    DIR_CONTROLE,
+    DIR_DADOS,
+    DIR_INPUTS,
+    DIR_LOG,
+)
+from correcao_rede_propria import (
+    corrigir_uso_rede_propria,
+    verificar_memo_uso_rede,
+)
+from docs_processo import filtrar_docs_geacs, filtrar_memos_geacs
 from dotenv import load_dotenv
-from processar_novo import processar_novo
+from extrator_dados_ui import FormatoMemorandoInvalido
+from log_config import (
+    configurar_logging,
+    contexto_processo,
+    formatar_duracao,
+    log_fim_processo,
+    log_resumo,
+)
+from processar_novo import obter_dados_ui, processar_novo
 from processar_velho import processar_velho
+from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
 from Registro import RegistroMain
 from sei_automacao.auth.login import efetuar_login
 from sei_automacao.driver import iniciar_driver
@@ -16,6 +36,13 @@ from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
+from tags import (
+    TAG_PROCESSO_NOVO,
+    TAG_PROCESSO_VELHO,
+    TAGS_SCRIPT,
+    normalizar_tags,
+    registrar_tags,
+)
 
 load_dotenv()
 
@@ -25,262 +52,270 @@ SEI_ORGAO = os.getenv('SEI_ORGAO')
 
 AGORA = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-DIR_BASE = Path(__file__).resolve().parent.parent
-
-DIR_DADOS = DIR_BASE / 'dados'
-
-DIR_INPUTS = DIR_DADOS / 'inputs'
-DIR_CONTROLE = DIR_DADOS / 'controle'
-DIR_LOG = DIR_BASE / 'logs'
 DIR_UI = DIR_DADOS / 'utilizacoes'
-
 DIR_UI_NOVAS = DIR_UI / 'novas'
 DIR_UI_ANTIGAS = DIR_UI / 'antigas'
-
 DIR_UI_NOVAS_XLS = DIR_UI_NOVAS / 'xlsx'
 DIR_UI_NOVAS_PDF = DIR_UI_NOVAS / 'pdf'
-
 DIR_UI_ANTIGAS_XLS = DIR_UI_ANTIGAS / 'xlsx'
 DIR_UI_ANTIGAS_PDF = DIR_UI_ANTIGAS / 'pdf'
 
-for diretorio in [DIR_DADOS, DIR_INPUTS, DIR_CONTROLE, DIR_LOG]:
+for diretorio in [
+    DIR_DADOS,
+    DIR_INPUTS,
+    DIR_CONTROLE,
+    DIR_LOG,
+    DIR_UI_ANTIGAS_XLS,
+]:
     diretorio.mkdir(parents=True, exist_ok=True)
 
 ARQ_PROCESSOS_NAO_PROCESSADOS = DIR_INPUTS / 'processos_nao_processados.xlsx'
-ARQ_PROCESSOS_PROCESSADOS = (
-    DIR_CONTROLE / f'processos_processados_{AGORA}.xlsx'
-)
+ARQ_PROCESSOS_PROCESSADOS = DIR_CONTROLE / f'processos_processados_{AGORA}.xlsx'
 ARQ_LOG = DIR_LOG / f'{AGORA}_execucao.log'
 
-_NUM_MEMOS_PROCESSO_NOVO = 2
-_TAG_PROCESSO_NOVO = 'Script v2 - Processo NOVO'
-_TAG_PROCESSO_VELHO = 'Script v2 - Processo VELHO'
-_TAG_PERIODO_VAR_DEP = 'Script v2 - Período Variável Para Dependentes'
-_TAG_MEMOS_NO_BLOCO = 'Script v2 - Memos DISA e DEPROC no bloco'
-_TAG_PLANILHADO = 'PLANILHADO'
-_TAG_UI_INSERIDA = 'UTILIZAÇÃO INSERIDA'
-_TAG_RELATORIO_UI_TRANSFORMADO_PDF = (
-    'Script v2 - Rel. de UI Velho Transformado em PDF'
-)
-_TAG_NOVO_RELATORIO_UI_GERADO = 'Script v2 - Novo Rel. de UI Gerado'
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(ARQ_LOG, encoding='utf-8'),
-        logging.StreamHandler(),
-    ],
-)
-
-logger = logging.getLogger()
+configurar_logging(ARQ_LOG)
+logger = logging.getLogger(__name__)
 
 
 @dataclass
 class ContextoLinha:
-    driver: object
-    tds_docs: list
-    docs_geacs: list
-    tags: list
-
-    @property
-    def quant_docs_geacs(self) -> int:
-        return len(self.docs_geacs)
+    driver: webdriver.Remote
+    tds_docs: list[dict]
+    docs_geacs: list[dict]
+    memos_geacs: list[dict]
+    tags: list[str]
+    bases: BasesUso
 
 
-def _filtrar_docs_geacs(tds_docs):
-    return [
-        doc
-        for doc in tds_docs
-        if 'IPSEMG/GEACS - Utilização' in doc['unidade']
-    ]
+# ---------------------------------------------------------------------------
+# Processos sem marcadores do script
+# ---------------------------------------------------------------------------
 
 
-def _tratar_sem_marcadores(ctx, registro):
-    if len(ctx.docs_geacs) > 0:
-        adicionar_marcador(ctx.driver, _TAG_PROCESSO_VELHO)
+def _tratar_sem_marcadores(ctx: ContextoLinha, registro: RegistroMain):
+    if ctx.docs_geacs:
+        logger.info(f'Classificação: VELHO ({len(ctx.docs_geacs)} documento(s) da GEACS na árvore)')
+        adicionar_marcador(ctx.driver, TAG_PROCESSO_VELHO)
+        logger.info(f'Marcador adicionado: "{TAG_PROCESSO_VELHO}"')
         registro.tag_processo_velho = True
         registro.prox_acao = 'Processar processos VELHOS'
         return registro
 
-    adicionar_marcador(ctx.driver, _TAG_PROCESSO_NOVO)
+    logger.info('Classificação: NOVO (sem documentos da GEACS na árvore)')
+    adicionar_marcador(ctx.driver, TAG_PROCESSO_NOVO)
     registro.tag_processo_novo = True
-    return processar_novo(
-        ctx.driver,
-        registro,
-        ctx.tds_docs,
-        _TAG_PERIODO_VAR_DEP,
-        _TAG_MEMOS_NO_BLOCO,
-    )
+    logger.info(f'Marcador adicionado: "{TAG_PROCESSO_NOVO}"')
+    return processar_novo(ctx.driver, registro, ctx.tds_docs, ctx.bases)
 
 
-def _tratar_tag_novo_sem_tag_memos_no_bloco(ctx, registro):
-    registro.tag_processo_novo = True
-    quant_docs_geacs = ctx.quant_docs_geacs
-
-    if quant_docs_geacs == _NUM_MEMOS_PROCESSO_NOVO:
-        registro.prox_acao = 'Processo já contém 2 memos da GEACS. Pulado.'
-        return registro
-
-    if quant_docs_geacs == 0:
-        return processar_novo(
-            ctx.driver,
-            registro,
-            ctx.tds_docs,
-            _TAG_PERIODO_VAR_DEP,
-            _TAG_MEMOS_NO_BLOCO,
-        )
-
-    registro.erro = f'Identificados {quant_docs_geacs} docs da geacs'
-    return registro
+# ---------------------------------------------------------------------------
+# VELHOS
+# ---------------------------------------------------------------------------
 
 
-def _tratar_tag_rel_ui_transformado_pdf(
-    ctx: ContextoLinha, registro: RegistroMain
-):
-    ...
+def _tratar_tag_rel_ui_transformado_pdf(ctx: ContextoLinha, registro: RegistroMain):
+    # TODO: implementar
     return registro
 
 
 def _tratar_tag_novo_rel_ui_gerado(ctx: ContextoLinha, registro: RegistroMain):
-    ...
+    # TODO: implementar
     return registro
 
 
-def _classificar_e_processar(
-    driver: webdriver.Remote, ctx: ContextoLinha, registro: RegistroMain
-) -> RegistroMain:
-    if len(ctx.tags) == 0:
-        registro = _tratar_sem_marcadores(ctx, registro)
+def _tratar_velho(ctx: ContextoLinha, registro: RegistroMain):
+    if registro.tag_rel_ui_transformado_pdf:
+        logger.info('Fluxo: VELHO com relatório de UI transformado em PDF')
+        return _tratar_tag_rel_ui_transformado_pdf(ctx, registro)
+    if registro.tag_novo_rel_ui_gerado:
+        logger.info('Fluxo: VELHO com novo relatório de UI gerado')
+        return _tratar_tag_novo_rel_ui_gerado(ctx, registro)
+    logger.info('Fluxo: VELHO - identificação das instruções da APIS')
+    return processar_velho(ctx.driver, registro, ctx.docs_geacs, ctx.tds_docs)
 
-    elif registro.tag_processo_velho:
-        if registro.tag_rel_ui_transformado_pdf:
-            registro = _tratar_tag_rel_ui_transformado_pdf(ctx, registro)
-        elif registro.tag_novo_rel_ui_gerado:
-            registro = _tratar_tag_novo_rel_ui_gerado(ctx, registro)
-        else:
-            registro = processar_velho(
-                driver, registro, ctx.docs_geacs, ctx.tds_docs
-            )
 
-    elif registro.tag_processo_novo:
-        if registro.tag_memos_no_bloco:
-            if registro.qnt_docs_geacs_na_arvore == _NUM_MEMOS_PROCESSO_NOVO:
-                registro.prox_acao = 'Assinar memorandos e encaminhar'
-            else:
-                registro.prox_acao = (
-                    'Processo NOVO com tag de memos no bloco, mas '
-                    f'quantidade de docs da GEACS na árvore é '
-                    f'{registro.qnt_docs_geacs_na_arvore}. Verificar.'
-                )
-        else:
-            registro = _tratar_tag_novo_sem_tag_memos_no_bloco(ctx, registro)
+# ---------------------------------------------------------------------------
+# NOVOS
+# ---------------------------------------------------------------------------
 
-    elif registro.tag_memos_no_bloco:
-        registro.erro = 'Marcador de memos_no_bloco sem processo_novo'
 
+def _tratar_novo_avaliado(ctx: ContextoLinha, registro: RegistroMain):
+    """Processo já avaliado: confere os memos esperados na árvore."""
+    logger.info('Fluxo: NOVO já avaliado - conferência dos memos na árvore')
+    if registro.tag_memo_nao_usou_rede_propria_no_bloco:
+        verificar_memo_uso_rede(ctx.driver, registro, ctx.tds_docs)
+
+    if registro.tag_memos_no_bloco:
+        esperado = 2 + int(registro.tag_memo_nao_usou_rede_propria_no_bloco)
+        acao = 'Assinar memorandos e encaminhar'
+    elif registro.tag_memo_deproc_no_bloco:
+        esperado = 1
+        acao = 'Assinar memorando DEPROC e encaminhar'
     else:
-        registro.erro = f'Combinação de tags não tratados: {ctx.tags}'
+        raise ErroAvaliacao('Processo avaliado quanto à rede própria, mas sem marcador de memos no bloco')
 
+    quant = len(ctx.memos_geacs)
+    if quant == esperado:
+        logger.info(f'Quantidade de memos da GEACS confere ({quant})')
+        registro.prox_acao = acao
+    else:
+        logger.warning(f'Quantidade de memos da GEACS não confere: esperado {esperado}, encontrado {quant}')
+        registro.prox_acao = f'Esperado(s) {esperado} memorando(s) da GEACS na árvore, encontrado(s) {quant}. Verificar.'
     return registro
 
 
-def _processar_linha(driver, num_processo):
+def _corrigir_novo_sem_avaliacao(ctx: ContextoLinha, registro: RegistroMain):
+    """Processo enviado à DISA e à DEPROC sem avaliação da rede própria."""
+    logger.info('Fluxo: NOVO enviado à DISA e DEPROC sem avaliação da rede própria - correção')
+    dados_ui = obter_dados_ui(ctx.driver, registro, ctx.tds_docs)
+    corrigir_uso_rede_propria(
+        ctx.driver,
+        registro,
+        ctx.tds_docs,
+        dados_ui.matricula_titular,
+        dados_ui.matriculas_dependentes,
+        ctx.bases,
+    )
+    return registro
+
+
+def _tratar_novo(ctx: ContextoLinha, registro: RegistroMain):
+    if registro.tag_avaliado_se_usou_rede_propria:
+        return _tratar_novo_avaliado(ctx, registro)
+
+    if registro.tag_memos_no_bloco:
+        return _corrigir_novo_sem_avaliacao(ctx, registro)
+
+    if registro.tag_memo_deproc_no_bloco:
+        raise ErroAvaliacao('Marcador de memo DEPROC no bloco sem marcador de avaliação da rede própria')
+
+    if registro.tag_memo_nao_usou_rede_propria_no_bloco:
+        raise ErroAvaliacao('Marcador de memo de uso da rede própria sem marcador de memos DISA e DEPROC no bloco')
+
+    quant = len(ctx.memos_geacs)
+    if quant == 0:
+        logger.info('Fluxo: NOVO sem memos da GEACS - fluxo normal')
+        return processar_novo(ctx.driver, registro, ctx.tds_docs, ctx.bases)
+
+    raise ErroAvaliacao(f'Processo NOVO com {quant} memorando(s) da GEACS e sem marcador de conclusão. Verificar manualmente para evitar duplicidade.')
+
+
+# ---------------------------------------------------------------------------
+# Classificação
+# ---------------------------------------------------------------------------
+
+
+def _classificar_e_processar(ctx: ContextoLinha, registro: RegistroMain):
+    if registro.tag_processo_novo and registro.tag_processo_velho:
+        raise ErroAvaliacao('Processo marcado como NOVO e VELHO')
+
+    if registro.tag_processo_velho:
+        return _tratar_velho(ctx, registro)
+
+    if registro.tag_processo_novo:
+        return _tratar_novo(ctx, registro)
+
+    tags_script = [t for t in ctx.tags if t in TAGS_SCRIPT]
+    if tags_script:
+        raise ErroAvaliacao(f'Marcadores do script sem marcador NOVO/VELHO: {tags_script}')
+
+    # Marcadores manuais (ex.: PLANILHADO) não impedem a classificação
+    return _tratar_sem_marcadores(ctx, registro)
+
+
+def _processar_linha(driver, num_processo, bases: BasesUso) -> RegistroMain:
     registro = RegistroMain(num_processo=num_processo)
 
     try:
         acessar_processo(driver, num_processo)
         tds_docs = listar_documentos_arvore(driver)
-        docs_geacs = _filtrar_docs_geacs(tds_docs)
-        tags = listar_marcadores(driver)
-
-        registro.qnt_docs_geacs_na_arvore = len(docs_geacs)
+        tags = normalizar_tags(listar_marcadores(driver))
 
         ctx = ContextoLinha(
             driver=driver,
             tds_docs=tds_docs,
-            docs_geacs=docs_geacs,
+            docs_geacs=filtrar_docs_geacs(tds_docs),
+            memos_geacs=filtrar_memos_geacs(tds_docs),
             tags=tags,
+            bases=bases,
         )
+        registro.qnt_docs_geacs_na_arvore = len(ctx.docs_geacs)
+        registro.qnt_memos_geacs_na_arvore = len(ctx.memos_geacs)
+        logger.info(f'Árvore: {len(tds_docs)} documento(s) | GEACS: {len(ctx.docs_geacs)} documento(s), {len(ctx.memos_geacs)} memorando(s)')
+        logger.info(f'Marcadores: {tags or "nenhum"}')
 
-        for tag in tags:
-            if tag == _TAG_PROCESSO_NOVO:
-                registro.tag_processo_novo = True
-            if tag == _TAG_PROCESSO_VELHO:
-                registro.tag_processo_velho = True
-            if tag == _TAG_PLANILHADO:
-                registro.tag_planilhado = True
-            if tag == _TAG_UI_INSERIDA:
-                registro.tag_ui_inserida = True
-            if tag == _TAG_PERIODO_VAR_DEP:
-                registro.tag_periodo_var_deps = True
-            if tag == _TAG_MEMOS_NO_BLOCO:
-                registro.tag_memos_no_bloco = True
-            if tag == _TAG_RELATORIO_UI_TRANSFORMADO_PDF:
-                registro.tag_rel_ui_transformado_pdf = True
-            if tag == _TAG_NOVO_RELATORIO_UI_GERADO:
-                registro.tag_novo_rel_ui_gerado
+        registrar_tags(registro, tags)
 
-        registro = _classificar_e_processar(driver, ctx, registro)
+        registro = _classificar_e_processar(ctx, registro)
+
+    except (ErroAvaliacao, FormatoMemorandoInvalido) as e:
+        # Problema esperado nos dados: sem traceback
+        registro.erro = f'{type(e).__name__}: {e}'
 
     except Exception as e:
         registro.erro = f'{type(e).__name__}: {e}'
-        logger.exception(f'{num_processo} - erro durante o processamento')
+        logger.exception('Erro inesperado durante o processamento')
 
     return registro
 
 
-def _salvar_resultado(registros_processados):
+def _salvar_resultado(registros_processados: list[dict]) -> None:
     if not registros_processados:
         return
     df = pd.DataFrame(registros_processados)
-    df.to_excel(ARQ_PROCESSOS_PROCESSADOS, index=False)
+    try:
+        df.to_excel(ARQ_PROCESSOS_PROCESSADOS, index=False)
+        logger.info(f'Planilha de controle salva: {ARQ_PROCESSOS_PROCESSADOS}')
+    except Exception:
+        logger.exception(f'Falha ao salvar planilha de controle: {ARQ_PROCESSOS_PROCESSADOS}')
 
 
 def main():
     registros_processados: list[dict] = []
     driver = None
     t_ini_geral = datetime.now()
+
     try:
         logger.info('================= INÍCIO DA EXECUÇÃO =================')
-        driver = iniciar_driver(
-            driver_type='chrome', download_dir=DIR_UI_ANTIGAS_XLS
-        )
-        driver.maximize_window()
-        driver.get('https://www.sei.mg.gov.br')
-
-        efetuar_login(driver, SEI_LOGIN, SEI_SENHA, SEI_ORGAO)
+        logger.info(f'Log: {ARQ_LOG}')
 
         df_processos = pd.read_excel(
             io=ARQ_PROCESSOS_NAO_PROCESSADOS,
             sheet_name='processos_reais',
         )
+        total = len(df_processos)
+        logger.info(f'{total} processo(s) lido(s) de {ARQ_PROCESSOS_NAO_PROCESSADOS.name}')
 
-        for _, linha in df_processos.iterrows():
+        bases = carregar_bases(ARQ_USO_REDE_PROPRIA)
+
+        logger.info('Iniciando navegador e login no SEI')
+        driver = iniciar_driver(driver_type='chrome', download_dir=DIR_UI_ANTIGAS_XLS)
+        driver.maximize_window()
+        driver.get('https://www.sei.mg.gov.br')
+        efetuar_login(driver, SEI_LOGIN, SEI_SENHA, SEI_ORGAO)
+        logger.info('Login no SEI efetuado')
+
+        for i, (_, linha) in enumerate(df_processos.iterrows(), start=1):
             num_processo = linha['num_sei']
-            t_ini = datetime.now()
-            logger.info(f'{num_processo} - PROCESSAMENTO INICIADO')
+            with contexto_processo(num_processo):
+                t_ini = datetime.now()
+                logger.info(f'INÍCIO [{i}/{total}]')
 
-            registro = _processar_linha(driver, num_processo)
+                registro = _processar_linha(driver, num_processo, bases)
+                registros_processados.append(registro.to_dict())
 
-            registros_processados.append(registro.to_dict())
-
-            t_fim = datetime.now()
-            duracao = t_fim - t_ini
-            logger.info(
-                f'{num_processo} - PROCESSAMENTO FINALIZADO ({duracao})'
-            )
+                log_fim_processo(logger, registro, datetime.now() - t_ini)
 
     except Exception:
-        logger.error('Erro critico na execução do main')
+        logger.exception('Erro crítico na execução do main')
         raise
 
     finally:
         _salvar_resultado(registros_processados)
         if driver is not None:
             driver.quit()
-        t_fim_geral = datetime.now()
-        duracao_geral = t_fim_geral - t_ini_geral
+        log_resumo(logger, registros_processados)
+        duracao_geral = formatar_duracao(datetime.now() - t_ini_geral)
         logger.info(f'Duração total da execução: {duracao_geral}')
         logger.info('================== FIM DA EXECUÇÃO ==================')
 

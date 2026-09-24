@@ -1,14 +1,26 @@
 from sei_automacao.classes.Memorando import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
+    REFERENCIA_PLANILHA_REDE_PROPRIA,
+    UsoRedeBeneficiarios,
+)
 
 
 def _par_1():
-    return 'Solicita-se à Diretoria de Saúde - DISA, no âmbito de suas competências institucionais previstas nos arts. 68 e 73 do Decreto Estadual nº 48.823, de 16 de maio de 2024, e conforme fluxo de apuração formalizado nos Memorandos IPSEMG/APIS-UTILIZAÇÃO nº. 467/2026 (142545421) e nº 468/2026 (142545891), o levantamento dos valores de utilização indevida da assistência à saúde referentes ao titular e dependentes indicados, na forma e nas etapas ali definidas, abrangendo <strong>os atendimentos de internação e de pronto atendimento realizados na Rede Própria</strong>, no período de apuração informado abaixo. '
+    return 'Solicita-se à Diretoria de Saúde - DISA, no âmbito de suas competências institucionais previstas nos arts. 68 e 73 do Decreto Estadual nº 48.823, de 16 de maio de 2024, e conforme fluxo de apuração formalizado nos Memorandos IPSEMG/APIS-UTILIZAÇÃO nº. 467/2026 (142545421) e nº 468/2026 (142545891), o levantamento dos valores de utilização indevida da assistência à saúde referentes aos <strong>beneficiários que utilizaram a Rede Própria</strong>, indicados abaixo, na forma e nas etapas ali definidas, abrangendo <strong>os atendimentos de internação e de pronto atendimento realizados na Rede Própria</strong>, no período de apuração informado.'
 
 
 def _par_2(dados: DadosUI):
     return dados.texto_levantamento_html()
+
+
+def _par_intro_uso():
+    return f'Conforme a {REFERENCIA_PLANILHA_REDE_PROPRIA}, verificou-se a seguinte situação quanto ao uso da Rede Própria:'
+
+
+def _par_situacao_uso(uso: UsoRedeBeneficiarios):
+    return uso.situacao_uso_html()
 
 
 def _par_3():
@@ -36,9 +48,19 @@ def _par_8():
 
 
 class MemoDisa(Memorando):
+    """Memo do fluxo normal. Só deve existir se alguém usou a rede
+    própria."""
+
     def __init__(
-        self, dados: DadosUI, nome_signatario: str, cargo_signatario: str
+        self,
+        dados: DadosUI,
+        uso: UsoRedeBeneficiarios,
+        nome_signatario: str,
+        cargo_signatario: str,
     ):
+        if not uso.alguem_usou:
+            raise ValueError('Memorando DISA criado sem beneficiários que utilizaram a Rede Própria')
+
         super().__init__(
             destinatario_nome='IPSEMG/DISA-UTI-INDEV',
             assunto='Levantamento de atendimentos da rede própria - utilização indevida da assistência à saúde',
@@ -50,6 +72,8 @@ class MemoDisa(Memorando):
             paragrafos=[
                 _par_1(),
                 _par_2(dados),
+                _par_intro_uso(),
+                _par_situacao_uso(uso),
                 _par_3(),
                 _par_4(),
                 _par_5(),

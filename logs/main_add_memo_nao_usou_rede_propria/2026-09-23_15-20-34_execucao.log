@@ -20,7 +20,7 @@ Traceback (most recent call last):
     _avaliar_processo(driver, linha, bases, registro)
     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 234, in _avaliar_processo
-    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_ADD)
+    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 159, in adicionar_marcador
     if checar_marcador_existe(driver, marcador):
@@ -49,7 +49,7 @@ Traceback (most recent call last):
     _avaliar_processo(driver, linha, bases, registro)
     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 234, in _avaliar_processo
-    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_ADD)
+    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 159, in adicionar_marcador
     if checar_marcador_existe(driver, marcador):
@@ -78,7 +78,7 @@ Traceback (most recent call last):
     _avaliar_processo(driver, linha, bases, registro)
     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 234, in _avaliar_processo
-    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_ADD)
+    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 159, in adicionar_marcador
     if checar_marcador_existe(driver, marcador):
@@ -107,7 +107,7 @@ Traceback (most recent call last):
     _avaliar_processo(driver, linha, bases, registro)
     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 234, in _avaliar_processo
-    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_ADD)
+    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 159, in adicionar_marcador
     if checar_marcador_existe(driver, marcador):
@@ -136,7 +136,7 @@ Traceback (most recent call last):
     _avaliar_processo(driver, linha, bases, registro)
     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py", line 234, in _avaliar_processo
-    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_ADD)
+    adicionar_marcador(driver, _TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 159, in adicionar_marcador
     if checar_marcador_existe(driver, marcador):

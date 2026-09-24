@@ -1,82 +1,146 @@
-from extrator_dados_ui import FormatoMemorandoInvalido, extrair_dados_ui
-from Registro import RegistroMain
-from sei_automacao.documento import inserir_bloco_ass, obter_conteudo_doc
-from sei_automacao.processo import adicionar_marcador, incluir_doc_sei_memo
-from sei_automacao.processo.arvore import (
-    selecionar_doc_arvore,
-)
-from selenium import webdriver
+import logging
 
+from constantes import (
+    BLOCO_MEMOS_DISA_DEPROC,
+    CARGO_SIGNATARIO,
+    NOME_SIGNATARIO,
+)
+from docs_processo import ler_texto_doc, obter_ultimo_memo_apis
+from extrator_dados_ui import FormatoMemorandoInvalido, extrair_dados_ui
+from rede_propria import BasesUso, ErroAvaliacao, avaliar_uso, registrar_uso
+from Registro import RegistroMain
+from sei_automacao.documento import inserir_bloco_ass
+from sei_automacao.processo import adicionar_marcador, incluir_doc_sei_memo
+from selenium import webdriver
+from tags import (
+    TAG_AVALIADO_USO_REDE_PROPRIA,
+    TAG_MEMO_DEPROC_NO_BLOCO,
+    TAG_MEMOS_DISA_DEPROC_NO_BLOCO,
+    TAG_PERIODO_VAR_DEP,
+)
+
+from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import MemoDeproc
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import MemoDisa
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
+    UsoRedeBeneficiarios,
+)
+
+logger = logging.getLogger(__name__)
+
+
+def _adicionar_marcador(driver: webdriver.Remote, tag: str) -> None:
+    adicionar_marcador(driver, tag)
+    logger.info(f'Marcador adicionado: "{tag}"')
+
+
+def obter_dados_ui(driver: webdriver.Remote, registro: RegistroMain, tds_docs: list[dict]) -> DadosUI:
+    """Extrai as instruções do último memorando da APIS-Utilização."""
+    memo_apis = obter_ultimo_memo_apis(tds_docs)
+    if memo_apis is None:
+        raise ErroAvaliacao('Não foi encontrado memorando da APIS-Utilização na árvore')
+    registro.ult_memo_obtido = True
+
+    doc_text = ler_texto_doc(driver, memo_apis)
+    registro.conteudo_ult_memo_obtido = True
+
+    try:
+        dados_ui = extrair_dados_ui(doc_text)
+    except FormatoMemorandoInvalido:
+        registro.prox_acao = 'Verificar erro no formato do memo'
+        raise
+
+    registro.dados_ui = dados_ui
+    logger.info(
+        f'Instruções da APIS extraídas | Titular: {dados_ui.matricula_titular} '
+        f'| Período titular: {dados_ui.periodo_titular} | '
+        f'Dependentes: {dados_ui.matriculas_dependentes or "-"} | '
+        f'Período variável p/ dependentes: '
+        f'{"sim" if dados_ui.periodo_dependentes else "não"}'
+    )
+    return dados_ui
+
+
+def _incluir_memo_disa(
+    driver: webdriver.Remote,
+    registro: RegistroMain,
+    dados_ui: DadosUI,
+    uso: UsoRedeBeneficiarios,
+) -> None:
+    memo = MemoDisa(
+        dados=dados_ui,
+        uso=uso,
+        nome_signatario=NOME_SIGNATARIO,
+        cargo_signatario=CARGO_SIGNATARIO,
+    )
+    incluir_doc_sei_memo(driver, **memo.para_kwargs_inserir_doc())
+    registro.memo_disa_criado = True
+    logger.info('Memo DISA criado')
+
+    inserir_bloco_ass(driver, BLOCO_MEMOS_DISA_DEPROC)
+    registro.memo_disa_inserido_bloco = True
+    logger.info(f'Memo DISA inserido no bloco {BLOCO_MEMOS_DISA_DEPROC}')
+
+
+def _incluir_memo_deproc(driver: webdriver.Remote, registro: RegistroMain, dados_ui: DadosUI) -> None:
+    memo = MemoDeproc(
+        dados=dados_ui,
+        nome_signatario=NOME_SIGNATARIO,
+        cargo_signatario=CARGO_SIGNATARIO,
+    )
+    incluir_doc_sei_memo(driver, **memo.para_kwargs_inserir_doc())
+    registro.memo_deproc_criado = True
+    logger.info('Memo DEPROC criado')
+
+    inserir_bloco_ass(driver, BLOCO_MEMOS_DISA_DEPROC)
+    registro.memo_deproc_inserido_bloco = True
+    logger.info(f'Memo DEPROC inserido no bloco {BLOCO_MEMOS_DISA_DEPROC}')
 
 
 def processar_novo(
     driver: webdriver.Remote,
     registro: RegistroMain,
     tds_docs: list[dict],
-    tag_periodo_var_dep: str,
-    tag_memos_no_bloco: str,
-) -> dict:
-    try:
-        memos = [doc for doc in tds_docs if 'Memorando' in doc['nome_arvore']]
+    bases: BasesUso,
+) -> RegistroMain:
+    """Fluxo normal de processos NOVOS.
 
-        ultimo_doc = memos[-1]
-        registro.ult_memo_obtido = True
+    - Alguém usou a rede própria: memo DISA (quem usou e quem não usou)
+      e memo DEPROC (todos).
+    - Ninguém usou: somente memo DEPROC.
 
-        selecionar_doc_arvore(driver, numero_sei=ultimo_doc['numero_sei'])
-        doc_text = obter_conteudo_doc(driver, formato='texto')
-        registro.conteudo_ult_memo_obtido = True
+    Os marcadores de conclusão (avaliado e memos no bloco) só são
+    colocados depois que os memos estão no bloco. Assim, se o script
+    falhar no meio, o processo fica com o marcador NOVO e com memos da
+    GEACS, e a próxima execução o sinaliza para verificação em vez de
+    duplicar memos.
+    """
+    dados_ui = obter_dados_ui(driver, registro, tds_docs)
 
-        try:
-            dados_ui = extrair_dados_ui(doc_text)
-            registro.matricula_titular = dados_ui.matricula_titular
-            registro.nome_titular = dados_ui.nome_titular
-            registro.periodo_titular = dados_ui.periodo_titular
-            registro.matriculas_dependentes = dados_ui.matriculas_dependentes
-            registro.periodo_dependentes = dados_ui.periodo_dependentes
+    uso = avaliar_uso(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
+    registrar_uso(registro, uso)
 
-        except FormatoMemorandoInvalido:
-            registro.prox_acao = 'Verificar erro no formato do memo'
-            raise
+    if dados_ui.periodo_dependentes:
+        _adicionar_marcador(driver, TAG_PERIODO_VAR_DEP)
+        registro.tag_periodo_var_deps = True
 
-        registro.dados_ui = dados_ui
+    if uso.alguem_usou:
+        logger.info('Alguém usou a rede própria: memos DISA e DEPROC')
+        _incluir_memo_disa(driver, registro, dados_ui, uso)
+    else:
+        logger.info('Ninguém usou a rede própria: somente memo DEPROC')
+    _incluir_memo_deproc(driver, registro, dados_ui)
 
-        if dados_ui.periodo_dependentes:
-            adicionar_marcador(driver, tag_periodo_var_dep)
-            registro.tag_periodo_variavel_deps = True
+    _adicionar_marcador(driver, TAG_AVALIADO_USO_REDE_PROPRIA)
+    registro.tag_avaliado_se_usou_rede_propria = True
 
-        # Memorando DISA
-        memo_disa = MemoDisa(
-            dados=dados_ui,
-            nome_signatario='Bruna Miiller Lavarini',
-            cargo_signatario='Gerência de Auditoria e Contas da Saúde',
-        )
-        incluir_doc_sei_memo(driver, **memo_disa.para_kwargs_inserir_doc())
-        registro.memo_disa_criado = True
-
-        inserir_bloco_ass(driver, 7697744)
-        registro.memo_disa_inserido_bloco = True
-
-        # Memorando DEPROC
-        memo_deproc = MemoDeproc(
-            dados=dados_ui,
-            nome_signatario='Bruna Miiller Lavarini',
-            cargo_signatario='Gerência de Auditoria e Contas da Saúde',
-        )
-        incluir_doc_sei_memo(driver, **memo_deproc.para_kwargs_inserir_doc())
-        registro.memo_deproc_criado = True
-
-        inserir_bloco_ass(driver, 7697744)
-        registro.memo_deproc_inserido_bloco = True
-
-        adicionar_marcador(driver, tag_memos_no_bloco)
+    if uso.alguem_usou:
+        _adicionar_marcador(driver, TAG_MEMOS_DISA_DEPROC_NO_BLOCO)
         registro.tag_memos_no_bloco = True
+        registro.prox_acao = 'Assinar memorandos DISA e DEPROC e encaminhar'
+    else:
+        _adicionar_marcador(driver, TAG_MEMO_DEPROC_NO_BLOCO)
+        registro.tag_memo_deproc_no_bloco = True
+        registro.prox_acao = 'Assinar memorando DEPROC e encaminhar'
 
-        registro.prox_acao = 'Assinar memorandos e encaminhar'
-
-        return registro
-
-    except Exception as e:
-        registro.erro = f'{type(e).__name__}: {e}'
-        return registro
+    return registro

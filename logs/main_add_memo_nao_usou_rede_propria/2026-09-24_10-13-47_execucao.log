@@ -1,0 +1,68 @@
+2026-09-24 10:13:47 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-09-24 10:13:47 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\main_add_memo_nao_usou_rede_propria\2026-09-24_10-13-47_execucao.log
+2026-09-24 10:13:47 | INFO    | -                         | __main__              | 3 processo(s) lido(s) de _processos_processados-COMPILADO-2026_09_23.xlsx
+2026-09-24 10:13:47 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-09-24 10:13:47 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-09-24 10:13:47 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-09-24 10:13:47 | INFO    | -                         | __main__              | Iniciando navegador e login no SEI
+2026-09-24 10:13:47 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-09-24 10:13:47 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-09-24 10:13:48 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-09-24 10:13:48 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-09-24 10:13:50 | INFO    | -                         | __main__              | Login no SEI efetuado
+2026-09-24 10:13:50 | INFO    | 2010.01.0011781/2026-46   | __main__              | INÍCIO [1/3]
+2026-09-24 10:13:51 | INFO    | 2010.01.0011781/2026-46   | __main__              | Marcadores: ['Script v2 - Processo NOVO', 'Script v2 - Memos DISA e DEPROC no bloco', 'Script v2 - Memos DISA/DEPROC Ass./Encaminhados']
+2026-09-24 10:13:51 | INFO    | 2010.01.0011781/2026-46   | correcao_rede_propria | Iniciando correção: avaliação do uso da rede própria
+2026-09-24 10:13:51 | INFO    | 2010.01.0011781/2026-46   | rede_propria          | Uso da rede própria | Titular 35204907: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-09-24 10:13:51 | DEBUG   | 2010.01.0011781/2026-46   | docs_processo         | Procurando memo de uso da rede própria em 2 memorando(s) da GEACS
+2026-09-24 10:13:51 | DEBUG   | 2010.01.0011781/2026-46   | docs_processo         | Lendo documento Memorando 767 (SEI 149614819)
+2026-09-24 10:13:51 | DEBUG   | 2010.01.0011781/2026-46   | docs_processo         | Documento 149614819 lido (2022 caracteres)
+2026-09-24 10:13:51 | DEBUG   | 2010.01.0011781/2026-46   | docs_processo         | Lendo documento Memorando 766 (SEI 149614808)
+2026-09-24 10:13:52 | DEBUG   | 2010.01.0011781/2026-46   | docs_processo         | Documento 149614808 lido (3235 caracteres)
+2026-09-24 10:13:52 | INFO    | 2010.01.0011781/2026-46   | docs_processo         | Memo de uso da rede própria não encontrado na árvore
+2026-09-24 10:13:52 | INFO    | 2010.01.0011781/2026-46   | correcao_rede_propria | Processo reaberto na unidade
+2026-09-24 10:14:09 | INFO    | 2010.01.0011781/2026-46   | correcao_rede_propria | Memo de uso da rede própria criado
+2026-09-24 10:14:12 | INFO    | 2010.01.0011781/2026-46   | correcao_rede_propria | Memo de uso da rede própria inserido no bloco 7707212
+2026-09-24 10:14:14 | INFO    | 2010.01.0011781/2026-46   | correcao_rede_propria | Marcador adicionado: "Script v2 - Memo Não Usou Rede Propria No Bloco"
+2026-09-24 10:14:17 | INFO    | 2010.01.0011781/2026-46   | correcao_rede_propria | Marcador adicionado: "Script v2 - Avaliado Se Usou Rede Própria"
+2026-09-24 10:14:17 | INFO    | 2010.01.0011781/2026-46   | __main__              | FIM (27.3s) | Próxima ação: Assinar memo de uso da rede própria e encaminhar
+2026-09-24 10:14:17 | INFO    | 2010.01.0011765/2026-90   | __main__              | INÍCIO [2/3]
+2026-09-24 10:14:18 | INFO    | 2010.01.0011765/2026-90   | __main__              | Marcadores: ['Script v2 - Processo NOVO', 'Script v2 - Memos DISA e DEPROC no bloco', 'Script v2 - Memos DISA/DEPROC Ass./Encaminhados']
+2026-09-24 10:14:18 | INFO    | 2010.01.0011765/2026-90   | correcao_rede_propria | Iniciando correção: avaliação do uso da rede própria
+2026-09-24 10:14:18 | INFO    | 2010.01.0011765/2026-90   | rede_propria          | Dependente(s) não encontrado(s) na base, considerado(s) como "não usou": ['3826911', '3826912']
+2026-09-24 10:14:18 | INFO    | 2010.01.0011765/2026-90   | rede_propria          | Uso da rede própria | Titular 30105773: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['3826911', '3826912']
+2026-09-24 10:14:18 | DEBUG   | 2010.01.0011765/2026-90   | docs_processo         | Procurando memo de uso da rede própria em 2 memorando(s) da GEACS
+2026-09-24 10:14:18 | DEBUG   | 2010.01.0011765/2026-90   | docs_processo         | Lendo documento Memorando 769 (SEI 149614870)
+2026-09-24 10:14:19 | DEBUG   | 2010.01.0011765/2026-90   | docs_processo         | Documento 149614870 lido (2054 caracteres)
+2026-09-24 10:14:19 | DEBUG   | 2010.01.0011765/2026-90   | docs_processo         | Lendo documento Memorando 768 (SEI 149614822)
+2026-09-24 10:14:20 | DEBUG   | 2010.01.0011765/2026-90   | docs_processo         | Documento 149614822 lido (3267 caracteres)
+2026-09-24 10:14:20 | INFO    | 2010.01.0011765/2026-90   | docs_processo         | Memo de uso da rede própria não encontrado na árvore
+2026-09-24 10:14:20 | INFO    | 2010.01.0011765/2026-90   | correcao_rede_propria | Processo reaberto na unidade
+2026-09-24 10:14:34 | INFO    | 2010.01.0011765/2026-90   | correcao_rede_propria | Memo de uso da rede própria criado
+2026-09-24 10:14:37 | INFO    | 2010.01.0011765/2026-90   | correcao_rede_propria | Memo de uso da rede própria inserido no bloco 7707212
+2026-09-24 10:14:39 | INFO    | 2010.01.0011765/2026-90   | correcao_rede_propria | Marcador adicionado: "Script v2 - Memo Não Usou Rede Propria No Bloco"
+2026-09-24 10:14:42 | INFO    | 2010.01.0011765/2026-90   | correcao_rede_propria | Marcador adicionado: "Script v2 - Avaliado Se Usou Rede Própria"
+2026-09-24 10:14:42 | INFO    | 2010.01.0011765/2026-90   | __main__              | FIM (24.6s) | Próxima ação: Assinar memo de uso da rede própria e encaminhar
+2026-09-24 10:14:42 | INFO    | 2010.01.0011759/2026-58   | __main__              | INÍCIO [3/3]
+2026-09-24 10:14:43 | INFO    | 2010.01.0011759/2026-58   | __main__              | Marcadores: ['Script v2 - Processo NOVO', 'Script v2 - Memos DISA e DEPROC no bloco', 'Script v2 - Memos DISA/DEPROC Ass./Encaminhados']
+2026-09-24 10:14:43 | INFO    | 2010.01.0011759/2026-58   | correcao_rede_propria | Iniciando correção: avaliação do uso da rede própria
+2026-09-24 10:14:43 | INFO    | 2010.01.0011759/2026-58   | rede_propria          | Dependente(s) não encontrado(s) na base, considerado(s) como "não usou": ['3628959']
+2026-09-24 10:14:43 | INFO    | 2010.01.0011759/2026-58   | rede_propria          | Uso da rede própria | Titular 23167700: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['3628959']
+2026-09-24 10:14:43 | DEBUG   | 2010.01.0011759/2026-58   | docs_processo         | Procurando memo de uso da rede própria em 2 memorando(s) da GEACS
+2026-09-24 10:14:43 | DEBUG   | 2010.01.0011759/2026-58   | docs_processo         | Lendo documento Memorando 771 (SEI 149614880)
+2026-09-24 10:14:43 | DEBUG   | 2010.01.0011759/2026-58   | docs_processo         | Documento 149614880 lido (2046 caracteres)
+2026-09-24 10:14:43 | DEBUG   | 2010.01.0011759/2026-58   | docs_processo         | Lendo documento Memorando 770 (SEI 149614827)
+2026-09-24 10:14:44 | DEBUG   | 2010.01.0011759/2026-58   | docs_processo         | Documento 149614827 lido (3259 caracteres)
+2026-09-24 10:14:44 | INFO    | 2010.01.0011759/2026-58   | docs_processo         | Memo de uso da rede própria não encontrado na árvore
+2026-09-24 10:14:44 | INFO    | 2010.01.0011759/2026-58   | correcao_rede_propria | Processo reaberto na unidade
+2026-09-24 10:14:59 | INFO    | 2010.01.0011759/2026-58   | correcao_rede_propria | Memo de uso da rede própria criado
+2026-09-24 10:15:01 | INFO    | 2010.01.0011759/2026-58   | correcao_rede_propria | Memo de uso da rede própria inserido no bloco 7707212
+2026-09-24 10:15:04 | INFO    | 2010.01.0011759/2026-58   | correcao_rede_propria | Marcador adicionado: "Script v2 - Memo Não Usou Rede Propria No Bloco"
+2026-09-24 10:15:06 | INFO    | 2010.01.0011759/2026-58   | correcao_rede_propria | Marcador adicionado: "Script v2 - Avaliado Se Usou Rede Própria"
+2026-09-24 10:15:06 | INFO    | 2010.01.0011759/2026-58   | __main__              | FIM (24.7s) | Próxima ação: Assinar memo de uso da rede própria e encaminhar
+2026-09-24 10:15:06 | INFO    | -                         | __main__              | Planilha de controle salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\main_add_memo_nao_usou_rede_propria\2026-09-24_10-13-47_processos_add_memo_nao_uso_rede_propria.xlsx
+2026-09-24 10:15:09 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-09-24 10:15:09 | INFO    | -                         | __main__              | Processos: 3 | Sem erro: 3 | Com erro: 0
+2026-09-24 10:15:09 | INFO    | -                         | __main__              |     3 | Assinar memo de uso da rede própria e encaminhar
+2026-09-24 10:15:09 | INFO    | -                         | __main__              | Duração total da execução: 0h01m22s
+2026-09-24 10:15:09 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

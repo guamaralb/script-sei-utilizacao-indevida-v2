@@ -46,9 +46,7 @@ def _build_table_row(row, valor_col_index, matricula_dep_index, normal):
     return linha
 
 
-def transformar_xls_em_pdf(
-    tit_matricula, tit_nome, tipo, df: pd.DataFrame, path_destino
-) -> Path:
+def transformar_xls_em_pdf(tit_matricula, tit_nome, tipo, df: pd.DataFrame, path_destino) -> Path:
     styles = getSampleStyleSheet()
     normal = styles['BodyText']
     header_style = styles['Heading4']
@@ -76,29 +74,18 @@ def transformar_xls_em_pdf(
 
     logo = Image('img/logo.jpg', width=120, height=60)
     info = Paragraph(
-        f'<b>Relatório de Utilização Por {tipo}</b><br/>'
-        f'Beneficiário Titular: {tit_nome} - {tit_matricula}',
+        f'<b>Relatório de Utilização Por {tipo}</b><br/>Beneficiário Titular: {tit_nome} - {tit_matricula}',
         header_style,
     )
     elements.append(Table([[logo, info]], colWidths=[150, 650]))
     elements.append(Spacer(1, 20))
 
-    valor_col_index = (
-        df.columns.get_loc('VALOR PAGO')
-        if 'VALOR PAGO' in df.columns
-        else None
-    )
-    matricula_dep_index = (
-        df.columns.get_loc('MATRICULA DEPENDENTE')
-        if 'MATRICULA DEPENDENTE' in df.columns
-        else None
-    )
+    valor_col_index = df.columns.get_loc('VALOR PAGO') if 'VALOR PAGO' in df.columns else None
+    matricula_dep_index = df.columns.get_loc('MATRICULA DEPENDENTE') if 'MATRICULA DEPENDENTE' in df.columns else None
 
     data = [[Paragraph(col, table_header) for col in df.columns]]
     for _, row in df.iterrows():
-        data.append(
-            _build_table_row(row, valor_col_index, matricula_dep_index, normal)
-        )
+        data.append(_build_table_row(row, valor_col_index, matricula_dep_index, normal))
 
     if tipo == 'Titular':
         col_widths = [COL_WITDHS_TIT_DICT.get(col, 100) for col in df.columns]
