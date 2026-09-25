@@ -22,11 +22,10 @@ import re
 
 from docs_processo import ler_texto_doc, obter_memos_apis_apos_email
 from rede_propria import ErroAvaliacao
-from Registro import RegistroMain
-from sei_automacao.processo import adicionar_marcador
+from Registro import ProxAcao, RegistroMain
 from sei_automacao.processo.arvore import selecionar_doc_arvore
 from selenium import webdriver
-from tags import TAG_REFAZER_REL_UI, TAG_TRANSFORMAR_EXCEL_EM_PDF
+from tags import TAG_REFAZER_REL_UI, TAG_TRANSFORMAR_EXCEL_EM_PDF, adicionar_tag
 
 logger = logging.getLogger(__name__)
 
@@ -78,10 +77,8 @@ def _baixar_planilhas_antigas(driver: webdriver.Remote, docs_geacs: list[dict]) 
 def _marcar_transformar_excel_em_pdf(driver: webdriver.Remote, registro: RegistroMain) -> None:
     """Sem instrução de nova pesquisa: o relatório de UI antigo será
     transformado em PDF (fluxo ainda não implementado)."""
-    adicionar_marcador(driver, TAG_TRANSFORMAR_EXCEL_EM_PDF)
-    registro.tag_transformar_excel_em_pdf = True
-    logger.info(f'Marcador adicionado: "{TAG_TRANSFORMAR_EXCEL_EM_PDF}"')
-    registro.prox_acao = 'Processo VELHO: transformar Excel em PDF (fluxo ainda não implementado)'
+    adicionar_tag(driver, registro, TAG_TRANSFORMAR_EXCEL_EM_PDF)
+    registro.prox_acao = ProxAcao.VELHO_TRANSFORMAR_PDF
 
 
 def _marcar_refazer_rel_ui(driver: webdriver.Remote, registro: RegistroMain) -> None:
@@ -91,10 +88,8 @@ def _marcar_refazer_rel_ui(driver: webdriver.Remote, registro: RegistroMain) -> 
     TODO: antes da pesquisa, executar a consulta à DISA e à DEPROC
     (avaliar_uso e memos no bloco 7697744), como no fluxo dos NOVOS.
     """
-    adicionar_marcador(driver, TAG_REFAZER_REL_UI)
-    registro.tag_refazer_rel_ui = True
-    logger.info(f'Marcador adicionado: "{TAG_REFAZER_REL_UI}"')
-    registro.prox_acao = 'Processo VELHO: refazer relatório de UI (fluxo ainda não implementado)'
+    adicionar_tag(driver, registro, TAG_REFAZER_REL_UI)
+    registro.prox_acao = ProxAcao.VELHO_REFAZER_REL_UI
 
 
 def processar_velho(
@@ -127,6 +122,6 @@ def processar_velho(
         # Enquanto os critérios de "nova pesquisa" não forem definidos, não
         # é possível afirmar que o processo não tem essa instrução. Sem o
         # marcador, o processo é reavaliado na próxima execução.
-        registro.prox_acao = 'Processo VELHO: nenhuma instrução identificada nos memos da APIS (critérios ainda em definição)'
+        registro.prox_acao = ProxAcao.VELHO_AGUARDAR_CRITERIOS
 
     return registro

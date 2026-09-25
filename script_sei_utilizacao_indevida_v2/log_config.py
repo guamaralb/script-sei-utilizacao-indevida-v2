@@ -75,7 +75,7 @@ def formatar_duracao(duracao: timedelta) -> str:
 
 def log_fim_processo(logger: logging.Logger, registro, duracao: timedelta) -> None:
     if registro.erro:
-        logger.warning(f'FIM COM ERRO ({formatar_duracao(duracao)}) | {registro.erro}')
+        logger.warning(f'FIM COM ERRO ({formatar_duracao(duracao)}) | {registro.tipo_erro}: {registro.erro}')
     else:
         logger.info(f'FIM ({formatar_duracao(duracao)}) | Próxima ação: {registro.prox_acao or "-"}')
 
@@ -93,4 +93,4 @@ def log_resumo(logger: logging.Logger, registros: list[dict]) -> None:
         logger.info(f'{qtd:>5} | {acao}')
 
     for registro in com_erro:
-        logger.info(f'ERRO  | {registro["num_processo"]} | {registro["erro"]}')
+        logger.info(f'ERRO  | {registro["num_processo"]} | {registro.get("tipo_erro")}: {registro["erro"]}')

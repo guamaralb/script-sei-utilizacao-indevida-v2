@@ -4,7 +4,7 @@ import logging
 
 from constantes import UNIDADE_APIS, UNIDADE_GEACS
 from sei_automacao.documento import obter_conteudo_doc
-from sei_automacao.processo.arvore import selecionar_doc_arvore
+from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
@@ -81,3 +81,12 @@ def encontrar_memo_uso_rede(driver: webdriver.Remote, tds_docs: list[dict]) -> d
 
     logger.info('Memo de uso da rede própria não encontrado na árvore')
     return None
+
+
+def memos_geacs_novos(driver: webdriver.Remote, tds_docs_antes: list[dict]) -> list[dict]:
+    """Relê a árvore e devolve, na ordem da árvore, os memos da GEACS que
+    não estavam em tds_docs_antes (memos criados na execução)."""
+    antes = {doc['numero_sei'] for doc in tds_docs_antes}
+    novos = [doc for doc in filtrar_memos_geacs(listar_documentos_arvore(driver)) if doc['numero_sei'] not in antes]
+    logger.info(f'Memo(s) criado(s) na árvore: {[_descrever(doc) for doc in novos] or "nenhum"}')
+    return novos

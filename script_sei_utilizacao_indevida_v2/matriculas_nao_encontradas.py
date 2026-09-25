@@ -8,17 +8,11 @@ pelo fluxo dos VELHOS (cada um com os seus marcadores).
 import logging
 
 from rede_propria import MatriculasNaoEncontradas
-from sei_automacao.processo import adicionar_marcador
+from Registro import ProxAcao
 from selenium import webdriver
-from tags import registrar_tags
+from tags import adicionar_tag
 
 logger = logging.getLogger(__name__)
-
-
-def _adicionar_marcador(driver: webdriver.Remote, registro, tag: str) -> None:
-    adicionar_marcador(driver, tag)
-    registrar_tags(registro, [tag])
-    logger.info(f'Marcador adicionado: "{tag}"')
 
 
 def marcar_matriculas_nao_encontradas(
@@ -35,12 +29,12 @@ def marcar_matriculas_nao_encontradas(
         registro.titular_nao_encontrado_base_geral = erro.base_geral.titular
         registro.deps_nao_encontrados_base_geral = list(erro.base_geral.dependentes)
         logger.warning(f'Não encontrado(s) na base geral | {erro.base_geral.descrever()}')
-        _adicionar_marcador(driver, registro, tag_base_geral)
+        adicionar_tag(driver, registro, tag_base_geral)
 
     if erro.base_rede:
         registro.titular_nao_encontrado = erro.base_rede.titular
         registro.deps_nao_encontrados = list(erro.base_rede.dependentes)
         logger.warning(f'Não encontrado(s) na base da rede própria | {erro.base_rede.descrever()}')
-        _adicionar_marcador(driver, registro, tag_base_rede)
+        adicionar_tag(driver, registro, tag_base_rede)
 
-    registro.prox_acao = 'Verificar matrícula(s) não encontrada(s)'
+    registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS

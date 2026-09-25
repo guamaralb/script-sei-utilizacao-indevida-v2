@@ -18,7 +18,7 @@ from constantes import (
     CARGO_SIGNATARIO,
     NOME_SIGNATARIO,
 )
-from docs_processo import encontrar_memo_uso_rede
+from docs_processo import encontrar_memo_uso_rede, memos_geacs_novos
 from matriculas_nao_encontradas import marcar_matriculas_nao_encontradas
 from rede_propria import (
     BasesUso,
@@ -27,9 +27,9 @@ from rede_propria import (
     avaliar_uso,
     registrar_uso,
 )
+from Registro import ProxAcao
 from sei_automacao.documento import inserir_bloco_ass
 from sei_automacao.processo import (
-    adicionar_marcador,
     incluir_doc_sei_memo,
     reabrir_processo,
 )
@@ -39,6 +39,7 @@ from tags import (
     TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO,
     TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO,
     TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO,
+    adicionar_tag,
 )
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
@@ -54,13 +55,26 @@ def verificar_memo_uso_rede(driver: webdriver.Remote, registro, tds_docs: list[d
     if memo is None:
         raise ErroAvaliacao(f'Marcador "{TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO}" presente, mas o memo de uso da rede própria não foi encontrado na árvore')
     registro.memo_uso_rede_na_arvore = True
-    registro.prox_acao = f'Memo de uso da rede própria encontrado ({memo["numero_sei"]})'
+    registro.memo_uso_rede_sei = memo['numero_sei']
 
 
 def _marcar_avaliado(driver: webdriver.Remote, registro) -> None:
-    adicionar_marcador(driver, TAG_AVALIADO_USO_REDE_PROPRIA)
-    registro.tag_avaliado_se_usou_rede_propria = True
-    logger.info(f'Marcador adicionado: "{TAG_AVALIADO_USO_REDE_PROPRIA}"')
+    adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA)
+
+
+def _registrar_numero_memo(driver: webdriver.Remote, registro, tds_docs: list[dict]) -> None:
+    """Obtém o número SEI do memo criado. Só informativo: uma falha aqui
+    não interrompe o processo, que já está com o memo no bloco e com os
+    marcadores."""
+    try:
+        novos = memos_geacs_novos(driver, tds_docs)
+    except Exception:
+        logger.exception('Não foi possível obter o número SEI do memo criado')
+        return
+    if len(novos) == 1:
+        registro.memo_uso_rede_sei = novos[0]['numero_sei']
+    else:
+        logger.warning(f'Número SEI do memo não registrado: esperado 1 memo novo na árvore, encontrado(s) {len(novos)}')
 
 
 def _reabrir(driver: webdriver.Remote) -> None:
@@ -82,6 +96,7 @@ def corrigir_uso_rede_propria(
         verificar_memo_uso_rede(driver, registro, tds_docs)
         _reabrir(driver)
         _marcar_avaliado(driver, registro)
+        registro.prox_acao = ProxAcao.ASSINAR_USO_REDE
         return
 
     logger.info('Iniciando correção: avaliação do uso da rede própria')
@@ -98,12 +113,13 @@ def corrigir_uso_rede_propria(
         logger.info('Todos os beneficiários usaram a rede própria: memo dispensado')
         _reabrir(driver)
         _marcar_avaliado(driver, registro)
-        registro.prox_acao = 'Todos usaram a rede própria. Memo dispensado.'
+        registro.prox_acao = ProxAcao.NADA_A_FAZER_TODOS_USARAM
         return
 
     memo_existente = encontrar_memo_uso_rede(driver, tds_docs)
     if memo_existente is not None:
         registro.memo_uso_rede_na_arvore = True
+        registro.memo_uso_rede_sei = memo_existente['numero_sei']
         raise ErroAvaliacao(
             f'Memo de uso da rede própria ({memo_existente["numero_sei"]}) já existe na árvore, mas o processo não tem os marcadores. Verificar se está no bloco e adicionar os marcadores manualmente.'
         )
@@ -123,9 +139,9 @@ def corrigir_uso_rede_propria(
     registro.memo_uso_rede_inserido_bloco = True
     logger.info(f'Memo de uso da rede própria inserido no bloco {BLOCO_MEMO_USO_REDE_PROPRIA}')
 
-    adicionar_marcador(driver, TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
-    registro.tag_memo_nao_usou_rede_propria_no_bloco = True
-    logger.info(f'Marcador adicionado: "{TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO}"')
+    adicionar_tag(driver, registro, TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
 
     _marcar_avaliado(driver, registro)
-    registro.prox_acao = 'Assinar memo de uso da rede própria e encaminhar'
+    registro.prox_acao = ProxAcao.ASSINAR_USO_REDE
+
+    _registrar_numero_memo(driver, registro, tds_docs)

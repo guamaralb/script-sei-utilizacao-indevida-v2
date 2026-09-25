@@ -22,6 +22,7 @@ from correcao_rede_propria import (
     corrigir_uso_rede_propria,
     verificar_memo_uso_rede,
 )
+from docs_processo import filtrar_memos_geacs
 from dotenv import load_dotenv
 from log_config import (
     configurar_logging,
@@ -30,14 +31,15 @@ from log_config import (
     log_fim_processo,
     log_resumo,
 )
+from planilha_controle import salvar_planilha_controle
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
-from Registro import RegistroMainAddMemoNaoUsouRedePropria
+from Registro import ProxAcao, RegistroMainAddMemoNaoUsouRedePropria, registrar_erro
 from sei_automacao.auth.login import efetuar_login
 from sei_automacao.driver import iniciar_driver
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
-from tags import registrar_tags
+from tags import normalizar_tags, registrar_tags
 
 load_dotenv()
 
@@ -69,6 +71,12 @@ configurar_logging(ARQ_LOG)
 logger = logging.getLogger(__name__)
 
 
+def _listar_arvore(driver, registro: RegistroMainAddMemoNaoUsouRedePropria) -> list[dict]:
+    tds_docs = listar_documentos_arvore(driver)
+    registro.qnt_memos_geacs_na_arvore = len(filtrar_memos_geacs(tds_docs))
+    return tds_docs
+
+
 def _avaliar_processo(
     driver,
     linha: pd.Series,
@@ -76,36 +84,44 @@ def _avaliar_processo(
     registro: RegistroMainAddMemoNaoUsouRedePropria,
 ) -> None:
     acessar_processo(driver, registro.num_processo)
-    tags = listar_marcadores(driver)
+    tags = normalizar_tags(listar_marcadores(driver))
+    registro.marcadores_sei = tags
     registrar_tags(registro, tags)
     logger.info(f'Marcadores: {tags or "nenhum"}')
 
     if not registro.tag_processo_novo:
         if registro.tag_processo_velho:
             logger.info('Processo VELHO: fora do escopo da correção')
-            registro.prox_acao = 'Processo VELHO: fora do escopo da correção'
+            registro.fluxo = 'VELHO - fora do escopo'
+            registro.prox_acao = ProxAcao.FORA_DO_ESCOPO
             return
         raise ErroAvaliacao('Processo não marcado como NOVO nem VELHO no SEI')
 
     if registro.tag_mat_nao_encontradas_base_geral_novo or registro.tag_mat_nao_encontradas_novo:
+        registro.fluxo = 'NOVO - parado (matrículas não encontradas)'
+        registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS
         raise ErroAvaliacao('Processamento parado: matrícula(s) não encontrada(s) na base da rede própria. Corrigir e remover o marcador para reprocessar')
 
     if registro.tag_avaliado_se_usou_rede_propria:
+        registro.fluxo = 'NOVO - já avaliado'
         if registro.tag_memo_nao_usou_rede_propria_no_bloco:
             logger.info('Já avaliado e com memo no bloco: conferindo memo na árvore')
-            tds_docs = listar_documentos_arvore(driver)
+            tds_docs = _listar_arvore(driver, registro)
             verificar_memo_uso_rede(driver, registro, tds_docs)
+            registro.prox_acao = ProxAcao.ASSINAR_USO_REDE
         else:
             logger.info('Já avaliado, sem memo de uso da rede própria')
-            registro.prox_acao = 'Processo já avaliado quanto ao uso da rede própria. Nada a fazer.'
+            registro.prox_acao = ProxAcao.NADA_A_FAZER
         return
 
     if not registro.tag_memos_no_bloco:
         logger.info('Sem marcador de memos DISA e DEPROC no bloco: não se enquadra na correção')
-        registro.prox_acao = 'Processo NOVO sem marcador de memos DISA e DEPROC no bloco: não se enquadra na correção'
+        registro.fluxo = 'NOVO - não se enquadra na correção'
+        registro.prox_acao = ProxAcao.FORA_DO_ESCOPO
         return
 
-    tds_docs = listar_documentos_arvore(driver)
+    registro.fluxo = 'NOVO - correção'
+    tds_docs = _listar_arvore(driver, registro)
     corrigir_uso_rede_propria(
         driver,
         registro,
@@ -119,6 +135,7 @@ def _avaliar_processo(
 def _processar_linha(driver, linha: pd.Series, bases: BasesUso) -> RegistroMainAddMemoNaoUsouRedePropria:
     registro = RegistroMainAddMemoNaoUsouRedePropria(
         num_processo=linha['num_processo'],
+        data_execucao=AGORA,
         matricula_titular=linha['matricula_titular'],
         matriculas_dependentes=linha['matriculas_dependentes'],
     )
@@ -127,23 +144,16 @@ def _processar_linha(driver, linha: pd.Series, bases: BasesUso) -> RegistroMainA
         _avaliar_processo(driver, linha, bases, registro)
     except ErroAvaliacao as e:
         # Problema esperado nos dados: sem traceback
-        registro.erro = str(e)
+        registrar_erro(registro, e)
     except Exception as e:
-        registro.erro = f'{type(e).__name__}: {e}'
+        registrar_erro(registro, e)
         logger.exception('Erro inesperado durante o processamento')
 
     return registro
 
 
 def _salvar_resultado(registros_processados: list[dict]) -> None:
-    if not registros_processados:
-        return
-    df = pd.DataFrame(registros_processados)
-    try:
-        df.to_excel(ARQ_CONTROLE, index=False)
-        logger.info(f'Planilha de controle salva: {ARQ_CONTROLE}')
-    except Exception:
-        logger.exception(f'Falha ao salvar planilha de controle: {ARQ_CONTROLE}')
+    salvar_planilha_controle(registros_processados, ARQ_CONTROLE)
 
 
 def main():

@@ -35,10 +35,11 @@ A pesquisa da utilização indevida em si **ainda não foi implementada**.
 | `docs_processo.py` | Filtros da árvore e busca do memo de correção pelo assunto |
 | `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS (modelos "novo" e "velho") |
 | `matriculas_nao_encontradas.py` | Registra as matrículas não encontradas e adiciona o marcador de cada base (NOVO ou VELHO) |
-| `tags.py` | Todos os marcadores e `registrar_tags()` |
+| `tags.py` | Todos os marcadores, `registrar_tags()` e `adicionar_tag()` |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos |
 | `log_config.py` | Logging compartilhado: processo atual em cada linha e resumo final |
-| `Registro.py` | Um registro por processo, que vira uma linha da planilha de controle |
+| `Registro.py` | Um registro por processo (uma linha da planilha de controle), `ProxAcao` e `registrar_erro()` |
+| `planilha_controle.py` | Grava e formata a planilha de controle (usado pelos dois scripts) |
 | `memorandos/` | `DadosUI`, `MemoDisa`, `MemoDeproc`, `MemoDisaUsoRede` |
 
 A biblioteca `sei_automacao` é externa (login, árvore, marcadores,
@@ -71,6 +72,13 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
     `contexto_processo` já o injeta;
   - toda ação no SEI (memo criado, bloco, marcador, reabertura) gera um
     `logger.info`.
+- Marcadores: adicione **sempre** com `tags.adicionar_tag(driver, registro,
+  tag)`, que também preenche o atributo e a coluna
+  `marcadores_adicionados`. Não chame `adicionar_marcador` direto.
+- `prox_acao`: use os valores de `Registro.ProxAcao`. Não escreva textos
+  soltos; detalhes vão para as demais colunas e para o log.
+- Erros: registre com `Registro.registrar_erro(registro, e)` (preenche
+  `tipo_erro`, `erro` e, se preciso, `prox_acao = Verificar erro`).
 
 ## Regras de negócio
 
@@ -296,9 +304,26 @@ Fluxos previstos (não implementados):
 ### Saídas
 
 - `dados/controle/processos_processados_<data>.xlsx`, uma linha por
-  processo, gerada por `RegistroMain.to_dict()`.
+  processo, gerada por `RegistroMain.to_dict()` e gravada por
+  `salvar_planilha_controle`.
   - **Não renomeie as colunas existentes**: a compilação dessas planilhas
     alimenta o script de correção.
+  - Primeiras colunas: `num_processo`, `data_execucao` (identifica a
+    execução no compilado), `fluxo`, `prox_acao`, `tipo_erro`, `erro`.
+  - Rastreabilidade: `memo_apis_sei`, `modelo_memo_apis`,
+    `memo_disa_sei`, `memo_deproc_sei`, `memo_uso_rede_sei`,
+    `marcadores_sei` (lidos no início) e `marcadores_adicionados`.
+  - `tem_periodo_var_deps` (sim/não) e `periodo_dependentes` (só as
+    datas, modelo velho). Até 2026-09-25, `periodo_dependentes` também
+    trazia `True/False` do modelo novo.
+  - `qnt_memos_geacs_esperada`: preenchida na conferência dos NOVOS já
+    avaliados.
+  - Formatação: cabeçalho congelado e com filtro; linha com erro em
+    vermelho claro; matrículas não encontradas em amarelo. Se a formatação
+    falhar, a planilha fica salva sem ela.
+  - O número SEI dos memos criados é obtido relendo a árvore **depois**
+    dos marcadores; uma falha nessa leitura só gera log e não afeta o
+    processo.
 - Log em `logs/<data>_execucao.log`, com resumo final.
 
 ---
@@ -363,6 +388,11 @@ Os marcadores são lidos **do SEI**, não da planilha.
   A busca do memo de correção depende disso.
 - Confirmar que `incluir_doc_sei_memo` funciona com um documento
   selecionado na árvore.
+- Confirmar que `listar_documentos_arvore` logo após criar os memos traz
+  os memos novos no fim da árvore, na ordem de criação (DISA antes de
+  DEPROC). Os números SEI dos memos dependem disso.
+- A planilha de controle tem nomes e matrículas (LGPD). Restrinja o
+  acesso à pasta `dados/controle`.
 - Processos antigos com 2 memos da GEACS e **sem** o marcador de memos no
   bloco aparecem como erro. Se forem casos de correção, adicione
   manualmente `Memos DISA e DEPROC no bloco` e rode de novo.

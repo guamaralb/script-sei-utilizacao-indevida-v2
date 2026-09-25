@@ -26,13 +26,13 @@ from log_config import (
     log_fim_processo,
     log_resumo,
 )
+from planilha_controle import salvar_planilha_controle
 from processar_novo import obter_dados_ui, processar_novo
 from processar_velho import processar_velho
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
-from Registro import RegistroMain
+from Registro import ProxAcao, RegistroMain, registrar_erro
 from sei_automacao.auth.login import efetuar_login
 from sei_automacao.driver import iniciar_driver
-from sei_automacao.processo import adicionar_marcador
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
@@ -41,6 +41,7 @@ from tags import (
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
     TAGS_SCRIPT,
+    adicionar_tag,
     normalizar_tags,
     registrar_tags,
 )
@@ -96,16 +97,14 @@ class ContextoLinha:
 def _tratar_sem_marcadores(ctx: ContextoLinha, registro: RegistroMain):
     if ctx.docs_geacs:
         logger.info(f'Classificação: VELHO ({len(ctx.docs_geacs)} documento(s) da GEACS na árvore)')
-        adicionar_marcador(ctx.driver, TAG_PROCESSO_VELHO)
-        logger.info(f'Marcador adicionado: "{TAG_PROCESSO_VELHO}"')
-        registro.tag_processo_velho = True
-        registro.prox_acao = 'Processar processos VELHOS'
+        registro.fluxo = 'VELHO - classificação'
+        adicionar_tag(ctx.driver, registro, TAG_PROCESSO_VELHO)
+        registro.prox_acao = ProxAcao.PROCESSAR_VELHO
         return registro
 
     logger.info('Classificação: NOVO (sem documentos da GEACS na árvore)')
-    adicionar_marcador(ctx.driver, TAG_PROCESSO_NOVO)
-    registro.tag_processo_novo = True
-    logger.info(f'Marcador adicionado: "{TAG_PROCESSO_NOVO}"')
+    registro.fluxo = 'NOVO - classificação'
+    adicionar_tag(ctx.driver, registro, TAG_PROCESSO_NOVO)
     return processar_novo(ctx.driver, registro, ctx.tds_docs, ctx.bases)
 
 
@@ -116,31 +115,39 @@ def _tratar_sem_marcadores(ctx: ContextoLinha, registro: RegistroMain):
 
 def _tratar_tag_rel_ui_transformado_pdf(ctx: ContextoLinha, registro: RegistroMain):
     # TODO: implementar
+    registro.fluxo = 'VELHO - Excel transformado em PDF'
+    registro.prox_acao = ProxAcao.VELHO_CONCLUIDO
     return registro
 
 
 def _tratar_tag_novo_rel_ui_gerado(ctx: ContextoLinha, registro: RegistroMain):
     # TODO: implementar
+    registro.fluxo = 'VELHO - relatório de UI refeito'
+    registro.prox_acao = ProxAcao.VELHO_CONCLUIDO
     return registro
 
 
 def _tratar_tag_transformar_excel_em_pdf(ctx: ContextoLinha, registro: RegistroMain):
     # TODO: implementar
-    registro.prox_acao = 'Processo VELHO: transformar Excel em PDF (fluxo ainda não implementado)'
+    registro.fluxo = 'VELHO - transformar Excel em PDF'
+    registro.prox_acao = ProxAcao.VELHO_TRANSFORMAR_PDF
     return registro
 
 
 def _tratar_tag_refazer_rel_ui(ctx: ContextoLinha, registro: RegistroMain):
     # TODO: implementar
-    registro.prox_acao = 'Processo VELHO: refazer relatório de UI (fluxo ainda não implementado)'
+    registro.fluxo = 'VELHO - refazer relatório de UI'
+    registro.prox_acao = ProxAcao.VELHO_REFAZER_REL_UI
     return registro
 
 
-_MSG_PARADO_MAT_NAO_ENCONTRADAS = 'Processamento parado: matrícula(s) não encontrada(s) na base da rede própria. Corrigir e remover o marcador para reprocessar'
+_MSG_PARADO_MAT_NAO_ENCONTRADAS = 'Processamento parado: matrícula(s) não encontrada(s) na base geral e/ou na base da rede própria. Corrigir e remover o(s) marcador(es) para reprocessar'
 
 
 def _tratar_velho(ctx: ContextoLinha, registro: RegistroMain):
     if registro.tag_mat_nao_encontradas_base_geral_velho or registro.tag_mat_nao_encontradas_velho:
+        registro.fluxo = 'VELHO - parado (matrículas não encontradas)'
+        registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS
         raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
     if registro.tag_rel_ui_transformado_pdf:
         logger.info('Fluxo: VELHO com relatório de UI transformado em PDF')
@@ -157,6 +164,7 @@ def _tratar_velho(ctx: ContextoLinha, registro: RegistroMain):
         logger.info('Fluxo: VELHO pendente de refazer relatório de UI')
         return _tratar_tag_refazer_rel_ui(ctx, registro)
     logger.info('Fluxo: VELHO - identificação das instruções da APIS')
+    registro.fluxo = 'VELHO - identificação das instruções'
     return processar_velho(ctx.driver, registro, ctx.docs_geacs, ctx.tds_docs)
 
 
@@ -168,31 +176,34 @@ def _tratar_velho(ctx: ContextoLinha, registro: RegistroMain):
 def _tratar_novo_avaliado(ctx: ContextoLinha, registro: RegistroMain):
     """Processo já avaliado: confere os memos esperados na árvore."""
     logger.info('Fluxo: NOVO já avaliado - conferência dos memos na árvore')
+    registro.fluxo = 'NOVO - já avaliado'
     if registro.tag_memo_nao_usou_rede_propria_no_bloco:
         verificar_memo_uso_rede(ctx.driver, registro, ctx.tds_docs)
 
     if registro.tag_memos_no_bloco:
         esperado = 2 + int(registro.tag_memo_nao_usou_rede_propria_no_bloco)
-        acao = 'Assinar memorandos e encaminhar'
+        acao = ProxAcao.ASSINAR_DISA_DEPROC
     elif registro.tag_memo_deproc_no_bloco:
         esperado = 1
-        acao = 'Assinar memorando DEPROC e encaminhar'
+        acao = ProxAcao.ASSINAR_DEPROC
     else:
         raise ErroAvaliacao('Processo avaliado quanto à rede própria, mas sem marcador de memos no bloco')
 
+    registro.qnt_memos_geacs_esperada = esperado
     quant = len(ctx.memos_geacs)
     if quant == esperado:
         logger.info(f'Quantidade de memos da GEACS confere ({quant})')
         registro.prox_acao = acao
     else:
         logger.warning(f'Quantidade de memos da GEACS não confere: esperado {esperado}, encontrado {quant}')
-        registro.prox_acao = f'Esperado(s) {esperado} memorando(s) da GEACS na árvore, encontrado(s) {quant}. Verificar.'
+        registro.prox_acao = ProxAcao.VERIFICAR_QNT_MEMOS
     return registro
 
 
 def _corrigir_novo_sem_avaliacao(ctx: ContextoLinha, registro: RegistroMain):
     """Processo enviado à DISA e à DEPROC sem avaliação da rede própria."""
     logger.info('Fluxo: NOVO enviado à DISA e DEPROC sem avaliação da rede própria - correção')
+    registro.fluxo = 'NOVO - correção'
     dados_ui = obter_dados_ui(ctx.driver, registro, ctx.tds_docs)
     corrigir_uso_rede_propria(
         ctx.driver,
@@ -207,6 +218,8 @@ def _corrigir_novo_sem_avaliacao(ctx: ContextoLinha, registro: RegistroMain):
 
 def _tratar_novo(ctx: ContextoLinha, registro: RegistroMain):
     if registro.tag_mat_nao_encontradas_base_geral_novo or registro.tag_mat_nao_encontradas_novo:
+        registro.fluxo = 'NOVO - parado (matrículas não encontradas)'
+        registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS
         raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
 
     if registro.tag_avaliado_se_usou_rede_propria:
@@ -253,7 +266,7 @@ def _classificar_e_processar(ctx: ContextoLinha, registro: RegistroMain):
 
 
 def _processar_linha(driver, num_processo, bases: BasesUso) -> RegistroMain:
-    registro = RegistroMain(num_processo=num_processo)
+    registro = RegistroMain(num_processo=num_processo, data_execucao=AGORA)
 
     try:
         acessar_processo(driver, num_processo)
@@ -273,30 +286,24 @@ def _processar_linha(driver, num_processo, bases: BasesUso) -> RegistroMain:
         logger.info(f'Árvore: {len(tds_docs)} documento(s) | GEACS: {len(ctx.docs_geacs)} documento(s), {len(ctx.memos_geacs)} memorando(s)')
         logger.info(f'Marcadores: {tags or "nenhum"}')
 
+        registro.marcadores_sei = tags
         registrar_tags(registro, tags)
 
         registro = _classificar_e_processar(ctx, registro)
 
     except (ErroAvaliacao, FormatoMemorandoInvalido) as e:
         # Problema esperado nos dados: sem traceback
-        registro.erro = f'{type(e).__name__}: {e}'
+        registrar_erro(registro, e)
 
     except Exception as e:
-        registro.erro = f'{type(e).__name__}: {e}'
+        registrar_erro(registro, e)
         logger.exception('Erro inesperado durante o processamento')
 
     return registro
 
 
 def _salvar_resultado(registros_processados: list[dict]) -> None:
-    if not registros_processados:
-        return
-    df = pd.DataFrame(registros_processados)
-    try:
-        df.to_excel(ARQ_PROCESSOS_PROCESSADOS, index=False)
-        logger.info(f'Planilha de controle salva: {ARQ_PROCESSOS_PROCESSADOS}')
-    except Exception:
-        logger.exception(f'Falha ao salvar planilha de controle: {ARQ_PROCESSOS_PROCESSADOS}')
+    salvar_planilha_controle(registros_processados, ARQ_PROCESSOS_PROCESSADOS)
 
 
 def main():

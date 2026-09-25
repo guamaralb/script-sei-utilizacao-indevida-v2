@@ -4,6 +4,13 @@ Módulo compartilhado entre main.py e main_add_memo_nao_usou_rede_propria.py,
 para que um script não precise importar o outro.
 """
 
+import logging
+
+from sei_automacao.processo import adicionar_marcador
+from selenium import webdriver
+
+logger = logging.getLogger(__name__)
+
 # Numeração: o primeiro número é o ramo (1 = NOVO, 2 = VELHO) e o número
 # após o ponto é a ordem de inserção no ramo. Marcadores com o mesmo número
 # são alternativos (o processo recebe um ou outro).
@@ -74,3 +81,13 @@ def registrar_tags(registro, tags: list[str]) -> None:
         atributo = _ATRIBUTO_REGISTRO_POR_TAG.get(tag)
         if atributo and hasattr(registro, atributo):
             setattr(registro, atributo, True)
+
+
+def adicionar_tag(driver: webdriver.Remote, registro, tag: str) -> None:
+    """Adiciona o marcador no SEI e o registra (atributo e coluna
+    marcadores_adicionados). Use sempre esta função para adicionar
+    marcadores."""
+    adicionar_marcador(driver, tag)
+    registrar_tags(registro, [tag])
+    registro.marcadores_adicionados.append(tag)
+    logger.info(f'Marcador adicionado: "{tag}"')
