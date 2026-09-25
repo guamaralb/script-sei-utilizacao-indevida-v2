@@ -13,8 +13,10 @@ para que um script não precise importar o outro.
 TAG_PROCESSO_NOVO = 'Script v2 - 1 - Processo NOVO'
 TAG_PERIODO_VAR_DEP = 'Script v2 - 1.1 - Período Variável p/ Dependentes'
 TAG_AVALIADO_USO_REDE_PROPRIA = 'Script v2 - 1.2 - Avaliado Se Usou Rede Própria'
-# Matrícula(s) não encontrada(s) na base da rede própria: processamento parado
-TAG_MAT_NAO_ENCONTRADAS_NOVO = 'Script v2 - 1.2.1 - Mat. N Encontradas Base DISA'
+# Matrícula(s) não encontrada(s): processamento parado.
+# Base geral (listagem de todos os beneficiários) e base da rede própria (DISA)
+TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO = 'Script v2 - 1.2.1 - Mat. N Encontradas Base Geral'
+TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO = 'Script v2 - 1.2.2 - Mat. N Encontradas Base DISA'
 TAG_MEMOS_DISA_DEPROC_NO_BLOCO = 'Script v2 - 1.3 - Memos DISA e DEPROC no Bloco'
 TAG_MEMO_DEPROC_NO_BLOCO = 'Script v2 - 1.3 - Memo DEPROC no Bloco'
 # Rotina de correção: inserido antes do 1.2
@@ -25,8 +27,9 @@ TAG_PROCESSO_VELHO = 'Script v2 - 2 - Processo VELHO'
 # Pendências indicadas pelas instruções da APIS
 TAG_TRANSFORMAR_EXCEL_EM_PDF = 'Script v2 - 2.1 - Transformar Excel em PDF'
 TAG_REFAZER_REL_UI = 'Script v2 - 2.1 - Refazer Relatório de UI'
-# Matrícula(s) não encontrada(s) na base da rede própria: processamento parado
-TAG_MAT_NAO_ENCONTRADAS_VELHO = 'Script v2 - 2.1.1 - Mat. N Encontradas Base DISA'
+# Matrícula(s) não encontrada(s): processamento parado (ver NOVOS)
+TAG_MAT_NAO_ENCONTRADAS_GERAL_VELHO = 'Script v2 - 2.1.1 - Mat. N Encontradas Base Geral'
+TAG_MAT_NAO_ENCONTRADAS_DISA_VELHO = 'Script v2 - 2.1.2 - Mat. N Encontradas Base DISA'
 # Conclusão
 TAG_REL_UI_TRANSFORMADO_PDF = 'Script v2 - 2.2 - Excel Transformado em PDF'
 TAG_NOVO_REL_UI_GERADO = 'Script v2 - 2.2 - Relatório de UI Refeito'
@@ -40,13 +43,15 @@ _ATRIBUTO_REGISTRO_POR_TAG = {
     TAG_PROCESSO_VELHO: 'tag_processo_velho',
     TAG_PERIODO_VAR_DEP: 'tag_periodo_var_deps',
     TAG_AVALIADO_USO_REDE_PROPRIA: 'tag_avaliado_se_usou_rede_propria',
-    TAG_MAT_NAO_ENCONTRADAS_NOVO: 'tag_mat_nao_encontradas_novo',
+    TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO: 'tag_mat_nao_encontradas_base_geral_novo',
+    TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO: 'tag_mat_nao_encontradas_novo',
     TAG_MEMOS_DISA_DEPROC_NO_BLOCO: 'tag_memos_no_bloco',
     TAG_MEMO_DEPROC_NO_BLOCO: 'tag_memo_deproc_no_bloco',
     TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO: ('tag_memo_nao_usou_rede_propria_no_bloco'),
     TAG_TRANSFORMAR_EXCEL_EM_PDF: 'tag_transformar_excel_em_pdf',
     TAG_REFAZER_REL_UI: 'tag_refazer_rel_ui',
-    TAG_MAT_NAO_ENCONTRADAS_VELHO: 'tag_mat_nao_encontradas_velho',
+    TAG_MAT_NAO_ENCONTRADAS_GERAL_VELHO: 'tag_mat_nao_encontradas_base_geral_velho',
+    TAG_MAT_NAO_ENCONTRADAS_DISA_VELHO: 'tag_mat_nao_encontradas_velho',
     TAG_REL_UI_TRANSFORMADO_PDF: 'tag_rel_ui_transformado_pdf',
     TAG_NOVO_REL_UI_GERADO: 'tag_novo_rel_ui_gerado',
     TAG_PLANILHADO: 'tag_planilhado',

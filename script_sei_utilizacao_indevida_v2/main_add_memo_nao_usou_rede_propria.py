@@ -11,6 +11,7 @@ from datetime import datetime
 
 import pandas as pd
 from constantes import (
+    ARQ_BASE_GERAL,
     ARQ_USO_REDE_PROPRIA,
     DIR_CONTROLE,
     DIR_DADOS,
@@ -86,7 +87,7 @@ def _avaliar_processo(
             return
         raise ErroAvaliacao('Processo não marcado como NOVO nem VELHO no SEI')
 
-    if registro.tag_mat_nao_encontradas_novo:
+    if registro.tag_mat_nao_encontradas_base_geral_novo or registro.tag_mat_nao_encontradas_novo:
         raise ErroAvaliacao('Processamento parado: matrícula(s) não encontrada(s) na base da rede própria. Corrigir e remover o marcador para reprocessar')
 
     if registro.tag_avaliado_se_usou_rede_propria:
@@ -162,7 +163,7 @@ def main():
         total = len(df_processos)
         logger.info(f'{total} processo(s) lido(s) de {ARQ_COMPILADO.name}')
 
-        bases = carregar_bases(ARQ_USO_REDE_PROPRIA)
+        bases = carregar_bases(ARQ_USO_REDE_PROPRIA, ARQ_BASE_GERAL)
 
         logger.info('Iniciando navegador e login no SEI')
         driver = iniciar_driver(driver_type='chrome')

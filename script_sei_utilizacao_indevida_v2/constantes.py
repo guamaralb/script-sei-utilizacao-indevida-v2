@@ -10,6 +10,8 @@ DIR_CONTROLE = DIR_DADOS / 'controle'
 DIR_LOG = DIR_BASE / 'logs'
 
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'
+# Listagem de todos os beneficiários (base geral). Matrículas com DV.
+ARQ_BASE_GERAL = DIR_INPUTS / 'planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx'
 
 # Grafias exatas retornadas pela árvore do SEI (são diferentes entre si)
 UNIDADE_GEACS = 'IPSEMG/GEACS - Utilização'

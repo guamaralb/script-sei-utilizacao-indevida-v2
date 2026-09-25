@@ -6,9 +6,11 @@ TODO:
     - Avaliar o uso da rede própria antes da pesquisa
       (rede_propria.avaliar_uso). Dependentes citados sem matrícula
       explícita ("AVERIGUAR") já geram ErroAvaliacao. Matrícula não
-      encontrada na base levanta MatriculasNaoEncontradas: chamar
-      marcar_matriculas_nao_encontradas com TAG_MAT_NAO_ENCONTRADAS_VELHO e
-      levantar o erro de novo (o marcador já é tratado em main._tratar_velho).
+      encontrada na base geral ou na da rede própria levanta
+      MatriculasNaoEncontradas: chamar marcar_matriculas_nao_encontradas com
+      TAG_MAT_NAO_ENCONTRADAS_GERAL_VELHO e TAG_MAT_NAO_ENCONTRADAS_DISA_VELHO
+      e levantar o erro de novo (os marcadores já são tratados em
+      main._tratar_velho).
     - Implementar os fluxos de cada instrução. Por enquanto o processo só
       recebe o marcador da pendência:
         - sem instrução de nova pesquisa: TAG_TRANSFORMAR_EXCEL_EM_PDF;

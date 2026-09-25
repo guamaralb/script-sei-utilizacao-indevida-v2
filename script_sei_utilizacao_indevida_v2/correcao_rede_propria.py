@@ -36,7 +36,8 @@ from sei_automacao.processo import (
 from selenium import webdriver
 from tags import (
     TAG_AVALIADO_USO_REDE_PROPRIA,
-    TAG_MAT_NAO_ENCONTRADAS_NOVO,
+    TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO,
+    TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO,
     TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO,
 )
 
@@ -89,7 +90,7 @@ def corrigir_uso_rede_propria(
     except MatriculasNaoEncontradas as e:
         # Os marcadores são adicionados com o processo reaberto
         _reabrir(driver)
-        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_NOVO)
+        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
         raise
     registrar_uso(registro, uso)
 

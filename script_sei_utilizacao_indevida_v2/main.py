@@ -5,6 +5,7 @@ from datetime import datetime
 
 import pandas as pd
 from constantes import (
+    ARQ_BASE_GERAL,
     ARQ_USO_REDE_PROPRIA,
     DIR_CONTROLE,
     DIR_DADOS,
@@ -139,7 +140,7 @@ _MSG_PARADO_MAT_NAO_ENCONTRADAS = 'Processamento parado: matrícula(s) não enco
 
 
 def _tratar_velho(ctx: ContextoLinha, registro: RegistroMain):
-    if registro.tag_mat_nao_encontradas_velho:
+    if registro.tag_mat_nao_encontradas_base_geral_velho or registro.tag_mat_nao_encontradas_velho:
         raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
     if registro.tag_rel_ui_transformado_pdf:
         logger.info('Fluxo: VELHO com relatório de UI transformado em PDF')
@@ -205,7 +206,7 @@ def _corrigir_novo_sem_avaliacao(ctx: ContextoLinha, registro: RegistroMain):
 
 
 def _tratar_novo(ctx: ContextoLinha, registro: RegistroMain):
-    if registro.tag_mat_nao_encontradas_novo:
+    if registro.tag_mat_nao_encontradas_base_geral_novo or registro.tag_mat_nao_encontradas_novo:
         raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
 
     if registro.tag_avaliado_se_usou_rede_propria:
@@ -314,7 +315,7 @@ def main():
         total = len(df_processos)
         logger.info(f'{total} processo(s) lido(s) de {ARQ_PROCESSOS_NAO_PROCESSADOS.name}')
 
-        bases = carregar_bases(ARQ_USO_REDE_PROPRIA)
+        bases = carregar_bases(ARQ_USO_REDE_PROPRIA, ARQ_BASE_GERAL)
 
         logger.info('Iniciando navegador e login no SEI')
         driver = iniciar_driver(driver_type='chrome', download_dir=DIR_UI_ANTIGAS_XLS)

@@ -21,7 +21,8 @@ from sei_automacao.processo import adicionar_marcador, incluir_doc_sei_memo
 from selenium import webdriver
 from tags import (
     TAG_AVALIADO_USO_REDE_PROPRIA,
-    TAG_MAT_NAO_ENCONTRADAS_NOVO,
+    TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO,
+    TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO,
     TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_MEMOS_DISA_DEPROC_NO_BLOCO,
     TAG_PERIODO_VAR_DEP,
@@ -128,7 +129,7 @@ def processar_novo(
     try:
         uso = avaliar_uso(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
     except MatriculasNaoEncontradas as e:
-        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_NOVO)
+        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
         raise
     registrar_uso(registro, uso)
 

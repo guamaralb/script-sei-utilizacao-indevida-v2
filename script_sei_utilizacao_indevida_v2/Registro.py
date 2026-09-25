@@ -29,7 +29,13 @@ class RegistroMain:
     tit_usou: bool | None = None
     deps_que_usaram: list[str] = field(default_factory=list)
     deps_que_nao_usaram: list[str] = field(default_factory=list)
-    matriculas_nao_encontradas: list[str] = field(default_factory=list)
+    # Matrículas não encontradas (sem sufixo: base da rede própria/DISA)
+    titular_nao_encontrado_base_geral: str | None = None
+    deps_nao_encontrados_base_geral: list[str] = field(default_factory=list)
+    titular_nao_encontrado: str | None = None
+    deps_nao_encontrados: list[str] = field(default_factory=list)
+    tag_mat_nao_encontradas_base_geral_novo: bool = False
+    tag_mat_nao_encontradas_base_geral_velho: bool = False
     tag_mat_nao_encontradas_novo: bool = False
     tag_mat_nao_encontradas_velho: bool = False
 
@@ -80,7 +86,12 @@ class RegistroMain:
             'tit_usou': self.tit_usou,
             'deps_que_usaram': '; '.join(self.deps_que_usaram),
             'deps_que_nao_usaram': '; '.join(self.deps_que_nao_usaram),
-            'matriculas_nao_encontradas': '; '.join(self.matriculas_nao_encontradas),
+            'titular_nao_encontrado_base_geral': self.titular_nao_encontrado_base_geral,
+            'deps_nao_encontrados_base_geral': '; '.join(self.deps_nao_encontrados_base_geral),
+            'titular_nao_encontrado': self.titular_nao_encontrado,
+            'deps_nao_encontrados': '; '.join(self.deps_nao_encontrados),
+            'tag_mat_nao_encontradas_base_geral_novo': self.tag_mat_nao_encontradas_base_geral_novo,
+            'tag_mat_nao_encontradas_base_geral_velho': self.tag_mat_nao_encontradas_base_geral_velho,
             'tag_mat_nao_encontradas_novo': self.tag_mat_nao_encontradas_novo,
             'tag_mat_nao_encontradas_velho': self.tag_mat_nao_encontradas_velho,
             'memo_disa_criado': self.memo_disa_criado,
@@ -119,7 +130,12 @@ class RegistroMainAddMemoNaoUsouRedePropria:
     tit_usou: bool | None = None
     deps_que_usaram: list[str] = field(default_factory=list)
     deps_que_nao_usaram: list[str] = field(default_factory=list)
-    matriculas_nao_encontradas: list[str] = field(default_factory=list)
+    # Matrículas não encontradas (sem sufixo: base da rede própria/DISA)
+    titular_nao_encontrado_base_geral: str | None = None
+    deps_nao_encontrados_base_geral: list[str] = field(default_factory=list)
+    titular_nao_encontrado: str | None = None
+    deps_nao_encontrados: list[str] = field(default_factory=list)
+    tag_mat_nao_encontradas_base_geral_novo: bool = False
     tag_mat_nao_encontradas_novo: bool = False
 
     memo_uso_rede_criado: bool = False
@@ -131,6 +147,6 @@ class RegistroMainAddMemoNaoUsouRedePropria:
 
     def to_dict(self) -> dict:
         dados = asdict(self)
-        for campo in ('deps_que_usaram', 'deps_que_nao_usaram', 'matriculas_nao_encontradas'):
+        for campo in ('deps_que_usaram', 'deps_que_nao_usaram', 'deps_nao_encontrados_base_geral', 'deps_nao_encontrados'):
             dados[campo] = '; '.join(getattr(self, campo))
         return dados

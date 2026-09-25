@@ -1,4 +1,5 @@
-"""Consulta à planilha de beneficiários atendidos na rede própria.
+"""Consulta à planilha de beneficiários atendidos na rede própria e à
+base geral (listagem de todos os beneficiários).
 
 Compartilhado entre o fluxo normal (main.py) e o fluxo de correção
 (main_add_memo_nao_usou_rede_propria.py).
@@ -24,6 +25,11 @@ _RESPOSTAS_UTILIZOU = {'SIM': True, 'NÃO': False, 'NAO': False}
 _ABA_TITULARES = ('UI 2025 EX-TITULARES', 'MATRICULAS TITULARES')
 _ABA_DEPENDENTES = ('UI 2025 EX-DEPENDENTES', 'MATRICULAS DEPENDENTES - SEM DV')
 
+# Base geral: titulares e dependentes com DV. Nos processos, os dependentes
+# vêm sem DV, então o DV (último dígito) é retirado dos dependentes da base.
+_ABA_GERAL_TITULARES = ('UI 2025 EX-TITULARES', 'MATRICULAS TITULARES')
+_ABA_GERAL_DEPENDENTES = ('UI 2025 EX-DEPENDENTES', 'MATRICULAS DEPENDENTES')
+
 # Número lido do Excel como float e convertido para texto: "123456789.0"
 _PADRAO_FLOAT_EXCEL = re.compile(r'^(\d+)\.0+$')
 _PADRAO_SEPARADORES = re.compile(r'[-.\s]')
@@ -33,15 +39,38 @@ class ErroAvaliacao(Exception):
     """Problema esperado nos dados de um processo (não é falha do script)."""
 
 
+@dataclass(frozen=True)
+class NaoEncontradas:
+    """Matrículas não encontradas em uma base."""
+
+    titular: str | None = None
+    dependentes: tuple[str, ...] = ()
+
+    def __bool__(self) -> bool:
+        return bool(self.titular or self.dependentes)
+
+    def descrever(self) -> str:
+        partes = []
+        if self.titular:
+            partes.append(f'titular {self.titular}')
+        if self.dependentes:
+            partes.append(f'dependente(s) {", ".join(self.dependentes)}')
+        return '; '.join(partes)
+
+
 class MatriculasNaoEncontradas(ErroAvaliacao):
-    """Matrícula(s) buscada(s) e não encontrada(s) na base da rede própria.
+    """Matrícula(s) não encontrada(s) na base geral e/ou na base da rede
+    própria. O processamento do processo deve ser parado."""
 
-    O processamento do processo deve ser parado.
-    """
-
-    def __init__(self, matriculas: list[str]):
-        self.matriculas = matriculas
-        super().__init__(f'Matrícula(s) não encontrada(s) na base da rede própria: {", ".join(matriculas)}')
+    def __init__(self, base_geral: NaoEncontradas, base_rede: NaoEncontradas):
+        self.base_geral = base_geral
+        self.base_rede = base_rede
+        partes = []
+        if base_geral:
+            partes.append(f'base geral: {base_geral.descrever()}')
+        if base_rede:
+            partes.append(f'base da rede própria: {base_rede.descrever()}')
+        super().__init__(f'Matrícula(s) não encontrada(s) | {" | ".join(partes)}')
 
 
 @dataclass(frozen=True)
@@ -54,6 +83,9 @@ class BasesUso:
 
     titulares: dict[str, bool | None]
     dependentes: dict[str, bool | None]
+    # Base geral (sem resposta de uso). Dependentes sem DV.
+    geral_titulares: frozenset[str]
+    geral_dependentes: frozenset[str]
 
 
 def normalizar_matricula(valor) -> str | None:
@@ -120,11 +152,34 @@ def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str) -> dict[str, b
     return uso
 
 
-def carregar_bases(arquivo: Path) -> BasesUso:
-    logger.info(f'Carregando planilha de uso da rede própria: {arquivo.name}')
+def _carregar_aba_geral(arquivo: Path, aba: str, coluna_matricula: str, *, retirar_dv: bool) -> frozenset[str]:
+    df = pd.read_excel(io=arquivo, sheet_name=aba, dtype=str)
+    # A planilha tem cabeçalho com espaço sobrando ("MATRICULAS TITULARES ")
+    df.columns = df.columns.str.strip()
+
+    matriculas = set()
+    for valor in df[coluna_matricula]:
+        mat = normalizar_matricula(valor)
+        if mat and retirar_dv:
+            mat = mat[:-1].lstrip('0')
+        if mat:
+            matriculas.add(mat)
+
+    logger.info(f'Base geral, aba "{aba}" carregada | {len(df)} linha(s) | {len(matriculas)} matrícula(s) única(s)')
+    return frozenset(matriculas)
+
+
+def carregar_bases(arquivo_uso: Path, arquivo_geral: Path) -> BasesUso:
+    logger.info(f'Carregando planilha de uso da rede própria: {arquivo_uso.name}')
+    titulares = _carregar_aba(arquivo_uso, *_ABA_TITULARES)
+    dependentes = _carregar_aba(arquivo_uso, *_ABA_DEPENDENTES)
+
+    logger.info(f'Carregando base geral de beneficiários: {arquivo_geral.name}')
     return BasesUso(
-        titulares=_carregar_aba(arquivo, *_ABA_TITULARES),
-        dependentes=_carregar_aba(arquivo, *_ABA_DEPENDENTES),
+        titulares=titulares,
+        dependentes=dependentes,
+        geral_titulares=_carregar_aba_geral(arquivo_geral, *_ABA_GERAL_TITULARES, retirar_dv=False),
+        geral_dependentes=_carregar_aba_geral(arquivo_geral, *_ABA_GERAL_DEPENDENTES, retirar_dv=True),
     )
 
 
@@ -169,11 +224,20 @@ def _consultar(
     return usaram, nao_usaram
 
 
+def _nao_encontradas(titular: str, dependentes: list[str], base_titulares, base_dependentes) -> NaoEncontradas:
+    return NaoEncontradas(
+        titular=titular if titular not in base_titulares else None,
+        dependentes=tuple(m for m in dependentes if m not in base_dependentes),
+    )
+
+
 def _verificar_encontradas(titular: str, dependentes: list[str], bases: BasesUso) -> None:
-    nao_encontradas = [titular] if titular not in bases.titulares else []
-    nao_encontradas += [m for m in dependentes if m not in bases.dependentes]
-    if nao_encontradas:
-        raise MatriculasNaoEncontradas(nao_encontradas)
+    """Busca as matrículas na base geral e na base da rede própria. As duas
+    buscas são feitas antes de parar, para registrar as duas situações."""
+    base_geral = _nao_encontradas(titular, dependentes, bases.geral_titulares, bases.geral_dependentes)
+    base_rede = _nao_encontradas(titular, dependentes, bases.titulares, bases.dependentes)
+    if base_geral or base_rede:
+        raise MatriculasNaoEncontradas(base_geral, base_rede)
 
 
 def avaliar_uso(
