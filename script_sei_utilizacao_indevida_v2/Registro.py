@@ -26,6 +26,7 @@ class ProxAcao:
     VERIFICAR_QNT_MEMOS = 'Verificar quantidade de memos da GEACS'
     VERIFICAR_FORMATO_MEMO = 'Verificar formato do memo da APIS'
     VERIFICAR_MAT_NAO_ENCONTRADAS = 'Verificar matrículas não encontradas'
+    ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS = 'Assinar memo à APIS (matrículas não encontradas) e encaminhar'
     VERIFICAR_ERRO = 'Verificar erro'
 
 
@@ -33,6 +34,7 @@ class ProxAcao:
 _PROX_ACOES_DE_ERRO = frozenset({
     ProxAcao.VERIFICAR_FORMATO_MEMO,
     ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS,
+    ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
 })
 
 
@@ -92,6 +94,9 @@ class RegistroMain:
     tag_mat_nao_encontradas_base_geral_velho: bool = False
     tag_mat_nao_encontradas_novo: bool = False
     tag_mat_nao_encontradas_velho: bool = False
+    memo_apis_mat_nao_encontradas_criado: bool = False
+    memo_apis_mat_nao_encontradas_inserido_bloco: bool = False
+    memo_apis_mat_nao_encontradas_sei: str | None = None
 
     # Fluxo normal (NOVOS)
     memo_disa_criado: bool = False
@@ -162,6 +167,9 @@ class RegistroMain:
             'tag_mat_nao_encontradas_base_geral_velho': self.tag_mat_nao_encontradas_base_geral_velho,
             'tag_mat_nao_encontradas_novo': self.tag_mat_nao_encontradas_novo,
             'tag_mat_nao_encontradas_velho': self.tag_mat_nao_encontradas_velho,
+            'memo_apis_mat_nao_encontradas_criado': self.memo_apis_mat_nao_encontradas_criado,
+            'memo_apis_mat_nao_encontradas_inserido_bloco': self.memo_apis_mat_nao_encontradas_inserido_bloco,
+            'memo_apis_mat_nao_encontradas_sei': self.memo_apis_mat_nao_encontradas_sei,
             'memo_disa_criado': self.memo_disa_criado,
             'memo_disa_inserido_bloco': self.memo_disa_inserido_bloco,
             'memo_disa_sei': self.memo_disa_sei,
@@ -216,6 +224,9 @@ class RegistroMainAddMemoNaoUsouRedePropria:
     deps_nao_encontrados: list[str] = field(default_factory=list)
     tag_mat_nao_encontradas_base_geral_novo: bool = False
     tag_mat_nao_encontradas_novo: bool = False
+    memo_apis_mat_nao_encontradas_criado: bool = False
+    memo_apis_mat_nao_encontradas_inserido_bloco: bool = False
+    memo_apis_mat_nao_encontradas_sei: str | None = None
 
     memo_uso_rede_criado: bool = False
     memo_uso_rede_inserido_bloco: bool = False

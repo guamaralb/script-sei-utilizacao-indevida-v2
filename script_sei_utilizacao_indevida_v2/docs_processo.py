@@ -7,6 +7,9 @@ from sei_automacao.documento import obter_conteudo_doc
 from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
 
+from script_sei_utilizacao_indevida_v2.memorandos.MemoApisMatNaoEncontradas import (
+    PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS,
+)
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
     PADRAO_ASSUNTO_MEMO_USO_REDE,
 )
@@ -69,18 +72,28 @@ def ler_texto_doc(driver: webdriver.Remote, doc: dict) -> str:
     return texto
 
 
+def _encontrar_memo_geacs_por_assunto(driver: webdriver.Remote, tds_docs: list[dict], padrao, descricao: str) -> dict | None:
+    memos_geacs = filtrar_memos_geacs(tds_docs)
+    logger.debug(f'Procurando memo {descricao} em {len(memos_geacs)} memorando(s) da GEACS')
+    for memo in reversed(memos_geacs):
+        if padrao.search(ler_texto_doc(driver, memo)):
+            logger.info(f'Memo {descricao} encontrado: {_descrever(memo)}')
+            return memo
+
+    logger.info(f'Memo {descricao} não encontrado na árvore')
+    return None
+
+
 def encontrar_memo_uso_rede(driver: webdriver.Remote, tds_docs: list[dict]) -> dict | None:
     """Procura, pelo assunto, o memo que informa o uso da rede própria
     (memo do fluxo de correção)."""
-    memos_geacs = filtrar_memos_geacs(tds_docs)
-    logger.debug(f'Procurando memo de uso da rede própria em {len(memos_geacs)} memorando(s) da GEACS')
-    for memo in reversed(memos_geacs):
-        if PADRAO_ASSUNTO_MEMO_USO_REDE.search(ler_texto_doc(driver, memo)):
-            logger.info(f'Memo de uso da rede própria encontrado: {_descrever(memo)}')
-            return memo
+    return _encontrar_memo_geacs_por_assunto(driver, tds_docs, PADRAO_ASSUNTO_MEMO_USO_REDE, 'de uso da rede própria')
 
-    logger.info('Memo de uso da rede própria não encontrado na árvore')
-    return None
+
+def encontrar_memo_mat_nao_encontradas(driver: webdriver.Remote, tds_docs: list[dict]) -> dict | None:
+    """Procura, pelo assunto, o memo à APIS sobre matrículas não encontradas
+    na base geral."""
+    return _encontrar_memo_geacs_por_assunto(driver, tds_docs, PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS, 'à APIS de matrículas não encontradas')
 
 
 def memos_geacs_novos(driver: webdriver.Remote, tds_docs_antes: list[dict]) -> list[dict]:

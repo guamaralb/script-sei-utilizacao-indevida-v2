@@ -105,7 +105,7 @@ def corrigir_uso_rede_propria(
     except MatriculasNaoEncontradas as e:
         # Os marcadores são adicionados com o processo reaberto
         _reabrir(driver)
-        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
+        marcar_matriculas_nao_encontradas(driver, registro, tds_docs, e, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
         raise
     registrar_uso(registro, uso)
 

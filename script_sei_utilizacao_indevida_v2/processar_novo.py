@@ -149,7 +149,7 @@ def processar_novo(
     try:
         uso = avaliar_uso(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
     except MatriculasNaoEncontradas as e:
-        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
+        marcar_matriculas_nao_encontradas(driver, registro, tds_docs, e, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
         raise
     registrar_uso(registro, uso)
 

@@ -9,7 +9,7 @@ TODO:
       encontrada na base geral ou na da rede própria levanta
       MatriculasNaoEncontradas: chamar marcar_matriculas_nao_encontradas com
       TAG_MAT_NAO_ENCONTRADAS_GERAL_VELHO e TAG_MAT_NAO_ENCONTRADAS_DISA_VELHO
-      e levantar o erro de novo (os marcadores já são tratados em
+      (ela também cria o memo à APIS) e levantar o erro de novo (os marcadores já são tratados em
       main._tratar_velho).
     - Implementar os fluxos de cada instrução. Por enquanto o processo só
       recebe o marcador da pendência:

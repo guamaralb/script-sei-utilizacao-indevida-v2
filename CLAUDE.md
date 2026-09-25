@@ -32,15 +32,15 @@ A pesquisa da utilização indevida em si **ainda não foi implementada**.
 | `processar_velho.py` | Fluxo dos VELHOS (**somente estrutura**, com TODOs) |
 | `correcao_rede_propria.py` | Rotina de correção, usada pelos dois scripts |
 | `rede_propria.py` | Carga da planilha de rede própria e da base geral, normalização de matrícula, `avaliar_uso()`, `ErroAvaliacao`, `MatriculasNaoEncontradas` |
-| `docs_processo.py` | Filtros da árvore e busca do memo de correção pelo assunto |
+| `docs_processo.py` | Filtros da árvore e busca, pelo assunto, do memo de correção e do memo à APIS |
 | `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS (modelos "novo" e "velho") |
-| `matriculas_nao_encontradas.py` | Registra as matrículas não encontradas e adiciona o marcador de cada base (NOVO ou VELHO) |
+| `matriculas_nao_encontradas.py` | Registra as matrículas não encontradas, cria o memo à APIS (base geral) e adiciona o marcador de cada base (NOVO ou VELHO) |
 | `tags.py` | Todos os marcadores, `registrar_tags()` e `adicionar_tag()` |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos |
 | `log_config.py` | Logging compartilhado: processo atual em cada linha e resumo final |
 | `Registro.py` | Um registro por processo (uma linha da planilha de controle), `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | Grava e formata a planilha de controle (usado pelos dois scripts) |
-| `memorandos/` | `DadosUI`, `MemoDisa`, `MemoDeproc`, `MemoDisaUsoRede` |
+| `memorandos/` | `DadosUI`, `MemoDisa`, `MemoDeproc`, `MemoDisaUsoRede`, `MemoApisMatNaoEncontradas` |
 
 A biblioteca `sei_automacao` é externa (login, árvore, marcadores,
 memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
@@ -105,11 +105,14 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
   - `avaliar_uso` busca nas **duas** bases antes de parar e levanta
     `MatriculasNaoEncontradas` (subclasse de `ErroAvaliacao`) com o
     resultado de cada base;
-  - quem chamou adiciona, via `marcar_matriculas_nao_encontradas`, o
-    marcador de cada base com ausência, sem criar memos nem adicionar
-    AVALIADO:
-    - base geral: `1.2.1` (NOVO) ou `2.1.1` (VELHO);
-    - base da rede própria: `1.2.2` (NOVO) ou `2.1.2` (VELHO);
+  - quem chamou executa `marcar_matriculas_nao_encontradas`, que não
+    cria memos DISA/DEPROC nem adiciona AVALIADO:
+    - **base geral**: cria o memo à APIS-Utilização
+      (`MemoApisMatNaoEncontradas`), insere no bloco
+      `BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS` e **só depois** adiciona `1.2.1`
+      (NOVO) ou `2.1.1` (VELHO). Esse marcador também indica que o memo
+      está no bloco;
+    - **base da rede própria**: adiciona `1.2.2` (NOVO) ou `2.1.2` (VELHO);
   - colunas da planilha de controle (nos dois scripts):
     - base geral: `titular_nao_encontrado_base_geral` e
       `deps_nao_encontrados_base_geral`;
@@ -133,7 +136,7 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 | `Script v2 - 1 - Processo NOVO` | Classificação: NOVO |
 | `Script v2 - 1.1 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes |
 | `Script v2 - 1.2 - Avaliado Se Usou Rede Própria` | Uso da rede própria avaliado |
-| `Script v2 - 1.2.1 - Mat. N Encontradas Base Geral` | NOVO parado: matrícula não encontrada na base geral |
+| `Script v2 - 1.2.1 - Mat. N Encontradas Base Geral` | NOVO parado: matrícula não encontrada na base geral; memo à APIS no bloco |
 | `Script v2 - 1.2.2 - Mat. N Encontradas Base DISA` | NOVO parado: matrícula não encontrada na base da rede própria |
 | `Script v2 - 1.3 - Memos DISA e DEPROC no Bloco` | Alguém usou; os dois memos estão no bloco |
 | `Script v2 - 1.3 - Memo DEPROC no Bloco` | Ninguém usou; só a DEPROC foi acionada |
@@ -141,7 +144,7 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 | `Script v2 - 2 - Processo VELHO` | Classificação: VELHO |
 | `Script v2 - 2.1 - Transformar Excel em PDF` | VELHO sem instrução de nova pesquisa (fluxo não implementado) |
 | `Script v2 - 2.1 - Refazer Relatório de UI` | VELHO com instrução de nova pesquisa (fluxo não implementado) |
-| `Script v2 - 2.1.1 - Mat. N Encontradas Base Geral` | VELHO parado: matrícula não encontrada na base geral |
+| `Script v2 - 2.1.1 - Mat. N Encontradas Base Geral` | VELHO parado: matrícula não encontrada na base geral; memo à APIS no bloco |
 | `Script v2 - 2.1.2 - Mat. N Encontradas Base DISA` | VELHO parado: matrícula não encontrada na base da rede própria |
 | `Script v2 - 2.2 - Excel Transformado em PDF` | Conclusão do 2.1 "Transformar Excel em PDF" |
 | `Script v2 - 2.2 - Relatório de UI Refeito` | Conclusão do 2.1 "Refazer Relatório de UI" |
@@ -168,9 +171,16 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 - O memo de correção é identificado na árvore **pelo assunto**
   (`PADRAO_ASSUNTO_MEMO_USO_REDE`, que aceita também a grafia antiga
   "Rede Prória"). Antes de criar, sempre verifique se ele já existe.
+- O memo à APIS só existe se alguma matrícula **não foi encontrada na
+  base geral**. Também é identificado **pelo assunto**
+  (`PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS`). Se já existir sem o
+  marcador `1.2.1`/`2.1.1`, é `ErroAvaliacao` para verificação manual.
 - Blocos de assinatura:
   - `7697744`: memos DISA e DEPROC do fluxo normal;
-  - `7707212`: memo de correção.
+  - `7707212`: memo de correção;
+  - `BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS`: memo à APIS. **Número ainda não
+    informado** (`None`): enquanto isso, o processo para com erro antes de
+    criar o memo e sem adicionar marcadores.
 - Signatária: Bruna Miiller Lavarini, Gerência de Auditoria e Contas da
   Saúde.
 
@@ -391,6 +401,11 @@ Os marcadores são lidos **do SEI**, não da planilha.
 - Confirmar que `listar_documentos_arvore` logo após criar os memos traz
   os memos novos no fim da árvore, na ordem de criação (DISA antes de
   DEPROC). Os números SEI dos memos dependem disso.
+- Informar o número do bloco do memo à APIS em
+  `constantes.BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS`.
+- Processos que já receberam `1.2.1` antes da criação do memo à APIS
+  (até 2026-09-25) não têm o memo. Para gerá-lo, remova manualmente o
+  `1.2.1` (e o `1.2.2`) e rode de novo.
 - A planilha de controle tem nomes e matrículas (LGPD). Restrinja o
   acesso à pasta `dados/controle`.
 - Processos antigos com 2 memos da GEACS e **sem** o marcador de memos no
