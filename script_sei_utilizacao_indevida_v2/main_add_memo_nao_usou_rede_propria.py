@@ -86,6 +86,9 @@ def _avaliar_processo(
             return
         raise ErroAvaliacao('Processo não marcado como NOVO nem VELHO no SEI')
 
+    if registro.tag_mat_nao_encontradas_novo:
+        raise ErroAvaliacao('Processamento parado: matrícula(s) não encontrada(s) na base da rede própria. Corrigir e remover o marcador para reprocessar')
+
     if registro.tag_avaliado_se_usou_rede_propria:
         if registro.tag_memo_nao_usou_rede_propria_no_bloco:
             logger.info('Já avaliado e com memo no bloco: conferindo memo na árvore')

@@ -29,6 +29,9 @@ class RegistroMain:
     tit_usou: bool | None = None
     deps_que_usaram: list[str] = field(default_factory=list)
     deps_que_nao_usaram: list[str] = field(default_factory=list)
+    matriculas_nao_encontradas: list[str] = field(default_factory=list)
+    tag_mat_nao_encontradas_novo: bool = False
+    tag_mat_nao_encontradas_velho: bool = False
 
     # Fluxo normal (NOVOS)
     memo_disa_criado: bool = False
@@ -77,6 +80,9 @@ class RegistroMain:
             'tit_usou': self.tit_usou,
             'deps_que_usaram': '; '.join(self.deps_que_usaram),
             'deps_que_nao_usaram': '; '.join(self.deps_que_nao_usaram),
+            'matriculas_nao_encontradas': '; '.join(self.matriculas_nao_encontradas),
+            'tag_mat_nao_encontradas_novo': self.tag_mat_nao_encontradas_novo,
+            'tag_mat_nao_encontradas_velho': self.tag_mat_nao_encontradas_velho,
             'memo_disa_criado': self.memo_disa_criado,
             'memo_disa_inserido_bloco': self.memo_disa_inserido_bloco,
             'memo_deproc_criado': self.memo_deproc_criado,
@@ -113,6 +119,8 @@ class RegistroMainAddMemoNaoUsouRedePropria:
     tit_usou: bool | None = None
     deps_que_usaram: list[str] = field(default_factory=list)
     deps_que_nao_usaram: list[str] = field(default_factory=list)
+    matriculas_nao_encontradas: list[str] = field(default_factory=list)
+    tag_mat_nao_encontradas_novo: bool = False
 
     memo_uso_rede_criado: bool = False
     memo_uso_rede_inserido_bloco: bool = False
@@ -123,6 +131,6 @@ class RegistroMainAddMemoNaoUsouRedePropria:
 
     def to_dict(self) -> dict:
         dados = asdict(self)
-        for campo in ('deps_que_usaram', 'deps_que_nao_usaram'):
+        for campo in ('deps_que_usaram', 'deps_que_nao_usaram', 'matriculas_nao_encontradas'):
             dados[campo] = '; '.join(getattr(self, campo))
         return dados

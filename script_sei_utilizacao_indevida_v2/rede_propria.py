@@ -33,6 +33,17 @@ class ErroAvaliacao(Exception):
     """Problema esperado nos dados de um processo (não é falha do script)."""
 
 
+class MatriculasNaoEncontradas(ErroAvaliacao):
+    """Matrícula(s) buscada(s) e não encontrada(s) na base da rede própria.
+
+    O processamento do processo deve ser parado.
+    """
+
+    def __init__(self, matriculas: list[str]):
+        self.matriculas = matriculas
+        super().__init__(f'Matrícula(s) não encontrada(s) na base da rede própria: {", ".join(matriculas)}')
+
+
 @dataclass(frozen=True)
 class BasesUso:
     """Mapeia matrícula -> utilizou a rede própria.
@@ -147,19 +158,22 @@ def _consultar(
     base: dict[str, bool | None],
     descricao: str,
 ) -> tuple[list[str], list[str]]:
-    """Retorna (usaram, nao_usaram). Matrícula não encontrada na base
-    conta como "não usou"."""
+    """Retorna (usaram, nao_usaram). As matrículas já devem ter sido
+    encontradas na base (ver _verificar_encontradas)."""
     invalidas = [m for m in matriculas if m in base and base[m] is None]
     if invalidas:
         raise ErroAvaliacao(f'Matrícula(s) de {descricao} com resposta inválida em "{_COLUNA_UTILIZOU}": {", ".join(invalidas)}')
 
-    usaram = [m for m in matriculas if base.get(m) is True]
-    nao_usaram = [m for m in matriculas if base.get(m) is not True]
-    nao_encontradas = [m for m in matriculas if m not in base]
-
-    if nao_encontradas:
-        logger.info(f'{descricao.capitalize()}(s) não encontrado(s) na base, considerado(s) como "não usou": {nao_encontradas}')
+    usaram = [m for m in matriculas if base[m] is True]
+    nao_usaram = [m for m in matriculas if base[m] is not True]
     return usaram, nao_usaram
+
+
+def _verificar_encontradas(titular: str, dependentes: list[str], bases: BasesUso) -> None:
+    nao_encontradas = [titular] if titular not in bases.titulares else []
+    nao_encontradas += [m for m in dependentes if m not in bases.dependentes]
+    if nao_encontradas:
+        raise MatriculasNaoEncontradas(nao_encontradas)
 
 
 def avaliar_uso(
@@ -175,6 +189,7 @@ def avaliar_uso(
 
     _validar_formato([titular], 'titular')
     _validar_formato(dependentes, 'dependente')
+    _verificar_encontradas(titular, dependentes, bases)
 
     tit_usaram, _ = _consultar([titular], bases.titulares, 'titular')
     deps_usaram, deps_nao_usaram = _consultar(dependentes, bases.dependentes, 'dependente')

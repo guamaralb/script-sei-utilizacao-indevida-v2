@@ -7,13 +7,21 @@ from constantes import (
 )
 from docs_processo import ler_texto_doc, obter_ultimo_memo_apis
 from extrator_dados_ui import FormatoMemorandoInvalido, extrair_dados_ui
-from rede_propria import BasesUso, ErroAvaliacao, avaliar_uso, registrar_uso
+from matriculas_nao_encontradas import marcar_matriculas_nao_encontradas
+from rede_propria import (
+    BasesUso,
+    ErroAvaliacao,
+    MatriculasNaoEncontradas,
+    avaliar_uso,
+    registrar_uso,
+)
 from Registro import RegistroMain
 from sei_automacao.documento import inserir_bloco_ass
 from sei_automacao.processo import adicionar_marcador, incluir_doc_sei_memo
 from selenium import webdriver
 from tags import (
     TAG_AVALIADO_USO_REDE_PROPRIA,
+    TAG_MAT_NAO_ENCONTRADAS_NOVO,
     TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_MEMOS_DISA_DEPROC_NO_BLOCO,
     TAG_PERIODO_VAR_DEP,
@@ -117,7 +125,11 @@ def processar_novo(
     """
     dados_ui = obter_dados_ui(driver, registro, tds_docs)
 
-    uso = avaliar_uso(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
+    try:
+        uso = avaliar_uso(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
+    except MatriculasNaoEncontradas as e:
+        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_NOVO)
+        raise
     registrar_uso(registro, uso)
 
     if dados_ui.periodo_dependentes:

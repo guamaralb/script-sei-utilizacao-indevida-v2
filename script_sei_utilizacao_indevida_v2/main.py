@@ -135,7 +135,12 @@ def _tratar_tag_refazer_rel_ui(ctx: ContextoLinha, registro: RegistroMain):
     return registro
 
 
+_MSG_PARADO_MAT_NAO_ENCONTRADAS = 'Processamento parado: matrícula(s) não encontrada(s) na base da rede própria. Corrigir e remover o marcador para reprocessar'
+
+
 def _tratar_velho(ctx: ContextoLinha, registro: RegistroMain):
+    if registro.tag_mat_nao_encontradas_velho:
+        raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
     if registro.tag_rel_ui_transformado_pdf:
         logger.info('Fluxo: VELHO com relatório de UI transformado em PDF')
         return _tratar_tag_rel_ui_transformado_pdf(ctx, registro)
@@ -200,6 +205,9 @@ def _corrigir_novo_sem_avaliacao(ctx: ContextoLinha, registro: RegistroMain):
 
 
 def _tratar_novo(ctx: ContextoLinha, registro: RegistroMain):
+    if registro.tag_mat_nao_encontradas_novo:
+        raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
+
     if registro.tag_avaliado_se_usou_rede_propria:
         return _tratar_novo_avaliado(ctx, registro)
 

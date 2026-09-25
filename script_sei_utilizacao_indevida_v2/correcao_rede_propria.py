@@ -19,7 +19,14 @@ from constantes import (
     NOME_SIGNATARIO,
 )
 from docs_processo import encontrar_memo_uso_rede
-from rede_propria import BasesUso, ErroAvaliacao, avaliar_uso, registrar_uso
+from matriculas_nao_encontradas import marcar_matriculas_nao_encontradas
+from rede_propria import (
+    BasesUso,
+    ErroAvaliacao,
+    MatriculasNaoEncontradas,
+    avaliar_uso,
+    registrar_uso,
+)
 from sei_automacao.documento import inserir_bloco_ass
 from sei_automacao.processo import (
     adicionar_marcador,
@@ -29,6 +36,7 @@ from sei_automacao.processo import (
 from selenium import webdriver
 from tags import (
     TAG_AVALIADO_USO_REDE_PROPRIA,
+    TAG_MAT_NAO_ENCONTRADAS_NOVO,
     TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO,
 )
 
@@ -76,7 +84,13 @@ def corrigir_uso_rede_propria(
         return
 
     logger.info('Iniciando correção: avaliação do uso da rede própria')
-    uso = avaliar_uso(matricula_titular, matriculas_dependentes, bases)
+    try:
+        uso = avaliar_uso(matricula_titular, matriculas_dependentes, bases)
+    except MatriculasNaoEncontradas as e:
+        # Os marcadores são adicionados com o processo reaberto
+        _reabrir(driver)
+        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_NOVO)
+        raise
     registrar_uso(registro, uso)
 
     if not uso.alguem_nao_usou:

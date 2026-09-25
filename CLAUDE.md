@@ -31,9 +31,10 @@ A pesquisa da utilização indevida em si **ainda não foi implementada**.
 | `processar_novo.py` | Fluxo normal dos NOVOS; `obter_dados_ui()` lê o último memo da APIS |
 | `processar_velho.py` | Fluxo dos VELHOS (**somente estrutura**, com TODOs) |
 | `correcao_rede_propria.py` | Rotina de correção, usada pelos dois scripts |
-| `rede_propria.py` | Carga da planilha, normalização de matrícula, `avaliar_uso()`, `ErroAvaliacao` |
+| `rede_propria.py` | Carga da planilha, normalização de matrícula, `avaliar_uso()`, `ErroAvaliacao`, `MatriculasNaoEncontradas` |
 | `docs_processo.py` | Filtros da árvore e busca do memo de correção pelo assunto |
 | `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS (modelos "novo" e "velho") |
+| `matriculas_nao_encontradas.py` | Registra as matrículas não encontradas e adiciona o marcador (NOVO ou VELHO) |
 | `tags.py` | Todos os marcadores e `registrar_tags()` |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos |
 | `log_config.py` | Logging compartilhado: processo atual em cada linha e resumo final |
@@ -81,7 +82,19 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
   esquerda.
 - Matrícula repetida: um SIM prevalece. Resposta inválida prevalece sobre
   NÃO.
-- Matrícula **não encontrada conta como "não usou"**.
+- Matrícula (titular ou dependente) **não encontrada na base para o
+  processamento do processo**:
+  - `avaliar_uso` levanta `MatriculasNaoEncontradas` (subclasse de
+    `ErroAvaliacao`) com todas as matrículas não encontradas;
+  - quem chamou adiciona o marcador `1.2.1` (NOVO) ou `2.1.1` (VELHO) via
+    `marcar_matriculas_nao_encontradas`, sem criar memos nem adicionar
+    AVALIADO;
+  - as matrículas vão para a coluna `matriculas_nao_encontradas` da
+    planilha de controle;
+  - nas execuções seguintes, o processo com esse marcador gera erro e não
+    é processado. Para reprocessar, corrija a base e remova o marcador
+    manualmente no SEI.
+  - Os demais processos continuam normalmente.
 - São `ErroAvaliacao`:
   - resposta inválida (nem SIM nem NÃO);
   - dependentes citados sem matrícula explícita (`AVERIGUAR`, modelo
@@ -96,12 +109,14 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 | `Script v2 - 1 - Processo NOVO` | Classificação: NOVO |
 | `Script v2 - 1.1 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes |
 | `Script v2 - 1.2 - Avaliado Se Usou Rede Própria` | Uso da rede própria avaliado |
+| `Script v2 - 1.2.1 - Mat. N Encontradas Base DISA` | NOVO parado: matrícula não encontrada na base da rede própria |
 | `Script v2 - 1.3 - Memos DISA e DEPROC no Bloco` | Alguém usou; os dois memos estão no bloco |
 | `Script v2 - 1.3 - Memo DEPROC no Bloco` | Ninguém usou; só a DEPROC foi acionada |
 | `Script v2 - 1.4 - Memo Não Usou Rede no Bloco` | Memo de correção no bloco (na correção, inserido antes do 1.2) |
 | `Script v2 - 2 - Processo VELHO` | Classificação: VELHO |
 | `Script v2 - 2.1 - Transformar Excel em PDF` | VELHO sem instrução de nova pesquisa (fluxo não implementado) |
 | `Script v2 - 2.1 - Refazer Relatório de UI` | VELHO com instrução de nova pesquisa (fluxo não implementado) |
+| `Script v2 - 2.1.1 - Mat. N Encontradas Base DISA` | VELHO parado: matrícula não encontrada na base da rede própria |
 | `Script v2 - 2.2 - Excel Transformado em PDF` | Conclusão do 2.1 "Transformar Excel em PDF" |
 | `Script v2 - 2.2 - Relatório de UI Refeito` | Conclusão do 2.1 "Refazer Relatório de UI" |
 | `PLANILHADO`, `UTILIZAÇÃO INSERIDA` | Manuais; não interferem na classificação |
@@ -169,7 +184,8 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
    - período do titular;
    - matrículas dos dependentes;
    - se há período variável para dependentes.
-3. `avaliar_uso` consulta a planilha de rede própria.
+3. `avaliar_uso` consulta a planilha de rede própria. Se alguma matrícula
+   não for encontrada, adiciona o marcador `1.2.1` e para.
 4. Se há período variável para dependentes, adiciona o marcador de período
    variável.
 5. Cria os memos no bloco `7697744`:
@@ -181,6 +197,8 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 
 ### NOVO já tratado (`_tratar_novo`)
 
+- **Com `1.2.1 - Mat. N Encontradas Base DISA`**: erro; o processo fica
+  parado até a remoção manual do marcador.
 - **Com AVALIADO** (`_tratar_novo_avaliado`): confere a quantidade de
   memorandos da GEACS.
 
@@ -226,6 +244,7 @@ em si ainda não foram implementados.
   `TAG_REFAZER_REL_UI` ('Script v2 - 2.1 - Refazer Relatório de UI').
 - Instruções conflitantes: erro.
 - Na execução seguinte, `_tratar_velho` encaminha pelo marcador:
+  - `2.1.1 - Mat. N Encontradas Base DISA`: erro (processo parado);
   - `TAG_REL_UI_TRANSFORMADO_PDF` / `TAG_NOVO_REL_UI_GERADO` (conclusão)
     têm prioridade;
   - depois `_tratar_tag_transformar_excel_em_pdf` ou
@@ -239,7 +258,8 @@ Fluxos previstos (não implementados):
   Excel Transformado em PDF').
 - **Refazer relatório de UI**: executa primeiro o fluxo de consulta à
   DISA e à DEPROC — o mesmo da Seção 1 (`avaliar_uso` e criação dos memos
-  DISA/DEPROC no bloco `7697744`).
+  DISA/DEPROC no bloco `7697744`). Matrícula não encontrada: marcador
+  `2.1.1` e processamento parado (ver regras da planilha de rede própria).
   - `TAG_NOVO_REL_UI_GERADO` ('Script v2 - 2.2 - Relatório de UI Refeito') só é
     inserida depois que a pesquisa da utilização indevida em si for
     realizada — fluxo **ainda não implementado** (ver introdução).
@@ -288,6 +308,7 @@ Os marcadores são lidos **do SEI**, não da planilha.
 |---|---|
 | VELHO | Fora do escopo |
 | Nem NOVO nem VELHO | Erro |
+| NOVO com `1.2.1 - Mat. N Encontradas Base DISA` | Erro (processo parado) |
 | AVALIADO e com memo de correção | Confere o memo na árvore |
 | AVALIADO e sem memo de correção | Nada a fazer |
 | NOVO sem `Memos DISA e DEPROC no bloco` | Não se enquadra |
@@ -297,7 +318,8 @@ Os marcadores são lidos **do SEI**, não da planilha.
 
 1. **Retomada**: se já existe o marcador de memo de correção, confirma o
    memo na árvore, reabre o processo, adiciona AVALIADO e encerra.
-2. `avaliar_uso`.
+2. `avaliar_uso`. Se alguma matrícula não for encontrada: reabre o
+   processo, adiciona o marcador `1.2.1` e para.
 3. Se **todos usaram**: reabre o processo e adiciona AVALIADO. O memo é
    dispensado.
 4. Se **alguém não usou**:
