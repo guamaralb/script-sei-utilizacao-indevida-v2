@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from typing import Literal
 import pandas as pd
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4, landscape
@@ -36,17 +36,30 @@ def _formatar_valor_monetario(valor: float) -> str:
 
 def _build_table_row(row, valor_col_index, matricula_dep_index, normal):
     linha = []
+
     for i, cell in enumerate(row):
         if i == valor_col_index and pd.notna(cell):
             linha.append(_formatar_valor_monetario(float(cell)))
+
         elif i == matricula_dep_index and pd.notna(cell):
             linha.append(str(int(cell)))
+
+        elif pd.notna(cell) and isinstance(cell, (pd.Timestamp,)):
+            linha.append(cell.strftime('%d/%m/%Y'))
+
         else:
             linha.append(Paragraph(str(cell), normal))
+
     return linha
 
 
-def transformar_xls_em_pdf(tit_matricula, tit_nome, tipo, df: pd.DataFrame, path_destino) -> Path:
+def transformar_xls_em_pdf(
+    tit_matricula: str,
+    tit_nome: str,
+    tipo: Literal['Titular', 'Dependente'],
+    df: pd.DataFrame,
+    path_destino: Path
+) -> Path:
     styles = getSampleStyleSheet()
     normal = styles['BodyText']
     header_style = styles['Heading4']
@@ -72,7 +85,7 @@ def transformar_xls_em_pdf(tit_matricula, tit_nome, tipo, df: pd.DataFrame, path
 
     elements = []
 
-    logo = Image('img/logo.jpg', width=120, height=60)
+    logo = Image(r'dados\img\logo.jpg', width=120, height=60)
     info = Paragraph(
         f'<b>Relatório de Utilização Por {tipo}</b><br/>Beneficiário Titular: {tit_nome} - {tit_matricula}',
         header_style,

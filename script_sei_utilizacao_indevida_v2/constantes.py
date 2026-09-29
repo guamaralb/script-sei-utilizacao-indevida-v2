@@ -9,6 +9,10 @@ DIR_INPUTS = DIR_DADOS / 'inputs'
 DIR_CONTROLE = DIR_DADOS / 'controle'
 DIR_LOG = DIR_BASE / 'logs'
 
+DIR_UTILIZACOES = DIR_DADOS / 'utilizacoes'
+DIR_UTILIZACOES_OUTRAS = DIR_UTILIZACOES / 'outras'
+DIR_UTILIZACOES_OUTRAS_PDF = DIR_UTILIZACOES_OUTRAS / 'pdf'
+
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'
 # Listagem de todos os beneficiários (base geral). Matrículas com DV.
 ARQ_BASE_GERAL = DIR_INPUTS / 'planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx'
