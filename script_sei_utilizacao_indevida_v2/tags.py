@@ -44,6 +44,11 @@ TAG_NOVO_REL_UI_GERADO = 'Script v2 - 2.2 - Relatório de UI Refeito'
 # Marcadores manuais (não são colocados pelo script)
 TAG_PLANILHADO = 'PLANILHADO'
 TAG_UI_INSERIDA = 'UTILIZAÇÃO INSERIDA'
+TAG_MANUAL = 'MANUAL'
+TAG_ASSINADO = 'ASSINADO'
+
+# Processos tratados manualmente: fora do escopo do script de correção
+TAGS_TRATAMENTO_MANUAL = frozenset({TAG_MANUAL, TAG_ASSINADO})
 
 _ATRIBUTO_REGISTRO_POR_TAG = {
     TAG_PROCESSO_NOVO: 'tag_processo_novo',

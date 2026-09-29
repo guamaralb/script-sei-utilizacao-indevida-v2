@@ -2,8 +2,10 @@ import re
 
 from sei_automacao.classes.Memorando import Memorando
 
-REFERENCIA_PLANILHA_MATRICULAS = 'documento <strong>Planilha de Matrículas - Titulares e Dependentes U.I (144739371)</strong>, contida no processo 2010.01.0058549/2026-56'
+PROCESSO_PLANILHA_MATRICULAS = '2010.01.0058549/2026-56'
+PLANILHA_MATRICULAS = 'Planilha de Matrículas – Titulares e Dependentes U.I (144739371)'
 
+# Não altere o assunto: é por ele que o script encontra memos já criados
 ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS = 'Matrículas Não Encontradas na Planilha de Matrículas U.I'
 
 PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS = re.compile(
@@ -18,17 +20,35 @@ def _listar_matriculas(titular: str | None, dependentes: tuple[str, ...]) -> lis
     return itens
 
 
-def _par_nao_encontradas(itens: list[str]) -> str:
+def _juntar(itens: list[str]) -> str:
+    return itens[0] if len(itens) == 1 else ', '.join(itens[:-1]) + f' e {itens[-1]}'
+
+
+def _par_nao_localizadas(itens: list[str]) -> str:
+    base = (
+        f'dentre as matrículas constantes da {PLANILHA_MATRICULAS}, disponibilizada no processo nº {PROCESSO_PLANILHA_MATRICULAS}, '
+        'que constitui a base de referência para tratamento das demandas pela unidade IPSEMG/GEACS-Utilização.'
+    )
     if len(itens) == 1:
-        return f'A matrícula {itens[0]} não foi encontrada dentre as matrículas listadas no {REFERENCIA_PLANILHA_MATRICULAS}.'
-    lista = ', '.join(itens[:-1]) + f' e {itens[-1]}'
-    return f'As matrículas {lista} não foram encontradas dentre as matrículas listadas no {REFERENCIA_PLANILHA_MATRICULAS}.'
+        return f'A matrícula {itens[0]}, informada no presente processo, não foi localizada {base}'
+    return f'As matrículas {_juntar(itens)}, informadas no presente processo, não foram localizadas {base}'
 
 
-def _par_encaminhamento():
+def _par_conferencia(plural: bool) -> str:
+    matricula = 'das matrículas informadas' if plural else 'da matrícula informada'
+    return f'Dessa forma, retornamos o processo para conferência {matricula} e verificação de sua correspondência com os beneficiários abrangidos pela referida planilha.'
+
+
+def _par_correcao(plural: bool) -> str:
+    matricula = 'de alguma das matrículas' if plural else 'da matrícula'
+    return f'Caso seja identificada necessidade de correção {matricula} e confirmada sua inclusão na base, solicitamos a retificação da informação e o reencaminhamento à IPSEMG/GEACS-Utilização.'
+
+
+def _par_encaminhamento(plural: bool) -> str:
+    condicao = 'Caso as matrículas estejam corretas e os beneficiários não integrem' if plural else 'Caso a matrícula esteja correta e o beneficiário não integre'
     return (
-        'Considerando que a presente unidade <strong>IPSEMG/GEACS-Utilização</strong> tem como objetivo tratar somente das matrículas '
-        'contidas na planilha, este processo deve ser encaminhado para a unidade <strong>IPSEMG/GEACS</strong>.'
+        f'{condicao} a base da demanda de utilização indevida tratada no processo nº {PROCESSO_PLANILHA_MATRICULAS}, '
+        'o presente processo deverá ser encaminhado à unidade IPSEMG/GEACS, para o tratamento pertinente.'
     )
 
 
@@ -37,8 +57,12 @@ def _par_fecho():
 
 
 class MemoApisMatNaoEncontradas(Memorando):
-    """Memo à APIS-Utilização: matrícula(s) não encontrada(s) na base geral
-    (Planilha de Matrículas - Titulares e Dependentes U.I)."""
+    """Memo à APIS-Utilização: matrícula(s) não localizada(s) na base geral
+    (Planilha de Matrículas - Titulares e Dependentes U.I).
+
+    Devolve o processo para conferência da matrícula (possível erro de
+    digitação) e, se estiver correta, pede o encaminhamento à IPSEMG/GEACS.
+    """
 
     def __init__(
         self,
@@ -51,6 +75,7 @@ class MemoApisMatNaoEncontradas(Memorando):
         itens = _listar_matriculas(titular, dependentes)
         if not itens:
             raise ValueError('Memorando de matrículas não encontradas criado sem matrículas')
+        plural = len(itens) > 1
 
         super().__init__(
             destinatario_nome='IPSEMG/APIS-Utilização',
@@ -61,8 +86,10 @@ class MemoApisMatNaoEncontradas(Memorando):
             nivel_acesso='Restrito',
             hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
             paragrafos=[
-                _par_nao_encontradas(itens),
-                _par_encaminhamento(),
+                _par_nao_localizadas(itens),
+                _par_conferencia(plural),
+                _par_correcao(plural),
+                _par_encaminhamento(plural),
                 '',
                 '',
                 '',

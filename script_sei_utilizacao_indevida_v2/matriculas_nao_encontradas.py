@@ -7,6 +7,10 @@ pelo fluxo dos VELHOS (cada um com os seus marcadores).
 Base geral: cria o memo à APIS-Utilização e o insere no bloco; o marcador
 da base geral (1.2.1/2.1.1) só é adicionado depois disso, e também indica
 que o memo está no bloco.
+
+Retomada: se o memo já estiver na árvore (encontrado pelo assunto) e o
+processo não tiver o marcador, o memo não é recriado; só os marcadores são
+adicionados.
 """
 
 import logging
@@ -17,6 +21,7 @@ from constantes import (
     NOME_SIGNATARIO,
 )
 from docs_processo import encontrar_memo_mat_nao_encontradas, memos_geacs_novos
+from marcadores_disponiveis import garantir_marcadores_no_sei
 from rede_propria import ErroAvaliacao, MatriculasNaoEncontradas, NaoEncontradas
 from Registro import ProxAcao
 from sei_automacao.documento import inserir_bloco_ass
@@ -37,11 +42,10 @@ def _incluir_memo_apis(driver: webdriver.Remote, registro, tds_docs: list[dict],
 
     memo_existente = encontrar_memo_mat_nao_encontradas(driver, tds_docs)
     if memo_existente is not None:
+        registro.memo_apis_mat_nao_encontradas_na_arvore = True
         registro.memo_apis_mat_nao_encontradas_sei = memo_existente['numero_sei']
-        raise ErroAvaliacao(
-            f'Memo à APIS de matrículas não encontradas ({memo_existente["numero_sei"]}) já existe na árvore, mas o processo não tem o marcador. '
-            'Verificar se está no bloco e adicionar o marcador manualmente.'
-        )
+        logger.info(f'Retomada: memo à APIS já está na árvore ({memo_existente["numero_sei"]}); só os marcadores serão adicionados')
+        return
 
     memo = MemoApisMatNaoEncontradas(
         nome_signatario=NOME_SIGNATARIO,
@@ -91,6 +95,9 @@ def marcar_matriculas_nao_encontradas(  # noqa: PLR0913, PLR0917
         registro.deps_nao_encontrados = list(erro.base_rede.dependentes)
         logger.warning(f'Não encontrado(s) na base da rede própria | {erro.base_rede.descrever()}')
     registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS
+
+    tags = ([tag_base_geral] if erro.base_geral else []) + ([tag_base_rede] if erro.base_rede else [])
+    garantir_marcadores_no_sei(driver, tags)
 
     if erro.base_geral:
         _incluir_memo_apis(driver, registro, tds_docs, erro.base_geral)

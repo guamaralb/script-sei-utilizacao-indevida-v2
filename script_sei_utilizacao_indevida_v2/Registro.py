@@ -1,3 +1,4 @@
+import traceback
 from dataclasses import asdict, dataclass, field
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
@@ -38,9 +39,26 @@ _PROX_ACOES_DE_ERRO = frozenset({
 })
 
 
+def _mensagem_erro(erro: Exception) -> str:
+    """Mensagem curta para a planilha. Erros do Selenium trazem o
+    stacktrace do chromedriver no texto; fica só a primeira linha útil ou,
+    sem mensagem, a função do script/biblioteca em que o erro ocorreu."""
+    texto = (getattr(erro, 'msg', None) or str(erro)).strip()
+    primeira_linha = texto.splitlines()[0].strip() if texto else ''
+    if primeira_linha and primeira_linha != 'Message:':
+        return primeira_linha
+
+    quadros = traceback.extract_tb(erro.__traceback__)
+    quadro = next((q for q in reversed(quadros) if 'selenium' not in q.filename.replace('\\', '/')), None)
+    local = f' em {quadro.name}' if quadro else ''
+    if type(erro).__name__ == 'TimeoutException':
+        return f'Tempo esgotado esperando elemento do SEI{local} (detalhes no log)'
+    return f'{type(erro).__name__} sem mensagem{local} (detalhes no log)'
+
+
 def registrar_erro(registro, erro: Exception) -> None:
     registro.tipo_erro = type(erro).__name__
-    registro.erro = str(erro)
+    registro.erro = _mensagem_erro(erro)
     if registro.prox_acao not in _PROX_ACOES_DE_ERRO:
         registro.prox_acao = ProxAcao.VERIFICAR_ERRO
 
@@ -96,6 +114,7 @@ class RegistroMain:
     tag_mat_nao_encontradas_velho: bool = False
     memo_apis_mat_nao_encontradas_criado: bool = False
     memo_apis_mat_nao_encontradas_inserido_bloco: bool = False
+    memo_apis_mat_nao_encontradas_na_arvore: bool = False
     memo_apis_mat_nao_encontradas_sei: str | None = None
 
     # Fluxo normal (NOVOS)
@@ -169,6 +188,7 @@ class RegistroMain:
             'tag_mat_nao_encontradas_velho': self.tag_mat_nao_encontradas_velho,
             'memo_apis_mat_nao_encontradas_criado': self.memo_apis_mat_nao_encontradas_criado,
             'memo_apis_mat_nao_encontradas_inserido_bloco': self.memo_apis_mat_nao_encontradas_inserido_bloco,
+            'memo_apis_mat_nao_encontradas_na_arvore': self.memo_apis_mat_nao_encontradas_na_arvore,
             'memo_apis_mat_nao_encontradas_sei': self.memo_apis_mat_nao_encontradas_sei,
             'memo_disa_criado': self.memo_disa_criado,
             'memo_disa_inserido_bloco': self.memo_disa_inserido_bloco,
@@ -226,6 +246,7 @@ class RegistroMainAddMemoNaoUsouRedePropria:
     tag_mat_nao_encontradas_novo: bool = False
     memo_apis_mat_nao_encontradas_criado: bool = False
     memo_apis_mat_nao_encontradas_inserido_bloco: bool = False
+    memo_apis_mat_nao_encontradas_na_arvore: bool = False
     memo_apis_mat_nao_encontradas_sei: str | None = None
 
     memo_uso_rede_criado: bool = False

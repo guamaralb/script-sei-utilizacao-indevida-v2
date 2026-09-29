@@ -36,6 +36,7 @@ A pesquisa da utilização indevida em si **ainda não foi implementada**.
 | `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS (modelos "novo" e "velho") |
 | `matriculas_nao_encontradas.py` | Registra as matrículas não encontradas, cria o memo à APIS (base geral) e adiciona o marcador de cada base (NOVO ou VELHO) |
 | `tags.py` | Todos os marcadores, `registrar_tags()` e `adicionar_tag()` |
+| `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos |
 | `log_config.py` | Logging compartilhado: processo atual em cada linha e resumo final |
 | `Registro.py` | Um registro por processo (uma linha da planilha de controle), `ProxAcao` e `registrar_erro()` |
@@ -75,10 +76,19 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 - Marcadores: adicione **sempre** com `tags.adicionar_tag(driver, registro,
   tag)`, que também preenche o atributo e a coluna
   `marcadores_adicionados`. Não chame `adicionar_marcador` direto.
+- **Antes de criar qualquer memo**, chame
+  `garantir_marcadores_no_sei(driver, [marcadores que serão adicionados])`.
+  Se um nome não existir no SEI, o processo para antes do memo (senão o
+  memo fica no bloco sem marcador). A lista é lida na tela "Gerenciar
+  Marcador", sem salvar, uma vez por execução; se faltar um nome, é relida
+  uma vez.
 - `prox_acao`: use os valores de `Registro.ProxAcao`. Não escreva textos
   soltos; detalhes vão para as demais colunas e para o log.
 - Erros: registre com `Registro.registrar_erro(registro, e)` (preenche
-  `tipo_erro`, `erro` e, se preciso, `prox_acao = Verificar erro`).
+  `tipo_erro`, `erro` e, se preciso, `prox_acao = Verificar erro`). A
+  coluna `erro` recebe só uma frase; erros do Selenium sem mensagem viram
+  "Tempo esgotado esperando elemento do SEI em <função>". O traceback
+  completo fica no log.
 
 ## Regras de negócio
 
@@ -108,7 +118,11 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
   - quem chamou executa `marcar_matriculas_nao_encontradas`, que não
     cria memos DISA/DEPROC nem adiciona AVALIADO:
     - **base geral**: cria o memo à APIS-Utilização
-      (`MemoApisMatNaoEncontradas`), insere no bloco
+      (`MemoApisMatNaoEncontradas`: devolve o processo para conferência
+      da matrícula, pede a retificação e o reencaminhamento à
+      GEACS-Utilização se houver erro e, se a matrícula estiver correta,
+      o encaminhamento à IPSEMG/GEACS; **não altere o assunto**, que
+      identifica o memo na árvore), insere no bloco
       `BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS` e **só depois** adiciona `1.2.1`
       (NOVO) ou `2.1.1` (VELHO). Esse marcador também indica que o memo
       está no bloco;
@@ -174,13 +188,16 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 - O memo à APIS só existe se alguma matrícula **não foi encontrada na
   base geral**. Também é identificado **pelo assunto**
   (`PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS`). Se já existir sem o
-  marcador `1.2.1`/`2.1.1`, é `ErroAvaliacao` para verificação manual.
+  marcador `1.2.1`/`2.1.1`, é **retomada**: o memo não é recriado e só os
+  marcadores são adicionados (coluna
+  `memo_apis_mat_nao_encontradas_na_arvore`). Diferente do memo de
+  correção, que nesse caso gera erro para verificação manual.
 - Blocos de assinatura:
   - `7697744`: memos DISA e DEPROC do fluxo normal;
   - `7707212`: memo de correção;
-  - `BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS`: memo à APIS. **Número ainda não
-    informado** (`None`): enquanto isso, o processo para com erro antes de
-    criar o memo e sem adicionar marcadores.
+  - `7711907` (`BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS`): memo à APIS. Se a
+    constante for `None`, o processo para com erro antes de criar o memo
+    e sem adicionar marcadores.
 - Signatária: Bruna Miiller Lavarini, Gerência de Auditoria e Contas da
   Saúde.
 
@@ -361,7 +378,8 @@ Os marcadores são lidos **do SEI**, não da planilha.
 | Situação | Ação |
 |---|---|
 | VELHO | Fora do escopo |
-| Nem NOVO nem VELHO | Erro |
+| Nem NOVO nem VELHO, com `MANUAL` ou `ASSINADO` | Fora do escopo (tratado manualmente) |
+| Nem NOVO nem VELHO, sem esses marcadores | Erro |
 | NOVO com `1.2.1` ou `1.2.2` (matrículas não encontradas) | Erro (processo parado) |
 | AVALIADO e com memo de correção | Confere o memo na árvore |
 | AVALIADO e sem memo de correção | Nada a fazer |
@@ -401,8 +419,9 @@ Os marcadores são lidos **do SEI**, não da planilha.
 - Confirmar que `listar_documentos_arvore` logo após criar os memos traz
   os memos novos no fim da árvore, na ordem de criação (DISA antes de
   DEPROC). Os números SEI dos memos dependem disso.
-- Informar o número do bloco do memo à APIS em
-  `constantes.BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS`.
+- Confirmar que a leitura da lista de marcadores ("Gerenciar Marcador",
+  opções `#selMarcador label.dd-option-text`) traz todos os marcadores da
+  unidade e sai da tela sem salvar.
 - Processos que já receberam `1.2.1` antes da criação do memo à APIS
   (até 2026-09-25) não têm o memo. Para gerá-lo, remova manualmente o
   `1.2.1` (e o `1.2.2`) e rode de novo.

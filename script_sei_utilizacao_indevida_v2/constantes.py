@@ -19,10 +19,7 @@ UNIDADE_APIS = 'IPSEMG/APIS-Utilização'
 
 BLOCO_MEMOS_DISA_DEPROC = 7697744
 BLOCO_MEMO_USO_REDE_PROPRIA = 7707212
-# Memo à APIS de matrículas não encontradas na base geral.
-# TODO: informar o número do bloco. Enquanto for None, o processo com
-# matrícula não encontrada na base geral para com erro, sem criar o memo.
-BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS: int | None = None
+BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS = 7711907
 
 NOME_SIGNATARIO = 'Bruna Miiller Lavarini'
 CARGO_SIGNATARIO = 'Gerência de Auditoria e Contas da Saúde'

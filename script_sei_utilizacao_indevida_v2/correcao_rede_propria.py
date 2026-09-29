@@ -19,6 +19,7 @@ from constantes import (
     NOME_SIGNATARIO,
 )
 from docs_processo import encontrar_memo_uso_rede, memos_geacs_novos
+from marcadores_disponiveis import garantir_marcadores_no_sei
 from matriculas_nao_encontradas import marcar_matriculas_nao_encontradas
 from rede_propria import (
     BasesUso,
@@ -125,6 +126,7 @@ def corrigir_uso_rede_propria(
         )
 
     _reabrir(driver)
+    garantir_marcadores_no_sei(driver, [TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO, TAG_AVALIADO_USO_REDE_PROPRIA])
 
     memo = MemoDisaUsoRede(
         nome_signatario=NOME_SIGNATARIO,

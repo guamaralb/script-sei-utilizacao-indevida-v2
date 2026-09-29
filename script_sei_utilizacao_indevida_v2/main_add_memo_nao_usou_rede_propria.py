@@ -39,7 +39,7 @@ from sei_automacao.driver import iniciar_driver
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
-from tags import normalizar_tags, registrar_tags
+from tags import TAGS_TRATAMENTO_MANUAL, normalizar_tags, registrar_tags
 
 load_dotenv()
 
@@ -63,7 +63,7 @@ for diretorio in [
 ]:
     diretorio.mkdir(parents=True, exist_ok=True)
 
-ARQ_COMPILADO = DIR_CONTROLE_MAIN / '_processos_processados-COMPILADO-2026_09_23.xlsx'
+ARQ_COMPILADO = DIR_INPUTS / 'processos_processados_mas_nao_olhou_rede_propria.xlsx'
 ARQ_LOG = DIR_LOG_NAO_USOU_REDE_PROPRIA / f'{AGORA}_execucao.log'
 ARQ_CONTROLE = DIR_CONTROLE_NAO_USOU_REDE_PROPRIA / f'{AGORA}_processos_add_memo_nao_uso_rede_propria.xlsx'
 
@@ -90,6 +90,12 @@ def _avaliar_processo(
     logger.info(f'Marcadores: {tags or "nenhum"}')
 
     if not registro.tag_processo_novo:
+        tags_manuais = sorted(TAGS_TRATAMENTO_MANUAL.intersection(tags))
+        if not registro.tag_processo_velho and tags_manuais:
+            logger.info(f'Processo tratado manualmente ({tags_manuais}): fora do escopo da correção')
+            registro.fluxo = 'Tratado manualmente - fora do escopo'
+            registro.prox_acao = ProxAcao.FORA_DO_ESCOPO
+            return
         if registro.tag_processo_velho:
             logger.info('Processo VELHO: fora do escopo da correção')
             registro.fluxo = 'VELHO - fora do escopo'

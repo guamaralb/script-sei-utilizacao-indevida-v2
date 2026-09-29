@@ -7,6 +7,7 @@ from constantes import (
 )
 from docs_processo import ler_texto_doc, memos_geacs_novos, obter_ultimo_memo_apis
 from extrator_dados_ui import FormatoMemorandoInvalido, extrair_dados_ui, validar_template
+from marcadores_disponiveis import garantir_marcadores_no_sei
 from matriculas_nao_encontradas import marcar_matriculas_nao_encontradas
 from rede_propria import (
     BasesUso,
@@ -153,6 +154,12 @@ def processar_novo(
         raise
     registrar_uso(registro, uso)
 
+    tag_memos = TAG_MEMOS_DISA_DEPROC_NO_BLOCO if uso.alguem_usou else TAG_MEMO_DEPROC_NO_BLOCO
+    garantir_marcadores_no_sei(
+        driver,
+        [TAG_AVALIADO_USO_REDE_PROPRIA, tag_memos] + ([TAG_PERIODO_VAR_DEP] if dados_ui.periodo_dependentes else []),
+    )
+
     if dados_ui.periodo_dependentes:
         adicionar_tag(driver, registro, TAG_PERIODO_VAR_DEP)
 
@@ -165,12 +172,8 @@ def processar_novo(
 
     adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA)
 
-    if uso.alguem_usou:
-        adicionar_tag(driver, registro, TAG_MEMOS_DISA_DEPROC_NO_BLOCO)
-        registro.prox_acao = ProxAcao.ASSINAR_DISA_DEPROC
-    else:
-        adicionar_tag(driver, registro, TAG_MEMO_DEPROC_NO_BLOCO)
-        registro.prox_acao = ProxAcao.ASSINAR_DEPROC
+    adicionar_tag(driver, registro, tag_memos)
+    registro.prox_acao = ProxAcao.ASSINAR_DISA_DEPROC if uso.alguem_usou else ProxAcao.ASSINAR_DEPROC
 
     _registrar_numeros_memos(driver, registro, tds_docs)
     return registro
