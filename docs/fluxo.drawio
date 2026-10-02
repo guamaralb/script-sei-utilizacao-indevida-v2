@@ -1,4 +1,4 @@
-<mxfile host="Electron" type="device">
+<mxfile host="app.diagrams.net" pages="8">
   <diagram id="geral" name="1. Visão geral (main.py)">
     <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
       <root>
@@ -241,118 +241,111 @@
     </mxGraphModel>
   </diagram>
   <diagram id="novo" name="2. NOVO: roteamento (_tratar_novo)">
-    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
+    <mxGraphModel dx="1178" dy="3099" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="novo-tit" value="2. NOVO já classificado: roteamento pelos marcadores (main._tratar_novo)" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="-20" width="1200" height="40" as="geometry" />
+        <mxCell id="novo-tit" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" value="2. NOVO já classificado: roteamento pelos marcadores (main._tratar_novo)" vertex="1">
+          <mxGeometry height="40" width="1200" x="40" y="-20" as="geometry" />
         </mxCell>
-        <mxCell id="novo-ini" value="Entrada: processo com&lt;br&gt;&lt;b&gt;1 - Processo NOVO&lt;/b&gt;" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="70" width="420" height="60" as="geometry" />
+        <mxCell id="novo-ini" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;" value="Entrada: processo com&lt;br&gt;&lt;b&gt;1 - Processo NOVO&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="420" x="410" y="70" as="geometry" />
         </mxCell>
-        <mxCell id="novo-q1" value="Tem &lt;b&gt;1.2.1 - Mat. N Encontradas Base Geral&lt;/b&gt;&lt;br&gt;ou&lt;br&gt;&lt;b&gt;1.2.2 - Mat. N Encontradas Base DISA&lt;/b&gt;?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="185" width="440" height="190" as="geometry" />
+        <mxCell id="novo-q1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem &lt;b&gt;1.2.1 - Mat. N Encontradas Base Geral&lt;/b&gt;&lt;br&gt;ou&lt;br&gt;&lt;b&gt;1.2.2 - Mat. N Encontradas Base DISA&lt;/b&gt;?" vertex="1">
+          <mxGeometry height="190" width="440" x="400" y="185" as="geometry" />
         </mxCell>
-        <mxCell id="novo-q2" value="Tem&lt;br&gt;&lt;b&gt;1.2 - Avaliado Se Usou Rede Própria&lt;/b&gt;?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="430" width="440" height="190" as="geometry" />
+        <mxCell id="novo-q2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem&lt;br&gt;&lt;b&gt;1.2 - Avaliado Se Usou Rede Própria&lt;/b&gt;?" vertex="1">
+          <mxGeometry height="190" width="440" x="400" y="430" as="geometry" />
         </mxCell>
-        <mxCell id="novo-q3" value="Tem&lt;br&gt;&lt;b&gt;1.3 - Memos DISA e DEPROC no Bloco&lt;/b&gt;?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="675" width="440" height="190" as="geometry" />
+        <mxCell id="novo-q3" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem&lt;br&gt;&lt;b&gt;1.3 - Memos DISA e DEPROC no Bloco&lt;/b&gt;?" vertex="1">
+          <mxGeometry height="190" width="440" x="400" y="675" as="geometry" />
         </mxCell>
-        <mxCell id="novo-q4" value="Tem&lt;br&gt;&lt;b&gt;1.3 - Memo DEPROC no Bloco&lt;/b&gt;?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="920" width="440" height="190" as="geometry" />
+        <mxCell id="novo-q4" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem&lt;br&gt;&lt;b&gt;1.3 - Memo DEPROC no Bloco&lt;/b&gt;?" vertex="1">
+          <mxGeometry height="190" width="440" x="400" y="920" as="geometry" />
         </mxCell>
-        <mxCell id="novo-q5" value="Tem&lt;br&gt;&lt;b&gt;1.4 - Memo Não Usou Rede no Bloco&lt;/b&gt;?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1165" width="440" height="190" as="geometry" />
+        <mxCell id="novo-q5" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem&lt;br&gt;&lt;b&gt;1.4 - Memo Não Usou Rede no Bloco&lt;/b&gt;?" vertex="1">
+          <mxGeometry height="190" width="440" x="400" y="1165" as="geometry" />
         </mxCell>
-        <mxCell id="novo-q6" value="Há memos&lt;br&gt;da GEACS&lt;br&gt;na árvore?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1410" width="440" height="190" as="geometry" />
+        <mxCell id="novo-q6" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Há memos&lt;br&gt;da GEACS&lt;br&gt;na árvore?" vertex="1">
+          <mxGeometry height="190" width="440" x="400" y="1410" as="geometry" />
         </mxCell>
         <UserObject label="NOVO – fluxo normal&lt;br&gt;(processar_novo) →" link="data:page/id,normal" id="novo-s6">
-          <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-            <mxGeometry x="410" y="1655" width="420" height="64" as="geometry" />
+          <mxCell parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1">
+            <mxGeometry height="64" width="420" x="410" y="1655" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="novo-err1" value="&lt;b&gt;Erro&lt;/b&gt;: processo parado&lt;br&gt;(matrículas não encontradas)&lt;br&gt;&lt;b&gt;prox_acao:&lt;/b&gt; Verificar matrículas não encontradas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="230" width="440" height="100" as="geometry" />
+        <mxCell id="novo-err1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: processo parado&lt;br&gt;(matrículas não encontradas)&lt;br&gt;&lt;b&gt;prox_acao:&lt;/b&gt; Verificar matrículas não encontradas" vertex="1">
+          <mxGeometry height="100" width="440" x="1000" y="230" as="geometry" />
         </mxCell>
-        <mxCell id="novo-a3" value="Lê o último memo da APIS&lt;br&gt;(obter_dados_ui) → matrículas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1010" y="735" width="420" height="70" as="geometry" />
+        <mxCell id="novo-a3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Lê o último memo da APIS&lt;br&gt;(obter_dados_ui) → matrículas" vertex="1">
+          <mxGeometry height="70" width="420" x="1010" y="735" as="geometry" />
         </mxCell>
         <UserObject label="Rotina de correção&lt;br&gt;(corrigir_uso_rede_propria) →" link="data:page/id,correcao" id="novo-s3">
-          <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-            <mxGeometry x="1600" y="738" width="420" height="64" as="geometry" />
+          <mxCell parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1">
+            <mxGeometry height="64" width="420" x="1600" y="738" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="novo-err4" value="&lt;b&gt;Erro&lt;/b&gt;: tem 1.3 - Memo DEPROC no Bloco&lt;br&gt;sem 1.2 - Avaliado Se Usou Rede Própria&lt;br&gt;(combinação inválida)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="970" width="440" height="90" as="geometry" />
+        <mxCell id="novo-err4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: tem 1.3 - Memo DEPROC no Bloco&lt;br&gt;sem 1.2 - Avaliado Se Usou Rede Própria&lt;br&gt;(combinação inválida)" vertex="1">
+          <mxGeometry height="90" width="440" x="1000" y="970" as="geometry" />
         </mxCell>
-        <mxCell id="novo-err5" value="&lt;b&gt;Erro&lt;/b&gt;: tem 1.4 - Memo Não Usou Rede no Bloco&lt;br&gt;sem 1.2 - Avaliado Se Usou Rede Própria e sem 1.3 - Memos DISA e DEPROC no Bloco&lt;br&gt;(combinação inválida)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="1210" width="440" height="100" as="geometry" />
+        <mxCell id="novo-err5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: tem 1.4 - Memo Não Usou Rede no Bloco&lt;br&gt;sem 1.2 - Avaliado Se Usou Rede Própria e sem 1.3 - Memos DISA e DEPROC no Bloco&lt;br&gt;(combinação inválida)" vertex="1">
+          <mxGeometry height="100" width="440" x="1000" y="1210" as="geometry" />
         </mxCell>
-        <mxCell id="novo-err6" value="&lt;b&gt;Erro&lt;/b&gt;: memos da GEACS sem marcador&lt;br&gt;de conclusão. Verificar manualmente&lt;br&gt;(evita duplicidade)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="1460" width="440" height="90" as="geometry" />
+        <mxCell id="novo-err6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: memos da GEACS sem marcador&lt;br&gt;de conclusão. Verificar manualmente&lt;br&gt;(evita duplicidade)" vertex="1">
+          <mxGeometry height="90" width="440" x="1000" y="1460" as="geometry" />
         </mxCell>
-        <mxCell id="novo-qa" value="Tem&lt;br&gt;&lt;b&gt;1.4 - Memo Não Usou Rede no Bloco&lt;/b&gt;?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2180" y="430" width="440" height="190" as="geometry" />
+        <mxCell id="novo-qa" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem&lt;br&gt;&lt;b&gt;1.4 - Memo Não Usou Rede no Bloco&lt;/b&gt;?" vertex="1">
+          <mxGeometry height="190" width="440" x="2180" y="430" as="geometry" />
         </mxCell>
-        <mxCell id="novo-aa" value="Confere o memo de correção&lt;br&gt;na árvore (pelo assunto)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2190" y="675" width="420" height="70" as="geometry" />
+        <mxCell id="novo-aa" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Confere o memo de correção&lt;br&gt;na árvore (pelo assunto)" vertex="1">
+          <mxGeometry height="70" width="420" x="2190" y="675" as="geometry" />
         </mxCell>
-        <mxCell id="novo-qb" value="Qual marcador&lt;br&gt;&lt;b&gt;1.3&lt;/b&gt;?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2180" y="800" width="440" height="190" as="geometry" />
+        <mxCell id="novo-qb" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Qual marcador&lt;br&gt;&lt;b&gt;1.3&lt;/b&gt;?" vertex="1">
+          <mxGeometry height="190" width="440" x="2180" y="800" as="geometry" />
         </mxCell>
-        <mxCell id="novo-qc" value="Qtd. de memos&lt;br&gt;da GEACS =&lt;br&gt;esperado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2180" y="1045" width="440" height="190" as="geometry" />
+        <mxCell id="novo-qc" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Qtd. de memos&lt;br&gt;da GEACS =&lt;br&gt;esperado?" vertex="1">
+          <mxGeometry height="190" width="440" x="2180" y="1045" as="geometry" />
         </mxCell>
-        <mxCell id="novo-fc1" value="&lt;b&gt;prox_acao:&lt;/b&gt;&lt;br&gt;Assinar memos DISA e DEPROC e encaminhar&lt;br&gt;ou Assinar memo DEPROC e encaminhar" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2190" y="1290" width="420" height="80" as="geometry" />
+        <mxCell id="novo-fc1" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;prox_acao:&lt;/b&gt;&lt;br&gt;Assinar memos DISA e DEPROC e encaminhar&lt;br&gt;ou Assinar memo DEPROC e encaminhar" vertex="1">
+          <mxGeometry height="80" width="420" x="2190" y="1290" as="geometry" />
         </mxCell>
-        <mxCell id="novo-erra" value="&lt;b&gt;Erro&lt;/b&gt;: tem 1.4 - Memo Não Usou Rede no Bloco,&lt;br&gt;mas o memo de correção não está&lt;br&gt;na árvore" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2770" y="665" width="440" height="90" as="geometry" />
+        <mxCell id="novo-erra" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: tem 1.4 - Memo Não Usou Rede no Bloco,&lt;br&gt;mas o memo de correção não está&lt;br&gt;na árvore" vertex="1">
+          <mxGeometry height="90" width="440" x="2770" y="665" as="geometry" />
         </mxCell>
-        <mxCell id="novo-ab1" value="Esperado: &lt;b&gt;2&lt;/b&gt; memos da GEACS&lt;br&gt;(&lt;b&gt;3&lt;/b&gt; se tem 1.4 - Memo Não Usou Rede no Bloco)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2780" y="800" width="420" height="70" as="geometry" />
+        <mxCell id="novo-ab1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Esperado: &lt;b&gt;2&lt;/b&gt; memos da GEACS&lt;br&gt;(&lt;b&gt;3&lt;/b&gt; se tem 1.4 - Memo Não Usou Rede no Bloco)" vertex="1">
+          <mxGeometry height="70" width="420" x="2780" y="800" as="geometry" />
         </mxCell>
-        <mxCell id="novo-ab2" value="Esperado: &lt;b&gt;1&lt;/b&gt; memo da GEACS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2780" y="920" width="420" height="70" as="geometry" />
+        <mxCell id="novo-ab2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Esperado: &lt;b&gt;1&lt;/b&gt; memo da GEACS" vertex="1">
+          <mxGeometry height="70" width="420" x="2780" y="920" as="geometry" />
         </mxCell>
-        <mxCell id="novo-errb" value="&lt;b&gt;Erro&lt;/b&gt;: tem 1.2 - Avaliado Se Usou Rede Própria,&lt;br&gt;mas nenhum marcador 1.3&lt;br&gt;(memos no bloco)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="3360" y="850" width="440" height="90" as="geometry" />
+        <mxCell id="novo-errb" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: tem 1.2 - Avaliado Se Usou Rede Própria,&lt;br&gt;mas nenhum marcador 1.3&lt;br&gt;(memos no bloco)" vertex="1">
+          <mxGeometry height="90" width="440" x="3360" y="850" as="geometry" />
         </mxCell>
-        <mxCell id="novo-fc2" value="&lt;b&gt;prox_acao:&lt;/b&gt;&lt;br&gt;Verificar quantidade&lt;br&gt;de memos da GEACS" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="2780" y="1100" width="420" height="80" as="geometry" />
+        <mxCell id="novo-fc2" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;prox_acao:&lt;/b&gt;&lt;br&gt;Verificar quantidade&lt;br&gt;de memos da GEACS" vertex="1">
+          <mxGeometry height="80" width="420" x="2780" y="1210" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="novo-ini" target="novo-q1">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x1" edge="1" parent="1" source="novo-ini" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="novo-q1" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x2" value="Sim → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="novo-q1" target="novo-err1">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x2" edge="1" parent="1" source="novo-q1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="novo-err1" value="Sim → erro">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x3" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="novo-q1" target="novo-q2">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x3" edge="1" parent="1" source="novo-q1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="novo-q2" value="Não">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x4" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="novo-q2" target="novo-qa">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x4" edge="1" parent="1" source="novo-q2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="novo-qa" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x5" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="novo-qa" target="novo-aa">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x5" edge="1" parent="1" source="novo-qa" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="novo-aa" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x6" value="não achou → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="novo-aa" target="novo-erra">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x6" edge="1" parent="1" source="novo-aa" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="novo-erra" value="não achou → erro">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x7" value="achou" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="novo-aa" target="novo-qb">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x7" edge="1" parent="1" source="novo-aa" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="novo-qb" value="achou">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x8" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="novo-qa" target="novo-qb">
+        <mxCell id="novo-x8" edge="1" parent="1" source="novo-qa" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="novo-qb" value="Não">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="2100" y="525" />
@@ -360,309 +353,366 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="novo-x9" value="1.3 - Memos DISA e DEPROC no Bloco" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.75;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="novo-qb" target="novo-ab1">
-          <mxGeometry relative="1" as="geometry">
+        <mxCell id="novo-x9" edge="1" parent="1" source="novo-qb" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.75;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="novo-ab1" value="1.3 - Memos DISA e DEPROC no Bloco">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="novo-x10" edge="1" parent="1" source="novo-qb" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.75;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="novo-ab2" value="1.3 - Memo DEPROC no Bloco">
+          <mxGeometry relative="1" x="-0.0029" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="novo-x10" value="1.3 - Memo DEPROC no Bloco" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.75;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="novo-qb" target="novo-ab2">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x11" edge="1" parent="1" source="novo-qb" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="novo-errb" value="nenhum → erro">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x11" value="nenhum → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="novo-qb" target="novo-errb">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x12" edge="1" parent="1" source="novo-ab1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0.25;entryDx=0;entryDy=0;" target="novo-qc" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="novo-ab1" target="novo-qc">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x13" edge="1" parent="1" source="novo-ab2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="novo-qc" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="novo-ab2" target="novo-qc">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x14" edge="1" parent="1" source="novo-qc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="novo-fc1" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x14" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="novo-qc" target="novo-fc1">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x15" edge="1" parent="1" source="novo-qc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="novo-fc2" value="Não">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x15" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="novo-qc" target="novo-fc2">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x16" edge="1" parent="1" source="novo-q2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="novo-q3" value="Não">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x16" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="novo-q2" target="novo-q3">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x17" edge="1" parent="1" source="novo-q3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="novo-a3" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x17" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="novo-q3" target="novo-a3">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x18" edge="1" parent="1" source="novo-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="novo-s3" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="novo-a3" target="novo-s3">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x19" edge="1" parent="1" source="novo-q3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="novo-q4" value="Não">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x19" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="novo-q3" target="novo-q4">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x20" edge="1" parent="1" source="novo-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="novo-err4" value="Sim → erro">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x20" value="Sim → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="novo-q4" target="novo-err4">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x21" edge="1" parent="1" source="novo-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="novo-q5" value="Não">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x21" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="novo-q4" target="novo-q5">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x22" edge="1" parent="1" source="novo-q5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="novo-err5" value="Sim → erro">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x22" value="Sim → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="novo-q5" target="novo-err5">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x23" edge="1" parent="1" source="novo-q5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="novo-q6" value="Não">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x23" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="novo-q5" target="novo-q6">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x24" edge="1" parent="1" source="novo-q6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="novo-err6" value="Sim → erro">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x24" value="Sim → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="novo-q6" target="novo-err6">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-x25" edge="1" parent="1" source="novo-q6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="novo-s6" value="Não">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="novo-x25" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="novo-q6" target="novo-s6">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="novo-n0" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Os marcadores aparecem com o &lt;b&gt;nome completo&lt;/b&gt;, como estão cadastrados no SEI. Todos levam o prefixo &lt;b&gt;&quot;Script v2 - &quot;&lt;/b&gt; (ex.: &quot;Script v2 - 1.2 - Avaliado Se Usou Rede Própria&quot;). Limite do SEI: 50 caracteres." vertex="1">
+          <mxGeometry height="190" width="320" x="30" y="70" as="geometry" />
         </mxCell>
-        <mxCell id="novo-n0" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Os marcadores aparecem com o &lt;b&gt;nome completo&lt;/b&gt;, como estão cadastrados no SEI. Todos levam o prefixo &lt;b&gt;&quot;Script v2 - &quot;&lt;/b&gt; (ex.: &quot;Script v2 - 1.2 - Avaliado Se Usou Rede Própria&quot;). Limite do SEI: 50 caracteres." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="30" y="70" width="320" height="190" as="geometry" />
+        <mxCell id="novo-n3" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Nenhum marcador é adicionado nesta página.&lt;/b&gt;&lt;br&gt;Ela só decide para onde o processo vai. Ordem das perguntas = ordem do código: vale a primeira que for verdadeira." vertex="1">
+          <mxGeometry height="150" width="320" x="30" y="185" as="geometry" />
         </mxCell>
-        <mxCell id="novo-n3" value="&lt;b&gt;Nenhum marcador é adicionado nesta página.&lt;/b&gt;&lt;br&gt;Ela só decide para onde o processo vai. Ordem das perguntas = ordem do código: vale a primeira que for verdadeira." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="30" y="185" width="320" height="150" as="geometry" />
+        <mxCell id="novo-n2" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Reprocessar um processo parado&lt;/b&gt;&lt;br&gt;Corrigir a base (geral ou da rede própria) e remover manualmente 1.2.1 - Mat. N Encontradas Base Geral / 1.2.2 - Mat. N Encontradas Base DISA no SEI." vertex="1">
+          <mxGeometry height="170" width="320" x="30" y="430" as="geometry" />
         </mxCell>
-        <mxCell id="novo-n2" value="&lt;b&gt;Reprocessar um processo parado&lt;/b&gt;&lt;br&gt;Corrigir a base (geral ou da rede própria) e remover manualmente 1.2.1 - Mat. N Encontradas Base Geral / 1.2.2 - Mat. N Encontradas Base DISA no SEI." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="30" y="430" width="320" height="170" as="geometry" />
+        <mxCell id="novo-n1" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;1.3 - Memos DISA e DEPROC no Bloco sem 1.2 - Avaliado Se Usou Rede Própria&lt;/b&gt;&lt;br&gt;Processo encaminhado à DISA e à DEPROC sem avaliação do uso da rede própria (erro antigo). A rotina de correção adiciona 1.4 - Memo Não Usou Rede no Bloco e/ou 1.2 - Avaliado Se Usou Rede Própria, ou 1.2.1 - Mat. N Encontradas Base Geral / 1.2.2 - Mat. N Encontradas Base DISA." vertex="1">
+          <mxGeometry height="230" width="320" x="30" y="920" as="geometry" />
         </mxCell>
-        <mxCell id="novo-n1" value="&lt;b&gt;1.3 - Memos DISA e DEPROC no Bloco sem 1.2 - Avaliado Se Usou Rede Própria&lt;/b&gt;&lt;br&gt;Processo encaminhado à DISA e à DEPROC sem avaliação do uso da rede própria (erro antigo). A rotina de correção adiciona 1.4 - Memo Não Usou Rede no Bloco e/ou 1.2 - Avaliado Se Usou Rede Própria, ou 1.2.1 - Mat. N Encontradas Base Geral / 1.2.2 - Mat. N Encontradas Base DISA." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="30" y="920" width="320" height="230" as="geometry" />
-        </mxCell>
-        <mxCell id="novo-n4" value="&lt;b&gt;Conferência dos já avaliados&lt;/b&gt; (_tratar_novo_avaliado)&lt;br&gt;Confere o memo de correção (se houver), calcula qnt_memos_geacs_esperada e compara com a árvore." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="2240" y="70" width="320" height="150" as="geometry" />
+        <mxCell id="novo-n4" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Conferência dos já avaliados&lt;/b&gt; (_tratar_novo_avaliado)&lt;br&gt;Confere o memo de correção (se houver), calcula qnt_memos_geacs_esperada e compara com a árvore." vertex="1">
+          <mxGeometry height="150" width="320" x="2240" y="70" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="normal" name="3. NOVO: fluxo normal (processar_novo)">
-    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
+    <mxGraphModel dx="6341" dy="4826" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="normal-tit" value="3. NOVO: fluxo normal (processar_novo.processar_novo)" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="-20" width="1200" height="40" as="geometry" />
+        <mxCell id="normal-tit" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" value="3. NOVO: fluxo normal (processar_novo.processar_novo)" vertex="1">
+          <mxGeometry height="40" width="1200" x="40" y="-20" as="geometry" />
         </mxCell>
-        <mxCell id="normal-ini" value="Entrada: NOVO recém-classificado (➕ 1 - Processo NOVO)&lt;br&gt;ou NOVO sem memos da GEACS" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="70" width="420" height="70" as="geometry" />
+        <mxCell id="normal-ini" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;" value="Entrada: NOVO recém-classificado (➕ 1 - Processo NOVO)&lt;br&gt;ou NOVO sem memos da GEACS" vertex="1">
+          <mxGeometry height="70" width="420" x="410" y="70" as="geometry" />
         </mxCell>
-        <mxCell id="normal-a1" value="Localiza o &lt;b&gt;último&lt;/b&gt; memorando&lt;br&gt;da APIS-Utilização" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="195" width="420" height="70" as="geometry" />
+        <mxCell id="bfcg3ryPWytD5HzeTqwM-2" edge="1" parent="1" source="normal-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;dashed=1;dashPattern=8 8;" target="bfcg3ryPWytD5HzeTqwM-1" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="normal-q1" value="Encontrou?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="320" width="440" height="150" as="geometry" />
+        <mxCell id="normal-a1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Localiza o &lt;b&gt;último&lt;/b&gt; memorando&lt;br&gt;da APIS-Utilização &lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;para GEACS&lt;/span&gt;" vertex="1">
+          <mxGeometry height="70" width="420" x="410" y="195" as="geometry" />
         </mxCell>
-        <mxCell id="normal-a2" value="Lê o texto do memo, identifica o modelo&lt;br&gt;(novo/velho) e extrai: titular (nome,&lt;br&gt;matrícula com DV, período), dependentes&lt;br&gt;(sem DV) e período variável" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="525" width="420" height="95" as="geometry" />
+        <mxCell id="normal-q1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Encontrou?" vertex="1">
+          <mxGeometry height="150" width="440" x="400" y="320" as="geometry" />
         </mxCell>
-        <mxCell id="normal-q2" value="Formato&lt;br&gt;válido?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="675" width="440" height="150" as="geometry" />
+        <mxCell id="normal-a2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Lê o texto do memo, identifica o modelo&lt;br&gt;(novo/velho) e extrai: titular (nome,&lt;br&gt;matrícula com DV, período), dependentes&lt;br&gt;(sem DV) e período variável" vertex="1">
+          <mxGeometry height="95" width="420" x="410" y="525" as="geometry" />
         </mxCell>
-        <mxCell id="normal-a3" value="&lt;b&gt;avaliar_uso&lt;/b&gt;: busca titular e&lt;br&gt;dependentes na &lt;b&gt;base geral&lt;/b&gt; e&lt;br&gt;na &lt;b&gt;base da rede própria&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="880" width="420" height="80" as="geometry" />
+        <mxCell id="normal-q2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Formato&lt;br&gt;válido?&lt;br&gt;&lt;br&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;Somente o formato &quot;novo&quot; será valido&lt;/span&gt;" vertex="1">
+          <mxGeometry height="150" width="440" x="400" y="675" as="geometry" />
         </mxCell>
-        <mxCell id="normal-q3" value="Todas as&lt;br&gt;matrículas nas&lt;br&gt;duas bases?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1015" width="440" height="190" as="geometry" />
+        <mxCell id="normal-a3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="&lt;b&gt;avaliar_uso&lt;/b&gt;: busca titular e&lt;br&gt;dependentes na &lt;b&gt;base geral&lt;/b&gt; e&lt;br&gt;na &lt;b&gt;base da rede própria&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="420" x="410" y="880" as="geometry" />
         </mxCell>
-        <mxCell id="normal-a4" value="garantir_marcadores_no_sei&lt;br&gt;[1.2 - Avaliado Se Usou Rede Própria;&lt;br&gt;o marcador 1.3 do caso;&lt;br&gt;1.1 - Período Variável p/ Dependentes se houver]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="1260" width="420" height="95" as="geometry" />
+        <mxCell id="normal-q3" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Todas as&lt;br&gt;matrículas nas&lt;br&gt;duas bases?" vertex="1">
+          <mxGeometry height="190" width="440" x="400" y="1015" as="geometry" />
         </mxCell>
-        <mxCell id="normal-q4" value="Todos existem&lt;br&gt;no SEI?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1410" width="440" height="150" as="geometry" />
+        <mxCell id="normal-a4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="garantir_marcadores_no_sei&lt;br&gt;[1.2 - Avaliado Se Usou Rede Própria;&lt;br&gt;o marcador 1.3 do caso;&lt;br&gt;1.1 - Período Variável p/ Dependentes se houver]" vertex="1">
+          <mxGeometry height="95" width="420" x="410" y="1260" as="geometry" />
         </mxCell>
-        <mxCell id="normal-q5" value="Período variável&lt;br&gt;p/ dependentes?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1615" width="440" height="150" as="geometry" />
+        <mxCell id="normal-q4" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Todos existem&lt;br&gt;no SEI?" vertex="1">
+          <mxGeometry height="150" width="440" x="400" y="1410" as="geometry" />
         </mxCell>
-        <mxCell id="normal-q6" value="Alguém usou&lt;br&gt;a rede própria?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1820" width="440" height="150" as="geometry" />
+        <mxCell id="normal-q5" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Período variável&lt;br&gt;p/ dependentes?" vertex="1">
+          <mxGeometry height="150" width="440" x="400" y="1615" as="geometry" />
         </mxCell>
-        <mxCell id="normal-a7" value="Cria &lt;b&gt;memo DEPROC&lt;/b&gt; (todos os&lt;br&gt;beneficiários) e insere no&lt;br&gt;bloco &lt;b&gt;7697744&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="2025" width="420" height="80" as="geometry" />
+        <mxCell id="normal-q6" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Alguém usou&lt;br&gt;a rede própria?" vertex="1">
+          <mxGeometry height="150" width="440" x="400" y="2700" as="geometry" />
         </mxCell>
-        <mxCell id="normal-t8" value="➕ 1.2 - Avaliado Se Usou Rede Própria" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="2160" width="440" height="58" as="geometry" />
+        <mxCell id="normal-a7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Cria &lt;b&gt;memo DEPROC&lt;/b&gt; (todos os&lt;br&gt;beneficiários) e insere no&lt;br&gt;bloco &lt;b&gt;7697744&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="420" x="410" y="2875" as="geometry" />
         </mxCell>
-        <mxCell id="normal-q9" value="Alguém usou?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="2273" width="440" height="150" as="geometry" />
+        <mxCell id="normal-t8" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2 - Avaliado Se Usou Rede Própria" vertex="1">
+          <mxGeometry height="58" width="440" x="400" y="3010" as="geometry" />
         </mxCell>
-        <mxCell id="normal-t9b" value="➕ 1.3 - Memo DEPROC no Bloco" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="2478" width="440" height="58" as="geometry" />
+        <mxCell id="normal-q9" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Alguém usou?" vertex="1">
+          <mxGeometry height="150" width="440" x="400" y="3123" as="geometry" />
         </mxCell>
-        <mxCell id="normal-a10" value="Relê a árvore → número SEI dos memos&lt;br&gt;(falha aqui só gera log)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="2591" width="420" height="70" as="geometry" />
+        <mxCell id="normal-t9b" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.3 - Memo DEPROC no Bloco" vertex="1">
+          <mxGeometry height="58" width="440" x="400" y="3328" as="geometry" />
         </mxCell>
-        <mxCell id="normal-f10" value="&lt;b&gt;prox_acao:&lt;/b&gt;&lt;br&gt;Assinar memos DISA e DEPROC e encaminhar&lt;br&gt;(ou Assinar memo DEPROC e encaminhar)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="410" y="2716" width="420" height="80" as="geometry" />
+        <mxCell id="normal-a10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Relê a árvore → número SEI dos memos&lt;br&gt;(falha aqui só gera log)" vertex="1">
+          <mxGeometry height="70" width="420" x="410" y="3441" as="geometry" />
         </mxCell>
-        <mxCell id="normal-err1" value="&lt;b&gt;Erro&lt;/b&gt;: memorando da APIS&lt;br&gt;não encontrado na árvore" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="355" width="440" height="80" as="geometry" />
+        <mxCell id="normal-f10" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;prox_acao:&lt;/b&gt;&lt;br&gt;Assinar memos DISA e DEPROC e encaminhar&lt;br&gt;(ou Assinar memo DEPROC e encaminhar)" vertex="1">
+          <mxGeometry height="80" width="420" x="410" y="3566" as="geometry" />
         </mxCell>
-        <mxCell id="normal-err2" value="&lt;b&gt;Erro&lt;/b&gt;: FormatoMemorandoInvalido&lt;br&gt;&lt;b&gt;prox_acao:&lt;/b&gt;&lt;br&gt;Verificar formato do memo da APIS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="705" width="440" height="90" as="geometry" />
+        <mxCell id="bfcg3ryPWytD5HzeTqwM-4" edge="1" parent="1" source="normal-err1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="bfcg3ryPWytD5HzeTqwM-3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-err1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: memorando da APIS&lt;br&gt;não encontrado na árvore" vertex="1">
+          <mxGeometry height="80" width="440" x="1000" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="bfcg3ryPWytD5HzeTqwM-6" edge="1" parent="1" source="normal-err2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="bfcg3ryPWytD5HzeTqwM-5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-err2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: FormatoMemorandoInvalido&lt;br&gt;&lt;b&gt;prox_acao:&lt;/b&gt;&lt;br&gt;Verificar formato do memo da APIS" vertex="1">
+          <mxGeometry height="90" width="440" x="1000" y="705" as="geometry" />
         </mxCell>
         <UserObject label="Matrículas não encontradas&lt;br&gt;(➕ 1.2.1 - Mat. N Encontradas Base Geral /&lt;br&gt;1.2.2 - Mat. N Encontradas Base DISA) →" link="data:page/id,matriculas" id="normal-s3">
-          <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-            <mxGeometry x="1010" y="1070" width="420" height="80" as="geometry" />
+          <mxCell parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=12;" vertex="1">
+            <mxGeometry height="80" width="420" x="1010" y="1070" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="normal-f3" value="&lt;b&gt;Erro relançado&lt;/b&gt;: processo parado&lt;br&gt;(sem memos e sem 1.2 - Avaliado Se Usou Rede Própria)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1590" y="1070" width="440" height="80" as="geometry" />
+        <mxCell id="normal-f3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro relançado&lt;/b&gt;: processo parado&lt;br&gt;(sem memos e sem 1.2 - Avaliado Se Usou Rede Própria)" vertex="1">
+          <mxGeometry height="80" width="440" x="1590" y="1070" as="geometry" />
         </mxCell>
-        <mxCell id="normal-err4" value="&lt;b&gt;Erro&lt;/b&gt;: marcador não cadastrado&lt;br&gt;no SEI (nenhum memo criado)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="1445" width="440" height="80" as="geometry" />
+        <mxCell id="normal-err4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: marcador não cadastrado&lt;br&gt;no SEI (nenhum memo criado)" vertex="1">
+          <mxGeometry height="80" width="440" x="1000" y="1445" as="geometry" />
         </mxCell>
-        <mxCell id="normal-t5" value="➕ 1.1 - Período Variável p/ Dependentes" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="1661" width="440" height="58" as="geometry" />
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-2" edge="1" parent="1" source="normal-t5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="BnXjwsfr6Sd9i9RX9FoH-1" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="normal-a6" value="Cria &lt;b&gt;memo DISA&lt;/b&gt; (quem usou e&lt;br&gt;quem não usou) e insere no&lt;br&gt;bloco &lt;b&gt;7697744&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1010" y="1855" width="420" height="80" as="geometry" />
+        <mxCell id="normal-t5" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.1 - Período Variável p/ Dependentes" vertex="1">
+          <mxGeometry height="58" width="440" x="1000" y="1661" as="geometry" />
         </mxCell>
-        <mxCell id="normal-t9a" value="➕ 1.3 - Memos DISA e DEPROC no Bloco" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="2319" width="440" height="58" as="geometry" />
+        <mxCell id="normal-a6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Cria &lt;b&gt;memo DISA&lt;/b&gt; (quem usou e&lt;br&gt;quem não usou) e insere no&lt;br&gt;bloco &lt;b&gt;7697744&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="340" x="1430" y="2720" as="geometry" />
         </mxCell>
-        <mxCell id="normal-x1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-ini" target="normal-a1">
+        <mxCell id="normal-t9a" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.3 - Memos DISA e DEPROC no Bloco" vertex="1">
+          <mxGeometry height="58" width="440" x="1000" y="3169" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x1" edge="1" parent="1" source="normal-ini" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-a1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x2" edge="1" parent="1" source="normal-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-q1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x3" edge="1" parent="1" source="normal-q1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="normal-err1" value="Não → erro">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x4" edge="1" parent="1" source="normal-q1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="normal-a2" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x5" edge="1" parent="1" source="normal-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-q2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x6" edge="1" parent="1" source="normal-q2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="normal-err2" value="Não → erro">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x7" edge="1" parent="1" source="normal-q2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="normal-a3" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x8" edge="1" parent="1" source="normal-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-q3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x9" edge="1" parent="1" source="normal-q3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="normal-s3" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x10" edge="1" parent="1" source="normal-s3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="normal-f3" value="para o processo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x11" edge="1" parent="1" source="normal-q3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="normal-a4" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x12" edge="1" parent="1" source="normal-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-q4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x13" edge="1" parent="1" source="normal-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" target="normal-err4" value="Não → erro">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x14" edge="1" parent="1" source="normal-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="normal-q5" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x15" edge="1" parent="1" source="normal-q5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="normal-t5" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x17" edge="1" parent="1" source="BnXjwsfr6Sd9i9RX9FoH-8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="normal-q6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x18" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="normal-a6" value="Sim">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1270" y="2745" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-a1" target="normal-q1">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x3" value="Não → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="normal-q1" target="normal-err1">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x4" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="normal-q1" target="normal-a2">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-a2" target="normal-q2">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x6" value="Não → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="normal-q2" target="normal-err2">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x7" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="normal-q2" target="normal-a3">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-a3" target="normal-q3">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x9" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="normal-q3" target="normal-s3">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x10" value="para o processo" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="normal-s3" target="normal-f3">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x11" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="normal-q3" target="normal-a4">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-a4" target="normal-q4">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x13" value="Não → erro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;strokeColor=#b85450;strokeWidth=3;fontStyle=1;fontColor=#b85450;" edge="1" parent="1" source="normal-q4" target="normal-err4">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x14" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="normal-q4" target="normal-q5">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x15" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="normal-q5" target="normal-t5">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="normal-x16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="normal-t5" target="normal-q6">
+        <mxCell id="normal-x19" edge="1" parent="1" source="normal-a6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="normal-a7" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1220" y="1790" />
-              <mxPoint x="620" y="1790" />
+              <mxPoint x="1220" y="2910" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x17" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="normal-q5" target="normal-q6">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="normal-x20" edge="1" parent="1" source="normal-q6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="normal-a7" value="Não">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="normal-x18" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="normal-q6" target="normal-a6">
-          <mxGeometry relative="1" as="geometry">
-          </mxGeometry>
+        <mxCell id="normal-x21" edge="1" parent="1" source="normal-a7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-t8" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="normal-x19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="normal-a6" target="normal-a7">
+        <mxCell id="normal-x22" edge="1" parent="1" source="normal-t8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-q9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x23" edge="1" parent="1" source="normal-q9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" target="normal-t9a" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x24" edge="1" parent="1" source="normal-q9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="normal-t9b" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x25" edge="1" parent="1" source="normal-t9a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="normal-a10" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1220" y="2060" />
+              <mxPoint x="1220" y="3476" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x20" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="normal-q6" target="normal-a7">
+        <mxCell id="normal-x26" edge="1" parent="1" source="normal-t9b" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-a10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-x27" edge="1" parent="1" source="normal-a10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" target="normal-f10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-n0" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Os marcadores aparecem com o &lt;b&gt;nome completo&lt;/b&gt;, como estão cadastrados no SEI. Todos levam o prefixo &lt;b&gt;&quot;Script v2 - &quot;&lt;/b&gt; (ex.: &quot;Script v2 - 1.2 - Avaliado Se Usou Rede Própria&quot;). Limite do SEI: 50 caracteres." vertex="1">
+          <mxGeometry height="190" width="320" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-n4" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Os períodos não entram na consulta&lt;/b&gt; da rede própria; só vão para a planilha de controle." vertex="1">
+          <mxGeometry height="100" width="320" x="30" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-n2" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Erros de avaliar_uso&lt;/b&gt; (ErroAvaliacao):&lt;br&gt;- resposta inválida na base (nem SIM nem NÃO);&lt;br&gt;- dependentes citados sem matrícula (AVERIGUAR, modelo velho);&lt;br&gt;- matrícula em formato inválido;&lt;br&gt;- sem matrícula de titular.&lt;br&gt;Matrícula repetida: um SIM prevalece." vertex="1">
+          <mxGeometry height="185" width="320" x="30" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-n1" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Invariante: marcadores de conclusão só depois dos memos no bloco&lt;/b&gt;&lt;br&gt;Ordem: memos → ➕ 1.2 - Avaliado Se Usou Rede Própria → ➕ o marcador 1.3. Se o script falhar no meio, o processo fica com 1 - Processo NOVO e com memos da GEACS; na próxima execução ele cai em &quot;Erro: memos da GEACS sem marcador de conclusão&quot; em vez de duplicar memos." vertex="1">
+          <mxGeometry height="260" width="320" x="30" y="2890" as="geometry" />
+        </mxCell>
+        <mxCell id="normal-n3" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Memo DISA só existe se alguém usou&lt;/b&gt; (MemoDisa levanta ValueError se ninguém usou). A DEPROC recebe &lt;b&gt;sempre&lt;/b&gt; todos os beneficiários." vertex="1">
+          <mxGeometry height="130" width="320" x="1790" y="2670" as="geometry" />
+        </mxCell>
+        <mxCell id="bfcg3ryPWytD5HzeTqwM-1" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#e51400;strokeColor=#B20000;fontColor=#ffffff;" value="Verificar se tem um único memorando&lt;br&gt;da APIS para GEACS, se tiver mais&lt;br&gt;de um deve ser marcado como erro&lt;br&gt;&lt;br&gt;Ao invé de procurar memorando &lt;br&gt;qualquer, procurar memorando PARA GEACS" vertex="1">
+          <mxGeometry height="205" width="320" x="930" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="bfcg3ryPWytD5HzeTqwM-3" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#e51400;strokeColor=#B20000;fontColor=#ffffff;" value="Quando não achar o memorando,&lt;br&gt;adicionar um DESPACHO sobre o processo não&lt;br&gt;ter memorando para a gente, colocar etiqueta&lt;br&gt;nova e colocar o doc no bloco&lt;br&gt;&lt;br&gt;Despacho 2 (SEI nº 150644870)" vertex="1">
+          <mxGeometry height="205" width="320" x="1480" y="292.5" as="geometry" />
+        </mxCell>
+        <mxCell id="bfcg3ryPWytD5HzeTqwM-5" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#e51400;strokeColor=#B20000;fontColor=#ffffff;" value="Caso não encontre as matriculas&lt;br&gt;dos dependentes explicitas, colocar o despacho&lt;br&gt;Memorando 2019 (150646384)&lt;br&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="205" width="320" x="1490" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-1" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;" value="Adicionar memorando pedindo&lt;br&gt;para destacar o período de&lt;br&gt;cada dependente que tem período&lt;br&gt;diferente do titular. Colocar no bloco&lt;br&gt;e com marcardor diferente" vertex="1">
+          <mxGeometry height="225" width="280" x="1530" y="1560" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-4" edge="1" parent="1" source="normal-q6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" value="">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="840" y="2745" as="sourcePoint" />
+            <mxPoint x="960" y="2745" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-a7" target="normal-t8">
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-9" edge="1" parent="1" source="BnXjwsfr6Sd9i9RX9FoH-13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="BnXjwsfr6Sd9i9RX9FoH-8" value="">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="2420" as="sourcePoint" />
+            <mxPoint x="620" y="2670" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-t8" target="normal-q9">
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-8" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Houve uso de Rede Credenciada?" vertex="1">
+          <mxGeometry height="150" width="440" x="-60" y="2640" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-10" edge="1" parent="1" source="BnXjwsfr6Sd9i9RX9FoH-13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;exitX=0.968;exitY=0.48;exitDx=0;exitDy=0;exitPerimeter=0;" target="BnXjwsfr6Sd9i9RX9FoH-12" value="">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="900" y="2570" as="sourcePoint" />
+            <mxPoint x="970" y="2535" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x23" value="Sim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#2e7d32;" edge="1" parent="1" source="normal-q9" target="normal-t9a">
-          <mxGeometry relative="1" as="geometry">
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-11" connectable="0" parent="BnXjwsfr6Sd9i9RX9FoH-10" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(198, 40, 40); font-weight: 700;&quot;&gt;Não&lt;/span&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1077" y="3" as="geometry">
+            <mxPoint y="-12" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x24" value="Não" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" edge="1" parent="1" source="normal-q9" target="normal-t9b">
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Elaborar, inserir marcador, inserir no bloco Memo informando que não teve uso de nada" vertex="1">
+          <mxGeometry height="80" width="310" x="980" y="2540" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-14" edge="1" parent="1" source="BnXjwsfr6Sd9i9RX9FoH-17" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="BnXjwsfr6Sd9i9RX9FoH-13" value="">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="1765" as="sourcePoint" />
+            <mxPoint x="620" y="1850" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="normal-t9a" target="normal-a10">
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-13" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Houve algum uso de Rede Credenciada ou Rede Própria&lt;div&gt;por qualquer uma das matrículas?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="150" width="440" x="400" y="2520" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-16" connectable="0" parent="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(198, 40, 40); font-weight: 700;&quot;&gt;Não&lt;/span&gt;" vertex="1">
+          <mxGeometry x="630" y="1800" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-18" edge="1" parent="1" source="normal-q5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;" target="BnXjwsfr6Sd9i9RX9FoH-17" value="">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1220" y="2626" />
-            </Array>
+            <mxPoint x="620" y="1765" as="sourcePoint" />
+            <mxPoint x="620" y="1960" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-t9b" target="normal-a10">
-          <mxGeometry relative="1" as="geometry">
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-21" edge="1" parent="1" source="BnXjwsfr6Sd9i9RX9FoH-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="BnXjwsfr6Sd9i9RX9FoH-20" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-22" connectable="0" parent="BnXjwsfr6Sd9i9RX9FoH-21" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(46, 125, 50); font-weight: 700;&quot;&gt;Sim&lt;/span&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.04" as="geometry">
+            <mxPoint x="-12" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-x27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="normal-a10" target="normal-f10">
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-17" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Houve algum uso de Rede Própria&lt;div&gt;por qualquer uma das matrículas?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="150" width="440" x="400" y="1823" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-20" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="A planilha da DISA informa que houve uso da Rede Própria?" vertex="1">
+          <mxGeometry height="150" width="440" x="940" y="1823" as="geometry" />
+        </mxCell>
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-24" edge="1" parent="1" source="BnXjwsfr6Sd9i9RX9FoH-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.975;exitY=0.52;exitDx=0;exitDy=0;exitPerimeter=0;" target="BnXjwsfr6Sd9i9RX9FoH-26" value="">
           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1490" y="1910" as="sourcePoint" />
+            <mxPoint x="1530" y="1900" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="normal-n0" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Os marcadores aparecem com o &lt;b&gt;nome completo&lt;/b&gt;, como estão cadastrados no SEI. Todos levam o prefixo &lt;b&gt;&quot;Script v2 - &quot;&lt;/b&gt; (ex.: &quot;Script v2 - 1.2 - Avaliado Se Usou Rede Própria&quot;). Limite do SEI: 50 caracteres." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="30" y="70" width="320" height="190" as="geometry" />
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-25" connectable="0" parent="BnXjwsfr6Sd9i9RX9FoH-24" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(46, 125, 50); font-weight: 700;&quot;&gt;Sim&lt;/span&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.04" as="geometry">
+            <mxPoint x="-12" y="-8" as="offset" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="normal-n4" value="&lt;b&gt;Os períodos não entram na consulta&lt;/b&gt; da rede própria; só vão para a planilha de controle." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="30" y="525" width="320" height="100" as="geometry" />
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Insere Memorando para DISA pedindo para validar o que identificamos no nosso e inserir usos adicionais que eles identificaram" vertex="1">
+          <mxGeometry height="80" width="310" x="1480" y="1858" as="geometry" />
         </mxCell>
-        <mxCell id="normal-n2" value="&lt;b&gt;Erros de avaliar_uso&lt;/b&gt; (ErroAvaliacao):&lt;br&gt;- resposta inválida na base (nem SIM nem NÃO);&lt;br&gt;- dependentes citados sem matrícula (AVERIGUAR, modelo velho);&lt;br&gt;- matrícula em formato inválido;&lt;br&gt;- sem matrícula de titular.&lt;br&gt;Matrícula repetida: um SIM prevalece." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="30" y="880" width="320" height="185" as="geometry" />
-        </mxCell>
-        <mxCell id="normal-n1" value="&lt;b&gt;Invariante: marcadores de conclusão só depois dos memos no bloco&lt;/b&gt;&lt;br&gt;Ordem: memos → ➕ 1.2 - Avaliado Se Usou Rede Própria → ➕ o marcador 1.3. Se o script falhar no meio, o processo fica com 1 - Processo NOVO e com memos da GEACS; na próxima execução ele cai em &quot;Erro: memos da GEACS sem marcador de conclusão&quot; em vez de duplicar memos." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="30" y="2040" width="320" height="260" as="geometry" />
-        </mxCell>
-        <mxCell id="normal-n3" value="&lt;b&gt;Memo DISA só existe se alguém usou&lt;/b&gt; (MemoDisa levanta ValueError se ninguém usou). A DEPROC recebe &lt;b&gt;sempre&lt;/b&gt; todos os beneficiários." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1650" y="1820" width="320" height="130" as="geometry" />
+        <mxCell id="BnXjwsfr6Sd9i9RX9FoH-27" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;" value="" vertex="1">
+          <mxGeometry height="570" width="870" x="185" y="1950" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
