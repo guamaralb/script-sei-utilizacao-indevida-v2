@@ -31,7 +31,7 @@ O fluxo completo está desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio)
 |---|---|
 | `main.py` | Script principal: classifica e processa qualquer processo |
 | `main_add_memo_nao_usou_rede_propria.py` | Script de correção dos NOVOS enviados sem avaliação da rede própria |
-| `processar_novo.py` | Fluxo normal dos NOVOS; `obter_dados_ui()` lê o último memo da APIS |
+| `processar_novo.py` | Fluxo normal dos NOVOS; `obter_dados_ui()` lê o memo da APIS destinado à GEACS |
 | `processar_velho.py` | Fluxo dos VELHOS (**somente estrutura**, com TODOs) |
 | `correcao_rede_propria.py` | Rotina de correção, usada pelos dois scripts |
 | `rede_propria.py` | Carga da planilha de rede própria e da base geral, normalização de matrícula, `avaliar_uso()`, `ErroAvaliacao`, `MatriculasNaoEncontradas` |
@@ -262,7 +262,7 @@ ela só decide para onde o processo vai.
 |---|---|---|
 | 1 | Tem `1.2.1` ou `1.2.2`? | Erro: processo parado. `prox_acao` = Verificar matrículas não encontradas. Para reprocessar, corrija a base e remova os marcadores manualmente no SEI |
 | 2 | Tem `1.2` (AVALIADO)? | Conferência (abaixo) |
-| 3 | Tem `1.3 Memos DISA e DEPROC` (sem `1.2`)? | Processo enviado sem avaliação: lê as matrículas do último memo da APIS (`obter_dados_ui`) e executa a [rotina de correção](#4-rotina-de-correção-corrigir_uso_rede_propria) |
+| 3 | Tem `1.3 Memos DISA e DEPROC` (sem `1.2`)? | Processo enviado sem avaliação: lê as matrículas do memo da APIS destinado à GEACS (`obter_dados_ui`) e executa a [rotina de correção](#4-rotina-de-correção-corrigir_uso_rede_propria) |
 | 4 | Tem `1.3 Memo DEPROC` (sem `1.2`)? | Erro de combinação de marcadores |
 | 5 | Tem `1.4` (sem `1.2`)? | Erro de combinação de marcadores |
 | 6 | Há memos da GEACS na árvore? | Erro: memos sem marcador de conclusão; verificar manualmente (evita duplicidade) |
@@ -288,7 +288,13 @@ ela só decide para onde o processo vai.
 
 Entrada: NOVO recém-classificado (➕ `1`) ou NOVO sem memos da GEACS.
 
-1. Localiza o **último memorando da APIS-Utilização**. Não encontrou: erro.
+1. Lê **todos os memorandos da APIS-Utilização** e mantém os destinados à
+   GEACS (`obter_memos_apis_para_geacs`): o texto contém algum dos trechos
+   de `TRECHOS_DESTINO_GEACS` ("Solicita-se à Gerência de Auditoria e
+   Contas da Saúde - GEACS", "Para: Bruna Miller Lavarini" ou "Para: Bruna
+   Miiller Lavarini"; espaços e maiúsculas são ignorados). Nenhum ou mais
+   de um: erro (`ErroAvaliacao`). Os números SEI encontrados vão para a
+   coluna `memos_apis_geacs_sei`.
 2. Lê o texto, identifica o modelo (novo/velho) e extrai
    (`extrair_dados_ui`): nome e matrícula do titular, período do titular,
    matrículas dos dependentes e se há período variável para dependentes.
@@ -320,7 +326,7 @@ duplicar os memos.
 ### 4. Rotina de correção (`corrigir_uso_rede_propria`)
 
 Usada pelo `main.py` ([seção 2](#2-novo-roteamento-_tratar_novo),
-pergunta 3; matrículas do último memo da APIS) e pelo script de correção
+pergunta 3; matrículas do memo da APIS destinado à GEACS) e pelo script de correção
 ([seção 7](#7-script-de-correção-main_add_memo_nao_usou_rede_propriapy);
 matrículas da planilha compilada).
 
@@ -505,7 +511,8 @@ rotina de correção adiciona.
     alimenta o script de correção.
   - Primeiras colunas: `num_processo`, `data_execucao` (identifica a
     execução no compilado), `fluxo`, `prox_acao`, `tipo_erro`, `erro`.
-  - Rastreabilidade: `memo_apis_sei`, `modelo_memo_apis`,
+  - Rastreabilidade: `memo_apis_sei`, `memos_apis_geacs_sei`,
+    `modelo_memo_apis`,
     `memo_disa_sei`, `memo_deproc_sei`, `memo_uso_rede_sei`,
     `marcadores_sei` (lidos no início) e `marcadores_adicionados`.
   - `tem_periodo_var_deps` (sim/não) e `periodo_dependentes` (só as

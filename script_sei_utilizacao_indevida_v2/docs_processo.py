@@ -1,6 +1,7 @@
 """Filtros e buscas na árvore de documentos do processo."""
 
 import logging
+import re
 
 from constantes import UNIDADE_APIS, UNIDADE_GEACS
 from sei_automacao.documento import obter_conteudo_doc
@@ -15,6 +16,18 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
 )
 
 logger = logging.getLogger(__name__)
+
+# Trechos que indicam que o memorando da APIS é destinado à GEACS. Tolera
+# espaços/quebras de linha variáveis e maiúsculas/minúsculas.
+TRECHOS_DESTINO_GEACS = (
+    'Solicita-se à Gerência de Auditoria e Contas da Saúde - GEACS',
+    'Para: Bruna Miller Lavarini',
+    'Para: Bruna Miiller Lavarini',
+)
+_PADRAO_DESTINO_GEACS = re.compile(
+    '|'.join(r'\s*'.join(re.escape(parte) for parte in trecho.split()) for trecho in TRECHOS_DESTINO_GEACS),
+    re.IGNORECASE,
+)
 
 
 def _eh_memorando(doc: dict) -> bool:
@@ -37,13 +50,23 @@ def filtrar_memos_apis(tds_docs: list[dict]) -> list[dict]:
     return [doc for doc in tds_docs if _eh_memorando(doc) and UNIDADE_APIS in doc['unidade']]
 
 
-def obter_ultimo_memo_apis(tds_docs: list[dict]) -> dict | None:
+def eh_destinado_geacs(texto: str) -> bool:
+    return _PADRAO_DESTINO_GEACS.search(texto) is not None
+
+
+def obter_memos_apis_para_geacs(driver: webdriver.Remote, tds_docs: list[dict]) -> list[tuple[dict, str]]:
+    """Lê todos os memorandos da APIS da árvore e devolve, na ordem da
+    árvore, os destinados à GEACS (com o texto já lido)."""
     memos = filtrar_memos_apis(tds_docs)
-    if not memos:
-        logger.debug('Nenhum memorando da APIS na árvore')
-        return None
-    logger.info(f'{len(memos)} memorando(s) da APIS na árvore; usando o último: {_descrever(memos[-1])}')
-    return memos[-1]
+    para_geacs = []
+    for memo in memos:
+        texto = ler_texto_doc(driver, memo)
+        if eh_destinado_geacs(texto):
+            para_geacs.append((memo, texto))
+        else:
+            logger.debug(f'Memorando da APIS não destinado à GEACS: {_descrever(memo)}')
+    logger.info(f'{len(memos)} memorando(s) da APIS na árvore; destinado(s) à GEACS: {[_descrever(memo) for memo, _ in para_geacs] or "nenhum"}')
+    return para_geacs
 
 
 def obter_memos_apis_apos_email(tds_docs: list[dict]) -> list[dict] | None:

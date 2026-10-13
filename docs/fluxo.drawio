@@ -277,7 +277,7 @@
         <mxCell id="novo-err1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: processo parado&lt;br&gt;(matrículas não encontradas)&lt;br&gt;&lt;b&gt;prox_acao:&lt;/b&gt; Verificar matrículas não encontradas" vertex="1">
           <mxGeometry height="100" width="440" x="1000" y="230" as="geometry" />
         </mxCell>
-        <mxCell id="novo-a3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Lê o último memo da APIS&lt;br&gt;(obter_dados_ui) → matrículas" vertex="1">
+        <mxCell id="novo-a3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Lê o memo da APIS para GEACS&lt;br&gt;(obter_dados_ui) → matrículas" vertex="1">
           <mxGeometry height="70" width="420" x="1010" y="735" as="geometry" />
         </mxCell>
         <UserObject label="Rotina de correção&lt;br&gt;(corrigir_uso_rede_propria) →" link="data:page/id,correcao" id="novo-s3">
@@ -438,7 +438,7 @@
         <mxCell id="bfcg3ryPWytD5HzeTqwM-2" edge="1" parent="1" source="normal-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;dashed=1;dashPattern=8 8;" target="bfcg3ryPWytD5HzeTqwM-1" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="normal-a1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Localiza o &lt;b&gt;último&lt;/b&gt; memorando&lt;br&gt;da APIS-Utilização &lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;para GEACS&lt;/span&gt;" vertex="1">
+        <mxCell id="normal-a1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Lê &lt;b&gt;todos&lt;/b&gt; os memorandos da APIS-Utilização&lt;br&gt;e mantém os destinados à GEACS&lt;br&gt;(obter_memos_apis_para_geacs)" vertex="1">
           <mxGeometry height="70" width="420" x="410" y="195" as="geometry" />
         </mxCell>
         <mxCell id="normal-q1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Encontrou?" vertex="1">
@@ -489,7 +489,7 @@
         <mxCell id="bfcg3ryPWytD5HzeTqwM-4" edge="1" parent="1" source="normal-err1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="bfcg3ryPWytD5HzeTqwM-3" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="normal-err1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: memorando da APIS&lt;br&gt;não encontrado na árvore" vertex="1">
+        <mxCell id="normal-err1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=12;" value="&lt;b&gt;Erro&lt;/b&gt;: nenhum ou mais de um&lt;br&gt;memorando da APIS para GEACS" vertex="1">
           <mxGeometry height="80" width="440" x="1000" y="355" as="geometry" />
         </mxCell>
         <mxCell id="bfcg3ryPWytD5HzeTqwM-6" edge="1" parent="1" source="normal-err2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="bfcg3ryPWytD5HzeTqwM-5" value="">
@@ -908,7 +908,7 @@
         <mxCell id="correcao-n0" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Os marcadores aparecem com o &lt;b&gt;nome completo&lt;/b&gt;, como estão cadastrados no SEI. Todos levam o prefixo &lt;b&gt;&quot;Script v2 - &quot;&lt;/b&gt; (ex.: &quot;Script v2 - 1.2 - Avaliado Se Usou Rede Própria&quot;). Limite do SEI: 50 caracteres." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
           <mxGeometry x="30" y="70" width="320" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="correcao-n1" value="&lt;b&gt;Quem chama&lt;/b&gt;&lt;br&gt;- main.py (_tratar_novo): matrículas lidas do último memo da APIS;&lt;br&gt;- script de correção: matrículas da planilha compilada (colunas matricula_titular e matriculas_dependentes)." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+        <mxCell id="correcao-n1" value="&lt;b&gt;Quem chama&lt;/b&gt;&lt;br&gt;- main.py (_tratar_novo): matrículas lidas do memo da APIS destinado à GEACS;&lt;br&gt;- script de correção: matrículas da planilha compilada (colunas matricula_titular e matriculas_dependentes)." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
           <mxGeometry x="30" y="195" width="320" height="185" as="geometry" />
         </mxCell>
         <mxCell id="correcao-n2" value="&lt;b&gt;Marcadores só com o processo reaberto&lt;/b&gt;&lt;br&gt;Todo marcador desta rotina é adicionado depois de reabrir o processo na unidade." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">

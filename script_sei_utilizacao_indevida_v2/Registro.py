@@ -94,6 +94,7 @@ class RegistroMain:
     ult_memo_obtido: bool = False
     conteudo_ult_memo_obtido: bool = False
     memo_apis_sei: str | None = None
+    memos_apis_geacs_sei: list[str] = field(default_factory=list)
     modelo_memo_apis: str | None = None
     dados_ui: DadosUI | None = None
     tag_periodo_var_deps: bool = False
@@ -161,6 +162,7 @@ class RegistroMain:
             'tem_periodo_var_deps': bool(periodo_deps) if dados_ui else None,
             'periodo_dependentes': periodo_deps if isinstance(periodo_deps, str) else None,
             'memo_apis_sei': self.memo_apis_sei,
+            'memos_apis_geacs_sei': _juntar(self.memos_apis_geacs_sei),
             'modelo_memo_apis': self.modelo_memo_apis,
             'qnt_docs_geacs_na_arvore': self.qnt_docs_geacs_na_arvore,
             'qnt_memos_geacs_na_arvore': self.qnt_memos_geacs_na_arvore,
