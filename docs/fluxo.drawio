@@ -425,7 +425,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="normal" name="OK 3. NOVO: fluxo normal (processar_novo)">
-    <mxGraphModel dx="892" dy="2860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
+    <mxGraphModel dx="1070" dy="2964" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -724,13 +724,13 @@
         <mxCell id="HKcRAeHWYEBUUJlXxjBS-52" edge="1" parent="1" source="HKcRAeHWYEBUUJlXxjBS-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="HKcRAeHWYEBUUJlXxjBS-51" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="HKcRAeHWYEBUUJlXxjBS-50" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Cria &lt;b&gt;Memo à APIS: Informar Período Específico dos Dependentes&lt;/b&gt; e insere no bloco &lt;b&gt;7711907&lt;/b&gt;&lt;br&gt;&lt;br&gt;Sem Modelo No Momento" vertex="1">
+        <mxCell id="HKcRAeHWYEBUUJlXxjBS-50" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="Cria &lt;b&gt;Memo à APIS: Informar Período Específico dos Dependentes&lt;/b&gt; e insere no bloco &lt;b&gt;7730905&lt;/b&gt;&lt;br&gt;&lt;br&gt;Sem Modelo No Momento" vertex="1">
           <mxGeometry height="80" width="310" x="1520" y="4049" as="geometry" />
         </mxCell>
         <mxCell id="HKcRAeHWYEBUUJlXxjBS-51" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ x.x - Memo à APIS Adc: Informar Período dos Dependentes" vertex="1">
           <mxGeometry height="58" width="440" x="1920" y="4060" as="geometry" />
         </mxCell>
-        <mxCell id="HKcRAeHWYEBUUJlXxjBS-54" edge="1" parent="1" source="HKcRAeHWYEBUUJlXxjBS-26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="HKcRAeHWYEBUUJlXxjBS-53" value="">
+        <mxCell id="HKcRAeHWYEBUUJlXxjBS-54" edge="1" parent="1" source="DB1UMD8OOUmEsnBDRe5n-3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="HKcRAeHWYEBUUJlXxjBS-53" value="">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1020" y="2085" as="sourcePoint" />
             <mxPoint x="800" y="2430" as="targetPoint" />
@@ -873,8 +873,17 @@
             <mxPoint x="620" y="4490" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="HKcRAeHWYEBUUJlXxjBS-87" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ X.X - Avaliado Se Usou Rede Própria DISA" vertex="1">
+        <mxCell id="HKcRAeHWYEBUUJlXxjBS-87" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ X.X - Avaliado Se Usou Rede Própria MANTIS" vertex="1">
           <mxGeometry height="58" width="440" x="400" y="4390" as="geometry" />
+        </mxCell>
+        <mxCell id="DB1UMD8OOUmEsnBDRe5n-4" edge="1" parent="1" source="HKcRAeHWYEBUUJlXxjBS-26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="DB1UMD8OOUmEsnBDRe5n-3" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1030" y="2125" as="sourcePoint" />
+            <mxPoint x="725" y="2410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DB1UMD8OOUmEsnBDRe5n-3" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ Script v2 - 1.2.2 - Mat. N Encontradas Base DISA" vertex="1">
+          <mxGeometry height="58" width="440" x="810" y="2220" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
