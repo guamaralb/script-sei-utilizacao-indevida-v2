@@ -1,0 +1,95 @@
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | WARNING | -                         | processar_novo        | Nenhum memorando da APIS destinado à GEACS: memo à APIS (sem memorando)
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo à APIS (sem memorando) criado
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo à APIS (sem memorando) inserido no bloco 7730344
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.5 - Memo APIS Sem Memo p/ GEACS"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | WARNING | -                         | processar_novo        | Memorando da APIS em formato inválido: memo à APIS | O memorando está no modelo "velho", que não é mais aceito
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo à APIS (formato inválido) criado
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo à APIS (formato inválido) inserido no bloco 7730341
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.5 - Memo APIS Formato Inválido"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Instruções da APIS extraídas (modelo novo) | Titular: 23629118 | Período titular: 01/2019 a 12/2020 | Dependentes: 999 | Período variável p/ dependentes: não
+2026-10-14 10:36:51 | WARNING | -                         | rede_propria          | Não encontrado(s) na base geral | dependente(s) 999
+2026-10-14 10:36:51 | WARNING | -                         | rede_propria          | Não encontrado(s) na base DISA (contam como não uso) | dependente(s) 999
+2026-10-14 10:36:51 | INFO    | -                         | rede_propria          | Uso da rede própria | Titular 23629118: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['999']
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.2.2 - Mat. N Encontradas Base DISA"
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.2.1 - Mat. N Encontradas Base Geral"
+2026-10-14 10:36:51 | INFO    | -                         | matriculas_nao_encontradas | Memo à APIS de matrículas não encontradas criado
+2026-10-14 10:36:51 | INFO    | -                         | matriculas_nao_encontradas | Memo à APIS de matrículas não encontradas inserido no bloco 7711907
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.6.1 - Memo APIS Mat. N Encontradas"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Instruções da APIS extraídas (modelo novo) | Titular: 23629118 | Período titular: 01/2019 a 12/2020 | Dependentes: 3066985 | Período variável p/ dependentes: sim
+2026-10-14 10:36:51 | INFO    | -                         | rede_propria          | Uso da rede própria | Titular 23629118: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['3066985']
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.1 - Período Variável p/ Dependentes"
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo à APIS (período dos dependentes) criado
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo à APIS (período dos dependentes) inserido no bloco 7730905
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.7 - Memo APIS Período Dependentes"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Instruções da APIS extraídas (modelo novo) | Titular: 23629118 | Período titular: 01/2019 a 12/2020 | Dependentes: 222 | Período variável p/ dependentes: não
+2026-10-14 10:36:51 | WARNING | -                         | rede_propria          | Não encontrado(s) na base DISA (contam como não uso) | dependente(s) 222
+2026-10-14 10:36:51 | INFO    | -                         | rede_propria          | Uso da rede própria | Titular 23629118: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['222']
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.2.2 - Mat. N Encontradas Base DISA"
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-10-14 10:36:51 | INFO    | -                         | mantis                | MANTIS rede própria | Titular 23629118: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-10-14 10:36:51 | INFO    | -                         | mantis                | MANTIS rede credenciada | Titular 23629118: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.8 - Avaliado Uso Rede Própria MANTIS"
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Ninguém usou a rede própria: somente memo DEPROC
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo DEPROC criado
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo DEPROC inserido no bloco 7697744
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.10 - Memo DEPROC Coparticipação"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Instruções da APIS extraídas (modelo novo) | Titular: 23629118 | Período titular: 01/2019 a 12/2020 | Dependentes: 3066985 | Período variável p/ dependentes: não
+2026-10-14 10:36:51 | INFO    | -                         | rede_propria          | Uso da rede própria | Titular 23629118: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['3066985']
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-10-14 10:36:51 | INFO    | -                         | mantis                | MANTIS rede própria | Titular 23629118: USOU (R$ 10.00) | Dependentes que usaram: - (R$ 0.00)
+2026-10-14 10:36:51 | INFO    | -                         | mantis                | MANTIS rede credenciada | Titular 23629118: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-10-14 10:36:51 | WARNING | -                         | processar_novo        | MANTIS com uso da rede própria que a base DISA marca como não uso: ['23629118 (titular)']
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.8 - Avaliado Uso Rede Própria MANTIS"
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo à DISA (validar usos do MANTIS) criado
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo à DISA (validar usos do MANTIS) inserido no bloco 7730939
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.8.1 - Memo DISA Validar Usos MANTIS"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Instruções da APIS extraídas (modelo novo) | Titular: 23629118 | Período titular: 01/2019 a 12/2020 | Dependentes: 111 | Período variável p/ dependentes: não
+2026-10-14 10:36:51 | INFO    | -                         | rede_propria          | Uso da rede própria | Titular 23629118: NÃO USOU | Dependentes que usaram: ['111'] | Dependentes que não usaram: -
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-10-14 10:36:51 | INFO    | -                         | mantis                | MANTIS rede própria | Titular 23629118: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-10-14 10:36:51 | INFO    | -                         | mantis                | MANTIS rede credenciada | Titular 23629118: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.8 - Avaliado Uso Rede Própria MANTIS"
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Alguém usou a rede própria: memos DISA e DEPROC
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo DISA criado
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo DISA inserido no bloco 7697744
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.9 - Memo DISA Uso Rede Própria"
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo DEPROC criado
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo DEPROC inserido no bloco 7697744
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.10 - Memo DEPROC Coparticipação"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO - retomada do fluxo normal pelos marcadores
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Instruções da APIS extraídas (modelo novo) | Titular: 23629118 | Período titular: 01/2019 a 12/2020 | Dependentes: 111 | Período variável p/ dependentes: não
+2026-10-14 10:36:51 | INFO    | -                         | rede_propria          | Uso da rede própria | Titular 23629118: NÃO USOU | Dependentes que usaram: ['111'] | Dependentes que não usaram: -
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-10-14 10:36:51 | INFO    | -                         | mantis                | MANTIS rede própria | Titular 23629118: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-10-14 10:36:51 | INFO    | -                         | mantis                | MANTIS rede credenciada | Titular 23629118: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.8 - Avaliado Uso Rede Própria MANTIS"
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Alguém usou a rede própria: memos DISA e DEPROC
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Retomada: memo DISA já está no bloco
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo DEPROC criado
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Memo DEPROC inserido no bloco 7697744
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.10 - Memo DEPROC Coparticipação"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO concluído - conferência dos memos na árvore
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Quantidade de memos da GEACS confere (2)
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO - retomada do fluxo normal pelos marcadores
+2026-10-14 10:36:51 | INFO    | -                         | processar_novo        | Instruções da APIS extraídas (modelo novo) | Titular: 23629118 | Período titular: 01/2019 a 12/2020 | Dependentes: 999 | Período variável p/ dependentes: não
+2026-10-14 10:36:51 | WARNING | -                         | rede_propria          | Não encontrado(s) na base geral | dependente(s) 999
+2026-10-14 10:36:51 | WARNING | -                         | rede_propria          | Não encontrado(s) na base DISA (contam como não uso) | dependente(s) 999
+2026-10-14 10:36:51 | INFO    | -                         | rede_propria          | Uso da rede própria | Titular 23629118: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['999']
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.2.2 - Mat. N Encontradas Base DISA"
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.2.1 - Mat. N Encontradas Base Geral"
+2026-10-14 10:36:51 | INFO    | -                         | matriculas_nao_encontradas | Memo à APIS de matrículas não encontradas criado
+2026-10-14 10:36:51 | INFO    | -                         | matriculas_nao_encontradas | Memo à APIS de matrículas não encontradas inserido no bloco 7711907
+2026-10-14 10:36:51 | INFO    | -                         | tags                  | Marcador adicionado: "Script v2 - 1.6.1 - Memo APIS Mat. N Encontradas"
+2026-10-14 10:36:51 | INFO    | -                         | main                  | Fluxo: NOVO sem memos da GEACS - fluxo normal
+2026-10-14 10:36:51 | WARNING | -                         | processar_novo        | Nenhum memorando da APIS destinado à GEACS: memo à APIS (sem memorando)

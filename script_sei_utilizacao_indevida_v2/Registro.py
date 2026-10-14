@@ -28,6 +28,11 @@ class ProxAcao:
     VERIFICAR_FORMATO_MEMO = 'Verificar formato do memo da APIS'
     VERIFICAR_MAT_NAO_ENCONTRADAS = 'Verificar matrículas não encontradas'
     ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS = 'Assinar memo à APIS (matrículas não encontradas) e encaminhar'
+    ASSINAR_MEMO_APIS_SEM_MEMO = 'Assinar memo à APIS (sem memorando para a GEACS) e encaminhar'
+    ASSINAR_MEMO_APIS_FORMATO_INVALIDO = 'Assinar memo à APIS (formato do memorando inválido) e encaminhar'
+    ASSINAR_MEMO_APIS_PERIODO_DEPS = 'Assinar memo à APIS (período dos dependentes) e encaminhar'
+    ASSINAR_MEMO_DISA_VALIDAR_MANTIS = 'Assinar memo à DISA (validar usos do MANTIS) e encaminhar'
+    AGUARDAR_RESPOSTA_MEMO = 'Aguardar resposta ao memo enviado (processo parado)'
     VERIFICAR_ERRO = 'Verificar erro'
 
 
@@ -36,6 +41,7 @@ _PROX_ACOES_DE_ERRO = frozenset({
     ProxAcao.VERIFICAR_FORMATO_MEMO,
     ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS,
     ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
+    ProxAcao.AGUARDAR_RESPOSTA_MEMO,
 })
 
 
@@ -96,6 +102,7 @@ class RegistroMain:
     memo_apis_sei: str | None = None
     memos_apis_geacs_sei: list[str] = field(default_factory=list)
     modelo_memo_apis: str | None = None
+    motivo_formato_invalido: str | None = None
     dados_ui: DadosUI | None = None
     tag_periodo_var_deps: bool = False
 
@@ -118,7 +125,45 @@ class RegistroMain:
     memo_apis_mat_nao_encontradas_na_arvore: bool = False
     memo_apis_mat_nao_encontradas_sei: str | None = None
 
+    # Memos à APIS que param o fluxo normal
+    tag_memo_apis_sem_memo: bool = False
+    memo_apis_sem_memo_criado: bool = False
+    memo_apis_sem_memo_inserido_bloco: bool = False
+    memo_apis_sem_memo_sei: str | None = None
+    tag_memo_apis_formato_invalido: bool = False
+    memo_apis_formato_invalido_criado: bool = False
+    memo_apis_formato_invalido_inserido_bloco: bool = False
+    memo_apis_formato_invalido_sei: str | None = None
+    tag_memo_apis_mat_nao_encontradas: bool = False
+    tag_memo_apis_periodo_deps: bool = False
+    memo_apis_periodo_deps_criado: bool = False
+    memo_apis_periodo_deps_inserido_bloco: bool = False
+    memo_apis_periodo_deps_sei: str | None = None
+
+    # Uso da rede própria e da rede credenciada no MANTIS (período do titular)
+    tag_avaliado_uso_rede_propria_disa: bool = False
+    tag_avaliado_uso_rede_propria_mantis: bool = False
+    tit_usou_mantis_rede_propria: bool | None = None
+    tit_valor_total_uso_mantis_rede_propria: float | None = None
+    deps_que_usaram_mantis_rede_propria: list[str] = field(default_factory=list)
+    deps_valor_total_uso_mantis_rede_propria: float | None = None
+    tit_usou_mantis_rede_credenciada: bool | None = None
+    tit_valor_total_uso_mantis_rede_credenciada: float | None = None
+    deps_que_usaram_mantis_rede_credenciada: list[str] = field(default_factory=list)
+    deps_valor_total_uso_mantis_rede_credenciada: float | None = None
+    # Uso da rede própria no MANTIS que a base DISA marca como não uso
+    mats_uso_mantis_alem_disa: list[str] = field(default_factory=list)
+    tag_memo_disa_validar_usos_mantis: bool = False
+    memo_disa_validar_mantis_criado: bool = False
+    memo_disa_validar_mantis_inserido_bloco: bool = False
+    memo_disa_validar_mantis_sei: str | None = None
+
     # Fluxo normal (NOVOS)
+    tag_memo_disa_uso_rede_propria: bool = False
+    tag_memo_deproc_coparticipacao: bool = False
+    # Memos criados na execução, na ordem de criação (prefixo dos atributos
+    # <memo>_sei), para obter o número SEI relendo a árvore
+    memos_criados: list[str] = field(default_factory=list)
     memo_disa_criado: bool = False
     memo_disa_inserido_bloco: bool = False
     memo_disa_sei: str | None = None
@@ -157,13 +202,14 @@ class RegistroMain:
             'nome_titular': dados_ui.nome_titular if dados_ui else None,
             'periodo_titular': (dados_ui.periodo_titular if dados_ui else None),
             'matriculas_dependentes': (dados_ui.matriculas_dependentes if dados_ui else None),
-            # Modelo novo: só indica se há período variável (sem as datas).
-            # Modelo velho: as datas ficam em periodo_dependentes.
+            # Só indica se há período variável (sem as datas). A coluna
+            # periodo_dependentes era do modelo velho, que não é mais aceito.
             'tem_periodo_var_deps': bool(periodo_deps) if dados_ui else None,
             'periodo_dependentes': periodo_deps if isinstance(periodo_deps, str) else None,
             'memo_apis_sei': self.memo_apis_sei,
             'memos_apis_geacs_sei': _juntar(self.memos_apis_geacs_sei),
             'modelo_memo_apis': self.modelo_memo_apis,
+            'motivo_formato_invalido': self.motivo_formato_invalido,
             'qnt_docs_geacs_na_arvore': self.qnt_docs_geacs_na_arvore,
             'qnt_memos_geacs_na_arvore': self.qnt_memos_geacs_na_arvore,
             'qnt_memos_geacs_esperada': self.qnt_memos_geacs_esperada,
@@ -192,6 +238,36 @@ class RegistroMain:
             'memo_apis_mat_nao_encontradas_inserido_bloco': self.memo_apis_mat_nao_encontradas_inserido_bloco,
             'memo_apis_mat_nao_encontradas_na_arvore': self.memo_apis_mat_nao_encontradas_na_arvore,
             'memo_apis_mat_nao_encontradas_sei': self.memo_apis_mat_nao_encontradas_sei,
+            'tag_memo_apis_sem_memo': self.tag_memo_apis_sem_memo,
+            'memo_apis_sem_memo_criado': self.memo_apis_sem_memo_criado,
+            'memo_apis_sem_memo_inserido_bloco': self.memo_apis_sem_memo_inserido_bloco,
+            'memo_apis_sem_memo_sei': self.memo_apis_sem_memo_sei,
+            'tag_memo_apis_formato_invalido': self.tag_memo_apis_formato_invalido,
+            'memo_apis_formato_invalido_criado': self.memo_apis_formato_invalido_criado,
+            'memo_apis_formato_invalido_inserido_bloco': self.memo_apis_formato_invalido_inserido_bloco,
+            'memo_apis_formato_invalido_sei': self.memo_apis_formato_invalido_sei,
+            'tag_memo_apis_mat_nao_encontradas': self.tag_memo_apis_mat_nao_encontradas,
+            'tag_memo_apis_periodo_deps': self.tag_memo_apis_periodo_deps,
+            'memo_apis_periodo_deps_criado': self.memo_apis_periodo_deps_criado,
+            'memo_apis_periodo_deps_inserido_bloco': self.memo_apis_periodo_deps_inserido_bloco,
+            'memo_apis_periodo_deps_sei': self.memo_apis_periodo_deps_sei,
+            'tag_avaliado_uso_rede_propria_disa': self.tag_avaliado_uso_rede_propria_disa,
+            'tag_avaliado_uso_rede_propria_mantis': self.tag_avaliado_uso_rede_propria_mantis,
+            'tit_usou_mantis_rede_propria': self.tit_usou_mantis_rede_propria,
+            'tit_valor_total_uso_mantis_rede_propria': self.tit_valor_total_uso_mantis_rede_propria,
+            'deps_que_usaram_mantis_rede_propria': _juntar(self.deps_que_usaram_mantis_rede_propria),
+            'deps_valor_total_uso_mantis_rede_propria': self.deps_valor_total_uso_mantis_rede_propria,
+            'tit_usou_mantis_rede_credenciada': self.tit_usou_mantis_rede_credenciada,
+            'tit_valor_total_uso_mantis_rede_credenciada': self.tit_valor_total_uso_mantis_rede_credenciada,
+            'deps_que_usaram_mantis_rede_credenciada': _juntar(self.deps_que_usaram_mantis_rede_credenciada),
+            'deps_valor_total_uso_mantis_rede_credenciada': self.deps_valor_total_uso_mantis_rede_credenciada,
+            'mats_uso_mantis_alem_disa': _juntar(self.mats_uso_mantis_alem_disa),
+            'tag_memo_disa_validar_usos_mantis': self.tag_memo_disa_validar_usos_mantis,
+            'memo_disa_validar_mantis_criado': self.memo_disa_validar_mantis_criado,
+            'memo_disa_validar_mantis_inserido_bloco': self.memo_disa_validar_mantis_inserido_bloco,
+            'memo_disa_validar_mantis_sei': self.memo_disa_validar_mantis_sei,
+            'tag_memo_disa_uso_rede_propria': self.tag_memo_disa_uso_rede_propria,
+            'tag_memo_deproc_coparticipacao': self.tag_memo_deproc_coparticipacao,
             'memo_disa_criado': self.memo_disa_criado,
             'memo_disa_inserido_bloco': self.memo_disa_inserido_bloco,
             'memo_disa_sei': self.memo_disa_sei,

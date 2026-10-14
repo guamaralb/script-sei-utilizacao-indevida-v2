@@ -6,6 +6,8 @@ from datetime import datetime
 import pandas as pd
 from constantes import (
     ARQ_BASE_GERAL,
+    ARQ_MANTIS_REDE_CREDENCIADA,
+    ARQ_MANTIS_REDE_PROPRIA,
     ARQ_USO_REDE_PROPRIA,
     DIR_CONTROLE,
     DIR_DADOS,
@@ -26,6 +28,7 @@ from log_config import (
     log_fim_processo,
     log_resumo,
 )
+from mantis import BasesMantis, carregar_bases_mantis
 from planilha_controle import salvar_planilha_controle
 from processar_novo import obter_dados_ui, processar_novo
 from processar_velho import processar_velho
@@ -38,13 +41,20 @@ from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
 from tags import (
+    TAG_MEMO_DEPROC_COPARTICIPACAO,
+    TAG_MEMO_DISA_USO_REDE_PROPRIA,
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
+    TAGS_MEMO_NOVO,
+    TAGS_MEMO_PARADA_NOVO,
+    TAGS_RETOMADA_NOVO,
     TAGS_SCRIPT,
     adicionar_tag,
     normalizar_tags,
     registrar_tags,
 )
+
+from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import TextoMemoPendente
 
 load_dotenv()
 
@@ -87,6 +97,7 @@ class ContextoLinha:
     memos_geacs: list[dict]
     tags: list[str]
     bases: BasesUso
+    bases_mantis: BasesMantis
 
 
 # ---------------------------------------------------------------------------
@@ -105,7 +116,7 @@ def _tratar_sem_marcadores(ctx: ContextoLinha, registro: RegistroMain):
     logger.info('Classificação: NOVO (sem documentos da GEACS na árvore)')
     registro.fluxo = 'NOVO - classificação'
     adicionar_tag(ctx.driver, registro, TAG_PROCESSO_NOVO)
-    return processar_novo(ctx.driver, registro, ctx.tds_docs, ctx.bases)
+    return processar_novo(ctx.driver, registro, ctx.tds_docs, ctx.bases, ctx.bases_mantis)
 
 
 # ---------------------------------------------------------------------------
@@ -216,12 +227,66 @@ def _corrigir_novo_sem_avaliacao(ctx: ContextoLinha, registro: RegistroMain):
     return registro
 
 
+def _conferir_novo_concluido(ctx: ContextoLinha, registro: RegistroMain):
+    """Fluxo normal concluído (memo DEPROC no bloco): confere os memos da
+    GEACS na árvore."""
+    logger.info('Fluxo: NOVO concluído - conferência dos memos na árvore')
+    registro.fluxo = 'NOVO - concluído'
+    esperado = sum(1 for tag in TAGS_MEMO_NOVO if tag in ctx.tags)
+    acao = ProxAcao.ASSINAR_DISA_DEPROC if TAG_MEMO_DISA_USO_REDE_PROPRIA in ctx.tags else ProxAcao.ASSINAR_DEPROC
+
+    registro.qnt_memos_geacs_esperada = esperado
+    quant = len(ctx.memos_geacs)
+    if quant == esperado:
+        logger.info(f'Quantidade de memos da GEACS confere ({quant})')
+        registro.prox_acao = acao
+    else:
+        logger.warning(f'Quantidade de memos da GEACS não confere: esperado {esperado}, encontrado {quant}')
+        registro.prox_acao = ProxAcao.VERIFICAR_QNT_MEMOS
+    return registro
+
+
+def _processar_novo_ou_retomar(ctx: ContextoLinha, registro: RegistroMain):
+    """Fluxo normal, do início ou retomando pelos marcadores. Cada memo da
+    GEACS na árvore precisa ter o seu marcador; senão há memo sem marcador
+    e o processo é verificado manualmente (evita duplicidade).
+
+    TODO: procurar pelo assunto os memos sem marcador e só adicionar o
+    marcador (retomada, como o memo à APIS de matrículas não encontradas)."""
+    esperado = sum(1 for tag in TAGS_MEMO_NOVO if tag in ctx.tags)
+    quant = len(ctx.memos_geacs)
+    if quant != esperado:
+        registro.qnt_memos_geacs_esperada = esperado
+        raise ErroAvaliacao(f'Processo NOVO com {quant} memorando(s) da GEACS e {esperado} marcador(es) de memo. Verificar manualmente para evitar duplicidade.')
+
+    if any(tag in ctx.tags for tag in TAGS_RETOMADA_NOVO):
+        logger.info('Fluxo: NOVO - retomada do fluxo normal pelos marcadores')
+    else:
+        logger.info('Fluxo: NOVO sem memos da GEACS - fluxo normal')
+    return processar_novo(ctx.driver, registro, ctx.tds_docs, ctx.bases, ctx.bases_mantis)
+
+
 def _tratar_novo(ctx: ContextoLinha, registro: RegistroMain):
-    if registro.tag_mat_nao_encontradas_base_geral_novo or registro.tag_mat_nao_encontradas_novo:
+    parada = [tag for tag in TAGS_MEMO_PARADA_NOVO if tag in ctx.tags]
+    if parada:
+        # TODO: definir o processamento na próxima execução (depois da
+        # resposta da APIS ou da DISA ao memo enviado)
+        registro.fluxo = 'NOVO - parado (aguardando resposta ao memo)'
+        registro.prox_acao = ProxAcao.AGUARDAR_RESPOSTA_MEMO
+        raise ErroAvaliacao(f'Processamento parado: memo enviado, aguardando resposta ({", ".join(parada)})')
+
+    # No fluxo normal, 1.2.1 sem o marcador do memo à APIS e 1.2.2 vêm
+    # sempre com o avaliado (DISA) e são retomados. Sem ele, são da versão
+    # anterior do fluxo, em que esses marcadores paravam o processo.
+    if not registro.tag_avaliado_uso_rede_propria_disa and (registro.tag_mat_nao_encontradas_base_geral_novo or registro.tag_mat_nao_encontradas_novo):
         registro.fluxo = 'NOVO - parado (matrículas não encontradas)'
         registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS
         raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
 
+    if TAG_MEMO_DEPROC_COPARTICIPACAO in ctx.tags:
+        return _conferir_novo_concluido(ctx, registro)
+
+    # Marcadores da versão anterior do fluxo normal (1.2, 1.3 e 1.4)
     if registro.tag_avaliado_se_usou_rede_propria:
         return _tratar_novo_avaliado(ctx, registro)
 
@@ -234,12 +299,7 @@ def _tratar_novo(ctx: ContextoLinha, registro: RegistroMain):
     if registro.tag_memo_nao_usou_rede_propria_no_bloco:
         raise ErroAvaliacao('Marcador de memo de uso da rede própria sem marcador de memos DISA e DEPROC no bloco')
 
-    quant = len(ctx.memos_geacs)
-    if quant == 0:
-        logger.info('Fluxo: NOVO sem memos da GEACS - fluxo normal')
-        return processar_novo(ctx.driver, registro, ctx.tds_docs, ctx.bases)
-
-    raise ErroAvaliacao(f'Processo NOVO com {quant} memorando(s) da GEACS e sem marcador de conclusão. Verificar manualmente para evitar duplicidade.')
+    return _processar_novo_ou_retomar(ctx, registro)
 
 
 # ---------------------------------------------------------------------------
@@ -265,7 +325,7 @@ def _classificar_e_processar(ctx: ContextoLinha, registro: RegistroMain):
     return _tratar_sem_marcadores(ctx, registro)
 
 
-def _processar_linha(driver, num_processo, bases: BasesUso) -> RegistroMain:
+def _processar_linha(driver, num_processo, bases: BasesUso, bases_mantis: BasesMantis) -> RegistroMain:
     registro = RegistroMain(num_processo=num_processo, data_execucao=AGORA)
 
     try:
@@ -280,6 +340,7 @@ def _processar_linha(driver, num_processo, bases: BasesUso) -> RegistroMain:
             memos_geacs=filtrar_memos_geacs(tds_docs),
             tags=tags,
             bases=bases,
+            bases_mantis=bases_mantis,
         )
         registro.qnt_docs_geacs_na_arvore = len(ctx.docs_geacs)
         registro.qnt_memos_geacs_na_arvore = len(ctx.memos_geacs)
@@ -291,7 +352,7 @@ def _processar_linha(driver, num_processo, bases: BasesUso) -> RegistroMain:
 
         registro = _classificar_e_processar(ctx, registro)
 
-    except (ErroAvaliacao, FormatoMemorandoInvalido) as e:
+    except (ErroAvaliacao, FormatoMemorandoInvalido, TextoMemoPendente) as e:
         # Problema esperado nos dados: sem traceback
         registrar_erro(registro, e)
 
@@ -323,6 +384,7 @@ def main():
         logger.info(f'{total} processo(s) lido(s) de {ARQ_PROCESSOS_NAO_PROCESSADOS.name}')
 
         bases = carregar_bases(ARQ_USO_REDE_PROPRIA, ARQ_BASE_GERAL)
+        bases_mantis = carregar_bases_mantis(ARQ_MANTIS_REDE_PROPRIA, ARQ_MANTIS_REDE_CREDENCIADA)
 
         logger.info('Iniciando navegador e login no SEI')
         driver = iniciar_driver(driver_type='chrome', download_dir=DIR_UI_ANTIGAS_XLS)
@@ -337,7 +399,7 @@ def main():
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
 
-                registro = _processar_linha(driver, num_processo, bases)
+                registro = _processar_linha(driver, num_processo, bases, bases_mantis)
                 registros_processados.append(registro.to_dict())
 
                 log_fim_processo(logger, registro, datetime.now() - t_ini)

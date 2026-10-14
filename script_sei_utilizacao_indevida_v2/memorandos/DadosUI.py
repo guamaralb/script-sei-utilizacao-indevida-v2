@@ -6,9 +6,8 @@ class DadosUI:
     nome_titular: str
     matricula_titular: str
     periodo_titular: str
-    # Modelo novo: bool (há datas para dependentes).
-    # Modelo velho: datas unidas por "; " ou None.
-    periodo_dependentes: bool | str | None
+    # Há datas específicas para os dependentes no memo da APIS
+    periodo_dependentes: bool
     matriculas_dependentes: str | None = None
 
     def texto_levantamento_html(self) -> str:

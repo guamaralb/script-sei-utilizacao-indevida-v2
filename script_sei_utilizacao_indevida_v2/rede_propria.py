@@ -240,11 +240,7 @@ def _verificar_encontradas(titular: str, dependentes: list[str], bases: BasesUso
         raise MatriculasNaoEncontradas(base_geral, base_rede)
 
 
-def avaliar_uso(
-    matricula_titular,
-    matriculas_dependentes,
-    bases: BasesUso,
-) -> UsoRedeBeneficiarios:
+def _preparar_matriculas(matricula_titular, matriculas_dependentes) -> tuple[str, list[str]]:
     titular = normalizar_matricula(matricula_titular)
     if not titular:
         raise ErroAvaliacao('Não há matrícula de titular')
@@ -253,6 +249,26 @@ def avaliar_uso(
 
     _validar_formato([titular], 'titular')
     _validar_formato(dependentes, 'dependente')
+    return titular, dependentes
+
+
+def _logar_uso(uso: UsoRedeBeneficiarios) -> None:
+    logger.info(
+        f'Uso da rede própria | Titular {uso.matricula_titular}: '
+        f'{"USOU" if uso.tit_usou else "NÃO USOU"} | '
+        f'Dependentes que usaram: {list(uso.deps_que_usaram) or "-"} | '
+        f'Dependentes que não usaram: {list(uso.deps_que_nao_usaram) or "-"}'
+    )
+
+
+def avaliar_uso(
+    matricula_titular,
+    matriculas_dependentes,
+    bases: BasesUso,
+) -> UsoRedeBeneficiarios:
+    """Usada pela rotina de correção: para (MatriculasNaoEncontradas) se
+    alguma matrícula não estiver nas duas bases."""
+    titular, dependentes = _preparar_matriculas(matricula_titular, matriculas_dependentes)
     _verificar_encontradas(titular, dependentes, bases)
 
     tit_usaram, _ = _consultar([titular], bases.titulares, 'titular')
@@ -264,13 +280,57 @@ def avaliar_uso(
         deps_que_usaram=tuple(deps_usaram),
         deps_que_nao_usaram=tuple(deps_nao_usaram),
     )
-    logger.info(
-        f'Uso da rede própria | Titular {titular}: '
-        f'{"USOU" if uso.tit_usou else "NÃO USOU"} | '
-        f'Dependentes que usaram: {list(uso.deps_que_usaram) or "-"} | '
-        f'Dependentes que não usaram: {list(uso.deps_que_nao_usaram) or "-"}'
-    )
+    _logar_uso(uso)
     return uso
+
+
+@dataclass(frozen=True)
+class AvaliacaoDisa:
+    """Resultado de avaliar_uso_rede_propria_disa (fluxo normal)."""
+
+    uso: UsoRedeBeneficiarios
+    dependentes: tuple[str, ...]
+    nao_encontradas_geral: NaoEncontradas
+    nao_encontradas_disa: NaoEncontradas
+
+
+def _consultar_disa(matriculas: list[str], base: dict[str, bool | None], descricao: str) -> tuple[list[str], list[str]]:
+    """Matrícula fora da base DISA conta como não uso."""
+    usaram, _ = _consultar([m for m in matriculas if m in base], base, descricao)
+    return usaram, [m for m in matriculas if m not in usaram]
+
+
+def avaliar_uso_rede_propria_disa(
+    matricula_titular,
+    matriculas_dependentes,
+    bases: BasesUso,
+) -> AvaliacaoDisa:
+    """Fluxo normal: procura o titular e os dependentes na base geral e na
+    base DISA. Não para quando falta matrícula: quem chama decide. Quem não
+    está na base DISA não usou a rede própria."""
+    titular, dependentes = _preparar_matriculas(matricula_titular, matriculas_dependentes)
+    nao_encontradas_geral = _nao_encontradas(titular, dependentes, bases.geral_titulares, bases.geral_dependentes)
+    nao_encontradas_disa = _nao_encontradas(titular, dependentes, bases.titulares, bases.dependentes)
+
+    tit_usaram, _ = _consultar_disa([titular], bases.titulares, 'titular')
+    deps_usaram, deps_nao_usaram = _consultar_disa(dependentes, bases.dependentes, 'dependente')
+    uso = UsoRedeBeneficiarios(
+        matricula_titular=titular,
+        tit_usou=bool(tit_usaram),
+        deps_que_usaram=tuple(deps_usaram),
+        deps_que_nao_usaram=tuple(deps_nao_usaram),
+    )
+    if nao_encontradas_geral:
+        logger.warning(f'Não encontrado(s) na base geral | {nao_encontradas_geral.descrever()}')
+    if nao_encontradas_disa:
+        logger.warning(f'Não encontrado(s) na base DISA (contam como não uso) | {nao_encontradas_disa.descrever()}')
+    _logar_uso(uso)
+    return AvaliacaoDisa(
+        uso=uso,
+        dependentes=tuple(dependentes),
+        nao_encontradas_geral=nao_encontradas_geral,
+        nao_encontradas_disa=nao_encontradas_disa,
+    )
 
 
 def registrar_uso(registro, uso: UsoRedeBeneficiarios) -> None:

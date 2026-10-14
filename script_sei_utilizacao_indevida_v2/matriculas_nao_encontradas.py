@@ -36,7 +36,7 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoApisMatNaoEncontradas impo
 logger = logging.getLogger(__name__)
 
 
-def _incluir_memo_apis(driver: webdriver.Remote, registro, tds_docs: list[dict], base_geral: NaoEncontradas) -> None:
+def incluir_memo_apis_mat_nao_encontradas(driver: webdriver.Remote, registro, tds_docs: list[dict], base_geral: NaoEncontradas) -> None:
     if BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS is None:
         raise ErroAvaliacao('Bloco do memo à APIS de matrículas não encontradas não configurado (constantes.BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS)')
 
@@ -100,7 +100,7 @@ def marcar_matriculas_nao_encontradas(  # noqa: PLR0913, PLR0917
     garantir_marcadores_no_sei(driver, tags)
 
     if erro.base_geral:
-        _incluir_memo_apis(driver, registro, tds_docs, erro.base_geral)
+        incluir_memo_apis_mat_nao_encontradas(driver, registro, tds_docs, erro.base_geral)
         adicionar_tag(driver, registro, tag_base_geral)
         registro.prox_acao = ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS
 
