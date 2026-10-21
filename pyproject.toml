@@ -22,6 +22,7 @@ sei-automacao = { path = "../../../sei-automacao", develop = true }
 [tool.poetry.group.dev.dependencies]
 taskipy = "^1.14.1"
 ruff = "^0.14.13"
+pytest = "^9.1.1"
 
 
 [build-system]
@@ -36,6 +37,12 @@ pre_run = {cmd = "poetry run task format"}
 pre_run_extra = {cmd = "poetry run task format"}
 run = 'python script_sei_utilizacao_indevida_v2/main.py'
 run_extra = 'python script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py'
+test = 'pytest'
+
+[tool.pytest.ini_options]
+testpaths = ['tests']
+# Os módulos do script se importam pelo nome (ex.: from tags import ...)
+pythonpath = ['script_sei_utilizacao_indevida_v2']
 
 [tool.ruff]
 line-length = 200
@@ -48,6 +55,8 @@ select = ['I', 'F', 'E', 'W', 'PL', 'PT', 'FAST']
 
 [tool.ruff.lint.per-file-ignores]
 "script_sei_utilizacao_indevida_v2/memorandos/*" = ["E501"]
+# Nos testes, comparar com números literais é o esperado
+"tests/*" = ["PLR2004"]
 
 [tool.ruff.format]
 preview = true

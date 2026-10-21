@@ -9,8 +9,8 @@ TODO:
       encontrada na base geral ou na da rede própria levanta
       MatriculasNaoEncontradas: chamar marcar_matriculas_nao_encontradas com
       TAG_MAT_NAO_ENCONTRADAS_GERAL_VELHO e TAG_MAT_NAO_ENCONTRADAS_DISA_VELHO
-      (ela também cria o memo à APIS) e levantar o erro de novo (os marcadores já são tratados em
-      main._tratar_velho).
+      (ela também cria o memo à APIS) e levantar o erro de novo (os
+      marcadores já são tratados em main._tratar_velho).
     - Implementar os fluxos de cada instrução. Por enquanto o processo só
       recebe o marcador da pendência:
         - sem instrução de nova pesquisa: TAG_TRANSFORMAR_EXCEL_EM_PDF;
@@ -67,9 +67,9 @@ def _encontrar_instrucoes(driver: webdriver.Remote, memos_apis: list[dict]) -> l
     return list(dict.fromkeys(instrucoes))
 
 
-def _baixar_planilhas_antigas(driver: webdriver.Remote, docs_geacs: list[dict]) -> None:
+def _baixar_planilhas_antigas(driver: webdriver.Remote, registro: RegistroMain) -> None:
     """TODO: hoje apenas seleciona as planilhas; falta o download."""
-    for planilha in docs_geacs:
+    for planilha in registro.docs_geacs:
         if 'Planilha Utilização' in planilha['nome_arvore']:
             selecionar_doc_arvore(driver, planilha['numero_sei'])
 
@@ -92,13 +92,8 @@ def _marcar_refazer_rel_ui(driver: webdriver.Remote, registro: RegistroMain) -> 
     registro.prox_acao = ProxAcao.VELHO_REFAZER_REL_UI
 
 
-def processar_velho(
-    driver: webdriver.Remote,
-    registro: RegistroMain,
-    docs_geacs: list[dict],
-    tds_docs: list[dict],
-) -> RegistroMain:
-    memos_apis = obter_memos_apis_apos_email(tds_docs)
+def processar_velho(driver: webdriver.Remote, registro: RegistroMain) -> None:
+    memos_apis = obter_memos_apis_apos_email(registro.tds_docs)
 
     if memos_apis is None:
         raise ErroAvaliacao('Não foi encontrado o e-mail da APIS utilizado como referência para a busca das instruções')
@@ -123,5 +118,3 @@ def processar_velho(
         # é possível afirmar que o processo não tem essa instrução. Sem o
         # marcador, o processo é reavaliado na próxima execução.
         registro.prox_acao = ProxAcao.VELHO_AGUARDAR_CRITERIOS
-
-    return registro

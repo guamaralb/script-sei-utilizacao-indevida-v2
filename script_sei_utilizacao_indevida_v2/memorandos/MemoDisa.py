@@ -1,3 +1,5 @@
+import re
+
 from sei_automacao.classes.Memorando import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
@@ -5,6 +7,11 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
     REFERENCIA_PLANILHA_REDE_PROPRIA,
     UsoRedeBeneficiarios,
 )
+
+# Não altere o assunto: é por ele que o script encontra memos já criados
+ASSUNTO_MEMO_DISA = 'Levantamento de atendimentos da rede própria - utilização indevida da assistência à saúde'
+
+PADRAO_ASSUNTO_MEMO_DISA = re.compile(re.escape(ASSUNTO_MEMO_DISA), flags=re.IGNORECASE)
 
 
 def _par_1():
@@ -63,7 +70,7 @@ class MemoDisa(Memorando):
 
         super().__init__(
             destinatario_nome='IPSEMG/DISA-UTI-INDEV',
-            assunto='Levantamento de atendimentos da rede própria - utilização indevida da assistência à saúde',
+            assunto=ASSUNTO_MEMO_DISA,
             vocativo='Prezados',
             nome_signatario=nome_signatario,
             cargo_signatario=cargo_signatario,

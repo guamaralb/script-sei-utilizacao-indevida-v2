@@ -20,32 +20,24 @@ from constantes import (
     CARGO_SIGNATARIO,
     NOME_SIGNATARIO,
 )
-from docs_processo import encontrar_memo_mat_nao_encontradas, memos_geacs_novos
 from marcadores_disponiveis import garantir_marcadores_no_sei
+from memos_sei import incluir_memo, registrar_numeros_memos
 from rede_propria import ErroAvaliacao, MatriculasNaoEncontradas, NaoEncontradas
 from Registro import ProxAcao
-from sei_automacao.documento import inserir_bloco_ass
-from sei_automacao.processo import incluir_doc_sei_memo
 from selenium import webdriver
 from tags import adicionar_tag
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisMatNaoEncontradas import (
+    PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS,
     MemoApisMatNaoEncontradas,
 )
 
 logger = logging.getLogger(__name__)
 
 
-def incluir_memo_apis_mat_nao_encontradas(driver: webdriver.Remote, registro, tds_docs: list[dict], base_geral: NaoEncontradas) -> None:
+def incluir_memo_apis_mat_nao_encontradas(driver: webdriver.Remote, registro, base_geral: NaoEncontradas) -> None:
     if BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS is None:
         raise ErroAvaliacao('Bloco do memo à APIS de matrículas não encontradas não configurado (constantes.BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS)')
-
-    memo_existente = encontrar_memo_mat_nao_encontradas(driver, tds_docs)
-    if memo_existente is not None:
-        registro.memo_apis_mat_nao_encontradas_na_arvore = True
-        registro.memo_apis_mat_nao_encontradas_sei = memo_existente['numero_sei']
-        logger.info(f'Retomada: memo à APIS já está na árvore ({memo_existente["numero_sei"]}); só os marcadores serão adicionados')
-        return
 
     memo = MemoApisMatNaoEncontradas(
         nome_signatario=NOME_SIGNATARIO,
@@ -53,32 +45,20 @@ def incluir_memo_apis_mat_nao_encontradas(driver: webdriver.Remote, registro, td
         titular=base_geral.titular,
         dependentes=base_geral.dependentes,
     )
-    incluir_doc_sei_memo(driver, **memo.para_kwargs_inserir_doc())
-    registro.memo_apis_mat_nao_encontradas_criado = True
-    logger.info('Memo à APIS de matrículas não encontradas criado')
-
-    inserir_bloco_ass(driver, BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS)
-    registro.memo_apis_mat_nao_encontradas_inserido_bloco = True
-    logger.info(f'Memo à APIS de matrículas não encontradas inserido no bloco {BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS}')
-
-
-def _registrar_numero_memo_apis(driver: webdriver.Remote, registro, tds_docs: list[dict]) -> None:
-    """Só informativo: uma falha aqui não interrompe o processo."""
-    try:
-        novos = memos_geacs_novos(driver, tds_docs)
-    except Exception:
-        logger.exception('Não foi possível obter o número SEI do memo à APIS')
-        return
-    if len(novos) == 1:
-        registro.memo_apis_mat_nao_encontradas_sei = novos[0]['numero_sei']
-    else:
-        logger.warning(f'Número SEI do memo à APIS não registrado: esperado 1 memo novo na árvore, encontrado(s) {len(novos)}')
+    incluir_memo(
+        driver,
+        registro,
+        memo,
+        BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS,
+        'memo_apis_mat_nao_encontradas',
+        'à APIS de matrículas não encontradas',
+        padrao_assunto=PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS,
+    )
 
 
-def marcar_matriculas_nao_encontradas(  # noqa: PLR0913, PLR0917
+def marcar_matriculas_nao_encontradas(
     driver: webdriver.Remote,
     registro,
-    tds_docs: list[dict],
     erro: MatriculasNaoEncontradas,
     tag_base_geral: str,
     tag_base_rede: str,
@@ -100,12 +80,11 @@ def marcar_matriculas_nao_encontradas(  # noqa: PLR0913, PLR0917
     garantir_marcadores_no_sei(driver, tags)
 
     if erro.base_geral:
-        incluir_memo_apis_mat_nao_encontradas(driver, registro, tds_docs, erro.base_geral)
+        incluir_memo_apis_mat_nao_encontradas(driver, registro, erro.base_geral)
         adicionar_tag(driver, registro, tag_base_geral)
         registro.prox_acao = ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS
 
     if erro.base_rede:
         adicionar_tag(driver, registro, tag_base_rede)
 
-    if registro.memo_apis_mat_nao_encontradas_criado:
-        _registrar_numero_memo_apis(driver, registro, tds_docs)
+    registrar_numeros_memos(driver, registro)

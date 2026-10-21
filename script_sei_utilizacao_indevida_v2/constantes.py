@@ -9,6 +9,11 @@ DIR_INPUTS = DIR_DADOS / 'inputs'
 DIR_CONTROLE = DIR_DADOS / 'controle'
 DIR_LOG = DIR_BASE / 'logs'
 
+# Uma linha por processo (aba "processos") e uma por passagem (aba
+# "historico"), gravada pelos dois scripts
+ARQ_CONTROLE_GERAL = DIR_CONTROLE / 'controle_geral_de_processos.xlsx'
+DIR_BACKUP_CONTROLE = DIR_CONTROLE / 'backup'
+
 DIR_UTILIZACOES = DIR_DADOS / 'utilizacoes'
 DIR_UTILIZACOES_OUTRAS = DIR_UTILIZACOES / 'outras'
 DIR_UTILIZACOES_OUTRAS_PDF = DIR_UTILIZACOES_OUTRAS / 'pdf'

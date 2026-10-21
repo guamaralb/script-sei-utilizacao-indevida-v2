@@ -7,7 +7,7 @@
         <mxCell id="g-tit" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" value="1. Script principal (&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;main.py&lt;/font&gt;&lt;/b&gt;): início e classificação" vertex="1">
           <mxGeometry height="40" width="1500" y="-80" as="geometry" />
         </mxCell>
-        <mxCell id="g-ini" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Início&lt;/b&gt;: python main.py" vertex="1">
+        <mxCell id="g-ini" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Início&lt;/b&gt;: python main.py&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Sem remover_marcador na sei_automacao: SystemExit (TODO)&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="480" x="650" as="geometry" />
         </mxCell>
         <mxCell id="g-c-main" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;main&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
@@ -22,16 +22,16 @@
         <mxCell id="g-a-mantis" parent="g-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;carregar_bases_mantis&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Bases do MANTIS: rede própria e rede credenciada (mantis.py)" vertex="1">
           <mxGeometry height="58" width="440" x="670" y="262" as="geometry" />
         </mxCell>
-        <mxCell id="g-a-login" parent="g-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;efetuar_login&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Abre o navegador e faz login no SEI" vertex="1">
+        <mxCell id="g-a-login" parent="g-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;abrir_sei&lt;/b&gt; (sessao_sei.py)&lt;br&gt;Abre o navegador e faz login no SEI" vertex="1">
           <mxGeometry height="58" width="440" x="670" y="356" as="geometry" />
         </mxCell>
         <mxCell id="g-q-loop" parent="g-c-main" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Há próximo processo?" vertex="1">
           <mxGeometry height="100" width="440" x="670" y="450" as="geometry" />
         </mxCell>
-        <mxCell id="g-c-salvar" parent="g-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_salvar_resultado&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py (finally)&lt;/font&gt;" vertex="1">
+        <mxCell id="g-c-salvar" parent="g-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;PlanilhaControleGeral&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;planilha_controle.py&lt;/font&gt;" vertex="1">
           <mxGeometry height="348" width="440" x="1800" y="450" as="geometry" />
         </mxCell>
-        <mxCell id="g-a-salvar" parent="g-c-salvar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;salvar_planilha_controle&lt;/font&gt;&lt;/b&gt;&lt;br&gt;dados/controle/processos_processados_&amp;lt;data&amp;gt;.xlsx&lt;br&gt;(formatação: erro em vermelho, matrícula não encontrada em amarelo)" vertex="1">
+        <mxCell id="g-a-salvar" parent="g-c-salvar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="Criada antes do login: lê dados/controle/controle_geral_de_processos.xlsx uma vez&lt;br&gt;&lt;b&gt;registrar&lt;/b&gt;: regrava a planilha &lt;b&gt;depois de cada processo&lt;/b&gt; (abas processos e historico); backup em dados/controle/backup antes da 1ª gravação&lt;br&gt;(formatação: erro em vermelho, matrícula não encontrada em amarelo)" vertex="1">
           <mxGeometry height="90" width="400" x="20" y="58" as="geometry" />
         </mxCell>
         <mxCell id="g-a-resumo" parent="g-c-salvar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;log_resumo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Resumo final no log (logs/&amp;lt;data&amp;gt;_execucao.log)" vertex="1">
@@ -43,13 +43,13 @@
         <mxCell id="g-c-linha" parent="g-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_processar_linha&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
           <mxGeometry height="1654" width="1740" x="20" y="586" as="geometry" />
         </mxCell>
-        <mxCell id="g-a-abre" parent="g-c-linha" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;acessar_processo · listar_documentos_arvore · listar_marcadores&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Abre o processo, lista a árvore e lê os marcadores &lt;b&gt;do SEI&lt;/b&gt; (normalizar_tags)" vertex="1">
+        <mxCell id="g-a-abre" parent="g-c-linha" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;acessar_processo · listar_documentos_arvore · listar_marcadores&lt;/b&gt;&lt;br&gt;Abre o processo, lista a árvore e lê os marcadores do SEI" vertex="1">
           <mxGeometry height="74" width="440" x="650" y="58" as="geometry" />
         </mxCell>
-        <mxCell id="g-a-filtra" parent="g-c-linha" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;filtrar_docs_geacs · filtrar_memos_geacs&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Documentos e memorandos da GEACS na árvore&lt;br&gt;Registro: qnt_docs_geacs_na_arvore, qnt_memos_geacs_na_arvore" vertex="1">
+        <mxCell id="g-a-filtra" parent="g-c-linha" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;registro.registrar_arvore&lt;/b&gt;&lt;br&gt;O registro guarda a árvore: tds_docs, docs_geacs, memos_geacs&lt;br&gt;Registro: qnt_docs_geacs_na_arvore, qnt_memos_geacs_na_arvore" vertex="1">
           <mxGeometry height="74" width="440" x="650" y="168" as="geometry" />
         </mxCell>
-        <mxCell id="g-a-tags" parent="g-c-linha" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;registrar_tags&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: marcadores_sei e atributos tag_* (um por marcador)" vertex="1">
+        <mxCell id="g-a-tags" parent="g-c-linha" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;registrar_tags&lt;/b&gt;&lt;br&gt;Registro: marcadores_sei (lidos) e marcadores_atuais (atualizados a cada ➕ e remoção)" vertex="1">
           <mxGeometry height="58" width="440" x="650" y="278" as="geometry" />
         </mxCell>
         <mxCell id="g-c-class" parent="g-c-linha" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_classificar_e_processar&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
@@ -89,7 +89,7 @@
         <mxCell id="g-err4" parent="g-c-class" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcadores do script sem NOVO/VELHO" vertex="1">
           <mxGeometry height="58" width="260" x="20" y="544" as="geometry" />
         </mxCell>
-        <mxCell id="g-c-sem" parent="g-c-class" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_sem_marcadores&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
+        <mxCell id="g-c-sem" parent="g-c-class" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_classificar_e_processar&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py (sem marcadores do script)&lt;/font&gt;" vertex="1">
           <mxGeometry height="438" width="920" x="320" y="678" as="geometry" />
         </mxCell>
         <mxCell id="g-q-geacs" parent="g-c-sem" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Há documento da GEACS na árvore?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(docs_geacs)&lt;/font&gt;" vertex="1">
@@ -115,7 +115,7 @@
         <mxCell id="g-err-exc" parent="g-c-linha" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;except&lt;/b&gt; (qualquer etapa acima): &lt;b&gt;registrar_erro&lt;/b&gt;(registro, e) preenche tipo_erro e erro (e prox_acao = Verificar erro, se vazia).&lt;br&gt;ErroAvaliacao, FormatoMemorandoInvalido, TextoMemoPendente: sem traceback. Outras: logger.exception" vertex="1">
           <mxGeometry height="90" width="440" x="650" y="1544" as="geometry" />
         </mxCell>
-        <mxCell id="g-a-fimproc" parent="g-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;log_fim_processo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;registro.to_dict() vira uma linha da planilha de controle; segue para o próximo processo" vertex="1">
+        <mxCell id="g-a-fimproc" parent="g-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;log_fim_processo · PlanilhaControleGeral.registrar&lt;/b&gt;&lt;br&gt;registro.to_dict() é gravado na planilha de controle geral; segue para o próximo processo" vertex="1">
           <mxGeometry height="74" width="440" x="670" y="2276" as="geometry" />
         </mxCell>
         <mxCell id="g-nota0" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;• Moldura = &lt;b&gt;função&lt;/b&gt; (nome e módulo no topo); caixas dentro = passos na ordem em que o código executa. Funções chamadas aparecem como molduras aninhadas.&lt;br&gt;• Azul: ação · Amarelo: pergunta · Roxo: memo criado e inserido no bloco · Verde: ➕ marcador · Vermelho: erro · Cinza: início/fim · Laranja: detalhado em outra aba (clique).&lt;br&gt;• Erros à esquerda; desvios que param o processo ou seguem outro caminho, à direita. Tracejado: previsto (não implementado).&lt;br&gt;• Legenda completa e tabela de marcadores: aba 8." vertex="1">
@@ -233,261 +233,255 @@
         <mxCell id="n-ini" value="&lt;b&gt;Entrada&lt;/b&gt; (main._classificar_e_processar)&lt;br&gt;Processo com 1 - Processo NOVO" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="450" y="0" width="480" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="n-nota0" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;• Moldura = &lt;b&gt;função&lt;/b&gt; (nome e módulo no topo); caixas dentro = passos na ordem em que o código executa. Funções chamadas aparecem como molduras aninhadas.&lt;br&gt;• Azul: ação · Amarelo: pergunta · Roxo: memo criado e inserido no bloco · Verde: ➕ marcador · Vermelho: erro · Cinza: início/fim · Laranja: detalhado em outra aba (clique).&lt;br&gt;• Erros à esquerda; desvios que param o processo ou seguem outro caminho, à direita. Tracejado: previsto (não implementado).&lt;br&gt;• Legenda completa e tabela de marcadores: aba 8." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="0" width="560" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="n-nota1" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Prefixo &quot;Script v2 - &quot; em todos (ex.: &quot;Script v2 - 1.2 - Avaliado Se Usou Rede Própria&quot;). Limite do SEI: 50 caracteres. Aqui os marcadores aparecem sem o prefixo." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="190" width="560" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="n-nota2" value="&lt;b&gt;Nenhum marcador é adicionado nesta aba.&lt;/b&gt;&lt;br&gt;Ela só decide para onde o processo vai. Ordem das perguntas = ordem do código: vale a primeira verdadeira.&lt;br&gt;&lt;b&gt;A cada passagem o processo é reavaliado&lt;/b&gt;: o marcador de estado é conferido com os memos da GEACS na árvore (_conferir_memos_geacs). Se não batem: erro e o script segue para o próximo processo." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="320" width="560" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="n-nota6" value="&lt;b&gt;Marcadores de estado&lt;/b&gt; (TAGS_ESTADO_NOVO: 1.5 a 1.10)&lt;br&gt;No máximo um por processo. Ao adicionar um estado (aba 3), o anterior é removido. Os demais (1, 1.1, 1.2.1, 1.2.2 e os da versão anterior 1.2, 1.3, 1.4) se acumulam.&lt;br&gt;&lt;b&gt;Memos da GEACS esperados&lt;/b&gt; (MEMOS_POR_ESTADO_NOVO):&lt;br&gt;• 0: 1.6, 1.8&lt;br&gt;• 1: 1.5 (os dois), 1.6.1, 1.7, 1.8.1, 1.9, 1.10 Memo DEPROC&lt;br&gt;• 2: 1.10 Memos DISA e DEPROC&lt;br&gt;&lt;b&gt;Memo sem marcador&lt;/b&gt;: sem estado → à APIS (sem memorando/formato) · 1.6 → à APIS (matrículas/período) · 1.8 → à DISA (validar MANTIS), DISA ou DEPROC · 1.9 → DEPROC" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="460" width="560" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="n-nota3" value="&lt;b&gt;Reprocessar um processo parado&lt;/b&gt; (pergunta &quot;Tem 1.2.1 ou 1.2.2?&quot;)&lt;br&gt;Corrigir a base (geral ou da rede própria) e remover manualmente 1.2.1 / 1.2.2 no SEI. No fluxo atual, 1.2.1 e 1.2.2 vêm sempre com um marcador de estado e não caem nesta pergunta." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="710" width="560" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="n-nota4" value="&lt;b&gt;1.3 Memos DISA e DEPROC sem 1.2&lt;/b&gt;&lt;br&gt;Processo encaminhado à DISA e à DEPROC sem avaliação do uso da rede própria (versão anterior). A rotina de correção (aba 4) adiciona 1.4 e/ou 1.2, ou 1.2.1 / 1.2.2." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="830" width="560" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="n-nota5" value="&lt;b&gt;Erros&lt;/b&gt;&lt;br&gt;Todo erro sobe até _processar_linha: registrar_erro preenche tipo_erro, erro e, se preciso, prox_acao = Verificar erro. ErroAvaliacao, FormatoMemorandoInvalido e TextoMemoPendente são logados sem traceback; falha inesperada, com logger.exception. &lt;b&gt;Um erro nunca interrompe os demais processos.&lt;/b&gt;" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="970" width="560" height="120" as="geometry" />
+        </mxCell>
         <mxCell id="n-c-main" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_novo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" vertex="1" parent="1">
-          <mxGeometry x="0" y="96" width="2500" height="2968" as="geometry" />
+          <mxGeometry x="0" y="96" width="3200" height="2868" as="geometry" />
         </mxCell>
-        <mxCell id="n-q1" value="Tem marcador de memo que para o processo?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(1.5, 1.6.1, 1.7 ou 1.8.1: TAGS_MEMO_PARADA_NOVO)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
-          <mxGeometry x="470" y="58" width="440" height="174" as="geometry" />
+        <mxCell id="n-q1" value="Tem mais de um marcador de estado?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(1.5 a 1.10: TAGS_ESTADO_NOVO; estado_atual)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
+          <mxGeometry x="470" y="58" width="440" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="n-err1" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): processo parado, aguardando resposta ao memo&lt;br&gt;prox_acao = Aguardar resposta ao memo enviado&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: processamento depois da resposta da APIS/DISA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-main">
-          <mxGeometry x="20" y="85" width="260" height="120" as="geometry" />
+        <mxCell id="n-err1" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): mais de um marcador de estado (a remoção do anterior falhou ou o processo é de antes da troca de estados)&lt;br&gt;Remover manualmente o(s) anterior(es) no SEI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-main">
+          <mxGeometry x="20" y="63" width="300" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="n-q2" value="Tem 1.2.1 ou 1.2.2 &lt;b&gt;sem&lt;/b&gt; 1.6?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(versão anterior do fluxo)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
-          <mxGeometry x="470" y="268" width="440" height="102" as="geometry" />
+        <mxCell id="n-q2" value="Tem marcador de estado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
+          <mxGeometry x="470" y="238" width="440" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="n-err2" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): processo parado (matrículas não encontradas)&lt;br&gt;prox_acao = Verificar matrículas não encontradas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-main">
-          <mxGeometry x="20" y="269" width="260" height="100" as="geometry" />
+        <mxCell id="n-c-conf" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_conferir_memos_geacs&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
+          <mxGeometry x="1980" y="238" width="940" height="330" as="geometry" />
         </mxCell>
-        <mxCell id="n-q3" value="Tem 1.10 - Memo DEPROC Coparticipação?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
-          <mxGeometry x="470" y="406" width="440" height="102" as="geometry" />
+        <mxCell id="n-q-parada" value="Estado de parada?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(1.5, 1.6.1, 1.7 ou 1.8.1: TAGS_PARADA_NOVO)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
+          <mxGeometry x="2000" y="618" width="440" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="n-c-concl" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_conferir_novo_concluido&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
-          <mxGeometry x="1100" y="406" width="740" height="400" as="geometry" />
+        <mxCell id="n-err-parada" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): processo parado, aguardando resposta ao memo&lt;br&gt;prox_acao = Aguardar resposta ao memo enviado&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: processamento depois da resposta da APIS/DISA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-main">
+          <mxGeometry x="2820" y="618" width="340" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="n-cc-esp" value="Esperado = quantidade de marcadores de memo do processo (1.9 e 1.10)&lt;br&gt;Registro: qnt_memos_geacs_esperada" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-concl">
-          <mxGeometry x="20" y="58" width="400" height="74" as="geometry" />
+        <mxCell id="n-q-concl" value="Estado de conclusão?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(1.10: TAGS_CONCLUSAO_NOVO)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
+          <mxGeometry x="2000" y="788" width="440" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="n-cc-q" value="Qtd. de memos da GEACS = esperado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-concl">
-          <mxGeometry x="20" y="168" width="400" height="102" as="geometry" />
+        <mxCell id="n-f-concl" value="&lt;b&gt;Fim&lt;/b&gt;: fluxo normal concluído&lt;br&gt;1.10 Memos DISA e DEPROC → prox_acao = Assinar memos DISA e DEPROC e encaminhar&lt;br&gt;1.10 Memo DEPROC → prox_acao = Assinar memo DEPROC e encaminhar" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="n-c-main">
+          <mxGeometry x="2820" y="783" width="340" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="n-cc-f2" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = Verificar quantidade de memos da GEACS" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="n-c-concl">
-          <mxGeometry x="460" y="190" width="260" height="58" as="geometry" />
+        <mxCell id="n-c-pn-ret" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;processar_novo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
+          <mxGeometry x="2020" y="948" width="400" height="152" as="geometry" />
         </mxCell>
-        <mxCell id="n-cc-f1" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = Assinar memos DISA e DEPROC e encaminhar (com 1.9)&lt;br&gt;ou Assinar memo DEPROC e encaminhar" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="n-c-concl">
-          <mxGeometry x="20" y="306" width="400" height="74" as="geometry" />
+        <mxCell id="n-c-va" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_novo_versao_anterior&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
+          <mxGeometry x="20" y="398" width="1860" height="1828" as="geometry" />
         </mxCell>
-        <mxCell id="n-q4" value="Tem 1.2 - Avaliado Se Usou Rede Própria?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(versão anterior)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
-          <mxGeometry x="470" y="842" width="440" height="138" as="geometry" />
+        <mxCell id="n-c-conf0" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_conferir_memos_geacs&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
+          <mxGeometry x="450" y="2276" width="880" height="330" as="geometry" />
         </mxCell>
-        <mxCell id="n-c-aval" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_novo_avaliado&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
-          <mxGeometry x="1100" y="842" width="1380" height="1066" as="geometry" />
+        <mxCell id="n-c-pn" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;processar_novo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
+          <mxGeometry x="470" y="2656" width="400" height="152" as="geometry" />
         </mxCell>
-        <mxCell id="n-av-q14" value="Tem 1.4 - Memo Não Usou Rede no Bloco?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-aval">
-          <mxGeometry x="490" y="58" width="400" height="102" as="geometry" />
+        <mxCell id="n-cf-esp" value="Esperado = MEMOS_POR_ESTADO_NOVO[estado] (0, 1 ou 2)&lt;br&gt;Estado 1.6, 1.8 ou 1.9 com &lt;b&gt;um&lt;/b&gt; memo a mais: &lt;b&gt;encontrar_memo_sem_marcador&lt;/b&gt; procura pelo assunto o memo da etapa seguinte; encontrou: esperado + 1 (retomada sem recriar)&lt;br&gt;Registro: qnt_memos_geacs_esperada" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-conf">
+          <mxGeometry x="20" y="58" width="900" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="n-c-verif" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;verificar_memo_uso_rede&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;correcao_rede_propria.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-aval">
-          <mxGeometry x="320" y="196" width="740" height="364" as="geometry" />
+        <mxCell id="n-cf-q" value="Qtd. de memos da GEACS na árvore = esperado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-conf">
+          <mxGeometry x="20" y="188" width="440" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="n-v-busca" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;encontrar_memo_uso_rede&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Procura o memo de correção na árvore pelo assunto (PADRAO_ASSUNTO_MEMO_USO_REDE)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-verif">
-          <mxGeometry x="320" y="58" width="400" height="74" as="geometry" />
+        <mxCell id="n-cf-err" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): o marcador não condiz com os documentos; verificar manualmente (evita duplicidade)&lt;br&gt;prox_acao = Verificar quantidade de memos da GEACS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-conf">
+          <mxGeometry x="560" y="193" width="340" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="n-v-q" value="Encontrou?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-verif">
-          <mxGeometry x="320" y="168" width="400" height="90" as="geometry" />
+        <UserObject label="&lt;b&gt;Detalhado na aba 3&lt;/b&gt; →&lt;br&gt;Retomada do fluxo normal (estado 1.6, 1.8 ou 1.9): as etapas até o estado são puladas" link="data:page/id,normal" id="n-c-pn-ret-lk">
+          <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="n-c-pn-ret">
+            <mxGeometry x="20" y="58" width="360" height="74" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="n-q3" value="Tem 1.2.1 ou 1.2.2?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(sem marcador de estado: versão anterior do fluxo)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-va">
+          <mxGeometry x="450" y="58" width="440" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="n-v-err" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): tem 1.4, mas o memo de correção não está na árvore" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-verif">
-          <mxGeometry x="20" y="184" width="260" height="58" as="geometry" />
+        <mxCell id="n-err3" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): processo parado (matrículas não encontradas)&lt;br&gt;prox_acao = Verificar matrículas não encontradas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-va">
+          <mxGeometry x="20" y="68" width="300" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="n-v-reg" value="Registro: memo_uso_rede_na_arvore, memo_uso_rede_sei" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-verif">
-          <mxGeometry x="320" y="294" width="400" height="50" as="geometry" />
+        <mxCell id="n-q4" value="Tem 1.2 - Avaliado Se Usou Rede Própria?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-va">
+          <mxGeometry x="450" y="228" width="440" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="n-c-aval" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_novo_avaliado&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-va">
+          <mxGeometry x="980" y="228" width="840" height="740" as="geometry" />
+        </mxCell>
+        <mxCell id="n-q5" value="Tem 1.3 - Memos DISA e DEPROC no Bloco?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(enviado sem avaliação)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-va">
+          <mxGeometry x="450" y="1018" width="440" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="n-c-corr" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_corrigir_novo_sem_avaliacao&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-va">
+          <mxGeometry x="980" y="1018" width="440" height="450" as="geometry" />
+        </mxCell>
+        <mxCell id="n-q6" value="Tem 1.3 - Memo DEPROC no Bloco?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-va">
+          <mxGeometry x="450" y="1518" width="440" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="n-err6" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): memo DEPROC no bloco sem avaliação da rede própria (combinação inválida)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-va">
+          <mxGeometry x="20" y="1528" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-q7" value="Tem 1.4 - Memo Não Usou Rede no Bloco?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-va">
+          <mxGeometry x="450" y="1678" width="440" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="n-err7" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): 1.4 sem 1.3 Memos DISA e DEPROC (combinação inválida)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-va">
+          <mxGeometry x="20" y="1688" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-c0-esp" value="Esperado = 0 (processo NOVO sem marcador de estado)&lt;br&gt;Com &lt;b&gt;um&lt;/b&gt; memo a mais: &lt;b&gt;encontrar_memo_sem_marcador&lt;/b&gt; procura pelo assunto o memo à APIS (sem memorando / formato inválido); encontrou: esperado = 1&lt;br&gt;Registro: qnt_memos_geacs_esperada" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-conf0">
+          <mxGeometry x="20" y="58" width="840" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n-c0-q" value="Qtd. de memos da GEACS na árvore = esperado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-conf0">
+          <mxGeometry x="20" y="188" width="440" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="n-c0-err" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): memo da GEACS sem marcador que não é o da etapa seguinte; verificar manualmente (evita duplicidade)&lt;br&gt;prox_acao = Verificar quantidade de memos da GEACS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-conf0">
+          <mxGeometry x="540" y="178" width="300" height="130" as="geometry" />
+        </mxCell>
+        <UserObject label="&lt;b&gt;Detalhado na aba 3&lt;/b&gt; →&lt;br&gt;Fluxo normal do início" link="data:page/id,normal" id="n-c-pn-lk">
+          <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="n-c-pn">
+            <mxGeometry x="20" y="58" width="360" height="74" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="n-av-verif" value="Se tem 1.4: &lt;b&gt;verificar_memo_uso_rede&lt;/b&gt; (correcao_rede_propria.py)&lt;br&gt;Procura o memo de correção pelo assunto; não encontrou: &lt;b&gt;erro&lt;/b&gt;&lt;br&gt;Registro: memo_uso_rede_na_arvore, memo_uso_rede_sei" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-aval">
+          <mxGeometry x="20" y="58" width="440" height="96" as="geometry" />
         </mxCell>
         <mxCell id="n-av-q13" value="Tem algum marcador 1.3?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-aval">
-          <mxGeometry x="490" y="596" width="400" height="100" as="geometry" />
+          <mxGeometry x="20" y="194" width="440" height="110" as="geometry" />
         </mxCell>
         <mxCell id="n-av-err13" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): avaliado, mas sem marcador de memos no bloco" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-aval">
-          <mxGeometry x="20" y="617" width="260" height="58" as="geometry" />
+          <mxGeometry x="520" y="209" width="300" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="n-av-esp" value="Registro: qnt_memos_geacs_esperada&lt;br&gt;1.3 Memos DISA e DEPROC: &lt;b&gt;2&lt;/b&gt; (&lt;b&gt;3&lt;/b&gt; com 1.4) → Assinar memos DISA e DEPROC e encaminhar&lt;br&gt;1.3 Memo DEPROC: &lt;b&gt;1&lt;/b&gt; → Assinar memo DEPROC e encaminhar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-aval">
-          <mxGeometry x="490" y="732" width="400" height="90" as="geometry" />
+        <mxCell id="n-av-esp" value="Esperado:&lt;br&gt;1.3 Memos DISA e DEPROC: 2 (&lt;b&gt;3&lt;/b&gt; com 1.4) → Assinar memos DISA e DEPROC e encaminhar&lt;br&gt;1.3 Memo DEPROC: 1 → Assinar memo DEPROC e encaminhar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-aval">
+          <mxGeometry x="20" y="354" width="440" height="96" as="geometry" />
         </mxCell>
-        <mxCell id="n-av-qqt" value="Qtd. de memos da GEACS = esperado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-aval">
-          <mxGeometry x="490" y="858" width="400" height="102" as="geometry" />
+        <mxCell id="n-av-q" value="&lt;b&gt;_conferir_memos_geacs&lt;/b&gt;&lt;br&gt;Qtd. de memos da GEACS = esperado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-aval">
+          <mxGeometry x="20" y="490" width="440" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="n-av-f2" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = Verificar quantidade de memos da GEACS" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="n-c-aval">
-          <mxGeometry x="1100" y="880" width="260" height="58" as="geometry" />
+        <mxCell id="n-av-err" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao)&lt;br&gt;prox_acao = Verificar quantidade de memos da GEACS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-aval">
+          <mxGeometry x="520" y="505" width="300" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="n-av-f1" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = a ação correspondente ao marcador 1.3" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="n-c-aval">
-          <mxGeometry x="490" y="996" width="400" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="n-q5" value="Tem 1.3 - Memos DISA e DEPROC no Bloco?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(enviado sem avaliação)&lt;/font&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
-          <mxGeometry x="470" y="1944" width="440" height="138" as="geometry" />
-        </mxCell>
-        <mxCell id="n-c-corr" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_corrigir_novo_sem_avaliacao&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
-          <mxGeometry x="1100" y="1944" width="440" height="450" as="geometry" />
+        <mxCell id="n-av-fim" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = ação correspondente ao marcador 1.3" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="n-c-aval">
+          <mxGeometry x="20" y="650" width="440" height="70" as="geometry" />
         </mxCell>
         <mxCell id="n-c-obter" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;obter_dados_ui&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-corr">
           <mxGeometry x="20" y="58" width="400" height="184" as="geometry" />
+        </mxCell>
+        <mxCell id="n-c-corrigir" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;corrigir_uso_rede_propria&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;correcao_rede_propria.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-corr">
+          <mxGeometry x="20" y="278" width="400" height="152" as="geometry" />
         </mxCell>
         <UserObject label="&lt;b&gt;Detalhado na aba 3&lt;/b&gt; →&lt;br&gt;Lê o memo da APIS destinado à GEACS (titular e dependentes).&lt;br&gt;Aqui, sem memo, mais de um ou formato inválido = &lt;b&gt;erro&lt;/b&gt; (nenhum memo à APIS é criado)" link="data:page/id,normal" id="n-c-obter-lk">
           <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="n-c-obter">
             <mxGeometry x="20" y="58" width="360" height="106" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="n-c-corrigir" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;corrigir_uso_rede_propria&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;correcao_rede_propria.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-corr">
-          <mxGeometry x="20" y="278" width="400" height="152" as="geometry" />
-        </mxCell>
         <UserObject label="&lt;b&gt;Detalhado na aba 4&lt;/b&gt; →&lt;br&gt;Rotina de correção com as matrículas do memo da APIS" link="data:page/id,correcao" id="n-c-corrigir-lk">
           <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="n-c-corrigir">
             <mxGeometry x="20" y="58" width="360" height="74" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="n-q6" value="Tem 1.3 - Memo DEPROC no Bloco?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
-          <mxGeometry x="470" y="2118" width="440" height="100" as="geometry" />
-        </mxCell>
-        <mxCell id="n-err6" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): memo DEPROC no bloco sem avaliação da rede própria (combinação inválida)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-main">
-          <mxGeometry x="20" y="2131" width="260" height="74" as="geometry" />
-        </mxCell>
-        <mxCell id="n-q7" value="Tem 1.4 - Memo Não Usou Rede no Bloco?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-main">
-          <mxGeometry x="470" y="2254" width="440" height="102" as="geometry" />
-        </mxCell>
-        <mxCell id="n-err7" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): 1.4 sem 1.3 Memos DISA e DEPROC (combinação inválida)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-main">
-          <mxGeometry x="20" y="2276" width="260" height="58" as="geometry" />
-        </mxCell>
-        <mxCell id="n-c-ret" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_processar_novo_ou_retomar&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-main">
-          <mxGeometry x="320" y="2392" width="740" height="556" as="geometry" />
-        </mxCell>
-        <mxCell id="n-r-esp" value="Esperado = quantidade de marcadores de memo do processo (TAGS_MEMO_NOVO: 1.5 a 1.10)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-ret">
-          <mxGeometry x="320" y="58" width="400" height="58" as="geometry" />
-        </mxCell>
-        <mxCell id="n-r-q" value="Qtd. de memos da GEACS = esperado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="n-c-ret">
-          <mxGeometry x="320" y="152" width="400" height="102" as="geometry" />
-        </mxCell>
-        <mxCell id="n-r-err" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): memo da GEACS sem marcador; verificar manualmente (evita duplicidade). Registro: qnt_memos_geacs_esperada&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: procurar os memos pelo assunto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="n-c-ret">
-          <mxGeometry x="20" y="152" width="260" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="n-r-log" value="Log: fluxo normal do início ou &lt;b&gt;retomada&lt;/b&gt; (tem 1.6, 1.8 ou 1.9: TAGS_RETOMADA_NOVO)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="n-c-ret">
-          <mxGeometry x="320" y="290" width="400" height="58" as="geometry" />
-        </mxCell>
-        <mxCell id="n-c-pn" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;processar_novo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="n-c-ret">
-          <mxGeometry x="320" y="384" width="400" height="152" as="geometry" />
-        </mxCell>
-        <UserObject label="&lt;b&gt;Detalhado na aba 3&lt;/b&gt; →&lt;br&gt;Fluxo normal; as etapas cujo marcador já existe são puladas" link="data:page/id,normal" id="n-c-pn-lk">
-          <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.06;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="n-c-pn">
-            <mxGeometry x="20" y="58" width="360" height="74" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <mxCell id="n-nota0" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;• Moldura = &lt;b&gt;função&lt;/b&gt; (nome e módulo no topo); caixas dentro = passos na ordem em que o código executa. Funções chamadas aparecem como molduras aninhadas.&lt;br&gt;• Azul: ação · Amarelo: pergunta · Roxo: memo criado e inserido no bloco · Verde: ➕ marcador · Vermelho: erro · Cinza: início/fim · Laranja: detalhado em outra aba (clique).&lt;br&gt;• Erros à esquerda; desvios que param o processo ou seguem outro caminho, à direita. Tracejado: previsto (não implementado).&lt;br&gt;• Legenda completa e tabela de marcadores: aba 8." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-620" y="0" width="560" height="170" as="geometry" />
-        </mxCell>
-        <mxCell id="n-nota1" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Prefixo &quot;Script v2 - &quot; em todos (ex.: &quot;Script v2 - 1.2 - Avaliado Se Usou Rede Própria&quot;). Limite do SEI: 50 caracteres. Aqui os marcadores aparecem sem o prefixo." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-620" y="194" width="560" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="n-nota2" value="&lt;b&gt;Nenhum marcador é adicionado nesta aba.&lt;/b&gt;&lt;br&gt;Ela só decide para onde o processo vai. Ordem das perguntas = ordem do código: vale a primeira verdadeira." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-620" y="298" width="560" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="n-nota3" value="&lt;b&gt;Reprocessar um processo parado&lt;/b&gt; (pergunta 2)&lt;br&gt;Corrigir a base (geral ou da rede própria) e remover manualmente 1.2.1 / 1.2.2 no SEI. No fluxo atual, 1.2.1 e 1.2.2 vêm sempre com 1.6 e não param o processo aqui." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-620" y="392" width="560" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="n-nota4" value="&lt;b&gt;1.3 Memos DISA e DEPROC sem 1.2&lt;/b&gt;&lt;br&gt;Processo encaminhado à DISA e à DEPROC sem avaliação do uso da rede própria (versão anterior). A rotina de correção (aba 4) adiciona 1.4 e/ou 1.2, ou 1.2.1 / 1.2.2." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-620" y="506" width="560" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="n-nota5" value="&lt;b&gt;Erros&lt;/b&gt;&lt;br&gt;Todo erro sobe até _processar_linha: registrar_erro preenche tipo_erro, erro e, se preciso, prox_acao = Verificar erro. ErroAvaliacao, FormatoMemorandoInvalido e TextoMemoPendente são logados sem traceback; falha inesperada, com logger.exception. &lt;b&gt;Um erro nunca interrompe os demais processos.&lt;/b&gt;" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-620" y="620" width="560" height="110" as="geometry" />
-        </mxCell>
-        <mxCell id="n-e1" edge="1" parent="1" source="n-ini" target="n-c-main" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.2760;entryY=0;entryDx=0;entryDy=0;" value="">
+        <mxCell id="n-e1" edge="1" parent="1" source="n-q1" target="n-err1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e2" edge="1" parent="1" source="n-q1" target="n-err1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e2" edge="1" parent="1" source="n-q1" target="n-q2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e3" edge="1" parent="1" source="n-q1" target="n-q2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e3" edge="1" parent="1" source="n-q2" target="n-c-conf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e4" edge="1" parent="1" source="n-q2" target="n-err2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e4" edge="1" parent="1" source="n-cf-esp" target="n-cf-q" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e5" edge="1" parent="1" source="n-q2" target="n-q3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e5" edge="1" parent="1" source="n-cf-q" target="n-cf-err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e6" edge="1" parent="1" source="n-q3" target="n-c-concl" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" value="Sim">
+        <mxCell id="n-e6" edge="1" parent="1" source="n-cf-q" target="n-q-parada" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e7" edge="1" parent="1" source="n-q3" target="n-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e7" edge="1" parent="1" source="n-q-parada" target="n-err-parada" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e8" edge="1" parent="1" source="n-q4" target="n-c-aval" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" value="Sim">
+        <mxCell id="n-e8" edge="1" parent="1" source="n-q-parada" target="n-q-concl" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e9" edge="1" parent="1" source="n-q4" target="n-q5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e9" edge="1" parent="1" source="n-q-concl" target="n-f-concl" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e10" edge="1" parent="1" source="n-q5" target="n-c-corr" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" value="Sim">
+        <mxCell id="n-e10" edge="1" parent="1" source="n-q-concl" target="n-c-pn-ret" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não (1.6, 1.8 ou 1.9)">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e11" edge="1" parent="1" source="n-q5" target="n-q6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e11" edge="1" parent="1" source="n-q3" target="n-err3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e12" edge="1" parent="1" source="n-q6" target="n-err6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e12" edge="1" parent="1" source="n-q3" target="n-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e13" edge="1" parent="1" source="n-q6" target="n-q7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e13" edge="1" parent="1" source="n-q4" target="n-c-aval" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e14" edge="1" parent="1" source="n-q7" target="n-err7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e14" edge="1" parent="1" source="n-av-verif" target="n-av-q13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e15" edge="1" parent="1" source="n-q7" target="n-c-ret" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e15" edge="1" parent="1" source="n-av-q13" target="n-av-err13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e16" edge="1" parent="1" source="n-cc-esp" target="n-cc-q" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="">
+        <mxCell id="n-e16" edge="1" parent="1" source="n-av-q13" target="n-av-esp" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e17" edge="1" parent="1" source="n-cc-q" target="n-cc-f2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e17" edge="1" parent="1" source="n-av-esp" target="n-av-q" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e18" edge="1" parent="1" source="n-cc-q" target="n-cc-f1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e18" edge="1" parent="1" source="n-av-q" target="n-av-err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e19" edge="1" parent="1" source="n-av-q14" target="n-c-verif" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e19" edge="1" parent="1" source="n-av-q" target="n-av-fim" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e20" edge="1" parent="1" source="n-av-q14" target="n-av-q13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="2172" y="1047" />
-              <mxPoint x="2172" y="1584" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="n-e21" edge="1" parent="1" source="n-v-busca" target="n-v-q" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="">
+        <mxCell id="n-e20" edge="1" parent="1" source="n-q4" target="n-q5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e22" edge="1" parent="1" source="n-v-q" target="n-v-err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e21" edge="1" parent="1" source="n-q5" target="n-c-corr" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e23" edge="1" parent="1" source="n-v-q" target="n-v-reg" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e22" edge="1" parent="1" source="n-c-obter" target="n-c-corrigir" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e24" edge="1" parent="1" source="n-c-verif" target="n-av-q13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="">
+        <mxCell id="n-e23" edge="1" parent="1" source="n-q5" target="n-q6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e25" edge="1" parent="1" source="n-av-q13" target="n-av-err13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e24" edge="1" parent="1" source="n-q6" target="n-err6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e26" edge="1" parent="1" source="n-av-q13" target="n-av-esp" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e25" edge="1" parent="1" source="n-q6" target="n-q7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e27" edge="1" parent="1" source="n-av-esp" target="n-av-qqt" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="">
+        <mxCell id="n-e26" edge="1" parent="1" source="n-q7" target="n-err7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e28" edge="1" parent="1" source="n-av-qqt" target="n-av-f2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e27" edge="1" parent="1" source="n-q2" target="n-c-va" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e29" edge="1" parent="1" source="n-av-qqt" target="n-av-f1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Sim">
+        <mxCell id="n-e28" edge="1" parent="1" source="n-q7" target="n-c-conf0" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Não (sem marcadores da versão anterior)">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e30" edge="1" parent="1" source="n-c-obter" target="n-c-corrigir" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="">
+        <mxCell id="n-e29" edge="1" parent="1" source="n-c0-esp" target="n-c0-q" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e31" edge="1" parent="1" source="n-r-esp" target="n-r-q" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="">
+        <mxCell id="n-e30" edge="1" parent="1" source="n-c0-q" target="n-c0-err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e32" edge="1" parent="1" source="n-r-q" target="n-r-err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" value="Não">
+        <mxCell id="n-e31" edge="1" parent="1" source="n-c0-q" target="n-c-pn" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="n-e33" edge="1" parent="1" source="n-r-q" target="n-r-log" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="Sim">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="n-e34" edge="1" parent="1" source="n-r-log" target="n-c-pn" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" value="">
+        <mxCell id="n-e32" edge="1" parent="1" source="n-ini" target="n-c-main" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
@@ -501,7 +495,7 @@
         <mxCell id="n3-tit" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" value="3. NOVO: fluxo normal (&lt;font face=&quot;Courier New&quot;&gt;processar_novo&lt;/font&gt;, processar_novo.py)" vertex="1">
           <mxGeometry height="40" width="1500" y="-300" as="geometry" />
         </mxCell>
-        <mxCell id="n3-ini" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=0;" value="&lt;b&gt;Entrada&lt;/b&gt; (main._processar_novo_ou_retomar)&lt;br&gt;NOVO recém-classificado (➕ 1), NOVO sem memos da GEACS&lt;br&gt;ou retomada (cada memo da GEACS tem o seu marcador)" vertex="1">
+        <mxCell id="n3-ini" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=0;" value="&lt;b&gt;Entrada&lt;/b&gt; (main._tratar_novo ou classificação)&lt;br&gt;NOVO recém-classificado (➕ 1), NOVO sem marcador de estado e sem memos da GEACS, ou retomada (estado 1.6, 1.8 ou 1.9)" vertex="1">
           <mxGeometry height="80" width="480" x="300" y="-230" as="geometry" />
         </mxCell>
         <mxCell id="n3-c-obter" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;obter_dados_ui&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
@@ -534,7 +528,7 @@
         <mxCell id="n3-err-disa" parent="n3-c-disa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): sem matrícula de titular, matrícula em formato inválido ou resposta inválida na base DISA" vertex="1">
           <mxGeometry height="100" width="260" x="20" y="58" as="geometry" />
         </mxCell>
-        <mxCell id="n3-a-reg-nao" parent="n3-c-disa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_registrar_nao_encontradas&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: titular/dependentes não encontrados na base geral e na base DISA" vertex="1">
+        <mxCell id="n3-a-reg-nao" parent="n3-c-disa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: titular/dependentes não encontrados na base geral e na base DISA" vertex="1">
           <mxGeometry height="70" width="440" x="320" y="194" as="geometry" />
         </mxCell>
         <mxCell id="n3-a-reg-uso" parent="n3-c-disa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;registrar_uso&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: quem usou e quem não usou a rede própria (base DISA)" vertex="1">
@@ -552,7 +546,7 @@
         <mxCell id="n3-t-122" parent="n3-c-disa" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2.2 - Mat. N Encontradas Base DISA&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="440" x="320" y="678" as="geometry" />
         </mxCell>
-        <mxCell id="n3-t-16" parent="n3-c-disa" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.6 - Avaliado Uso Rede Própria DISA&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-t-16" parent="n3-c-disa" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.6 - Avaliado Uso Rede Própria DISA&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(se o estado ainda não passou dele: _etapa_feita)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="440" x="320" y="774" as="geometry" />
         </mxCell>
         <mxCell id="n3-q-geral" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;processar_novo&lt;/b&gt;&lt;/font&gt;&lt;br&gt;Faltou matrícula na base geral?" vertex="1">
@@ -591,58 +585,58 @@
         <mxCell id="n3-err-r-gar" parent="n3-c-mantis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
           <mxGeometry height="80" width="240" x="1250" y="612" as="geometry" />
         </mxCell>
-        <mxCell id="n3-r-t18" parent="n3-c-mantis" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8 - Avaliado Uso Rede Própria MANTIS&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-r-t18" parent="n3-c-mantis" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8 - Avaliado Uso Rede Própria MANTIS ↻ 1.6&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(se o estado ainda não passou dele: _etapa_feita)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="400" x="820" y="723" as="geometry" />
         </mxCell>
-        <mxCell id="n3-c-validar" parent="n3-c-mantis" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_usos_mantis_alem_disa&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-c-validar" parent="n3-c-mantis" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_parar_com_memo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py (_USOS_MANTIS_ALEM_DISA)&lt;/font&gt;" vertex="1">
           <mxGeometry height="506" width="400" x="820" y="819" as="geometry" />
         </mxCell>
-        <mxCell id="n3-v-memo" parent="n3-c-validar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDisaValidarUsosMantis&lt;/b&gt; e insere no bloco &lt;b&gt;7730939&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: procurar pelo assunto antes de criar&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-v-memo" parent="n3-c-validar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_memo (memos_sei.py)&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDisaValidarUsosMantis&lt;/b&gt; e insere no bloco &lt;b&gt;7730939&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Antes, procura pelo assunto: já existe → só o marcador&lt;/font&gt;" vertex="1">
           <mxGeometry height="100" width="370" x="15" y="58" as="geometry" />
         </mxCell>
-        <mxCell id="n3-v-t181" parent="n3-c-validar" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8.1 - Memo DISA Validar Usos MANTIS" vertex="1">
+        <mxCell id="n3-v-t181" parent="n3-c-validar" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8.1 - Memo DISA Validar Usos MANTIS ↻ 1.8" vertex="1">
           <mxGeometry height="50" width="370" x="15" y="194" as="geometry" />
         </mxCell>
-        <mxCell id="n3-v-fin" parent="n3-c-validar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à DISA (validar usos do MANTIS) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-v-fin" parent="n3-c-validar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à DISA (validar usos do MANTIS) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
           <mxGeometry height="110" width="370" x="15" y="280" as="geometry" />
         </mxCell>
         <mxCell id="n3-v-fim" parent="n3-c-validar" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: próxima execução depois da resposta da DISA&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="370" x="15" y="426" as="geometry" />
         </mxCell>
-        <mxCell id="n3-a-gar-mantis" parent="n3-c-mantis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;garantir_marcadores_no_sei&lt;/font&gt;&lt;/b&gt;&lt;br&gt;[1.8; 1.9 se alguém usou (base DISA ou MANTIS); 1.10]" vertex="1">
+        <mxCell id="n3-a-gar-mantis" parent="n3-c-mantis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;garantir_marcadores_no_sei&lt;/b&gt;&lt;br&gt;[1.8; 1.9 se há memo DISA; 1.10 correspondente]" vertex="1">
           <mxGeometry height="80" width="440" x="320" y="632" as="geometry" />
         </mxCell>
         <mxCell id="n3-err-gar-mantis" parent="n3-c-mantis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
           <mxGeometry height="80" width="260" x="20" y="632" as="geometry" />
         </mxCell>
-        <mxCell id="n3-t-18" parent="n3-c-mantis" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8 - Avaliado Uso Rede Própria MANTIS&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-t-18" parent="n3-c-mantis" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8 - Avaliado Uso Rede Própria MANTIS ↻ 1.6&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(se o estado ainda não passou dele: _etapa_feita)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="440" x="320" y="748" as="geometry" />
         </mxCell>
-        <mxCell id="n3-q-usou" parent="n3-c-mantis" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Alguém usou a rede própria?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(base DISA ou MANTIS)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-q-usou" parent="n3-c-mantis" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Memo DISA?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(alguém usou na base DISA, ou o estado já é 1.9)&lt;/font&gt;" vertex="1">
           <mxGeometry height="120" width="440" x="320" y="844" as="geometry" />
         </mxCell>
-        <mxCell id="n3-c-memo-disa" parent="n3-c-mantis" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_incluir_memo_disa&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-c-memo-disa" parent="n3-c-mantis" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_avaliar_mantis_e_criar_memos&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;(memo DISA)&lt;/font&gt;" vertex="1">
           <mxGeometry height="390" width="440" x="320" y="1000" as="geometry" />
         </mxCell>
-        <mxCell id="n3-d-q19" parent="n3-c-memo-disa" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Já tem 1.9?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(tem_tag: retomada)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-d-q19" parent="n3-c-memo-disa" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Etapa 1.9 já feita?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(_etapa_feita: retomada)&lt;/font&gt;" vertex="1">
           <mxGeometry height="100" width="300" x="70" y="58" as="geometry" />
         </mxCell>
-        <mxCell id="n3-d-memo" parent="n3-c-memo-disa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDisa&lt;/b&gt; (quem usou e quem não usou) e insere no bloco &lt;b&gt;7697744&lt;/b&gt;" vertex="1">
+        <mxCell id="n3-d-memo" parent="n3-c-memo-disa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_memo (memos_sei.py)&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDisa&lt;/b&gt; (quem usou e quem não usou) e insere no bloco &lt;b&gt;7697744&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Antes, procura pelo assunto: já existe → só o marcador&lt;/font&gt;" vertex="1">
           <mxGeometry height="90" width="400" x="20" y="194" as="geometry" />
         </mxCell>
-        <mxCell id="n3-d-t19" parent="n3-c-memo-disa" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.9 - Memo DISA Uso Rede Própria" vertex="1">
+        <mxCell id="n3-d-t19" parent="n3-c-memo-disa" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.9 - Memo DISA Uso Rede Própria ↻ 1.8" vertex="1">
           <mxGeometry height="50" width="400" x="20" y="320" as="geometry" />
         </mxCell>
-        <mxCell id="n3-c-memo-deproc" parent="n3-c-mantis" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_incluir_memo_deproc&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-c-memo-deproc" parent="n3-c-mantis" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_avaliar_mantis_e_criar_memos&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;(memo DEPROC)&lt;/font&gt;" vertex="1">
           <mxGeometry height="254" width="440" x="320" y="1426" as="geometry" />
         </mxCell>
-        <mxCell id="n3-p-memo" parent="n3-c-memo-deproc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDeproc&lt;/b&gt; (todos os beneficiários) e insere no bloco &lt;b&gt;7697744&lt;/b&gt;" vertex="1">
+        <mxCell id="n3-p-memo" parent="n3-c-memo-deproc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_memo (memos_sei.py)&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDeproc&lt;/b&gt; (todos os beneficiários) e insere no bloco &lt;b&gt;7697744&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Antes, procura pelo assunto: já existe → só o marcador&lt;/font&gt;" vertex="1">
           <mxGeometry height="90" width="400" x="20" y="58" as="geometry" />
         </mxCell>
-        <mxCell id="n3-p-t110" parent="n3-c-memo-deproc" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.10 - Memo DEPROC Coparticipação" vertex="1">
+        <mxCell id="n3-p-t110" parent="n3-c-memo-deproc" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.10 - Memos DISA e DEPROC no Bloco ↻ 1.9 (com memo DISA)&lt;br&gt;ou ➕ 1.10 - Memo DEPROC Coparticipação ↻ 1.8 (sem memo DISA)" vertex="1">
           <mxGeometry height="50" width="400" x="20" y="184" as="geometry" />
         </mxCell>
-        <mxCell id="n3-a-fin" parent="n3-c-mantis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memos DISA e DEPROC e encaminhar (alguém usou)&lt;br&gt;ou Assinar memo DEPROC e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-a-fin" parent="n3-c-mantis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memos DISA e DEPROC e encaminhar (alguém usou)&lt;br&gt;ou Assinar memo DEPROC e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
           <mxGeometry height="120" width="440" x="320" y="1716" as="geometry" />
         </mxCell>
         <mxCell id="aZxonJeAYWA88GjUZAk9-1" parent="n3-c-mantis" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;perimeter=cloudPerimeter;fillColor=light-dark(#ff0d00, #512d2b);strokeColor=#b85450;" value="A DISA somente fala se teve ou não antedimento, sem especificação. Então&amp;nbsp;&lt;div&gt;- caso tenha na DISA e no nosso, vamos so enviar a lista do que encontramos e pedir um OK.&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;- Caso tenha na DISA e não tenha no nosso, não enviamos nada&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;- Caso tenha no nosso e não tenha na DISA, é o fluxo de erro acima&lt;br&gt;&lt;br&gt;- OBSERVAÇÃO: Lembrar que o registro de utilizações tem que seguir o padrão&lt;br&gt;&lt;br&gt;TAMBEM TEMOS QUE INSERIR O RELATÓRIO DE USO DA REDE CREDENCIADA&lt;br&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
@@ -651,10 +645,10 @@
         <mxCell id="aZxonJeAYWA88GjUZAk9-3" parent="n3-c-mantis" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;perimeter=cloudPerimeter;fillColor=light-dark(#ff0d00, #512d2b);strokeColor=#b85450;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;Separar os blocos do que vai só pra DEPROC&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;e o que vai pra DISA e DEPROC&lt;/div&gt;" vertex="1">
           <mxGeometry height="267" width="310" x="10" y="1370" as="geometry" />
         </mxCell>
-        <mxCell id="n3-fim" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: memos no bloco 7697744 (fluxo normal concluído).&lt;br&gt;Próximas execuções: conferência (aba 2, ➕ 1.10)" vertex="1">
+        <mxCell id="n3-fim" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: memos no bloco 7697744 (fluxo normal concluído).&lt;br&gt;Próximas execuções: conferência (aba 2, estado 1.10)" vertex="1">
           <mxGeometry height="70" width="480" x="300" y="3872" as="geometry" />
         </mxCell>
-        <mxCell id="n3-c-sem-memo" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_sem_memo_apis&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-c-sem-memo" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_parar_sem_memo_apis → _parar_com_memo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
           <mxGeometry height="718" width="760" x="1620" y="77" as="geometry" />
         </mxCell>
         <mxCell id="n3-c-sem-memo-memo" parent="n3-c-sem-memo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;MemoApisSemMemo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Monta o memo (modelo Despacho 2, SEI 150644870)&lt;br&gt;(TEXTO_DEFINIDO = False: TextoMemoPendente)" vertex="1">
@@ -669,19 +663,19 @@
         <mxCell id="n3-c-sem-memo-err-gar" parent="n3-c-sem-memo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
           <mxGeometry height="80" width="260" x="480" y="189" as="geometry" />
         </mxCell>
-        <mxCell id="n3-s1-memo" parent="n3-c-sem-memo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisSemMemo&lt;/b&gt; e insere no bloco &lt;b&gt;7730344&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: procurar pelo assunto antes de criar&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-s1-memo" parent="n3-c-sem-memo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_memo (memos_sei.py)&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisSemMemo&lt;/b&gt; e insere no bloco &lt;b&gt;7730344&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Antes, procura pelo assunto: já existe → só o marcador&lt;/font&gt;" vertex="1">
           <mxGeometry height="90" width="420" x="20" y="300" as="geometry" />
         </mxCell>
         <mxCell id="n3-s1-t15" parent="n3-c-sem-memo" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.5 - Memo APIS Sem Memo p/ GEACS" vertex="1">
           <mxGeometry height="50" width="420" x="20" y="426" as="geometry" />
         </mxCell>
-        <mxCell id="n3-s1-fin" parent="n3-c-sem-memo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (sem memorando para a GEACS) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-s1-fin" parent="n3-c-sem-memo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (sem memorando para a GEACS) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
           <mxGeometry height="100" width="420" x="20" y="512" as="geometry" />
         </mxCell>
         <mxCell id="n3-s1-fim" parent="n3-c-sem-memo" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado" vertex="1">
           <mxGeometry height="50" width="420" x="20" y="648" as="geometry" />
         </mxCell>
-        <mxCell id="n3-c-formato" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_formato_invalido&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-c-formato" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_parar_formato_invalido → _parar_com_memo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
           <mxGeometry height="804" width="760" x="1620" y="855" as="geometry" />
         </mxCell>
         <mxCell id="n3-c-formato-antes0" parent="n3-c-formato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="Registro: &lt;b&gt;motivo_formato_invalido&lt;/b&gt;" vertex="1">
@@ -699,19 +693,19 @@
         <mxCell id="n3-c-formato-err-gar" parent="n3-c-formato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
           <mxGeometry height="80" width="260" x="480" y="275" as="geometry" />
         </mxCell>
-        <mxCell id="n3-s2-memo" parent="n3-c-formato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisFormatoInvalido&lt;/b&gt; e insere no bloco &lt;b&gt;7730341&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: procurar pelo assunto antes de criar&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-s2-memo" parent="n3-c-formato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_memo (memos_sei.py)&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisFormatoInvalido&lt;/b&gt; e insere no bloco &lt;b&gt;7730341&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Antes, procura pelo assunto: já existe → só o marcador&lt;/font&gt;" vertex="1">
           <mxGeometry height="90" width="420" x="20" y="386" as="geometry" />
         </mxCell>
         <mxCell id="n3-s2-t15" parent="n3-c-formato" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.5 - Memo APIS Formato Inválido" vertex="1">
           <mxGeometry height="50" width="420" x="20" y="512" as="geometry" />
         </mxCell>
-        <mxCell id="n3-s2-fin" parent="n3-c-formato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (formato do memorando inválido) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-s2-fin" parent="n3-c-formato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (formato do memorando inválido) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
           <mxGeometry height="100" width="420" x="20" y="598" as="geometry" />
         </mxCell>
         <mxCell id="n3-s2-fim" parent="n3-c-formato" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado" vertex="1">
           <mxGeometry height="50" width="420" x="20" y="734" as="geometry" />
         </mxCell>
-        <mxCell id="n3-c-geral" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_nao_encontradas_base_geral&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-c-geral" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_parar_nao_encontradas_base_geral&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
           <mxGeometry height="962" width="760" x="1620" y="1719" as="geometry" />
         </mxCell>
         <mxCell id="n3-g-t121" parent="n3-c-geral" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2.1 - Mat. N Encontradas Base Geral&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;Registra a pesquisa: vem antes do memo. Marcadores já conferidos em _avaliar_disa&lt;/font&gt;" vertex="1">
@@ -735,16 +729,16 @@
         <mxCell id="n3-gi-memo" parent="n3-c-incluir-apis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="Cria &lt;b&gt;MemoApisMatNaoEncontradas&lt;/b&gt; e insere no bloco &lt;b&gt;7711907&lt;/b&gt;" vertex="1">
           <mxGeometry height="70" width="400" x="20" y="360" as="geometry" />
         </mxCell>
-        <mxCell id="n3-g-t161" parent="n3-c-geral" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.6.1 - Memo APIS Mat. N Encontradas" vertex="1">
+        <mxCell id="n3-g-t161" parent="n3-c-geral" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.6.1 - Memo APIS Mat. N Encontradas ↻ 1.6" vertex="1">
           <mxGeometry height="50" width="420" x="20" y="670" as="geometry" />
         </mxCell>
-        <mxCell id="n3-g-fin" parent="n3-c-geral" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (matrículas não encontradas) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-g-fin" parent="n3-c-geral" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (matrículas não encontradas) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
           <mxGeometry height="100" width="420" x="20" y="756" as="geometry" />
         </mxCell>
         <mxCell id="n3-g-fim" parent="n3-c-geral" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado" vertex="1">
           <mxGeometry height="50" width="420" x="20" y="892" as="geometry" />
         </mxCell>
-        <mxCell id="n3-c-periodo" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_periodo_variavel&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-c-periodo" parent="1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_parar_periodo_variavel → _parar_com_memo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
           <mxGeometry height="814" width="760" x="1620" y="2741" as="geometry" />
         </mxCell>
         <mxCell id="n3-c-periodo-memo" parent="n3-c-periodo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;MemoApisPeriodoDependentes&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Monta o memo com os dependentes&lt;br&gt;(TEXTO_DEFINIDO = False: TextoMemoPendente)" vertex="1">
@@ -762,25 +756,25 @@
         <mxCell id="n3-s4-t11" parent="n3-c-periodo" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.1 - Período Variável p/ Dependentes&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="420" x="20" y="300" as="geometry" />
         </mxCell>
-        <mxCell id="n3-s4-memo" parent="n3-c-periodo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisPeriodoDependentes&lt;/b&gt; e insere no bloco &lt;b&gt;7730905&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: procurar pelo assunto antes de criar&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-s4-memo" parent="n3-c-periodo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_memo (memos_sei.py)&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisPeriodoDependentes&lt;/b&gt; e insere no bloco &lt;b&gt;7730905&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Antes, procura pelo assunto: já existe → só o marcador&lt;/font&gt;" vertex="1">
           <mxGeometry height="90" width="420" x="20" y="396" as="geometry" />
         </mxCell>
-        <mxCell id="n3-s4-t17" parent="n3-c-periodo" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.7 - Memo APIS Período Dependentes" vertex="1">
+        <mxCell id="n3-s4-t17" parent="n3-c-periodo" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.7 - Memo APIS Período Dependentes ↻ 1.6" vertex="1">
           <mxGeometry height="50" width="420" x="20" y="522" as="geometry" />
         </mxCell>
-        <mxCell id="n3-s4-fin" parent="n3-c-periodo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (período dos dependentes) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+        <mxCell id="n3-s4-fin" parent="n3-c-periodo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (período dos dependentes) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
           <mxGeometry height="100" width="420" x="20" y="608" as="geometry" />
         </mxCell>
         <mxCell id="n3-s4-fim" parent="n3-c-periodo" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado" vertex="1">
           <mxGeometry height="50" width="420" x="20" y="744" as="geometry" />
         </mxCell>
-        <mxCell id="n3-nota-legenda" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;• Moldura = &lt;b&gt;função&lt;/b&gt; (nome no topo); caixas dentro = passos na ordem em que o código executa.&lt;br&gt;• Azul: ação · Amarelo: pergunta · Roxo: memo criado e inserido no bloco · Verde: ➕ marcador · Vermelho: erro · Cinza: início/fim.&lt;br&gt;• Contêineres principais: erros à esquerda; desvios que param o processo à direita.&lt;br&gt;• Todo erro sobe até main._processar_linha: registrar_erro preenche tipo_erro/erro e o loop segue (ErroAvaliacao, FormatoMemorandoInvalido e TextoMemoPendente sem traceback)." vertex="1">
+        <mxCell id="n3-nota-legenda" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;• Moldura = &lt;b&gt;função&lt;/b&gt; (nome no topo); caixas dentro = passos na ordem em que o código executa.&lt;br&gt;• Azul: ação · Amarelo: pergunta · Roxo: memo criado e inserido no bloco · Verde: ➕ marcador · Vermelho: erro · Cinza: início/fim.&lt;br&gt;• &lt;b&gt;↻ X&lt;/b&gt;: o ➕ de um marcador de estado remove o estado anterior X (adicionar_tag). No SEI fica só o estado atual.&lt;br&gt;• Contêineres principais: erros à esquerda; desvios que param o processo à direita.&lt;br&gt;• Todo erro sobe até main._processar_linha: registrar_erro preenche tipo_erro/erro e o loop segue (ErroAvaliacao, FormatoMemorandoInvalido e TextoMemoPendente sem traceback)." vertex="1">
           <mxGeometry height="170" width="560" x="-620" y="-230" as="geometry" />
         </mxCell>
-        <mxCell id="n3-nota-marcadores" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Prefixo &quot;Script v2 - &quot; em todos (ex.: &quot;Script v2 - 1.6 - Avaliado Uso Rede Própria DISA&quot;). Limite do SEI: 50 caracteres.&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: cadastrar 1.5 a 1.10 no SEI.&lt;br&gt;Cada memo recebe o seu marcador &lt;b&gt;só depois&lt;/b&gt; de estar no bloco. Os marcadores de pesquisa (1.2.1, 1.2.2, 1.6, 1.8, 1.1) entram antes dos memos." vertex="1">
+        <mxCell id="n3-nota-marcadores" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Prefixo &quot;Script v2 - &quot; em todos (ex.: &quot;Script v2 - 1.6 - Avaliado Uso Rede Própria DISA&quot;). Limite do SEI: 50 caracteres.&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: cadastrar no SEI o 1.10 - Memos DISA e DEPROC no Bloco.&lt;br&gt;Cada memo recebe o seu marcador &lt;b&gt;só depois&lt;/b&gt; de estar no bloco. Os marcadores de pesquisa (1.2.1, 1.2.2, 1.6, 1.8, 1.1) entram antes dos memos." vertex="1">
           <mxGeometry height="150" width="560" x="-620" y="-30" as="geometry" />
         </mxCell>
-        <mxCell id="n3-nota-retomada" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Retomada&lt;/b&gt;&lt;br&gt;processar_novo roda sempre do início. Marcador que o processo já tem não é adicionado de novo (adicionar_tag_se_ausente); o memo DISA com 1.9 não é recriado (tem_tag); o memo à APIS de matrículas não encontradas é procurado pelo assunto.&lt;br&gt;Se o script falhar entre criar um memo e adicionar o marcador dele, a próxima execução tem mais memos da GEACS que marcadores de memo e para com erro (aba 2, pergunta 8).&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: procurar os demais memos pelo assunto." vertex="1">
+        <mxCell id="n3-nota-retomada" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Retomada&lt;/b&gt;&lt;br&gt;processar_novo roda sempre do início. As etapas até o estado atual (1.6, 1.8, 1.9) são puladas (_etapa_feita): o estado não é adicionado de novo e o memo DISA com 1.9 não é recriado. Os informativos (1.1, 1.2.1, 1.2.2) usam adicionar_tag_se_ausente.&lt;br&gt;&lt;b&gt;Todo memo é procurado pelo assunto antes de ser criado&lt;/b&gt; (incluir_memo, padrao_assunto): se a passagem anterior falhou entre criar o memo e adicionar o marcador, o memo é reaproveitado (coluna &amp;lt;memo&amp;gt;_na_arvore) e só recebe o marcador. A aba 2 aceita esse memo a mais (encontrar_memo_sem_marcador).&lt;br&gt;Se falhar entre adicionar um estado e remover o anterior, a próxima execução encontra dois estados (erro, aba 2)." vertex="1">
           <mxGeometry height="190" width="560" x="-620" y="140" as="geometry" />
         </mxCell>
         <mxCell id="n3-nota-periodo" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="Os períodos &lt;b&gt;não&lt;/b&gt; entram na consulta da base DISA; só na do MANTIS.&lt;br&gt;O processo com período variável para dependentes para antes do MANTIS, então o período do titular vale para todos." vertex="1">
@@ -1075,7 +1069,7 @@
         <mxCell id="c-r-reabre" parent="c-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_reabrir&lt;/font&gt;&lt;/b&gt;&lt;br&gt;reabrir_processo: reabre o processo na unidade" vertex="1">
           <mxGeometry height="58" width="400" x="970" y="442" as="geometry" />
         </mxCell>
-        <mxCell id="c-r-t12" parent="c-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2 - Avaliado Se Usou Rede Própria&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(_marcar_avaliado)&lt;/font&gt;" vertex="1">
+        <mxCell id="c-r-t12" parent="c-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2 - Avaliado Se Usou Rede Própria" vertex="1">
           <mxGeometry height="60" width="400" x="970" y="536" as="geometry" />
         </mxCell>
         <mxCell id="c-r-fim" parent="c-c-main" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = Assinar memo de uso da rede própria e encaminhar" vertex="1">
@@ -1113,7 +1107,7 @@
         <mxCell id="c-tu-reabre" parent="c-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_reabrir&lt;/font&gt;&lt;/b&gt;&lt;br&gt;reabrir_processo" vertex="1">
           <mxGeometry height="58" width="400" x="800" y="1118" as="geometry" />
         </mxCell>
-        <mxCell id="c-tu-t12" parent="c-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2 - Avaliado Se Usou Rede Própria&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(_marcar_avaliado)&lt;/font&gt;" vertex="1">
+        <mxCell id="c-tu-t12" parent="c-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2 - Avaliado Se Usou Rede Própria" vertex="1">
           <mxGeometry height="60" width="400" x="800" y="1212" as="geometry" />
         </mxCell>
         <mxCell id="c-tu-fim" parent="c-c-main" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = Nada a fazer: todos usaram a rede própria (memo dispensado)" vertex="1">
@@ -1137,16 +1131,16 @@
         <mxCell id="c-err-gar" parent="c-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
           <mxGeometry height="58" width="260" x="20" y="1604" as="geometry" />
         </mxCell>
-        <mxCell id="c-m-memo" parent="c-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_doc_sei_memo · inserir_bloco_ass&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDisaUsoRede&lt;/b&gt; (quem usou e quem não usou) e insere no bloco &lt;b&gt;7707212&lt;/b&gt;" vertex="1">
+        <mxCell id="c-m-memo" parent="c-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;incluir_memo&lt;/b&gt; (memos_sei.py)&lt;br&gt;Cria MemoDisaUsoRede (quem usou e quem não usou) e insere no bloco 7707212" vertex="1">
           <mxGeometry height="74" width="440" x="320" y="1706" as="geometry" />
         </mxCell>
         <mxCell id="c-t14" parent="c-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.4 - Memo Não Usou Rede no Bloco" vertex="1">
           <mxGeometry height="50" width="440" x="320" y="1816" as="geometry" />
         </mxCell>
-        <mxCell id="c-t12" parent="c-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2 - Avaliado Se Usou Rede Própria&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(_marcar_avaliado)&lt;/font&gt;" vertex="1">
+        <mxCell id="c-t12" parent="c-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2 - Avaliado Se Usou Rede Própria" vertex="1">
           <mxGeometry height="60" width="440" x="320" y="1902" as="geometry" />
         </mxCell>
-        <mxCell id="c-a-num" parent="c-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_registrar_numero_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;memos_geacs_novos: relê a árvore e preenche memo_uso_rede_sei (falha só gera log)" vertex="1">
+        <mxCell id="c-a-num" parent="c-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;registrar_numeros_memos&lt;/b&gt; (memos_sei.py)&lt;br&gt;Relê a árvore e preenche memo_uso_rede_sei (falha só gera log)" vertex="1">
           <mxGeometry height="74" width="440" x="320" y="1998" as="geometry" />
         </mxCell>
         <mxCell id="c-fim" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = Assinar memo de uso da rede própria e encaminhar" vertex="1">
@@ -1310,7 +1304,7 @@
         <mxCell id="m-i-ret" value="&lt;b&gt;Retomada&lt;/b&gt;: não recria o memo&lt;br&gt;Registro: memo_apis_mat_nao_encontradas_na_arvore, memo_apis_mat_nao_encontradas_sei" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="m-c-incl">
           <mxGeometry x="760" y="220" width="260" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="m-i-memo" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_doc_sei_memo · inserir_bloco_ass&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisMatNaoEncontradas&lt;/b&gt; e insere no bloco &lt;b&gt;7711907&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Devolve à APIS para conferir as matrículas: retificar e reencaminhar à GEACS-Utilização se houver erro; se estiver correta, encaminhar à IPSEMG/GEACS&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" vertex="1" parent="m-c-incl">
+        <mxCell id="m-i-memo" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;incluir_memo (memos_sei.py)&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisMatNaoEncontradas&lt;/b&gt; e insere no bloco &lt;b&gt;7711907&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Devolve à APIS para conferir as matrículas: retificar e reencaminhar à GEACS-Utilização se houver erro; se estiver correta, encaminhar à IPSEMG/GEACS&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" vertex="1" parent="m-c-incl">
           <mxGeometry x="320" y="370" width="400" height="106" as="geometry" />
         </mxCell>
         <mxCell id="m-t-geral" value="➕ 1.2.1 (NOVO) ou 2.1.1 (VELHO) - Mat. N Encontradas Base Geral&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;Também indica que o memo à APIS está no bloco&lt;/font&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="m-c-main">
@@ -1328,7 +1322,7 @@
         <mxCell id="m-q-criado" value="O memo à APIS foi criado nesta execução?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="m-c-main">
           <mxGeometry x="620" y="1392" width="440" height="102" as="geometry" />
         </mxCell>
-        <mxCell id="m-a-num" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_registrar_numero_memo_apis&lt;/font&gt;&lt;/b&gt;&lt;br&gt;memos_geacs_novos: relê a árvore e preenche memo_apis_mat_nao_encontradas_sei (falha só gera log)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="m-c-main">
+        <mxCell id="m-a-num" value="&lt;b&gt;registrar_numeros_memos&lt;/b&gt; (memos_sei.py)&lt;br&gt;Relê a árvore e preenche memo_apis_mat_nao_encontradas_sei (falha só gera log)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="m-c-main">
           <mxGeometry x="620" y="1530" width="440" height="74" as="geometry" />
         </mxCell>
         <mxCell id="m-fim" value="&lt;b&gt;Fim&lt;/b&gt;: quem chamou relança o erro&lt;br&gt;Processo parado, sem memos DISA/DEPROC e sem 1.2" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
@@ -1451,33 +1445,33 @@
           <mxGeometry height="90" width="260" x="20" y="64" as="geometry" />
         </mxCell>
         <mxCell id="v-q2" parent="v-c-main" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem 2.2 - Excel Transformado em PDF?" vertex="1">
-          <mxGeometry height="100" width="440" x="730" y="196" as="geometry" />
+          <mxGeometry height="100" width="440" x="730" y="368" as="geometry" />
         </mxCell>
-        <mxCell id="v-c-concl1" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_tag_rel_ui_transformado_pdf&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
-          <mxGeometry height="136" width="440" x="1620" y="196" as="geometry" />
+        <mxCell id="v-c-concl1" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_ESTADOS_VELHO&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="136" width="440" x="1620" y="368" as="geometry" />
         </mxCell>
         <mxCell id="v-c-concl1-f" parent="v-c-concl1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Stub&lt;/b&gt; (TODO)&lt;br&gt;prox_acao = VELHO: fluxo após conclusão" vertex="1">
           <mxGeometry height="58" width="400" x="20" y="58" as="geometry" />
         </mxCell>
         <mxCell id="v-q3" parent="v-c-main" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem 2.2 - Relatório de UI Refeito?" vertex="1">
-          <mxGeometry height="100" width="440" x="730" y="368" as="geometry" />
+          <mxGeometry height="100" width="440" x="730" y="504" as="geometry" />
         </mxCell>
-        <mxCell id="v-c-concl2" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_tag_novo_rel_ui_gerado&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
-          <mxGeometry height="136" width="440" x="1620" y="368" as="geometry" />
+        <mxCell id="v-c-concl2" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_ESTADOS_VELHO&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="136" width="440" x="1620" y="504" as="geometry" />
         </mxCell>
         <mxCell id="v-c-concl2-f" parent="v-c-concl2" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Stub&lt;/b&gt; (TODO)&lt;br&gt;prox_acao = VELHO: fluxo após conclusão" vertex="1">
           <mxGeometry height="58" width="400" x="20" y="58" as="geometry" />
         </mxCell>
-        <mxCell id="v-q4" parent="v-c-main" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem as duas pendências 2.1?" vertex="1">
-          <mxGeometry height="100" width="440" x="730" y="504" as="geometry" />
+        <mxCell id="v-q4" parent="v-c-main" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem mais de um marcador de estado?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(2.1 e 2.2: TAGS_ESTADO_VELHO; estado_atual)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="440" x="730" y="196" as="geometry" />
         </mxCell>
-        <mxCell id="v-err4" parent="v-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcado para transformar Excel em PDF &lt;b&gt;e&lt;/b&gt; para refazer o relatório de UI" vertex="1">
-          <mxGeometry height="74" width="260" x="20" y="517" as="geometry" />
+        <mxCell id="v-err4" parent="v-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): mais de um marcador de estado. Remover manualmente o(s) anterior(es) no SEI" vertex="1">
+          <mxGeometry height="74" width="260" x="20" y="209" as="geometry" />
         </mxCell>
         <mxCell id="v-q5" parent="v-c-main" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem 2.1 - Transformar Excel em PDF?" vertex="1">
           <mxGeometry height="100" width="440" x="730" y="640" as="geometry" />
         </mxCell>
-        <mxCell id="v-c-pdf" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_tag_transformar_excel_em_pdf&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
+        <mxCell id="v-c-pdf" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_ESTADOS_VELHO&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
           <mxGeometry height="136" width="440" x="1620" y="640" as="geometry" />
         </mxCell>
         <mxCell id="v-c-pdf-f" parent="v-c-pdf" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Stub&lt;/b&gt; (TODO)&lt;br&gt;prox_acao = VELHO: transformar Excel em PDF" vertex="1">
@@ -1486,13 +1480,13 @@
         <mxCell id="v-pdf-a" parent="v-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" value="Transforma o relatório de UI antigo (Excel) em PDF" vertex="1">
           <mxGeometry height="50" width="440" x="1620" y="812" as="geometry" />
         </mxCell>
-        <mxCell id="v-pdf-t" parent="v-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" value="➕ 2.2 - Excel Transformado em PDF" vertex="1">
+        <mxCell id="v-pdf-t" parent="v-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" value="➕ 2.2 - Excel Transformado em PDF ↻ 2.1" vertex="1">
           <mxGeometry height="50" width="440" x="1620" y="898" as="geometry" />
         </mxCell>
         <mxCell id="v-q6" parent="v-c-main" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Tem 2.1 - Refazer Relatório de UI?" vertex="1">
           <mxGeometry height="100" width="440" x="730" y="984" as="geometry" />
         </mxCell>
-        <mxCell id="v-c-ref" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_tag_refazer_rel_ui&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
+        <mxCell id="v-c-ref" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_ESTADOS_VELHO&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main.py&lt;/font&gt;" vertex="1">
           <mxGeometry height="136" width="440" x="1620" y="984" as="geometry" />
         </mxCell>
         <mxCell id="v-c-ref-f" parent="v-c-ref" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Stub&lt;/b&gt; (TODO)&lt;br&gt;prox_acao = VELHO: refazer relatório de UI" vertex="1">
@@ -1515,7 +1509,7 @@
         <mxCell id="v-ref-b" parent="v-c-main" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" value="Pesquisa da utilização indevida em si" vertex="1">
           <mxGeometry height="50" width="440" x="1620" y="1404" as="geometry" />
         </mxCell>
-        <mxCell id="v-ref-t" parent="v-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" value="➕ 2.2 - Relatório de UI Refeito" vertex="1">
+        <mxCell id="v-ref-t" parent="v-c-main" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" value="➕ 2.2 - Relatório de UI Refeito ↻ 2.1" vertex="1">
           <mxGeometry height="50" width="440" x="1620" y="1490" as="geometry" />
         </mxCell>
         <mxCell id="v-c-proc" parent="v-c-main" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;processar_velho&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_velho.py&lt;/font&gt;" vertex="1">
@@ -1590,13 +1584,13 @@
         <mxCell id="v-nota1" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Prefixo &quot;Script v2 - &quot; em todos (ex.: &quot;Script v2 - 1.2 - Avaliado Se Usou Rede Própria&quot;). Limite do SEI: 50 caracteres. Aqui os marcadores aparecem sem o prefixo." vertex="1">
           <mxGeometry height="80" width="560" x="-620" y="194" as="geometry" />
         </mxCell>
-        <mxCell id="v-nota2" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Por enquanto o script só adiciona o marcador da pendência (2.1).&lt;/b&gt;&lt;br&gt;Os stubs de main.py só definem a prox_acao. Os passos tracejados ainda não foram implementados; 2.2 - Relatório de UI Refeito só entra depois da pesquisa da utilização indevida." vertex="1">
+        <mxCell id="v-nota2" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Por enquanto o script só adiciona o marcador da pendência (2.1).&lt;/b&gt;&lt;br&gt;Os stubs de main.py (_ESTADOS_VELHO) só definem a prox_acao. O 2.2 substitui o 2.1 (↻). Os passos tracejados ainda não foram implementados; 2.2 - Relatório de UI Refeito só entra depois da pesquisa da utilização indevida." vertex="1">
           <mxGeometry height="100" width="560" x="-620" y="298" as="geometry" />
         </mxCell>
         <mxCell id="v-nota3" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Critérios das instruções&lt;/b&gt;&lt;br&gt;Os padrões de nova_pesquisa ainda estão vazios (em avaliação). Enquanto isso, um processo sem instrução identificada não recebe marcador: não dá para afirmar que ele não tem a instrução de nova pesquisa." vertex="1">
           <mxGeometry height="100" width="560" x="-620" y="422" as="geometry" />
         </mxCell>
-        <mxCell id="v-nota4" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;TODO&lt;/b&gt;&lt;br&gt;- critérios de texto das instruções (não invente);&lt;br&gt;- avaliação da rede própria no VELHO;&lt;br&gt;- download das planilhas antigas;&lt;br&gt;- _tratar_tag_transformar_excel_em_pdf e _tratar_tag_refazer_rel_ui;&lt;br&gt;- pesquisa da utilização indevida." vertex="1">
+        <mxCell id="v-nota4" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;TODO&lt;/b&gt;&lt;br&gt;- critérios de texto das instruções (não invente);&lt;br&gt;- avaliação da rede própria no VELHO;&lt;br&gt;- download das planilhas antigas;&lt;br&gt;- fluxo de cada estado de _ESTADOS_VELHO (main.py);&lt;br&gt;- pesquisa da utilização indevida." vertex="1">
           <mxGeometry height="120" width="560" x="-620" y="546" as="geometry" />
         </mxCell>
         <mxCell id="v-nota5" parent="1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Erros&lt;/b&gt;&lt;br&gt;Todo erro sobe até _processar_linha: registrar_erro preenche tipo_erro, erro e, se preciso, prox_acao = Verificar erro. ErroAvaliacao, FormatoMemorandoInvalido e TextoMemoPendente são logados sem traceback; falha inesperada, com logger.exception. &lt;b&gt;Um erro nunca interrompe os demais processos.&lt;/b&gt;" vertex="1">
@@ -1608,7 +1602,7 @@
         <mxCell id="v-e2" edge="1" parent="1" source="v-q1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="v-err1" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="v-e3" edge="1" parent="1" source="v-q1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" target="v-q2" value="Não">
+        <mxCell id="v-e3" edge="1" parent="1" source="v-q1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" target="v-q4" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="v-e4" edge="1" parent="1" source="v-q2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" target="v-c-concl1" value="Sim">
@@ -1620,13 +1614,13 @@
         <mxCell id="v-e6" edge="1" parent="1" source="v-q3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" target="v-c-concl2" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="v-e7" edge="1" parent="1" source="v-q3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" target="v-q4" value="Não">
+        <mxCell id="v-e7" edge="1" parent="1" source="v-q3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" target="v-q5" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="v-e8" edge="1" parent="1" source="v-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="v-err4" value="Sim">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="v-e9" edge="1" parent="1" source="v-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" target="v-q5" value="Não">
+        <mxCell id="v-e9" edge="1" parent="1" source="v-q4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5000;entryY=0;entryDx=0;entryDy=0;" target="v-q2" value="Não">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="v-e10" edge="1" parent="1" source="v-q5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" target="v-c-pdf" value="Sim">
@@ -1727,22 +1721,22 @@
         <mxCell id="s-c-main" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;main&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main_add_memo_nao_usou_rede_propria.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" vertex="1" parent="1">
           <mxGeometry x="0" y="86" width="2140" height="2152" as="geometry" />
         </mxCell>
-        <mxCell id="s-a-ler" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;pd.read_excel&lt;/font&gt;&lt;/b&gt;&lt;br&gt;dados/inputs/processos_processados_mas_nao_olhou_rede_propria.xlsx&lt;br&gt;(aba FINAL: num_processo, matricula_titular, matriculas_dependentes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-main">
+        <mxCell id="s-a-ler" value="&lt;b&gt;_ler_processos&lt;/b&gt;&lt;br&gt;Planilha de controle geral (aba processos): com 1.3 Memos DISA e DEPROC e sem 1.2&lt;br&gt;+ planilha compilada antiga (dados/inputs/processos_processados_mas_nao_olhou_rede_propria.xlsx, aba FINAL): os que ainda não estão na planilha geral&lt;br&gt;Matrículas: da planilha geral; vazias → da compilada" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-main">
           <mxGeometry x="610" y="58" width="440" height="106" as="geometry" />
         </mxCell>
         <mxCell id="s-a-bases" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;carregar_bases&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Base da rede própria (DISA) e base geral (rede_propria.py)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-main">
           <mxGeometry x="610" y="200" width="440" height="58" as="geometry" />
         </mxCell>
-        <mxCell id="s-a-login" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;efetuar_login&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Abre o navegador e faz login no SEI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-main">
+        <mxCell id="s-a-login" value="&lt;b&gt;abrir_sei&lt;/b&gt; (sessao_sei.py)&lt;br&gt;Abre o navegador e faz login no SEI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-main">
           <mxGeometry x="610" y="294" width="440" height="58" as="geometry" />
         </mxCell>
         <mxCell id="s-q-loop" value="Há próximo processo?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="s-c-main">
           <mxGeometry x="610" y="388" width="440" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="s-c-salvar" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_salvar_resultado&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main_add_memo_nao_usou_rede_propria.py (finally)&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="s-c-main">
+        <mxCell id="s-c-salvar" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;PlanilhaControleGeral&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;planilha_controle.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="s-c-main">
           <mxGeometry x="1680" y="388" width="440" height="348" as="geometry" />
         </mxCell>
-        <mxCell id="s-a-salvar" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;salvar_planilha_controle&lt;/font&gt;&lt;/b&gt;&lt;br&gt;dados/controle/main_add_memo_nao_usou_rede_propria/&amp;lt;data&amp;gt;_processos_add_memo_nao_uso_rede_propria.xlsx" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-salvar">
+        <mxCell id="s-a-salvar" value="Mesma planilha do main.py (script = correcao_rede_propria)&lt;br&gt;Lida antes do login; &lt;b&gt;registrar&lt;/b&gt; regrava depois de cada processo; backup em dados/controle/backup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-salvar">
           <mxGeometry x="20" y="58" width="400" height="74" as="geometry" />
         </mxCell>
         <mxCell id="s-a-resumo" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;log_resumo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Resumo final no log (logs/main_add_memo_nao_usou_rede_propria/)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-salvar">
@@ -1757,7 +1751,7 @@
         <mxCell id="s-c-aval" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_avaliar_processo&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;main_add_memo_nao_usou_rede_propria.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="s-c-linha">
           <mxGeometry x="20" y="58" width="1580" height="1310" as="geometry" />
         </mxCell>
-        <mxCell id="s-a-abre" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;acessar_processo · listar_marcadores · registrar_tags&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Abre o processo e lê os marcadores &lt;b&gt;do SEI&lt;/b&gt; (não da planilha)&lt;br&gt;Registro: marcadores_sei, tag_*" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-aval">
+        <mxCell id="s-a-abre" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;acessar_processo · listar_marcadores · registrar_tags&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Abre o processo e lê os marcadores &lt;b&gt;do SEI&lt;/b&gt; (não da planilha)&lt;br&gt;Registro: marcadores_sei, marcadores_atuais" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-aval">
           <mxGeometry x="320" y="58" width="440" height="74" as="geometry" />
         </mxCell>
         <mxCell id="s-q-novo" value="Tem 1 - Processo NOVO?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="s-c-aval">
@@ -1790,7 +1784,7 @@
         <mxCell id="s-q14" value="Tem 1.4 - Memo Não Usou Rede no Bloco?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="s-c-aval">
           <mxGeometry x="800" y="536" width="360" height="102" as="geometry" />
         </mxCell>
-        <mxCell id="s-a14-arv" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_listar_arvore&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: qnt_memos_geacs_na_arvore" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-aval">
+        <mxCell id="s-a14-arv" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;registro.registrar_arvore&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: qnt_memos_geacs_na_arvore" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-aval">
           <mxGeometry x="1200" y="536" width="360" height="58" as="geometry" />
         </mxCell>
         <mxCell id="s-c14-verif" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;verificar_memo_uso_rede&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;correcao_rede_propria.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="s-c-aval">
@@ -1813,7 +1807,7 @@
         <mxCell id="s-f-fora" value="&lt;b&gt;Fim&lt;/b&gt;: prox_acao = Fora do escopo (não se enquadra na correção)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="s-c-aval">
           <mxGeometry x="800" y="912" width="360" height="58" as="geometry" />
         </mxCell>
-        <mxCell id="s-a-arv" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_listar_arvore&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Lista a árvore&lt;br&gt;Registro: qnt_memos_geacs_na_arvore" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-aval">
+        <mxCell id="s-a-arv" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;registro.registrar_arvore&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Lista a árvore&lt;br&gt;Registro: qnt_memos_geacs_na_arvore" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-aval">
           <mxGeometry x="320" y="1028" width="440" height="74" as="geometry" />
         </mxCell>
         <mxCell id="s-c-corr" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;corrigir_uso_rede_propria&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;correcao_rede_propria.py&lt;/font&gt;" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" vertex="1" parent="s-c-aval">
@@ -1827,7 +1821,7 @@
         <mxCell id="s-err-exc" value="&lt;b&gt;except&lt;/b&gt; (qualquer etapa acima): &lt;b&gt;registrar_erro&lt;/b&gt;(registro, e) preenche tipo_erro e erro.&lt;br&gt;ErroAvaliacao: sem traceback. Outras: logger.exception" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" vertex="1" parent="s-c-linha">
           <mxGeometry x="590" y="1404" width="440" height="74" as="geometry" />
         </mxCell>
-        <mxCell id="s-a-fimproc" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;log_fim_processo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;registro.to_dict() vira uma linha da planilha de controle; segue para o próximo processo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-main">
+        <mxCell id="s-a-fimproc" value="&lt;b&gt;log_fim_processo · PlanilhaControleGeral.registrar&lt;/b&gt;&lt;br&gt;registro.to_dict() é gravado na planilha de controle geral; segue para o próximo processo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="s-c-main">
           <mxGeometry x="610" y="2058" width="440" height="74" as="geometry" />
         </mxCell>
         <mxCell id="s-nota0" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;• Moldura = &lt;b&gt;função&lt;/b&gt; (nome e módulo no topo); caixas dentro = passos na ordem em que o código executa. Funções chamadas aparecem como molduras aninhadas.&lt;br&gt;• Azul: ação · Amarelo: pergunta · Roxo: memo criado e inserido no bloco · Verde: ➕ marcador · Vermelho: erro · Cinza: início/fim · Laranja: detalhado em outra aba (clique).&lt;br&gt;• Erros à esquerda; desvios que param o processo ou seguem outro caminho, à direita. Tracejado: previsto (não implementado).&lt;br&gt;• Legenda completa e tabela de marcadores: aba 8." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
@@ -2110,7 +2104,7 @@
         <mxCell id="l-m8" value="➕ 1.5 - Memo APIS Sem Memo p/ GEACS" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="429" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s8" value="Memo à APIS (sem memorando para a GEACS) no bloco 7730344; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s8" value="[estado] Memo à APIS (sem memorando para a GEACS) no bloco 7730344; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="429" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o8" value="aba 3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
@@ -2119,7 +2113,7 @@
         <mxCell id="l-m9" value="➕ 1.5 - Memo APIS Formato Inválido" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="477" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s9" value="Memo à APIS (formato inválido) no bloco 7730341; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s9" value="[estado] Memo à APIS (formato inválido) no bloco 7730341; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="477" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o9" value="aba 3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
@@ -2128,7 +2122,7 @@
         <mxCell id="l-m10" value="➕ 1.6 - Avaliado Uso Rede Própria DISA" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="525" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s10" value="Base geral e base DISA consultadas" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s10" value="[estado] Base geral e base DISA consultadas" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="525" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o10" value="aba 3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
@@ -2137,7 +2131,7 @@
         <mxCell id="l-m11" value="➕ 1.6.1 - Memo APIS Mat. N Encontradas" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="573" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s11" value="Memo à APIS (matrículas não encontradas) no bloco 7711907; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s11" value="[estado] Memo à APIS (matrículas não encontradas) no bloco 7711907; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="573" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o11" value="aba 3, depois do 1.2.1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
@@ -2146,7 +2140,7 @@
         <mxCell id="l-m12" value="➕ 1.7 - Memo APIS Período Dependentes" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="621" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s12" value="Memo à APIS (período dos dependentes) no bloco 7730905; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s12" value="[estado] Memo à APIS (período dos dependentes) no bloco 7730905; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="621" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o12" value="aba 3, depois do 1.1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
@@ -2155,7 +2149,7 @@
         <mxCell id="l-m13" value="➕ 1.8 - Avaliado Uso Rede Própria MANTIS" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="669" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s13" value="MANTIS consultado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s13" value="[estado] MANTIS consultado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="669" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o13" value="aba 3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
@@ -2164,7 +2158,7 @@
         <mxCell id="l-m14" value="➕ 1.8.1 - Memo DISA Validar Usos MANTIS" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="717" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s14" value="Memo à DISA (validar usos do MANTIS) no bloco 7730939; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s14" value="[estado] Memo à DISA (validar usos do MANTIS) no bloco 7730939; parado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="717" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o14" value="aba 3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
@@ -2173,110 +2167,119 @@
         <mxCell id="l-m15" value="➕ 1.9 - Memo DISA Uso Rede Própria" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="765" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s15" value="Memo DISA (alguém usou) no bloco 7697744" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s15" value="[estado] Memo DISA (alguém usou) no bloco 7697744" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="765" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o15" value="aba 3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="765" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-m16" value="➕ 1.10 - Memo DEPROC Coparticipação" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-m16" value="➕ 1.10 - Memos DISA e DEPROC no Bloco" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="813" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s16" value="Memo DEPROC no bloco 7697744: fluxo normal concluído" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-m16b" value="➕ 1.10 - Memo DEPROC Coparticipação" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="400" y="861" width="440" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l-s16" value="[estado] Memos DISA e DEPROC no bloco 7697744: fluxo normal concluído (alguém usou)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="813" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l-s16b" value="[estado] Só o memo DEPROC no bloco 7697744: fluxo normal concluído (ninguém usou)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="860" y="861" width="420" height="40" as="geometry" />
         </mxCell>
         <mxCell id="l-o16" value="aba 3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="813" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-m17" value="➕ 2 - Processo VELHO" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="400" y="861" width="440" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="l-s17" value="Classificação: VELHO (já tem documento da GEACS)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="860" y="861" width="420" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="l-o17" value="aba 1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-o16b" value="aba 3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="861" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-m18" value="➕ 2.1 - Transformar Excel em PDF" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-m17" value="➕ 2 - Processo VELHO" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="909" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s18" value="VELHO sem instrução de nova pesquisa (fluxo não implementado)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s17" value="Classificação: VELHO (já tem documento da GEACS)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="909" width="420" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-o18" value="aba 6" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-o17" value="aba 1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="909" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-m19" value="➕ 2.1 - Refazer Relatório de UI" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-m18" value="➕ 2.1 - Transformar Excel em PDF" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="957" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s19" value="VELHO com instrução de nova pesquisa (fluxo não implementado)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s18" value="[estado] VELHO sem instrução de nova pesquisa (fluxo não implementado)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="957" width="420" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-o19" value="aba 6" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-o18" value="aba 6" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="957" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-m20" value="➕ 2.1.1 - Mat. N Encontradas Base Geral" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" vertex="1" parent="1">
+        <mxCell id="l-m19" value="➕ 2.1 - Refazer Relatório de UI" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="1005" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s20" value="VELHO parado: matrícula fora da base geral; memo à APIS no bloco" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s19" value="[estado] VELHO com instrução de nova pesquisa (fluxo não implementado)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="1005" width="420" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-o20" value="aba 5 (previsto)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-o19" value="aba 6" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="1005" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-m21" value="➕ 2.1.2 - Mat. N Encontradas Base DISA" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" vertex="1" parent="1">
+        <mxCell id="l-m20" value="➕ 2.1.1 - Mat. N Encontradas Base Geral" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" vertex="1" parent="1">
           <mxGeometry x="400" y="1053" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s21" value="VELHO parado: matrícula fora da base da rede própria" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s20" value="VELHO parado: matrícula fora da base geral; memo à APIS no bloco" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="1053" width="420" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-o21" value="aba 5 (previsto)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-o20" value="aba 5 (previsto)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="1053" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-m22" value="➕ 2.2 - Excel Transformado em PDF" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" vertex="1" parent="1">
+        <mxCell id="l-m21" value="➕ 2.1.2 - Mat. N Encontradas Base DISA" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" vertex="1" parent="1">
           <mxGeometry x="400" y="1101" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s22" value="Conclusão do 2.1 &quot;Transformar Excel em PDF&quot;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s21" value="VELHO parado: matrícula fora da base da rede própria" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="1101" width="420" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-o22" value="Não implementado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-o21" value="aba 5 (previsto)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="1101" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-m23" value="➕ 2.2 - Relatório de UI Refeito" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" vertex="1" parent="1">
+        <mxCell id="l-m22" value="➕ 2.2 - Excel Transformado em PDF" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" vertex="1" parent="1">
           <mxGeometry x="400" y="1149" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-s23" value="Conclusão do 2.1 &quot;Refazer Relatório de UI&quot;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s22" value="[estado] Conclusão do 2.1 &quot;Transformar Excel em PDF&quot;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="1149" width="420" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-o23" value="Não implementado (após a pesquisa)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-o22" value="Não implementado" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="1149" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-mm0" value="PLANILHADO, UTILIZAÇÃO INSERIDA (sem prefixo)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-m23" value="➕ 2.2 - Relatório de UI Refeito" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;dashed=1;dashPattern=6 4;opacity=70;fontColor=#555555;" vertex="1" parent="1">
           <mxGeometry x="400" y="1197" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-ms0" value="Manuais; não interferem na classificação" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-s23" value="[estado] Conclusão do 2.1 &quot;Refazer Relatório de UI&quot;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="1197" width="420" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-mo0" value="Manualmente" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-o23" value="Não implementado (após a pesquisa)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="1197" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-mm1" value="MANUAL, ASSINADO (sem prefixo)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-mm0" value="PLANILHADO, UTILIZAÇÃO INSERIDA (sem prefixo)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="400" y="1245" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-ms1" value="Manuais; tiram o processo do escopo do script de correção" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-ms0" value="Manuais; não interferem na classificação" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="860" y="1245" width="420" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-mo1" value="Manualmente" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="l-mo0" value="Manualmente" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1300" y="1245" width="320" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-n0" value="&lt;b&gt;Numeração&lt;/b&gt;&lt;br&gt;Primeiro número = ramo (1 NOVO, 2 VELHO); número após o ponto = ordem de inserção. &lt;b&gt;Mesmo número = alternativas&lt;/b&gt; (o processo recebe um ou outro).&lt;br&gt;O SEI limita o nome a &lt;b&gt;50 caracteres&lt;/b&gt;. Os nomes em tags.py precisam ser idênticos aos do SEI: para renomear, edite o marcador existente no SEI e atualize tags.py.&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: cadastrar no SEI os marcadores 1.5 a 1.10." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1313" width="440" height="150" as="geometry" />
+        <mxCell id="l-mm1" value="MANUAL, ASSINADO (sem prefixo)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="400" y="1293" width="440" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="l-n1" value="&lt;b&gt;Ciclo de vida&lt;/b&gt;&lt;br&gt;NOVO normal: 1 → [1.2.2] → 1.6 → 1.8 → [1.9] → 1.10&lt;br&gt;Parado pelo memo da APIS: 1 → 1.5 (um dos dois)&lt;br&gt;Parado pela base geral: 1 → [1.2.2] → 1.6 → 1.2.1 → 1.6.1&lt;br&gt;Parado pelo período: 1 → [1.2.2] → 1.6 → 1.1 → 1.7&lt;br&gt;Parado pelo MANTIS: 1 → [1.2.2] → 1.6 → 1.8 → 1.8.1&lt;br&gt;Versão anterior: 1 → [1.1] → 1.2 → 1.3 (um dos dois)&lt;br&gt;Correção: 1 → 1.3 Memos DISA e DEPROC → [1.4] → 1.2&lt;br&gt;VELHO: 2 → 2.1 → [2.1.1/2.1.2] → 2.2" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="860" y="1313" width="420" height="210" as="geometry" />
+        <mxCell id="l-ms1" value="Manuais; tiram o processo do escopo do script de correção" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="860" y="1293" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l-mo1" value="Manualmente" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="1293" width="320" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l-n0" value="&lt;b&gt;Numeração&lt;/b&gt;&lt;br&gt;Primeiro número = ramo (1 NOVO, 2 VELHO); número após o ponto = ordem de inserção. &lt;b&gt;Mesmo número = alternativas&lt;/b&gt; (o processo recebe um ou outro).&lt;br&gt;&lt;b&gt;[estado]&lt;/b&gt;: no máximo um por ramo; o ➕ de um estado remove o anterior (↻). Os demais se acumulam.&lt;br&gt;O SEI limita o nome a &lt;b&gt;50 caracteres&lt;/b&gt;. Os nomes em tags.py precisam ser idênticos aos do SEI: para renomear, edite o marcador existente no SEI e atualize tags.py.&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: cadastrar no SEI o 1.10 - Memos DISA e DEPROC no Bloco; remover_marcador na sei_automacao." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="400" y="1361" width="440" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="l-n1" value="&lt;b&gt;Ciclo de vida&lt;/b&gt; (→ troca o estado; + acumula)&lt;br&gt;NOVO normal: 1 + [1.2.2] + 1.6 → 1.8 → [1.9] → 1.10&lt;br&gt;Parado pelo memo da APIS: 1 + 1.5 (um dos dois)&lt;br&gt;Parado pela base geral: 1 + [1.2.2] + 1.6 + 1.2.1 → 1.6.1&lt;br&gt;Parado pelo período: 1 + [1.2.2] + 1.6 + 1.1 → 1.7&lt;br&gt;Parado pelo MANTIS: 1 + [1.2.2] + 1.6 → 1.8 → 1.8.1&lt;br&gt;Versão anterior: 1 + [1.1] + 1.2 + 1.3 (um dos dois)&lt;br&gt;Correção: 1 + 1.3 Memos DISA e DEPROC + [1.4] + 1.2&lt;br&gt;VELHO: 2 + 2.1 + [2.1.1/2.1.2] → 2.2" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="860" y="1361" width="420" height="230" as="geometry" />
         </mxCell>
         <mxCell id="l-n2" value="&lt;b&gt;Blocos de assinatura&lt;/b&gt;&lt;br&gt;7697744: memos DISA e DEPROC (fluxo normal)&lt;br&gt;7707212: memo de correção&lt;br&gt;7730344: memo à APIS (sem memorando)&lt;br&gt;7730341: memo à APIS (formato inválido)&lt;br&gt;7730905: memo à APIS (período dos dependentes)&lt;br&gt;7730939: memo à DISA (validar usos do MANTIS)&lt;br&gt;7711907: memo à APIS (matrículas não encontradas)&lt;br&gt;&lt;br&gt;&lt;b&gt;Antes de criar qualquer memo&lt;/b&gt;: garantir_marcadores_no_sei." style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1300" y="1313" width="320" height="210" as="geometry" />
+          <mxGeometry x="1300" y="1361" width="320" height="230" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

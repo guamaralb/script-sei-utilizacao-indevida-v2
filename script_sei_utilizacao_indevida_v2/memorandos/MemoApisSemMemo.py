@@ -13,8 +13,7 @@ TEXTO_DEFINIDO = False
 # encontra na árvore
 ASSUNTO_MEMO_APIS_SEM_MEMO = '[TODO: assunto do memo à APIS - sem memorando para a GEACS]'
 
-# TODO: buscar o memo pelo assunto antes de criar (retomada, como o memo de
-# matrículas não encontradas)
+# O script procura o memo por este padrão antes de criar (retomada)
 PADRAO_ASSUNTO_MEMO_APIS_SEM_MEMO = re.compile(re.escape(ASSUNTO_MEMO_APIS_SEM_MEMO), flags=re.IGNORECASE)
 
 

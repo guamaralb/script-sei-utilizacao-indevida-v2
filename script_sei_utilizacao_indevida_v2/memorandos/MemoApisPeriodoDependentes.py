@@ -11,8 +11,7 @@ TEXTO_DEFINIDO = False
 # encontra na árvore
 ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES = '[TODO: assunto do memo à APIS - período específico dos dependentes]'
 
-# TODO: buscar o memo pelo assunto antes de criar (retomada, como o memo de
-# matrículas não encontradas)
+# O script procura o memo por este padrão antes de criar (retomada)
 PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES = re.compile(re.escape(ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES), flags=re.IGNORECASE)
 
 

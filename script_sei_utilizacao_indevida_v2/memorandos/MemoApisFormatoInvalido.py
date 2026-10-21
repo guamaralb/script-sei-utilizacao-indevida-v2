@@ -12,8 +12,7 @@ TEXTO_DEFINIDO = False
 # encontra na árvore
 ASSUNTO_MEMO_APIS_FORMATO_INVALIDO = '[TODO: assunto do memo à APIS - formato do memorando inválido]'
 
-# TODO: buscar o memo pelo assunto antes de criar (retomada, como o memo de
-# matrículas não encontradas)
+# O script procura o memo por este padrão antes de criar (retomada)
 PADRAO_ASSUNTO_MEMO_APIS_FORMATO_INVALIDO = re.compile(re.escape(ASSUNTO_MEMO_APIS_FORMATO_INVALIDO), flags=re.IGNORECASE)
 
 

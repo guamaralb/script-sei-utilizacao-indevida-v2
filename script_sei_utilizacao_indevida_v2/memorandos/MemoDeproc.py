@@ -1,6 +1,13 @@
+import re
+
 from sei_automacao.classes.Memorando import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
+
+# Não altere o assunto: é por ele que o script encontra memos já criados
+ASSUNTO_MEMO_DEPROC = 'Levantamento de coparticipação - utilização indevida da assistência à saúde'
+
+PADRAO_ASSUNTO_MEMO_DEPROC = re.compile(re.escape(ASSUNTO_MEMO_DEPROC), flags=re.IGNORECASE)
 
 
 def _par_1():
@@ -27,7 +34,7 @@ class MemoDeproc(Memorando):
     def __init__(self, dados: DadosUI, nome_signatario: str, cargo_signatario: str):
         super().__init__(
             destinatario_nome='IPSEMG/DEPROC',
-            assunto='Levantamento de coparticipação - utilização indevida da assistência à saúde',
+            assunto=ASSUNTO_MEMO_DEPROC,
             vocativo='Prezados',
             nome_signatario=nome_signatario,
             cargo_signatario=cargo_signatario,

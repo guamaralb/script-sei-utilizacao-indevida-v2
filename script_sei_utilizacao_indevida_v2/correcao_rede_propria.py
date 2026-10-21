@@ -18,9 +18,10 @@ from constantes import (
     CARGO_SIGNATARIO,
     NOME_SIGNATARIO,
 )
-from docs_processo import encontrar_memo_uso_rede, memos_geacs_novos
+from docs_processo import encontrar_memo_uso_rede
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from matriculas_nao_encontradas import marcar_matriculas_nao_encontradas
+from memos_sei import incluir_memo, registrar_numeros_memos
 from rede_propria import (
     BasesUso,
     ErroAvaliacao,
@@ -29,11 +30,7 @@ from rede_propria import (
     registrar_uso,
 )
 from Registro import ProxAcao
-from sei_automacao.documento import inserir_bloco_ass
-from sei_automacao.processo import (
-    incluir_doc_sei_memo,
-    reabrir_processo,
-)
+from sei_automacao.processo import reabrir_processo
 from selenium import webdriver
 from tags import (
     TAG_AVALIADO_USO_REDE_PROPRIA,
@@ -41,6 +38,7 @@ from tags import (
     TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO,
     TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO,
     adicionar_tag,
+    tem_tag,
 )
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
@@ -50,32 +48,13 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
 logger = logging.getLogger(__name__)
 
 
-def verificar_memo_uso_rede(driver: webdriver.Remote, registro, tds_docs: list[dict]) -> None:
+def verificar_memo_uso_rede(driver: webdriver.Remote, registro) -> None:
     """Confere se o memo de uso da rede própria existe na árvore."""
-    memo = encontrar_memo_uso_rede(driver, tds_docs)
+    memo = encontrar_memo_uso_rede(driver, registro.tds_docs)
     if memo is None:
         raise ErroAvaliacao(f'Marcador "{TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO}" presente, mas o memo de uso da rede própria não foi encontrado na árvore')
     registro.memo_uso_rede_na_arvore = True
     registro.memo_uso_rede_sei = memo['numero_sei']
-
-
-def _marcar_avaliado(driver: webdriver.Remote, registro) -> None:
-    adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA)
-
-
-def _registrar_numero_memo(driver: webdriver.Remote, registro, tds_docs: list[dict]) -> None:
-    """Obtém o número SEI do memo criado. Só informativo: uma falha aqui
-    não interrompe o processo, que já está com o memo no bloco e com os
-    marcadores."""
-    try:
-        novos = memos_geacs_novos(driver, tds_docs)
-    except Exception:
-        logger.exception('Não foi possível obter o número SEI do memo criado')
-        return
-    if len(novos) == 1:
-        registro.memo_uso_rede_sei = novos[0]['numero_sei']
-    else:
-        logger.warning(f'Número SEI do memo não registrado: esperado 1 memo novo na árvore, encontrado(s) {len(novos)}')
 
 
 def _reabrir(driver: webdriver.Remote) -> None:
@@ -86,17 +65,16 @@ def _reabrir(driver: webdriver.Remote) -> None:
 def corrigir_uso_rede_propria(
     driver: webdriver.Remote,
     registro,
-    tds_docs: list[dict],
     matricula_titular,
     matriculas_dependentes,
     bases: BasesUso,
 ) -> None:
     # Retomada: memo já foi para o bloco, mas faltou o marcador de avaliado
-    if registro.tag_memo_nao_usou_rede_propria_no_bloco:
+    if tem_tag(registro, TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO):
         logger.info('Retomada: memo de uso da rede própria já está no bloco; falta apenas o marcador de avaliado')
-        verificar_memo_uso_rede(driver, registro, tds_docs)
+        verificar_memo_uso_rede(driver, registro)
         _reabrir(driver)
-        _marcar_avaliado(driver, registro)
+        adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA)
         registro.prox_acao = ProxAcao.ASSINAR_USO_REDE
         return
 
@@ -106,18 +84,18 @@ def corrigir_uso_rede_propria(
     except MatriculasNaoEncontradas as e:
         # Os marcadores são adicionados com o processo reaberto
         _reabrir(driver)
-        marcar_matriculas_nao_encontradas(driver, registro, tds_docs, e, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
+        marcar_matriculas_nao_encontradas(driver, registro, e, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
         raise
     registrar_uso(registro, uso)
 
     if not uso.alguem_nao_usou:
         logger.info('Todos os beneficiários usaram a rede própria: memo dispensado')
         _reabrir(driver)
-        _marcar_avaliado(driver, registro)
+        adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA)
         registro.prox_acao = ProxAcao.NADA_A_FAZER_TODOS_USARAM
         return
 
-    memo_existente = encontrar_memo_uso_rede(driver, tds_docs)
+    memo_existente = encontrar_memo_uso_rede(driver, registro.tds_docs)
     if memo_existente is not None:
         registro.memo_uso_rede_na_arvore = True
         registro.memo_uso_rede_sei = memo_existente['numero_sei']
@@ -133,17 +111,9 @@ def corrigir_uso_rede_propria(
         cargo_signatario=CARGO_SIGNATARIO,
         uso=uso,
     )
-    incluir_doc_sei_memo(driver, **memo.para_kwargs_inserir_doc())
-    registro.memo_uso_rede_criado = True
-    logger.info('Memo de uso da rede própria criado')
-
-    inserir_bloco_ass(driver, BLOCO_MEMO_USO_REDE_PROPRIA)
-    registro.memo_uso_rede_inserido_bloco = True
-    logger.info(f'Memo de uso da rede própria inserido no bloco {BLOCO_MEMO_USO_REDE_PROPRIA}')
-
+    incluir_memo(driver, registro, memo, BLOCO_MEMO_USO_REDE_PROPRIA, 'memo_uso_rede', 'de uso da rede própria')
     adicionar_tag(driver, registro, TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
-
-    _marcar_avaliado(driver, registro)
+    adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA)
     registro.prox_acao = ProxAcao.ASSINAR_USO_REDE
 
-    _registrar_numero_memo(driver, registro, tds_docs)
+    registrar_numeros_memos(driver, registro)

@@ -1,12 +1,11 @@
 import re
-from typing import Dict, Literal
+from typing import Literal
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
 
 class FormatoMemorandoInvalido(ValueError):
-    def __init__(self, msg):
-        super().__init__(msg)
+    """O memorando da APIS não está no modelo esperado."""
 
 
 # ---------------------------------------------------------------------------
@@ -22,14 +21,9 @@ _PADRAO_NOME_TITULAR_NOVO = re.compile(r'Nome completo:\s*(.+)', flags=re.IGNORE
 _PADRAO_MATRICULA_TITULAR_NOVO = re.compile(r'Matr[íi]cula:\s*(.+)', flags=re.IGNORECASE)
 _PADRAO_PERIODO_TITULAR_NOVO = re.compile(r'Per[íi]odo de apura[çc][ãa]o do titular:\s*(.+)', flags=re.IGNORECASE)
 
-_PADROES_NOME_TITULAR_NOVO = [_PADRAO_NOME_TITULAR_NOVO]
-_PADROES_MATRICULA_TITULAR_NOVO = [_PADRAO_MATRICULA_TITULAR_NOVO]
-_PADROES_PERIODO_TITULAR_NOVO = [_PADRAO_PERIODO_TITULAR_NOVO]
-
-
 _PADRAO_ASSINATURA_ELETRONICA = re.compile(r'Documento assinado eletronicamente', flags=re.IGNORECASE)
 
-_MARCADORES_OBRIGATORIOS_NOVOS_NOVOS: Dict[str, re.Pattern] = {
+_MARCADORES_MODELO_NOVO: dict[str, re.Pattern] = {
     'remetente IPSEMG/APIS-UTILIZAÇÃO': _PADRAO_REMETENTE,
     'campo "Nome completo"': _PADRAO_NOME_TITULAR_NOVO,
     'campo "Matrícula" (titular)': _PADRAO_MATRICULA_TITULAR_NOVO,
@@ -43,7 +37,7 @@ _PADRAO_PERIODO_TITULAR_VELHO = re.compile(
     flags=re.IGNORECASE,
 )
 
-_MARCADORES_MODELO_VELHO: Dict[str, re.Pattern] = {
+_MARCADORES_MODELO_VELHO: dict[str, re.Pattern] = {
     'remetente IPSEMG/APIS-UTILIZAÇÃO': _PADRAO_REMETENTE,
     'campo "Segurado(a)"': _PADRAO_NOME_TITULAR_VELHO,
     'campo "Matrícula" (titular)': _PADRAO_MATRICULA_TITULAR_NOVO,
@@ -63,42 +57,26 @@ _PADRAO_SEPARADOR_MATRICULAS = re.compile(r'\s+e\s+|[;,:/.]+|\s+', flags=re.IGNO
 def validar_template(doc_text: str) -> Literal['novo']:
     """Só o modelo "novo" é aceito. O modelo "velho" (campo "Segurado(a)")
     passou a ser formato inválido."""
-    ausentes = [descricao for descricao, padrao in _MARCADORES_OBRIGATORIOS_NOVOS_NOVOS.items() if not padrao.search(doc_text)]
+    ausentes = [descricao for descricao, padrao in _MARCADORES_MODELO_NOVO.items() if not padrao.search(doc_text)]
     if not ausentes:
         return 'novo'
 
     if all(padrao.search(doc_text) for padrao in _MARCADORES_MODELO_VELHO.values()):
-        raise FormatoMemorandoInvalido(msg='O memorando está no modelo "velho", que não é mais aceito')
+        raise FormatoMemorandoInvalido('O memorando está no modelo "velho", que não é mais aceito')
 
-    raise FormatoMemorandoInvalido(msg=f'O texto não corresponde ao modelo esperado: faltam os campos {ausentes}')
+    raise FormatoMemorandoInvalido(f'O texto não corresponde ao modelo esperado: faltam os campos {ausentes}')
 
 
-def _extrair_campo(
-    padroes: list[re.Pattern],
-    doc_text: str,
-    nome_campo: str,
-    valido_none: bool = False,
-) -> str | None:
-    for padrao in padroes:
-        match = padrao.search(doc_text)
-        if not match or not match.group(1).strip():
-            continue
-        else:
-            return match.group(1).strip()
-
-    if valido_none:
-        return None
-    else:
-        raise FormatoMemorandoInvalido(msg=(f'Não foi possível extrair o campo "{nome_campo}" do texto.'))
+def _extrair_campo(padrao: re.Pattern, doc_text: str, nome_campo: str, *, opcional: bool = False) -> str | None:
+    match = padrao.search(doc_text)
+    valor = match.group(1).strip() if match else ''
+    if valor or opcional:
+        return valor or None
+    raise FormatoMemorandoInvalido(f'Não foi possível extrair o campo "{nome_campo}" do texto.')
 
 
 def _extrair_matriculas_dependentes(doc_text: str) -> str | None:
-    valor_bruto = _extrair_campo(
-        [_PADRAO_MATRICULAS_DEPENDENTES_NOVO],
-        doc_text,
-        'Matrícula dos dependentes',
-        valido_none=True,
-    )
+    valor_bruto = _extrair_campo(_PADRAO_MATRICULAS_DEPENDENTES_NOVO, doc_text, 'Matrícula dos dependentes', opcional=True)
     if not valor_bruto:
         return None
 
@@ -132,20 +110,10 @@ def _detectar_periodo_dependentes(doc_text: str) -> bool:
 def extrair_dados_ui(doc_text: str) -> DadosUI:
     validar_template(doc_text)
 
-    nome_titular = _extrair_campo(_PADROES_NOME_TITULAR_NOVO, doc_text, 'Nome completo')
-    matricula_titular = _extrair_campo(_PADROES_MATRICULA_TITULAR_NOVO, doc_text, 'Matrícula')
-    periodo_titular = _extrair_campo(
-        _PADROES_PERIODO_TITULAR_NOVO,
-        doc_text,
-        'Período de apuração do titular',
-    )
-    matriculas_dependentes = _extrair_matriculas_dependentes(doc_text)
-    periodo_dependentes = _detectar_periodo_dependentes(doc_text)
-
     return DadosUI(
-        nome_titular=nome_titular,
-        matricula_titular=matricula_titular,
-        periodo_titular=periodo_titular,
-        matriculas_dependentes=matriculas_dependentes,
-        periodo_dependentes=periodo_dependentes,
+        nome_titular=_extrair_campo(_PADRAO_NOME_TITULAR_NOVO, doc_text, 'Nome completo'),
+        matricula_titular=_extrair_campo(_PADRAO_MATRICULA_TITULAR_NOVO, doc_text, 'Matrícula'),
+        periodo_titular=_extrair_campo(_PADRAO_PERIODO_TITULAR_NOVO, doc_text, 'Período de apuração do titular'),
+        matriculas_dependentes=_extrair_matriculas_dependentes(doc_text),
+        periodo_dependentes=_detectar_periodo_dependentes(doc_text),
     )
