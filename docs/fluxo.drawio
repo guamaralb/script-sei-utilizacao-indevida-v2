@@ -1,4 +1,596 @@
-<mxfile host="app.diagrams.net" pages="8">
+<mxfile host="app.diagrams.net" pages="9">
+  <diagram name="FLUXO COMPLETO" id="AySzQHZ8doyPj1BDEAWf">
+    <mxGraphModel dx="3642" dy="3561" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-0" />
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-1" parent="AFsUTFi49G7jIGGUE0sy-0" />
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-2" parent="AFsUTFi49G7jIGGUE0sy-1" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;" value="3. NOVO: fluxo normal (&lt;font face=&quot;Courier New&quot;&gt;processar_novo&lt;/font&gt;, processar_novo.py)" vertex="1">
+          <mxGeometry height="40" width="1500" y="-300" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-3" parent="AFsUTFi49G7jIGGUE0sy-1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontStyle=0;" value="&lt;b&gt;Entrada&lt;/b&gt; (main._processar_novo_ou_retomar)&lt;br&gt;NOVO recém-classificado (➕ 1), NOVO sem memos da GEACS&lt;br&gt;ou retomada (cada memo da GEACS tem o seu marcador)" vertex="1">
+          <mxGeometry height="80" width="480" x="300" y="-230" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-4" parent="AFsUTFi49G7jIGGUE0sy-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;obter_dados_ui&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="762" width="800" y="-110" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-5" parent="AFsUTFi49G7jIGGUE0sy-4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;obter_memos_apis_para_geacs&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Lê o texto de &lt;b&gt;todos&lt;/b&gt; os memorandos da APIS-Utilização da árvore e mantém os destinados à GEACS (texto com um dos TRECHOS_DESTINO_GEACS)&lt;br&gt;Registro: memos_apis_geacs_sei" vertex="1">
+          <mxGeometry height="110" width="440" x="320" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-6" parent="AFsUTFi49G7jIGGUE0sy-4" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Quantos memorandos da APIS destinados à GEACS?" vertex="1">
+          <mxGeometry height="130" width="440" x="320" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-7" parent="AFsUTFi49G7jIGGUE0sy-4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): mais de um memorando da APIS destinado à GEACS" vertex="1">
+          <mxGeometry height="80" width="260" x="20" y="229" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-8" parent="AFsUTFi49G7jIGGUE0sy-4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;validar_template&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Confere os campos do modelo &quot;novo&quot;.&lt;br&gt;Modelo &quot;velho&quot; ou campo faltando: FormatoMemorandoInvalido" vertex="1">
+          <mxGeometry height="80" width="440" x="320" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-9" parent="AFsUTFi49G7jIGGUE0sy-4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;extrair_dados_ui&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Titular (nome, matrícula com DV, período), matrículas dos dependentes (sem DV) e se há período variável p/ dependentes.&lt;br&gt;Campo inválido: FormatoMemorandoInvalido" vertex="1">
+          <mxGeometry height="110" width="440" x="320" y="486" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-10" parent="AFsUTFi49G7jIGGUE0sy-4" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Formato válido?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(nenhum FormatoMemorandoInvalido)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="440" x="320" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-11" parent="AFsUTFi49G7jIGGUE0sy-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_avaliar_disa&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="854" width="800" y="702" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-12" parent="AFsUTFi49G7jIGGUE0sy-11" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;avaliar_uso_rede_propria_disa&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Procura titular e dependentes na &lt;b&gt;base geral&lt;/b&gt; e na &lt;b&gt;base DISA&lt;/b&gt;. Não para quando falta matrícula. Fora da base DISA = &lt;b&gt;não usou&lt;/b&gt;" vertex="1">
+          <mxGeometry height="100" width="440" x="320" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-13" parent="AFsUTFi49G7jIGGUE0sy-11" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): sem matrícula de titular, matrícula em formato inválido ou resposta inválida na base DISA" vertex="1">
+          <mxGeometry height="100" width="260" x="20" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-14" parent="AFsUTFi49G7jIGGUE0sy-11" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_registrar_nao_encontradas&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: titular/dependentes não encontrados na base geral e na base DISA" vertex="1">
+          <mxGeometry height="70" width="440" x="320" y="194" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-15" parent="AFsUTFi49G7jIGGUE0sy-11" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;registrar_uso&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: quem usou e quem não usou a rede própria (base DISA)" vertex="1">
+          <mxGeometry height="70" width="440" x="320" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-16" parent="AFsUTFi49G7jIGGUE0sy-11" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;garantir_marcadores_no_sei&lt;/font&gt;&lt;/b&gt;&lt;br&gt;[1.2.2 se faltou na base DISA] + 1.6&lt;br&gt;+ [1.2.1 e 1.6.1 se faltou na base geral]" vertex="1">
+          <mxGeometry height="90" width="440" x="320" y="406" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-17" parent="AFsUTFi49G7jIGGUE0sy-11" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="80" width="260" x="20" y="411" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-18" parent="AFsUTFi49G7jIGGUE0sy-11" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Faltou matrícula na base DISA?" vertex="1">
+          <mxGeometry height="110" width="440" x="320" y="532" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-19" parent="AFsUTFi49G7jIGGUE0sy-11" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2.2 - Mat. N Encontradas Base DISA&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="440" x="320" y="678" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-20" parent="AFsUTFi49G7jIGGUE0sy-11" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.6 - Avaliado Uso Rede Própria DISA&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="440" x="320" y="774" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-21" parent="AFsUTFi49G7jIGGUE0sy-1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;processar_novo&lt;/b&gt;&lt;/font&gt;&lt;br&gt;Faltou matrícula na base geral?" vertex="1">
+          <mxGeometry height="130" width="440" x="320" y="1606" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-22" parent="AFsUTFi49G7jIGGUE0sy-1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;processar_novo&lt;/b&gt;&lt;/font&gt;&lt;br&gt;Há período variável para dependentes?" vertex="1">
+          <mxGeometry height="130" width="440" x="320" y="1786" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-23" parent="AFsUTFi49G7jIGGUE0sy-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_avaliar_mantis_e_criar_memos&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="1856" width="1510" x="-60" y="1910" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-24" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;avaliar_uso_rede_propria_mantis&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;interpretar_periodo&lt;/b&gt; (período do titular) e consulta às bases do MANTIS (rede própria e rede credenciada): uso = atendimento com data no período" vertex="1">
+          <mxGeometry height="110" width="440" x="320" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-25" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): período em formato não reconhecido, data inválida ou atendimento sem data" vertex="1">
+          <mxGeometry height="100" width="260" x="20" y="63" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-26" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_registrar_uso_mantis&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Registro: tit_usou_*, tit_valor_total_uso_*, deps_que_usaram_*, deps_valor_total_uso_* (rede própria e rede credenciada)" vertex="1">
+          <mxGeometry height="90" width="440" x="320" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-27" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;usos_mantis_alem_disa&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Matrículas com uso no MANTIS (rede própria) que a base DISA marca como não uso&lt;br&gt;Registro: mats_uso_mantis_alem_disa" vertex="1">
+          <mxGeometry height="100" width="440" x="320" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-28" parent="AFsUTFi49G7jIGGUE0sy-23" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="O MANTIS (rede própria) tem uso além da base DISA?" vertex="1">
+          <mxGeometry height="130" width="440" x="320" y="466" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-29" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;MemoDisaValidarUsosMantis&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Monta o memo com as matrículas&lt;br&gt;(TEXTO_DEFINIDO = False: TextoMemoPendente)" vertex="1">
+          <mxGeometry height="100" width="400" x="820" y="481" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-30" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (TextoMemoPendente): texto do memo ainda é placeholder (&lt;b&gt;TODO&lt;/b&gt;). Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="100" width="240" x="1250" y="481" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-31" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;garantir_marcadores_no_sei&lt;/font&gt;&lt;/b&gt;&lt;br&gt;[1.8; 1.8.1]" vertex="1">
+          <mxGeometry height="70" width="400" x="820" y="617" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-32" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="80" width="240" x="1250" y="612" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-33" parent="AFsUTFi49G7jIGGUE0sy-23" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8 - Avaliado Uso Rede Própria MANTIS&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="400" x="820" y="723" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-34" parent="AFsUTFi49G7jIGGUE0sy-23" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_usos_mantis_alem_disa&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="506" width="400" x="820" y="819" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-35" parent="AFsUTFi49G7jIGGUE0sy-34" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDisaValidarUsosMantis&lt;/b&gt; e insere no bloco &lt;b&gt;7730939&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: procurar pelo assunto antes de criar&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="370" x="15" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-36" parent="AFsUTFi49G7jIGGUE0sy-34" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8.1 - Memo DISA Validar Usos MANTIS" vertex="1">
+          <mxGeometry height="50" width="370" x="15" y="194" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-37" parent="AFsUTFi49G7jIGGUE0sy-34" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à DISA (validar usos do MANTIS) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="370" x="15" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-38" parent="AFsUTFi49G7jIGGUE0sy-34" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: próxima execução depois da resposta da DISA&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="370" x="15" y="426" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-39" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;garantir_marcadores_no_sei&lt;/font&gt;&lt;/b&gt;&lt;br&gt;[1.8; 1.9 se alguém usou (base DISA ou MANTIS); 1.10]" vertex="1">
+          <mxGeometry height="80" width="440" x="320" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-40" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="80" width="260" x="20" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-41" parent="AFsUTFi49G7jIGGUE0sy-23" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.8 - Avaliado Uso Rede Própria MANTIS&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="440" x="320" y="748" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-42" parent="AFsUTFi49G7jIGGUE0sy-23" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Alguém usou a rede própria?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(base DISA ou MANTIS)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="120" width="440" x="320" y="844" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-43" parent="AFsUTFi49G7jIGGUE0sy-23" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_incluir_memo_disa&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="390" width="440" x="320" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-44" parent="AFsUTFi49G7jIGGUE0sy-43" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Já tem 1.9?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(tem_tag: retomada)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="300" x="70" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-45" parent="AFsUTFi49G7jIGGUE0sy-43" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDisa&lt;/b&gt; (quem usou e quem não usou) e insere no bloco &lt;b&gt;7697744&lt;/b&gt;" vertex="1">
+          <mxGeometry height="90" width="400" x="20" y="194" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-46" parent="AFsUTFi49G7jIGGUE0sy-43" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.9 - Memo DISA Uso Rede Própria" vertex="1">
+          <mxGeometry height="50" width="400" x="20" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-47" parent="AFsUTFi49G7jIGGUE0sy-23" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_incluir_memo_deproc&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="254" width="440" x="320" y="1426" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-48" parent="AFsUTFi49G7jIGGUE0sy-47" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoDeproc&lt;/b&gt; (todos os beneficiários) e insere no bloco &lt;b&gt;7697744&lt;/b&gt;" vertex="1">
+          <mxGeometry height="90" width="400" x="20" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-49" parent="AFsUTFi49G7jIGGUE0sy-47" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.10 - Memo DEPROC Coparticipação" vertex="1">
+          <mxGeometry height="50" width="400" x="20" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-50" parent="AFsUTFi49G7jIGGUE0sy-23" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memos DISA e DEPROC e encaminhar (alguém usou)&lt;br&gt;ou Assinar memo DEPROC e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="120" width="440" x="320" y="1716" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-51" parent="AFsUTFi49G7jIGGUE0sy-23" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;perimeter=cloudPerimeter;fillColor=light-dark(#ff0d00, #512d2b);strokeColor=#b85450;" value="A DISA somente fala se teve ou não antedimento, sem especificação. Então&amp;nbsp;&lt;div&gt;- caso tenha na DISA e no nosso, vamos so enviar a lista do que encontramos e pedir um OK.&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;- Caso tenha na DISA e não tenha no nosso, não enviamos nada&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;- Caso tenha no nosso e não tenha na DISA, é o fluxo de erro acima&lt;br&gt;&lt;br&gt;- OBSERVAÇÃO: Lembrar que o registro de utilizações tem que seguir o padrão&lt;br&gt;&lt;br&gt;TAMBEM TEMOS QUE INSERIR O RELATÓRIO DE USO DA REDE CREDENCIADA&lt;br&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="267" width="470" x="-150" y="733" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-52" parent="AFsUTFi49G7jIGGUE0sy-23" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;perimeter=cloudPerimeter;fillColor=light-dark(#ff0d00, #512d2b);strokeColor=#b85450;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;Separar os blocos do que vai só pra DEPROC&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;e o que vai pra DISA e DEPROC&lt;/div&gt;" vertex="1">
+          <mxGeometry height="267" width="310" x="10" y="1370" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-53" parent="AFsUTFi49G7jIGGUE0sy-1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: memos no bloco 7697744 (fluxo normal concluído).&lt;br&gt;Próximas execuções: conferência (aba 2, ➕ 1.10)" vertex="1">
+          <mxGeometry height="70" width="480" x="300" y="3872" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-54" parent="AFsUTFi49G7jIGGUE0sy-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_sem_memo_apis&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="718" width="760" x="1620" y="77" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-55" parent="AFsUTFi49G7jIGGUE0sy-54" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;MemoApisSemMemo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Monta o memo (modelo Despacho 2, SEI 150644870)&lt;br&gt;(TEXTO_DEFINIDO = False: TextoMemoPendente)" vertex="1">
+          <mxGeometry height="100" width="420" x="20" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-56" parent="AFsUTFi49G7jIGGUE0sy-54" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (TextoMemoPendente): texto do memo ainda é placeholder (&lt;b&gt;TODO&lt;/b&gt;). Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="90" width="260" x="480" y="63" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-57" parent="AFsUTFi49G7jIGGUE0sy-54" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;garantir_marcadores_no_sei&lt;/font&gt;&lt;/b&gt;&lt;br&gt;[1.5 - Memo APIS Sem Memo p/ GEACS]" vertex="1">
+          <mxGeometry height="70" width="420" x="20" y="194" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-58" parent="AFsUTFi49G7jIGGUE0sy-54" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="80" width="260" x="480" y="189" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-59" parent="AFsUTFi49G7jIGGUE0sy-54" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisSemMemo&lt;/b&gt; e insere no bloco &lt;b&gt;7730344&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: procurar pelo assunto antes de criar&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="420" x="20" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-60" parent="AFsUTFi49G7jIGGUE0sy-54" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.5 - Memo APIS Sem Memo p/ GEACS" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="426" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-61" parent="AFsUTFi49G7jIGGUE0sy-54" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (sem memorando para a GEACS) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="420" x="20" y="512" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-62" parent="AFsUTFi49G7jIGGUE0sy-54" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="648" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-63" parent="AFsUTFi49G7jIGGUE0sy-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_formato_invalido&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="804" width="760" x="1620" y="855" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-64" parent="AFsUTFi49G7jIGGUE0sy-63" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="Registro: &lt;b&gt;motivo_formato_invalido&lt;/b&gt;" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-65" parent="AFsUTFi49G7jIGGUE0sy-63" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;MemoApisFormatoInvalido&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Monta o memo citando o memorando da APIS (modelo Memorando 2019, SEI 150646384)&lt;br&gt;(TEXTO_DEFINIDO = False: TextoMemoPendente)" vertex="1">
+          <mxGeometry height="100" width="420" x="20" y="144" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-66" parent="AFsUTFi49G7jIGGUE0sy-63" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (TextoMemoPendente): texto do memo ainda é placeholder (&lt;b&gt;TODO&lt;/b&gt;). Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="90" width="260" x="480" y="149" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-67" parent="AFsUTFi49G7jIGGUE0sy-63" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;garantir_marcadores_no_sei&lt;/font&gt;&lt;/b&gt;&lt;br&gt;[1.5 - Memo APIS Formato Inválido]" vertex="1">
+          <mxGeometry height="70" width="420" x="20" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-68" parent="AFsUTFi49G7jIGGUE0sy-63" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="80" width="260" x="480" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-69" parent="AFsUTFi49G7jIGGUE0sy-63" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisFormatoInvalido&lt;/b&gt; e insere no bloco &lt;b&gt;7730341&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: procurar pelo assunto antes de criar&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="420" x="20" y="386" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-70" parent="AFsUTFi49G7jIGGUE0sy-63" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.5 - Memo APIS Formato Inválido" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="512" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-71" parent="AFsUTFi49G7jIGGUE0sy-63" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (formato do memorando inválido) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="420" x="20" y="598" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-72" parent="AFsUTFi49G7jIGGUE0sy-63" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="734" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-73" parent="AFsUTFi49G7jIGGUE0sy-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_nao_encontradas_base_geral&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="962" width="760" x="1620" y="1719" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-74" parent="AFsUTFi49G7jIGGUE0sy-73" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.2.1 - Mat. N Encontradas Base Geral&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;Registra a pesquisa: vem antes do memo. Marcadores já conferidos em _avaliar_disa&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="420" x="20" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-75" parent="AFsUTFi49G7jIGGUE0sy-73" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#ffffff;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;incluir_memo_apis_mat_nao_encontradas&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;matriculas_nao_encontradas.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="450" width="720" x="20" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-76" parent="AFsUTFi49G7jIGGUE0sy-75" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS configurado?" vertex="1">
+          <mxGeometry height="110" width="400" x="20" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-77" parent="AFsUTFi49G7jIGGUE0sy-75" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): bloco não configurado. Sem memo (o 1.2.1 já foi adicionado)" vertex="1">
+          <mxGeometry height="90" width="250" x="450" y="68" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-78" parent="AFsUTFi49G7jIGGUE0sy-75" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="Memo à APIS já está na árvore?&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;(encontrar_memo_mat_nao_encontradas, pelo assunto)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="120" width="400" x="20" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-79" parent="AFsUTFi49G7jIGGUE0sy-75" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;Retomada&lt;/b&gt;: não recria o memo&lt;br&gt;Registro: memo_apis_mat_nao_encontradas_na_arvore" vertex="1">
+          <mxGeometry height="80" width="250" x="450" y="224" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-80" parent="AFsUTFi49G7jIGGUE0sy-75" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="Cria &lt;b&gt;MemoApisMatNaoEncontradas&lt;/b&gt; e insere no bloco &lt;b&gt;7711907&lt;/b&gt;" vertex="1">
+          <mxGeometry height="70" width="400" x="20" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-81" parent="AFsUTFi49G7jIGGUE0sy-73" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.6.1 - Memo APIS Mat. N Encontradas" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-82" parent="AFsUTFi49G7jIGGUE0sy-73" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (matrículas não encontradas) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="420" x="20" y="756" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-83" parent="AFsUTFi49G7jIGGUE0sy-73" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="892" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-84" parent="AFsUTFi49G7jIGGUE0sy-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_tratar_periodo_variavel&lt;/b&gt;&lt;/font&gt;&amp;nbsp;&amp;nbsp;&lt;font style=&quot;font-size:11px&quot; color=&quot;#333333&quot;&gt;processar_novo.py&lt;/font&gt;" vertex="1">
+          <mxGeometry height="814" width="760" x="1620" y="2741" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-85" parent="AFsUTFi49G7jIGGUE0sy-84" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;MemoApisPeriodoDependentes&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Monta o memo com os dependentes&lt;br&gt;(TEXTO_DEFINIDO = False: TextoMemoPendente)" vertex="1">
+          <mxGeometry height="100" width="420" x="20" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-86" parent="AFsUTFi49G7jIGGUE0sy-84" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (TextoMemoPendente): texto do memo ainda é placeholder (&lt;b&gt;TODO&lt;/b&gt;). Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="90" width="260" x="480" y="63" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-87" parent="AFsUTFi49G7jIGGUE0sy-84" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;garantir_marcadores_no_sei&lt;/font&gt;&lt;/b&gt;&lt;br&gt;[1.1; 1.7]" vertex="1">
+          <mxGeometry height="70" width="420" x="20" y="194" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-88" parent="AFsUTFi49G7jIGGUE0sy-84" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=11;" value="&lt;b&gt;Erro&lt;/b&gt; (ErroAvaliacao): marcador não cadastrado no SEI. Nenhum memo nem marcador" vertex="1">
+          <mxGeometry height="80" width="260" x="480" y="189" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-89" parent="AFsUTFi49G7jIGGUE0sy-84" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.1 - Período Variável p/ Dependentes&lt;br&gt;&lt;font style=&quot;font-weight:normal;font-size:10px&quot;&gt;(adicionar_tag_se_ausente: pula se já tem)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="420" x="20" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-90" parent="AFsUTFi49G7jIGGUE0sy-84" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=12;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_incluir_memo&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Cria &lt;b&gt;MemoApisPeriodoDependentes&lt;/b&gt; e insere no bloco &lt;b&gt;7730905&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;TODO: procurar pelo assunto antes de criar&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="420" x="20" y="396" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-91" parent="AFsUTFi49G7jIGGUE0sy-84" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.08;fixedSize=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontStyle=1;fontSize=12;" value="➕ 1.7 - Memo APIS Período Dependentes" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="522" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-92" parent="AFsUTFi49G7jIGGUE0sy-84" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;b&gt;&lt;font face=&quot;Courier New&quot;&gt;_finalizar&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;prox_acao&lt;/b&gt; = Assinar memo à APIS (período dos dependentes) e encaminhar&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;_registrar_numeros_memos: relê a árvore e preenche &amp;lt;memo&amp;gt;_sei (falha só gera log)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="420" x="20" y="608" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-93" parent="AFsUTFi49G7jIGGUE0sy-84" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="&lt;b&gt;Fim&lt;/b&gt;: processo parado" vertex="1">
+          <mxGeometry height="50" width="420" x="20" y="744" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-94" parent="AFsUTFi49G7jIGGUE0sy-1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Como ler&lt;/b&gt;&lt;br&gt;• Moldura = &lt;b&gt;função&lt;/b&gt; (nome no topo); caixas dentro = passos na ordem em que o código executa.&lt;br&gt;• Azul: ação · Amarelo: pergunta · Roxo: memo criado e inserido no bloco · Verde: ➕ marcador · Vermelho: erro · Cinza: início/fim.&lt;br&gt;• Contêineres principais: erros à esquerda; desvios que param o processo à direita.&lt;br&gt;• Todo erro sobe até main._processar_linha: registrar_erro preenche tipo_erro/erro e o loop segue (ErroAvaliacao, FormatoMemorandoInvalido e TextoMemoPendente sem traceback)." vertex="1">
+          <mxGeometry height="170" width="560" x="-620" y="-230" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-95" parent="AFsUTFi49G7jIGGUE0sy-1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Nomes dos marcadores&lt;/b&gt;&lt;br&gt;Prefixo &quot;Script v2 - &quot; em todos (ex.: &quot;Script v2 - 1.6 - Avaliado Uso Rede Própria DISA&quot;). Limite do SEI: 50 caracteres.&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: cadastrar 1.5 a 1.10 no SEI.&lt;br&gt;Cada memo recebe o seu marcador &lt;b&gt;só depois&lt;/b&gt; de estar no bloco. Os marcadores de pesquisa (1.2.1, 1.2.2, 1.6, 1.8, 1.1) entram antes dos memos." vertex="1">
+          <mxGeometry height="150" width="560" x="-620" y="-30" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-96" parent="AFsUTFi49G7jIGGUE0sy-1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;Retomada&lt;/b&gt;&lt;br&gt;processar_novo roda sempre do início. Marcador que o processo já tem não é adicionado de novo (adicionar_tag_se_ausente); o memo DISA com 1.9 não é recriado (tem_tag); o memo à APIS de matrículas não encontradas é procurado pelo assunto.&lt;br&gt;Se o script falhar entre criar um memo e adicionar o marcador dele, a próxima execução tem mais memos da GEACS que marcadores de memo e para com erro (aba 2, pergunta 8).&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: procurar os demais memos pelo assunto." vertex="1">
+          <mxGeometry height="190" width="560" x="-620" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-97" parent="AFsUTFi49G7jIGGUE0sy-1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="Os períodos &lt;b&gt;não&lt;/b&gt; entram na consulta da base DISA; só na do MANTIS.&lt;br&gt;O processo com período variável para dependentes para antes do MANTIS, então o período do titular vale para todos." vertex="1">
+          <mxGeometry height="90" width="560" x="-620" y="722" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-98" parent="AFsUTFi49G7jIGGUE0sy-1" style="shape=note;size=14;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fillColor=#fffde7;strokeColor=#c9b458;fontSize=11;" value="&lt;b&gt;MANTIS&lt;/b&gt;&lt;br&gt;Rede própria entra na decisão; rede credenciada só vai para a planilha de controle.&lt;br&gt;&lt;b&gt;TODO&lt;/b&gt;: confirmar o DV das matrículas (hoje: sem DV) e usar as planilhas completas." vertex="1">
+          <mxGeometry height="100" width="560" x="-620" y="1986" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-99" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.675;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-100" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-101" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-8" value="Um">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-102" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-7" value="Mais de um">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-103" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" target="AFsUTFi49G7jIGGUE0sy-54" value="Nenhum (MemoApisNaoEncontrado)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-104" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-105" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-106" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" target="AFsUTFi49G7jIGGUE0sy-63" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-107" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.675;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-11" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-108" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-13" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-109" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-110" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-111" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-15" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-112" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-16" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-17" value="faltou no SEI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-113" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-16" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-114" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-18" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-19" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-115" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-18" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-20" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-116" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-19" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-20" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-117" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-20" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-21" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-118" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-21" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" target="AFsUTFi49G7jIGGUE0sy-73" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-119" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-21" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-22" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-120" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-22" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=17;" target="AFsUTFi49G7jIGGUE0sy-84" value="Sim">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1550" y="1851" />
+              <mxPoint x="1550" y="2758" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-121" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-22" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3576;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-23" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-122" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-24" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-25" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-123" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-24" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-26" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-124" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-27" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-125" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-27" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-28" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-126" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-28" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-29" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-127" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-28" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-39" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-128" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-29" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-30" value="texto pendente">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-129" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-29" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-31" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-130" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-31" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-32" value="faltou no SEI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-131" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-31" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-33" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-132" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-33" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-34" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-133" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-35" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-36" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-134" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-36" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-37" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-135" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-37" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-38" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-136" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-39" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-40" value="faltou no SEI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-137" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-39" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-41" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-138" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-41" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-42" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-139" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-42" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-43" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-140" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-42" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=17;" target="AFsUTFi49G7jIGGUE0sy-47" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-141" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-44" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-45" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-142" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-44" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=17;" target="AFsUTFi49G7jIGGUE0sy-47" value="Sim (pula)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-143" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-45" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-46" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-144" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-46" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-47" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-145" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-48" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-49" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-146" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-49" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-50" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-147" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-50" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-53" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-148" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-55" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-57" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-149" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-57" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-59" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-150" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-59" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-60" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-151" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-60" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-61" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-152" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-61" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-62" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-153" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-55" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-56" value="texto pendente">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-154" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-57" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-58" value="faltou no SEI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-155" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-64" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-65" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-156" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-65" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-67" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-157" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-67" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-69" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-158" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-69" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-70" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-159" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-70" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-71" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-160" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-71" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-72" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-161" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-65" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-66" value="texto pendente">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-162" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-67" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-68" value="faltou no SEI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-163" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-85" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-87" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-164" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-87" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-89" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-165" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-89" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-90" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-166" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-90" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-91" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-167" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-91" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-92" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-168" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-92" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-93" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-169" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-85" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-86" value="texto pendente">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-170" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-87" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-88" value="faltou no SEI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-171" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-74" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-75" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-172" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-76" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-78" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-173" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-76" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;fontColor=#c62828;strokeColor=#b85450;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-77" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-174" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-78" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-80" value="Não">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-175" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-78" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-79" value="Sim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-176" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-80" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-81" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-177" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-79" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="AFsUTFi49G7jIGGUE0sy-81" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-178" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-81" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-82" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AFsUTFi49G7jIGGUE0sy-179" edge="1" parent="AFsUTFi49G7jIGGUE0sy-1" source="AFsUTFi49G7jIGGUE0sy-82" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=1.5;fontSize=11;labelBackgroundColor=#ffffff;fontStyle=1;" target="AFsUTFi49G7jIGGUE0sy-83" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-1" parent="AFsUTFi49G7jIGGUE0sy-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_processar_linha | main.py&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="1330" width="1660" x="-20" y="-2220" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-15" edge="1" parent="4I6jWVczUFwZvJZscmOp-1" source="4I6jWVczUFwZvJZscmOp-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4I6jWVczUFwZvJZscmOp-14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-10" parent="4I6jWVczUFwZvJZscmOp-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;listar_documentos_arvore | sei-automacao&lt;/b&gt;&lt;/font&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/font&gt;Obtém todos os documentos contidos dentro da árvore de processos&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="440" x="180" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-12" edge="1" parent="4I6jWVczUFwZvJZscmOp-1" source="4I6jWVczUFwZvJZscmOp-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4I6jWVczUFwZvJZscmOp-10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-11" parent="4I6jWVczUFwZvJZscmOp-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;acessar_processo | sei-automacao&lt;/b&gt;&lt;/font&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/font&gt;Entra no processo&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="440" x="180" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-17" edge="1" parent="4I6jWVczUFwZvJZscmOp-1" source="4I6jWVczUFwZvJZscmOp-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4I6jWVczUFwZvJZscmOp-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-14" parent="4I6jWVczUFwZvJZscmOp-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;listar_marcadores | sei-autoamcao&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/font&gt;Obtém todos os marcadores do processo&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="440" x="180" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-19" edge="1" parent="4I6jWVczUFwZvJZscmOp-1" source="4I6jWVczUFwZvJZscmOp-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4I6jWVczUFwZvJZscmOp-18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-16" parent="4I6jWVczUFwZvJZscmOp-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;normalizar_tags | sei-autoamcao&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/font&gt;Ajusta os nomes dos marcadores (tags) obtidos&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="440" x="180" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-21" edge="1" parent="4I6jWVczUFwZvJZscmOp-1" source="4I6jWVczUFwZvJZscmOp-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4I6jWVczUFwZvJZscmOp-20" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-18" parent="4I6jWVczUFwZvJZscmOp-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;filtrar_docs_geacs | docs_processo.py&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/font&gt;Partindo da lista de todos os documentos, obtém todos os documentos que tem a GEACS como unidade geradora&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="440" x="180" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-23" edge="1" parent="4I6jWVczUFwZvJZscmOp-1" source="4I6jWVczUFwZvJZscmOp-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="4I6jWVczUFwZvJZscmOp-22" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-20" parent="4I6jWVczUFwZvJZscmOp-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;filtrar_memos_geacs | docs_processo.py&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/font&gt;Partindo da lista de todos os documentos, obtém todos os documentos que tem a GEACS como unidade geradora e, destes, somente os Memorandos&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="440" x="180" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-22" parent="4I6jWVczUFwZvJZscmOp-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;ctx = ContextoLinha | main.py&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/font&gt;Salva as informações daquela &quot;linha&quot; (processo):&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- lista completa de docs&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- lista de docs da geacs&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- lista de memos da geacs&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- lista de tags&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- bases (bases de uso)&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- bases mantis (geral (APIS) e&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;rede propria (DISA)&amp;nbsp;&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="440" x="180" y="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="4I6jWVczUFwZvJZscmOp-24" parent="4I6jWVczUFwZvJZscmOp-1" style="swimlane;startSize=34;html=1;whiteSpace=wrap;fontSize=14;fontStyle=0;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;fillColor=#bac8d3;strokeColor=#23445d;swimlaneFillColor=#f7f9fb;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_classificar_e_processar | main.py&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="1140" width="760" x="800" y="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
   <diagram id="geral" name="1. Visão geral (main.py)">
     <mxGraphModel dx="3538" dy="3314" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
       <root>
