@@ -3,7 +3,14 @@ com o SEI simulado."""
 
 from Registro import ProxAcao
 from relatorios_mantis import REDE_CREDENCIADA, inicio_nome_relatorio
-from tags import TAG_MANUAL, TAG_MEMO_DEPROC_NO_BLOCO, TAG_MEMOS_DISA_DEPROC_NO_BLOCO, TAG_PROCESSO_NOVO
+from tags import (
+    TAG_MANUAL,
+    TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO,
+    TAG_MEMO_DEPROC_COPARTICIPACAO,
+    TAG_MEMO_DEPROC_NO_BLOCO,
+    TAG_MEMOS_DISA_DEPROC_NO_BLOCO,
+    TAG_PROCESSO_NOVO,
+)
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisMatNaoEncontradas import ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO_DEPROC
@@ -19,14 +26,14 @@ from tests.sei_falso import (
     curto,
 )
 
-NOVO = '1 - Processo NOVO'
+NOVO = '1 - Tratado pelo Script'
 DISA = '1.6 - Avaliado Uso Rede Própria DISA'
 MANTIS = '1.8 - Avaliado Uso Rede Própria MANTIS'
 MEMO_DISA = '1.9 - Memo DISA Uso Rede Própria'
-CONCLUIDO_DISA_DEPROC = '1.10 - Memos DISA e DEPROC no Bloco'
-CONCLUIDO_DEPROC = '1.10 - Memo DEPROC Coparticipação'
-VELHO_DISA = '1.11 - VELHO Memo DISA no Bloco'
-VELHO_DEPROC = '1.11 - VELHO Memo DEPROC no Bloco'
+CONCLUIDO_DISA_DEPROC = '1.10 - Concluído: Memos DISA e DEPROC'
+CONCLUIDO_DEPROC = '1.10 - Concluído: Memo DEPROC'
+VELHO_DISA = '1.11 - VELHO Concluído: Memo DISA'
+VELHO_DEPROC = '1.11 - VELHO Concluído: Memo DEPROC'
 
 PDF_DEP_RP = f'PDF Utilização Dep. RP - {TITULAR}'
 PDF_TIT_RC = f'PDF Utilização Tit. RC - {TITULAR}'
@@ -131,7 +138,7 @@ def test_falha_depois_do_relatorio_nao_duplica_o_pdf(sei):
 def test_base_geral_para_com_memo_a_apis(sei):
     sei.novo_processo()
     registro = sei.passar(bases(tit_na_geral=False))
-    assert sei.tags_curtas == [NOVO, '1.2.1 - Mat. N Encontradas Base Geral', '1.6.1 - Memo APIS Mat. N Encontradas']
+    assert sei.tags_curtas == [NOVO, '1.2.1 - Mat. N Encontradas Base Geral', '1.6.1 - Aguarda APIS: Matrículas']
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS
 
     registro = sei.passar(bases(tit_na_geral=False))
@@ -143,7 +150,7 @@ def test_sem_memo_da_apis(sei):
     sei.novo_processo(com_memo_apis=False)
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '1.5 - Memo APIS Sem Memo p/ GEACS']
+    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Sem Memo p/ GEACS']
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_SEM_MEMO
 
 
@@ -152,7 +159,7 @@ def test_modelo_novo_velho_e_formato_invalido(sei):
     sei.memo_apis(MEMO_APIS_NOVO_VELHO)
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '1.5 - Memo APIS Formato Inválido']
+    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Formato Inválido']
     assert 'novo_velho' in registro.motivo_formato_invalido
 
 
@@ -171,7 +178,7 @@ def test_periodo_variavel_para_dependentes(sei):
     sei.novo_processo(extra='Dependente 555: 01/02/2024 a 01/03/2024')
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '1.1 - Período Variável p/ Dependentes', '1.7 - Memo APIS Período Dependentes']
+    assert sei.tags_curtas == [NOVO, '1.1 - Período Variável p/ Dependentes', '1.7 - Aguarda APIS: Período Deps']
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_PERIODO_DEPS
 
 
@@ -184,6 +191,19 @@ def test_falha_na_remocao_deixa_dois_estados_e_gera_erro(sei):
     sei.falhar_remocao = False
     registro = sei.passar(bases())
     assert 'mais de um marcador de estado' in registro.erro
+    assert registro.prox_acao == ProxAcao.VERIFICAR_MARCADORES
+
+
+def test_marcadores_inconsistentes_param_antes_de_qualquer_acao(sei):
+    # Concluído (1.10) com matrícula fora da base geral (1.2.1): impossível
+    sei.novo_processo()
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MEMO_DEPROC_COPARTICIPACAO]
+    registro = sei.passar(bases())
+
+    assert registro.tipo_erro == 'MarcadoresInconsistentes'
+    assert registro.prox_acao == ProxAcao.VERIFICAR_MARCADORES
+    assert registro.marcadores_adicionados == []
+    assert sei.qnt_memos_geacs == 0
 
 
 def test_processo_com_documentos_antigos_da_geacs_e_tratado_como_novo(sei):
@@ -240,7 +260,7 @@ def test_memo_a_apis_sem_marcador_e_reaproveitado(sei):
     assert registro.erro is None
     assert registro.memo_apis_mat_nao_encontradas_na_arvore
     assert sei.qnt_memos_geacs == 1
-    assert sei.tags_curtas[-1] == '1.6.1 - Memo APIS Mat. N Encontradas'
+    assert sei.tags_curtas[-1] == '1.6.1 - Aguarda APIS: Matrículas'
 
 
 # --- VELHO (enviado à DISA e à DEPROC antes da avaliação) ---------------------

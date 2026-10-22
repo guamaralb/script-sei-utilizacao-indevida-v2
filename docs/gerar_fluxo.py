@@ -246,7 +246,8 @@ col_main = Coluna(
         S('<b>Para cada processo</b>'),
         F('_processar_linha()', 'Abre o processo e lê a árvore e os marcadores do SEI', chama='acessar_processo, registrar_arvore, registrar_tags'),
         IR('_tratar() — coluna 2'),
-        E('<b>Erro levantado em qualquer coluna?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro, erro (uma frase) e prox_acao = Verificar erro. Inesperado: + traceback no log'),
+        F('conferir_marcadores()', 'De novo, no fim da passagem (se não houve erro)'),
+        E('<b>Erro levantado em qualquer coluna?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro, erro e prox_acao = Verificar erro (ou a já definida). Inesperado: + traceback'),
         F('controle.registrar()', 'Regrava a planilha de controle (abas processos e historico) depois de cada processo'),
         P('Há mais processos?', [IR('volta a "Para cada processo"')]),
         F('log_resumo()', 'Fecha o navegador e loga o resumo'),
@@ -254,17 +255,24 @@ col_main = Coluna(
     ],
 )
 # O erro não encerra a execução: a passagem segue para a planilha
-col_main.itens[8].ligar = lambda prox, no=col_main.itens[8]: _seta(no, prox, '', ABAIXO)
+col_main.itens[9].ligar = lambda prox, no=col_main.itens[9]: _seta(no, prox, '', ABAIXO)
 
 col_tratar = Coluna(
     '2 · _tratar()',
     'Roteamento pelos marcadores lidos do SEI. Só adiciona o marcador 1; o resto é decidido em processar_novo()',
     [
-        P('Sem o marcador<br><b>1 - Processo NOVO</b>?', [M('1 - Processo NOVO'), IR('processar_novo() do início — coluna 3')]),
+        F(
+            'conferir_marcadores()',
+            'A combinação de marcadores é possível no fluxo? (estado único, informativo com estado compatível, 1.6.1 com 1.2.1, 1.7 com 1.1, 1.11 só VELHO, VELHO sem 1.9/1.10…)',
+        ),
+        P('Marcadores<br>inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: nada é feito no SEI<br>prox_acao = Verificar marcadores (corrigir no SEI)')]),
+        P('Sem o marcador<br><b>1 - Tratado pelo Script</b>?', [M('1 - Tratado pelo Script'), IR('processar_novo() do início — coluna 3')]),
         S('<b>VELHO</b> = tem <b>1.3 - Memos DISA e DEPROC no Bloco</b> (já enviado à DISA e à DEPROC)<br><font face="Courier New">estado_atual()</font>: marcador de estado do processo'),
-        P('Mais de um marcador<br>de estado?', [E('<b>Erro</b>: remover manualmente o(s) estado(s) anterior(es) no SEI')]),
         P('Estado de parada?<br>1.5, 1.6.1, 1.7, 1.8.1', [E('<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado')]),
-        P('Estado de conclusão?<br>1.10 ou 1.11', [T('<b>Concluído</b><br>prox_acao = assinar os memos do bloco e encaminhar')]),
+        P(
+            'Estado de conclusão?<br>1.10 ou 1.11',
+            [T('<b>Concluído</b>, prox_acao:<br>1.10 Memos DISA e DEPROC → assinar os dois<br>1.10 Memo DEPROC → assinar DEPROC<br>1.11 → VELHO: assinar o memo')],
+        ),
         P('VELHO com MANUAL<br>ou ASSINADO?', [T('prox_acao = Fora do escopo (tratado manualmente)')]),
         P('NOVO sem estado com<br>1.3 - Memo DEPROC?', [T('Concluído na versão anterior<br>prox_acao = Assinar memo DEPROC')]),
         P('NOVO sem estado com<br>1.2.1 ou 1.2.2?', [E('<b>Erro</b>: parado pela versão anterior<br>prox_acao = Verificar matrículas não encontradas')]),
@@ -282,7 +290,7 @@ col_processar = Coluna(
             [
                 F('_parar_sem_memo_apis()', chama='_parar_com_memo'),
                 MEMO('MemoApisSemMemo', 7730344),
-                M('1.5 - Memo APIS Sem Memo p/ GEACS'),
+                M('1.5 - Aguarda APIS: Sem Memo p/ GEACS'),
                 R('estado anterior (se houver)'),
                 T('prox_acao = Assinar memo à APIS (sem memorando)'),
             ],
@@ -292,7 +300,7 @@ col_processar = Coluna(
             [
                 F('_parar_formato_invalido()', chama='_parar_com_memo'),
                 MEMO('MemoApisFormatoInvalido', 7730341),
-                M('1.5 - Memo APIS Formato Inválido'),
+                M('1.5 - Aguarda APIS: Formato Inválido'),
                 R('estado anterior (se houver)'),
                 T('prox_acao = Assinar memo à APIS (formato inválido)'),
             ],
@@ -309,7 +317,7 @@ col_processar = Coluna(
                 F('_parar_nao_encontradas_base_geral()', chama='incluir_memo_apis_mat_nao_encontradas'),
                 M('1.2.1 - Mat. N Encontradas Base Geral'),
                 MEMO('MemoApisMatNaoEncontradas', 7711907),
-                M('1.6.1 - Memo APIS Mat. N Encontradas'),
+                M('1.6.1 - Aguarda APIS: Matrículas'),
                 R('1.6 - Avaliado Uso Rede Própria DISA'),
                 T('prox_acao = Assinar memo à APIS (matrículas não encontradas)'),
             ],
@@ -320,7 +328,7 @@ col_processar = Coluna(
                 F('_parar_periodo_variavel()', chama='_parar_com_memo'),
                 M('1.1 - Período Variável p/ Dependentes'),
                 MEMO('MemoApisPeriodoDependentes', 7730905),
-                M('1.7 - Memo APIS Período Dependentes'),
+                M('1.7 - Aguarda APIS: Período Deps'),
                 R('1.6 - Avaliado Uso Rede Própria DISA'),
                 T('prox_acao = Assinar memo à APIS (período dos dependentes)'),
             ],
@@ -352,7 +360,7 @@ col_mantis = Coluna(
                         R('1.8'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDeproc', 7697744),
-                        M('1.10 - Memos DISA e DEPROC no Bloco'),
+                        M('1.10 - Concluído: Memos DISA e DEPROC'),
                         R('1.9'),
                         T('prox_acao = Assinar memos DISA e DEPROC'),
                     ],
@@ -362,7 +370,7 @@ col_mantis = Coluna(
                     [
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDeproc', 7697744),
-                        M('1.10 - Memo DEPROC Coparticipação'),
+                        M('1.10 - Concluído: Memo DEPROC'),
                         R('1.8'),
                         T('prox_acao = Assinar memo DEPROC'),
                     ],
@@ -373,7 +381,7 @@ col_mantis = Coluna(
                         PDF('PDF Utilização Tit./Dep. <b>RP</b>'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b>'),
                         MEMO('MemoDisa</b> (validar RP)<b>', 7697744),
-                        M('1.11 - VELHO Memo DISA no Bloco'),
+                        M('1.11 - VELHO Concluído: Memo DISA'),
                         R('1.8'),
                         T('prox_acao = VELHO: assinar memo DISA<br>(sem DEPROC)'),
                     ],
@@ -383,7 +391,7 @@ col_mantis = Coluna(
                     [
                         PDF('PDF Utilização Tit./Dep. <b>RC</b>'),
                         MEMO('MemoDeprocRedeCredenciada</b> (complementar)<b>', 7697744),
-                        M('1.11 - VELHO Memo DEPROC no Bloco'),
+                        M('1.11 - VELHO Concluído: Memo DEPROC'),
                         R('1.8'),
                         T('prox_acao = VELHO: assinar memo DEPROC'),
                     ],
@@ -450,6 +458,27 @@ aux = [
     ),
 ]
 
+marcadores = N(
+    '<b>Marcadores</b> (prefixo "Script v2 - "; ★ = estado: no máximo um)<br>'
+    '1 - Tratado pelo Script<br>'
+    '1.1 - Período Variável p/ Dependentes<br>'
+    '1.2.1 - Mat. N Encontradas Base Geral<br>'
+    '1.2.2 - Mat. N Encontradas Base DISA<br>'
+    '★ 1.5 - Aguarda APIS: Sem Memo p/ GEACS<br>'
+    '★ 1.5 - Aguarda APIS: Formato Inválido<br>'
+    '★ 1.6 - Avaliado Uso Rede Própria DISA<br>'
+    '★ 1.6.1 - Aguarda APIS: Matrículas<br>'
+    '★ 1.7 - Aguarda APIS: Período Deps<br>'
+    '★ 1.8 - Avaliado Uso Rede Própria MANTIS<br>'
+    '★ 1.9 - Memo DISA Uso Rede Própria<br>'
+    '★ 1.10 - Concluído: Memos DISA e DEPROC<br>'
+    '★ 1.10 - Concluído: Memo DEPROC<br>'
+    '★ 1.11 - VELHO Concluído: Memo DISA<br>'
+    '★ 1.11 - VELHO Concluído: Memo DEPROC<br>'
+    '<i>Versão anterior: 1.2, 1.3 Memos DISA e DEPROC (= VELHO), 1.3 Memo DEPROC, 1.4, ★ 1.8.1</i>',
+    largura=LARGURA_PRINCIPAL + 2 * PAD + GAP + LARGURA_LADO,
+)
+
 legenda = [
     F('função()', 'o que ela faz', chama='funções que ela chama'),
     IR('outra coluna'),
@@ -465,7 +494,7 @@ legenda = [
 pendencias = N(
     '<b>Pendências (TODO)</b><br>'
     '• remover_marcador na sei_automacao (sem ele o main não inicia)<br>'
-    '• cadastrar no SEI os marcadores 1.10 e 1.11<br>'
+    '• no SEI: editar os marcadores renomeados (1, 1.5, 1.6.1, 1.7, 1.10 Memo DEPROC) e cadastrar 1.10 Memos DISA e DEPROC e os dois 1.11<br>'
     '• revisar os textos dos memos com TEXTO_DEFINIDO = False<br>'
     '• tratar a resposta dos processos parados e dos VELHOS que aguardam a DISA',
     largura=460,
@@ -501,6 +530,8 @@ celulas.append(
     f'<mxCell id="{_novo_id()}" value="Funções usadas em vários pontos" style="text;html=1;align=left;verticalAlign=middle;fontSize=18;fontStyle=1;" vertex="1" parent="1">'
     f'<mxGeometry x="{x_aux}" y="{y - 40}" width="500" height="34" as="geometry"/></mxCell>'
 )
+marcadores.emitir(celulas, '1', x_aux, y)
+y += marcadores.h + 40
 for coluna in aux:
     coluna.emitir(celulas, x_aux, y)
     y += coluna.h + 40

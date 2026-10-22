@@ -1,3 +1,5 @@
+import re
+
 import pytest
 import tags
 from rede_propria import ErroAvaliacao
@@ -59,3 +61,47 @@ def test_colunas_tags_refletem_marcadores_finais(registro):
 @pytest.mark.parametrize('tag', sorted(tags.TAGS_SCRIPT))
 def test_nome_do_marcador_cabe_no_sei(tag):
     assert len(tag) <= 50
+
+
+def _registro_com(*marcadores) -> RegistroMain:
+    reg = RegistroMain(num_processo='PROC')
+    tags.registrar_tags(reg, list(marcadores))
+    return reg
+
+
+@pytest.mark.parametrize(
+    'marcadores',
+    [
+        (),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO, tags.TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, tags.TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_PERIODO_VAR_DEP, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO, tags.TAG_VELHO_MEMO_DEPROC),
+        # Versão anterior, sem estado: tratado em main._tratar
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO),
+        (tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO,),
+    ],
+)
+def test_marcadores_consistentes(marcadores):
+    tags.conferir_marcadores(_registro_com(*marcadores))
+
+
+@pytest.mark.parametrize(
+    ('marcadores', 'trecho'),
+    [
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA, tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS), 'mais de um marcador de estado'),
+        ((tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA,), 'sem o marcador'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO, tags.TAG_MEMO_DEPROC_NO_BLOCO), 'os dois marcadores 1.3'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_DEPROC_NO_BLOCO, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA), 'concluído na versão anterior'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS), '1.2.1 - Mat. N Encontradas Base Geral com o estado 1.8'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_PERIODO_VAR_DEP, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), '1.1 - Período Variável p/ Dependentes com o estado'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO, tags.TAG_MEMO_APIS_SEM_MEMO), '1.2.2 - Mat. N Encontradas Base DISA com o estado'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS), '1.6.1 - Aguarda APIS: Matrículas sem 1.2.1'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_APIS_PERIODO_DEPENDENTES), 'sem 1.1'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_VELHO_MEMO_DISA), 'sem 1.3'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO, tags.TAG_MEMO_DISA_USO_REDE_PROPRIA), 'em processo VELHO'),
+    ],
+)
+def test_marcadores_inconsistentes(marcadores, trecho):
+    with pytest.raises(tags.MarcadoresInconsistentes, match=re.escape(trecho)):
+        tags.conferir_marcadores(_registro_com(*marcadores))

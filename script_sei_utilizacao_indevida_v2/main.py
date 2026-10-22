@@ -44,7 +44,9 @@ from tags import (
     TAG_VELHO_MEMO_DISA,
     TAGS_PARADA_NOVO,
     TAGS_TRATAMENTO_MANUAL,
+    MarcadoresInconsistentes,
     adicionar_tag,
+    conferir_marcadores,
     estado_atual,
     registrar_tags,
     tem_tag,
@@ -72,9 +74,19 @@ _PROX_ACAO_POR_CONCLUSAO = {
 }
 
 
+def _conferir_marcadores(registro: RegistroMain, momento: str) -> None:
+    try:
+        conferir_marcadores(registro)
+    except MarcadoresInconsistentes:
+        logger.error(f'Marcadores inconsistentes {momento}: {registro.marcadores_atuais}')
+        registro.prox_acao = ProxAcao.VERIFICAR_MARCADORES
+        raise
+
+
 def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, bases_mantis: BasesMantis) -> None:
     """Decide, pelos marcadores, se o processo está parado, concluído ou
     segue (do início ou retomando) para o fluxo de processar_novo."""
+    _conferir_marcadores(registro, 'no início da passagem')
     if not tem_tag(registro, TAG_PROCESSO_NOVO):
         # Inclusive os que já têm documento da GEACS ou o antigo
         # "2 - Processo VELHO": a APIS pede para refazer a consulta
@@ -137,6 +149,7 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
         logger.info(f'Marcadores: {registro.marcadores_sei or "nenhum"}')
 
         _tratar(driver, registro, bases, bases_mantis)
+        _conferir_marcadores(registro, 'no fim da passagem')
 
     except (ErroAvaliacao, FormatoMemorandoInvalido, TextoMemoPendente) as e:
         # Problema esperado nos dados: sem traceback

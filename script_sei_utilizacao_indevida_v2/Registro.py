@@ -30,6 +30,7 @@ class ProxAcao:
     ASSINAR_MEMO_APIS_FORMATO_INVALIDO = 'Assinar memo à APIS (formato do memorando inválido) e encaminhar'
     ASSINAR_MEMO_APIS_PERIODO_DEPS = 'Assinar memo à APIS (período dos dependentes) e encaminhar'
     AGUARDAR_RESPOSTA_MEMO = 'Aguardar resposta ao memo enviado (processo parado)'
+    VERIFICAR_MARCADORES = 'Verificar marcadores inconsistentes (corrigir no SEI)'
     VERIFICAR_ERRO = 'Verificar erro'
 
 
@@ -39,6 +40,7 @@ _PROX_ACOES_DE_ERRO = frozenset({
     ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS,
     ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
     ProxAcao.AGUARDAR_RESPOSTA_MEMO,
+    ProxAcao.VERIFICAR_MARCADORES,
 })
 
 

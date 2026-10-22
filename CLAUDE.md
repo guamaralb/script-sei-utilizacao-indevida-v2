@@ -230,21 +230,21 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 | Marcador | Significado |
 |---|---|
-| `1 - Processo NOVO` | Processo tratado pelo script (todos). Adicionado se faltar, e o fluxo começa do início |
+| `1 - Tratado pelo Script` | Processo tratado pelo script (todos). Adicionado se faltar, e o fluxo começa do início |
 | `1.1 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes |
 | `1.2.1 - Mat. N Encontradas Base Geral` | Matrícula não encontrada na base geral |
 | `1.2.2 - Mat. N Encontradas Base DISA` | Matrícula fora da base DISA (conta como não uso; o fluxo segue) |
-| `1.5 - Memo APIS Sem Memo p/ GEACS` | Estado (parada): memo à APIS (sem memorando para a GEACS) no bloco |
-| `1.5 - Memo APIS Formato Inválido` | Estado (parada): memo à APIS (formato inválido) no bloco |
+| `1.5 - Aguarda APIS: Sem Memo p/ GEACS` | Estado (parada): memo à APIS (sem memorando para a GEACS) no bloco |
+| `1.5 - Aguarda APIS: Formato Inválido` | Estado (parada): memo à APIS (formato inválido) no bloco |
 | `1.6 - Avaliado Uso Rede Própria DISA` | Estado: base geral e base DISA consultadas |
-| `1.6.1 - Memo APIS Mat. N Encontradas` | Estado (parada): memo à APIS (matrículas não encontradas) no bloco, depois do `1.2.1` |
-| `1.7 - Memo APIS Período Dependentes` | Estado (parada): memo à APIS (período dos dependentes) no bloco, depois do `1.1` |
+| `1.6.1 - Aguarda APIS: Matrículas` | Estado (parada): memo à APIS (matrículas não encontradas) no bloco, depois do `1.2.1` |
+| `1.7 - Aguarda APIS: Período Deps` | Estado (parada): memo à APIS (período dos dependentes) no bloco, depois do `1.1` |
 | `1.8 - Avaliado Uso Rede Própria MANTIS` | Estado: MANTIS consultado |
 | `1.9 - Memo DISA Uso Rede Própria` | Estado: relatórios RP e memo à DISA no bloco (fluxo normal) |
-| `1.10 - Memos DISA e DEPROC no Bloco` | Estado (conclusão, fluxo normal): com memo à DISA |
-| `1.10 - Memo DEPROC Coparticipação` | Estado (conclusão, fluxo normal): só memo DEPROC |
-| `1.11 - VELHO Memo DISA no Bloco` | Estado (conclusão, VELHO): relatórios RP e RC e memo à DISA no bloco |
-| `1.11 - VELHO Memo DEPROC no Bloco` | Estado (conclusão, VELHO): relatório RC e memo DEPROC complementar no bloco |
+| `1.10 - Concluído: Memos DISA e DEPROC` | Estado (conclusão, fluxo normal): com memo à DISA |
+| `1.10 - Concluído: Memo DEPROC` | Estado (conclusão, fluxo normal): só memo DEPROC |
+| `1.11 - VELHO Concluído: Memo DISA` | Estado (conclusão, VELHO): relatórios RP e RC e memo à DISA no bloco |
+| `1.11 - VELHO Concluído: Memo DEPROC` | Estado (conclusão, VELHO): relatório RC e memo DEPROC complementar no bloco |
 | `1.2 - Avaliado Se Usou Rede Própria`, `1.4 - Memo Não Usou Rede no Bloco` | Versão anterior / correção. Não são mais adicionados nem consultados |
 | `1.3 - Memos DISA e DEPROC no Bloco` | Versão anterior. **Identifica o processo VELHO** |
 | `1.3 - Memo DEPROC no Bloco` | Versão anterior: concluído (só DEPROC). Não é reprocessado |
@@ -260,6 +260,28 @@ Prefixo de todos os nomes: `Script v2 - `.
   `adicionar_tag` remove o anterior (primeiro adiciona, depois remove).
   Mais de um estado no processo é erro (a remoção falhou): remova
   manualmente o(s) anterior(es).
+- Nomes: parada = `Aguarda <unidade>: <motivo>`; conclusão = `Concluído:
+  <memos no bloco>` (`VELHO Concluído:` no VELHO); retomada = `Avaliado
+  ...` ou o memo no bloco.
+- **Conferência** (`conferir_marcadores`): no início e no fim de **toda**
+  passagem, o script confere se a combinação de marcadores é possível no
+  fluxo. Se não for, levanta `MarcadoresInconsistentes` (nenhuma ação no
+  SEI quando é no início), `prox_acao` = Verificar marcadores
+  inconsistentes, e a coluna `erro` lista todos os problemas. Regras:
+  - no máximo um marcador de estado;
+  - estado ou informativo (`1.1`, `1.2.1`, `1.2.2`) exige o `1`;
+  - informativo só com os estados que vêm depois dele: `1.2.2` com
+    qualquer estado exceto `1.5`; `1.2.1` só com `1.6` ou `1.6.1`; `1.1`
+    só com `1.6` ou `1.7` (sem estado, valem as regras da versão anterior
+    em `_tratar`);
+  - `1.6.1` exige `1.2.1`; `1.7` exige `1.1`; `1.11` exige `1.3 Memos DISA
+    e DEPROC` (VELHO);
+  - VELHO não tem `1.9` nem `1.10`;
+  - os dois `1.3` juntos, ou `1.3 Memo DEPROC` (concluído na versão
+    anterior) com estado do fluxo atual, são inconsistentes.
+
+  Ao mudar o fluxo, ajuste as regras em `tags.py` (há testes em
+  `tests/test_tags.py`).
 - Os demais se acumulam: `1`, informativos (`1.1`, `1.2.1`, `1.2.2`),
   versão anterior (`1.2`, `1.3`, `1.4`) e manuais.
 - **TODO**: `remover_marcador(driver, marcador)` ainda não existe na
@@ -267,10 +289,11 @@ Prefixo de todos os nomes: `Script v2 - `.
   placeholder (`REMOCAO_DE_MARCADOR_DISPONIVEL = False`) e o `main.py` não
   inicia.
 - O SEI limita o nome do marcador a **50 caracteres** (há teste).
-- **TODO**: cadastrar no SEI `1.10 - Memos DISA e DEPROC no Bloco`,
-  `1.11 - VELHO Memo DISA no Bloco` e `1.11 - VELHO Memo DEPROC no Bloco`
-  antes de rodar (sem eles, `garantir_marcadores_no_sei` para o processo
-  antes do memo).
+- **TODO**: editar no SEI os marcadores renomeados e cadastrar os novos
+  (lista em [Pontos a validar](#pontos-a-validar-no-ambiente-real)) antes
+  de rodar. Sem eles, `garantir_marcadores_no_sei` para o processo antes
+  do memo, e os processos já marcados com o nome antigo não são
+  reconhecidos.
 - Os nomes em `tags.py` precisam ser **idênticos** aos cadastrados no SEI.
   Para renomear, edite o marcador existente no SEI (não crie outro) e
   atualize `tags.py` antes da próxima execução; senão os processos já
@@ -342,14 +365,14 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 | Caminho | Sequência de marcadores | No SEI ao final |
 |---|---|---|
-| Fluxo normal, uso no MANTIS (RP) | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.9` → `1.10 Memos DISA e DEPROC` | `1`, [`1.2.2`], `1.10 Memos DISA e DEPROC` |
-| Fluxo normal, sem uso no MANTIS (RP) | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.10 Memo DEPROC` | `1`, [`1.2.2`], `1.10 Memo DEPROC` |
+| Fluxo normal, uso no MANTIS (RP) | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.9` → `1.10 Concluído: Memos DISA e DEPROC` | `1`, [`1.2.2`], `1.10 Concluído: Memos DISA e DEPROC` |
+| Fluxo normal, sem uso no MANTIS (RP) | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.10 Concluído: Memo DEPROC` | `1`, [`1.2.2`], `1.10 Concluído: Memo DEPROC` |
 | Parado pelo memo da APIS | `1` + `1.5` (um dos dois) | `1`, `1.5` |
 | Parado pela base geral | `1` + [`1.2.2`] + `1.6` + `1.2.1` → `1.6.1` | `1`, [`1.2.2`], `1.2.1`, `1.6.1` |
 | Parado pelo período dos dependentes | `1` + [`1.2.2`] + `1.6` + `1.1` → `1.7` | `1`, [`1.2.2`], `1.1`, `1.7` |
 | VELHO na base DISA | `1` + `1.3` + [`1.2`, `1.4`] + `1.6` (aguarda) | os mesmos |
-| VELHO, uso no MANTIS (RP) | `1` + `1.3` + … + `1.6` → `1.8` → `1.11 VELHO Memo DISA` | `1`, `1.3`, …, `1.11 VELHO Memo DISA` |
-| VELHO, sem uso | `1` + `1.3` + … + `1.6` → `1.8` → `1.11 VELHO Memo DEPROC` | `1`, `1.3`, …, `1.11 VELHO Memo DEPROC` |
+| VELHO, uso no MANTIS (RP) | `1` + `1.3` + … + `1.6` → `1.8` → `1.11 VELHO Concluído: Memo DISA` | `1`, `1.3`, …, `1.11 VELHO Concluído: Memo DISA` |
+| VELHO, sem uso | `1` + `1.3` + … + `1.6` → `1.8` → `1.11 VELHO Concluído: Memo DEPROC` | `1`, `1.3`, …, `1.11 VELHO Concluído: Memo DEPROC` |
 
 ### 1. Script principal (`main.py`)
 
@@ -372,13 +395,17 @@ Prefixo de todos os nomes: `Script v2 - `.
 | # | Pergunta | Se sim |
 |---|---|---|
 | 1 | **Não** tem `1`? | **➕ `1`** e [seção 2](#2-fluxo-processar_novo) do início (inclusive com documento da GEACS ou com o antigo `2`) |
-| 2 | Tem mais de um marcador de estado? | Erro: remover manualmente o(s) anterior(es) |
+| 0 | Marcadores inconsistentes (`conferir_marcadores`, [regras](#marcadores-tagspy))? | Erro, antes de qualquer ação. `prox_acao` = Verificar marcadores inconsistentes (corrigir no SEI) |
 | 3 | Estado de parada (`1.5`, `1.6.1`, `1.7`, `1.8.1`)? | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. **TODO**: processamento depois da resposta |
 | 4 | Estado de conclusão (`1.10`, `1.11`)? | Concluído. `prox_acao` = assinar os memos correspondentes e encaminhar |
 | 5 | VELHO (`1.3 Memos DISA e DEPROC`) com `MANUAL` ou `ASSINADO`? | `prox_acao` = Fora do escopo (tratado manualmente) |
 | 6 | NOVO sem estado com `1.3 Memo DEPROC`? | Concluído na versão anterior. `prox_acao` = Assinar memo DEPROC e encaminhar |
 | 7 | NOVO sem estado com `1.2.1` ou `1.2.2`? | Erro: parado pela versão anterior. `prox_acao` = Verificar matrículas não encontradas. Para reprocessar, corrija a base e remova os marcadores manualmente no SEI |
 | — | (nenhuma das anteriores) | [Seção 2](#2-fluxo-processar_novo), do início ou retomando (`1.6`, `1.8`, `1.9`). VELHO: `registro.velho = True` |
+
+Depois do roteamento (sem erro), os marcadores são conferidos de novo
+(`conferir_marcadores`); se a passagem deixou uma combinação impossível,
+o processo termina com o mesmo erro.
 
 **Fim**: atualiza a planilha de controle geral e grava o resumo no log
 ([Saídas](#saídas)).
@@ -398,13 +425,13 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
    os destinados à GEACS (coluna `memos_apis_geacs_sei`) e usa o
    **último**. Os documentos depois dele são a rodada.
    - **Nenhum?** Cria `MemoApisSemMemo` (bloco `7730344`), **➕ `1.5 -
-     Memo APIS Sem Memo p/ GEACS`**, `prox_acao` = Assinar memo à APIS (sem
+     Aguarda APIS: Sem Memo p/ GEACS`**, `prox_acao` = Assinar memo à APIS (sem
      memorando para a GEACS) e encaminhar. Fim.
 2. `validar_template` e `extrair_dados_ui`: nome e matrícula do titular,
    período do titular, matrículas dos dependentes e se há período variável
    para dependentes.
    - **Formato inválido** (qualquer modelo diferente do novo_novo)? Cria
-     `MemoApisFormatoInvalido` (bloco `7730341`), **➕ `1.5 - Memo APIS
+     `MemoApisFormatoInvalido` (bloco `7730341`), **➕ `1.5 - Aguarda APIS:
      Formato Inválido`**, `prox_acao` = Assinar memo à APIS (formato do
      memorando inválido) e encaminhar. Motivo na coluna
      `motivo_formato_invalido`. Fim.
@@ -417,11 +444,11 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
    aguardar retorno da DISA. Fim (sem erro; reavaliado a cada execução).
 5. **Faltou matrícula na base geral?** Sim: **➕ `1.2.1`**, memo à APIS
    (`incluir_memo_apis_mat_nao_encontradas`; bloco `7711907`), **➕ `1.6.1
-   - Memo APIS Mat. N Encontradas`**, `prox_acao` = Assinar memo à APIS
+   - Aguarda APIS: Matrículas`**, `prox_acao` = Assinar memo à APIS
    (matrículas não encontradas) e encaminhar. Fim.
 6. **Há período variável para dependentes?** Sim: **➕ `1.1`**,
-   `MemoApisPeriodoDependentes` (bloco `7730905`), **➕ `1.7 - Memo APIS
-   Período Dependentes`**, `prox_acao` = Assinar memo à APIS (período dos
+   `MemoApisPeriodoDependentes` (bloco `7730905`), **➕ `1.7 - Aguarda APIS:
+   Período Deps`**, `prox_acao` = Assinar memo à APIS (período dos
    dependentes) e encaminhar. Fim.
 7. `avaliar_uso_rede_propria_mantis` (período do titular; rede própria e
    rede credenciada, registradas na planilha de controle; coluna
@@ -437,16 +464,16 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
 9. Fluxo normal: relatórios RC (se alguém usou a rede credenciada) e
    `MemoDeproc` (todos os beneficiários; cita a rede credenciada; bloco
    `7697744`):
-   - com memo DISA: **➕ `1.10 - Memos DISA e DEPROC no Bloco`**;
+   - com memo DISA: **➕ `1.10 - Concluído: Memos DISA e DEPROC`**;
      `prox_acao` = Assinar memos DISA e DEPROC e encaminhar;
-   - sem memo DISA: **➕ `1.10 - Memo DEPROC Coparticipação`**;
+   - sem memo DISA: **➕ `1.10 - Concluído: Memo DEPROC`**;
      `prox_acao` = Assinar memo DEPROC e encaminhar.
 10. VELHO:
-    - com memo DISA (passo 8): **➕ `1.11 - VELHO Memo DISA no Bloco`**;
+    - com memo DISA (passo 8): **➕ `1.11 - VELHO Concluído: Memo DISA`**;
       `prox_acao` = VELHO: assinar memo DISA (validar rede própria) e
       encaminhar. **Não** vai de novo para a DEPROC;
     - sem uso: relatórios RC e `MemoDeprocRedeCredenciada` (bloco
-      `7697744`), **➕ `1.11 - VELHO Memo DEPROC no Bloco`**; `prox_acao` =
+      `7697744`), **➕ `1.11 - VELHO Concluído: Memo DEPROC`**; `prox_acao` =
       VELHO: assinar memo DEPROC (rede credenciada) e encaminhar.
 
 Em todos os finais com memo, o script relê a árvore para obter o número
@@ -456,7 +483,7 @@ Se o script falhar entre criar um relatório ou memo e adicionar o
 marcador, a próxima execução retoma do estado: o relatório (pelo nome) e
 o memo (pelo assunto) já na rodada não são recriados. Se falhar entre
 adicionar o estado novo e remover o anterior, a próxima execução encontra
-dois estados (erro, pergunta 2 da seção 1).
+dois estados (erro da conferência, pergunta 0 da seção 1).
 
 ---
 
@@ -524,9 +551,23 @@ perca os processos já tratados.
 
 - **TODO**: implementar `remover_marcador(driver, marcador)` na
   `sei_automacao` (`sei_automacao.processo`). Até lá o `main.py` não roda.
-- **TODO**: cadastrar no SEI os marcadores `1.10 - Memos DISA e DEPROC no
-  Bloco`, `1.11 - VELHO Memo DISA no Bloco` e `1.11 - VELHO Memo DEPROC no
-  Bloco` com os nomes de `tags.py`.
+- **TODO**: no SEI (Gerenciar Marcador), **editar** os marcadores
+  renomeados em outubro de 2026, antes da próxima execução:
+  - `1 - Processo NOVO` → `1 - Tratado pelo Script`;
+  - `1.5 - Memo APIS Sem Memo p/ GEACS` → `1.5 - Aguarda APIS: Sem Memo p/
+    GEACS`;
+  - `1.5 - Memo APIS Formato Inválido` → `1.5 - Aguarda APIS: Formato
+    Inválido`;
+  - `1.6.1 - Memo APIS Mat. N Encontradas` → `1.6.1 - Aguarda APIS:
+    Matrículas`;
+  - `1.7 - Memo APIS Período Dependentes` → `1.7 - Aguarda APIS: Período
+    Deps`;
+  - `1.10 - Memo DEPROC Coparticipação` → `1.10 - Concluído: Memo DEPROC`.
+
+  E **cadastrar** `1.10 - Concluído: Memos DISA e DEPROC`, `1.11 - VELHO
+  Concluído: Memo DISA` e `1.11 - VELHO Concluído: Memo DEPROC` (se algum
+  já foi cadastrado com o nome antigo, edite-o). Todos com o prefixo
+  `Script v2 - `, idênticos aos de `tags.py`.
 - **TODO**: revisar os rascunhos de `MemoDisa` (validação da rede própria)
   e `MemoDeprocRedeCredenciada` e trocar `TEXTO_DEFINIDO` para `True`.
   Conferir o parágrafo da rede credenciada no `MemoDeproc`
@@ -559,8 +600,9 @@ perca os processos já tratados.
   opções `#selMarcador label.dd-option-text`) traz todos os marcadores da
   unidade e sai da tela sem salvar.
 - Processos que receberam a cadeia de estados antiga (por exemplo `1.6` e
-  `1.8`, ou `1.9` e `1.10 Memo DEPROC`, nas execuções de teste de outubro
-  de 2026) caem no erro de mais de um estado. Deixe só o estado atual.
+  `1.8`, ou `1.9` e `1.10 Memo DEPROC Coparticipação`, nas execuções de teste de outubro
+  de 2026) caem na conferência dos marcadores (mais de um estado). Deixe só o
+  estado atual.
 - Os processos VELHOS que receberam `1.2.1`/`1.2.2` na correção são
   reavaliados do início (o memo à APIS já existente é reaproveitado pelo
   assunto, se estiver na rodada).
