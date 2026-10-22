@@ -1,4 +1,4 @@
-"""Fluxo dos processos (aba 3 do docs/fluxo.drawio): fluxo normal e
+"""Fluxo dos processos (colunas 3 e 4 do docs/fluxo.drawio): fluxo normal e
 processo VELHO (enviado à DISA e à DEPROC antes da avaliação).
 
 Cada memo criado recebe o seu marcador logo depois de entrar no bloco.

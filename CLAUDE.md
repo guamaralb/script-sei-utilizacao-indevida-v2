@@ -315,13 +315,15 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 ### Como ler
 
-- No diagrama, cada moldura é uma **função**; molduras aninhadas são as
-  funções que ela chama. Os passos estão na ordem de execução e os desvios
-  de cada pergunta ficam à direita. Caixas laranja apontam para funções
-  usadas em vários pontos, detalhadas na coluna da direita
-  (`adicionar_tag`, `incluir_memo`, `incluir_relatorios` etc.). Verde:
-  marcador adicionado; laranja tracejado: marcador removido; roxo: memo
-  ou PDF; vermelho: erro.
+- No diagrama, cada coluna é uma **função**, lidas da esquerda para a
+  direita (1 `main`, 2 `_tratar`, 3 `processar_novo`, 4
+  `_avaliar_mantis_e_criar_docs`). Em cada coluna o caminho principal
+  desce reto e os desvios saem para a direita e terminam ali. Caixas azuis
+  são funções chamadas (o que fazem e o que chamam); caixas laranja (▶)
+  levam a outra coluna. A coluna da direita detalha as funções usadas em
+  vários pontos (`adicionar_tag`, `incluir_memo`, `incluir_relatorios`
+  etc.). Verde: marcador adicionado; laranja tracejado: marcador removido;
+  roxo: memo ou PDF; vermelho: erro.
 - Um processo avança **ao longo de várias execuções**. Os marcadores do SEI
   guardam o estado: cada execução lê os marcadores, decide o que falta e
   continua dali.
