@@ -16,21 +16,26 @@ class FormatoMemorandoInvalido(ValueError):
 
 _PADRAO_REMETENTE = re.compile(r'IPSEMG/APIS-UTILIZA[ÇC][ÃA]O', flags=re.IGNORECASE)
 
-# --- Modelo "novo" ---
+# --- Modelo "novo_novo" (único aceito) ---
+# O que distingue o novo_novo do novo_velho (mesmos campos) é o pedido de
+# atualização do levantamento. Exemplo: Memorando IPSEMG/APIS-UTILIZAÇÃO
+# nº 2627/2026.
+_PADRAO_ATUALIZACAO_LEVANTAMENTO = re.compile(r'atualiza[çc][ãa]o\s+do\s+levantamento\s+de\s+utiliza[çc][ãa]o', flags=re.IGNORECASE)
 _PADRAO_NOME_TITULAR_NOVO = re.compile(r'Nome completo:\s*(.+)', flags=re.IGNORECASE)
 _PADRAO_MATRICULA_TITULAR_NOVO = re.compile(r'Matr[íi]cula:\s*(.+)', flags=re.IGNORECASE)
 _PADRAO_PERIODO_TITULAR_NOVO = re.compile(r'Per[íi]odo de apura[çc][ãa]o do titular:\s*(.+)', flags=re.IGNORECASE)
 
 _PADRAO_ASSINATURA_ELETRONICA = re.compile(r'Documento assinado eletronicamente', flags=re.IGNORECASE)
 
-_MARCADORES_MODELO_NOVO: dict[str, re.Pattern] = {
+_CAMPOS_MODELO_NOVO: dict[str, re.Pattern] = {
     'remetente IPSEMG/APIS-UTILIZAÇÃO': _PADRAO_REMETENTE,
     'campo "Nome completo"': _PADRAO_NOME_TITULAR_NOVO,
     'campo "Matrícula" (titular)': _PADRAO_MATRICULA_TITULAR_NOVO,
     'campo "Período titular"': _PADRAO_PERIODO_TITULAR_NOVO,
 }
 
-# --- Modelo "velho" (não é mais aceito; só identificado para a mensagem de erro) ---
+# --- Modelos "novo_velho" e "velho" (não são mais aceitos; só identificados
+# para a mensagem de erro) ---
 _PADRAO_NOME_TITULAR_VELHO = re.compile(r'Segurad[oa]:\s*(.+)', flags=re.IGNORECASE)
 _PADRAO_PERIODO_TITULAR_VELHO = re.compile(
     r'per[íi]odos?\s*,?\s+de\s+\d{2}/\d{2}/\d{4}\s+a\s+\d{2}/\d{2}/\d{4}',
@@ -54,12 +59,15 @@ _PADRAO_MATRICULAS_DEPENDENTES_NOVO = re.compile(
 _PADRAO_SEPARADOR_MATRICULAS = re.compile(r'\s+e\s+|[;,:/.]+|\s+', flags=re.IGNORECASE)
 
 
-def validar_template(doc_text: str) -> Literal['novo']:
-    """Só o modelo "novo" é aceito. O modelo "velho" (campo "Segurado(a)")
-    passou a ser formato inválido."""
-    ausentes = [descricao for descricao, padrao in _MARCADORES_MODELO_NOVO.items() if not padrao.search(doc_text)]
+def validar_template(doc_text: str) -> Literal['novo_novo']:
+    """Só o modelo "novo_novo" é aceito. Os modelos "novo_velho" (mesmos
+    campos, sem o pedido de atualização do levantamento) e "velho" (campo
+    "Segurado(a)") são formato inválido."""
+    ausentes = [descricao for descricao, padrao in _CAMPOS_MODELO_NOVO.items() if not padrao.search(doc_text)]
     if not ausentes:
-        return 'novo'
+        if _PADRAO_ATUALIZACAO_LEVANTAMENTO.search(doc_text):
+            return 'novo_novo'
+        raise FormatoMemorandoInvalido('O memorando está no modelo "novo_velho" (sem o pedido de atualização do levantamento), que não é mais aceito')
 
     if all(padrao.search(doc_text) for padrao in _MARCADORES_MODELO_VELHO.values()):
         raise FormatoMemorandoInvalido('O memorando está no modelo "velho", que não é mais aceito')

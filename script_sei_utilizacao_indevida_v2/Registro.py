@@ -12,37 +12,29 @@ class ProxAcao:
     """Valores padronizados da coluna prox_acao (facilitam o filtro e o
     resumo do log). Detalhes ficam nas demais colunas e no log."""
 
-    # NOVOS
+    # Fluxo normal
     ASSINAR_DISA_DEPROC = 'Assinar memos DISA e DEPROC e encaminhar'
     ASSINAR_DEPROC = 'Assinar memo DEPROC e encaminhar'
-    ASSINAR_USO_REDE = 'Assinar memo de uso da rede própria e encaminhar'
-    NADA_A_FAZER = 'Nada a fazer'
-    NADA_A_FAZER_TODOS_USARAM = 'Nada a fazer: todos usaram a rede própria (memo dispensado)'
-    FORA_DO_ESCOPO = 'Fora do escopo'
 
-    # VELHOS
-    PROCESSAR_VELHO = 'Processar VELHO'
-    VELHO_AGUARDAR_CRITERIOS = 'VELHO: aguardar definição dos critérios das instruções'
-    VELHO_TRANSFORMAR_PDF = 'VELHO: transformar Excel em PDF (não implementado)'
-    VELHO_REFAZER_REL_UI = 'VELHO: refazer relatório de UI (não implementado)'
-    VELHO_CONCLUIDO = 'VELHO: fluxo após conclusão (não implementado)'
+    # VELHOS (enviados à DISA e à DEPROC antes da avaliação)
+    VELHO_ASSINAR_DISA = 'VELHO: assinar memo DISA (validar rede própria) e encaminhar'
+    VELHO_ASSINAR_DEPROC = 'VELHO: assinar memo DEPROC (rede credenciada) e encaminhar'
+    VELHO_AGUARDAR_DISA = 'VELHO: aguardar retorno da DISA (consta na base DISA)'
+    FORA_DO_ESCOPO = 'Fora do escopo (tratado manualmente)'
 
     # Verificações manuais
-    VERIFICAR_QNT_MEMOS = 'Verificar quantidade de memos da GEACS'
     VERIFICAR_FORMATO_MEMO = 'Verificar formato do memo da APIS'
     VERIFICAR_MAT_NAO_ENCONTRADAS = 'Verificar matrículas não encontradas'
     ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS = 'Assinar memo à APIS (matrículas não encontradas) e encaminhar'
     ASSINAR_MEMO_APIS_SEM_MEMO = 'Assinar memo à APIS (sem memorando para a GEACS) e encaminhar'
     ASSINAR_MEMO_APIS_FORMATO_INVALIDO = 'Assinar memo à APIS (formato do memorando inválido) e encaminhar'
     ASSINAR_MEMO_APIS_PERIODO_DEPS = 'Assinar memo à APIS (período dos dependentes) e encaminhar'
-    ASSINAR_MEMO_DISA_VALIDAR_MANTIS = 'Assinar memo à DISA (validar usos do MANTIS) e encaminhar'
     AGUARDAR_RESPOSTA_MEMO = 'Aguardar resposta ao memo enviado (processo parado)'
     VERIFICAR_ERRO = 'Verificar erro'
 
 
 # Próximas ações definidas antes do erro que devem ser mantidas
 _PROX_ACOES_DE_ERRO = frozenset({
-    ProxAcao.VERIFICAR_QNT_MEMOS,
     ProxAcao.VERIFICAR_FORMATO_MEMO,
     ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS,
     ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
@@ -83,7 +75,7 @@ def _agora() -> datetime:
 
 
 # Dados de trabalho da passagem, fora da planilha de controle
-_CAMPOS_INTERNOS = frozenset({'marcadores_atuais', 'tds_docs', 'docs_geacs', 'memos_geacs', 'memos_criados', 'dados_ui'})
+_CAMPOS_INTERNOS = frozenset({'marcadores_atuais', 'tds_docs', 'docs_geacs', 'memos_geacs', 'docs_rodada', 'memos_criados', 'dados_ui'})
 
 
 @dataclass
@@ -103,7 +95,6 @@ class RegistroBase:
 
     qnt_docs_geacs_na_arvore: int | None = None
     qnt_memos_geacs_na_arvore: int | None = None
-    qnt_memos_geacs_esperada: int | None = None
 
     # Lidos no início, adicionados e removidos na passagem
     marcadores_sei: list[str] = field(default_factory=list)
@@ -124,23 +115,22 @@ class RegistroBase:
     memo_apis_mat_nao_encontradas_na_arvore: bool = False
     memo_apis_mat_nao_encontradas_sei: str | None = None
 
-    # Rotina de correção (NOVOS enviados sem avaliação)
-    memo_uso_rede_criado: bool = False
-    memo_uso_rede_inserido_bloco: bool = False
-    memo_uso_rede_na_arvore: bool = False
-    memo_uso_rede_sei: str | None = None
-
     # Internos (ver _CAMPOS_INTERNOS)
     marcadores_atuais: list[str] = field(default_factory=list)
     tds_docs: list[dict] = field(default_factory=list)
     docs_geacs: list[dict] = field(default_factory=list)
     memos_geacs: list[dict] = field(default_factory=list)
+    # Documentos da rodada atual: depois do último memo da APIS destinado à
+    # GEACS (toda a árvore até ele ser encontrado). É onde memos e
+    # relatórios já criados são procurados (retomada)
+    docs_rodada: list[dict] = field(default_factory=list)
     # Memos criados na passagem, na ordem de criação (prefixo dos atributos
     # <memo>_sei), para obter o número SEI relendo a árvore
     memos_criados: list[str] = field(default_factory=list)
 
     def registrar_arvore(self, tds_docs: list[dict]) -> None:
         self.tds_docs = tds_docs
+        self.docs_rodada = tds_docs
         self.docs_geacs = filtrar_docs_geacs(tds_docs)
         self.memos_geacs = filtrar_memos_geacs(tds_docs)
         self.qnt_docs_geacs_na_arvore = len(self.docs_geacs)
@@ -160,6 +150,9 @@ class RegistroBase:
 
 @dataclass
 class RegistroMain(RegistroBase):
+    # Enviado à DISA e à DEPROC antes da avaliação da rede própria
+    velho: bool | None = None
+
     # Instruções da APIS
     ult_memo_obtido: bool = False
     conteudo_ult_memo_obtido: bool = False
@@ -194,13 +187,13 @@ class RegistroMain(RegistroBase):
     deps_valor_total_uso_mantis_rede_credenciada: float | None = None
     # Uso da rede própria no MANTIS que a base DISA marca como não uso
     mats_uso_mantis_alem_disa: list[str] = field(default_factory=list)
-    memo_disa_validar_mantis_criado: bool = False
-    memo_disa_validar_mantis_inserido_bloco: bool = False
-    memo_disa_validar_mantis_na_arvore: bool = False
-    memo_disa_validar_mantis_sei: str | None = None
+    # Relatórios em PDF do MANTIS: anexados na passagem (nome na árvore) e
+    # já na árvore (número SEI, retomada)
+    relatorios_incluidos: list[str] = field(default_factory=list)
+    relatorios_na_arvore: list[str] = field(default_factory=list)
 
-    # Memos DISA e DEPROC do fluxo normal. <memo>_na_arvore: o memo já
-    # estava na árvore sem marcador e foi reaproveitado (retomada)
+    # Memos DISA e DEPROC. <memo>_na_arvore: o memo já estava na árvore sem
+    # marcador e foi reaproveitado (retomada)
     memo_disa_criado: bool = False
     memo_disa_inserido_bloco: bool = False
     memo_disa_na_arvore: bool = False
@@ -209,9 +202,11 @@ class RegistroMain(RegistroBase):
     memo_deproc_inserido_bloco: bool = False
     memo_deproc_na_arvore: bool = False
     memo_deproc_sei: str | None = None
-
-    # VELHOS
-    instrucoes_velho: str | None = None
+    # Processo VELHO sem uso da rede própria
+    memo_deproc_credenciada_criado: bool = False
+    memo_deproc_credenciada_inserido_bloco: bool = False
+    memo_deproc_credenciada_na_arvore: bool = False
+    memo_deproc_credenciada_sei: str | None = None
 
     def to_dict(self) -> dict:
         dados = super().to_dict()
@@ -222,19 +217,10 @@ class RegistroMain(RegistroBase):
             'nome_titular': dados_ui.nome_titular if dados_ui else None,
             'periodo_titular': dados_ui.periodo_titular if dados_ui else None,
             'matriculas_dependentes': dados_ui.matriculas_dependentes if dados_ui else None,
-            # Só indica se há período variável (sem as datas). A coluna
-            # periodo_dependentes era do modelo velho, que não é mais aceito.
+            # Só indica se há período variável (sem as datas)
             'tem_periodo_var_deps': bool(periodo_deps) if dados_ui else None,
-            'periodo_dependentes': periodo_deps if isinstance(periodo_deps, str) else None,
         }
         # Logo depois das colunas de resultado (até "erro")
         itens = list(dados.items())
         posicao = list(dados).index('erro') + 1
         return dict(itens[:posicao] + list(colunas_ui.items()) + itens[posicao:])
-
-
-@dataclass
-class RegistroMainAddMemoNaoUsouRedePropria(RegistroBase):
-    # Lidas da planilha compilada (mesmas colunas do RegistroMain)
-    matricula_titular: str | None = None
-    matriculas_dependentes: str | None = None

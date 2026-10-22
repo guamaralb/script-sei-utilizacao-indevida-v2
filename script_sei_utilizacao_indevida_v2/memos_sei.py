@@ -1,14 +1,15 @@
 """Criação dos memos da GEACS no SEI (memo e bloco de assinatura) e
 registro do número SEI deles na planilha de controle.
 
-Usado pelo fluxo normal, pela rotina de correção e pelo memo à APIS de
-matrículas não encontradas.
+Os memos são procurados pelo assunto só nos documentos da rodada atual
+(registro.docs_rodada: depois do último memo da APIS destinado à GEACS),
+para não confundir com memos de pedidos anteriores da APIS.
 """
 
 import logging
 import re
 
-from docs_processo import encontrar_memo_geacs_por_assunto, memos_geacs_novos
+from docs_processo import encontrar_memo_geacs_por_assunto, filtrar_memos_geacs, memos_geacs_novos
 from sei_automacao.classes.Memorando import Memorando
 from sei_automacao.documento import inserir_bloco_ass
 from sei_automacao.processo import incluir_doc_sei_memo
@@ -29,12 +30,12 @@ def incluir_memo(
     """Cria o memo, insere no bloco e preenche <prefixo>_criado e
     <prefixo>_inserido_bloco no registro.
 
-    Com padrao_assunto, antes procura o memo entre os memos da GEACS na
-    árvore. Se ele já existe (passagem anterior que falhou antes de
+    Com padrao_assunto, antes procura o memo entre os memos da GEACS da
+    rodada atual. Se ele já existe (passagem anterior que falhou antes de
     adicionar o marcador), não é recriado: preenche <prefixo>_na_arvore e
     <prefixo>_sei, e quem chamou só adiciona o marcador."""
-    if padrao_assunto is not None and registro.memos_geacs:
-        existente = encontrar_memo_geacs_por_assunto(driver, registro.tds_docs, padrao_assunto, descricao)
+    if padrao_assunto is not None and filtrar_memos_geacs(registro.docs_rodada):
+        existente = encontrar_memo_geacs_por_assunto(driver, registro.docs_rodada, padrao_assunto, descricao)
         if existente is not None:
             setattr(registro, f'{prefixo}_na_arvore', True)
             setattr(registro, f'{prefixo}_sei', existente['numero_sei'])

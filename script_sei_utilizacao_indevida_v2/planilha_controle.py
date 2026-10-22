@@ -1,7 +1,8 @@
 """Planilha de controle geral (dados/controle/controle_geral_de_processos.xlsx).
 
-Gravada por main.py e por main_add_memo_nao_usou_rede_propria.py depois de
-cada processo (PlanilhaControleGeral):
+Gravada por main.py depois de cada processo (PlanilhaControleGeral). A
+coluna "script" distingue as passagens antigas do script de correção
+(correcao_rede_propria), que foi removido:
     - aba "processos": uma linha por processo, com a última passagem pelo
       fluxo. As colunas que o script grava são sobrescritas (o processo é
       reavaliado a cada passagem); as demais e primeira_passagem são

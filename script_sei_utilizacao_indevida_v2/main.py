@@ -11,10 +11,7 @@ from constantes import (
     DIR_DADOS,
     DIR_INPUTS,
     DIR_LOG,
-)
-from correcao_rede_propria import (
-    corrigir_uso_rede_propria,
-    verificar_memo_uso_rede,
+    DIR_UTILIZACOES_MANTIS_PDF,
 )
 from extrator_dados_ui import FormatoMemorandoInvalido
 from log_config import (
@@ -26,8 +23,7 @@ from log_config import (
 )
 from mantis import BasesMantis, carregar_bases_mantis
 from planilha_controle import PlanilhaControleGeral
-from processar_novo import encontrar_memo_sem_marcador, obter_dados_ui, processar_novo
-from processar_velho import processar_velho
+from processar_novo import processar_novo
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
 from Registro import ProxAcao, RegistroMain, registrar_erro
 from sei_automacao.processo.arvore import listar_documentos_arvore
@@ -36,28 +32,18 @@ from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
 from sessao_sei import abrir_sei
 from tags import (
-    MEMOS_POR_ESTADO_NOVO,
     REMOCAO_DE_MARCADOR_DISPONIVEL,
-    TAG_AVALIADO_USO_REDE_PROPRIA,
     TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO,
-    TAG_MAT_NAO_ENCONTRADAS_DISA_VELHO,
     TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO,
-    TAG_MAT_NAO_ENCONTRADAS_GERAL_VELHO,
+    TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DEPROC_NO_BLOCO,
-    TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
     TAG_MEMOS_DISA_DEPROC_NO_BLOCO,
-    TAG_NOVO_REL_UI_GERADO,
     TAG_PROCESSO_NOVO,
-    TAG_PROCESSO_VELHO,
-    TAG_REFAZER_REL_UI,
-    TAG_REL_UI_TRANSFORMADO_PDF,
-    TAG_TRANSFORMAR_EXCEL_EM_PDF,
-    TAGS_CONCLUSAO_NOVO,
-    TAGS_ESTADO_NOVO,
-    TAGS_ESTADO_VELHO,
+    TAG_VELHO_MEMO_DEPROC,
+    TAG_VELHO_MEMO_DISA,
     TAGS_PARADA_NOVO,
-    TAGS_SCRIPT,
+    TAGS_TRATAMENTO_MANUAL,
     adicionar_tag,
     estado_atual,
     registrar_tags,
@@ -76,175 +62,67 @@ ARQ_LOG = DIR_LOG / f'{AGORA}_execucao.log'
 
 logger = logging.getLogger(__name__)
 
-_MSG_PARADO_MAT_NAO_ENCONTRADAS = 'Processamento parado: matrícula(s) não encontrada(s) na base geral e/ou na base da rede própria. Corrigir e remover o(s) marcador(es) para reprocessar'
+_MSG_PARADO_MAT_NAO_ENCONTRADAS = 'Parado pela versão anterior do fluxo: matrícula(s) não encontrada(s) na base geral e/ou DISA. Corrigir e remover o(s) marcador(es) para reprocessar'
 
-
-def _conferir_memos_geacs(registro: RegistroMain, esperado: int, motivo: str) -> None:
-    """Os memos da GEACS na árvore precisam corresponder aos marcadores;
-    senão o processo é verificado manualmente (evita duplicidade)."""
-    registro.qnt_memos_geacs_esperada = esperado
-    quant = len(registro.memos_geacs)
-    if quant != esperado:
-        registro.prox_acao = ProxAcao.VERIFICAR_QNT_MEMOS
-        raise ErroAvaliacao(f'{motivo} indica {esperado} memorando(s) da GEACS, mas há {quant} na árvore. Verificar manualmente para evitar duplicidade.')
-    logger.info(f'Quantidade de memos da GEACS confere ({quant})')
-
-
-# ---------------------------------------------------------------------------
-# VELHOS
-# ---------------------------------------------------------------------------
-
-# TODO: implementar o fluxo de cada pendência (2.1) e o fluxo após a
-# conclusão (2.2). Por enquanto só registram a próxima ação.
-_ESTADOS_VELHO = {
-    TAG_TRANSFORMAR_EXCEL_EM_PDF: ('VELHO - transformar Excel em PDF', ProxAcao.VELHO_TRANSFORMAR_PDF),
-    TAG_REFAZER_REL_UI: ('VELHO - refazer relatório de UI', ProxAcao.VELHO_REFAZER_REL_UI),
-    TAG_REL_UI_TRANSFORMADO_PDF: ('VELHO - Excel transformado em PDF', ProxAcao.VELHO_CONCLUIDO),
-    TAG_NOVO_REL_UI_GERADO: ('VELHO - relatório de UI refeito', ProxAcao.VELHO_CONCLUIDO),
+_PROX_ACAO_POR_CONCLUSAO = {
+    TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DISA_DEPROC,
+    TAG_MEMO_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DEPROC,
+    TAG_VELHO_MEMO_DISA: ProxAcao.VELHO_ASSINAR_DISA,
+    TAG_VELHO_MEMO_DEPROC: ProxAcao.VELHO_ASSINAR_DEPROC,
 }
 
 
-def _tratar_velho(driver: webdriver.Remote, registro: RegistroMain) -> None:
-    if tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_GERAL_VELHO) or tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_DISA_VELHO):
-        registro.fluxo = 'VELHO - parado (matrículas não encontradas)'
-        registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS
-        raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
-
-    estado = estado_atual(registro, TAGS_ESTADO_VELHO)
-    if estado is None:
-        logger.info('Fluxo: VELHO - identificação das instruções da APIS')
-        registro.fluxo = 'VELHO - identificação das instruções'
-        processar_velho(driver, registro)
+def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, bases_mantis: BasesMantis) -> None:
+    """Decide, pelos marcadores, se o processo está parado, concluído ou
+    segue (do início ou retomando) para o fluxo de processar_novo."""
+    if not tem_tag(registro, TAG_PROCESSO_NOVO):
+        # Inclusive os que já têm documento da GEACS ou o antigo
+        # "2 - Processo VELHO": a APIS pede para refazer a consulta
+        logger.info('Classificação: processo sem o marcador NOVO - fluxo do início')
+        registro.fluxo = 'NOVO - classificação'
+        adicionar_tag(driver, registro, TAG_PROCESSO_NOVO)
+        processar_novo(driver, registro, bases, bases_mantis)
         return
 
-    logger.info(f'Fluxo: VELHO com marcador "{estado}"')
-    registro.fluxo, registro.prox_acao = _ESTADOS_VELHO[estado]
-
-
-# ---------------------------------------------------------------------------
-# NOVOS: versão anterior do fluxo normal (1.2, 1.3 e 1.4)
-# ---------------------------------------------------------------------------
-
-
-def _tratar_novo_avaliado(driver: webdriver.Remote, registro: RegistroMain) -> None:
-    """Processo já avaliado: confere os memos esperados na árvore."""
-    logger.info('Fluxo: NOVO já avaliado - conferência dos memos na árvore')
-    registro.fluxo = 'NOVO - já avaliado'
-    com_memo_uso_rede = tem_tag(registro, TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO)
-    if com_memo_uso_rede:
-        verificar_memo_uso_rede(driver, registro)
-
-    if tem_tag(registro, TAG_MEMOS_DISA_DEPROC_NO_BLOCO):
-        esperado, acao = 2 + int(com_memo_uso_rede), ProxAcao.ASSINAR_DISA_DEPROC
-    elif tem_tag(registro, TAG_MEMO_DEPROC_NO_BLOCO):
-        esperado, acao = 1, ProxAcao.ASSINAR_DEPROC
-    else:
-        raise ErroAvaliacao('Processo avaliado quanto à rede própria, mas sem marcador de memos no bloco')
-
-    _conferir_memos_geacs(registro, esperado, 'Marcadores da versão anterior do fluxo')
-    registro.prox_acao = acao
-
-
-def _corrigir_novo_sem_avaliacao(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso) -> None:
-    """Processo enviado à DISA e à DEPROC sem avaliação da rede própria."""
-    logger.info('Fluxo: NOVO enviado à DISA e DEPROC sem avaliação da rede própria - correção')
-    registro.fluxo = 'NOVO - correção'
-    dados_ui = obter_dados_ui(driver, registro)
-    corrigir_uso_rede_propria(driver, registro, dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
-
-
-def _tratar_novo_versao_anterior(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso) -> bool:
-    """Trata o processo com marcadores da versão anterior do fluxo normal.
-    Devolve False se ele não tem nenhum."""
-    if tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO) or tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO):
-        # No fluxo atual, 1.2.1 e 1.2.2 vêm sempre com um marcador de estado
-        registro.fluxo = 'NOVO - parado (matrículas não encontradas)'
-        registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS
-        raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
-    if tem_tag(registro, TAG_AVALIADO_USO_REDE_PROPRIA):
-        _tratar_novo_avaliado(driver, registro)
-        return True
-    if tem_tag(registro, TAG_MEMOS_DISA_DEPROC_NO_BLOCO):
-        _corrigir_novo_sem_avaliacao(driver, registro, bases)
-        return True
-    if tem_tag(registro, TAG_MEMO_DEPROC_NO_BLOCO):
-        raise ErroAvaliacao('Marcador de memo DEPROC no bloco sem marcador de avaliação da rede própria')
-    if tem_tag(registro, TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO):
-        raise ErroAvaliacao('Marcador de memo de uso da rede própria sem marcador de memos DISA e DEPROC no bloco')
-    return False
-
-
-# ---------------------------------------------------------------------------
-# NOVOS
-# ---------------------------------------------------------------------------
-
-
-def _tratar_novo(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, bases_mantis: BasesMantis) -> None:
-    estado = estado_atual(registro, TAGS_ESTADO_NOVO)
-    if estado is None and _tratar_novo_versao_anterior(driver, registro, bases):
-        return
-
-    esperado = MEMOS_POR_ESTADO_NOVO.get(estado, 0)
-    retomada = estado not in TAGS_PARADA_NOVO + TAGS_CONCLUSAO_NOVO
-    # Um memo a mais pode ser o da etapa seguinte, criado numa passagem que
-    # falhou antes do marcador: se o assunto confirmar, o fluxo normal o
-    # reaproveita e só adiciona o marcador
-    if retomada and len(registro.memos_geacs) == esperado + 1 and encontrar_memo_sem_marcador(driver, registro):
-        logger.warning('Memo da GEACS sem marcador identificado pelo assunto: retomada sem recriar o memo')
-        esperado += 1
-    _conferir_memos_geacs(registro, esperado, f'Marcador "{estado}"' if estado else 'Processo NOVO sem marcador de estado')
+    registro.velho = tem_tag(registro, TAG_MEMOS_DISA_DEPROC_NO_BLOCO)
+    estado = estado_atual(registro)
 
     if estado in TAGS_PARADA_NOVO:
         # TODO: definir o processamento na próxima execução (depois da
         # resposta da APIS ou da DISA ao memo enviado)
-        registro.fluxo = 'NOVO - parado (aguardando resposta ao memo)'
+        registro.fluxo = 'parado (aguardando resposta ao memo)'
         registro.prox_acao = ProxAcao.AGUARDAR_RESPOSTA_MEMO
         raise ErroAvaliacao(f'Processamento parado: memo enviado, aguardando resposta ({estado})')
 
-    if estado in TAGS_CONCLUSAO_NOVO:
-        logger.info('Fluxo: NOVO concluído - memos conferidos na árvore')
-        registro.fluxo = 'NOVO - concluído'
-        registro.prox_acao = ProxAcao.ASSINAR_DISA_DEPROC if estado == TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO else ProxAcao.ASSINAR_DEPROC
+    if estado in _PROX_ACAO_POR_CONCLUSAO:
+        logger.info(f'Fluxo: concluído ("{estado}")')
+        registro.fluxo = 'concluído'
+        registro.prox_acao = _PROX_ACAO_POR_CONCLUSAO[estado]
         return
+
+    if registro.velho:
+        manuais = TAGS_TRATAMENTO_MANUAL.intersection(registro.marcadores_atuais)
+        if manuais:
+            logger.info(f'VELHO tratado manualmente ({sorted(manuais)}): fora do escopo')
+            registro.fluxo = 'VELHO - tratado manualmente'
+            registro.prox_acao = ProxAcao.FORA_DO_ESCOPO
+            return
+    elif estado is None:
+        # Versão anterior do fluxo (sem marcador de estado)
+        if tem_tag(registro, TAG_MEMO_DEPROC_NO_BLOCO):
+            logger.info('Fluxo: concluído na versão anterior (só memo DEPROC)')
+            registro.fluxo = 'concluído (versão anterior)'
+            registro.prox_acao = ProxAcao.ASSINAR_DEPROC
+            return
+        if tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO) or tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO):
+            registro.fluxo = 'parado (matrículas não encontradas)'
+            registro.prox_acao = ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS
+            raise ErroAvaliacao(_MSG_PARADO_MAT_NAO_ENCONTRADAS)
 
     if estado is None:
-        logger.info('Fluxo: NOVO sem marcador de estado - fluxo normal do início')
+        logger.info(f'Fluxo: {"VELHO (enviado à DISA e à DEPROC antes da avaliação)" if registro.velho else "NOVO"} - do início')
     else:
-        logger.info(f'Fluxo: NOVO - retomada do fluxo normal (estado "{estado}")')
-    processar_novo(driver, registro, bases, bases_mantis)
-
-
-# ---------------------------------------------------------------------------
-# Classificação
-# ---------------------------------------------------------------------------
-
-
-def _classificar_e_processar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, bases_mantis: BasesMantis) -> None:
-    novo, velho = tem_tag(registro, TAG_PROCESSO_NOVO), tem_tag(registro, TAG_PROCESSO_VELHO)
-    if novo and velho:
-        raise ErroAvaliacao('Processo marcado como NOVO e VELHO')
-    if velho:
-        _tratar_velho(driver, registro)
-        return
-    if novo:
-        _tratar_novo(driver, registro, bases, bases_mantis)
-        return
-
-    tags_script = [t for t in registro.marcadores_sei if t in TAGS_SCRIPT]
-    if tags_script:
-        raise ErroAvaliacao(f'Marcadores do script sem marcador NOVO/VELHO: {tags_script}')
-
-    # Marcadores manuais (ex.: PLANILHADO) não impedem a classificação
-    if registro.docs_geacs:
-        logger.info(f'Classificação: VELHO ({len(registro.docs_geacs)} documento(s) da GEACS na árvore)')
-        registro.fluxo = 'VELHO - classificação'
-        adicionar_tag(driver, registro, TAG_PROCESSO_VELHO)
-        registro.prox_acao = ProxAcao.PROCESSAR_VELHO
-        return
-
-    logger.info('Classificação: NOVO (sem documentos da GEACS na árvore)')
-    registro.fluxo = 'NOVO - classificação'
-    adicionar_tag(driver, registro, TAG_PROCESSO_NOVO)
+        logger.info(f'Fluxo: retomada (estado "{estado}")')
     processar_novo(driver, registro, bases, bases_mantis)
 
 
@@ -258,7 +136,7 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
         logger.info(f'Árvore: {len(registro.tds_docs)} documento(s) | GEACS: {registro.qnt_docs_geacs_na_arvore} documento(s), {registro.qnt_memos_geacs_na_arvore} memorando(s)')
         logger.info(f'Marcadores: {registro.marcadores_sei or "nenhum"}')
 
-        _classificar_e_processar(driver, registro, bases, bases_mantis)
+        _tratar(driver, registro, bases, bases_mantis)
 
     except (ErroAvaliacao, FormatoMemorandoInvalido, TextoMemoPendente) as e:
         # Problema esperado nos dados: sem traceback
@@ -272,7 +150,7 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
 
 
 def main():
-    for diretorio in [DIR_DADOS, DIR_INPUTS, DIR_CONTROLE, DIR_LOG, DIR_UI_ANTIGAS_XLS]:
+    for diretorio in [DIR_DADOS, DIR_INPUTS, DIR_CONTROLE, DIR_LOG, DIR_UI_ANTIGAS_XLS, DIR_UTILIZACOES_MANTIS_PDF]:
         diretorio.mkdir(parents=True, exist_ok=True)
     configurar_logging(ARQ_LOG)
 

@@ -5,13 +5,13 @@ substitui as funções da sei_automacao usadas pelo script.
 """
 
 from datetime import date
+from pathlib import Path
 
-import correcao_rede_propria
 import docs_processo
 import main
-import matriculas_nao_encontradas
 import memos_sei
 import processar_novo
+import relatorios_mantis
 import tags
 from constantes import UNIDADE_APIS, UNIDADE_GEACS
 from mantis import Atendimento, BaseMantis, BasesMantis
@@ -21,25 +21,35 @@ from script_sei_utilizacao_indevida_v2.memorandos import (
     MemoApisFormatoInvalido,
     MemoApisPeriodoDependentes,
     MemoApisSemMemo,
-    MemoDisaValidarUsosMantis,
+    MemoDeprocRedeCredenciada,
+    MemoDisa,
 )
 
-MEMO_APIS = """IPSEMG/APIS-UTILIZAÇÃO
-Solicita-se à Gerência de Auditoria e Contas da Saúde - GEACS
+# Modelo novo_novo (único aceito)
+MEMO_APIS = """Memorando IPSEMG/APIS-UTILIZAÇÃO nº. 1/2026
+Para: Bruna Miller Lavarini
+solicita-se à Gerência de Auditoria e Contas da Saúde – GEACS atualização do levantamento de utilização da assistência à saúde
 Nome completo: FULANO
-Matrícula: 1234567-8
-Período de apuração do titular: 01/2024 a 06/2024
+Matrícula: 1234567 / 8
+Período de apuração do titular: (01/2024 a 06/2024)
 Matrícula dos dependentes: 555
 {extra}
 Documento assinado eletronicamente"""
+
+# Mesmos campos, sem o pedido de atualização do levantamento
+MEMO_APIS_NOVO_VELHO = MEMO_APIS.replace('atualização do levantamento', 'o levantamento')
 
 TITULAR = '12345678'
 DEPENDENTE = '555'
 
 _VAZIA = BaseMantis('vazia', {}, {})
+_ATENDIMENTO = Atendimento(date(2024, 3, 1), 10.0, prestador='HOSPITAL', procedimento='CONSULTA')
 MANTIS_SEM_USO = BasesMantis(_VAZIA, _VAZIA)
 # Dependente com atendimento na rede própria do MANTIS dentro do período
-MANTIS_DEPENDENTE_USOU = BasesMantis(BaseMantis('rede própria', {}, {DEPENDENTE: (Atendimento(date(2024, 3, 1), 10.0),)}), _VAZIA)
+MANTIS_DEPENDENTE_USOU = BasesMantis(BaseMantis('rede própria', {}, {DEPENDENTE: (_ATENDIMENTO,)}), _VAZIA)
+# Titular (sem DV no MANTIS) com atendimento na rede credenciada
+MANTIS_CREDENCIADA_TITULAR_USOU = BasesMantis(_VAZIA, BaseMantis('rede credenciada', {TITULAR[:-1]: (_ATENDIMENTO,)}, {}))
+MANTIS_DUAS_REDES = BasesMantis(MANTIS_DEPENDENTE_USOU.rede_propria, MANTIS_CREDENCIADA_TITULAR_USOU.rede_credenciada)
 
 
 def bases(*, tit_usou=True, tit_na_disa=True, tit_na_geral=True) -> BasesUso:
@@ -75,17 +85,36 @@ class SEIFalso:
         self.textos[numero] = texto
         return numero
 
+    def memo_apis(self, texto: str = MEMO_APIS, *, extra: str = '') -> str:
+        return self.novo_doc('Memorando 7', UNIDADE_APIS, texto.format(extra=extra))
+
     def novo_processo(self, *, extra: str = '', com_memo_apis: bool = True) -> None:
         self.novo_doc('E-mail', UNIDADE_APIS, 'e-mail')
         if com_memo_apis:
-            self.novo_doc('Memorando 7', UNIDADE_APIS, MEMO_APIS.format(extra=extra))
+            self.memo_apis(extra=extra)
 
     def memo_geacs(self, assunto: str) -> str:
         return self.novo_doc('Memorando 1', UNIDADE_GEACS, f'Assunto: {assunto}')
 
+    def _memos_geacs(self) -> list[dict]:
+        return [doc for doc in self.docs if doc['unidade'] == UNIDADE_GEACS and 'Memorando' in doc['nome_arvore']]
+
     @property
     def qnt_memos_geacs(self) -> int:
-        return sum(1 for doc in self.docs if doc['unidade'] == UNIDADE_GEACS)
+        return len(self._memos_geacs())
+
+    @property
+    def assuntos_memos_geacs(self) -> list[str]:
+        return [self.textos[doc['numero_sei']].splitlines()[0].removeprefix('Assunto: ') for doc in self._memos_geacs()]
+
+    @property
+    def pdfs(self) -> list[str]:
+        """Nome dos relatórios sem a data e hora da inclusão."""
+        return [doc['nome_arvore'].rsplit(' - ', 1)[0] for doc in self.docs if doc['nome_arvore'].startswith('PDF ')]
+
+    @property
+    def nomes(self) -> list[str]:
+        return [doc['nome_arvore'] for doc in self.docs]
 
     @property
     def tags_curtas(self) -> list[str]:
@@ -108,6 +137,9 @@ class SEIFalso:
             raise RuntimeError('falha simulada ao criar memo')
         self.novo_doc('Memorando 1', UNIDADE_GEACS, f'Assunto: {kwargs["assunto"]}\n{kwargs["texto_principal"]}')
 
+    def _incluir_doc_externo(self, driver, *, tipo_doc, num, **kwargs):
+        self.novo_doc(f'{tipo_doc} {num}', UNIDADE_GEACS, '')
+
     def instalar(self, monkeypatch) -> None:
         def arvore(driver):
             return [dict(doc) for doc in self.docs]
@@ -121,11 +153,11 @@ class SEIFalso:
         monkeypatch.setattr(memos_sei, 'incluir_doc_sei_memo', self._incluir_memo)
         monkeypatch.setattr(memos_sei, 'inserir_bloco_ass', lambda driver, bloco: None)
         monkeypatch.setattr(docs_processo, 'ler_texto_doc', lambda driver, doc: self.textos[doc['numero_sei']])
-        for modulo in (processar_novo, matriculas_nao_encontradas, correcao_rede_propria):
-            monkeypatch.setattr(modulo, 'garantir_marcadores_no_sei', lambda driver, lista: None)
-        monkeypatch.setattr(correcao_rede_propria, 'reabrir_processo', lambda driver: None)
+        monkeypatch.setattr(processar_novo, 'garantir_marcadores_no_sei', lambda driver, lista: None)
+        monkeypatch.setattr(relatorios_mantis, 'incluir_doc_externo', self._incluir_doc_externo)
+        monkeypatch.setattr(relatorios_mantis, 'transformar_xls_em_pdf', lambda **kwargs: Path('relatorio.pdf'))
         # Memos com texto pendente: liberados para testar o fluxo
-        for memo in (MemoApisSemMemo, MemoApisFormatoInvalido, MemoApisPeriodoDependentes, MemoDisaValidarUsosMantis):
+        for memo in (MemoApisSemMemo, MemoApisFormatoInvalido, MemoApisPeriodoDependentes, MemoDisa, MemoDeprocRedeCredenciada):
             monkeypatch.setattr(memo, 'TEXTO_DEFINIDO', True)
 
     def passar(self, bases_uso: BasesUso, bases_mantis: BasesMantis = MANTIS_SEM_USO):

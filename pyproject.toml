@@ -34,9 +34,7 @@ lint = {cmd = 'poetry run ruff check'}
 pre_format = {cmd = 'poetry run ruff check --fix'}
 format = {cmd = 'poetry run ruff format'}
 pre_run = {cmd = "poetry run task format"}
-pre_run_extra = {cmd = "poetry run task format"}
 run = 'python script_sei_utilizacao_indevida_v2/main.py'
-run_extra = 'python script_sei_utilizacao_indevida_v2/main_add_memo_nao_usou_rede_propria.py'
 test = 'pytest'
 
 [tool.pytest.ini_options]

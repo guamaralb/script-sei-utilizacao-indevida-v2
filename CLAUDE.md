@@ -3,25 +3,38 @@
 Automação Selenium no SEI-MG (IPSEMG) que prepara a apuração de utilização
 indevida da assistência à saúde:
 
-- classifica os processos;
-- extrai as instruções dos memorandos da APIS;
-- avalia o uso da rede própria;
-- gera os memorandos para DISA e DEPROC.
+- lê o último memorando da APIS destinado à GEACS;
+- avalia o uso da rede própria (base DISA e MANTIS);
+- anexa os relatórios do MANTIS em PDF e gera os memorandos para DISA e
+  DEPROC.
 
 A pesquisa da utilização indevida em si **ainda não foi implementada**.
 
-O fluxo completo está desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio)
-(seção [Fluxo do processo](#fluxo-do-processo)).
+O fluxo está descrito na seção [Fluxo do processo](#fluxo-do-processo) e
+desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
+[`docs/gerar_fluxo.py`](docs/gerar_fluxo.py)). O
+`docs/fluxo_com_comments.drawio` é da versão anterior do fluxo.
 
 ## Glossário
 
 - **APIS-Utilização**: unidade que envia as instruções. O memorando traz
-  titular, dependentes e períodos.
+  titular, dependentes e períodos. A APIS pede sempre para refazer
+  (atualizar) a consulta, mesmo em processo que já tem documento da GEACS.
 - **GEACS-Utilização**: nossa unidade. Emite os memorandos.
-- **DISA**: levanta os atendimentos na rede própria.
-- **DEPROC**: levanta a coparticipação. Recebe sempre todos os beneficiários.
-- **Processo NOVO**: sem nenhum documento da GEACS na árvore.
-- **Processo VELHO**: já contém documento da GEACS.
+- **DISA**: valida os atendimentos na rede própria.
+- **DEPROC**: levanta a coparticipação. Recebe sempre todos os beneficiários
+  e o relatório da rede credenciada.
+- **Base DISA**: planilha que diz apenas se o beneficiário teve atendimento
+  na rede própria (sem os atendimentos).
+- **MANTIS**: atendimentos detalhados (rede própria e rede credenciada).
+- **Processo VELHO**: processo enviado à DISA e à DEPROC **antes** da
+  avaliação da rede própria (marcador `1.3 - Memos DISA e DEPROC no Bloco`,
+  da versão anterior do fluxo; passou pela antiga rotina de correção).
+  Todos os outros são tratados como NOVOS, inclusive os que já têm
+  documento da GEACS.
+- **Rodada**: documentos depois do último memorando da APIS destinado à
+  GEACS (`registro.docs_rodada`). Memos e relatórios já criados só são
+  procurados nela, para não confundir com os de pedidos anteriores.
 - **Marcador (tag)**: marcador do SEI. É a memória do sistema entre
   execuções: registra o que foi feito e permite retomar o trabalho.
 
@@ -29,30 +42,31 @@ O fluxo completo está desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio)
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `main.py` | Script principal: classifica e processa qualquer processo. Não roda enquanto a `sei_automacao` não tiver `remover_marcador` |
-| `main_add_memo_nao_usou_rede_propria.py` | Script de correção dos NOVOS enviados sem avaliação da rede própria |
-| `processar_novo.py` | Fluxo normal dos NOVOS (com retomada pelo marcador de estado); `obter_dados_ui()` lê o memo da APIS destinado à GEACS |
-| `memos_sei.py` | `incluir_memo()` (procura o memo pelo assunto, ou cria e insere no bloco) e `registrar_numeros_memos()` (número SEI dos memos criados), usados por todos os fluxos |
+| `main.py` | Script principal: roteamento pelos marcadores (`_tratar`). Não roda enquanto a `sei_automacao` não tiver `remover_marcador` |
+| `processar_novo.py` | Fluxo de todos os processos, normal e VELHO (com retomada pelo marcador de estado); `obter_dados_ui()` lê o último memo da APIS destinado à GEACS |
+| `relatorios_mantis.py` | `incluir_relatorios()`: gera os PDFs do MANTIS (titular e dependentes) e os anexa como documento externo, com retomada pelo nome na árvore |
+| `transformar_xls_em_pdf.py` | Monta o PDF do relatório de utilização (ReportLab) |
+| `memos_sei.py` | `incluir_memo()` (procura o memo pelo assunto na rodada, ou cria e insere no bloco) e `registrar_numeros_memos()` (número SEI dos memos criados) |
 | `sessao_sei.py` | `abrir_sei()`: navegador e login (credenciais do `.env`) |
-| `processar_velho.py` | Fluxo dos VELHOS (**somente estrutura**, com TODOs) |
-| `correcao_rede_propria.py` | Rotina de correção, usada pelos dois scripts |
-| `rede_propria.py` | Carga da planilha de rede própria e da base geral, normalização de matrícula, `avaliar_uso()` (correção), `avaliar_uso_rede_propria_disa()` (fluxo normal), `ErroAvaliacao`, `MatriculasNaoEncontradas` |
-| `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
-| `docs_processo.py` | Filtros da árvore e busca de memos da GEACS pelo assunto (`encontrar_memo_geacs_por_assunto`) |
-| `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS (só o modelo "novo"; o "velho" é formato inválido) |
-| `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base geral (`incluir_memo_apis_mat_nao_encontradas`, usado também pelo fluxo normal) e rotina completa da seção 5 (correção e VELHO) |
+| `rede_propria.py` | Carga da base DISA e da base geral, normalização de matrícula, `avaliar_uso_rede_propria_disa()`, `ErroAvaliacao` |
+| `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada, com os atendimentos), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
+| `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome |
+| `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS (só o modelo "novo_novo"; os outros são formato inválido) |
+| `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base geral (`incluir_memo_apis_mat_nao_encontradas`) |
 | `tags.py` | Todos os marcadores, grupos de estado, `registrar_tags()`, `adicionar_tag()` (troca o estado), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()` e o placeholder de `remover_marcador` |
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos |
-| `log_config.py` | Logging compartilhado: processo atual em cada linha e resumo final |
-| `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroMainAddMemoNaoUsouRedePropria`): árvore, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
-| `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup (usado pelos dois scripts) |
-| `memorandos/` | `DadosUI`, `MemoDisa`, `MemoDeproc`, `MemoDisaUsoRede`, `MemoApisMatNaoEncontradas` e os memos com texto pendente (TODO): `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes`, `MemoDisaValidarUsosMantis` (ver `TextoPendente`) |
-| `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos e marcadores); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
-| `docs/fluxo.drawio` | Diagrama do fluxo (uma página por seção do [Fluxo do processo](#fluxo-do-processo)) |
+| `log_config.py` | Logging: processo atual em cada linha e resumo final |
+| `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
+| `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
+| `memorandos/` | `DadosUI`, `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa`, `MemoDeproc`, `MemoDeprocRedeCredenciada`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`) |
+| `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
+| `docs/gerar_fluxo.py` | Gera o `docs/fluxo.drawio` (`python docs/gerar_fluxo.py docs/fluxo.drawio`). O conteúdo do diagrama fica no script |
+| `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
 
 A biblioteca `sei_automacao` é externa (login, árvore, marcadores,
-memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
+memorandos, documento externo, blocos). Não altere a biblioteca; use apenas
+a API dela.
 
 ## Convenções
 
@@ -60,12 +74,10 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 - Código, nomes e mensagens em português.
 - Aspas simples.
 - Lint com **ruff** (preview ativo, ex.: PLR6301).
-- Testes com **pytest** (`poetry run task test`). Os mains não têm efeito
+- Testes com **pytest** (`poetry run task test`). O main não tem efeito
   colateral ao importar (logging e pastas são configurados em `main()`).
   Ao mudar o fluxo, ajuste ou acrescente o cenário em
   `tests/test_fluxo_novo.py`.
-- Os dois `main` ficam em arquivos separados, e **um nunca importa o
-  outro**. Lógica comum vai para os módulos compartilhados.
 - Caminhos de arquivos de entrada são **fixos**, com data no nome. Não
   parametrize.
 - Grafias de unidade são **diferentes de propósito**. Use as constantes:
@@ -84,25 +96,25 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
   - use `logging.getLogger(__name__)`;
   - não prefixe o número do processo na mensagem, pois
     `contexto_processo` já o injeta;
-  - toda ação no SEI (memo criado, bloco, marcador, reabertura) gera um
-    `logger.info`.
+  - toda ação no SEI (memo criado, relatório anexado, bloco, marcador)
+    gera um `logger.info`.
 - O registro é o contexto do processo: guarda a árvore (`tds_docs`,
-  `docs_geacs`, `memos_geacs`, via `registro.registrar_arvore`) e os
-  marcadores (`marcadores_sei`, lidos no início, e `marcadores_atuais`).
-  As funções recebem `(driver, registro)` e, quando precisam, as bases.
-  Campos de trabalho ficam em `_CAMPOS_INTERNOS` e não vão para a planilha.
+  `docs_geacs`, `memos_geacs`, via `registro.registrar_arvore`), a rodada
+  (`docs_rodada`, definida em `obter_dados_ui`) e os marcadores
+  (`marcadores_sei`, lidos no início, e `marcadores_atuais`). As funções
+  recebem `(driver, registro)` e, quando precisam, as bases. Campos de
+  trabalho ficam em `_CAMPOS_INTERNOS` e não vão para a planilha.
 - Marcadores: adicione **sempre** com `tags.adicionar_tag(driver, registro,
   tag)` (ou `adicionar_tag_se_ausente`, na retomada), que também preenche
   `marcadores_adicionados` e, se o marcador for de estado, remove o estado
   anterior (`marcadores_removidos`). Consulte com `tem_tag`/`estado_atual`
   (marcadores atuais). Não chame `adicionar_marcador`/`remover_marcador`
   direto.
-- **Antes de criar qualquer memo**, chame
+- **Antes de criar qualquer memo ou relatório**, chame
   `garantir_marcadores_no_sei(driver, [marcadores que serão adicionados])`.
-  Se um nome não existir no SEI, o processo para antes do memo (senão o
-  memo fica no bloco sem marcador). A lista é lida na tela "Gerenciar
-  Marcador", sem salvar, uma vez por execução; se faltar um nome, é relida
-  uma vez.
+  Se um nome não existir no SEI, o processo para antes (senão o memo fica
+  no bloco sem marcador). A lista é lida na tela "Gerenciar Marcador", sem
+  salvar, uma vez por execução; se faltar um nome, é relida uma vez.
 - `prox_acao`: use os valores de `Registro.ProxAcao`. Não escreva textos
   soltos; detalhes vão para as demais colunas e para o log.
 - Erros: registre com `Registro.registrar_erro(registro, e)` (preenche
@@ -111,18 +123,37 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
   "Tempo esgotado esperando elemento do SEI em <função>". O traceback
   completo fica no log.
 - Ao mudar o fluxo (pergunta, ação, marcador ou `prox_acao`), atualize a
-  seção [Fluxo do processo](#fluxo-do-processo) **e** a página
-  correspondente de `docs/fluxo.drawio`.
+  seção [Fluxo do processo](#fluxo-do-processo) **e** o conteúdo em
+  `docs/gerar_fluxo.py`, e regere o `docs/fluxo.drawio` (não edite o
+  `.drawio` à mão: a próxima geração sobrescreve).
 
 ## Regras de negócio
 
-### Bases de matrículas (compartilhadas)
+### Memo da APIS
 
-- **Base da rede própria (DISA)**:
+- Vale o **último** memorando da APIS-Utilização destinado à GEACS (na
+  ordem da árvore); os anteriores são ignorados.
+- Destinado à GEACS: o texto contém algum dos trechos de
+  `TRECHOS_DESTINO_GEACS` ("Solicita-se à Gerência de Auditoria e Contas da
+  Saúde - GEACS", "Para: Bruna Miller Lavarini" ou "Para: Bruna Miiller
+  Lavarini"; espaços e maiúsculas são ignorados).
+- Só o modelo **novo_novo** é válido (exemplo: Memorando
+  IPSEMG/APIS-UTILIZAÇÃO nº 2627/2026). Ele tem os campos `Nome completo`,
+  `Matrícula`, `Período de apuração do titular` e `Matrícula dos
+  dependentes` **e** o pedido de "atualização do levantamento de
+  utilização". Sem esse pedido é o modelo novo_velho; com "Segurado(a)", o
+  velho. Os dois são formato inválido.
+- Matrícula do titular com DV separado por barra (`1289612 / 8`) é aceita.
+- Período: `(01/05/2019 a 31/12/2019) e (01/02/2020 a 12/06/2024)` e os
+  formatos de [MANTIS](#bases-de-matrículas).
+
+### Bases de matrículas
+
+- **Base DISA (rede própria)**:
   `beneficiarios_atendidos_rede_propria-2026_09_23.xlsx`, abas
   `UI 2025 EX-TITULARES` (coluna `MATRICULAS TITULARES`) e
   `UI 2025 EX-DEPENDENTES` (coluna `MATRICULAS DEPENDENTES - SEM DV`), com
-  a resposta em `UTILIZOU A REDE PRÓPRIA?`.
+  a resposta em `UTILIZOU A REDE PRÓPRIA?`. Diz só se houve atendimento.
 - **Base geral** (listagem de todos os beneficiários):
   `planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx`, abas
   `UI 2025 EX-TITULARES` (coluna `MATRICULAS TITULARES`, cabeçalho com
@@ -131,101 +162,115 @@ memorandos, blocos). Não altere a biblioteca; use apenas a API dela.
 - Nos processos, o **titular vem com DV** e os **dependentes vêm sem DV**.
   O DV é o último dígito: ele é retirado dos dependentes da base geral na
   carga.
-- Matrícula normalizada: sem hífen, sem zeros à esquerda.
+- Matrícula normalizada: sem hífen, ponto, barra ou espaço e sem zeros à
+  esquerda.
 - Matrícula repetida: um SIM prevalece. Resposta inválida prevalece sobre
-  NÃO.
-- **Fluxo normal** (`avaliar_uso_rede_propria_disa`): não para quando
-  falta matrícula. Matrícula fora da base DISA conta como **não usou**
-  (`1.2.2`); fora da base geral, o processo para com memo à APIS
-  ([seção 3](#3-novo-fluxo-normal-processar_novo)).
-- **Rotina de correção** (`avaliar_uso`): busca o titular e os dependentes
-  nas **duas** bases antes de parar. Se alguma matrícula não for encontrada, levanta
-  `MatriculasNaoEncontradas` (subclasse de `ErroAvaliacao`) com o
-  resultado de cada base, e quem chamou executa a rotina da
-  [seção 5](#5-matrículas-não-encontradas-marcar_matriculas_nao_encontradas).
-  Os demais processos continuam normalmente.
-- São `ErroAvaliacao` em `avaliar_uso`:
-  - resposta inválida (nem SIM nem NÃO);
-  - dependentes citados sem matrícula explícita (`AVERIGUAR`, só em
-    planilhas antigas: o modelo velho não é mais aceito);
-  - matrícula em formato inválido;
-  - sem matrícula de titular.
+  NÃO; resposta inválida de matrícula consultada é `ErroAvaliacao`.
+- Matrícula fora da base DISA conta como **não usou** (`1.2.2`); fora da
+  base geral, o processo para com memo à APIS.
 - Os períodos **não** são usados na consulta da base DISA, só na do
   MANTIS.
 - **Bases do MANTIS**: `utilizacao_MANTIS-rede_propria.xlsx` e
-  `utilizacao_MANTIS-rede_credenciada.xlsx`, abas `TITULARES` (coluna
-  `MATRICULA_BENEFICIARIO`) e `DEPENDENTES` (coluna
-  `MATRICULA_DEPENDENTE`), uma linha por item atendido, com
-  `DAT_ATENDIMENTO` (número de série do Excel) e `VAL_PAGAR`.
+  `utilizacao_MANTIS-rede_credenciada.xlsx`, uma linha por item atendido:
+  - aba `TITULARES`, matrícula em `MATRICULA_TITULAR`;
+  - aba `DEPENDENTES`, matrícula em `MATRICULA_DEPENDENTE` (e
+    `NOME_DEPENDENTE`);
+  - nas duas: `DATA_DO_ATENDIMENTO` (data ou número de série do Excel),
+    `VALOR_A_PAGAR`, `NOME_PRESTADOR` e `PROCEDIMENTO`.
   - Conta como uso o atendimento com data dentro do **período de apuração
     do titular** (vale para os dependentes, pois o processo com período
-    variável para antes do MANTIS).
+    variável para antes do MANTIS). Titular e dependentes são avaliados.
   - Formatos de período aceitos: `01/08/2023 a 12/06/2024`,
-    `09/2023 a 06/2024` e `02 a 06/2024`, com vários intervalos. Qualquer
-    outro número no texto, data inválida ou início depois do fim:
-    `ErroAvaliacao`.
+    `09/2023 a 06/2024` e `02 a 06/2024`, com vários intervalos (entre
+    parênteses ou não). Qualquer outro número no texto, data inválida ou
+    início depois do fim: `ErroAvaliacao`.
   - Atendimento sem data válida de uma matrícula consultada:
     `ErroAvaliacao`. Sem valor: conta como 0.
-  - **TODO**: confirmar o DV. No exemplo o titular vem **sem DV**
-    (`TITULAR_MANTIS_COM_DV = False`); para os dependentes assume-se sem DV
+  - **TODO**: confirmar o DV. Assume-se titular **sem DV**
+    (`TITULAR_MANTIS_COM_DV = False`) e dependentes sem DV
     (`DEPENDENTE_MANTIS_COM_DV = False`).
-  - A rede própria entra na decisão do fluxo; a rede credenciada só é
-    registrada na planilha de controle.
+
+### Decisão DISA × MANTIS
+
+O memo à DISA depende **só do MANTIS (rede própria)**:
+
+| Base DISA | MANTIS rede própria | Ação |
+|---|---|---|
+| sim | sim | Relatório RP em PDF + memo à DISA para validar |
+| sim | não | Nada para a DISA |
+| não | sim | Relatório RP em PDF + memo à DISA para validar (o memo indica que não consta na base DISA) |
+| não | não | Nada para a DISA |
+
+O relatório da rede credenciada (RC) é anexado **sempre** antes do memo
+DEPROC, só de quem usou; se ninguém usou, o memo DEPROC diz isso.
+
+**VELHO**: qualquer beneficiário com SIM na base DISA → aguarda o retorno
+da DISA (nenhuma ação). Senão: com uso no MANTIS (rede própria), relatórios
+RP e RC + memo à DISA, **sem** DEPROC; sem uso, relatório RC + memo DEPROC
+complementar (`MemoDeprocRedeCredenciada`).
+
+### Relatórios em PDF (`relatorios_mantis.py`)
+
+- Um PDF para o titular (prestador, data, procedimento, valor) e um para os
+  dependentes (prestador, matrícula e nome do dependente, data, valor), só
+  de quem tem atendimento.
+- Documento externo: tipo `PDF`, número `Utilização <Tit.|Dep.> <RP|RC> -
+  <matrícula do titular> - <AAAAMMDD_HHMMSS>`, Nato-digital, data de hoje,
+  Restrito, Informação Pessoal. O SEI limita o nome a 50 caracteres (há
+  teste).
+- Arquivos em `dados/utilizacoes/mantis/pdf/` (sobrescritos a cada
+  geração).
+- Retomada: se a rodada já tem um documento que começa com
+  `PDF Utilização <Tit.|Dep.> <RP|RC> - <matrícula>`, ele não é anexado de
+  novo.
 
 ### Marcadores (`tags.py`)
 
 Prefixo de todos os nomes: `Script v2 - `.
 
-| Marcador | Significado | Onde é adicionado |
-|---|---|---|
-| `1 - Processo NOVO` | Classificação: NOVO | [1](#1-script-principal-mainpy-início-e-classificação) |
-| `1.1 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes | [3](#3-novo-fluxo-normal-processar_novo), antes do memo à APIS (período) |
-| `1.2 - Avaliado Se Usou Rede Própria` | Uso da rede própria avaliado (versão anterior do fluxo normal e correção) | [4](#4-rotina-de-correção-corrigir_uso_rede_propria) |
-| `1.2.1 - Mat. N Encontradas Base Geral` | Pesquisa na base geral feita e matrícula não encontrada | [3](#3-novo-fluxo-normal-processar_novo), antes do memo à APIS; [5](#5-matrículas-não-encontradas-marcar_matriculas_nao_encontradas) |
-| `1.2.2 - Mat. N Encontradas Base DISA` | Matrícula fora da base DISA (no fluxo normal conta como não uso e o fluxo segue; na correção, para) | [3](#3-novo-fluxo-normal-processar_novo); [5](#5-matrículas-não-encontradas-marcar_matriculas_nao_encontradas) |
-| `1.3 - Memos DISA e DEPROC no Bloco` | Versão anterior do fluxo normal: alguém usou; os dois memos estão no bloco | Não é mais adicionado |
-| `1.3 - Memo DEPROC no Bloco` | Versão anterior do fluxo normal: ninguém usou | Não é mais adicionado |
-| `1.4 - Memo Não Usou Rede no Bloco` | Memo de correção no bloco | [4](#4-rotina-de-correção-corrigir_uso_rede_propria), antes do 1.2 |
-| `1.5 - Memo APIS Sem Memo p/ GEACS` | Memo à APIS (sem memorando para a GEACS) no bloco; processo parado | [3](#3-novo-fluxo-normal-processar_novo) |
-| `1.5 - Memo APIS Formato Inválido` | Memo à APIS (formato inválido) no bloco; processo parado | [3](#3-novo-fluxo-normal-processar_novo) |
-| `1.6 - Avaliado Uso Rede Própria DISA` | Base geral e base DISA consultadas | [3](#3-novo-fluxo-normal-processar_novo) |
-| `1.6.1 - Memo APIS Mat. N Encontradas` | Memo à APIS (matrículas não encontradas na base geral) no bloco; processo parado | [3](#3-novo-fluxo-normal-processar_novo), depois do 1.2.1 |
-| `1.7 - Memo APIS Período Dependentes` | Memo à APIS (período dos dependentes) no bloco; processo parado | [3](#3-novo-fluxo-normal-processar_novo), depois do 1.1 |
-| `1.8 - Avaliado Uso Rede Própria MANTIS` | MANTIS consultado | [3](#3-novo-fluxo-normal-processar_novo) |
-| `1.8.1 - Memo DISA Validar Usos MANTIS` | Memo à DISA (validar usos do MANTIS) no bloco; processo parado | [3](#3-novo-fluxo-normal-processar_novo) |
-| `1.9 - Memo DISA Uso Rede Própria` | Memo DISA (alguém usou) no bloco | [3](#3-novo-fluxo-normal-processar_novo) |
-| `1.10 - Memos DISA e DEPROC no Bloco` | Memos DISA e DEPROC no bloco: fluxo normal concluído (alguém usou) | [3](#3-novo-fluxo-normal-processar_novo) |
-| `1.10 - Memo DEPROC Coparticipação` | Só o memo DEPROC no bloco: fluxo normal concluído (ninguém usou) | [3](#3-novo-fluxo-normal-processar_novo) |
-| `2 - Processo VELHO` | Classificação: VELHO | [1](#1-script-principal-mainpy-início-e-classificação) |
-| `2.1 - Transformar Excel em PDF` | VELHO sem instrução de nova pesquisa (fluxo não implementado) | [6](#6-velho-somente-estrutura) |
-| `2.1 - Refazer Relatório de UI` | VELHO com instrução de nova pesquisa (fluxo não implementado) | [6](#6-velho-somente-estrutura) |
-| `2.1.1 - Mat. N Encontradas Base Geral` | VELHO parado: matrícula não encontrada na base geral; memo à APIS no bloco | [5](#5-matrículas-não-encontradas-marcar_matriculas_nao_encontradas) (previsto) |
-| `2.1.2 - Mat. N Encontradas Base DISA` | VELHO parado: matrícula não encontrada na base da rede própria | [5](#5-matrículas-não-encontradas-marcar_matriculas_nao_encontradas) (previsto) |
-| `2.2 - Excel Transformado em PDF` | Conclusão do 2.1 "Transformar Excel em PDF" | Não implementado |
-| `2.2 - Relatório de UI Refeito` | Conclusão do 2.1 "Refazer Relatório de UI" | Não implementado (após a pesquisa) |
-| `PLANILHADO`, `UTILIZAÇÃO INSERIDA` (sem prefixo) | Manuais; não interferem na classificação | Manualmente |
-| `MANUAL`, `ASSINADO` (sem prefixo) | Manuais; tiram o processo do escopo do script de correção | Manualmente |
+| Marcador | Significado |
+|---|---|
+| `1 - Processo NOVO` | Processo tratado pelo script (todos). Adicionado se faltar, e o fluxo começa do início |
+| `1.1 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes |
+| `1.2.1 - Mat. N Encontradas Base Geral` | Matrícula não encontrada na base geral |
+| `1.2.2 - Mat. N Encontradas Base DISA` | Matrícula fora da base DISA (conta como não uso; o fluxo segue) |
+| `1.5 - Memo APIS Sem Memo p/ GEACS` | Estado (parada): memo à APIS (sem memorando para a GEACS) no bloco |
+| `1.5 - Memo APIS Formato Inválido` | Estado (parada): memo à APIS (formato inválido) no bloco |
+| `1.6 - Avaliado Uso Rede Própria DISA` | Estado: base geral e base DISA consultadas |
+| `1.6.1 - Memo APIS Mat. N Encontradas` | Estado (parada): memo à APIS (matrículas não encontradas) no bloco, depois do `1.2.1` |
+| `1.7 - Memo APIS Período Dependentes` | Estado (parada): memo à APIS (período dos dependentes) no bloco, depois do `1.1` |
+| `1.8 - Avaliado Uso Rede Própria MANTIS` | Estado: MANTIS consultado |
+| `1.9 - Memo DISA Uso Rede Própria` | Estado: relatórios RP e memo à DISA no bloco (fluxo normal) |
+| `1.10 - Memos DISA e DEPROC no Bloco` | Estado (conclusão, fluxo normal): com memo à DISA |
+| `1.10 - Memo DEPROC Coparticipação` | Estado (conclusão, fluxo normal): só memo DEPROC |
+| `1.11 - VELHO Memo DISA no Bloco` | Estado (conclusão, VELHO): relatórios RP e RC e memo à DISA no bloco |
+| `1.11 - VELHO Memo DEPROC no Bloco` | Estado (conclusão, VELHO): relatório RC e memo DEPROC complementar no bloco |
+| `1.2 - Avaliado Se Usou Rede Própria`, `1.4 - Memo Não Usou Rede no Bloco` | Versão anterior / correção. Não são mais adicionados nem consultados |
+| `1.3 - Memos DISA e DEPROC no Bloco` | Versão anterior. **Identifica o processo VELHO** |
+| `1.3 - Memo DEPROC no Bloco` | Versão anterior: concluído (só DEPROC). Não é reprocessado |
+| `1.8.1 - Memo DISA Validar Usos MANTIS` | Versão anterior: parada. Não é mais adicionado |
+| `2 - Processo VELHO` e `2.x` (antigos) | Ignorados: o processo sem `1` recebe `1` e segue o fluxo do início |
+| `PLANILHADO`, `UTILIZAÇÃO INSERIDA` (sem prefixo) | Manuais; não interferem |
+| `MANUAL`, `ASSINADO` (sem prefixo) | Manuais; tiram o processo VELHO do escopo |
 
-- Numeração: o primeiro número é o ramo (1 = NOVO, 2 = VELHO) e o número
-  após o ponto é a ordem de inserção. **Mesmo número = alternativas** (o
-  processo recebe um ou outro).
-- **Marcadores de estado** (`TAGS_ESTADO_NOVO`: `1.5` a `1.10`;
-  `TAGS_ESTADO_VELHO`: `2.1` e `2.2`): o processo tem no máximo um por
-  ramo. Ao adicionar um estado, `adicionar_tag` remove o anterior (primeiro
-  adiciona, depois remove). Mais de um estado no processo é erro (a remoção
-  falhou ou o processo é de antes da troca de estados): remova
+- Numeração: o número após `1.` é a ordem de inserção. **Mesmo número =
+  alternativas** (o processo recebe um ou outro).
+- **Marcadores de estado** (`TAGS_ESTADO_NOVO`: parada, retomada e
+  conclusão): o processo tem no máximo um. Ao adicionar um estado,
+  `adicionar_tag` remove o anterior (primeiro adiciona, depois remove).
+  Mais de um estado no processo é erro (a remoção falhou): remova
   manualmente o(s) anterior(es).
-- Os demais se acumulam: ramo (`1`, `2`), informativos (`1.1`, `1.2.1`,
-  `1.2.2`, `2.1.1`, `2.1.2`), versão anterior/correção (`1.2`, `1.3`,
-  `1.4`) e manuais.
+- Os demais se acumulam: `1`, informativos (`1.1`, `1.2.1`, `1.2.2`),
+  versão anterior (`1.2`, `1.3`, `1.4`) e manuais.
 - **TODO**: `remover_marcador(driver, marcador)` ainda não existe na
   `sei_automacao` (`sei_automacao.processo`). Até existir, `tags.py` usa um
   placeholder (`REMOCAO_DE_MARCADOR_DISPONIVEL = False`) e o `main.py` não
-  inicia. O script de correção não remove marcadores e continua rodando.
-- O SEI limita o nome do marcador a **50 caracteres**.
-- **TODO**: cadastrar no SEI o marcador `1.10 - Memos DISA e DEPROC no
-  Bloco` antes de rodar (sem ele, `garantir_marcadores_no_sei` para o
-  processo antes do memo).
+  inicia.
+- O SEI limita o nome do marcador a **50 caracteres** (há teste).
+- **TODO**: cadastrar no SEI `1.10 - Memos DISA e DEPROC no Bloco`,
+  `1.11 - VELHO Memo DISA no Bloco` e `1.11 - VELHO Memo DEPROC no Bloco`
+  antes de rodar (sem eles, `garantir_marcadores_no_sei` para o processo
+  antes do memo).
 - Os nomes em `tags.py` precisam ser **idênticos** aos cadastrados no SEI.
   Para renomear, edite o marcador existente no SEI (não crie outro) e
   atualize `tags.py` antes da próxima execução; senão os processos já
@@ -233,43 +278,34 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 ### Invariantes (não quebrar)
 
-- Fluxo normal: o marcador de cada memo é adicionado **somente depois** que
-  o memo está no bloco. O estado diz quantos memos da GEACS a árvore deve
-  ter (`MEMOS_POR_ESTADO_NOVO`); a cada passagem isso é conferido e, se não
-  bater, o processo para com erro (para não duplicar). Na retomada, as
-  etapas até o estado atual (`1.6`, `1.8`, `1.9`) são puladas. Os
-  marcadores que registram uma pesquisa (`1.2.1`, `1.2.2`, `1.6`, `1.8`,
+- O marcador de cada memo é adicionado **somente depois** que o memo está
+  no bloco. Os relatórios em PDF entram antes do memo que os cita. Na
+  retomada, as etapas até o estado atual (`1.6`, `1.8`, `1.9`) são puladas.
+  Os marcadores que registram uma pesquisa (`1.2.1`, `1.2.2`, `1.6`, `1.8`,
   `1.1`) entram antes dos memos.
-- Correção: a ordem é AVALIADO (`1.2`) depois do memo no bloco.
 - Memos com texto pendente (`TEXTO_DEFINIDO = False`) levantam
-  `TextoMemoPendente` antes de qualquer ação no SEI: nenhum memo com
-  placeholder é criado.
-- O memo DISA do fluxo normal **só existe se alguém usou** a rede própria.
-  `MemoDisa` levanta `ValueError` se ninguém usou.
-- O memo de correção **só existe se alguém NÃO usou**.
-  `MemoDisaUsoRede` levanta `ValueError` se todos usaram.
-- O memo de correção é identificado na árvore **pelo assunto**
-  (`PADRAO_ASSUNTO_MEMO_USO_REDE`, que aceita também a grafia antiga
-  "Rede Prória"). Antes de criar, sempre verifique se ele já existe.
-- O memo à APIS só existe se alguma matrícula **não foi encontrada na
-  base geral**.
-- Todos os memos do fluxo normal e o memo à APIS são identificados **pelo
-  assunto** (`PADRAO_ASSUNTO_*` em cada memorando; **não altere os
-  assuntos** depois de criar memos). `incluir_memo(..., padrao_assunto=)`
-  procura o memo antes de criar: se já existir sem o marcador, é
-  **retomada**: o memo não é recriado e só o marcador é adicionado (coluna
-  `<memo>_na_arvore`). Diferente do memo de correção, que nesse caso gera
-  erro para verificação manual.
+  `TextoMemoPendente` antes de qualquer ação no SEI: os memos são montados
+  antes de anexar relatórios, e nenhum memo com placeholder é criado.
+- O memo à DISA **só existe se alguém tem atendimento na rede própria do
+  MANTIS**. `MemoDisa` levanta `ValueError` se ninguém tem.
+- O memo à APIS de matrículas só existe se alguma matrícula **não foi
+  encontrada na base geral**.
+- Todos os memos são identificados **pelo assunto** (`PADRAO_ASSUNTO_*` em
+  cada memorando; **não altere os assuntos** depois de criar memos), só na
+  rodada. `incluir_memo(..., padrao_assunto=)` procura o memo antes de
+  criar: se já existir sem o marcador, é **retomada**: o memo não é
+  recriado e só o marcador é adicionado (coluna `<memo>_na_arvore`).
+- O assunto do `MemoDisa` atual é diferente do memo DISA da versão
+  anterior, e o do `MemoDeprocRedeCredenciada` é diferente do `MemoDeproc`,
+  pois os processos VELHOS já têm os memos antigos.
 - Blocos de assinatura:
-  - `7697744`: memos DISA e DEPROC do fluxo normal;
-  - `7707212`: memo de correção;
+  - `7697744`: memos DISA e DEPROC (fluxo normal e VELHO);
   - `7730344`: memo à APIS (sem memorando);
   - `7730341`: memo à APIS (formato inválido);
   - `7730905`: memo à APIS (período dos dependentes);
-  - `7730939`: memo à DISA (validar usos do MANTIS);
-  - `7711907` (`BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS`): memo à APIS. Se a
-    constante for `None`, o processo para com erro antes de criar o memo
-    e sem adicionar marcadores.
+  - `7711907` (`BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS`): memo à APIS
+    (matrículas). Se a constante for `None`, o processo para com erro
+    antes de criar o memo.
 - Signatária: Bruna Miiller Lavarini, Gerência de Auditoria e Contas da
   Saúde.
 
@@ -277,47 +313,43 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 ## Fluxo do processo
 
-Diagrama: [`docs/fluxo.drawio`](docs/fluxo.drawio). Cada subseção abaixo
-corresponde a uma página do diagrama com o mesmo número. A página 8 traz a
-legenda e a tabela de marcadores.
-
 ### Como ler
 
+- No diagrama, cada moldura é uma **função**; molduras aninhadas são as
+  funções que ela chama. Os passos estão na ordem de execução e os desvios
+  de cada pergunta ficam à direita. Caixas laranja apontam para funções
+  usadas em vários pontos, detalhadas na coluna da direita
+  (`adicionar_tag`, `incluir_memo`, `incluir_relatorios` etc.). Verde:
+  marcador adicionado; laranja tracejado: marcador removido; roxo: memo
+  ou PDF; vermelho: erro.
 - Um processo avança **ao longo de várias execuções**. Os marcadores do SEI
   guardam o estado: cada execução lê os marcadores, decide o que falta e
   continua dali.
 - As perguntas de cada seção estão **na ordem em que o código as avalia**;
   vale a primeira que for verdadeira.
 - **➕ `X`** indica o ponto exato em que o marcador `X` é adicionado
-  (sempre via `tags.adicionar_tag`).
-- Na página 3 do diagrama, cada moldura é uma **função** (nome no topo) e
-  as caixas dentro dela são os passos na ordem em que o código os executa.
-  Funções chamadas aparecem como molduras aninhadas. Nos contêineres
-  principais, os erros ficam à esquerda e os desvios que param o processo,
-  à direita.
+  (sempre via `tags.adicionar_tag`). Cada ➕ de estado remove o estado
+  anterior (↻).
 - Todo processo termina com uma `prox_acao` (valor de `ProxAcao`) ou com
   erro (`registrar_erro`). Em ambos os casos o registro vira uma linha da
   planilha de controle e o loop segue para o próximo processo.
 
 ### Ciclo de vida dos marcadores
 
-Os estados se substituem: `→` troca o estado e `+` acumula. Entre
-colchetes, opcional.
+`→` troca o estado e `+` acumula. Entre colchetes, opcional.
 
 | Caminho | Sequência de marcadores | No SEI ao final |
 |---|---|---|
-| NOVO, fluxo normal (alguém usou) | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.9` → `1.10 Memos DISA e DEPROC` | `1`, [`1.2.2`], `1.10 Memos DISA e DEPROC` |
-| NOVO, fluxo normal (ninguém usou) | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.10 Memo DEPROC` | `1`, [`1.2.2`], `1.10 Memo DEPROC` |
-| NOVO parado pelo memo da APIS | `1` + `1.5` (um dos dois) | `1`, `1.5` |
-| NOVO parado pela base geral | `1` + [`1.2.2`] + `1.6` + `1.2.1` → `1.6.1` | `1`, [`1.2.2`], `1.2.1`, `1.6.1` |
-| NOVO parado pelo período dos dependentes | `1` + [`1.2.2`] + `1.6` + `1.1` → `1.7` | `1`, [`1.2.2`], `1.1`, `1.7` |
-| NOVO parado pelo MANTIS | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.8.1` | `1`, [`1.2.2`], `1.8.1` |
-| NOVO, versão anterior do fluxo normal | `1` + [`1.1`] + `1.2` + `1.3` (um dos dois) | todos |
-| NOVO enviado sem avaliação (correção) | `1` + `1.3 Memos DISA e DEPROC` (já existentes) + [`1.4`] + `1.2` | todos |
-| NOVO parado (versão anterior / correção) | `1` + `1.2.1` e/ou `1.2.2` | todos |
-| VELHO | `2` + `2.1` (uma das pendências) + [`2.1.1`/`2.1.2`] → `2.2` (conclusão correspondente) | `2`, [`2.1.1`/`2.1.2`], `2.2` |
+| Fluxo normal, uso no MANTIS (RP) | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.9` → `1.10 Memos DISA e DEPROC` | `1`, [`1.2.2`], `1.10 Memos DISA e DEPROC` |
+| Fluxo normal, sem uso no MANTIS (RP) | `1` + [`1.2.2`] + `1.6` → `1.8` → `1.10 Memo DEPROC` | `1`, [`1.2.2`], `1.10 Memo DEPROC` |
+| Parado pelo memo da APIS | `1` + `1.5` (um dos dois) | `1`, `1.5` |
+| Parado pela base geral | `1` + [`1.2.2`] + `1.6` + `1.2.1` → `1.6.1` | `1`, [`1.2.2`], `1.2.1`, `1.6.1` |
+| Parado pelo período dos dependentes | `1` + [`1.2.2`] + `1.6` + `1.1` → `1.7` | `1`, [`1.2.2`], `1.1`, `1.7` |
+| VELHO na base DISA | `1` + `1.3` + [`1.2`, `1.4`] + `1.6` (aguarda) | os mesmos |
+| VELHO, uso no MANTIS (RP) | `1` + `1.3` + … + `1.6` → `1.8` → `1.11 VELHO Memo DISA` | `1`, `1.3`, …, `1.11 VELHO Memo DISA` |
+| VELHO, sem uso | `1` + `1.3` + … + `1.6` → `1.8` → `1.11 VELHO Memo DEPROC` | `1`, `1.3`, …, `1.11 VELHO Memo DEPROC` |
 
-### 1. Script principal (`main.py`): início e classificação
+### 1. Script principal (`main.py`)
 
 **Início**
 
@@ -325,400 +357,147 @@ colchetes, opcional.
    [Marcadores](#marcadores-tagspy)).
 2. Lê `dados/inputs/processos_nao_processados.xlsx` (aba
    `processos_reais`, coluna `num_sei`).
-3. Carrega a base da rede própria, a base geral e as bases do MANTIS.
+3. Carrega a base DISA, a base geral e as bases do MANTIS.
 4. Faz login no SEI.
 
 **Para cada processo**
 
-1. Abre o processo, lista a árvore, conta documentos e memorandos da GEACS
-   e lê os marcadores **do SEI** (tudo fica no registro).
-2. Classificação (`_classificar_e_processar`):
+1. Abre o processo, lista a árvore e lê os marcadores **do SEI** (tudo
+   fica no registro).
+2. Roteamento (`_tratar`). **Nenhum marcador é adicionado aqui**, exceto o
+   `1`:
 
 | # | Pergunta | Se sim |
 |---|---|---|
-| 1 | Tem `1` e `2`? | Erro |
-| 2 | Tem `2` (VELHO)? | [Seção 6](#6-velho-somente-estrutura) |
-| 3 | Tem `1` (NOVO)? | [Seção 2](#2-novo-roteamento-_tratar_novo) |
-| 4 | Tem outro marcador `Script v2`? | Erro (marcadores do script sem NOVO/VELHO) |
-| 5 | Há documento da GEACS na árvore? | **➕ `2`**; `prox_acao` = Processar VELHO. O fluxo VELHO só roda na **próxima execução** |
-| — | (nenhuma das anteriores) | **➕ `1`** e segue, **na mesma execução**, para a [seção 3](#3-novo-fluxo-normal-processar_novo) |
-
-Marcadores manuais (`PLANILHADO`, `UTILIZAÇÃO INSERIDA`) não contam na
-pergunta 4.
+| 1 | **Não** tem `1`? | **➕ `1`** e [seção 2](#2-fluxo-processar_novo) do início (inclusive com documento da GEACS ou com o antigo `2`) |
+| 2 | Tem mais de um marcador de estado? | Erro: remover manualmente o(s) anterior(es) |
+| 3 | Estado de parada (`1.5`, `1.6.1`, `1.7`, `1.8.1`)? | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. **TODO**: processamento depois da resposta |
+| 4 | Estado de conclusão (`1.10`, `1.11`)? | Concluído. `prox_acao` = assinar os memos correspondentes e encaminhar |
+| 5 | VELHO (`1.3 Memos DISA e DEPROC`) com `MANUAL` ou `ASSINADO`? | `prox_acao` = Fora do escopo (tratado manualmente) |
+| 6 | NOVO sem estado com `1.3 Memo DEPROC`? | Concluído na versão anterior. `prox_acao` = Assinar memo DEPROC e encaminhar |
+| 7 | NOVO sem estado com `1.2.1` ou `1.2.2`? | Erro: parado pela versão anterior. `prox_acao` = Verificar matrículas não encontradas. Para reprocessar, corrija a base e remova os marcadores manualmente no SEI |
+| — | (nenhuma das anteriores) | [Seção 2](#2-fluxo-processar_novo), do início ou retomando (`1.6`, `1.8`, `1.9`). VELHO: `registro.velho = True` |
 
 **Fim**: atualiza a planilha de controle geral e grava o resumo no log
 ([Saídas](#saídas)).
 
-### 2. NOVO: roteamento (`_tratar_novo`)
+### 2. Fluxo (`processar_novo`)
 
-Entrada: processo com `1`. **Nenhum marcador é adicionado nesta seção**:
-ela só decide para onde o processo vai. A cada passagem o processo é
-reavaliado: o marcador de estado é conferido com os memos da GEACS na
-árvore (`_conferir_memos_geacs`). Se não batem: erro, `prox_acao` =
-Verificar quantidade de memos da GEACS, e o script segue para o próximo
-processo.
-
-| # | Pergunta | Se sim |
-|---|---|---|
-| 1 | Tem mais de um marcador de estado (`1.5` a `1.10`)? | Erro: remover manualmente o(s) anterior(es) |
-| 2 | Tem um marcador de estado? | Confere os memos da GEACS (`MEMOS_POR_ESTADO_NOVO`, tabela abaixo; memo sem marcador: abaixo) e segue pela tabela abaixo |
-| 3 | Tem `1.2.1` ou `1.2.2`? | Erro: parado pela versão anterior do fluxo. `prox_acao` = Verificar matrículas não encontradas. Para reprocessar, corrija a base e remova os marcadores manualmente no SEI |
-| 4 | Tem `1.2` (AVALIADO, versão anterior)? | Conferência dos já avaliados (abaixo) |
-| 5 | Tem `1.3 Memos DISA e DEPROC` (sem `1.2`)? | Processo enviado sem avaliação: lê as matrículas do memo da APIS destinado à GEACS (`obter_dados_ui`) e executa a [rotina de correção](#4-rotina-de-correção-corrigir_uso_rede_propria) |
-| 6 | Tem `1.3 Memo DEPROC` (sem `1.2`)? | Erro de combinação de marcadores |
-| 7 | Tem `1.4` (sem `1.2`)? | Erro de combinação de marcadores |
-| — | (nenhuma das anteriores) | Confere que não há memos da GEACS (aceita um memo sem marcador, abaixo; senão erro) e segue para o [fluxo normal](#3-novo-fluxo-normal-processar_novo) do início |
-
-**Memo sem marcador** (`encontrar_memo_sem_marcador`): se o processo está
-sem estado ou em `1.6`, `1.8` ou `1.9` e tem **um** memo da GEACS a mais
-do que o esperado, o script procura pelo assunto o memo da etapa seguinte
-(passagem anterior que falhou entre criar o memo e adicionar o marcador).
-Encontrou: o esperado aumenta em 1 e o fluxo normal reaproveita o memo.
-Não encontrou (ou há mais de um a mais): erro.
-
-| Estado | Memo da etapa seguinte |
-|---|---|
-| sem estado | à APIS (sem memorando) ou à APIS (formato inválido) |
-| `1.6` | à APIS (matrículas não encontradas) ou à APIS (período dos dependentes) |
-| `1.8` | à DISA (validar usos do MANTIS), DISA ou DEPROC |
-| `1.9` | DEPROC |
-
-**Com marcador de estado:**
-
-| Estado | Memos da GEACS esperados | Depois da conferência |
-|---|---|---|
-| `1.5` (um dos dois), `1.6.1`, `1.7`, `1.8.1` | 1 | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. **TODO**: processamento depois da resposta da APIS/DISA |
-| `1.10 Memos DISA e DEPROC` | 2 | Concluído. `prox_acao` = Assinar memos DISA e DEPROC e encaminhar |
-| `1.10 Memo DEPROC` | 1 | Concluído. `prox_acao` = Assinar memo DEPROC e encaminhar |
-| `1.6`, `1.8` | 0 | Retomada do [fluxo normal](#3-novo-fluxo-normal-processar_novo) |
-| `1.9` | 1 | Retomada do [fluxo normal](#3-novo-fluxo-normal-processar_novo) |
-
-**Conferência dos já avaliados** (`_tratar_novo_avaliado`):
-
-1. Se tem `1.4`, confirma o memo de correção na árvore (pelo assunto).
-   Não encontrou: erro.
-2. Calcula a quantidade esperada de memos da GEACS
-   (`qnt_memos_geacs_esperada`):
-
-   | Marcador `1.3` | Memos esperados | `prox_acao` se conferir |
-   |---|---|---|
-   | Memos DISA e DEPROC | 2 (3 com `1.4`) | Assinar memos DISA e DEPROC e encaminhar |
-   | Memo DEPROC | 1 | Assinar memo DEPROC e encaminhar |
-   | nenhum | — | Erro |
-
-3. Quantidade diferente: erro, `prox_acao` = Verificar quantidade de
-   memos da GEACS.
-
-### 3. NOVO: fluxo normal (`processar_novo`)
-
-Entrada: NOVO recém-classificado (➕ `1`), NOVO sem memos da GEACS ou
-NOVO em retomada (estado `1.6`, `1.8` ou `1.9`). Na retomada, as etapas
-até o estado atual são puladas (`_etapa_feita`): o estado não é
-adicionado de novo e o memo DISA com `1.9` não é recriado. Os informativos
-(`1.1`, `1.2.1`, `1.2.2`) usam `adicionar_tag_se_ausente`.
-
-Cada ➕ de estado (`1.5` a `1.10`) remove o estado anterior (↻).
+Na retomada, as etapas até o estado atual são puladas (`_etapa_feita`): o
+estado não é adicionado de novo e o memo DISA com `1.9` não é recriado. Os
+informativos (`1.1`, `1.2.1`, `1.2.2`) usam `adicionar_tag_se_ausente`.
 
 Cada memo é criado, inserido no bloco e só então recebe o seu marcador.
 Antes de criar, `incluir_memo` procura o memo pelo assunto entre os memos
-da GEACS da árvore (só se houver algum): se já existe, não recria e só
-adiciona o marcador (coluna `<memo>_na_arvore`).
-Antes de cada grupo de marcadores, `garantir_marcadores_no_sei` (faltou
-algum no SEI: erro, sem marcador nem memo). Os textos dos memos novos ainda
-são placeholders: enquanto `TEXTO_DEFINIDO = False`, o processo para com
-`TextoMemoPendente` antes de criar o memo.
+da GEACS da rodada: se já existe, não recria e só adiciona o marcador.
+Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
 
-1. `obter_dados_ui` lê **todos os memorandos da APIS-Utilização** e mantém
-   os destinados à GEACS (`obter_memos_apis_para_geacs`): o texto contém
-   algum dos trechos de `TRECHOS_DESTINO_GEACS` ("Solicita-se à Gerência
-   de Auditoria e Contas da Saúde - GEACS", "Para: Bruna Miller Lavarini"
-   ou "Para: Bruna Miiller Lavarini"; espaços e maiúsculas são ignorados).
-   Os números SEI encontrados vão para a coluna `memos_apis_geacs_sei`.
+1. `obter_dados_ui` lê **todos os memorandos da APIS-Utilização**, mantém
+   os destinados à GEACS (coluna `memos_apis_geacs_sei`) e usa o
+   **último**. Os documentos depois dele são a rodada.
    - **Nenhum?** Cria `MemoApisSemMemo` (bloco `7730344`), **➕ `1.5 -
      Memo APIS Sem Memo p/ GEACS`**, `prox_acao` = Assinar memo à APIS (sem
      memorando para a GEACS) e encaminhar. Fim.
-   - **Mais de um?** Erro.
 2. `validar_template` e `extrair_dados_ui`: nome e matrícula do titular,
    período do titular, matrículas dos dependentes e se há período variável
-   para dependentes. Só o modelo "novo" é aceito.
-   - **Formato inválido** (inclusive modelo "velho")? Cria
+   para dependentes.
+   - **Formato inválido** (qualquer modelo diferente do novo_novo)? Cria
      `MemoApisFormatoInvalido` (bloco `7730341`), **➕ `1.5 - Memo APIS
      Formato Inválido`**, `prox_acao` = Assinar memo à APIS (formato do
      memorando inválido) e encaminhar. Motivo na coluna
      `motivo_formato_invalido`. Fim.
 3. `avaliar_uso_rede_propria_disa`: procura titular e dependentes na base
-   geral e na base DISA; registra quem não foi encontrado em cada base e
-   quem usou/não usou (fora da base DISA = não usou).
+   geral e na base DISA.
    - Faltou na base DISA: **➕ `1.2.2`**.
    - **➕ `1.6 - Avaliado Uso Rede Própria DISA`** (se o estado ainda não
      passou dele).
-4. **Faltou matrícula na base geral?** Sim: **➕ `1.2.1`** (registra a
-   pesquisa, por isso vem antes do memo), memo à APIS
-   (`incluir_memo_apis_mat_nao_encontradas`; bloco `7711907`), **➕ `1.6.1 - Memo APIS Mat. N Encontradas`**,
-   `prox_acao` = Assinar memo à APIS (matrículas não encontradas) e
-   encaminhar. ↻ `1.6`. Fim.
-5. **Há período variável para dependentes?** Sim: **➕ `1.1`**,
+4. **VELHO com alguém SIM na base DISA?** Sim: `prox_acao` = VELHO:
+   aguardar retorno da DISA. Fim (sem erro; reavaliado a cada execução).
+5. **Faltou matrícula na base geral?** Sim: **➕ `1.2.1`**, memo à APIS
+   (`incluir_memo_apis_mat_nao_encontradas`; bloco `7711907`), **➕ `1.6.1
+   - Memo APIS Mat. N Encontradas`**, `prox_acao` = Assinar memo à APIS
+   (matrículas não encontradas) e encaminhar. Fim.
+6. **Há período variável para dependentes?** Sim: **➕ `1.1`**,
    `MemoApisPeriodoDependentes` (bloco `7730905`), **➕ `1.7 - Memo APIS
    Período Dependentes`**, `prox_acao` = Assinar memo à APIS (período dos
-   dependentes) e encaminhar. ↻ `1.6`. Fim.
-6. `avaliar_uso_rede_propria_mantis` (período do titular; rede própria e
-   rede credenciada, registradas na planilha de controle), **➕ `1.8 -
-   Avaliado Uso Rede Própria MANTIS`** (se o estado ainda não passou dele).
-   ↻ `1.6`.
-7. **O MANTIS (rede própria) tem uso de matrícula que a base DISA marca
-   como não uso?** Sim (`usos_mantis_alem_disa`, coluna
-   `mats_uso_mantis_alem_disa`): `MemoDisaValidarUsosMantis` (bloco
-   `7730939`), **➕ `1.8.1 - Memo DISA Validar Usos MANTIS`**, `prox_acao` =
-   Assinar memo à DISA (validar usos do MANTIS) e encaminhar. ↻ `1.8`.
-   Fim. **TODO**: processamento depois da resposta da DISA.
-8. **Alguém usou a rede própria** (DISA e/ou MANTIS), ou o memo DISA já
-   está no bloco (estado `1.9`)? Sim e ainda sem `1.9`: `MemoDisa` (bloco
-   `7697744`), **➕ `1.9 - Memo DISA Uso Rede Própria`**. ↻ `1.8`.
-9. `MemoDeproc` (todos os beneficiários; bloco `7697744`):
-   - com memo DISA: **➕ `1.10 - Memos DISA e DEPROC no Bloco`**. ↻ `1.9`;
+   dependentes) e encaminhar. Fim.
+7. `avaliar_uso_rede_propria_mantis` (período do titular; rede própria e
+   rede credenciada, registradas na planilha de controle; coluna
+   `mats_uso_mantis_alem_disa` com quem usou no MANTIS e não consta na
+   base DISA). Os memos são montados (texto pendente para aqui).
+   **➕ `1.8 - Avaliado Uso Rede Própria MANTIS`** (se o estado ainda não
+   passou dele).
+8. **Alguém tem atendimento na rede própria do MANTIS** (e o memo DISA
+   ainda não está no bloco)? Sim: relatórios RP (titular e/ou
+   dependentes), no VELHO também os relatórios RC, `MemoDisa` (bloco
+   `7697744`) e, no fluxo normal, **➕ `1.9 - Memo DISA Uso Rede
+   Própria`**.
+9. Fluxo normal: relatórios RC (se alguém usou a rede credenciada) e
+   `MemoDeproc` (todos os beneficiários; cita a rede credenciada; bloco
+   `7697744`):
+   - com memo DISA: **➕ `1.10 - Memos DISA e DEPROC no Bloco`**;
      `prox_acao` = Assinar memos DISA e DEPROC e encaminhar;
-   - sem memo DISA: **➕ `1.10 - Memo DEPROC Coparticipação`**. ↻ `1.8`;
+   - sem memo DISA: **➕ `1.10 - Memo DEPROC Coparticipação`**;
      `prox_acao` = Assinar memo DEPROC e encaminhar.
+10. VELHO:
+    - com memo DISA (passo 8): **➕ `1.11 - VELHO Memo DISA no Bloco`**;
+      `prox_acao` = VELHO: assinar memo DISA (validar rede própria) e
+      encaminhar. **Não** vai de novo para a DEPROC;
+    - sem uso: relatórios RC e `MemoDeprocRedeCredenciada` (bloco
+      `7697744`), **➕ `1.11 - VELHO Memo DEPROC no Bloco`**; `prox_acao` =
+      VELHO: assinar memo DEPROC (rede credenciada) e encaminhar.
 
-Em todos os finais, o script relê a árvore para obter o número SEI dos
-memos criados (colunas `<memo>_sei`; falha só gera log).
+Em todos os finais com memo, o script relê a árvore para obter o número
+SEI dos memos criados (colunas `<memo>_sei`; falha só gera log).
 
-Se o script falhar entre criar um memo e adicionar o marcador dele, a
-próxima execução encontra um memo da GEACS a mais, identifica-o pelo
-assunto ("Memo sem marcador", [seção 2](#2-novo-roteamento-_tratar_novo))
-e só adiciona o marcador, sem duplicar o memo. Se o memo a mais não for
-o da etapa seguinte, para com erro. Se falhar entre adicionar o estado
-novo e remover o anterior, a próxima execução encontra dois estados
-(erro, pergunta 1 da seção 2).
-
-### 4. Rotina de correção (`corrigir_uso_rede_propria`)
-
-Usada pelo `main.py` ([seção 2](#2-novo-roteamento-_tratar_novo),
-pergunta 5; matrículas do memo da APIS destinado à GEACS) e pelo script de correção
-([seção 7](#7-script-de-correção-main_add_memo_nao_usou_rede_propriapy);
-matrículas da planilha de controle geral ou da compilada antiga).
-
-Entrada: NOVO com `1.3 Memos DISA e DEPROC` e **sem** `1.2`. Todo marcador
-desta rotina é adicionado com o processo **reaberto** na unidade.
-
-1. **Tem `1.4`?** (retomada) Sim:
-   1. confirma o memo de correção na árvore (não encontrou: erro);
-   2. reabre o processo;
-   3. **➕ `1.2`**;
-   4. `prox_acao` = Assinar memo de uso da rede própria e encaminhar.
-2. `avaliar_uso`. **Todas as matrículas foram encontradas?** Não: reabre o
-   processo,
-   [seção 5](#5-matrículas-não-encontradas-marcar_matriculas_nao_encontradas)
-   (**➕ `1.2.1`** e/ou **➕ `1.2.2`**) e para.
-3. **Alguém NÃO usou?** Não (todos usaram):
-   1. reabre o processo;
-   2. **➕ `1.2`**;
-   3. `prox_acao` = Nada a fazer: todos usaram a rede própria (memo
-      dispensado).
-4. **O memo de correção já existe na árvore** (pelo assunto)? Sim: erro
-   para verificação manual (verificar se está no bloco e adicionar os
-   marcadores). Nenhum marcador é adicionado.
-5. Reabre o processo.
-6. `garantir_marcadores_no_sei` com `1.4` e `1.2`.
-7. Cria `MemoDisaUsoRede` (quem usou e quem não usou).
-8. Insere no bloco `7707212`.
-9. **➕ `1.4`**.
-10. **➕ `1.2`**.
-11. Relê a árvore para obter o número SEI do memo (falha só gera log).
-12. `prox_acao` = Assinar memo de uso da rede própria e encaminhar.
-
-Se falhar entre os passos 9 e 10, a próxima execução entra pela retomada
-(passo 1).
-
-### 5. Matrículas não encontradas (`marcar_matriculas_nao_encontradas`)
-
-Chamada quando `avaliar_uso` levanta `MatriculasNaoEncontradas`, com os
-marcadores do ramo. O fluxo normal
-([seção 3](#3-novo-fluxo-normal-processar_novo)) não usa esta rotina; usa
-só o memo à APIS (`incluir_memo_apis_mat_nao_encontradas`).
-
-- [seção 4](#4-rotina-de-correção-corrigir_uso_rede_propria): `1.2.1` /
-  `1.2.2`;
-- [seção 6](#6-velho-somente-estrutura), fluxo "Refazer relatório de UI"
-  (previsto): `2.1.1` / `2.1.2`.
-
-Passos:
-
-1. Registra as matrículas na planilha de controle:
-   - base geral: `titular_nao_encontrado_base_geral` e
-     `deps_nao_encontrados_base_geral`;
-   - base da rede própria: `titular_nao_encontrado` e
-     `deps_nao_encontrados`.
-2. `prox_acao` = Verificar matrículas não encontradas.
-3. `garantir_marcadores_no_sei` com os marcadores das bases afetadas.
-   Faltou algum: erro, sem memo.
-4. **Faltou matrícula na base geral?** Sim:
-   1. **O bloco `BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS` está configurado?**
-      Não: erro, sem memo e sem marcador.
-   2. **O memo à APIS já existe na árvore** (pelo assunto)?
-      - Sim: retomada; não recria o memo.
-      - Não: cria `MemoApisMatNaoEncontradas` e insere no bloco `7711907`.
-        O memo devolve o processo à APIS para conferir as matrículas, pede
-        a retificação e o reencaminhamento à GEACS-Utilização se houver
-        erro e, se a matrícula estiver correta, o encaminhamento à
-        IPSEMG/GEACS.
-   3. **➕ `1.2.1` (NOVO) ou `2.1.1` (VELHO)**. O marcador também indica
-      que o memo está no bloco.
-   4. `prox_acao` = Assinar memo à APIS (matrículas não encontradas) e
-      encaminhar.
-5. **Faltou matrícula na base da rede própria?** Sim: **➕ `1.2.2` (NOVO)
-   ou `2.1.2` (VELHO)**.
-6. Se o memo foi criado, relê a árvore para obter o número SEI.
-7. Quem chamou relança o erro: o processo para sem memos DISA/DEPROC e sem
-   `1.2`.
-
-As perguntas 4 e 5 podem ser verdadeiras no mesmo processo. Nas execuções
-seguintes, o processo com esses marcadores gera erro e não é processado.
-Para reprocessar, corrija a base e remova os marcadores manualmente no SEI.
-
-### 6. VELHO (somente estrutura)
-
-Entrada: processo com `2` (adicionado na classificação de uma execução
-anterior).
-
-**Roteamento** (`main._tratar_velho`):
-
-| # | Pergunta | Se sim |
-|---|---|---|
-| 1 | Tem `2.1.1` ou `2.1.2`? | Erro: processo parado (`prox_acao` = Verificar matrículas não encontradas) |
-| 2 | Tem mais de um marcador de estado (`2.1`, `2.2`)? | Erro: remover manualmente o(s) anterior(es) |
-| 3 | Tem `2.2 Excel Transformado em PDF` ou `2.2 Relatório de UI Refeito`? | Stub (`_ESTADOS_VELHO`); `prox_acao` = VELHO: fluxo após conclusão |
-| 4 | Tem `2.1 Transformar Excel em PDF`? | Stub (`_ESTADOS_VELHO`); `prox_acao` = VELHO: transformar Excel em PDF |
-| 5 | Tem `2.1 Refazer Relatório de UI`? | Stub (`_ESTADOS_VELHO`); `prox_acao` = VELHO: refazer relatório de UI |
-| — | (nenhuma das anteriores) | Identificação da instrução (abaixo) |
-
-**Identificação da instrução** (`processar_velho`):
-
-1. Localiza o e-mail de referência da APIS. Não encontrou: erro.
-2. Lista **todos os memos da APIS posteriores ao e-mail**. Nenhum: erro.
-3. Lê cada memo e identifica a instrução (`atualizar_pesquisa` ou
-   `nova_pesquisa`) pelos padrões de texto de `_MARCADORES_INSTRUCOES`. Um
-   dicionário vazio significa que a instrução ainda não foi definida e é
-   ignorada.
-4. **Mais de uma instrução?** Sim: erro (instruções conflitantes).
-5. **Instrução `nova_pesquisa`?** Sim: **➕ `2.1 - Refazer Relatório de
-   UI`**; `prox_acao` = VELHO: refazer relatório de UI.
-6. **`atualizar_pesquisa` identificada, ou critérios de `nova_pesquisa`
-   definidos?** Sim: **➕ `2.1 - Transformar Excel em PDF`**; `prox_acao` =
-   VELHO: transformar Excel em PDF.
-7. Não: **nenhum marcador**; `prox_acao` = VELHO: aguardar definição dos
-   critérios das instruções. Enquanto os critérios de `nova_pesquisa`
-   estiverem vazios, não dá para afirmar que o processo não tem essa
-   instrução; ele é reavaliado na próxima execução.
-
-**Fluxos previstos (não implementados; tracejados no diagrama)**:
-
-- **Transformar Excel em PDF** (a partir de `2.1 Transformar Excel em
-  PDF`): transforma o relatório de UI antigo e, ao concluir, **➕ `2.2 -
-  Excel Transformado em PDF`** (↻ `2.1`).
-- **Refazer relatório de UI** (a partir de `2.1 Refazer Relatório de UI`):
-  1. consulta à DISA e à DEPROC, igual à
-     [seção 3](#3-novo-fluxo-normal-processar_novo) (`avaliar_uso` e
-     memos DISA/DEPROC no bloco `7697744`);
-  2. matrícula não encontrada:
-     [seção 5](#5-matrículas-não-encontradas-marcar_matriculas_nao_encontradas)
-     (**➕ `2.1.1`** e/ou **➕ `2.1.2`**) e para;
-  3. pesquisa da utilização indevida em si (ainda não implementada);
-  4. só depois da pesquisa: **➕ `2.2 - Relatório de UI Refeito`** (↻
-     `2.1`).
-
-**TODO**:
-
-- critérios de texto que distinguem as duas instruções (ainda em
-  avaliação pelo usuário; não invente);
-- avaliação da rede própria dentro do fluxo VELHO;
-- download das planilhas antigas;
-- implementar o fluxo de cada estado de `_ESTADOS_VELHO` em `main.py`
-  (hoje só registra a próxima ação);
-- fluxo completo da pesquisa da utilização indevida, que é quem insere
-  `2.2 - Relatório de UI Refeito`.
-
-### 7. Script de correção (`main_add_memo_nao_usou_rede_propria.py`)
-
-Objetivo: corrigir os processos NOVOS que foram encaminhados à DISA e à
-DEPROC **sem** avaliação do uso da rede própria.
-
-**Início**
-
-1. Monta a lista de processos (`_ler_processos`):
-   - da planilha de controle geral (aba `processos`), os que terminaram a
-     última passagem com `1.3 Memos DISA e DEPROC` e sem `1.2`;
-   - da planilha compilada antiga
-     (`dados/inputs/processos_processados_mas_nao_olhou_rede_propria.xlsx`,
-     aba `FINAL`, execuções de setembro de 2026), os que ainda não estão
-     na planilha de controle geral;
-   - matrículas (`matricula_titular`, `matriculas_dependentes`): da
-     planilha de controle geral; se vazias (ex.: memo da APIS no modelo
-     antigo, que o `main.py` não lê), da compilada.
-2. Carrega a base da rede própria e a base geral.
-3. Faz login no SEI.
-
-**Triagem de cada processo** (`_avaliar_processo`). Os marcadores são
-lidos **do SEI**, não da planilha. A triagem não adiciona marcadores; só a
-rotina de correção adiciona.
-
-| # | Pergunta | Se sim |
-|---|---|---|
-| 1 | **Não** tem `1` (NOVO)? | Tem `2`: fora do escopo. Tem `MANUAL` ou `ASSINADO`: fora do escopo (tratado manualmente). Nenhum dos dois: erro (nem NOVO nem VELHO) |
-| 2 | Tem `1.2.1` ou `1.2.2`? | Erro: processo parado |
-| 3 | Tem `1.2` (AVALIADO)? | Com `1.4`: lista a árvore e confere o memo de correção (`prox_acao` = Assinar memo de uso da rede própria e encaminhar). Sem `1.4`: Nada a fazer |
-| 4 | **Não** tem `1.3 Memos DISA e DEPROC`? | Fora do escopo (não se enquadra) |
-| — | (nenhuma das anteriores) | Lista a árvore e executa a [rotina de correção](#4-rotina-de-correção-corrigir_uso_rede_propria) com as matrículas da planilha |
-
-**Fim**: atualiza a planilha de controle geral (`script` =
-`correcao_rede_propria`) e grava o resumo no log ([Saídas](#saídas)).
+Se o script falhar entre criar um relatório ou memo e adicionar o
+marcador, a próxima execução retoma do estado: o relatório (pelo nome) e
+o memo (pelo assunto) já na rodada não são recriados. Se falhar entre
+adicionar o estado novo e remover o anterior, a próxima execução encontra
+dois estados (erro, pergunta 2 da seção 1).
 
 ---
 
 ## Saídas
 
-### Planilha de controle geral (os dois scripts)
+### Planilha de controle geral
 
 `dados/controle/controle_geral_de_processos.xlsx`, gravada por
 `PlanilhaControleGeral`: lida uma vez no início da execução e regravada
 **depois de cada processo** (`registrar`), para que uma interrupção não
-perca os processos já tratados. Substitui as antigas
-`processos_processados_<data>.xlsx` (main) e
-`<data>_processos_add_memo_nao_uso_rede_propria.xlsx` (correção).
+perca os processos já tratados.
 
 - Aba `processos`: **uma linha por processo**, com a última passagem pelo
   fluxo. As colunas que o script grava são sobrescritas (o processo é
-  reavaliado a cada passagem); as que ele não grava (ex.: colunas do
-  `main` numa passagem do script de correção) e `primeira_passagem` são
-  mantidas.
+  reavaliado a cada passagem); as que ele não grava (ex.: colunas antigas
+  do script de correção) e `primeira_passagem` são mantidas.
 - Aba `historico`: **uma linha por passagem**, acrescentada a cada
   execução.
 - Primeiras colunas: `num_processo`, `primeira_passagem`,
   `ultima_passagem` (data e hora em que o processo passou pelo fluxo),
-  `script` (`main` ou `correcao_rede_propria`), `data_execucao`
-  (identifica a execução), `fluxo`, `prox_acao`, `tipo_erro`, `erro`.
+  `script` (`main`; `correcao_rede_propria` nas passagens antigas),
+  `data_execucao` (identifica a execução), `fluxo`, `prox_acao`,
+  `tipo_erro`, `erro`.
 - Cada linha vem de `RegistroBase.to_dict()`: todos os campos do registro,
   exceto os de `_CAMPOS_INTERNOS`, mais `marcadores_finais` e uma coluna
   `tag_*` por marcador (o processo terminou a passagem com ele).
   **Não renomeie as colunas existentes.**
-- Rastreabilidade: `memo_apis_sei`, `memos_apis_geacs_sei`,
-  `motivo_formato_invalido`, `memo_apis_sem_memo_sei`,
+- Rastreabilidade: `velho`, `memo_apis_sei`, `memos_apis_geacs_sei`,
+  `modelo_memo_apis`, `motivo_formato_invalido`, `memo_apis_sem_memo_sei`,
   `memo_apis_formato_invalido_sei`, `memo_apis_periodo_deps_sei`,
-  `memo_disa_validar_mantis_sei`, `modelo_memo_apis`, `memo_disa_sei`,
-  `memo_deproc_sei`, `memo_uso_rede_sei`, `marcadores_sei` (lidos no
-  início), `marcadores_adicionados`, `marcadores_removidos` e
+  `memo_disa_sei`, `memo_deproc_sei`, `memo_deproc_credenciada_sei`,
+  `relatorios_incluidos`, `relatorios_na_arvore`, `marcadores_sei` (lidos
+  no início), `marcadores_adicionados`, `marcadores_removidos` e
   `marcadores_finais`.
 - MANTIS: `tit_usou_mantis_rede_propria`,
   `tit_valor_total_uso_mantis_rede_propria`,
   `deps_que_usaram_mantis_rede_propria`,
   `deps_valor_total_uso_mantis_rede_propria`, as mesmas para
   `rede_credenciada` e `mats_uso_mantis_alem_disa`.
-- `tem_periodo_var_deps` (sim/não) e `periodo_dependentes` (só as datas,
-  modelo velho; fica vazia, pois o modelo velho não é mais aceito).
-- `qnt_memos_geacs_esperada`: memos da GEACS que o marcador indica.
-- Matrículas não encontradas: colunas da
-  [seção 5](#5-matrículas-não-encontradas-marcar_matriculas_nao_encontradas)
-  (nos dois scripts).
+- `tem_periodo_var_deps` (sim/não).
+- Matrículas não encontradas: `titular_nao_encontrado_base_geral`,
+  `deps_nao_encontrados_base_geral`, `titular_nao_encontrado` e
+  `deps_nao_encontrados` (base DISA).
 - Formatação: cabeçalho congelado e com filtro; linha com erro em vermelho
   claro; matrículas não encontradas em amarelo. Se a formatação falhar, a
   aba fica salva sem ela.
@@ -732,15 +511,10 @@ perca os processos já tratados. Substitui as antigas
   quando o arquivo à parte pode ser apagado). Se não for possível **ler**
   a planilha no início, a execução inteira vai para o arquivo à parte e
   **não** entra na planilha geral; confira e incorpore manualmente.
-- O número SEI dos memos criados é obtido relendo a árvore **depois**
-  dos marcadores; uma falha nessa leitura só gera log e não afeta o
-  processo.
 
 ### Logs
 
-- Script principal: `logs/<data>_execucao.log`, com resumo final.
-- Script de correção: `logs/main_add_memo_nao_usou_rede_propria/`, com
-  resumo final.
+- `logs/<data>_execucao.log`, com resumo final.
 
 ---
 
@@ -748,47 +522,45 @@ perca os processos já tratados. Substitui as antigas
 
 - **TODO**: implementar `remover_marcador(driver, marcador)` na
   `sei_automacao` (`sei_automacao.processo`). Até lá o `main.py` não roda.
-- **TODO**: cadastrar no SEI o marcador `1.10 - Memos DISA e DEPROC no
-  Bloco` com o nome de `tags.py`.
-- Processos que já receberam a cadeia de estados antiga (por exemplo
-  `1.6` e `1.8`, ou `1.9` e `1.10 Memo DEPROC`, nas execuções de teste de
-  outubro de 2026) caem no erro de mais de um estado. Deixe só o estado
-  atual; se tinham `1.9` e `1.10 Memo DEPROC`, troque por `1.10 - Memos
-  DISA e DEPROC no Bloco`.
+- **TODO**: cadastrar no SEI os marcadores `1.10 - Memos DISA e DEPROC no
+  Bloco`, `1.11 - VELHO Memo DISA no Bloco` e `1.11 - VELHO Memo DEPROC no
+  Bloco` com os nomes de `tags.py`.
+- **TODO**: revisar os rascunhos de `MemoDisa` (validação da rede própria)
+  e `MemoDeprocRedeCredenciada` e trocar `TEXTO_DEFINIDO` para `True`.
+  Conferir o parágrafo da rede credenciada no `MemoDeproc`
+  (`par_rede_credenciada`).
 - **TODO**: textos e assuntos dos memos `MemoApisSemMemo` (modelo Despacho
   2, SEI 150644870; avaliar criar como Despacho), `MemoApisFormatoInvalido`
-  (modelo Memorando 2019, SEI 150646384), `MemoApisPeriodoDependentes` e
-  `MemoDisaValidarUsosMantis`. Depois trocar `TEXTO_DEFINIDO` para `True`.
-- Os assuntos de `MemoApisSemMemo`, `MemoApisFormatoInvalido`,
-  `MemoApisPeriodoDependentes` e `MemoDisaValidarUsosMantis` ainda são
-  placeholders. Defina-os **antes** de criar o primeiro memo: depois, o
-  assunto não pode mudar (é por ele que a retomada encontra o memo).
+  (modelo Memorando 2019, SEI 150646384) e `MemoApisPeriodoDependentes`.
+  Depois trocar `TEXTO_DEFINIDO` para `True`. Defina os assuntos **antes**
+  de criar o primeiro memo: depois, o assunto não pode mudar.
+- **TODO**: confirmar que o pedido de "atualização do levantamento de
+  utilização" é o que distingue o modelo novo_novo do novo_velho
+  (`_PADRAO_ATUALIZACAO_LEVANTAMENTO` em `extrator_dados_ui.py`).
 - **TODO**: confirmar o DV das matrículas nas bases do MANTIS e usar as
-  planilhas completas (as atuais são exemplos).
+  planilhas completas. As planilhas de exemplo atuais ainda têm as colunas
+  antigas (`MATRICULA_BENEFICIARIO`, `DAT_ATENDIMENTO`, `VAL_PAGAR`) e não
+  carregam.
 - **TODO**: processamento dos processos parados (`1.5`, `1.6.1`, `1.7`,
-  `1.8.1`) depois da resposta da APIS/DISA.
-- O script de correção ([seção 7](#7-script-de-correção-main_add_memo_nao_usou_rede_propriapy))
-  ainda trata `1.2.2` como processo parado.
-
+  `1.8.1`) depois da resposta da APIS/DISA, e dos VELHOS que aguardam a
+  DISA.
+- Confirmar que o nome do documento externo na árvore é `PDF <número>`
+  (a retomada dos relatórios e `espera_documento_aparecer_arvore` dependem
+  disso) e que o número cabe no campo do SEI.
 - Confirmar que `obter_conteudo_doc` devolve a linha de **assunto** do memo.
-  A busca do memo de correção e a retomada de todos os memos dependem
-  disso. A retomada também supõe que o memo encontrado já está no bloco
-  (o log pede para conferir).
-- Confirmar que `incluir_doc_sei_memo` funciona com um documento
-  selecionado na árvore.
+  A retomada de todos os memos depende disso. A retomada também supõe que
+  o memo encontrado já está no bloco (o log pede para conferir).
 - Confirmar que `listar_documentos_arvore` logo após criar os memos traz
   os memos novos no fim da árvore, na ordem de criação (DISA antes de
   DEPROC). Os números SEI dos memos dependem disso.
 - Confirmar que a leitura da lista de marcadores ("Gerenciar Marcador",
   opções `#selMarcador label.dd-option-text`) traz todos os marcadores da
   unidade e sai da tela sem salvar.
-- Processos que já receberam `1.2.1` antes da criação do memo à APIS
-  (até 2026-09-25) não têm o memo. Para gerá-lo, remova manualmente o
-  `1.2.1` (e o `1.2.2`) e rode de novo.
-- A planilha de controle (e os backups) tem nomes e matrículas (LGPD).
-  Restrinja o acesso à pasta `dados/controle`.
-- Processos antigos com 2 memos da GEACS e **sem** o marcador de memos no
-  bloco aparecem como erro. Se forem casos de correção, adicione
-  manualmente `Memos DISA e DEPROC no bloco` e rode de novo.
-- Os logs contêm matrículas, que são dados pessoais (LGPD). Restrinja o
-  acesso à pasta `logs`.
+- Processos que receberam a cadeia de estados antiga (por exemplo `1.6` e
+  `1.8`, ou `1.9` e `1.10 Memo DEPROC`, nas execuções de teste de outubro
+  de 2026) caem no erro de mais de um estado. Deixe só o estado atual.
+- Os processos VELHOS que receberam `1.2.1`/`1.2.2` na correção são
+  reavaliados do início (o memo à APIS já existente é reaproveitado pelo
+  assunto, se estiver na rodada).
+- A planilha de controle, os backups, os PDFs (`dados/utilizacoes`) e os
+  logs têm nomes e matrículas (LGPD). Restrinja o acesso a essas pastas.

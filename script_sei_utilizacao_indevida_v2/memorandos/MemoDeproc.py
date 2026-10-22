@@ -18,6 +18,13 @@ def _par_2(dados: DadosUI):
     return dados.texto_levantamento_html()
 
 
+def par_rede_credenciada(usou_rede_credenciada: bool) -> str:
+    """Também usado pelo memo DEPROC do processo VELHO."""
+    if usou_rede_credenciada:
+        return 'Seguem anexos a este processo os relatórios de utilização da <strong>rede credenciada</strong> extraídos do sistema MANTIS, referentes ao período de apuração.'
+    return 'Não foram identificados no sistema MANTIS atendimentos na <strong>rede credenciada</strong> no período de apuração.'
+
+
 def _par_3():
     return 'Caso não sejam identificados valores de coparticipação no período, solicita-se o registro dessa informação no processo.'
 
@@ -31,7 +38,10 @@ def _par_5():
 
 
 class MemoDeproc(Memorando):
-    def __init__(self, dados: DadosUI, nome_signatario: str, cargo_signatario: str):
+    """Memo do fluxo normal: sempre com todos os beneficiários. Os
+    relatórios da rede credenciada (se alguém usou) são anexados antes."""
+
+    def __init__(self, dados: DadosUI, usou_rede_credenciada: bool, nome_signatario: str, cargo_signatario: str):
         super().__init__(
             destinatario_nome='IPSEMG/DEPROC',
             assunto=ASSUNTO_MEMO_DEPROC,
@@ -43,6 +53,7 @@ class MemoDeproc(Memorando):
             paragrafos=[
                 _par_1(),
                 _par_2(dados),
+                par_rede_credenciada(usou_rede_credenciada),
                 _par_3(),
                 _par_4(),
                 '',

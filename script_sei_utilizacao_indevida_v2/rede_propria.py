@@ -1,9 +1,5 @@
-"""Consulta à planilha de beneficiários atendidos na rede própria e à
-base geral (listagem de todos os beneficiários).
-
-Compartilhado entre o fluxo normal (main.py) e o fluxo de correção
-(main_add_memo_nao_usou_rede_propria.py).
-"""
+"""Consulta à planilha de beneficiários atendidos na rede própria (base
+DISA) e à base geral (listagem de todos os beneficiários)."""
 
 import logging
 import re
@@ -11,11 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
-from constantes import VALOR_MATRICULA_DEPENDENTE_AVERIGUAR
 
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
-    UsoRedeBeneficiarios,
-)
+from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import UsoRedeBeneficiarios
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +25,8 @@ _ABA_GERAL_DEPENDENTES = ('UI 2025 EX-DEPENDENTES', 'MATRICULAS DEPENDENTES')
 
 # Número lido do Excel como float e convertido para texto: "123456789.0"
 _PADRAO_FLOAT_EXCEL = re.compile(r'^(\d+)\.0+$')
-_PADRAO_SEPARADORES = re.compile(r'[-.\s]')
+# O memo da APIS separa o DV com barra ("1289612 / 8")
+_PADRAO_SEPARADORES = re.compile(r'[-./\s]')
 
 
 class ErroAvaliacao(Exception):
@@ -58,21 +52,6 @@ class NaoEncontradas:
         return '; '.join(partes)
 
 
-class MatriculasNaoEncontradas(ErroAvaliacao):
-    """Matrícula(s) não encontrada(s) na base geral e/ou na base da rede
-    própria. O processamento do processo deve ser parado."""
-
-    def __init__(self, base_geral: NaoEncontradas, base_rede: NaoEncontradas):
-        self.base_geral = base_geral
-        self.base_rede = base_rede
-        partes = []
-        if base_geral:
-            partes.append(f'base geral: {base_geral.descrever()}')
-        if base_rede:
-            partes.append(f'base da rede própria: {base_rede.descrever()}')
-        super().__init__(f'Matrícula(s) não encontrada(s) | {" | ".join(partes)}')
-
-
 @dataclass(frozen=True)
 class BasesUso:
     """Mapeia matrícula -> utilizou a rede própria.
@@ -90,7 +69,7 @@ class BasesUso:
 
 def normalizar_matricula(valor) -> str | None:
     """Padroniza a matrícula no formato da planilha de rede própria:
-    com dígito verificador, sem hífen e sem zeros à esquerda."""
+    com dígito verificador, sem separadores e sem zeros à esquerda."""
     if valor is None or pd.isna(valor):
         return None
     if isinstance(valor, float):
@@ -184,19 +163,13 @@ def carregar_bases(arquivo_uso: Path, arquivo_geral: Path) -> BasesUso:
 
 
 def separar_matriculas_dependentes(valor) -> list[str]:
-    """Converte "123; 456" em lista de matrículas normalizadas.
-
-    Dependentes citados sem matrícula explícita ("AVERIGUAR") geram erro.
-    """
+    """Converte "123; 456" em lista de matrículas normalizadas."""
     if valor is None or pd.isna(valor):
         return []
 
     texto = str(valor).strip()
     if not texto:
         return []
-
-    if texto.upper() == VALOR_MATRICULA_DEPENDENTE_AVERIGUAR:
-        raise ErroAvaliacao('O memorando da APIS cita dependentes sem informar explicitamente as matrículas')
 
     matriculas = (normalizar_matricula(p) for p in texto.split(';'))
     return list(dict.fromkeys(m for m in matriculas if m))
@@ -213,8 +186,7 @@ def _consultar(
     base: dict[str, bool | None],
     descricao: str,
 ) -> tuple[list[str], list[str]]:
-    """Retorna (usaram, nao_usaram). As matrículas já devem ter sido
-    encontradas na base (ver _verificar_encontradas)."""
+    """Retorna (usaram, nao_usaram). As matrículas já devem estar na base."""
     invalidas = [m for m in matriculas if m in base and base[m] is None]
     if invalidas:
         raise ErroAvaliacao(f'Matrícula(s) de {descricao} com resposta inválida em "{_COLUNA_UTILIZOU}": {", ".join(invalidas)}')
@@ -229,15 +201,6 @@ def _nao_encontradas(titular: str, dependentes: list[str], base_titulares, base_
         titular=titular if titular not in base_titulares else None,
         dependentes=tuple(m for m in dependentes if m not in base_dependentes),
     )
-
-
-def _verificar_encontradas(titular: str, dependentes: list[str], bases: BasesUso) -> None:
-    """Busca as matrículas na base geral e na base da rede própria. As duas
-    buscas são feitas antes de parar, para registrar as duas situações."""
-    base_geral = _nao_encontradas(titular, dependentes, bases.geral_titulares, bases.geral_dependentes)
-    base_rede = _nao_encontradas(titular, dependentes, bases.titulares, bases.dependentes)
-    if base_geral or base_rede:
-        raise MatriculasNaoEncontradas(base_geral, base_rede)
 
 
 def _preparar_matriculas(matricula_titular, matriculas_dependentes) -> tuple[str, list[str]]:
@@ -261,32 +224,9 @@ def _logar_uso(uso: UsoRedeBeneficiarios) -> None:
     )
 
 
-def avaliar_uso(
-    matricula_titular,
-    matriculas_dependentes,
-    bases: BasesUso,
-) -> UsoRedeBeneficiarios:
-    """Usada pela rotina de correção: para (MatriculasNaoEncontradas) se
-    alguma matrícula não estiver nas duas bases."""
-    titular, dependentes = _preparar_matriculas(matricula_titular, matriculas_dependentes)
-    _verificar_encontradas(titular, dependentes, bases)
-
-    tit_usaram, _ = _consultar([titular], bases.titulares, 'titular')
-    deps_usaram, deps_nao_usaram = _consultar(dependentes, bases.dependentes, 'dependente')
-
-    uso = UsoRedeBeneficiarios(
-        matricula_titular=titular,
-        tit_usou=bool(tit_usaram),
-        deps_que_usaram=tuple(deps_usaram),
-        deps_que_nao_usaram=tuple(deps_nao_usaram),
-    )
-    _logar_uso(uso)
-    return uso
-
-
 @dataclass(frozen=True)
 class AvaliacaoDisa:
-    """Resultado de avaliar_uso_rede_propria_disa (fluxo normal)."""
+    """Resultado de avaliar_uso_rede_propria_disa."""
 
     uso: UsoRedeBeneficiarios
     dependentes: tuple[str, ...]
@@ -305,8 +245,7 @@ def avaliar_uso_rede_propria_disa(
     matriculas_dependentes,
     bases: BasesUso,
 ) -> AvaliacaoDisa:
-    """Fluxo normal: procura o titular e os dependentes na base geral e na
-    base DISA. Não para quando falta matrícula: quem chama decide. Quem não
+    """Procura o titular e os dependentes na base geral e na base DISA. Não para quando falta matrícula: quem chama decide. Quem não
     está na base DISA não usou a rede própria."""
     titular, dependentes = _preparar_matriculas(matricula_titular, matriculas_dependentes)
     nao_encontradas_geral = _nao_encontradas(titular, dependentes, bases.geral_titulares, bases.geral_dependentes)

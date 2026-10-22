@@ -1,6 +1,9 @@
 from pathlib import Path
 from typing import Literal
+from xml.sax.saxutils import escape
+
 import pandas as pd
+from constantes import DIR_DADOS
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
@@ -12,6 +15,8 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
+
+ARQ_LOGO = DIR_DADOS / 'img' / 'logo.jpg'
 
 COL_WITDHS_DEP_DICT = {
     'PRESTADOR': 180,
@@ -48,7 +53,8 @@ def _build_table_row(row, valor_col_index, matricula_dep_index, normal):
             linha.append(cell.strftime('%d/%m/%Y'))
 
         else:
-            linha.append(Paragraph(str(cell), normal))
+            # Paragraph interpreta marcação: "&" e "<" no texto quebram o PDF
+            linha.append(Paragraph(escape(str(cell)), normal))
 
     return linha
 
@@ -56,10 +62,12 @@ def _build_table_row(row, valor_col_index, matricula_dep_index, normal):
 def transformar_xls_em_pdf(
     tit_matricula: str,
     tit_nome: str,
-    tipo: Literal['Titular', 'Dependente'],
+    tipo: Literal['Titular', 'Dependente(s)'],
     df: pd.DataFrame,
-    path_destino: Path
+    path_destino: Path,
+    rede: str = '',
 ) -> Path:
+    """rede (opcional): nome da rede no título e no nome do arquivo."""
     styles = getSampleStyleSheet()
     normal = styles['BodyText']
     header_style = styles['Heading4']
@@ -72,7 +80,7 @@ def transformar_xls_em_pdf(
         alignment=1,
     )
 
-    caminho_pdf = path_destino / f'Utilizacao-{tipo}-{tit_matricula}.pdf'
+    caminho_pdf = path_destino / f'Utilizacao{f"-{rede}" if rede else ""}-{tipo}-{tit_matricula}.pdf'
 
     doc = SimpleDocTemplate(
         str(caminho_pdf),
@@ -85,9 +93,9 @@ def transformar_xls_em_pdf(
 
     elements = []
 
-    logo = Image(r'dados\img\logo.jpg', width=120, height=60)
+    logo = Image(str(ARQ_LOGO), width=120, height=60)
     info = Paragraph(
-        f'<b>Relatório de Utilização Por {tipo}</b><br/>Beneficiário Titular: {tit_nome} - {tit_matricula}',
+        f'<b>Relatório de Utilização{f" na {escape(rede)}" if rede else ""} Por {tipo}</b><br/>Beneficiário Titular: {escape(tit_nome)} - {tit_matricula}',
         header_style,
     )
     elements.append(Table([[logo, info]], colWidths=[150, 650]))

@@ -3,11 +3,12 @@ credenciada).
 
 Cada arquivo tem as abas TITULARES e DEPENDENTES, com uma linha por item
 atendido. Conta como uso o atendimento com data dentro do período de
-apuração do titular (o fluxo normal para antes do MANTIS quando há período
+apuração do titular (o fluxo para antes do MANTIS quando há período
 variável para dependentes, então o período do titular vale para todos).
 
-A rede própria entra na decisão do fluxo normal; a rede credenciada só é
-registrada na planilha de controle.
+Os atendimentos de quem usou vão para os relatórios em PDF
+(relatorios_mantis): os da rede própria, para a DISA validar; os da rede
+credenciada, para a DEPROC.
 """
 
 import calendar
@@ -21,16 +22,18 @@ from pathlib import Path
 import pandas as pd
 from rede_propria import ErroAvaliacao, normalizar_matricula
 
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
-    UsoRedeBeneficiarios,
-)
+from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import UsoRedeBeneficiarios
 
 logger = logging.getLogger(__name__)
 
-_ABA_TITULARES = ('TITULARES', 'MATRICULA_BENEFICIARIO')
+_ABA_TITULARES = ('TITULARES', 'MATRICULA_TITULAR')
 _ABA_DEPENDENTES = ('DEPENDENTES', 'MATRICULA_DEPENDENTE')
-_COLUNA_DATA = 'DAT_ATENDIMENTO'
-_COLUNA_VALOR = 'VAL_PAGAR'
+_COLUNA_DATA = 'DATA_DO_ATENDIMENTO'
+_COLUNA_VALOR = 'VALOR_A_PAGAR'
+# Colunas dos relatórios em PDF (NOME_DEPENDENTE só existe na aba DEPENDENTES)
+_COLUNA_PRESTADOR = 'NOME_PRESTADOR'
+_COLUNA_PROCEDIMENTO = 'PROCEDIMENTO'
+_COLUNA_NOME_DEPENDENTE = 'NOME_DEPENDENTE'
 
 # TODO: confirmar com as planilhas completas. No exemplo, o titular vem SEM
 # DV (2362911 corresponde a 23629118). Para os dependentes ainda não há
@@ -46,6 +49,9 @@ _ORIGEM_DATA_EXCEL = datetime(1899, 12, 30)
 class Atendimento:
     data: date | None
     valor: float
+    prestador: str = ''
+    procedimento: str = ''
+    nome_dependente: str = ''
 
 
 @dataclass(frozen=True)
@@ -91,15 +97,30 @@ def _converter_valor(valor) -> float | None:
         return None
 
 
+def _texto(valor) -> str:
+    return '' if valor is None or pd.isna(valor) else str(valor).strip()
+
+
 def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str, *, com_dv: bool) -> dict[str, tuple[Atendimento, ...]]:
     df = pd.read_excel(io=arquivo, sheet_name=aba, dtype={coluna_matricula: str})
     df.columns = df.columns.str.strip()
+    if _COLUNA_NOME_DEPENDENTE not in df.columns:
+        df[_COLUNA_NOME_DEPENDENTE] = None
 
     atendimentos: dict[str, list[Atendimento]] = defaultdict(list)
     sem_matricula = 0
     sem_data = 0
     sem_valor = 0
-    for matricula, data_bruta, valor_bruto in zip(df[coluna_matricula], df[_COLUNA_DATA], df[_COLUNA_VALOR], strict=True):
+    linhas = zip(
+        df[coluna_matricula],
+        df[_COLUNA_DATA],
+        df[_COLUNA_VALOR],
+        df[_COLUNA_PRESTADOR],
+        df[_COLUNA_PROCEDIMENTO],
+        df[_COLUNA_NOME_DEPENDENTE],
+        strict=True,
+    )
+    for matricula, data_bruta, valor_bruto, prestador, procedimento, nome_dependente in linhas:
         mat = normalizar_matricula(matricula)
         if mat and com_dv:
             mat = _sem_dv(mat)
@@ -110,7 +131,15 @@ def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str, *, com_dv: boo
         valor = _converter_valor(valor_bruto)
         sem_data += data is None
         sem_valor += valor is None
-        atendimentos[mat].append(Atendimento(data=data, valor=valor or 0.0))
+        atendimentos[mat].append(
+            Atendimento(
+                data=data,
+                valor=valor or 0.0,
+                prestador=_texto(prestador),
+                procedimento=_texto(procedimento),
+                nome_dependente=_texto(nome_dependente),
+            )
+        )
 
     logger.info(f'MANTIS, aba "{aba}" carregada | {len(df)} linha(s) | {len(atendimentos)} matrícula(s) única(s)')
     if sem_matricula:
@@ -218,6 +247,10 @@ class UsoMantis:
     tit_valor_total: float
     deps_que_usaram: tuple[str, ...]
     deps_valor_total: float
+    # Atendimentos no período, para os relatórios em PDF
+    tit_atendimentos: tuple[Atendimento, ...] = ()
+    # (matrícula do dependente, atendimento)
+    deps_atendimentos: tuple[tuple[str, Atendimento], ...] = ()
 
     @property
     def alguem_usou(self) -> bool:
@@ -241,18 +274,20 @@ def _consultar(base: BaseMantis, titular: str, dependentes: tuple[str, ...], int
     tit_atendimentos = _no_periodo(base.titulares.get(chave_titular, ()), intervalos, f'o titular {titular} ({base.nome})')
 
     deps_que_usaram = []
-    deps_valor_total = 0.0
+    deps_atendimentos = []
     for dependente in dependentes:
         atendimentos = _no_periodo(base.dependentes.get(dependente, ()), intervalos, f'o dependente {dependente} ({base.nome})')
         if atendimentos:
             deps_que_usaram.append(dependente)
-            deps_valor_total += sum(a.valor for a in atendimentos)
+            deps_atendimentos += [(dependente, a) for a in atendimentos]
 
     return UsoMantis(
         tit_usou=bool(tit_atendimentos),
         tit_valor_total=round(sum(a.valor for a in tit_atendimentos), 2),
         deps_que_usaram=tuple(deps_que_usaram),
-        deps_valor_total=round(deps_valor_total, 2),
+        deps_valor_total=round(sum(a.valor for _, a in deps_atendimentos), 2),
+        tit_atendimentos=tuple(tit_atendimentos),
+        deps_atendimentos=tuple(deps_atendimentos),
     )
 
 
@@ -278,7 +313,8 @@ def avaliar_uso_rede_propria_mantis(
 
 def usos_mantis_alem_disa(disa: UsoRedeBeneficiarios, mantis: UsoMantis) -> list[str]:
     """Matrículas com uso da rede própria no MANTIS que a base DISA marca
-    como não uso (ou não tem)."""
+    como não uso (ou não tem). Só informativo (planilha de controle e memo
+    à DISA): o memo à DISA depende apenas do uso no MANTIS."""
     itens = []
     if mantis.tit_usou and not disa.tit_usou:
         itens.append(f'{disa.matricula_titular} (titular)')

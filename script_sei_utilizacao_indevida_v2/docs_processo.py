@@ -8,10 +8,6 @@ from sei_automacao.documento import obter_conteudo_doc
 from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
 
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDisaUsoRede import (
-    PADRAO_ASSUNTO_MEMO_USO_REDE,
-)
-
 logger = logging.getLogger(__name__)
 
 # Trechos que indicam que o memorando da APIS é destinado à GEACS. Tolera
@@ -66,24 +62,6 @@ def obter_memos_apis_para_geacs(driver: webdriver.Remote, tds_docs: list[dict]) 
     return para_geacs
 
 
-def obter_memos_apis_apos_email(tds_docs: list[dict]) -> list[dict] | None:
-    """Memorandos da APIS posteriores ao e-mail da APIS.
-
-    Retorna None se o e-mail de referência não existir na árvore.
-    """
-    indice_email = next(
-        (i for i, doc in enumerate(tds_docs) if 'E-mail' in doc['nome_arvore'] and UNIDADE_APIS in doc['unidade']),
-        None,
-    )
-    if indice_email is None:
-        logger.debug('E-mail de referência da APIS não encontrado na árvore')
-        return None
-
-    memos = filtrar_memos_apis(tds_docs[indice_email + 1 :])
-    logger.info(f'E-mail da APIS encontrado: {_descrever(tds_docs[indice_email])} | {len(memos)} memorando(s) da APIS depois dele')
-    return memos
-
-
 def ler_texto_doc(driver: webdriver.Remote, doc: dict) -> str:
     logger.debug(f'Lendo documento {_descrever(doc)}')
     selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
@@ -105,10 +83,9 @@ def encontrar_memo_geacs_por_assunto(driver: webdriver.Remote, tds_docs: list[di
     return None
 
 
-def encontrar_memo_uso_rede(driver: webdriver.Remote, tds_docs: list[dict]) -> dict | None:
-    """Procura, pelo assunto, o memo que informa o uso da rede própria
-    (memo do fluxo de correção)."""
-    return encontrar_memo_geacs_por_assunto(driver, tds_docs, PADRAO_ASSUNTO_MEMO_USO_REDE, 'de uso da rede própria')
+def encontrar_doc_por_nome(tds_docs: list[dict], inicio_nome: str) -> dict | None:
+    """O documento mais recente cujo nome na árvore começa com inicio_nome."""
+    return next((doc for doc in reversed(tds_docs) if doc['nome_arvore'].startswith(inicio_nome)), None)
 
 
 def memos_geacs_novos(driver: webdriver.Remote, tds_docs_antes: list[dict]) -> list[dict]:
