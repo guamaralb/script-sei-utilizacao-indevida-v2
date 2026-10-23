@@ -98,8 +98,8 @@ class No:
 class Pergunta(No):
     """Losango no caminho principal; o desvio sai para a direita e termina."""
 
-    def __init__(self, texto, lado, rotulo='Sim', segue='Não'):
-        super().__init__('decision', texto, largura=230)
+    def __init__(self, texto, lado, rotulo='Sim', segue='Não', largura=230):
+        super().__init__('decision', texto, largura=largura)
         self.lado = [_ajustar(i, LARGURA_LADO) for i in lado]
         self.rotulo, self.segue = rotulo, segue
         self.altura = max(self.h, sum(i.h for i in self.lado) + VGAP * (len(self.lado) - 1))
@@ -228,8 +228,8 @@ def N(t, largura=None):
     return No('note', t, largura)
 
 
-def P(texto, lado, rotulo='Sim', segue='Não'):
-    return Pergunta(texto, lado, rotulo, segue)
+def P(texto, lado, rotulo='Sim', segue='Não', largura=230):
+    return Pergunta(texto, lado, rotulo, segue, largura)
 
 
 # --- conteúdo -----------------------------------------------------------------
@@ -263,20 +263,43 @@ col_tratar = Coluna(
     [
         F(
             'conferir_marcadores()',
-            'A combinação de marcadores é possível no fluxo? (estado único, informativo com estado compatível, 1.6.1 com 1.2.1, 1.7 com 1.1, 1.11 só VELHO, VELHO sem 1.9/1.10…)',
+            'A combinação de marcadores é possível no fluxo?<br>'
+            '• no máximo um marcador de estado (★)<br>'
+            '• informativo só com estado compatível<br>'
+            '• 1.6.1 - Aguarda APIS: Matrículas exige 1.2.1 - Mat. N Encontradas Base Geral<br>'
+            '• 1.7 - Aguarda APIS: Período Deps exige 1.1 - Período Variável p/ Dependentes<br>'
+            '• 1.11 - VELHO Concluído: Memo DISA e 1.11 - VELHO Concluído: Memo DEPROC exigem 1.3 - Memos DISA e DEPROC no Bloco<br>'
+            '• VELHO sem 1.9 - Memo DISA Uso Rede Própria, 1.10 - Concluído: Memos DISA e DEPROC e 1.10 - Concluído: Memo DEPROC…',
         ),
         P('Marcadores<br>inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: nada é feito no SEI<br>prox_acao = Verificar marcadores (corrigir no SEI)')]),
         P('Sem o marcador<br><b>1 - Tratado pelo Script</b>?', [M('1 - Tratado pelo Script'), IR('processar_novo() do início — coluna 3')]),
         S('<b>VELHO</b> = tem <b>1.3 - Memos DISA e DEPROC no Bloco</b> (já enviado à DISA e à DEPROC)<br><font face="Courier New">estado_atual()</font>: marcador de estado do processo'),
-        P('Estado de parada?<br>1.5, 1.6.1, 1.7, 1.8.1', [E('<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado')]),
         P(
-            'Estado de conclusão?<br>1.10 ou 1.11',
-            [T('<b>Concluído</b>, prox_acao:<br>1.10 Memos DISA e DEPROC → assinar os dois<br>1.10 Memo DEPROC → assinar DEPROC<br>1.11 → VELHO: assinar o memo')],
+            'Estado de parada?<br>1.5 - Aguarda APIS: Sem Memo p/ GEACS<br>1.5 - Aguarda APIS: Formato Inválido<br>'
+            '1.6.1 - Aguarda APIS: Matrículas<br>1.7 - Aguarda APIS: Período Deps<br>1.8.1 - Memo DISA Validar Usos MANTIS',
+            [E('<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado')],
+            largura=LARGURA_PRINCIPAL,
+        ),
+        P(
+            'Estado de conclusão?<br>1.10 - Concluído: Memos DISA e DEPROC<br>1.10 - Concluído: Memo DEPROC<br>1.11 - VELHO Concluído: Memo DISA<br>1.11 - VELHO Concluído: Memo DEPROC',
+            [
+                T(
+                    '<b>Concluído</b>, prox_acao:<br>1.10 - Concluído: Memos DISA e DEPROC → assinar os dois<br>1.10 - Concluído: Memo DEPROC → assinar DEPROC<br>'
+                    '1.11 - VELHO Concluído: Memo DISA → VELHO: assinar memo DISA<br>1.11 - VELHO Concluído: Memo DEPROC → VELHO: assinar memo DEPROC'
+                )
+            ],
+            largura=LARGURA_PRINCIPAL,
         ),
         P('VELHO com MANUAL<br>ou ASSINADO?', [T('prox_acao = Fora do escopo (tratado manualmente)')]),
-        P('NOVO sem estado com<br>1.3 - Memo DEPROC?', [T('Concluído na versão anterior<br>prox_acao = Assinar memo DEPROC')]),
-        P('NOVO sem estado com<br>1.2.1 ou 1.2.2?', [E('<b>Erro</b>: parado pela versão anterior<br>prox_acao = Verificar matrículas não encontradas')]),
-        IR('processar_novo() — coluna 3<br><span style="font-weight:normal">do início ou retomando de 1.6, 1.8 ou 1.9</span>'),
+        P('NOVO sem estado com<br>1.3 - Memo DEPROC no Bloco?', [T('Concluído na versão anterior<br>prox_acao = Assinar memo DEPROC')]),
+        P(
+            'NOVO sem estado com<br>1.2.1 - Mat. N Encontradas Base Geral ou 1.2.2 - Mat. N Encontradas Base DISA?',
+            [E('<b>Erro</b>: parado pela versão anterior<br>prox_acao = Verificar matrículas não encontradas')],
+        ),
+        IR(
+            'processar_novo() — coluna 3<br><span style="font-weight:normal">do início ou retomando de 1.6 - Avaliado Uso Rede Própria DISA, '
+            '1.8 - Avaliado Uso Rede Própria MANTIS ou 1.9 - Memo DISA Uso Rede Própria</span>'
+        ),
     ],
 )
 
@@ -305,7 +328,12 @@ col_processar = Coluna(
                 T('prox_acao = Assinar memo à APIS (formato inválido)'),
             ],
         ),
-        F('_avaliar_disa()', 'Procura titular e dependentes na base geral e na base DISA. Confere no SEI os marcadores desta etapa e, se faltou na base geral, também 1.2.1 e 1.6.1', chama='avaliar_uso_rede_propria_disa, registrar_uso, garantir_marcadores_no_sei'),
+        F(
+            '_avaliar_disa()',
+            'Procura titular e dependentes na base geral e na base DISA. Confere no SEI os marcadores desta etapa e, se faltou na base geral, '
+            'também 1.2.1 - Mat. N Encontradas Base Geral e 1.6.1 - Aguarda APIS: Matrículas',
+            chama='avaliar_uso_rede_propria_disa, registrar_uso, garantir_marcadores_no_sei',
+        ),
         P('Matrícula inválida ou<br>resposta inválida na<br>base DISA?', [E('<b>ErroAvaliacao</b>')]),
         M('1.2.2 - Mat. N Encontradas Base DISA<br><span style="font-weight:normal">só se faltou na base DISA (conta como não usou)</span>'),
         M('1.6 - Avaliado Uso Rede Própria DISA<br><span style="font-weight:normal">pulado na retomada</span>'),
@@ -341,58 +369,68 @@ col_mantis = Coluna(
     '4 · _avaliar_mantis_e_criar_docs()',
     'MANTIS, relatórios em PDF e memos DISA/DEPROC. O memo à DISA depende só do uso da rede própria (RP) no MANTIS; RC = rede credenciada',
     [
-        F('avaliar_uso_rede_propria_mantis()', 'Atendimentos no período do titular, nas duas redes', chama='interpretar_periodo, _registrar_uso_mantis, usos_mantis_alem_disa'),
+        F('avaliar_uso_rede_propria_mantis()', 'Atendimentos no período do titular, nas duas redes', chama='interpretar_periodo'),
         P('Período ou data<br>de atendimento<br>inválidos?', [E('<b>ErroAvaliacao</b>')]),
+        F(
+            '_registrar_uso_mantis() · usos_mantis_alem_disa()',
+            '<b>Base DISA × MANTIS rede própria</b>, por beneficiário:<br>'
+            '• DISA sim × MANTIS sim → memo à DISA validar ("consta na planilha")<br>'
+            '• DISA não × MANTIS sim → memo à DISA validar ("NÃO consta na planilha"; coluna mats_uso_mantis_alem_disa)<br>'
+            '• DISA sim × MANTIS não → nada para a DISA<br>'
+            '• DISA não × MANTIS não → nada para a DISA<br>'
+            'Quem decide o memo à DISA é só o MANTIS; a base DISA muda só o texto do memo. '
+            '(No VELHO, SIM na base DISA já parou o processo na coluna 3.)',
+        ),
         S('Monta os memos <b>antes de qualquer ação no SEI</b>'),
         P('Texto do memo<br>pendente?', [E('<b>TextoMemoPendente</b><br>nada é criado no SEI')]),
         F('garantir_marcadores_no_sei()', 'Os marcadores que serão adicionados existem no SEI?'),
         M('1.8 - Avaliado Uso Rede Própria MANTIS<br><span style="font-weight:normal">pulado na retomada</span>'),
         R('1.6 - Avaliado Uso Rede Própria DISA'),
         Casos(
-            'Processo VELHO?<br>Alguém usou a RP no MANTIS?<br>(ou já tem 1.9)',
+            'Processo VELHO?<br>Alguém usou a RP no MANTIS?<br>(ou já tem 1.9 - Memo DISA Uso Rede Própria)',
             [
                 (
-                    'Normal, com uso RP',
+                    'Normal, com uso RP<br>(DISA sim ou não)',
                     [
                         PDF('PDF Utilização Tit./Dep. <b>RP</b>'),
                         MEMO('MemoDisa</b> (validar RP)<b>', 7697744),
                         M('1.9 - Memo DISA Uso Rede Própria'),
-                        R('1.8'),
+                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDeproc', 7697744),
                         M('1.10 - Concluído: Memos DISA e DEPROC'),
-                        R('1.9'),
+                        R('1.9 - Memo DISA Uso Rede Própria'),
                         T('prox_acao = Assinar memos DISA e DEPROC'),
                     ],
                 ),
                 (
-                    'Normal, sem uso RP',
+                    'Normal, sem uso RP<br>(DISA sim ou não)',
                     [
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDeproc', 7697744),
                         M('1.10 - Concluído: Memo DEPROC'),
-                        R('1.8'),
+                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo DEPROC'),
                     ],
                 ),
                 (
-                    'VELHO, com uso RP',
+                    'VELHO, com uso RP<br>(DISA não)',
                     [
                         PDF('PDF Utilização Tit./Dep. <b>RP</b>'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b>'),
                         MEMO('MemoDisa</b> (validar RP)<b>', 7697744),
                         M('1.11 - VELHO Concluído: Memo DISA'),
-                        R('1.8'),
+                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = VELHO: assinar memo DISA<br>(sem DEPROC)'),
                     ],
                 ),
                 (
-                    'VELHO, sem uso RP',
+                    'VELHO, sem uso RP<br>(DISA não)',
                     [
                         PDF('PDF Utilização Tit./Dep. <b>RC</b>'),
                         MEMO('MemoDeprocRedeCredenciada</b> (complementar)<b>', 7697744),
                         M('1.11 - VELHO Concluído: Memo DEPROC'),
-                        R('1.8'),
+                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = VELHO: assinar memo DEPROC'),
                     ],
                 ),
@@ -417,7 +455,7 @@ aux = [
     ),
     Coluna(
         'adicionar_tag_se_ausente()',
-        'Informativos (1.1, 1.2.1, 1.2.2): na retomada, não adiciona de novo',
+        'Informativos (1.1 - Período Variável p/ Dependentes, 1.2.1 - Mat. N Encontradas Base Geral, 1.2.2 - Mat. N Encontradas Base DISA): na retomada, não adiciona de novo',
         [P('Já tem o marcador?', [S('Não faz nada')]), F('adicionar_tag()')],
         cor='aux',
     ),
@@ -475,7 +513,12 @@ marcadores = N(
     '★ 1.10 - Concluído: Memo DEPROC<br>'
     '★ 1.11 - VELHO Concluído: Memo DISA<br>'
     '★ 1.11 - VELHO Concluído: Memo DEPROC<br>'
-    '<i>Versão anterior: 1.2, 1.3 Memos DISA e DEPROC (= VELHO), 1.3 Memo DEPROC, 1.4, ★ 1.8.1</i>',
+    '<i>Versão anterior:<br>'
+    '1.2 - Avaliado Se Usou Rede Própria<br>'
+    '1.3 - Memos DISA e DEPROC no Bloco (= VELHO)<br>'
+    '1.3 - Memo DEPROC no Bloco<br>'
+    '1.4 - Memo Não Usou Rede no Bloco<br>'
+    '★ 1.8.1 - Memo DISA Validar Usos MANTIS</i>',
     largura=LARGURA_PRINCIPAL + 2 * PAD + GAP + LARGURA_LADO,
 )
 
@@ -494,7 +537,9 @@ legenda = [
 pendencias = N(
     '<b>Pendências (TODO)</b><br>'
     '• remover_marcador na sei_automacao (sem ele o main não inicia)<br>'
-    '• no SEI: editar os marcadores renomeados (1, 1.5, 1.6.1, 1.7, 1.10 Memo DEPROC) e cadastrar 1.10 Memos DISA e DEPROC e os dois 1.11<br>'
+    '• no SEI: editar os marcadores renomeados (1 - Tratado pelo Script, 1.5 - Aguarda APIS: Sem Memo p/ GEACS, 1.5 - Aguarda APIS: Formato Inválido, '
+    '1.6.1 - Aguarda APIS: Matrículas, 1.7 - Aguarda APIS: Período Deps, 1.10 - Concluído: Memo DEPROC) e cadastrar 1.10 - Concluído: Memos DISA e DEPROC, '
+    '1.11 - VELHO Concluído: Memo DISA e 1.11 - VELHO Concluído: Memo DEPROC<br>'
     '• revisar os textos dos memos com TEXTO_DEFINIDO = False<br>'
     '• tratar a resposta dos processos parados e dos VELHOS que aguardam a DISA',
     largura=460,
