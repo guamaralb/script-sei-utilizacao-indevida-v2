@@ -57,7 +57,7 @@ def _par_fecho():
 
 
 class MemoApisMatNaoEncontradas(Memorando):
-    """Memo à APIS-Utilização: matrícula(s) não localizada(s) na base geral
+    """Memo à APIS-Utilização: matrícula(s) não localizada(s) na base APIS
     (Planilha de Matrículas - Titulares e Dependentes U.I).
 
     Devolve o processo para conferência da matrícula (possível erro de

@@ -1,5 +1,6 @@
-"""Consulta à planilha de beneficiários atendidos na rede própria (base
-DISA) e à base geral (listagem de todos os beneficiários)."""
+"""Consulta à base APIS (listagem de todos os beneficiários da demanda) e à
+planilha de beneficiários atendidos na rede própria (base DISA, feita a
+partir da base APIS)."""
 
 import logging
 import re
@@ -18,10 +19,10 @@ _RESPOSTAS_UTILIZOU = {'SIM': True, 'NÃO': False, 'NAO': False}
 _ABA_TITULARES = ('UI 2025 EX-TITULARES', 'MATRICULAS TITULARES')
 _ABA_DEPENDENTES = ('UI 2025 EX-DEPENDENTES', 'MATRICULAS DEPENDENTES - SEM DV')
 
-# Base geral: titulares e dependentes com DV. Nos processos, os dependentes
+# Base APIS: titulares e dependentes com DV. Nos processos, os dependentes
 # vêm sem DV, então o DV (último dígito) é retirado dos dependentes da base.
-_ABA_GERAL_TITULARES = ('UI 2025 EX-TITULARES', 'MATRICULAS TITULARES')
-_ABA_GERAL_DEPENDENTES = ('UI 2025 EX-DEPENDENTES', 'MATRICULAS DEPENDENTES')
+_ABA_APIS_TITULARES = ('UI 2025 EX-TITULARES', 'MATRICULAS TITULARES')
+_ABA_APIS_DEPENDENTES = ('UI 2025 EX-DEPENDENTES', 'MATRICULAS DEPENDENTES')
 
 # Número lido do Excel como float e convertido para texto: "123456789.0"
 _PADRAO_FLOAT_EXCEL = re.compile(r'^(\d+)\.0+$')
@@ -62,9 +63,9 @@ class BasesUso:
 
     titulares: dict[str, bool | None]
     dependentes: dict[str, bool | None]
-    # Base geral (sem resposta de uso). Dependentes sem DV.
-    geral_titulares: frozenset[str]
-    geral_dependentes: frozenset[str]
+    # Base APIS (sem resposta de uso). Dependentes sem DV.
+    apis_titulares: frozenset[str]
+    apis_dependentes: frozenset[str]
 
 
 def normalizar_matricula(valor) -> str | None:
@@ -131,7 +132,7 @@ def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str) -> dict[str, b
     return uso
 
 
-def _carregar_aba_geral(arquivo: Path, aba: str, coluna_matricula: str, *, retirar_dv: bool) -> frozenset[str]:
+def _carregar_aba_apis(arquivo: Path, aba: str, coluna_matricula: str, *, retirar_dv: bool) -> frozenset[str]:
     df = pd.read_excel(io=arquivo, sheet_name=aba, dtype=str)
     # A planilha tem cabeçalho com espaço sobrando ("MATRICULAS TITULARES ")
     df.columns = df.columns.str.strip()
@@ -144,21 +145,21 @@ def _carregar_aba_geral(arquivo: Path, aba: str, coluna_matricula: str, *, retir
         if mat:
             matriculas.add(mat)
 
-    logger.info(f'Base geral, aba "{aba}" carregada | {len(df)} linha(s) | {len(matriculas)} matrícula(s) única(s)')
+    logger.info(f'Base APIS, aba "{aba}" carregada | {len(df)} linha(s) | {len(matriculas)} matrícula(s) única(s)')
     return frozenset(matriculas)
 
 
-def carregar_bases(arquivo_uso: Path, arquivo_geral: Path) -> BasesUso:
+def carregar_bases(arquivo_uso: Path, arquivo_apis: Path) -> BasesUso:
     logger.info(f'Carregando planilha de uso da rede própria: {arquivo_uso.name}')
     titulares = _carregar_aba(arquivo_uso, *_ABA_TITULARES)
     dependentes = _carregar_aba(arquivo_uso, *_ABA_DEPENDENTES)
 
-    logger.info(f'Carregando base geral de beneficiários: {arquivo_geral.name}')
+    logger.info(f'Carregando base APIS de beneficiários: {arquivo_apis.name}')
     return BasesUso(
         titulares=titulares,
         dependentes=dependentes,
-        geral_titulares=_carregar_aba_geral(arquivo_geral, *_ABA_GERAL_TITULARES, retirar_dv=False),
-        geral_dependentes=_carregar_aba_geral(arquivo_geral, *_ABA_GERAL_DEPENDENTES, retirar_dv=True),
+        apis_titulares=_carregar_aba_apis(arquivo_apis, *_ABA_APIS_TITULARES, retirar_dv=False),
+        apis_dependentes=_carregar_aba_apis(arquivo_apis, *_ABA_APIS_DEPENDENTES, retirar_dv=True),
     )
 
 
@@ -196,13 +197,6 @@ def _consultar(
     return usaram, nao_usaram
 
 
-def _nao_encontradas(titular: str, dependentes: list[str], base_titulares, base_dependentes) -> NaoEncontradas:
-    return NaoEncontradas(
-        titular=titular if titular not in base_titulares else None,
-        dependentes=tuple(m for m in dependentes if m not in base_dependentes),
-    )
-
-
 def _preparar_matriculas(matricula_titular, matriculas_dependentes) -> tuple[str, list[str]]:
     titular = normalizar_matricula(matricula_titular)
     if not titular:
@@ -217,7 +211,7 @@ def _preparar_matriculas(matricula_titular, matriculas_dependentes) -> tuple[str
 
 def _logar_uso(uso: UsoRedeBeneficiarios) -> None:
     logger.info(
-        f'Uso da rede própria | Titular {uso.matricula_titular}: '
+        f'Uso da rede própria (base DISA) | Titular {uso.matricula_titular}: '
         f'{"USOU" if uso.tit_usou else "NÃO USOU"} | '
         f'Dependentes que usaram: {list(uso.deps_que_usaram) or "-"} | '
         f'Dependentes que não usaram: {list(uso.deps_que_nao_usaram) or "-"}'
@@ -225,13 +219,26 @@ def _logar_uso(uso: UsoRedeBeneficiarios) -> None:
 
 
 @dataclass(frozen=True)
-class AvaliacaoDisa:
-    """Resultado de avaliar_uso_rede_propria_disa."""
+class MatriculasProcesso:
+    """Matrículas do processo, normalizadas, e as que faltam na base APIS."""
 
-    uso: UsoRedeBeneficiarios
+    titular: str
     dependentes: tuple[str, ...]
-    nao_encontradas_geral: NaoEncontradas
-    nao_encontradas_disa: NaoEncontradas
+    nao_encontradas_apis: NaoEncontradas
+
+
+def verificar_base_apis(matricula_titular, matriculas_dependentes, bases: BasesUso) -> MatriculasProcesso:
+    """Procura o titular e os dependentes na base APIS. A existência das
+    matrículas é conferida só nela (a base DISA é feita a partir dela). Não
+    para quando falta matrícula: quem chama decide."""
+    titular, dependentes = _preparar_matriculas(matricula_titular, matriculas_dependentes)
+    nao_encontradas = NaoEncontradas(
+        titular=titular if titular not in bases.apis_titulares else None,
+        dependentes=tuple(m for m in dependentes if m not in bases.apis_dependentes),
+    )
+    if nao_encontradas:
+        logger.warning(f'Não encontrado(s) na base APIS | {nao_encontradas.descrever()}')
+    return MatriculasProcesso(titular=titular, dependentes=tuple(dependentes), nao_encontradas_apis=nao_encontradas)
 
 
 def _consultar_disa(matriculas: list[str], base: dict[str, bool | None], descricao: str) -> tuple[list[str], list[str]]:
@@ -240,36 +247,25 @@ def _consultar_disa(matriculas: list[str], base: dict[str, bool | None], descric
     return usaram, [m for m in matriculas if m not in usaram]
 
 
-def avaliar_uso_rede_propria_disa(
-    matricula_titular,
-    matriculas_dependentes,
-    bases: BasesUso,
-) -> AvaliacaoDisa:
-    """Procura o titular e os dependentes na base geral e na base DISA. Não para quando falta matrícula: quem chama decide. Quem não
-    está na base DISA não usou a rede própria."""
-    titular, dependentes = _preparar_matriculas(matricula_titular, matriculas_dependentes)
-    nao_encontradas_geral = _nao_encontradas(titular, dependentes, bases.geral_titulares, bases.geral_dependentes)
-    nao_encontradas_disa = _nao_encontradas(titular, dependentes, bases.titulares, bases.dependentes)
+def avaliar_uso_rede_propria_disa(matriculas: MatriculasProcesso, bases: BasesUso) -> UsoRedeBeneficiarios:
+    """Uso da rede própria segundo a base DISA. Quem não está na base DISA
+    não usou a rede própria."""
+    fora_da_base = [m for m in matriculas.dependentes if m not in bases.dependentes]
+    if matriculas.titular not in bases.titulares:
+        fora_da_base.insert(0, f'{matriculas.titular} (titular)')
+    if fora_da_base:
+        logger.info(f'Fora da base DISA (contam como não uso): {fora_da_base}')
 
-    tit_usaram, _ = _consultar_disa([titular], bases.titulares, 'titular')
-    deps_usaram, deps_nao_usaram = _consultar_disa(dependentes, bases.dependentes, 'dependente')
+    tit_usaram, _ = _consultar_disa([matriculas.titular], bases.titulares, 'titular')
+    deps_usaram, deps_nao_usaram = _consultar_disa(list(matriculas.dependentes), bases.dependentes, 'dependente')
     uso = UsoRedeBeneficiarios(
-        matricula_titular=titular,
+        matricula_titular=matriculas.titular,
         tit_usou=bool(tit_usaram),
         deps_que_usaram=tuple(deps_usaram),
         deps_que_nao_usaram=tuple(deps_nao_usaram),
     )
-    if nao_encontradas_geral:
-        logger.warning(f'Não encontrado(s) na base geral | {nao_encontradas_geral.descrever()}')
-    if nao_encontradas_disa:
-        logger.warning(f'Não encontrado(s) na base DISA (contam como não uso) | {nao_encontradas_disa.descrever()}')
     _logar_uso(uso)
-    return AvaliacaoDisa(
-        uso=uso,
-        dependentes=tuple(dependentes),
-        nao_encontradas_geral=nao_encontradas_geral,
-        nao_encontradas_disa=nao_encontradas_disa,
-    )
+    return uso
 
 
 def registrar_uso(registro, uso: UsoRedeBeneficiarios) -> None:

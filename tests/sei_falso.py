@@ -4,6 +4,7 @@ Guarda a árvore (documentos e textos) e os marcadores de um processo e
 substitui as funções da sei_automacao usadas pelo script.
 """
 
+from dataclasses import replace
 from datetime import date
 from pathlib import Path
 
@@ -21,7 +22,6 @@ from script_sei_utilizacao_indevida_v2.memorandos import (
     MemoApisFormatoInvalido,
     MemoApisPeriodoDependentes,
     MemoApisSemMemo,
-    MemoDeprocRedeCredenciada,
     MemoDisa,
 )
 
@@ -52,12 +52,12 @@ MANTIS_CREDENCIADA_TITULAR_USOU = BasesMantis(_VAZIA, BaseMantis('rede credencia
 MANTIS_DUAS_REDES = BasesMantis(MANTIS_DEPENDENTE_USOU.rede_propria, MANTIS_CREDENCIADA_TITULAR_USOU.rede_credenciada)
 
 
-def bases(*, tit_usou=True, tit_na_disa=True, tit_na_geral=True) -> BasesUso:
+def bases(*, tit_usou=True, tit_na_disa=True, tit_na_apis=True) -> BasesUso:
     return BasesUso(
         titulares={TITULAR: tit_usou} if tit_na_disa else {},
         dependentes={DEPENDENTE: False},
-        geral_titulares=frozenset({TITULAR} if tit_na_geral else set()),
-        geral_dependentes=frozenset({DEPENDENTE}),
+        apis_titulares=frozenset({TITULAR} if tit_na_apis else set()),
+        apis_dependentes=frozenset({DEPENDENTE}),
     )
 
 
@@ -95,6 +95,11 @@ class SEIFalso:
 
     def memo_geacs(self, assunto: str) -> str:
         return self.novo_doc('Memorando 1', UNIDADE_GEACS, f'Assunto: {assunto}')
+
+    def memo_geacs_para(self, destino: str, data: str | None = '18 de setembro de 2026') -> str:
+        """Memo da GEACS com destinatário e data (identificação do VELHO)."""
+        linha_data = f'Belo Horizonte, {data}.' if data else ''
+        return self.novo_doc('Memorando 1', UNIDADE_GEACS, f'Para: {destino}\nAssunto: memo\n{linha_data}')
 
     def _memos_geacs(self) -> list[dict]:
         return [doc for doc in self.docs if doc['unidade'] == UNIDADE_GEACS and 'Memorando' in doc['nome_arvore']]
@@ -154,10 +159,14 @@ class SEIFalso:
         monkeypatch.setattr(memos_sei, 'inserir_bloco_ass', lambda driver, bloco: None)
         monkeypatch.setattr(docs_processo, 'ler_texto_doc', lambda driver, doc: self.textos[doc['numero_sei']])
         monkeypatch.setattr(processar_novo, 'garantir_marcadores_no_sei', lambda driver, lista: None)
+        monkeypatch.setattr(main, 'garantir_marcadores_no_sei', lambda driver, lista: None)
+        # Blocos dos memos à DISA ainda não configurados (None)
+        for nome, bloco in (('_DISA_VALIDAR_CONSTA', 1), ('_DISA_VALIDAR_NAO_CONSTA', 2), ('_DISA_RELATORIO', 3)):
+            monkeypatch.setattr(processar_novo, nome, replace(getattr(processar_novo, nome), bloco=bloco))
         monkeypatch.setattr(relatorios_mantis, 'incluir_doc_externo', self._incluir_doc_externo)
         monkeypatch.setattr(relatorios_mantis, 'transformar_xls_em_pdf', lambda **kwargs: Path('relatorio.pdf'))
         # Memos com texto pendente: liberados para testar o fluxo
-        for memo in (MemoApisSemMemo, MemoApisFormatoInvalido, MemoApisPeriodoDependentes, MemoDisa, MemoDeprocRedeCredenciada):
+        for memo in (MemoApisSemMemo, MemoApisFormatoInvalido, MemoApisPeriodoDependentes, MemoDisa):
             monkeypatch.setattr(memo, 'TEXTO_DEFINIDO', True)
 
     def passar(self, bases_uso: BasesUso, bases_mantis: BasesMantis = MANTIS_SEM_USO):

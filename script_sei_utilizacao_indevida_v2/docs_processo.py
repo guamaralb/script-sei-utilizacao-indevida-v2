@@ -2,8 +2,10 @@
 
 import logging
 import re
+from datetime import date
 
-from constantes import UNIDADE_APIS, UNIDADE_GEACS
+from constantes import DATA_CORTE_PROCESSO_VELHO, UNIDADE_APIS, UNIDADE_GEACS
+from rede_propria import ErroAvaliacao
 from sei_automacao.documento import obter_conteudo_doc
 from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
@@ -17,10 +19,27 @@ TRECHOS_DESTINO_GEACS = (
     'Para: Bruna Miller Lavarini',
     'Para: Bruna Miiller Lavarini',
 )
-_PADRAO_DESTINO_GEACS = re.compile(
-    '|'.join(r'\s*'.join(re.escape(parte) for parte in trecho.split()) for trecho in TRECHOS_DESTINO_GEACS),
-    re.IGNORECASE,
-)
+
+
+def _regex_trecho(trecho: str) -> str:
+    return r'\s*'.join(re.escape(parte) for parte in trecho.split())
+
+
+_PADRAO_DESTINO_GEACS = re.compile('|'.join(_regex_trecho(trecho) for trecho in TRECHOS_DESTINO_GEACS), re.IGNORECASE)
+
+# Processo VELHO: memo da GEACS à DISA seguido de memo à DEPROC, os dois
+# datados antes de DATA_CORTE_PROCESSO_VELHO
+_PADRAO_PARA_DISA = re.compile(_regex_trecho('Para: IPSEMG/DISA-UTI-INDEV'), re.IGNORECASE)
+_PADRAO_PARA_DEPROC = re.compile(_regex_trecho('Para: IPSEMG/DEPROC') + r'\b', re.IGNORECASE)
+# "Belo Horizonte, 18 de setembro de 2026."
+_PADRAO_DATA_MEMO = re.compile(r'Belo\s+Horizonte\s*,\s*(\d{1,2})\s*[º°]?\s+de\s+([a-zç]+)\s+de\s+(\d{4})', re.IGNORECASE)
+_MESES = {
+    nome: numero
+    for numero, nome in enumerate(
+        ('janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'),
+        start=1,
+    )
+}
 
 
 def _eh_memorando(doc: dict) -> bool:
@@ -95,3 +114,51 @@ def memos_geacs_novos(driver: webdriver.Remote, tds_docs_antes: list[dict]) -> l
     novos = [doc for doc in filtrar_memos_geacs(listar_documentos_arvore(driver)) if doc['numero_sei'] not in antes]
     logger.info(f'Memo(s) criado(s) na árvore: {[_descrever(doc) for doc in novos] or "nenhum"}')
     return novos
+
+
+def data_memo(texto: str) -> date | None:
+    """Data do memo ("Belo Horizonte, 18 de setembro de 2026.") ou None."""
+    achado = _PADRAO_DATA_MEMO.search(texto)
+    if achado is None:
+        return None
+    dia, mes, ano = achado.groups()
+    numero_mes = _MESES.get(mes.casefold())
+    if numero_mes is None:
+        return None
+    try:
+        return date(int(ano), numero_mes, int(dia))
+    except ValueError:
+        return None
+
+
+def _destino_memo(texto: str) -> str | None:
+    if _PADRAO_PARA_DISA.search(texto):
+        return 'DISA'
+    if _PADRAO_PARA_DEPROC.search(texto):
+        return 'DEPROC'
+    return None
+
+
+def encontrar_memos_velho(driver: webdriver.Remote, tds_docs: list[dict]) -> tuple[dict, dict] | None:
+    """Lê todos os memorandos da GEACS da árvore e devolve o primeiro par de
+    memos seguidos (entre os memorandos da GEACS) à DISA e à DEPROC, nessa
+    ordem, os dois datados antes de DATA_CORTE_PROCESSO_VELHO. Sem par, None.
+
+    Levanta ErroAvaliacao se um par não tiver a data legível: sem ela não
+    dá para saber se o processo é VELHO."""
+    anterior: tuple[dict, str, str | None] | None = None
+    for memo in filtrar_memos_geacs(tds_docs):
+        texto = ler_texto_doc(driver, memo)
+        destino = _destino_memo(texto)
+        if destino == 'DEPROC' and anterior is not None and anterior[2] == 'DISA':
+            datas = (data_memo(anterior[1]), data_memo(texto))
+            if None in datas:
+                raise ErroAvaliacao(
+                    f'Memos à DISA e à DEPROC seguidos ({anterior[0]["numero_sei"]} e {memo["numero_sei"]}) sem a data no formato '
+                    '"Belo Horizonte, <dia> de <mês> de <ano>": não foi possível conferir se o processo é VELHO'
+                )
+            if all(d < DATA_CORTE_PROCESSO_VELHO for d in datas):
+                logger.info(f'Memos à DISA e à DEPROC anteriores a {DATA_CORTE_PROCESSO_VELHO:%d/%m/%Y}: {_descrever(anterior[0])} e {_descrever(memo)}')
+                return anterior[0], memo
+        anterior = (memo, texto, destino)
+    return None

@@ -45,8 +45,6 @@ _PREENCHIMENTO_NAO_ENCONTRADA = PatternFill(fill_type='solid', start_color='FFFF
 _COLUNAS_NAO_ENCONTRADAS = (
     'titular_nao_encontrado_base_geral',
     'deps_nao_encontrados_base_geral',
-    'titular_nao_encontrado',
-    'deps_nao_encontrados',
 )
 
 

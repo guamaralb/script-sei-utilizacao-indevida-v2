@@ -13,18 +13,19 @@ class ProxAcao:
     resumo do log). Detalhes ficam nas demais colunas e no log."""
 
     # Fluxo normal
-    ASSINAR_DISA_DEPROC = 'Assinar memos DISA e DEPROC e encaminhar'
     ASSINAR_DEPROC = 'Assinar memo DEPROC e encaminhar'
+    ASSINAR_MEMO_DISA_VALIDAR_CONSTA = 'Assinar memo à DISA (validar e complementar) e encaminhar'
+    ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA = 'Assinar memo à DISA (validar; não consta na base DISA) e encaminhar'
+    ASSINAR_MEMO_DISA_RELATORIO = 'Assinar memo à DISA (relatório da rede própria) e encaminhar'
+    # Concluído na versão anterior do fluxo
+    ASSINAR_DISA_DEPROC = 'Assinar memos DISA e DEPROC e encaminhar'
 
     # VELHOS (enviados à DISA e à DEPROC antes da avaliação)
-    VELHO_ASSINAR_DISA = 'VELHO: assinar memo DISA (validar rede própria) e encaminhar'
-    VELHO_ASSINAR_DEPROC = 'VELHO: assinar memo DEPROC (rede credenciada) e encaminhar'
-    VELHO_AGUARDAR_DISA = 'VELHO: aguardar retorno da DISA (consta na base DISA)'
+    VELHO_AGUARDAR_DEFINICAO = 'VELHO: não processado (fluxo ainda não definido)'
     FORA_DO_ESCOPO = 'Fora do escopo (tratado manualmente)'
 
     # Verificações manuais
     VERIFICAR_FORMATO_MEMO = 'Verificar formato do memo da APIS'
-    VERIFICAR_MAT_NAO_ENCONTRADAS = 'Verificar matrículas não encontradas'
     ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS = 'Assinar memo à APIS (matrículas não encontradas) e encaminhar'
     ASSINAR_MEMO_APIS_SEM_MEMO = 'Assinar memo à APIS (sem memorando para a GEACS) e encaminhar'
     ASSINAR_MEMO_APIS_FORMATO_INVALIDO = 'Assinar memo à APIS (formato do memorando inválido) e encaminhar'
@@ -37,7 +38,6 @@ class ProxAcao:
 # Próximas ações definidas antes do erro que devem ser mantidas
 _PROX_ACOES_DE_ERRO = frozenset({
     ProxAcao.VERIFICAR_FORMATO_MEMO,
-    ProxAcao.VERIFICAR_MAT_NAO_ENCONTRADAS,
     ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
     ProxAcao.AGUARDAR_RESPOSTA_MEMO,
     ProxAcao.VERIFICAR_MARCADORES,
@@ -107,11 +107,10 @@ class RegistroBase:
     tit_usou: bool | None = None
     deps_que_usaram: list[str] = field(default_factory=list)
     deps_que_nao_usaram: list[str] = field(default_factory=list)
-    # Matrículas não encontradas (sem sufixo: base da rede própria/DISA)
+    # Matrículas não encontradas na base APIS (as colunas mantêm o nome
+    # antigo, "base_geral")
     titular_nao_encontrado_base_geral: str | None = None
     deps_nao_encontrados_base_geral: list[str] = field(default_factory=list)
-    titular_nao_encontrado: str | None = None
-    deps_nao_encontrados: list[str] = field(default_factory=list)
     memo_apis_mat_nao_encontradas_criado: bool = False
     memo_apis_mat_nao_encontradas_inserido_bloco: bool = False
     memo_apis_mat_nao_encontradas_na_arvore: bool = False
@@ -154,6 +153,8 @@ class RegistroBase:
 class RegistroMain(RegistroBase):
     # Enviado à DISA e à DEPROC antes da avaliação da rede própria
     velho: bool | None = None
+    # Memos da GEACS à DISA e à DEPROC que identificaram o VELHO (número SEI)
+    memos_velho_sei: list[str] = field(default_factory=list)
 
     # Instruções da APIS
     ult_memo_obtido: bool = False
@@ -189,13 +190,15 @@ class RegistroMain(RegistroBase):
     deps_valor_total_uso_mantis_rede_credenciada: float | None = None
     # Uso da rede própria no MANTIS que a base DISA marca como não uso
     mats_uso_mantis_alem_disa: list[str] = field(default_factory=list)
+    # Comparação base DISA x MANTIS (rede própria), ex.: "DISA sim, MANTIS não"
+    caso_disa_mantis: str | None = None
     # Relatórios em PDF do MANTIS: anexados na passagem (nome na árvore) e
     # já na árvore (número SEI, retomada)
     relatorios_incluidos: list[str] = field(default_factory=list)
     relatorios_na_arvore: list[str] = field(default_factory=list)
 
-    # Memos DISA e DEPROC. <memo>_na_arvore: o memo já estava na árvore sem
-    # marcador e foi reaproveitado (retomada)
+    # Memos DISA (um dos três casos) e DEPROC. <memo>_na_arvore: o memo já
+    # estava na árvore sem marcador e foi reaproveitado (retomada)
     memo_disa_criado: bool = False
     memo_disa_inserido_bloco: bool = False
     memo_disa_na_arvore: bool = False
@@ -204,11 +207,6 @@ class RegistroMain(RegistroBase):
     memo_deproc_inserido_bloco: bool = False
     memo_deproc_na_arvore: bool = False
     memo_deproc_sei: str | None = None
-    # Processo VELHO sem uso da rede própria
-    memo_deproc_credenciada_criado: bool = False
-    memo_deproc_credenciada_inserido_bloco: bool = False
-    memo_deproc_credenciada_na_arvore: bool = False
-    memo_deproc_credenciada_sei: str | None = None
 
     def to_dict(self) -> dict:
         dados = super().to_dict()

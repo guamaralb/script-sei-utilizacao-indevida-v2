@@ -1,5 +1,5 @@
-"""Fluxo dos processos (colunas 3 e 4 do docs/fluxo.drawio): fluxo normal e
-processo VELHO (enviado à DISA e à DEPROC antes da avaliação).
+"""Fluxo dos processos (colunas 3 e 4 do docs/fluxo.drawio). O processo
+VELHO é separado antes, em main._tratar, e não passa por aqui.
 
 Cada memo criado recebe o seu marcador logo depois de entrar no bloco.
 Os marcadores são a memória entre execuções: o marcador de estado diz até
@@ -15,7 +15,10 @@ from constantes import (
     BLOCO_MEMO_APIS_FORMATO_INVALIDO,
     BLOCO_MEMO_APIS_PERIODO_DEPENDENTES,
     BLOCO_MEMO_APIS_SEM_MEMO,
-    BLOCO_MEMOS_DISA_DEPROC,
+    BLOCO_MEMO_DEPROC,
+    BLOCO_MEMO_DISA_RELATORIO,
+    BLOCO_MEMO_DISA_VALIDAR_CONSTA,
+    BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA,
     CARGO_SIGNATARIO,
     NOME_SIGNATARIO,
 )
@@ -26,31 +29,34 @@ from marcadores_disponiveis import garantir_marcadores_no_sei
 from matriculas_nao_encontradas import incluir_memo_apis_mat_nao_encontradas
 from memos_sei import incluir_memo, registrar_numeros_memos
 from rede_propria import (
-    AvaliacaoDisa,
     BasesUso,
     ErroAvaliacao,
+    MatriculasProcesso,
     avaliar_uso_rede_propria_disa,
     registrar_uso,
+    verificar_base_apis,
 )
 from Registro import ProxAcao, RegistroMain
 from relatorios_mantis import REDE_CREDENCIADA, REDE_PROPRIA, incluir_relatorios
 from sei_automacao.classes.Memorando import Memorando
 from selenium import webdriver
 from tags import (
+    TAG_AGUARDA_DISA_RELATORIO,
+    TAG_AGUARDA_DISA_VALIDAR_CONSTA,
+    TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
     TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
     TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
-    TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO,
-    TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO,
+    TAG_DISA_NAO_USOU_RP,
+    TAG_DISA_USOU_RP,
+    TAG_MANTIS_NAO_USOU_RP,
+    TAG_MANTIS_USOU_RP,
+    TAG_MAT_NAO_ENCONTRADAS_APIS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
     TAG_MEMO_APIS_PERIODO_DEPENDENTES,
     TAG_MEMO_APIS_SEM_MEMO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
-    TAG_MEMO_DISA_USO_REDE_PROPRIA,
-    TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
     TAG_PERIODO_VAR_DEP,
-    TAG_VELHO_MEMO_DEPROC,
-    TAG_VELHO_MEMO_DISA,
     TAGS_RETOMADA_NOVO,
     adicionar_tag,
     adicionar_tag_se_ausente,
@@ -63,8 +69,15 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoApisFormatoInvalido import
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisPeriodoDependentes import PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES, MemoApisPeriodoDependentes
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisSemMemo import PADRAO_ASSUNTO_MEMO_APIS_SEM_MEMO, MemoApisSemMemo
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import PADRAO_ASSUNTO_MEMO_DEPROC, MemoDeproc
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDeprocRedeCredenciada import PADRAO_ASSUNTO_MEMO_DEPROC_REDE_CREDENCIADA, MemoDeprocRedeCredenciada
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import PADRAO_ASSUNTO_MEMO_DISA, MemoDisa
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import (
+    PADRAO_ASSUNTO_MEMO_DISA_RELATORIO,
+    PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
+    PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
+    MemoDisaRelatorio,
+    MemoDisaValidarConsta,
+    MemoDisaValidarNaoConsta,
+)
+from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import UsoRedeBeneficiarios
 
 logger = logging.getLogger(__name__)
 
@@ -139,7 +152,8 @@ class _Parada:
     fluxo: str
     descricao: str
     prefixo_registro: str
-    bloco: int
+    # None: bloco ainda não configurado (o processo para antes do memo)
+    bloco: int | None
     tag: str
     prox_acao: str
     padrao_assunto: re.Pattern
@@ -172,17 +186,48 @@ _PERIODO_VARIAVEL = _Parada(
     prox_acao=ProxAcao.ASSINAR_MEMO_APIS_PERIODO_DEPS,
     padrao_assunto=PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES,
 )
+# Memos à DISA (comparação base DISA x MANTIS, rede própria). O processo
+# fica parado até o retorno da DISA e não vai para a DEPROC
+_DISA_VALIDAR_CONSTA = _Parada(
+    fluxo='DISA sim, MANTIS sim: memo à DISA (validar e complementar)',
+    descricao='à DISA (validar e complementar)',
+    prefixo_registro='memo_disa',
+    bloco=BLOCO_MEMO_DISA_VALIDAR_CONSTA,
+    tag=TAG_AGUARDA_DISA_VALIDAR_CONSTA,
+    prox_acao=ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA,
+    padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
+)
+_DISA_VALIDAR_NAO_CONSTA = _Parada(
+    fluxo='DISA não, MANTIS sim: memo à DISA (validar, não consta)',
+    descricao='à DISA (validar, não consta na base DISA)',
+    prefixo_registro='memo_disa',
+    bloco=BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA,
+    tag=TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
+    prox_acao=ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA,
+    padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
+)
+_DISA_RELATORIO = _Parada(
+    fluxo='DISA sim, MANTIS não: memo à DISA (relatório)',
+    descricao='à DISA (relatório da rede própria)',
+    prefixo_registro='memo_disa',
+    bloco=BLOCO_MEMO_DISA_RELATORIO,
+    tag=TAG_AGUARDA_DISA_RELATORIO,
+    prox_acao=ProxAcao.ASSINAR_MEMO_DISA_RELATORIO,
+    padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_RELATORIO,
+)
 
 
-def _ramo(registro: RegistroMain) -> str:
-    return 'VELHO' if registro.velho else 'NOVO'
+def _conferir_bloco(parada: _Parada) -> None:
+    if parada.bloco is None:
+        raise ErroAvaliacao(f'Bloco do memo {parada.descricao} não configurado (constantes): nenhum documento foi criado')
 
 
 def _parar_com_memo(driver: webdriver.Remote, registro: RegistroMain, memo: Memorando, parada: _Parada, tag_antes: str | None = None) -> None:
     """tag_antes registra a verificação que levou à parada e entra antes
     do memo; o marcador do memo, depois que ele está no bloco. O memo é
     procurado pelo assunto antes de ser criado (retomada)."""
-    registro.fluxo = f'{_ramo(registro)} - {parada.fluxo}'
+    _conferir_bloco(parada)
+    registro.fluxo = f'NOVO - {parada.fluxo}'
     garantir_marcadores_no_sei(driver, [t for t in (tag_antes, parada.tag) if t])
     if tag_antes:
         adicionar_tag_se_ausente(driver, registro, tag_antes)
@@ -208,51 +253,60 @@ def _parar_formato_invalido(driver: webdriver.Remote, registro: RegistroMain, er
     _parar_com_memo(driver, registro, memo, _FORMATO_INVALIDO)
 
 
-def _parar_periodo_variavel(driver: webdriver.Remote, registro: RegistroMain, avaliacao: AvaliacaoDisa) -> None:
+def _parar_periodo_variavel(driver: webdriver.Remote, registro: RegistroMain, matriculas: MatriculasProcesso) -> None:
     memo = MemoApisPeriodoDependentes(
         nome_signatario=NOME_SIGNATARIO,
         cargo_signatario=CARGO_SIGNATARIO,
-        dependentes=avaliacao.dependentes,
+        dependentes=matriculas.dependentes,
     )
     _parar_com_memo(driver, registro, memo, _PERIODO_VARIAVEL, tag_antes=TAG_PERIODO_VAR_DEP)
 
 
-def _parar_nao_encontradas_base_geral(driver: webdriver.Remote, registro: RegistroMain, avaliacao: AvaliacaoDisa) -> None:
-    registro.fluxo = f'{_ramo(registro)} - matrículas não encontradas na base geral'
-    adicionar_tag_se_ausente(driver, registro, TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO)
-    incluir_memo_apis_mat_nao_encontradas(driver, registro, avaliacao.nao_encontradas_geral)
+def _parar_nao_encontradas_base_apis(driver: webdriver.Remote, registro: RegistroMain, matriculas: MatriculasProcesso) -> None:
+    registro.fluxo = 'NOVO - matrículas não encontradas na base APIS'
+    garantir_marcadores_no_sei(driver, [TAG_MAT_NAO_ENCONTRADAS_APIS, TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS])
+    adicionar_tag_se_ausente(driver, registro, TAG_MAT_NAO_ENCONTRADAS_APIS)
+    incluir_memo_apis_mat_nao_encontradas(driver, registro, matriculas.nao_encontradas_apis)
     adicionar_tag(driver, registro, TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS)
     _finalizar(driver, registro, ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS)
 
 
 # ---------------------------------------------------------------------------
-# Base geral e base DISA
+# Base APIS e base DISA
 # ---------------------------------------------------------------------------
 
 
-def _avaliar_disa(driver: webdriver.Remote, registro: RegistroMain, dados_ui: DadosUI, bases: BasesUso) -> AvaliacaoDisa:
-    """Avalia o uso na base DISA e adiciona 1.2.2 (se faltou matrícula na
-    base DISA) e o marcador de avaliado (DISA). Os marcadores das etapas
-    seguintes que dependem só desta avaliação (1.2.1 e o memo à APIS) são
-    conferidos no SEI aqui também, antes de adicionar qualquer um."""
-    avaliacao = avaliar_uso_rede_propria_disa(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
-    registro.titular_nao_encontrado_base_geral = avaliacao.nao_encontradas_geral.titular
-    registro.deps_nao_encontrados_base_geral = list(avaliacao.nao_encontradas_geral.dependentes)
-    registro.titular_nao_encontrado = avaliacao.nao_encontradas_disa.titular
-    registro.deps_nao_encontrados = list(avaliacao.nao_encontradas_disa.dependentes)
-    registrar_uso(registro, avaliacao.uso)
+def _verificar_base_apis(registro: RegistroMain, dados_ui: DadosUI, bases: BasesUso) -> MatriculasProcesso:
+    """A existência das matrículas é conferida só na base APIS."""
+    matriculas = verificar_base_apis(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
+    registro.titular_nao_encontrado_base_geral = matriculas.nao_encontradas_apis.titular
+    registro.deps_nao_encontrados_base_geral = list(matriculas.nao_encontradas_apis.dependentes)
+    if not matriculas.nao_encontradas_apis and tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_APIS):
+        # Base corrigida depois do 1.2.1: o marcador sai à mão, para não
+        # seguir com um marcador que diz o contrário
+        raise ErroAvaliacao(f'As matrículas agora estão na base APIS, mas o processo tem "{TAG_MAT_NAO_ENCONTRADAS_APIS}": remover o marcador no SEI para reprocessar')
+    return matriculas
 
-    tags = [TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO] if avaliacao.nao_encontradas_disa else []
-    tags.append(TAG_AVALIADO_USO_REDE_PROPRIA_DISA)
-    if avaliacao.nao_encontradas_geral:
-        tags += [TAG_MAT_NAO_ENCONTRADAS_GERAL_NOVO, TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS]
-    garantir_marcadores_no_sei(driver, tags)
 
-    if avaliacao.nao_encontradas_disa:
-        adicionar_tag_se_ausente(driver, registro, TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
+def _registrar_par(driver: webdriver.Remote, registro: RegistroMain, tag: str) -> None:
+    """Marcador de um par base DISA/MANTIS: adicionar_tag remove o outro do
+    par, se a base mudou desde a última passagem."""
+    if not tem_tag(registro, tag):
+        adicionar_tag(driver, registro, tag)
+
+
+def _avaliar_disa(driver: webdriver.Remote, registro: RegistroMain, matriculas: MatriculasProcesso, bases: BasesUso) -> UsoRedeBeneficiarios:
+    """Avalia o uso da rede própria na base DISA e adiciona o par base DISA
+    e o marcador de avaliado (DISA)."""
+    uso = avaliar_uso_rede_propria_disa(matriculas, bases)
+    registrar_uso(registro, uso)
+
+    tag_par = TAG_DISA_USOU_RP if uso.alguem_usou else TAG_DISA_NAO_USOU_RP
+    garantir_marcadores_no_sei(driver, [tag_par, TAG_AVALIADO_USO_REDE_PROPRIA_DISA])
+    _registrar_par(driver, registro, tag_par)
     if not _etapa_feita(registro, TAG_AVALIADO_USO_REDE_PROPRIA_DISA):
         adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA_DISA)
-    return avaliacao
+    return uso
 
 
 # ---------------------------------------------------------------------------
@@ -272,33 +326,44 @@ def _registrar_uso_mantis(registro: RegistroMain, avaliacao: AvaliacaoMantis) ->
     registro.deps_valor_total_uso_mantis_rede_credenciada = credenciada.deps_valor_total
 
 
+def _sim_nao(valor: bool) -> str:
+    return 'sim' if valor else 'não'
+
+
 def _avaliar_mantis_e_criar_docs(
     driver: webdriver.Remote,
     registro: RegistroMain,
     dados_ui: DadosUI,
-    avaliacao_disa: AvaliacaoDisa,
+    uso_disa: UsoRedeBeneficiarios,
+    matriculas: MatriculasProcesso,
     bases_mantis: BasesMantis,
 ) -> None:
-    """O memo à DISA (com os relatórios da rede própria) só existe se
-    alguém tem atendimento na rede própria do MANTIS; a base DISA não
-    decide. Depois vêm os relatórios da rede credenciada e o memo DEPROC.
+    """Compara o uso da rede própria na base DISA e no MANTIS (processo
+    inteiro: alguém usou) e decide o memo:
 
-    VELHO (já enviado à DISA e à DEPROC): com uso da rede própria, vão os
-    relatórios das duas redes e o memo à DISA, sem DEPROC; sem uso, os
-    relatórios da rede credenciada e um memo DEPROC complementar."""
-    uso_disa = avaliacao_disa.uso
-    mantis = avaliar_uso_rede_propria_mantis(uso_disa.matricula_titular, avaliacao_disa.dependentes, dados_ui.periodo_titular, bases_mantis)
+    - DISA sim, MANTIS sim: relatórios RP e memo à DISA (validar e complementar);
+    - DISA não, MANTIS sim: relatórios RP e memo à DISA (validar, não consta);
+    - DISA sim, MANTIS não: memo à DISA (relatório);
+    - DISA não, MANTIS não: relatórios RC e memo DEPROC.
+
+    Quem vai para a DISA não vai para a DEPROC."""
+    mantis = avaliar_uso_rede_propria_mantis(matriculas.titular, matriculas.dependentes, dados_ui.periodo_titular, bases_mantis)
     _registrar_uso_mantis(registro, mantis)
     registro.mats_uso_mantis_alem_disa = usos_mantis_alem_disa(uso_disa, mantis.rede_propria)
     propria, credenciada = mantis.rede_propria, mantis.rede_credenciada
+    usou_disa, usou_mantis = uso_disa.alguem_usou, propria.alguem_usou
+    registro.caso_disa_mantis = f'DISA {_sim_nao(usou_disa)}, MANTIS {_sim_nao(usou_mantis)}'
+    logger.info(f'Base DISA x MANTIS (rede própria): {registro.caso_disa_mantis} | no MANTIS e fora da base DISA: {registro.mats_uso_mantis_alem_disa or "-"}')
 
-    # O memo DISA já no bloco (retomada pelo 1.9) também conta
-    usou_rede_propria = propria.alguem_usou or tem_tag(registro, TAG_MEMO_DISA_USO_REDE_PROPRIA)
-    # Os memos são montados antes de qualquer ação no SEI: texto pendente
-    # (TextoMemoPendente) para o processo aqui
-    memo_disa = None
-    if propria.alguem_usou and not _etapa_feita(registro, TAG_MEMO_DISA_USO_REDE_PROPRIA):
-        memo_disa = MemoDisa(
+    # O memo é montado antes de qualquer ação no SEI: texto pendente
+    # (TextoMemoPendente) ou bloco não configurado param o processo aqui
+    parada = None
+    if usou_disa or usou_mantis:
+        if usou_mantis:
+            parada, classe = (_DISA_VALIDAR_CONSTA, MemoDisaValidarConsta) if usou_disa else (_DISA_VALIDAR_NAO_CONSTA, MemoDisaValidarNaoConsta)
+        else:
+            parada, classe = _DISA_RELATORIO, MemoDisaRelatorio
+        memo = classe(
             dados=dados_ui,
             uso_disa=uso_disa,
             tit_usou_mantis=propria.tit_usou,
@@ -306,42 +371,30 @@ def _avaliar_mantis_e_criar_docs(
             nome_signatario=NOME_SIGNATARIO,
             cargo_signatario=CARGO_SIGNATARIO,
         )
-    memo_deproc, prefixo_deproc, padrao_deproc = None, 'memo_deproc', PADRAO_ASSUNTO_MEMO_DEPROC
-    if not registro.velho:
-        memo_deproc = MemoDeproc(dados=dados_ui, usou_rede_credenciada=credenciada.alguem_usou, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
-    elif not usou_rede_propria:
-        memo_deproc = MemoDeprocRedeCredenciada(dados=dados_ui, usou_rede_credenciada=credenciada.alguem_usou, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
-        prefixo_deproc, padrao_deproc = 'memo_deproc_credenciada', PADRAO_ASSUNTO_MEMO_DEPROC_REDE_CREDENCIADA
-
-    if registro.velho:
-        tag_conclusao, prox_acao = (TAG_VELHO_MEMO_DISA, ProxAcao.VELHO_ASSINAR_DISA) if usou_rede_propria else (TAG_VELHO_MEMO_DEPROC, ProxAcao.VELHO_ASSINAR_DEPROC)
-        tags = [TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, tag_conclusao]
+        _conferir_bloco(parada)
+        tag_final = parada.tag
     else:
-        # O marcador de conclusão diz quantos memos ficaram no bloco
-        tag_conclusao, prox_acao = (TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO, ProxAcao.ASSINAR_DISA_DEPROC) if usou_rede_propria else (TAG_MEMO_DEPROC_COPARTICIPACAO, ProxAcao.ASSINAR_DEPROC)
-        tags = [TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, *([TAG_MEMO_DISA_USO_REDE_PROPRIA] if usou_rede_propria else []), tag_conclusao]
-    garantir_marcadores_no_sei(driver, tags)
+        memo = MemoDeproc(dados=dados_ui, usou_rede_credenciada=credenciada.alguem_usou, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
+        tag_final = TAG_MEMO_DEPROC_COPARTICIPACAO
 
+    tag_par = TAG_MANTIS_USOU_RP if usou_mantis else TAG_MANTIS_NAO_USOU_RP
+    garantir_marcadores_no_sei(driver, [tag_par, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, tag_final])
+    _registrar_par(driver, registro, tag_par)
     if not _etapa_feita(registro, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS):
         adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS)
 
-    nome, matricula = dados_ui.nome_titular, uso_disa.matricula_titular
-    if memo_disa is not None:
-        logger.info(f'Atendimento na rede própria do MANTIS: relatórios e memo à DISA | fora da base DISA: {registro.mats_uso_mantis_alem_disa or "-"}')
-        incluir_relatorios(driver, registro, propria, REDE_PROPRIA, nome, matricula)
-        if registro.velho:
-            incluir_relatorios(driver, registro, credenciada, REDE_CREDENCIADA, nome, matricula)
-        incluir_memo(driver, registro, memo_disa, BLOCO_MEMOS_DISA_DEPROC, 'memo_disa', 'DISA', padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA)
-        if not registro.velho:
-            adicionar_tag(driver, registro, TAG_MEMO_DISA_USO_REDE_PROPRIA)
-    elif not usou_rede_propria:
-        logger.info('Nenhum atendimento na rede própria do MANTIS: sem memo à DISA')
+    nome, matricula = dados_ui.nome_titular, matriculas.titular
+    if parada is not None:
+        if usou_mantis:
+            incluir_relatorios(driver, registro, propria, REDE_PROPRIA, nome, matricula)
+        _parar_com_memo(driver, registro, memo, parada)
+        return
 
-    if memo_deproc is not None:
-        incluir_relatorios(driver, registro, credenciada, REDE_CREDENCIADA, nome, matricula)
-        incluir_memo(driver, registro, memo_deproc, BLOCO_MEMOS_DISA_DEPROC, prefixo_deproc, 'DEPROC', padrao_assunto=padrao_deproc)
-    adicionar_tag(driver, registro, tag_conclusao)
-    _finalizar(driver, registro, prox_acao)
+    registro.fluxo = 'NOVO - DISA não, MANTIS não: memo DEPROC'
+    incluir_relatorios(driver, registro, credenciada, REDE_CREDENCIADA, nome, matricula)
+    incluir_memo(driver, registro, memo, BLOCO_MEMO_DEPROC, 'memo_deproc', 'DEPROC', padrao_assunto=PADRAO_ASSUNTO_MEMO_DEPROC)
+    adicionar_tag(driver, registro, TAG_MEMO_DEPROC_COPARTICIPACAO)
+    _finalizar(driver, registro, ProxAcao.ASSINAR_DEPROC)
 
 
 # ---------------------------------------------------------------------------
@@ -355,22 +408,22 @@ def processar_novo(
     bases: BasesUso,
     bases_mantis: BasesMantis,
 ) -> None:
-    """Fluxo de todos os processos, do início ou retomando pelo marcador de
-    estado (1.6, 1.8 ou 1.9). registro.velho indica o processo já enviado à
-    DISA e à DEPROC antes da avaliação.
+    """Fluxo dos processos (não VELHOS), do início ou retomando pelo
+    marcador de estado (1.6 ou 1.8).
 
     Termina em um destes pontos:
     - sem memo da APIS para a GEACS: memo à APIS (sem memorando);
     - memo da APIS em formato inválido: memo à APIS (formato inválido);
-    - VELHO com alguém na base DISA: aguarda o retorno da DISA;
-    - matrícula fora da base geral: 1.2.1 e memo à APIS;
+    - matrícula fora da base APIS: 1.2.1 e memo à APIS;
     - período variável para dependentes: 1.1 e memo à APIS;
-    - relatórios e memos à DISA e/ou à DEPROC.
+    - uso da rede própria na base DISA e/ou no MANTIS: memo à DISA (um dos
+      três casos);
+    - sem uso da rede própria: relatórios RC e memo DEPROC.
 
     Em todos os casos o marcador do memo só é adicionado depois que ele
     está no bloco.
     """
-    registro.fluxo = f'{_ramo(registro)} - fluxo normal'
+    registro.fluxo = 'NOVO - fluxo normal'
     try:
         dados_ui = obter_dados_ui(driver, registro)
     except MemoApisNaoEncontrado:
@@ -380,15 +433,13 @@ def processar_novo(
         _parar_formato_invalido(driver, registro, e)
         return
 
-    avaliacao_disa = _avaliar_disa(driver, registro, dados_ui, bases)
-    if registro.velho and avaliacao_disa.uso.alguem_usou:
-        # Atendimento na DISA desde o início: a DISA já levanta os usos
-        logger.info('VELHO com beneficiário na base DISA: aguardar o retorno da DISA')
-        registro.fluxo = 'VELHO - aguardando retorno da DISA'
-        registro.prox_acao = ProxAcao.VELHO_AGUARDAR_DISA
-    elif avaliacao_disa.nao_encontradas_geral:
-        _parar_nao_encontradas_base_geral(driver, registro, avaliacao_disa)
-    elif dados_ui.periodo_dependentes:
-        _parar_periodo_variavel(driver, registro, avaliacao_disa)
+    matriculas = _verificar_base_apis(registro, dados_ui, bases)
+    if matriculas.nao_encontradas_apis:
+        _parar_nao_encontradas_base_apis(driver, registro, matriculas)
+        return
+
+    uso_disa = _avaliar_disa(driver, registro, matriculas, bases)
+    if dados_ui.periodo_dependentes:
+        _parar_periodo_variavel(driver, registro, matriculas)
     else:
-        _avaliar_mantis_e_criar_docs(driver, registro, dados_ui, avaliacao_disa, bases_mantis)
+        _avaliar_mantis_e_criar_docs(driver, registro, dados_ui, uso_disa, matriculas, bases_mantis)
