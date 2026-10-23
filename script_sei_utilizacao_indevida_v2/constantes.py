@@ -37,11 +37,14 @@ BLOCO_MEMO_DEPROC = 7697744
 # TODO: preencher. Com None, o processo para com erro antes de criar o memo.
 BLOCO_MEMO_DISA_VALIDAR_CONSTA = None
 BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA = None
-BLOCO_MEMO_DISA_RELATORIO = None
+BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO = None
 BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS = 7711907
 BLOCO_MEMO_APIS_SEM_MEMO = 7730344
 BLOCO_MEMO_APIS_FORMATO_INVALIDO = 7730341
 BLOCO_MEMO_APIS_PERIODO_DEPENDENTES = 7730905
+# Memo à APIS: nenhum uso em nenhuma base (base DISA, MANTIS RP e RC).
+# TODO: preencher. Com None, o processo para com erro antes de criar o memo.
+BLOCO_MEMO_APIS_SEM_USO = None
 
 NOME_SIGNATARIO = 'Bruna Miiller Lavarini'
 CARGO_SIGNATARIO = 'Gerência de Auditoria e Contas da Saúde'

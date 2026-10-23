@@ -15,8 +15,9 @@ from constantes import (
     BLOCO_MEMO_APIS_FORMATO_INVALIDO,
     BLOCO_MEMO_APIS_PERIODO_DEPENDENTES,
     BLOCO_MEMO_APIS_SEM_MEMO,
+    BLOCO_MEMO_APIS_SEM_USO,
     BLOCO_MEMO_DEPROC,
-    BLOCO_MEMO_DISA_RELATORIO,
+    BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO,
     BLOCO_MEMO_DISA_VALIDAR_CONSTA,
     BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA,
     CARGO_SIGNATARIO,
@@ -41,14 +42,17 @@ from relatorios_mantis import REDE_CREDENCIADA, REDE_PROPRIA, incluir_relatorios
 from sei_automacao.classes.Memorando import Memorando
 from selenium import webdriver
 from tags import (
-    TAG_AGUARDA_DISA_RELATORIO,
+    TAG_AGUARDA_APIS_SEM_USO,
+    TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO,
     TAG_AGUARDA_DISA_VALIDAR_CONSTA,
     TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
     TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
     TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
     TAG_DISA_NAO_USOU_RP,
     TAG_DISA_USOU_RP,
+    TAG_MANTIS_NAO_USOU_RC,
     TAG_MANTIS_NAO_USOU_RP,
+    TAG_MANTIS_USOU_RC,
     TAG_MANTIS_USOU_RP,
     TAG_MAT_NAO_ENCONTRADAS_APIS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
@@ -69,12 +73,13 @@ from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisFormatoInvalido import PADRAO_ASSUNTO_MEMO_APIS_FORMATO_INVALIDO, MemoApisFormatoInvalido
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisPeriodoDependentes import PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES, MemoApisPeriodoDependentes
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisSemMemo import PADRAO_ASSUNTO_MEMO_APIS_SEM_MEMO, MemoApisSemMemo
+from script_sei_utilizacao_indevida_v2.memorandos.MemoApisSemUso import PADRAO_ASSUNTO_MEMO_APIS_SEM_USO, MemoApisSemUso
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import PADRAO_ASSUNTO_MEMO_DEPROC, MemoDeproc
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import (
-    PADRAO_ASSUNTO_MEMO_DISA_RELATORIO,
+    PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO,
     PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
     PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
-    MemoDisaRelatorio,
+    MemoDisaSemMantisSolicitaRelatorio,
     MemoDisaValidarConsta,
     MemoDisaValidarNaoConsta,
 )
@@ -207,14 +212,24 @@ _DISA_VALIDAR_NAO_CONSTA = _Parada(
     prox_acao=ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA,
     padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
 )
-_DISA_RELATORIO = _Parada(
-    fluxo='DISA sim, MANTIS não: memo à DISA (relatório)',
-    descricao='à DISA (relatório da rede própria)',
+_DISA_SEM_MANTIS_RELATORIO = _Parada(
+    fluxo='DISA sim, MANTIS não: memo à DISA (sem MANTIS, solicita relatório)',
+    descricao='à DISA (sem MANTIS, solicita relatório)',
     prefixo_registro='memo_disa',
-    bloco=BLOCO_MEMO_DISA_RELATORIO,
-    tag=TAG_AGUARDA_DISA_RELATORIO,
-    prox_acao=ProxAcao.ASSINAR_MEMO_DISA_RELATORIO,
-    padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_RELATORIO,
+    bloco=BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO,
+    tag=TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO,
+    prox_acao=ProxAcao.ASSINAR_MEMO_DISA_SEM_MANTIS_RELATORIO,
+    padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO,
+)
+# Nenhum uso em nenhuma base (DISA, MANTIS RP e RC): memo à APIS, sem DEPROC
+_APIS_SEM_USO = _Parada(
+    fluxo='DISA não, MANTIS RP não, MANTIS RC não: memo à APIS (nenhum uso)',
+    descricao='à APIS (nenhum uso nas bases)',
+    prefixo_registro='memo_apis_sem_uso',
+    bloco=BLOCO_MEMO_APIS_SEM_USO,
+    tag=TAG_AGUARDA_APIS_SEM_USO,
+    prox_acao=ProxAcao.ASSINAR_MEMO_APIS_SEM_USO,
+    padrao_assunto=PADRAO_ASSUNTO_MEMO_APIS_SEM_USO,
 )
 
 
@@ -343,28 +358,30 @@ def _avaliar_mantis_e_criar_docs(
     """Compara o uso da rede própria na base DISA e no MANTIS (processo
     inteiro: alguém usou) e decide o memo:
 
-    - DISA sim, MANTIS sim: relatórios RP e memo à DISA (validar e complementar);
-    - DISA não, MANTIS sim: relatórios RP e memo à DISA (validar, não consta);
-    - DISA sim, MANTIS não: memo à DISA (relatório);
-    - DISA não, MANTIS não: relatórios RC e memo DEPROC.
+    - DISA sim, MANTIS RP sim: memo à DISA (validar e complementar);
+    - DISA não, MANTIS RP sim: memo à DISA (validar, não consta);
+    - DISA sim, MANTIS RP não: memo à DISA (sem MANTIS, solicita relatório);
+    - DISA não, MANTIS RP não: memo DEPROC se alguém usou a rede
+      credenciada; senão, memo à APIS (nenhum uso nas bases).
 
-    Quem vai para a DISA não vai para a DEPROC."""
+    Em todos os casos, os relatórios RP e RC de quem usou entram antes do
+    memo. Quem vai para a DISA não vai para a DEPROC."""
     mantis = avaliar_uso_rede_propria_mantis(matriculas.titular, matriculas.dependentes, dados_ui.periodo_titular, bases_mantis)
     _registrar_uso_mantis(registro, mantis)
     registro.mats_uso_mantis_alem_disa = usos_mantis_alem_disa(uso_disa, mantis.rede_propria)
     propria, credenciada = mantis.rede_propria, mantis.rede_credenciada
-    usou_disa, usou_mantis = uso_disa.alguem_usou, propria.alguem_usou
-    registro.caso_disa_mantis = f'DISA {_sim_nao(usou_disa)}, MANTIS {_sim_nao(usou_mantis)}'
-    logger.info(f'Base DISA x MANTIS (rede própria): {registro.caso_disa_mantis} | no MANTIS e fora da base DISA: {registro.mats_uso_mantis_alem_disa or "-"}')
+    usou_disa, usou_rp, usou_rc = uso_disa.alguem_usou, propria.alguem_usou, credenciada.alguem_usou
+    registro.caso_disa_mantis = f'DISA {_sim_nao(usou_disa)}, MANTIS RP {_sim_nao(usou_rp)}, MANTIS RC {_sim_nao(usou_rc)}'
+    logger.info(f'Base DISA x MANTIS: {registro.caso_disa_mantis} | RP no MANTIS e fora da base DISA: {registro.mats_uso_mantis_alem_disa or "-"}')
 
     # O memo é montado antes de qualquer ação no SEI: texto pendente
     # (TextoMemoPendente) ou bloco não configurado param o processo aqui
     parada = None
-    if usou_disa or usou_mantis:
-        if usou_mantis:
+    if usou_disa or usou_rp:
+        if usou_rp:
             parada, classe = (_DISA_VALIDAR_CONSTA, MemoDisaValidarConsta) if usou_disa else (_DISA_VALIDAR_NAO_CONSTA, MemoDisaValidarNaoConsta)
         else:
-            parada, classe = _DISA_RELATORIO, MemoDisaRelatorio
+            parada, classe = _DISA_SEM_MANTIS_RELATORIO, MemoDisaSemMantisSolicitaRelatorio
         memo = classe(
             dados=dados_ui,
             uso_disa=uso_disa,
@@ -373,27 +390,32 @@ def _avaliar_mantis_e_criar_docs(
             nome_signatario=NOME_SIGNATARIO,
             cargo_signatario=CARGO_SIGNATARIO,
         )
-        _conferir_bloco(parada)
-        tag_final = parada.tag
+    elif usou_rc:
+        memo = MemoDeproc(dados=dados_ui, usou_rede_credenciada=True, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
     else:
-        memo = MemoDeproc(dados=dados_ui, usou_rede_credenciada=credenciada.alguem_usou, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
-        tag_final = TAG_MEMO_DEPROC_COPARTICIPACAO
+        parada = _APIS_SEM_USO
+        memo = MemoApisSemUso(dados=dados_ui, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
+    if parada is not None:
+        _conferir_bloco(parada)
+    tag_final = parada.tag if parada is not None else TAG_MEMO_DEPROC_COPARTICIPACAO
 
-    tag_par = TAG_MANTIS_USOU_RP if usou_mantis else TAG_MANTIS_NAO_USOU_RP
-    garantir_marcadores_no_sei(driver, [tag_par, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, tag_final])
-    _registrar_par(driver, registro, tag_par)
+    tag_rp = TAG_MANTIS_USOU_RP if usou_rp else TAG_MANTIS_NAO_USOU_RP
+    tag_rc = TAG_MANTIS_USOU_RC if usou_rc else TAG_MANTIS_NAO_USOU_RC
+    garantir_marcadores_no_sei(driver, [tag_rp, tag_rc, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, tag_final])
+    _registrar_par(driver, registro, tag_rp)
+    _registrar_par(driver, registro, tag_rc)
     if not _etapa_feita(registro, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS):
         adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS)
 
+    # Relatórios de quem usou (sem atendimento, nada é anexado)
     nome, matricula = dados_ui.nome_titular, matriculas.titular
+    incluir_relatorios(driver, registro, propria, REDE_PROPRIA, nome, matricula)
+    incluir_relatorios(driver, registro, credenciada, REDE_CREDENCIADA, nome, matricula)
     if parada is not None:
-        if usou_mantis:
-            incluir_relatorios(driver, registro, propria, REDE_PROPRIA, nome, matricula)
         _parar_com_memo(driver, registro, memo, parada)
         return
 
-    registro.fluxo = 'NOVO - DISA não, MANTIS não: memo DEPROC'
-    incluir_relatorios(driver, registro, credenciada, REDE_CREDENCIADA, nome, matricula)
+    registro.fluxo = 'NOVO - DISA não, MANTIS RP não, MANTIS RC sim: memo DEPROC'
     incluir_memo(driver, registro, memo, BLOCO_MEMO_DEPROC, 'memo_deproc', 'DEPROC', padrao_assunto=PADRAO_ASSUNTO_MEMO_DEPROC)
     adicionar_tag(driver, registro, TAG_MEMO_DEPROC_COPARTICIPACAO)
     _finalizar(driver, registro, ProxAcao.ASSINAR_DEPROC)
@@ -420,7 +442,8 @@ def processar_novo(
     - período variável para dependentes: 1.1 e memo à APIS;
     - uso da rede própria na base DISA e/ou no MANTIS: memo à DISA (um dos
       três casos);
-    - sem uso da rede própria: relatórios RC e memo DEPROC.
+    - sem uso da rede própria, com uso da rede credenciada: memo DEPROC;
+    - nenhum uso em nenhuma base: memo à APIS.
 
     Em todos os casos o marcador do memo só é adicionado depois que ele
     está no bloco.

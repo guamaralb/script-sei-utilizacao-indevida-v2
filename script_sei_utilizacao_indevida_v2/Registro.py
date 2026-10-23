@@ -16,7 +16,7 @@ class ProxAcao:
     ASSINAR_DEPROC = 'Assinar memo DEPROC e encaminhar'
     ASSINAR_MEMO_DISA_VALIDAR_CONSTA = 'Assinar memo à DISA (validar e complementar) e encaminhar'
     ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA = 'Assinar memo à DISA (validar; não consta na base DISA) e encaminhar'
-    ASSINAR_MEMO_DISA_RELATORIO = 'Assinar memo à DISA (relatório da rede própria) e encaminhar'
+    ASSINAR_MEMO_DISA_SEM_MANTIS_RELATORIO = 'Assinar memo à DISA (sem MANTIS: solicita relatório) e encaminhar'
     # Concluído na versão anterior do fluxo
     ASSINAR_DISA_DEPROC = 'Assinar memos DISA e DEPROC e encaminhar'
 
@@ -30,6 +30,7 @@ class ProxAcao:
     ASSINAR_MEMO_APIS_SEM_MEMO = 'Assinar memo à APIS (sem memorando para a GEACS) e encaminhar'
     ASSINAR_MEMO_APIS_FORMATO_INVALIDO = 'Assinar memo à APIS (formato do memorando inválido) e encaminhar'
     ASSINAR_MEMO_APIS_PERIODO_DEPS = 'Assinar memo à APIS (período dos dependentes) e encaminhar'
+    ASSINAR_MEMO_APIS_SEM_USO = 'Assinar memo à APIS (nenhum uso nas bases) e encaminhar'
     AGUARDAR_RESPOSTA_MEMO = 'Aguardar resposta ao memo enviado (processo parado)'
     VERIFICAR_MARCADORES = 'Verificar marcadores inconsistentes (corrigir no SEI)'
     VERIFICAR_ERRO = 'Verificar erro'
@@ -178,6 +179,10 @@ class RegistroMain(RegistroBase):
     memo_apis_periodo_deps_inserido_bloco: bool = False
     memo_apis_periodo_deps_na_arvore: bool = False
     memo_apis_periodo_deps_sei: str | None = None
+    memo_apis_sem_uso_criado: bool = False
+    memo_apis_sem_uso_inserido_bloco: bool = False
+    memo_apis_sem_uso_na_arvore: bool = False
+    memo_apis_sem_uso_sei: str | None = None
 
     # Uso da rede própria e da rede credenciada no MANTIS (período do titular)
     tit_usou_mantis_rede_propria: bool | None = None
@@ -190,7 +195,7 @@ class RegistroMain(RegistroBase):
     deps_valor_total_uso_mantis_rede_credenciada: float | None = None
     # Uso da rede própria no MANTIS que a base DISA marca como não uso
     mats_uso_mantis_alem_disa: list[str] = field(default_factory=list)
-    # Comparação base DISA x MANTIS (rede própria), ex.: "DISA sim, MANTIS não"
+    # Comparação base DISA x MANTIS, ex.: "DISA sim, MANTIS RP não, MANTIS RC sim"
     caso_disa_mantis: str | None = None
     # Relatórios em PDF do MANTIS: anexados na passagem (nome na árvore) e
     # já na árvore (número SEI, retomada)

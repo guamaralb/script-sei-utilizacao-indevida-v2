@@ -53,12 +53,14 @@ TAG_MEMOS_DISA_DEPROC_NO_BLOCO = 'Script v2 - 1.3 - Memos DISA e DEPROC no Bloco
 TAG_MEMO_DEPROC_NO_BLOCO = 'Script v2 - 1.3 - Memo DEPROC no Bloco'
 TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO = 'Script v2 - 1.4 - Memo Não Usou Rede no Bloco'
 
-# Informativos da comparação base DISA x MANTIS (rede própria), um par por
-# base. Os do mesmo par são alternativos
+# Informativos da comparação base DISA x MANTIS, um par por base (e por
+# rede, no MANTIS). Os do mesmo par são alternativos
 TAG_DISA_USOU_RP = 'Script v2 - 1.6.2 - Base DISA: Usou RP'
 TAG_DISA_NAO_USOU_RP = 'Script v2 - 1.6.2 - Base DISA: Não Usou RP'
 TAG_MANTIS_USOU_RP = 'Script v2 - 1.8.2 - MANTIS: Usou RP'
 TAG_MANTIS_NAO_USOU_RP = 'Script v2 - 1.8.2 - MANTIS: Não Usou RP'
+TAG_MANTIS_USOU_RC = 'Script v2 - 1.8.3 - MANTIS: Usou RC'
+TAG_MANTIS_NAO_USOU_RC = 'Script v2 - 1.8.3 - MANTIS: Não Usou RC'
 
 # Marcadores de estado. Os de memo indicam que o memo foi criado e inserido
 # no bloco.
@@ -78,10 +80,12 @@ TAG_AGUARDA_DISA_VALIDAR_CONSTA = 'Script v2 - 1.9 - Aguarda DISA: Validar (Cons
 # Base DISA não, MANTIS sim: validar (relatórios RP anexados)
 TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA = 'Script v2 - 1.9 - Aguarda DISA: Validar (N Consta)'
 # Base DISA sim, MANTIS não: relatório da DISA
-TAG_AGUARDA_DISA_RELATORIO = 'Script v2 - 1.9 - Aguarda DISA: Relatório'
-# Conclusão do fluxo (base DISA não, MANTIS não): relatórios da rede
-# credenciada e memo DEPROC no bloco
+TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO = 'Script v2 - 1.9 - Aguarda DISA: Relat. s/ MANTIS'
+# Base DISA não e MANTIS RP não (alternativos):
+# - MANTIS RC sim: conclusão, relatórios RC e memo DEPROC no bloco;
+# - MANTIS RC não: parada, memo à APIS (nenhum uso nas bases) no bloco
 TAG_MEMO_DEPROC_COPARTICIPACAO = 'Script v2 - 1.10 - Concluído: Memo DEPROC'
+TAG_AGUARDA_APIS_SEM_USO = 'Script v2 - 1.10 - Aguarda APIS: Sem Uso'
 
 # Estados da versão anterior do fluxo (não são mais adicionados)
 TAG_MEMO_DISA_VALIDAR_USOS_MANTIS = 'Script v2 - 1.8.1 - Memo DISA Validar Usos MANTIS'
@@ -108,7 +112,8 @@ TAGS_PARADA_NOVO = (
     TAG_MEMO_APIS_PERIODO_DEPENDENTES,
     TAG_AGUARDA_DISA_VALIDAR_CONSTA,
     TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
-    TAG_AGUARDA_DISA_RELATORIO,
+    TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO,
+    TAG_AGUARDA_APIS_SEM_USO,
     TAG_MEMO_DISA_VALIDAR_USOS_MANTIS,
     TAG_MEMO_DISA_USO_REDE_PROPRIA,
 )
@@ -126,8 +131,10 @@ TAGS_RETOMADA_NOVO = (
 TAGS_ESTADO_NOVO = TAGS_PARADA_NOVO + TAGS_RETOMADA_NOVO + TAGS_CONCLUSAO_NOVO
 TAGS_DUPLA_DISA = (TAG_DISA_USOU_RP, TAG_DISA_NAO_USOU_RP)
 TAGS_DUPLA_MANTIS = (TAG_MANTIS_USOU_RP, TAG_MANTIS_NAO_USOU_RP)
+TAGS_DUPLA_MANTIS_RC = (TAG_MANTIS_USOU_RC, TAG_MANTIS_NAO_USOU_RC)
+_DUPLAS = (TAGS_DUPLA_DISA, TAGS_DUPLA_MANTIS, TAGS_DUPLA_MANTIS_RC)
 # Grupos de alternativos: adicionar um remove os outros do mesmo grupo
-_GRUPOS_ALTERNATIVOS = (TAGS_ESTADO_NOVO, TAGS_DUPLA_DISA, TAGS_DUPLA_MANTIS)
+_GRUPOS_ALTERNATIVOS = (TAGS_ESTADO_NOVO, *_DUPLAS)
 
 # Coluna da planilha de controle de cada marcador (indica se o processo
 # terminou a passagem com o marcador)
@@ -150,13 +157,16 @@ _COLUNA_POR_TAG = {
     TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS: 'tag_avaliado_uso_rede_propria_mantis',
     TAG_MANTIS_USOU_RP: 'tag_mantis_usou_rp',
     TAG_MANTIS_NAO_USOU_RP: 'tag_mantis_nao_usou_rp',
+    TAG_MANTIS_USOU_RC: 'tag_mantis_usou_rc',
+    TAG_MANTIS_NAO_USOU_RC: 'tag_mantis_nao_usou_rc',
     TAG_MEMO_DISA_VALIDAR_USOS_MANTIS: 'tag_memo_disa_validar_usos_mantis',
     TAG_MEMO_DISA_USO_REDE_PROPRIA: 'tag_memo_disa_uso_rede_propria',
     TAG_AGUARDA_DISA_VALIDAR_CONSTA: 'tag_aguarda_disa_validar_consta',
     TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA: 'tag_aguarda_disa_validar_nao_consta',
-    TAG_AGUARDA_DISA_RELATORIO: 'tag_aguarda_disa_relatorio',
+    TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO: 'tag_aguarda_disa_sem_mantis_relatorio',
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO: 'tag_memos_disa_deproc_coparticipacao',
     TAG_MEMO_DEPROC_COPARTICIPACAO: 'tag_memo_deproc_coparticipacao',
+    TAG_AGUARDA_APIS_SEM_USO: 'tag_aguarda_apis_sem_uso',
     TAG_VELHO_MEMO_DISA: 'tag_velho_memo_disa',
     TAG_VELHO_MEMO_DEPROC: 'tag_velho_memo_deproc',
     TAG_MEMOS_DISA_DEPROC_NO_BLOCO: 'tag_memos_no_bloco',
@@ -205,6 +215,8 @@ def _curto(tag: str) -> str:
     return tag.removeprefix('Script v2 - ')
 
 
+_ESTADOS_DISA = (TAG_AGUARDA_DISA_VALIDAR_CONSTA, TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA, TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO)
+
 # Informativos: estados com que podem conviver (os que vêm depois deles no
 # fluxo). Sem estado, não há regra (versão anterior ou falha antes do estado)
 _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {
@@ -218,7 +230,7 @@ _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {
         TAG_MEMO_APIS_PERIODO_DEPENDENTES,
         TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
         TAG_AGUARDA_DISA_VALIDAR_CONSTA,
-        TAG_AGUARDA_DISA_RELATORIO,
+        TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO,
     ),
     TAG_DISA_NAO_USOU_RP: (
         TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
@@ -226,9 +238,13 @@ _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {
         TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
         TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
         TAG_MEMO_DEPROC_COPARTICIPACAO,
+        TAG_AGUARDA_APIS_SEM_USO,
     ),
     TAG_MANTIS_USOU_RP: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, TAG_AGUARDA_DISA_VALIDAR_CONSTA, TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA),
-    TAG_MANTIS_NAO_USOU_RP: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, TAG_AGUARDA_DISA_RELATORIO, TAG_MEMO_DEPROC_COPARTICIPACAO),
+    TAG_MANTIS_NAO_USOU_RP: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO, TAG_MEMO_DEPROC_COPARTICIPACAO, TAG_AGUARDA_APIS_SEM_USO),
+    # A rede credenciada não decide o memo à DISA: qualquer um dos 1.9
+    TAG_MANTIS_USOU_RC: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, *_ESTADOS_DISA, TAG_MEMO_DEPROC_COPARTICIPACAO),
+    TAG_MANTIS_NAO_USOU_RC: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, *_ESTADOS_DISA, TAG_AGUARDA_APIS_SEM_USO),
 }
 # Marcador que exige outros
 _EXIGIDOS = {
@@ -236,7 +252,8 @@ _EXIGIDOS = {
     TAG_MEMO_APIS_PERIODO_DEPENDENTES: (TAG_PERIODO_VAR_DEP,),
     TAG_AGUARDA_DISA_VALIDAR_CONSTA: (TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RP),
     TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA: (TAG_DISA_NAO_USOU_RP, TAG_MANTIS_USOU_RP),
-    TAG_AGUARDA_DISA_RELATORIO: (TAG_DISA_USOU_RP, TAG_MANTIS_NAO_USOU_RP),
+    TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO: (TAG_DISA_USOU_RP, TAG_MANTIS_NAO_USOU_RP),
+    TAG_AGUARDA_APIS_SEM_USO: (TAG_DISA_NAO_USOU_RP, TAG_MANTIS_NAO_USOU_RP, TAG_MANTIS_NAO_USOU_RC),
     TAG_VELHO_MEMO_DISA: (TAG_MEMOS_DISA_DEPROC_NO_BLOCO,),
     TAG_VELHO_MEMO_DEPROC: (TAG_MEMOS_DISA_DEPROC_NO_BLOCO,),
 }
@@ -246,9 +263,10 @@ _SO_FLUXO_NORMAL = (
     TAG_MEMO_DISA_USO_REDE_PROPRIA,
     TAG_AGUARDA_DISA_VALIDAR_CONSTA,
     TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
-    TAG_AGUARDA_DISA_RELATORIO,
+    TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
+    TAG_AGUARDA_APIS_SEM_USO,
 )
 _INFORMATIVOS = tuple(_ESTADOS_POSSIVEIS_POR_INFORMATIVO)
 
@@ -269,7 +287,7 @@ def conferir_marcadores(registro) -> None:
 
     if len(estados) > 1:
         problemas.append(f'mais de um marcador de estado ({", ".join(map(_curto, estados))}); remover o(s) anterior(es)')
-    for dupla in (TAGS_DUPLA_DISA, TAGS_DUPLA_MANTIS):
+    for dupla in _DUPLAS:
         if all(tag in atuais for tag in dupla):
             problemas.append(f'{" e ".join(map(_curto, dupla))} (são alternativos)')
     do_fluxo = [tag for tag in (*estados, *_INFORMATIVOS) if tag in atuais]

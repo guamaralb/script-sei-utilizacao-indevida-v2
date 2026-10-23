@@ -6,9 +6,10 @@ indevida da assistência à saúde:
 - separa os processos VELHOS (não processados; fluxo a definir);
 - lê o último memorando da APIS destinado à GEACS;
 - confere as matrículas na base APIS e compara o uso da rede própria na
-  base DISA e no MANTIS;
-- gera o memorando à DISA (um por caso da comparação, com os relatórios do
-  MANTIS em PDF) **ou** o memorando à DEPROC.
+  base DISA e no MANTIS (e, no MANTIS, o da rede credenciada);
+- anexa os relatórios do MANTIS em PDF (rede própria e credenciada, de quem
+  usou) e gera **um** memorando: à DISA (um por caso da comparação), à
+  DEPROC ou, sem uso em nenhuma base, à APIS.
 
 A pesquisa da utilização indevida em si **ainda não foi implementada**.
 
@@ -26,7 +27,8 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 - **DISA**: valida os atendimentos na rede própria e levanta os dela.
 - **DEPROC**: levanta a coparticipação. Recebe todos os beneficiários e o
   relatório da rede credenciada, **só** quando ninguém usou a rede própria
-  (base DISA e MANTIS). Processo enviado à DISA não vai para a DEPROC.
+  (base DISA e MANTIS) e alguém usou a rede credenciada. Processo enviado à
+  DISA não vai para a DEPROC.
 - **Base APIS**: listagem de todos os beneficiários da demanda. É nela que
   se confere se as matrículas existem. (Antes chamada de "base geral"; as
   colunas da planilha de controle mantêm o nome antigo.)
@@ -67,7 +69,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
 | `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
-| `memorandos/` | `DadosUI`, `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaRelatorio`), `MemoDeproc`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`) |
+| `memorandos/` | `DadosUI`, `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
 | `docs/gerar_fluxo.py` | Gera o `docs/fluxo.drawio` (`python docs/gerar_fluxo.py docs/fluxo.drawio`). O conteúdo do diagrama fica no script |
 | `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
@@ -227,25 +229,30 @@ a API dela.
 
 ### Decisão base DISA × MANTIS
 
-Pelo **processo inteiro**: DISA = alguém tem SIM na base DISA; MANTIS =
-alguém tem atendimento na rede própria do MANTIS no período. Cada base tem
-um par de marcadores (`1.6.2` e `1.8.2`, "Usou RP" / "Não Usou RP").
+Pelo **processo inteiro**: DISA = alguém tem SIM na base DISA; MANTIS RP /
+RC = alguém tem atendimento na rede própria / credenciada do MANTIS no
+período. Cada um tem um par de marcadores (`1.6.2`, `1.8.2` e `1.8.3`,
+"Usou" / "Não Usou").
 
-| Base DISA | MANTIS (RP) | Ação | Memo (bloco) | Marcador |
-|---|---|---|---|---|
-| sim | sim | Relatórios RP em PDF + memo à DISA para **validar e complementar** com os dados dela | `MemoDisaValidarConsta` (`BLOCO_MEMO_DISA_VALIDAR_CONSTA`) | `1.9 - Aguarda DISA: Validar (Consta)` |
-| não | sim | Relatórios RP em PDF + memo à DISA para **validar**, informando que não consta na planilha | `MemoDisaValidarNaoConsta` (`BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA`) | `1.9 - Aguarda DISA: Validar (N Consta)` |
-| sim | não | Memo à DISA pedindo o **relatório** com os dados dela (sem PDF) | `MemoDisaRelatorio` (`BLOCO_MEMO_DISA_RELATORIO`) | `1.9 - Aguarda DISA: Relatório` |
-| não | não | Relatórios RC em PDF (só de quem usou) + memo DEPROC | `MemoDeproc` (`7697744`) | `1.10 - Concluído: Memo DEPROC` |
+| Base DISA | MANTIS RP | MANTIS RC | Ação | Memo (bloco) | Marcador |
+|---|---|---|---|---|---|
+| sim | sim | qualquer | Memo à DISA para **validar e complementar** com os dados dela | `MemoDisaValidarConsta` (`BLOCO_MEMO_DISA_VALIDAR_CONSTA`) | `1.9 - Aguarda DISA: Validar (Consta)` |
+| não | sim | qualquer | Memo à DISA para **validar**, informando que não consta na planilha | `MemoDisaValidarNaoConsta` (`BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA`) | `1.9 - Aguarda DISA: Validar (N Consta)` |
+| sim | não | qualquer | Sem MANTIS: memo à DISA **solicitando o relatório** com os dados dela | `MemoDisaSemMantisSolicitaRelatorio` (`BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO`) | `1.9 - Aguarda DISA: Relat. s/ MANTIS` |
+| não | não | sim | Memo DEPROC | `MemoDeproc` (`7697744`) | `1.10 - Concluído: Memo DEPROC` |
+| não | não | não | **Nenhum uso**: memo à APIS (sem DEPROC) | `MemoApisSemUso` (`BLOCO_MEMO_APIS_SEM_USO`) | `1.10 - Aguarda APIS: Sem Uso` |
 
-- Processo enviado à DISA **não** vai para a DEPROC: nem memo DEPROC nem
-  relatório RC. O memo à DISA é uma **parada** (aguarda o retorno da DISA).
+- Em **todos** os casos, os relatórios RP e RC em PDF de quem usou são
+  anexados antes do memo (sem atendimento, nada é anexado).
+- Processo enviado à DISA **não** vai para a DEPROC (nem memo DEPROC). O
+  memo à DISA e o memo à APIS (nenhum uso) são **paradas** (aguardam o
+  retorno).
 - No memo "validar e complementar", cada beneficiário com uso no MANTIS vem
   com "consta"/"NÃO consta na planilha"; quem consta na base DISA sem uso
   no MANTIS vem num parágrafo à parte.
 - A coluna `mats_uso_mantis_alem_disa` lista quem usou no MANTIS e não
   consta na base DISA; `caso_disa_mantis` diz o caso
-  ("DISA sim, MANTIS não").
+  ("DISA sim, MANTIS RP não, MANTIS RC sim").
 
 ### Relatórios em PDF (`relatorios_mantis.py`)
 
@@ -280,10 +287,12 @@ Prefixo de todos os nomes: `Script v2 - `.
 | `1.7 - Aguarda APIS: Período Deps` | Estado (parada): memo à APIS (período dos dependentes) no bloco, depois do `1.1` |
 | `1.8 - Avaliado Uso Rede Própria MANTIS` | Estado: MANTIS consultado |
 | `1.8.2 - MANTIS: Usou RP` / `1.8.2 - MANTIS: Não Usou RP` | Par (informativo): alguém tem ou não atendimento na rede própria do MANTIS |
-| `1.9 - Aguarda DISA: Validar (Consta)` | Estado (parada): relatórios RP e memo à DISA (validar e complementar) no bloco |
-| `1.9 - Aguarda DISA: Validar (N Consta)` | Estado (parada): relatórios RP e memo à DISA (validar, não consta) no bloco |
-| `1.9 - Aguarda DISA: Relatório` | Estado (parada): memo à DISA (relatório) no bloco |
+| `1.8.3 - MANTIS: Usou RC` / `1.8.3 - MANTIS: Não Usou RC` | Par (informativo): alguém tem ou não atendimento na rede credenciada do MANTIS |
+| `1.9 - Aguarda DISA: Validar (Consta)` | Estado (parada): relatórios e memo à DISA (validar e complementar) no bloco |
+| `1.9 - Aguarda DISA: Validar (N Consta)` | Estado (parada): relatórios e memo à DISA (validar, não consta) no bloco |
+| `1.9 - Aguarda DISA: Relat. s/ MANTIS` | Estado (parada): memo à DISA (sem MANTIS, solicita relatório) no bloco |
 | `1.10 - Concluído: Memo DEPROC` | Estado (conclusão): relatórios RC e memo DEPROC no bloco |
+| `1.10 - Aguarda APIS: Sem Uso` | Estado (parada): memo à APIS (nenhum uso em nenhuma base) no bloco |
 | `1.2 - Avaliado Se Usou Rede Própria`, `1.4 - Memo Não Usou Rede no Bloco` | Versão anterior / correção. Não são mais adicionados nem consultados |
 | `1.2.2 - Mat. N Encontradas Base DISA` | Versão anterior. Não é mais adicionado; tolerado com qualquer estado exceto `1.5` |
 | `1.3 - Memos DISA e DEPROC no Bloco` | Versão anterior. **Identifica o processo VELHO** |
@@ -302,7 +311,8 @@ Prefixo de todos os nomes: `Script v2 - `.
   `adicionar_tag` remove o anterior (primeiro adiciona, depois remove).
   Mais de um estado no processo é erro (a remoção falhou): remova
   manualmente o(s) anterior(es).
-- **Pares** (`TAGS_DUPLA_DISA`, `TAGS_DUPLA_MANTIS`): no máximo um de cada.
+- **Pares** (`TAGS_DUPLA_DISA`, `TAGS_DUPLA_MANTIS`, `TAGS_DUPLA_MANTIS_RC`):
+  no máximo um de cada.
   São reavaliados a cada passagem; se a base mudou, `adicionar_tag` troca o
   marcador do par.
 - Nomes: parada = `Aguarda <unidade>: <motivo>`; conclusão = `Concluído:
@@ -318,12 +328,16 @@ Prefixo de todos os nomes: `Script v2 - `.
     regra): `1.2.2` com qualquer estado exceto `1.5`; `1.2.1` com `1.6`,
     `1.8` (falhou antes do memo) ou `1.6.1`; `1.1` com `1.6` ou `1.7`;
     `1.6.2 Usou` com `1.6`, `1.7`, `1.8`, `1.9 Validar (Consta)` ou `1.9
-    Relatório`; `1.6.2 Não Usou` com `1.6`, `1.7`, `1.8`, `1.9 Validar (N
-    Consta)` ou `1.10`; `1.8.2 Usou` com `1.8` ou os dois `1.9 Validar`;
-    `1.8.2 Não Usou` com `1.8`, `1.9 Relatório` ou `1.10`;
+    Relat. s/ MANTIS`; `1.6.2 Não Usou` com `1.6`, `1.7`, `1.8`, `1.9
+    Validar (N Consta)` ou um dos `1.10`; `1.8.2 Usou` com `1.8` ou os dois
+    `1.9 Validar`; `1.8.2 Não Usou` com `1.8`, `1.9 Relat. s/ MANTIS` ou um
+    dos `1.10`; `1.8.3 Usou` com `1.8`, qualquer `1.9 - Aguarda DISA` ou
+    `1.10 Concluído: Memo DEPROC`; `1.8.3 Não Usou` com `1.8`, qualquer `1.9
+    - Aguarda DISA` ou `1.10 Aguarda APIS: Sem Uso`;
   - `1.6.1` exige `1.2.1`; `1.7` exige `1.1`; cada `1.9 - Aguarda DISA`
-    exige o seu par DISA e MANTIS; `1.11` exige `1.3 Memos DISA e DEPROC`;
-  - VELHO (`0` ou `1.3 Memos DISA e DEPROC`) não tem `1.9` nem `1.10`;
+    exige o seu par DISA e MANTIS RP; `1.10 - Aguarda APIS: Sem Uso` exige
+    os três "Não Usou"; `1.11` exige `1.3 Memos DISA e DEPROC`;
+  - VELHO (`0` ou `1.3 Memos DISA e DEPROC`) não tem `1.9` nem os `1.10`;
   - os dois `1.3` juntos, ou `1.3 Memo DEPROC` (concluído na versão
     anterior) com estado do fluxo atual, são inconsistentes.
 
@@ -363,6 +377,9 @@ Prefixo de todos os nomes: `Script v2 - `.
   é criado em processo VELHO.
 - Quem vai para a DISA **não** vai para a DEPROC. Cada memo à DISA valida a
   sua combinação base DISA × MANTIS (`ValueError` se não bater).
+- Os relatórios RP e RC de quem usou entram em **todos** os casos, antes do
+  memo. O memo à APIS (nenhum uso) só existe sem uso na base DISA, no MANTIS
+  RP e no MANTIS RC.
 - O memo à APIS de matrículas só existe se alguma matrícula **não foi
   encontrada na base APIS**.
 - Todos os memos são identificados **pelo assunto** (`PADRAO_ASSUNTO_*` em
@@ -376,8 +393,9 @@ Prefixo de todos os nomes: `Script v2 - `.
 - Blocos de assinatura:
   - `7697744` (`BLOCO_MEMO_DEPROC`): memo DEPROC;
   - `BLOCO_MEMO_DISA_VALIDAR_CONSTA`, `BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA`,
-    `BLOCO_MEMO_DISA_RELATORIO`: memos à DISA (**TODO**: hoje `None`; o
-    processo para com erro antes de criar documentos);
+    `BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO`: memos à DISA, e
+    `BLOCO_MEMO_APIS_SEM_USO`: memo à APIS (nenhum uso) (**TODO**: hoje
+    `None`; o processo para com erro antes de criar documentos);
   - `7730344`: memo à APIS (sem memorando);
   - `7730341`: memo à APIS (formato inválido);
   - `7730905`: memo à APIS (período dos dependentes);
@@ -421,10 +439,11 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 | Caminho | Sequência de marcadores | No SEI ao final |
 |---|---|---|
-| DISA sim, MANTIS sim | `1` + `1.6.2 Usou` + `1.6` → `1.8.2 Usou` + `1.8` → `1.9 Validar (Consta)` | `1`, `1.6.2 Usou`, `1.8.2 Usou`, `1.9 Validar (Consta)` |
-| DISA não, MANTIS sim | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Usou` + `1.8` → `1.9 Validar (N Consta)` | `1`, `1.6.2 Não Usou`, `1.8.2 Usou`, `1.9 Validar (N Consta)` |
-| DISA sim, MANTIS não | `1` + `1.6.2 Usou` + `1.6` → `1.8.2 Não Usou` + `1.8` → `1.9 Relatório` | `1`, `1.6.2 Usou`, `1.8.2 Não Usou`, `1.9 Relatório` |
-| DISA não, MANTIS não | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Não Usou` + `1.8` → `1.10 Concluído: Memo DEPROC` | `1`, `1.6.2 Não Usou`, `1.8.2 Não Usou`, `1.10 Concluído: Memo DEPROC` |
+| DISA sim, RP sim | `1` + `1.6.2 Usou` + `1.6` → `1.8.2 Usou` + `1.8.3` + `1.8` → `1.9 Validar (Consta)` | `1`, `1.6.2 Usou`, `1.8.2 Usou`, `1.8.3`, `1.9 Validar (Consta)` |
+| DISA não, RP sim | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Usou` + `1.8.3` + `1.8` → `1.9 Validar (N Consta)` | `1`, `1.6.2 Não Usou`, `1.8.2 Usou`, `1.8.3`, `1.9 Validar (N Consta)` |
+| DISA sim, RP não | `1` + `1.6.2 Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3` + `1.8` → `1.9 Relat. s/ MANTIS` | `1`, `1.6.2 Usou`, `1.8.2 Não Usou`, `1.8.3`, `1.9 Relat. s/ MANTIS` |
+| DISA não, RP não, RC sim | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3 Usou` + `1.8` → `1.10 Concluído: Memo DEPROC` | `1`, `1.6.2 Não Usou`, `1.8.2 Não Usou`, `1.8.3 Usou`, `1.10 Concluído: Memo DEPROC` |
+| DISA não, RP não, RC não | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3 Não Usou` + `1.8` → `1.10 Aguarda APIS: Sem Uso` | `1`, `1.6.2 Não Usou`, `1.8.2 Não Usou`, `1.8.3 Não Usou`, `1.10 Aguarda APIS: Sem Uso` |
 | Parado pelo memo da APIS | `1` + `1.5` (um dos dois) | `1`, `1.5` |
 | Parado pela base APIS | `1` + `1.2.1` + `1.6.1` | `1`, `1.2.1`, `1.6.1` |
 | Parado pelo período dos dependentes | `1` + `1.6.2` + `1.6` + `1.1` → `1.7` | `1`, `1.6.2`, `1.1`, `1.7` |
@@ -452,7 +471,7 @@ Prefixo de todos os nomes: `Script v2 - `.
 |---|---|---|
 | 1 | Marcadores inconsistentes (`conferir_marcadores`, [regras](#marcadores-tagspy))? | Erro, antes de qualquer ação. `prox_acao` = Verificar marcadores inconsistentes (corrigir no SEI) |
 | 2 | VELHO pelos marcadores (`0` ou `1.3 Memos DISA e DEPROC`)? | `_separar_velho`: com `MANUAL`/`ASSINADO`, `prox_acao` = Fora do escopo; senão **➕ `0`** (se faltar), `prox_acao` = VELHO: não processado. **TODO**: fluxo do VELHO |
-| 3 | Estado de parada (`1.5`, `1.6.1`, `1.7`, `1.9 - Aguarda DISA`; versão anterior: `1.8.1`, `1.9 Memo DISA`)? | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. **TODO**: processamento depois da resposta |
+| 3 | Estado de parada (`1.5`, `1.6.1`, `1.7`, `1.9 - Aguarda DISA`, `1.10 - Aguarda APIS: Sem Uso`; versão anterior: `1.8.1`, `1.9 Memo DISA`)? | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. **TODO**: processamento depois da resposta |
 | 4 | Estado de conclusão (`1.10`)? | Concluído. `prox_acao` = assinar os memos correspondentes e encaminhar |
 | 5 | Sem estado com `1.3 Memo DEPROC`? | Concluído na versão anterior. `prox_acao` = Assinar memo DEPROC e encaminhar |
 | 6 | VELHO pelos memos da GEACS (`encontrar_memos_velho`, [regra](#processo-velho))? | `_separar_velho` (como no 2). Par sem data legível: erro, sem ação |
@@ -517,22 +536,29 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
    ([tabela](#decisão-base-disa--mantis)) é montado (texto pendente ou
    bloco `None` param aqui).
    - **➕ `1.8.2 - MANTIS: Usou RP`** ou **➕ `1.8.2 - MANTIS: Não Usou RP`**.
+   - **➕ `1.8.3 - MANTIS: Usou RC`** ou **➕ `1.8.3 - MANTIS: Não Usou RC`**.
    - **➕ `1.8 - Avaliado Uso Rede Própria MANTIS`** (se o estado ainda não
      passou dele).
-7. **Base DISA × MANTIS** (rede própria, processo inteiro):
-   - **DISA sim, MANTIS sim**: relatórios RP, `MemoDisaValidarConsta`,
-     **➕ `1.9 - Aguarda DISA: Validar (Consta)`**; `prox_acao` = Assinar
-     memo à DISA (validar e complementar) e encaminhar. Fim;
-   - **DISA não, MANTIS sim**: relatórios RP, `MemoDisaValidarNaoConsta`,
-     **➕ `1.9 - Aguarda DISA: Validar (N Consta)`**; `prox_acao` = Assinar
-     memo à DISA (validar; não consta na base DISA) e encaminhar. Fim;
-   - **DISA sim, MANTIS não**: `MemoDisaRelatorio` (sem PDF), **➕ `1.9 -
-     Aguarda DISA: Relatório`**; `prox_acao` = Assinar memo à DISA
-     (relatório da rede própria) e encaminhar. Fim;
-   - **DISA não, MANTIS não**: relatórios RC (se alguém usou a rede
-     credenciada) e `MemoDeproc` (todos os beneficiários; cita a rede
-     credenciada; bloco `7697744`), **➕ `1.10 - Concluído: Memo DEPROC`**;
-     `prox_acao` = Assinar memo DEPROC e encaminhar.
+7. Relatórios RP e RC em PDF de quem usou (em todos os casos; sem
+   atendimento, nada é anexado).
+8. **Base DISA × MANTIS** (processo inteiro):
+   - **DISA sim, MANTIS RP sim**: `MemoDisaValidarConsta`, **➕ `1.9 -
+     Aguarda DISA: Validar (Consta)`**; `prox_acao` = Assinar memo à DISA
+     (validar e complementar) e encaminhar. Fim;
+   - **DISA não, MANTIS RP sim**: `MemoDisaValidarNaoConsta`, **➕ `1.9 -
+     Aguarda DISA: Validar (N Consta)`**; `prox_acao` = Assinar memo à DISA
+     (validar; não consta na base DISA) e encaminhar. Fim;
+   - **DISA sim, MANTIS RP não**: `MemoDisaSemMantisSolicitaRelatorio`,
+     **➕ `1.9 - Aguarda DISA: Relat. s/ MANTIS`**; `prox_acao` = Assinar
+     memo à DISA (sem MANTIS: solicita relatório) e encaminhar. Fim;
+   - **DISA não, MANTIS RP não, MANTIS RC sim**: `MemoDeproc` (todos os
+     beneficiários; cita a rede credenciada; bloco `7697744`), **➕ `1.10 -
+     Concluído: Memo DEPROC`**; `prox_acao` = Assinar memo DEPROC e
+     encaminhar;
+   - **DISA não, MANTIS RP não, MANTIS RC não** (nenhum uso):
+     `MemoApisSemUso` (bloco `BLOCO_MEMO_APIS_SEM_USO`), **➕ `1.10 - Aguarda
+     APIS: Sem Uso`**; `prox_acao` = Assinar memo à APIS (nenhum uso nas
+     bases) e encaminhar. Fim.
 
 Em todos os finais com memo, o script relê a árvore para obter o número
 SEI dos memos criados (colunas `<memo>_sei`; falha só gera log). Os três
@@ -575,7 +601,7 @@ perca os processos já tratados.
 - Rastreabilidade: `velho`, `memos_velho_sei`, `memo_apis_sei`,
   `memos_apis_geacs_sei`, `modelo_memo_apis`, `motivo_formato_invalido`,
   `memo_apis_sem_memo_sei`, `memo_apis_formato_invalido_sei`,
-  `memo_apis_periodo_deps_sei`, `memo_disa_sei`, `memo_deproc_sei`,
+  `memo_apis_periodo_deps_sei`, `memo_apis_sem_uso_sei`, `memo_disa_sei`, `memo_deproc_sei`,
   `relatorios_incluidos`, `relatorios_na_arvore`, `marcadores_sei` (lidos
   no início), `marcadores_adicionados`, `marcadores_removidos` e
   `marcadores_finais`.
@@ -629,15 +655,19 @@ perca os processos já tratados.
 
   E **cadastrar** `0 - Processo VELHO`, `1.6.2 - Base DISA: Usou RP`,
   `1.6.2 - Base DISA: Não Usou RP`, `1.8.2 - MANTIS: Usou RP`, `1.8.2 -
-  MANTIS: Não Usou RP`, `1.9 - Aguarda DISA: Validar (Consta)`, `1.9 -
-  Aguarda DISA: Validar (N Consta)` e `1.9 - Aguarda DISA: Relatório`.
+  MANTIS: Não Usou RP`, `1.8.3 - MANTIS: Usou RC`, `1.8.3 - MANTIS: Não
+  Usou RC`, `1.9 - Aguarda DISA: Validar (Consta)`, `1.9 - Aguarda DISA:
+  Validar (N Consta)`, `1.9 - Aguarda DISA: Relat. s/ MANTIS` e `1.10 -
+  Aguarda APIS: Sem Uso`.
   Todos com o prefixo `Script v2 - `, idênticos aos de `tags.py`.
-- **TODO**: blocos dos três memos à DISA (`BLOCO_MEMO_DISA_*` em
-  `constantes.py`, hoje `None`).
+- **TODO**: blocos dos três memos à DISA (`BLOCO_MEMO_DISA_*`) e do memo
+  à APIS sem uso (`BLOCO_MEMO_APIS_SEM_USO`) em `constantes.py`, hoje
+  `None`.
 - **TODO**: revisar os rascunhos dos memos à DISA (`MemoDisa.py`: validar e
-  complementar, validar não consta, relatório) e confirmar os três
-  assuntos **antes** de criar o primeiro memo; depois trocar
-  `TEXTO_DEFINIDO` para `True`. Conferir o parágrafo da rede credenciada no
+  complementar, validar não consta, sem MANTIS solicita relatório) e do
+  memo à APIS sem uso (`MemoApisSemUso.py`) e confirmar os assuntos
+  **antes** de criar o primeiro memo; depois trocar `TEXTO_DEFINIDO` para
+  `True`. Conferir o parágrafo da rede credenciada no
   `MemoDeproc` (`_par_rede_credenciada`).
 - **TODO**: textos e assuntos dos memos `MemoApisSemMemo` (modelo Despacho
   2, SEI 150644870; avaliar criar como Despacho), `MemoApisFormatoInvalido`
@@ -653,7 +683,8 @@ perca os processos já tratados.
   antigas (`MATRICULA_BENEFICIARIO`, `DAT_ATENDIMENTO`, `VAL_PAGAR`) e não
   carregam.
 - **TODO**: processamento dos processos parados (`1.5`, `1.6.1`, `1.7`,
-  `1.9 - Aguarda DISA`; versão anterior `1.8.1` e `1.9 Memo DISA`) depois
+  `1.9 - Aguarda DISA`, `1.10 - Aguarda APIS: Sem Uso`; versão anterior
+  `1.8.1` e `1.9 Memo DISA`) depois
   da resposta da APIS/DISA.
 - Confirmar que o texto dos memorandos da GEACS (`obter_conteudo_doc`) traz
   a linha "Para: ..." e a data "Belo Horizonte, <dia> de <mês> de <ano>."

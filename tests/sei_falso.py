@@ -22,6 +22,7 @@ from script_sei_utilizacao_indevida_v2.memorandos import (
     MemoApisFormatoInvalido,
     MemoApisPeriodoDependentes,
     MemoApisSemMemo,
+    MemoApisSemUso,
     MemoDisa,
 )
 
@@ -160,13 +161,13 @@ class SEIFalso:
         monkeypatch.setattr(docs_processo, 'ler_texto_doc', lambda driver, doc: self.textos[doc['numero_sei']])
         monkeypatch.setattr(processar_novo, 'garantir_marcadores_no_sei', lambda driver, lista: None)
         monkeypatch.setattr(main, 'garantir_marcadores_no_sei', lambda driver, lista: None)
-        # Blocos dos memos à DISA ainda não configurados (None)
-        for nome, bloco in (('_DISA_VALIDAR_CONSTA', 1), ('_DISA_VALIDAR_NAO_CONSTA', 2), ('_DISA_RELATORIO', 3)):
+        # Blocos dos memos à DISA e à APIS (sem uso) ainda não configurados (None)
+        for nome, bloco in (('_DISA_VALIDAR_CONSTA', 1), ('_DISA_VALIDAR_NAO_CONSTA', 2), ('_DISA_SEM_MANTIS_RELATORIO', 3), ('_APIS_SEM_USO', 4)):
             monkeypatch.setattr(processar_novo, nome, replace(getattr(processar_novo, nome), bloco=bloco))
         monkeypatch.setattr(relatorios_mantis, 'incluir_doc_externo', self._incluir_doc_externo)
         monkeypatch.setattr(relatorios_mantis, 'transformar_xls_em_pdf', lambda **kwargs: Path('relatorio.pdf'))
         # Memos com texto pendente: liberados para testar o fluxo
-        for memo in (MemoApisSemMemo, MemoApisFormatoInvalido, MemoApisPeriodoDependentes, MemoDisa):
+        for memo in (MemoApisSemMemo, MemoApisFormatoInvalido, MemoApisPeriodoDependentes, MemoApisSemUso, MemoDisa):
             monkeypatch.setattr(memo, 'TEXTO_DEFINIDO', True)
 
     def passar(self, bases_uso: BasesUso, bases_mantis: BasesMantis = MANTIS_SEM_USO):

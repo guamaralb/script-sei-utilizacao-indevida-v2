@@ -5,10 +5,10 @@ própria), decidida pelo processo inteiro (alguém usou):
   com os dados da DISA (MemoDisaValidarConsta);
 - base DISA não, MANTIS sim: validar, informando que não consta na planilha
   (MemoDisaValidarNaoConsta);
-- base DISA sim, MANTIS não: relatório com os dados da DISA
-  (MemoDisaRelatorio).
+- base DISA sim, MANTIS não: sem atendimento no MANTIS, solicita o
+  relatório com os dados da DISA (MemoDisaSemMantisSolicitaRelatorio).
 
-Nos dois primeiros, os relatórios da rede própria (PDF) são anexados antes.
+Os relatórios do MANTIS (PDF) de quem usou são anexados antes.
 """
 
 import re
@@ -33,11 +33,11 @@ TEXTO_DEFINIDO = False
 # TODO: confirmar os assuntos antes de criar o primeiro memo
 ASSUNTO_MEMO_DISA_VALIDAR_CONSTA = 'Validação e complementação de atendimentos da rede própria - utilização indevida da assistência à saúde'
 ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA = 'Validação de atendimentos da rede própria - utilização indevida da assistência à saúde'
-ASSUNTO_MEMO_DISA_RELATORIO = 'Relatório de atendimentos da rede própria - utilização indevida da assistência à saúde'
+ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO = 'Relatório de atendimentos da rede própria - utilização indevida da assistência à saúde'
 
 PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA = re.compile(re.escape(ASSUNTO_MEMO_DISA_VALIDAR_CONSTA), flags=re.IGNORECASE)
 PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA = re.compile(re.escape(ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA), flags=re.IGNORECASE)
-PADRAO_ASSUNTO_MEMO_DISA_RELATORIO = re.compile(re.escape(ASSUNTO_MEMO_DISA_RELATORIO), flags=re.IGNORECASE)
+PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO = re.compile(re.escape(ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO), flags=re.IGNORECASE)
 
 _CLASSE_PARAGRAFO = 'Texto_Justificado_Recuo_Primeira_Linha'
 _COMPETENCIA_DISA = 'Solicita-se à Diretoria de Saúde - DISA, no âmbito de suas competências institucionais previstas nos arts. 68 e 73 do Decreto Estadual nº 48.823, de 16 de maio de 2024,'
@@ -178,7 +178,7 @@ class MemoDisaValidarNaoConsta(_MemoDisa):
         super().__init__(assunto=ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, paragrafos=paragrafos, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
 
 
-class MemoDisaRelatorio(_MemoDisa):
+class MemoDisaSemMantisSolicitaRelatorio(_MemoDisa):
     """Base DISA sim e MANTIS não: relatório dos atendimentos registrados
     pela DISA (não há relatório do MANTIS para anexar)."""
 
@@ -193,8 +193,8 @@ class MemoDisaRelatorio(_MemoDisa):
         cargo_signatario: str,
     ):
         if tit_usou_mantis or deps_que_usaram_mantis or not uso_disa.alguem_usou:
-            raise ValueError('Memorando DISA (relatório) exige atendimento na base DISA e nenhum no MANTIS')
-        verificar_texto_definido(TEXTO_DEFINIDO, 'DISA (relatório da rede própria)')
+            raise ValueError('Memorando DISA (sem MANTIS, solicita relatório) exige atendimento na base DISA e nenhum no MANTIS')
+        verificar_texto_definido(TEXTO_DEFINIDO, 'DISA (sem MANTIS, solicita relatório)')
 
         paragrafos = [
             f'{_COMPETENCIA_DISA} o <strong>relatório dos atendimentos realizados na Rede Própria</strong> pelos beneficiários indicados abaixo, no período de apuração informado.',
@@ -203,4 +203,4 @@ class MemoDisaRelatorio(_MemoDisa):
             _usos_so_disa(uso_disa, tit_usou_mantis, deps_que_usaram_mantis),
             f'O relatório deverá contemplar, no mínimo, a {_CAMPOS_LEVANTAMENTO}.',
         ]
-        super().__init__(assunto=ASSUNTO_MEMO_DISA_RELATORIO, paragrafos=paragrafos, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
+        super().__init__(assunto=ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, paragrafos=paragrafos, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
