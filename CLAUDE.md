@@ -178,6 +178,10 @@ a API dela.
   utilização". Sem esse pedido é o modelo novo_velho; com "Segurado(a)", o
   velho. Os dois são formato inválido.
 - Matrícula do titular com DV separado por barra (`1289612 / 8`) é aceita.
+- Nos memorandos, o titular aparece só pelas **iniciais**
+  (`DadosUI.nome_titular_iniciais`: `José da Silva` → `J.S.`, sem "de",
+  "da", "do", "das", "dos", "e"). O nome completo fica nos PDFs do MANTIS
+  e na planilha de controle.
 - Período: `(01/05/2019 a 31/12/2019) e (01/02/2020 a 12/06/2024)` e os
   formatos de [MANTIS](#bases-de-matrículas).
 
