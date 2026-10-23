@@ -61,6 +61,7 @@ from tags import (
     adicionar_tag,
     adicionar_tag_se_ausente,
     estado_atual,
+    remover_tag,
     tem_tag,
 )
 
@@ -276,15 +277,16 @@ def _parar_nao_encontradas_base_apis(driver: webdriver.Remote, registro: Registr
 # ---------------------------------------------------------------------------
 
 
-def _verificar_base_apis(registro: RegistroMain, dados_ui: DadosUI, bases: BasesUso) -> MatriculasProcesso:
-    """A existência das matrículas é conferida só na base APIS."""
+def _verificar_base_apis(driver: webdriver.Remote, registro: RegistroMain, dados_ui: DadosUI, bases: BasesUso) -> MatriculasProcesso:
+    """A existência das matrículas é conferida só na base APIS. Se todas
+    estão na base e o processo tem o 1.2.1 (base corrigida depois), o
+    marcador é removido e o fluxo segue."""
     matriculas = verificar_base_apis(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
     registro.titular_nao_encontrado_base_geral = matriculas.nao_encontradas_apis.titular
     registro.deps_nao_encontrados_base_geral = list(matriculas.nao_encontradas_apis.dependentes)
     if not matriculas.nao_encontradas_apis and tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_APIS):
-        # Base corrigida depois do 1.2.1: o marcador sai à mão, para não
-        # seguir com um marcador que diz o contrário
-        raise ErroAvaliacao(f'As matrículas agora estão na base APIS, mas o processo tem "{TAG_MAT_NAO_ENCONTRADAS_APIS}": remover o marcador no SEI para reprocessar')
+        logger.info('Matrículas agora encontradas na base APIS (base corrigida): o marcador 1.2.1 é removido e o fluxo segue')
+        remover_tag(driver, registro, TAG_MAT_NAO_ENCONTRADAS_APIS)
     return matriculas
 
 
@@ -433,7 +435,7 @@ def processar_novo(
         _parar_formato_invalido(driver, registro, e)
         return
 
-    matriculas = _verificar_base_apis(registro, dados_ui, bases)
+    matriculas = _verificar_base_apis(driver, registro, dados_ui, bases)
     if matriculas.nao_encontradas_apis:
         _parar_nao_encontradas_base_apis(driver, registro, matriculas)
         return

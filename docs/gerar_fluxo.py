@@ -350,7 +350,7 @@ col_processar = Coluna(
         ),
         P(
             'Tem 1.2.1 - Mat. N Encontradas Base APIS?<br>(base corrigida)',
-            [E('<b>ErroAvaliacao</b>: remover o marcador no SEI para reprocessar; nada é feito no SEI')],
+            [R('1.2.1 - Mat. N Encontradas Base APIS<br><span style="font-weight:normal">remove e segue o fluxo (abaixo)</span>')],
             largura=LARGURA_PRINCIPAL,
         ),
         F('_avaliar_disa()', 'Uso da rede própria na base DISA. Fora da base DISA = não usou', chama='avaliar_uso_rede_propria_disa, registrar_uso, garantir_marcadores_no_sei'),

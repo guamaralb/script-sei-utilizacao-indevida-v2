@@ -212,14 +212,14 @@ def test_base_apis_para_com_memo_a_apis(sei):
     assert sei.qnt_memos_geacs == 1
 
 
-def test_base_apis_corrigida_com_marcador_1_2_1_para_sem_acao(sei):
+def test_base_apis_corrigida_remove_o_1_2_1_e_segue(sei):
     sei.novo_processo()
     sei.tags = [TAG_PROCESSO_NOVO, TAG_MAT_NAO_ENCONTRADAS_APIS]
-    registro = sei.passar(bases())
+    registro = sei.passar(bases(tit_usou=False))
 
-    assert 'remover o marcador' in registro.erro
-    assert registro.marcadores_adicionados == []
-    assert sei.qnt_memos_geacs == 0
+    assert registro.erro is None
+    assert registro.marcadores_removidos[0] == TAG_MAT_NAO_ENCONTRADAS_APIS
+    assert sei.tags_curtas == [NOVO, DISA_NAO, MANTIS_NAO, CONCLUIDO_DEPROC]
 
 
 def test_sem_memo_da_apis(sei):

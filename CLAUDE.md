@@ -330,7 +330,8 @@ Prefixo de todos os nomes: `Script v2 - `.
   Ao mudar o fluxo, ajuste as regras em `tags.py` (há testes em
   `tests/test_tags.py`).
 - Os demais se acumulam: `0`, `1`, informativos (`1.1`, `1.2.1`), versão
-  anterior (`1.2`, `1.2.2`, `1.3`, `1.4`) e manuais.
+  anterior (`1.2`, `1.2.2`, `1.3`, `1.4`) e manuais. Exceção: o `1.2.1` é
+  removido quando as matrículas passam a constar na base APIS.
 - **TODO**: `remover_marcador(driver, marcador)` ainda não existe na
   `sei_automacao` (`sei_automacao.processo`). Até existir, `tags.py` usa um
   placeholder (`REMOCAO_DE_MARCADOR_DISPONIVEL = False`) e o `main.py` não
@@ -499,7 +500,7 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      `7711907`), **➕ `1.6.1 - Aguarda APIS: Matrículas`**, `prox_acao` =
      Assinar memo à APIS (matrículas não encontradas) e encaminhar. Fim.
    - **Encontrou todas, mas o processo tem `1.2.1`** (base corrigida)?
-     Erro, sem ação: remover o marcador no SEI para reprocessar.
+     **➖ `1.2.1`** (`remover_tag`) e o fluxo segue.
 4. `avaliar_uso_rede_propria_disa`: uso da rede própria na base DISA (fora
    dela = não usou).
    - **➕ `1.6.2 - Base DISA: Usou RP`** (alguém com SIM) ou **➕ `1.6.2 -
@@ -677,7 +678,7 @@ perca os processos já tratados.
   continuam como concluídos (versão anterior), com memo DEPROC no bloco.
 - Processos da versão anterior com `1.2.1`/`1.2.2` e sem estado são
   reprocessados do início: se a matrícula ainda falta na base APIS, recebem
-  o memo à APIS; se agora está na base, param pedindo para remover o
-  `1.2.1`.
+  o memo à APIS; se agora está na base, o `1.2.1` é removido e o fluxo
+  segue.
 - A planilha de controle, os backups, os PDFs (`dados/utilizacoes`) e os
   logs têm nomes e matrículas (LGPD). Restrinja o acesso a essas pastas.
