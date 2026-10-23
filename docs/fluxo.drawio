@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram id="fluxo-completo" name="Fluxo completo">
-    <mxGraphModel dx="1694" dy="899" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4318" pageHeight="3012" math="0" shadow="0">
+    <mxGraphModel dx="1406" dy="746" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4318" pageHeight="3012" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -259,8 +259,11 @@
         <mxCell id="c115" parent="c116" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;fontStyle=1;whiteSpace=wrap;html=1;fontSize=12;" value="▶ _avaliar_mantis_e_criar_docs() — coluna 4" vertex="1">
           <mxGeometry height="40" width="330" x="24" y="2638" as="geometry" />
         </mxCell>
+        <mxCell id="En6N_btYMlCfhkD8CGFw-2" parent="c116" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;perimeter=cloudPerimeter;fillColor=#FF0000;" value="A base da DISA e a da APIS são essencialmente a mesma. Tem que verificar primeiro se tem na base da APIS, se não tiver vai para o erro de matricula não encontrada e depois segue normal" vertex="1">
+          <mxGeometry height="162" width="206" x="404" y="1270" as="geometry" />
+        </mxCell>
         <mxCell id="c182" parent="1" style="swimlane;html=1;whiteSpace=wrap;fontSize=13;rounded=1;arcSize=1;collapsible=0;container=1;strokeWidth=2;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=#fbfcfe;startSize=50;" value="&lt;b style=&quot;font-size:16px&quot;&gt;4 · _avaliar_mantis_e_criar_docs()&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:12px&quot;&gt;MANTIS, relatórios em PDF e memos DISA/DEPROC. O memo à DISA depende só do uso da rede própria (RP) no MANTIS; RC = rede credenciada&lt;/span&gt;" vertex="1">
-          <mxGeometry height="2150" width="1086" x="2374" y="270" as="geometry" />
+          <mxGeometry height="2150" width="1086" x="2300" y="300" as="geometry" />
         </mxCell>
         <mxCell id="c117" parent="c182" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;whiteSpace=wrap;html=1;fontSize=12;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;avaliar_uso_rede_propria_mantis()&lt;/b&gt;&lt;/font&gt;&lt;br&gt;Atendimentos no período do titular, nas duas redes&lt;br&gt;&lt;font color=&quot;#555555&quot; style=&quot;font-size:11px&quot;&gt;chama: &lt;font face=&quot;Courier New&quot;&gt;interpretar_periodo&lt;/font&gt;&lt;/font&gt;" vertex="1">
           <mxGeometry height="82" width="330" x="24" y="74" as="geometry" />
@@ -271,7 +274,7 @@
         <mxCell id="c118" parent="c182" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;whiteSpace=wrap;html=1;fontSize=12;" value="&lt;b&gt;ErroAvaliacao&lt;/b&gt;" vertex="1">
           <mxGeometry height="40" width="270" x="424" y="216" as="geometry" />
         </mxCell>
-        <mxCell id="c121" parent="c182" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;whiteSpace=wrap;html=1;fontSize=12;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_registrar_uso_mantis() · usos_mantis_alem_disa()&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;Base DISA × MANTIS rede própria&lt;/b&gt;, por beneficiário:&lt;br&gt;• DISA sim × MANTIS sim → memo à DISA validar (&quot;consta na planilha&quot;)&lt;br&gt;• DISA não × MANTIS sim → memo à DISA validar (&quot;NÃO consta na planilha&quot;; coluna mats_uso_mantis_alem_disa)&lt;br&gt;• DISA sim × MANTIS não → nada para a DISA&lt;br&gt;• DISA não × MANTIS não → nada para a DISA&lt;br&gt;Quem decide o memo à DISA é só o MANTIS; a base DISA muda só o texto do memo. (No VELHO, SIM na base DISA já parou o processo na coluna 3.)" vertex="1">
+        <mxCell id="c121" parent="c182" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;whiteSpace=wrap;html=1;fontSize=12;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_registrar_uso_mantis() · usos_mantis_alem_disa()&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;b style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;Base DISA × MANTIS rede própria&lt;/b&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;, por beneficiário:&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;• DISA sim × MANTIS sim → memo à DISA validar (&quot;consta na planilha&quot;)&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;• DISA não × MANTIS sim → memo à DISA validar (&quot;NÃO consta na planilha&quot;; coluna mats_uso_mantis_alem_disa)&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;• DISA sim × MANTIS não → nada para a DISA&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;• DISA não × MANTIS não → nada para a DISA&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;Quem decide o memo à DISA é só o MANTIS; a base DISA muda só o texto do memo. (No VELHO, SIM na base DISA já parou o processo na coluna 3.)&lt;/span&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="258" width="330" x="24" y="316" as="geometry" />
         </mxCell>
         <mxCell id="c122" parent="c182" style="rounded=1;fillColor=#ffffff;strokeColor=#999999;whiteSpace=wrap;html=1;fontSize=12;" value="Monta os memos &lt;b&gt;antes de qualquer ação no SEI&lt;/b&gt;" vertex="1">
@@ -375,6 +378,24 @@
         </mxCell>
         <mxCell id="c181" parent="c182" style="rounded=1;arcSize=50;fillColor=#f5f5f5;strokeColor=#666666;whiteSpace=wrap;html=1;fontSize=12;" value="Volta para a coluna 1&lt;br&gt;(planilha de controle)" vertex="1">
           <mxGeometry height="50" width="330" x="24" y="2076" as="geometry" />
+        </mxCell>
+        <mxCell id="En6N_btYMlCfhkD8CGFw-6" parent="c182" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FF0000;" value="&lt;font face=&quot;Courier New&quot;&gt;&lt;b&gt;_registrar_uso_mantis() · usos_mantis_alem_disa()&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;b style=&quot;background-color: transparent;&quot;&gt;Base DISA × MANTIS rede própria&lt;/b&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;, por beneficiário:&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;• DISA sim × MANTIS sim → memo à DISA validar (&quot;consta na planilha&quot;) &amp;gt;&amp;gt;&amp;gt; Validar e complementar&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;• DISA não × MANTIS sim → memo à DISA validar (&quot;NÃO consta na planilha&quot;; coluna mats_uso_mantis_alem_disa)&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;• DISA sim × MANTIS não → nada para a DISA &amp;gt;&amp;gt;&amp;gt; Manda para DISA sem relatório de uso mas pedindo o atendimento deles&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;• DISA não × MANTIS não → nada para a DISA &amp;gt;&amp;gt;&amp;gt; Não manda para a DISA&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;Quem decide o memo à DISA é só o MANTIS; a base DISA muda só o texto do memo. (No VELHO, SIM na base DISA já parou o processo na coluna 3.)&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="330" width="330" x="436" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="En6N_btYMlCfhkD8CGFw-8" parent="c182" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF0000;" value="&lt;span style=&quot;text-align: justify;&quot;&gt;O memo de quando não ta na DISA é diferente de quando está. Devem ser blocos diferentes também. Fluxos diferentes com marcadores diferentes.&lt;/span&gt;" vertex="1">
+          <mxGeometry height="82" width="170" x="-100" y="1293" as="geometry" />
+        </mxCell>
+        <mxCell id="En6N_btYMlCfhkD8CGFw-9" parent="c182" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF0000;" value="&lt;span style=&quot;text-align: justify;&quot;&gt;Caso a DISA tenha dito que teve atendimento, deve ir para eles mesmo sem nosso relatório de RP&lt;/span&gt;" vertex="1">
+          <mxGeometry height="60" width="170" x="330" y="1257" as="geometry" />
+        </mxCell>
+        <mxCell id="En6N_btYMlCfhkD8CGFw-10" parent="c182" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF0000;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;Colocar 4 marcadores de tem nao tem na DISA e RP MANTIS&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="170" x="570" y="1016" as="geometry" />
+        </mxCell>
+        <mxCell id="En6N_btYMlCfhkD8CGFw-11" parent="c182" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF0000;" value="&lt;div style=&quot;text-align: justify;&quot;&gt;Todos que mandar para DISA vai ser enviado só para DISA.&lt;br&gt;&lt;br&gt;Então o processo agora vai para DISA OU DEPROC&lt;/div&gt;" vertex="1">
+          <mxGeometry height="245" width="170" x="280" y="1677" as="geometry" />
+        </mxCell>
+        <mxCell id="En6N_btYMlCfhkD8CGFw-12" parent="c182" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF0000;" value="Os velhos a gente vai separar do fluxo desde o começo. Vamos pensar neles depois: o fluxo vai ser forçar eles ao normal" vertex="1">
+          <mxGeometry height="104" width="170" x="880" y="1102" as="geometry" />
         </mxCell>
         <mxCell id="c339" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=18;fontStyle=1;" value="Funções usadas em vários pontos" vertex="1">
           <mxGeometry height="34" width="500" x="3560" y="230" as="geometry" />
