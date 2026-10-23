@@ -3,6 +3,7 @@ import re
 from sei_automacao.classes.Memorando import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar_texto_definido
 from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import REFERENCIA_PLANILHA_REDE_PROPRIA
 
@@ -38,7 +39,7 @@ class MemoApisSemUso(Memorando):
     MANTIS rede própria e MANTIS rede credenciada). Substitui o memo DEPROC:
     não há coparticipação a levantar."""
 
-    def __init__(self, *, dados: DadosUI, nome_signatario: str, cargo_signatario: str):
+    def __init__(self, *, dados: DadosUI, memo_apis: DocArvore, nome_signatario: str, cargo_signatario: str):
         verificar_texto_definido(TEXTO_DEFINIDO, 'à APIS (nenhum uso nas bases)')
         super().__init__(
             destinatario_nome='IPSEMG/APIS-Utilização',
@@ -59,3 +60,4 @@ class MemoApisSemUso(Memorando):
                 'Atenciosamente,',
             ],
         )
+        self.memo_apis = memo_apis

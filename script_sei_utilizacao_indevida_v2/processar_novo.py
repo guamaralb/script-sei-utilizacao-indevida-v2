@@ -108,6 +108,7 @@ def obter_dados_ui(driver: webdriver.Remote, registro: RegistroMain) -> DadosUI:
     if len(memos_para_geacs) > 1:
         logger.info(f'{len(memos_para_geacs)} memorandos da APIS destinados à GEACS: usado o último ({memo_apis["numero_sei"]})')
     registro.ult_memo_obtido = True
+    registro.memo_apis = memo_apis
     registro.memo_apis_sei = memo_apis['numero_sei']
     registro.conteudo_ult_memo_obtido = True
     indice = next(i for i, doc in enumerate(registro.tds_docs) if doc['numero_sei'] == memo_apis['numero_sei'])
@@ -264,7 +265,7 @@ def _parar_formato_invalido(driver: webdriver.Remote, registro: RegistroMain, er
     memo = MemoApisFormatoInvalido(
         nome_signatario=NOME_SIGNATARIO,
         cargo_signatario=CARGO_SIGNATARIO,
-        memo_apis_sei=registro.memo_apis_sei,
+        memo_apis=registro.memo_apis,
     )
     _parar_com_memo(driver, registro, memo, _FORMATO_INVALIDO)
 
@@ -274,6 +275,7 @@ def _parar_periodo_variavel(driver: webdriver.Remote, registro: RegistroMain, ma
         nome_signatario=NOME_SIGNATARIO,
         cargo_signatario=CARGO_SIGNATARIO,
         dependentes=matriculas.dependentes,
+        memo_apis=registro.memo_apis,
     )
     _parar_com_memo(driver, registro, memo, _PERIODO_VARIAVEL, tag_antes=TAG_PERIODO_VAR_DEP)
 
@@ -384,6 +386,7 @@ def _avaliar_mantis_e_criar_docs(
             parada, classe = _DISA_SEM_MANTIS_RELATORIO, MemoDisaSemMantisSolicitaRelatorio
         memo = classe(
             dados=dados_ui,
+            memo_apis=registro.memo_apis,
             uso_disa=uso_disa,
             tit_usou_mantis=propria.tit_usou,
             deps_que_usaram_mantis=propria.deps_que_usaram,
@@ -391,10 +394,10 @@ def _avaliar_mantis_e_criar_docs(
             cargo_signatario=CARGO_SIGNATARIO,
         )
     elif usou_rc:
-        memo = MemoDeproc(dados=dados_ui, usou_rede_credenciada=True, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
+        memo = MemoDeproc(dados=dados_ui, usou_rede_credenciada=True, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO, memo_apis=registro.memo_apis)
     else:
         parada = _APIS_SEM_USO
-        memo = MemoApisSemUso(dados=dados_ui, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
+        memo = MemoApisSemUso(dados=dados_ui, memo_apis=registro.memo_apis, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
     if parada is not None:
         _conferir_bloco(parada)
     tag_final = parada.tag if parada is not None else TAG_MEMO_DEPROC_COPARTICIPACAO

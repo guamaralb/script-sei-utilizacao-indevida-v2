@@ -69,7 +69,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
 | `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
-| `memorandos/` | `DadosUI`, `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`) |
+| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
 | `docs/gerar_fluxo.py` | Gera o `docs/fluxo.drawio` (`python docs/gerar_fluxo.py docs/fluxo.drawio`). O conteúdo do diagrama fica no script |
 | `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
@@ -178,6 +178,10 @@ a API dela.
   utilização". Sem esse pedido é o modelo novo_velho; com "Segurado(a)", o
   velho. Os dois são formato inválido.
 - Matrícula do titular com DV separado por barra (`1289612 / 8`) é aceita.
+- O último memo da APIS destinado à GEACS fica em `registro.memo_apis`
+  (`DocArvore`: `numero_sei`, `nome_arvore` e `unidade`, como na árvore) e
+  é passado a **todos** os memorandos (`memo_apis=`), exceto o
+  `MemoApisSemMemo` (não há memo da APIS).
 - Nos memorandos, o titular aparece só pelas **iniciais**
   (`DadosUI.nome_titular_iniciais`: `José da Silva` → `J.S.`, sem "de",
   "da", "do", "das", "dos", "e"). O nome completo fica nos PDFs do MANTIS

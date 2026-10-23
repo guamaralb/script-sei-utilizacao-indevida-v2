@@ -16,6 +16,7 @@ import re
 from sei_automacao.classes.Memorando import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar_texto_definido
 from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import (
     REFERENCIA_PLANILHA_REDE_PROPRIA,
@@ -99,7 +100,7 @@ def _fecho() -> list[str]:
 
 
 class _MemoDisa(Memorando):
-    def __init__(self, *, assunto: str, paragrafos: list[str], nome_signatario: str, cargo_signatario: str):
+    def __init__(self, *, assunto: str, paragrafos: list[str], memo_apis: DocArvore, nome_signatario: str, cargo_signatario: str):
         super().__init__(
             destinatario_nome='IPSEMG/DISA-UTI-INDEV',
             assunto=assunto,
@@ -110,6 +111,7 @@ class _MemoDisa(Memorando):
             hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
             paragrafos=[*paragrafos, _par_padronizacao(), _par_lgpd(), _par_retorno(), *_fecho()],
         )
+        self.memo_apis = memo_apis
 
 
 class MemoDisaValidarConsta(_MemoDisa):
@@ -121,6 +123,7 @@ class MemoDisaValidarConsta(_MemoDisa):
         self,
         *,
         dados: DadosUI,
+        memo_apis: DocArvore,
         uso_disa: UsoRedeBeneficiarios,
         tit_usou_mantis: bool,
         deps_que_usaram_mantis: tuple[str, ...],
@@ -146,7 +149,7 @@ class MemoDisaValidarConsta(_MemoDisa):
         paragrafos.append(
             f'Solicita-se a confirmação dos atendimentos relacionados nos relatórios e a complementação com os atendimentos registrados por essa Diretoria e neles não relacionados, contemplando, no mínimo, a {_CAMPOS_LEVANTAMENTO}.'
         )
-        super().__init__(assunto=ASSUNTO_MEMO_DISA_VALIDAR_CONSTA, paragrafos=paragrafos, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
+        super().__init__(assunto=ASSUNTO_MEMO_DISA_VALIDAR_CONSTA, paragrafos=paragrafos, memo_apis=memo_apis, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
 
 
 class MemoDisaValidarNaoConsta(_MemoDisa):
@@ -157,6 +160,7 @@ class MemoDisaValidarNaoConsta(_MemoDisa):
         self,
         *,
         dados: DadosUI,
+        memo_apis: DocArvore,
         uso_disa: UsoRedeBeneficiarios,
         tit_usou_mantis: bool,
         deps_que_usaram_mantis: tuple[str, ...],
@@ -175,7 +179,7 @@ class MemoDisaValidarNaoConsta(_MemoDisa):
             'Solicita-se a confirmação dos atendimentos relacionados nos relatórios.',
             _par_levantamento_complementar(),
         ]
-        super().__init__(assunto=ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, paragrafos=paragrafos, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
+        super().__init__(assunto=ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, paragrafos=paragrafos, memo_apis=memo_apis, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
 
 
 class MemoDisaSemMantisSolicitaRelatorio(_MemoDisa):
@@ -186,6 +190,7 @@ class MemoDisaSemMantisSolicitaRelatorio(_MemoDisa):
         self,
         *,
         dados: DadosUI,
+        memo_apis: DocArvore,
         uso_disa: UsoRedeBeneficiarios,
         tit_usou_mantis: bool,
         deps_que_usaram_mantis: tuple[str, ...],
@@ -203,4 +208,4 @@ class MemoDisaSemMantisSolicitaRelatorio(_MemoDisa):
             _usos_so_disa(uso_disa, tit_usou_mantis, deps_que_usaram_mantis),
             f'O relatório deverá contemplar, no mínimo, a {_CAMPOS_LEVANTAMENTO}.',
         ]
-        super().__init__(assunto=ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, paragrafos=paragrafos, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
+        super().__init__(assunto=ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, paragrafos=paragrafos, memo_apis=memo_apis, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)

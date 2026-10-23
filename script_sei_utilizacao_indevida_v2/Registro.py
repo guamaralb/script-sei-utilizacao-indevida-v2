@@ -6,6 +6,7 @@ from docs_processo import filtrar_docs_geacs, filtrar_memos_geacs
 from tags import colunas_tags
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 
 
 class ProxAcao:
@@ -78,7 +79,7 @@ def _agora() -> datetime:
 
 
 # Dados de trabalho da passagem, fora da planilha de controle
-_CAMPOS_INTERNOS = frozenset({'marcadores_atuais', 'tds_docs', 'docs_geacs', 'memos_geacs', 'docs_rodada', 'memos_criados', 'dados_ui'})
+_CAMPOS_INTERNOS = frozenset({'marcadores_atuais', 'tds_docs', 'docs_geacs', 'memos_geacs', 'docs_rodada', 'memos_criados', 'dados_ui', 'memo_apis'})
 
 
 @dataclass
@@ -161,6 +162,9 @@ class RegistroMain(RegistroBase):
     ult_memo_obtido: bool = False
     conteudo_ult_memo_obtido: bool = False
     memo_apis_sei: str | None = None
+    # Último memo da APIS destinado à GEACS, como na árvore (interno; o
+    # número vai em memo_apis_sei)
+    memo_apis: DocArvore | None = None
     memos_apis_geacs_sei: list[str] = field(default_factory=list)
     modelo_memo_apis: str | None = None
     motivo_formato_invalido: str | None = None

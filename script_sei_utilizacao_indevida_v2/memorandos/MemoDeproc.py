@@ -3,6 +3,7 @@ import re
 from sei_automacao.classes.Memorando import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 
 # Não altere o assunto: é por ele que o script encontra memos já criados
 ASSUNTO_MEMO_DEPROC = 'Levantamento de coparticipação - utilização indevida da assistência à saúde'
@@ -41,7 +42,7 @@ class MemoDeproc(Memorando):
     com todos os beneficiários. Os relatórios da rede credenciada (se alguém
     usou) são anexados antes."""
 
-    def __init__(self, dados: DadosUI, usou_rede_credenciada: bool, nome_signatario: str, cargo_signatario: str):
+    def __init__(self, dados: DadosUI, usou_rede_credenciada: bool, nome_signatario: str, cargo_signatario: str, *, memo_apis: DocArvore):
         super().__init__(
             destinatario_nome='IPSEMG/DEPROC',
             assunto=ASSUNTO_MEMO_DEPROC,
@@ -62,3 +63,4 @@ class MemoDeproc(Memorando):
                 _par_5(),
             ],
         )
+        self.memo_apis = memo_apis

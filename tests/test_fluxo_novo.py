@@ -252,13 +252,19 @@ def test_modelo_novo_velho_e_formato_invalido(sei):
     assert 'novo_velho' in registro.motivo_formato_invalido
 
 
-def test_usa_o_ultimo_memo_da_apis(sei):
+def test_usa_o_ultimo_memo_da_apis(sei, monkeypatch):
     sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
     sei.memo_apis(MEMO_APIS_NOVO_VELHO)
     ultimo = sei.memo_apis()
+    memos = []
+    incluir_memo = processar_novo.incluir_memo
+    monkeypatch.setattr(processar_novo, 'incluir_memo', lambda driver, registro, memo, *args, **kwargs: memos.append(memo) or incluir_memo(driver, registro, memo, *args, **kwargs))
     registro = sei.passar(bases(tit_usou=False), SO_RC)
 
+    doc_ultimo = next(doc for doc in sei.docs if doc['numero_sei'] == ultimo)
     assert registro.memo_apis_sei == ultimo
+    assert registro.memo_apis == doc_ultimo
+    assert [memo.memo_apis for memo in memos] == [doc_ultimo]
     assert registro.modelo_memo_apis == 'novo_novo'
     assert sei.tags_curtas[-1] == CONCLUIDO_DEPROC
 

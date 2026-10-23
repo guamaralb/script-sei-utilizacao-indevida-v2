@@ -2,6 +2,7 @@ import re
 
 from sei_automacao.classes.Memorando import Memorando
 
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar_texto_definido
 
 # TODO: definir o texto a partir do modelo Memorando 2019 (SEI 150646384) e
@@ -20,7 +21,7 @@ class MemoApisFormatoInvalido(Memorando):
     """Memo à APIS-Utilização: o memorando da APIS destinado à GEACS não
     está no modelo esperado."""
 
-    def __init__(self, *, nome_signatario: str, cargo_signatario: str, memo_apis_sei: str):
+    def __init__(self, *, nome_signatario: str, cargo_signatario: str, memo_apis: DocArvore):
         verificar_texto_definido(TEXTO_DEFINIDO, 'à APIS (formato inválido)')
         super().__init__(
             destinatario_nome=(
@@ -44,3 +45,4 @@ class MemoApisFormatoInvalido(Memorando):
                 'Atenciosamente,',
             ],
         )
+        self.memo_apis = memo_apis

@@ -2,6 +2,8 @@ import re
 
 from sei_automacao.classes.Memorando import Memorando
 
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
+
 PROCESSO_PLANILHA_MATRICULAS = '2010.01.0058549/2026-56'
 PLANILHA_MATRICULAS = 'Planilha de Matrículas – Titulares e Dependentes U.I (144739371)'
 
@@ -71,6 +73,7 @@ class MemoApisMatNaoEncontradas(Memorando):
         cargo_signatario: str,
         titular: str | None,
         dependentes: tuple[str, ...],
+        memo_apis: DocArvore,
     ):
         itens = _listar_matriculas(titular, dependentes)
         if not itens:
@@ -96,3 +99,4 @@ class MemoApisMatNaoEncontradas(Memorando):
                 _par_fecho(),
             ],
         )
+        self.memo_apis = memo_apis

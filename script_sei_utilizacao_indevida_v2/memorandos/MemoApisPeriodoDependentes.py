@@ -2,6 +2,7 @@ import re
 
 from sei_automacao.classes.Memorando import Memorando
 
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar_texto_definido
 
 # TODO: definir o texto (ainda sem modelo) e trocar para True
@@ -19,7 +20,7 @@ class MemoApisPeriodoDependentes(Memorando):
     """Memo à APIS-Utilização: pede que informe o período específico de
     apuração dos dependentes."""
 
-    def __init__(self, *, nome_signatario: str, cargo_signatario: str, dependentes: tuple[str, ...]):
+    def __init__(self, *, nome_signatario: str, cargo_signatario: str, dependentes: tuple[str, ...], memo_apis: DocArvore):
         verificar_texto_definido(TEXTO_DEFINIDO, 'à APIS (período dos dependentes)')
         super().__init__(
             destinatario_nome='IPSEMG/APIS-Utilização',
@@ -37,3 +38,4 @@ class MemoApisPeriodoDependentes(Memorando):
                 'Atenciosamente,',
             ],
         )
+        self.memo_apis = memo_apis

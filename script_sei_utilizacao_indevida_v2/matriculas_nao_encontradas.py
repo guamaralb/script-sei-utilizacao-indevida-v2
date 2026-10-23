@@ -34,6 +34,7 @@ def incluir_memo_apis_mat_nao_encontradas(driver: webdriver.Remote, registro, ba
         cargo_signatario=CARGO_SIGNATARIO,
         titular=base_apis.titular,
         dependentes=base_apis.dependentes,
+        memo_apis=registro.memo_apis,
     )
     incluir_memo(
         driver,
