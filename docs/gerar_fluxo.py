@@ -305,7 +305,7 @@ col_processar = Coluna(
                 T('prox_acao = Assinar memo à APIS (formato inválido)'),
             ],
         ),
-        F('_avaliar_disa()', 'Procura titular e dependentes na base geral e na base DISA', chama='avaliar_uso_rede_propria_disa, registrar_uso, garantir_marcadores_no_sei'),
+        F('_avaliar_disa()', 'Procura titular e dependentes na base geral e na base DISA. Confere no SEI os marcadores desta etapa e, se faltou na base geral, também 1.2.1 e 1.6.1', chama='avaliar_uso_rede_propria_disa, registrar_uso, garantir_marcadores_no_sei'),
         P('Matrícula inválida ou<br>resposta inválida na<br>base DISA?', [E('<b>ErroAvaliacao</b>')]),
         M('1.2.2 - Mat. N Encontradas Base DISA<br><span style="font-weight:normal">só se faltou na base DISA (conta como não usou)</span>'),
         M('1.6 - Avaliado Uso Rede Própria DISA<br><span style="font-weight:normal">pulado na retomada</span>'),
@@ -445,7 +445,7 @@ aux = [
         'garantir_marcadores_no_sei()',
         'Antes de criar memos e relatórios',
         [
-            F('_ler_marcadores_da_unidade()', 'Tela Gerenciar Marcador, sem salvar (uma vez por execução)'),
+            F('_ler_marcadores_da_unidade()', 'Tela Gerenciar Marcador, sem salvar (uma vez por execução; relida uma vez se faltar algum nome)'),
             P('Falta marcador<br>no SEI?', [E('<b>ErroAvaliacao</b>: nada é criado')]),
         ],
         cor='aux',
