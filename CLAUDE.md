@@ -255,9 +255,13 @@ período. Cada um tem um par de marcadores (`1.6.2`, `1.8.2` e `1.8.3`,
 - Processo enviado à DISA **não** vai para a DEPROC (nem memo DEPROC). O
   memo à DISA e o memo à APIS (nenhum uso) são **paradas** (aguardam o
   retorno).
-- No memo "validar e complementar", cada beneficiário com uso no MANTIS vem
-  com "consta"/"NÃO consta na planilha"; quem consta na base DISA sem uso
-  no MANTIS vem num parágrafo à parte.
+- Os memos à DISA (destinatário Felippe Gonçalves Declie Fagioli, Diretor
+  de Saúde) citam o memo da APIS pela árvore, sem o ano (`identificar_doc`:
+  "Memorando IPSEMG/APIS-UTILIZAÇÃO nº 2627 (150644870)"). Os dois de
+  validação citam também os relatórios RP pelo número SEI ("no documento
+  X" / "nos documentos X e Y"); o memo é montado antes dos relatórios só
+  para conferência (`_RELATORIOS_A_ANEXAR`) e de novo depois, com os
+  números (`_escolher_memo`).
 - A coluna `mats_uso_mantis_alem_disa` lista quem usou no MANTIS e não
   consta na base DISA; `caso_disa_mantis` diz o caso
   ("DISA sim, MANTIS RP não, MANTIS RC sim").
@@ -276,6 +280,9 @@ período. Cada um tem um par de marcadores (`1.6.2`, `1.8.2` e `1.8.3`,
 - Retomada: se a rodada já tem um documento que começa com
   `PDF Utilização <Tit.|Dep.> <RP|RC> - <matrícula>`, ele não é anexado de
   novo.
+- `incluir_relatorios` devolve o número SEI dos PDFs (o anexado agora é
+  procurado pelo nome, relendo a árvore; não achou: `ErroAvaliacao`, e a
+  próxima execução o encontra pela retomada).
 
 ### Marcadores (`tags.py`)
 
@@ -548,7 +555,8 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
    - **➕ `1.8 - Avaliado Uso Rede Própria MANTIS`** (se o estado ainda não
      passou dele).
 7. Relatórios RP e RC em PDF de quem usou (em todos os casos; sem
-   atendimento, nada é anexado).
+   atendimento, nada é anexado). O número SEI dos RP vai para os memos à
+   DISA de validação.
 8. **Base DISA × MANTIS** (processo inteiro):
    - **DISA sim, MANTIS RP sim**: `MemoDisaValidarConsta`, **➕ `1.9 -
      Aguarda DISA: Validar (Consta)`**; `prox_acao` = Assinar memo à DISA
@@ -671,17 +679,13 @@ perca os processos já tratados.
 - **TODO**: blocos dos três memos à DISA (`BLOCO_MEMO_DISA_*`) e do memo
   à APIS sem uso (`BLOCO_MEMO_APIS_SEM_USO`) em `constantes.py`, hoje
   `None`.
-- **TODO**: revisar os rascunhos dos memos à DISA (`MemoDisa.py`: validar e
-  complementar, validar não consta, sem MANTIS solicita relatório) e do
-  memo à APIS sem uso (`MemoApisSemUso.py`) e confirmar os assuntos
-  **antes** de criar o primeiro memo; depois trocar `TEXTO_DEFINIDO` para
-  `True`. Conferir o parágrafo da rede credenciada no
-  `MemoDeproc` (`_par_rede_credenciada`).
-- **TODO**: textos e assuntos dos memos `MemoApisSemMemo` (modelo Despacho
-  2, SEI 150644870; avaliar criar como Despacho), `MemoApisFormatoInvalido`
-  (modelo Memorando 2019, SEI 150646384) e `MemoApisPeriodoDependentes`.
-  Depois trocar `TEXTO_DEFINIDO` para `True`. Defina os assuntos **antes**
-  de criar o primeiro memo: depois, o assunto não pode mudar.
+- **TODO**: revisar o rascunho do memo à APIS sem uso
+  (`MemoApisSemUso.py`) e confirmar o assunto **antes** de criar o
+  primeiro memo; depois trocar `TEXTO_DEFINIDO` para `True`. Conferir o
+  parágrafo da rede credenciada no `MemoDeproc` (`_par_rede_credenciada`).
+- **TODO**: texto e assunto do memo `MemoApisPeriodoDependentes`. Depois
+  trocar `TEXTO_DEFINIDO` para `True`. Defina o assunto **antes** de criar
+  o primeiro memo: depois, o assunto não pode mudar.
 - **TODO**: fluxo do processo VELHO (`main._separar_velho`).
 - **TODO**: confirmar que o pedido de "atualização do levantamento de
   utilização" é o que distingue o modelo novo_novo do novo_velho

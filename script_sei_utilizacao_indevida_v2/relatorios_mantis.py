@@ -5,6 +5,9 @@ memo à DISA; rede credenciada, antes do memo à DEPROC.
 Um PDF para o titular e outro para os dependentes, só de quem tem
 atendimento no período de apuração. Retomada: o PDF já anexado na rodada
 atual (procurado pelo início do nome na árvore) não é anexado de novo.
+
+incluir_relatorios devolve o número SEI dos PDFs (anexados agora ou já na
+árvore), citados no memo à DISA.
 """
 
 import logging
@@ -12,8 +15,9 @@ from datetime import datetime
 
 import pandas as pd
 from constantes import DIR_UTILIZACOES_MANTIS_PDF
-from docs_processo import encontrar_doc_por_nome
+from docs_processo import encontrar_doc_por_nome, numero_sei_por_nome
 from mantis import UsoMantis
+from rede_propria import ErroAvaliacao
 from sei_automacao.processo import incluir_doc_externo
 from selenium import webdriver
 from transformar_xls_em_pdf import transformar_xls_em_pdf
@@ -73,13 +77,14 @@ def _incluir(
     df: pd.DataFrame,
     nome_titular: str,
     matricula_titular: str,
-) -> None:
+) -> str:
+    """Anexa o PDF e devolve o número SEI dele."""
     inicio = inicio_nome_relatorio(rede, tipo_curto, matricula_titular)
     existente = encontrar_doc_por_nome(registro.docs_rodada, f'{TIPO_DOC} {inicio}')
     if existente is not None:
         registro.relatorios_na_arvore.append(existente['numero_sei'])
         logger.warning(f'Retomada: relatório {rede[1]} ({tipo}) já está na árvore ({existente["numero_sei"]}); não será anexado de novo')
-        return
+        return existente['numero_sei']
 
     agora = datetime.now()
     caminho_pdf = transformar_xls_em_pdf(
@@ -102,7 +107,11 @@ def _incluir(
         hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
     )
     registro.relatorios_incluidos.append(num)
-    logger.info(f'Relatório {rede[1]} ({tipo}) anexado ao processo: {num}')
+    numero_sei = numero_sei_por_nome(driver, f'{TIPO_DOC} {num}')
+    if numero_sei is None:
+        raise ErroAvaliacao(f'Relatório {rede[1]} ({tipo}) anexado, mas não encontrado na árvore ({num}): a próxima execução o encontra pelo nome')
+    logger.info(f'Relatório {rede[1]} ({tipo}) anexado ao processo: {num} ({numero_sei})')
+    return numero_sei
 
 
 def incluir_relatorios(
@@ -112,10 +121,13 @@ def incluir_relatorios(
     rede: tuple[str, str],
     nome_titular: str,
     matricula_titular: str,
-) -> None:
+) -> tuple[str, ...]:
     """Anexa os PDFs da rede (titular e dependentes) de quem tem
-    atendimento. Sem nenhum atendimento, não anexa nada."""
+    atendimento e devolve o número SEI deles. Sem nenhum atendimento, não
+    anexa nada."""
+    docs = []
     if uso.tit_atendimentos:
-        _incluir(driver, registro, rede, 'Titular', 'Tit.', _df_titular(uso), nome_titular, matricula_titular)
+        docs.append(_incluir(driver, registro, rede, 'Titular', 'Tit.', _df_titular(uso), nome_titular, matricula_titular))
     if uso.deps_atendimentos:
-        _incluir(driver, registro, rede, 'Dependente(s)', 'Dep.', _df_dependentes(uso), nome_titular, matricula_titular)
+        docs.append(_incluir(driver, registro, rede, 'Dependente(s)', 'Dep.', _df_dependentes(uso), nome_titular, matricula_titular))
+    return tuple(docs)

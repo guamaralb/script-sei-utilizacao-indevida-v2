@@ -9,6 +9,7 @@ main._tratar). Cada novo estado substitui o anterior no SEI.
 
 import logging
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from constantes import (
@@ -25,7 +26,7 @@ from constantes import (
 )
 from docs_processo import obter_memos_apis_para_geacs
 from extrator_dados_ui import FormatoMemorandoInvalido, extrair_dados_ui, validar_template
-from mantis import AvaliacaoMantis, BasesMantis, avaliar_uso_rede_propria_mantis, usos_mantis_alem_disa
+from mantis import AvaliacaoMantis, BasesMantis, UsoMantis, avaliar_uso_rede_propria_mantis, usos_mantis_alem_disa
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from matriculas_nao_encontradas import incluir_memo_apis_mat_nao_encontradas
 from memos_sei import incluir_memo, registrar_numeros_memos
@@ -349,6 +350,42 @@ def _sim_nao(valor: bool) -> str:
     return 'sim' if valor else 'não'
 
 
+# Número SEI provisório dos relatórios da rede própria: o memo é montado
+# com ele só para ser conferido antes de qualquer ação no SEI, e montado de
+# novo depois de anexar os relatórios
+_RELATORIOS_A_ANEXAR = ('<relatório a anexar>',)
+
+
+def _escolher_memo(
+    registro: RegistroMain,
+    dados_ui: DadosUI,
+    uso_disa: UsoRedeBeneficiarios,
+    propria: UsoMantis,
+    usou_rc: bool,
+) -> tuple[_Parada | None, Callable[[tuple[str, ...]], Memorando]]:
+    """A parada (None: memo DEPROC, conclusão) e uma função que monta o memo
+    a partir do número SEI dos relatórios da rede própria, citados nos memos
+    à DISA de validação."""
+    if not (uso_disa.alguem_usou or propria.alguem_usou):
+        if usou_rc:
+            return None, lambda docs_rp: MemoDeproc(dados=dados_ui, usou_rede_credenciada=True, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO, memo_apis=registro.memo_apis)
+        return _APIS_SEM_USO, lambda docs_rp: MemoApisSemUso(dados=dados_ui, memo_apis=registro.memo_apis, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
+
+    argumentos = {
+        'dados': dados_ui,
+        'memo_apis': registro.memo_apis,
+        'uso_disa': uso_disa,
+        'tit_usou_mantis': propria.tit_usou,
+        'deps_que_usaram_mantis': propria.deps_que_usaram,
+        'nome_signatario': NOME_SIGNATARIO,
+        'cargo_signatario': CARGO_SIGNATARIO,
+    }
+    if not propria.alguem_usou:
+        return _DISA_SEM_MANTIS_RELATORIO, lambda docs_rp: MemoDisaSemMantisSolicitaRelatorio(**argumentos)
+    parada, classe = (_DISA_VALIDAR_CONSTA, MemoDisaValidarConsta) if uso_disa.alguem_usou else (_DISA_VALIDAR_NAO_CONSTA, MemoDisaValidarNaoConsta)
+    return parada, lambda docs_rp: classe(**argumentos, docs_relatorio_rp=docs_rp)
+
+
 def _avaliar_mantis_e_criar_docs(
     driver: webdriver.Remote,
     registro: RegistroMain,
@@ -377,27 +414,10 @@ def _avaliar_mantis_e_criar_docs(
     logger.info(f'Base DISA x MANTIS: {registro.caso_disa_mantis} | RP no MANTIS e fora da base DISA: {registro.mats_uso_mantis_alem_disa or "-"}')
 
     # O memo é montado antes de qualquer ação no SEI: texto pendente
-    # (TextoMemoPendente) ou bloco não configurado param o processo aqui
-    parada = None
-    if usou_disa or usou_rp:
-        if usou_rp:
-            parada, classe = (_DISA_VALIDAR_CONSTA, MemoDisaValidarConsta) if usou_disa else (_DISA_VALIDAR_NAO_CONSTA, MemoDisaValidarNaoConsta)
-        else:
-            parada, classe = _DISA_SEM_MANTIS_RELATORIO, MemoDisaSemMantisSolicitaRelatorio
-        memo = classe(
-            dados=dados_ui,
-            memo_apis=registro.memo_apis,
-            uso_disa=uso_disa,
-            tit_usou_mantis=propria.tit_usou,
-            deps_que_usaram_mantis=propria.deps_que_usaram,
-            nome_signatario=NOME_SIGNATARIO,
-            cargo_signatario=CARGO_SIGNATARIO,
-        )
-    elif usou_rc:
-        memo = MemoDeproc(dados=dados_ui, usou_rede_credenciada=True, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO, memo_apis=registro.memo_apis)
-    else:
-        parada = _APIS_SEM_USO
-        memo = MemoApisSemUso(dados=dados_ui, memo_apis=registro.memo_apis, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
+    # (TextoMemoPendente) ou bloco não configurado param o processo aqui.
+    # É montado de novo depois dos relatórios, com o número SEI deles
+    parada, montar_memo = _escolher_memo(registro, dados_ui, uso_disa, propria, usou_rc)
+    montar_memo(_RELATORIOS_A_ANEXAR)
     if parada is not None:
         _conferir_bloco(parada)
     tag_final = parada.tag if parada is not None else TAG_MEMO_DEPROC_COPARTICIPACAO
@@ -412,8 +432,9 @@ def _avaliar_mantis_e_criar_docs(
 
     # Relatórios de quem usou (sem atendimento, nada é anexado)
     nome, matricula = dados_ui.nome_titular, matriculas.titular
-    incluir_relatorios(driver, registro, propria, REDE_PROPRIA, nome, matricula)
+    docs_rp = incluir_relatorios(driver, registro, propria, REDE_PROPRIA, nome, matricula)
     incluir_relatorios(driver, registro, credenciada, REDE_CREDENCIADA, nome, matricula)
+    memo = montar_memo(docs_rp)
     if parada is not None:
         _parar_com_memo(driver, registro, memo, parada)
         return

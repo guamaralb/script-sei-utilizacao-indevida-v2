@@ -16,6 +16,10 @@ ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES = '[TODO: assunto do memo à APIS - perío
 PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES = re.compile(re.escape(ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES), flags=re.IGNORECASE)
 
 
+def _par_dependentes(dependentes: tuple[str, ...]) -> str:
+    return f'[TODO: texto do memo. Dependentes: {", ".join(dependentes) or "-"}]'
+
+
 class MemoApisPeriodoDependentes(Memorando):
     """Memo à APIS-Utilização: pede que informe o período específico de
     apuração dos dependentes."""
@@ -31,7 +35,7 @@ class MemoApisPeriodoDependentes(Memorando):
             nivel_acesso='Restrito',
             hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
             paragrafos=[
-                f'[TODO: texto do memo. Dependentes: {", ".join(dependentes) or "-"}]',
+                _par_dependentes(dependentes),
                 '',
                 '',
                 '',

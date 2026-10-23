@@ -107,6 +107,13 @@ def encontrar_doc_por_nome(tds_docs: list[dict], inicio_nome: str) -> dict | Non
     return next((doc for doc in reversed(tds_docs) if doc['nome_arvore'].startswith(inicio_nome)), None)
 
 
+def numero_sei_por_nome(driver: webdriver.Remote, nome: str) -> str | None:
+    """Número SEI do documento mais recente com esse início de nome, relendo
+    a árvore (ex.: documento que acabou de ser incluído)."""
+    doc = encontrar_doc_por_nome(listar_documentos_arvore(driver), nome)
+    return doc['numero_sei'] if doc is not None else None
+
+
 def memos_geacs_novos(driver: webdriver.Remote, tds_docs_antes: list[dict]) -> list[dict]:
     """Relê a árvore e devolve, na ordem da árvore, os memos da GEACS que
     não estavam em tds_docs_antes (memos criados na execução)."""

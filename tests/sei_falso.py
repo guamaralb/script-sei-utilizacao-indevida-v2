@@ -114,6 +114,14 @@ class SEIFalso:
         return [self.textos[doc['numero_sei']].splitlines()[0].removeprefix('Assunto: ') for doc in self._memos_geacs()]
 
     @property
+    def texto_ultimo_memo_geacs(self) -> str:
+        return self.textos[self._memos_geacs()[-1]['numero_sei']]
+
+    def numero_sei(self, inicio_nome: str) -> str:
+        """Número SEI do último documento com esse início de nome."""
+        return next(doc['numero_sei'] for doc in reversed(self.docs) if doc['nome_arvore'].startswith(inicio_nome))
+
+    @property
     def pdfs(self) -> list[str]:
         """Nome dos relatórios sem a data e hora da inclusão."""
         return [doc['nome_arvore'].rsplit(' - ', 1)[0] for doc in self.docs if doc['nome_arvore'].startswith('PDF ')]

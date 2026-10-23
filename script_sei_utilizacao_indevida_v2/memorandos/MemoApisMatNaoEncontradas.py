@@ -5,65 +5,53 @@ from sei_automacao.classes.Memorando import Memorando
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 
 PROCESSO_PLANILHA_MATRICULAS = '2010.01.0058549/2026-56'
-PLANILHA_MATRICULAS = 'Planilha de Matrículas – Titulares e Dependentes U.I (144739371)'
+PLANILHA_MATRICULAS = 'Planilha de Matrículas - Titulares e Dependentes U.I (144739371)'
 
 # Não altere o assunto: é por ele que o script encontra memos já criados
-ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS = 'Matrículas Não Encontradas na Planilha de Matrículas U.I'
+ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS = 'Conferência de matrículas e do direcionamento da demanda'
 
+# Aceita também o assunto anterior ("Matrículas Não Encontradas na Planilha de
+# Matrículas U.I"), dos memos já criados
 PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS = re.compile(
-    r'Matr[íi]culas\s+N[ãa]o\s+Encontradas\s+na\s+Planilha\s+de\s+Matr[íi]culas',
+    re.escape(ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS) + r'|Matr[íi]culas\s+N[ãa]o\s+Encontradas\s+na\s+Planilha\s+de\s+Matr[íi]culas',
     flags=re.IGNORECASE,
 )
 
 
-def _listar_matriculas(titular: str | None, dependentes: tuple[str, ...]) -> list[str]:
-    itens = [f'{titular} (titular)'] if titular else []
-    itens += [f'{m} (dependente)' for m in dependentes]
-    return itens
+def _par_nao_localizadas(plural: bool) -> str:
+    verbo, matriculas = ('foram identificadas', 'as seguintes matrículas') if plural else ('foi identificada', 'a seguinte matrícula')
+    return f'Na validação inicial deste processo, não {verbo} na {PLANILHA_MATRICULAS}, constante do processo {PROCESSO_PLANILHA_MATRICULAS}, {matriculas}:'
 
 
-def _juntar(itens: list[str]) -> str:
-    return itens[0] if len(itens) == 1 else ', '.join(itens[:-1]) + f' e {itens[-1]}'
-
-
-def _par_nao_localizadas(itens: list[str]) -> str:
-    base = (
-        f'dentre as matrículas constantes da {PLANILHA_MATRICULAS}, disponibilizada no processo nº {PROCESSO_PLANILHA_MATRICULAS}, '
-        'que constitui a base de referência para tratamento das demandas pela unidade IPSEMG/GEACS-Utilização.'
-    )
-    if len(itens) == 1:
-        return f'A matrícula {itens[0]}, informada no presente processo, não foi localizada {base}'
-    return f'As matrículas {_juntar(itens)}, informadas no presente processo, não foram localizadas {base}'
+def _matriculas(titular: str | None, dependentes: tuple[str, ...]) -> list[str]:
+    """Uma linha para o titular e uma para os dependentes, só as que faltaram."""
+    linhas = [f'<strong>Matrícula do titular</strong>: {titular}.'] if titular else []
+    if dependentes:
+        rotulo = '<strong>Matrículas dos dependentes</strong>' if len(dependentes) > 1 else '<strong>Matrícula do dependente</strong>'
+        linhas.append(f'{rotulo}: {"; ".join(dependentes)}.')
+    return linhas
 
 
 def _par_conferencia(plural: bool) -> str:
-    matricula = 'das matrículas informadas' if plural else 'da matrícula informada'
-    return f'Dessa forma, retornamos o processo para conferência {matricula} e verificação de sua correspondência com os beneficiários abrangidos pela referida planilha.'
-
-
-def _par_correcao(plural: bool) -> str:
-    matricula = 'de alguma das matrículas' if plural else 'da matrícula'
-    return f'Caso seja identificada necessidade de correção {matricula} e confirmada sua inclusão na base, solicitamos a retificação da informação e o reencaminhamento à IPSEMG/GEACS-Utilização.'
+    matriculas = 'das matrículas informadas' if plural else 'da matrícula informada'
+    return f'Assim, retornamos o processo para </strong>conferência {matriculas} e confirmação de que a demanda integra o levantamento abrangido pela referida planilha.</strong>'
 
 
 def _par_encaminhamento(plural: bool) -> str:
-    condicao = 'Caso as matrículas estejam corretas e os beneficiários não integrem' if plural else 'Caso a matrícula esteja correta e o beneficiário não integre'
+    condicao = 'as matrículas estejam corretas' if plural else 'a matrícula esteja correta'
     return (
-        f'{condicao} a base da demanda de utilização indevida tratada no processo nº {PROCESSO_PLANILHA_MATRICULAS}, '
-        'o presente processo deverá ser encaminhado à unidade IPSEMG/GEACS, para o tratamento pertinente.'
+        f'Caso {condicao} e se trate de demanda de utilização diversa daquela abrangida pela planilha, solicita-se o encaminhamento à unidade IPSEMG/GEACS, '
+        'uma vez que a unidade IPSEMG/GEACS-Utilização se destina ao tratamento das demandas vinculadas à relação de referência.'
     )
-
-
-def _par_fecho():
-    return 'Atenciosamente,'
 
 
 class MemoApisMatNaoEncontradas(Memorando):
     """Memo à APIS-Utilização: matrícula(s) não localizada(s) na base APIS
     (Planilha de Matrículas - Titulares e Dependentes U.I).
 
-    Devolve o processo para conferência da matrícula (possível erro de
-    digitação) e, se estiver correta, pede o encaminhamento à IPSEMG/GEACS.
+    Devolve o processo para conferência das matrículas: se houver erro, pede
+    novo memorando de solicitação no modelo padronizado; se estiverem corretas
+    e a demanda for diversa da planilha, o encaminhamento à IPSEMG/GEACS.
     """
 
     def __init__(
@@ -75,13 +63,13 @@ class MemoApisMatNaoEncontradas(Memorando):
         dependentes: tuple[str, ...],
         memo_apis: DocArvore,
     ):
-        itens = _listar_matriculas(titular, dependentes)
-        if not itens:
+        if not titular and not dependentes:
             raise ValueError('Memorando de matrículas não encontradas criado sem matrículas')
-        plural = len(itens) > 1
+        plural = len(dependentes) + bool(titular) > 1
 
         super().__init__(
-            destinatario_nome='IPSEMG/APIS-Utilização',
+            # Duas linhas: <br>, pois o texto entra no HTML do memo (um \n vira espaço)
+            destinatario_nome='Fernanda de Moura Galantini<br>Assessoria de Políticas e Informações em Saúde - APIS',
             assunto=ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS,
             vocativo='Prezados',
             nome_signatario=nome_signatario,
@@ -89,14 +77,16 @@ class MemoApisMatNaoEncontradas(Memorando):
             nivel_acesso='Restrito',
             hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
             paragrafos=[
-                _par_nao_localizadas(itens),
+                _par_nao_localizadas(plural),
+                *_matriculas(titular, dependentes),
                 _par_conferencia(plural),
-                _par_correcao(plural),
+                'Caso seja identificada incorreção nos dados, solicita-se a emissão de <strong>novo memorando de solicitação no modelo padronizado, contendo integralmente a demanda com os dados corrigidos</strong>, incluindo as matrículas do titular e dos dependentes e os respectivos períodos de apuração. Após o ajuste, o processo deverá ser reencaminhado à unidade IPSEMG/GEACS-Utilização.',
                 _par_encaminhamento(plural),
+                'Para preservar a rotina de automatização, eventual correção deverá ser incorporada ao novo memorando de solicitação, não se limitando a resposta pontual a este documento.',
                 '',
                 '',
                 '',
-                _par_fecho(),
+                'Atenciosamente,',
             ],
         )
         self.memo_apis = memo_apis

@@ -105,6 +105,11 @@ def test_disa_nao_mantis_sim_valida_com_rc_e_sem_deproc(sei):
     assert registro.mats_uso_mantis_alem_disa == ['555 (dependente)']
     assert registro.memo_disa_sei
     assert not registro.memo_deproc_criado
+    # O memo cita o memo da APIS e o relatório RP pelo número SEI
+    texto = sei.texto_ultimo_memo_geacs
+    assert f'Memorando IPSEMG/APIS-UTILIZAÇÃO nº 7 ({sei.numero_sei("Memorando 7")})' in texto
+    assert f'no documento {sei.numero_sei(PDF_DEP_RP)}' in texto
+    assert sei.numero_sei(PDF_TIT_RC) not in texto
 
 
 def test_disa_sim_mantis_sim_valida_e_complementa(sei):
@@ -205,9 +210,11 @@ def test_falha_depois_do_relatorio_nao_duplica_o_pdf(sei):
     registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
     assert registro.erro is None
     assert sei.pdfs == [PDF_DEP_RP]
-    assert registro.relatorios_na_arvore
+    assert registro.relatorios_na_arvore == [sei.numero_sei(PDF_DEP_RP)]
     assert registro.relatorios_incluidos == []
     assert sei.tags_curtas[-1] == AGUARDA_N_CONSTA
+    # Na retomada, o memo cita o relatório que já estava na árvore
+    assert f'no documento {sei.numero_sei(PDF_DEP_RP)}' in sei.texto_ultimo_memo_geacs
 
 
 # --- Memo da APIS e base APIS ---------------------------------------------------

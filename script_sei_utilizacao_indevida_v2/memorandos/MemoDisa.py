@@ -1,14 +1,15 @@
 """Memos à DISA, um por caso da comparação base DISA x MANTIS (rede
 própria), decidida pelo processo inteiro (alguém usou):
 
-- base DISA sim, MANTIS sim: validar os atendimentos do MANTIS e complementar
-  com os dados da DISA (MemoDisaValidarConsta);
-- base DISA não, MANTIS sim: validar, informando que não consta na planilha
-  (MemoDisaValidarNaoConsta);
-- base DISA sim, MANTIS não: sem atendimento no MANTIS, solicita o
-  relatório com os dados da DISA (MemoDisaSemMantisSolicitaRelatorio).
+- base DISA sim, MANTIS sim: validar os atendimentos dos relatórios e
+  complementar com os dados da DISA (MemoDisaValidarConsta);
+- base DISA não, MANTIS sim: validar os atendimentos dos relatórios, que
+  não constam na planilha (MemoDisaValidarNaoConsta);
+- base DISA sim, MANTIS não: sem relatório, solicita o levantamento à DISA
+  (MemoDisaSemMantisSolicitaRelatorio).
 
-Os relatórios do MANTIS (PDF) de quem usou são anexados antes.
+Os relatórios do MANTIS (PDF) de quem usou são anexados antes, e os da
+rede própria são citados pelo número SEI (docs_relatorio_rp).
 """
 
 import re
@@ -16,108 +17,118 @@ import re
 from sei_automacao.classes.Memorando import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
-from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore, identificar_doc
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar_texto_definido
-from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import (
-    REFERENCIA_PLANILHA_REDE_PROPRIA,
-    UsoRedeBeneficiarios,
-)
+from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import UsoRedeBeneficiarios
 
-# TODO: revisar os textos (rascunhos adaptados do memo DISA anterior) e
-# trocar para True
-TEXTO_DEFINIDO = False
+TEXTO_DEFINIDO = True
 
 # Não altere os assuntos depois de criar memos: é por eles que o script os
 # encontra na árvore. Nenhum pode conter outro, e todos são diferentes do
 # assunto do memo DISA da versão anterior ("Levantamento de atendimentos da
 # rede própria..."), que está nos processos VELHOS.
-# TODO: confirmar os assuntos antes de criar o primeiro memo
-ASSUNTO_MEMO_DISA_VALIDAR_CONSTA = 'Validação e complementação de atendimentos da rede própria - utilização indevida da assistência à saúde'
-ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA = 'Validação de atendimentos da rede própria - utilização indevida da assistência à saúde'
-ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO = 'Relatório de atendimentos da rede própria - utilização indevida da assistência à saúde'
+ASSUNTO_MEMO_DISA_VALIDAR_CONSTA = 'Validação e complementação do levantamento de atendimentos da rede própria'
+ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA = 'Validação de atendimentos da rede própria identificados pela GEACS'
+ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO = 'Solicitação de levantamento dos atendimentos e valores da rede própria'
 
 PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA = re.compile(re.escape(ASSUNTO_MEMO_DISA_VALIDAR_CONSTA), flags=re.IGNORECASE)
 PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA = re.compile(re.escape(ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA), flags=re.IGNORECASE)
 PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO = re.compile(re.escape(ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO), flags=re.IGNORECASE)
 
-_CLASSE_PARAGRAFO = 'Texto_Justificado_Recuo_Primeira_Linha'
-_COMPETENCIA_DISA = 'Solicita-se à Diretoria de Saúde - DISA, no âmbito de suas competências institucionais previstas nos arts. 68 e 73 do Decreto Estadual nº 48.823, de 16 de maio de 2024,'
-_CAMPOS_LEVANTAMENTO = '<strong>identificação do beneficiário, data do atendimento, natureza do atendimento, procedimentos realizados e respectivos valores</strong>, observadas as regras de faturamento aplicáveis e a tabela da rede própria vigente à época da realização'
+
+def _memo_apis(memo_apis: DocArvore) -> str:
+    return f'<strong>{identificar_doc(memo_apis)}</strong>'
 
 
-def _p(conteudo: str) -> str:
-    return f'<p class="{_CLASSE_PARAGRAFO}">{conteudo}</p>'
+def _documentos(docs: tuple[str, ...], singular: str, plural: str) -> str:
+    """Relatórios citados pelo número SEI, com a preposição do trecho:
+    _documentos(('1',), 'no', 'nos') -> 'no documento 1';
+    _documentos(('1', '2'), 'no', 'nos') -> 'nos documentos 1 e 2'."""
+    if len(docs) == 1:
+        return f'{singular} documento {docs[0]}'
+    return f'{plural} documentos {", ".join(docs[:-1])} e {docs[-1]}'
 
 
-def _situacao_disa(usou: bool) -> str:
-    return 'consta' if usou else 'NÃO consta'
+def _par_abertura_validar(memo_apis: DocArvore) -> str:
+    return (
+        f'Em atendimento à solicitação constante do {_memo_apis(memo_apis)}, encaminhamos o processo para '
+        '<strong>validação do levantamento dos atendimentos da rede própria e respectivos valores</strong>, referente aos seguintes beneficiários e períodos:'
+    )
 
 
-def _beneficiarios(titular: str | None, dependentes: tuple[str, ...], situacao) -> str:
-    """Um parágrafo por beneficiário: "TITULAR: matrícula 123 (<situação>)"."""
-    itens = [f'TITULAR: matrícula {titular}{situacao(titular, True)}'] if titular else []
-    itens += [f'DEPENDENTE: matrícula {m}{situacao(m, False)}' for m in dependentes]
-    return ''.join(_p(i) for i in itens)
+def _par_registros_nao_consta(docs: tuple[str, ...]) -> str:
+    return (
+        'Embora a Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791) não indique atendimento para as matrículas relacionadas, '
+        f'a GEACS identificou registros de faturamento nas remessas exportadas ao SADS, consolidados <strong>{_documentos(docs, "no", "nos")}</strong>.'
+    )
 
 
-def _usos_mantis(uso_disa: UsoRedeBeneficiarios, tit_usou_mantis: bool, deps_que_usaram_mantis: tuple[str, ...]) -> str:
-    """Beneficiários com atendimento na rede própria do MANTIS, com a
-    situação de cada um na base DISA."""
-
-    def situacao(matricula: str, titular: bool) -> str:
-        usou = uso_disa.tit_usou if titular else matricula in uso_disa.deps_que_usaram
-        return f' ({_situacao_disa(usou)} na planilha)'
-
-    return _beneficiarios(uso_disa.matricula_titular if tit_usou_mantis else None, deps_que_usaram_mantis, situacao)
+def _par_validacao_nao_consta(docs: tuple[str, ...]) -> str:
+    return (
+        'Solicita-se a <strong>validação dos atendimentos e valores apresentados e a verificação da existência de outros atendimentos nos períodos indicados</strong>. '
+        'Caso o relatório seja confirmado integralmente e não haja outros atendimentos a acrescentar, solicita-se manifestação expressa de que poderá ser utilizado na consolidação do retorno à APIS. '
+        'Se identificadas inconsistências ou atendimentos adicionais, solicita-se o envio de '
+        f'<strong>novo relatório consolidado com a relação completa dos atendimentos e valores validados, em substituição {_documentos(docs, "ao", "aos")}</strong>, evitando duplicidades.'
+    )
 
 
-def _usos_so_disa(uso_disa: UsoRedeBeneficiarios, tit_usou_mantis: bool, deps_que_usaram_mantis: tuple[str, ...]) -> str:
-    """Beneficiários atendidos segundo a base DISA, sem atendimento na rede
-    própria do MANTIS no período."""
-    titular = uso_disa.matricula_titular if uso_disa.tit_usou and not tit_usou_mantis else None
-    dependentes = tuple(m for m in uso_disa.deps_que_usaram if m not in deps_que_usaram_mantis)
-    return _beneficiarios(titular, dependentes, lambda matricula, titular: '')
+def _par_abertura_levantamento(memo_apis: DocArvore) -> str:
+    return (
+        f'Em atendimento à solicitação constante do {_memo_apis(memo_apis)}, encaminhamos o processo para '
+        '<strong>levantamento dos atendimentos realizados na rede própria e dos respectivos valores</strong>, referente aos seguintes beneficiários e períodos:'
+    )
 
 
-def _par_levantamento_complementar():
-    return f'Solicita-se, ainda, caso existam atendimentos não relacionados nos relatórios, o respectivo levantamento, contemplando, no mínimo, a {_CAMPOS_LEVANTAMENTO}.'
+def _par_registros_consta(docs: tuple[str, ...]) -> str:
+    return (
+        f'A Gerência de Auditoria e Contas da Saúde - GEACS identificou registros de faturamento da rede própria nas remessas exportadas ao SADS, consolidados <strong>{_documentos(docs, "no", "nos")}</strong>. '
+        'Esses registros podem corresponder à totalidade dos atendimentos identificados por essa Diretoria ou representar apenas parte deles, sendo necessária a verificação de outros atendimentos, '
+        '<strong>especialmente internações e atendimentos no Serviço Médico de Urgência - SMU do Hospital Governador Israel Pinheiro - HGIP</strong>, '
+        'conforme detalhado no processo <strong>2010.01.0058549/2026-56</strong>.'
+    )
 
 
-def _par_padronizacao():
-    return 'Para subsidiar a padronização do retorno, poderão ser observados, no que couber, os campos dos modelos de relatório encaminhados por meio do Memorando IPSEMG/GEACS nº 96/2026. O retorno deverá conter os elementos necessários à posterior consolidação, pela GEACS, das informações da rede própria com aquelas referentes à rede contratada e à coparticipação, para composição do demonstrativo final por beneficiário.'
+def _par_validacao_consta(docs: tuple[str, ...]) -> str:
+    return f'Assim, solicita-se a <strong>validação dos atendimentos e respectivos valores constantes {_documentos(docs, "do", "dos")} e a verificação da existência de outros atendimentos nos períodos solicitados</strong>.'
 
 
-def _par_lgpd():
-    return 'O tratamento e o compartilhamento das informações deverão observar os princípios e as disposições da Lei nº 13.709, de 14 de agosto de 2018 - Lei Geral de Proteção de Dados Pessoais - LGPD, especialmente quanto à finalidade, à necessidade e à segurança dos dados.'
+def _par_novo_relatorio_consta(docs: tuple[str, ...]) -> str:
+    return (
+        'Caso o relatório seja confirmado integralmente e não haja outros atendimentos a acrescentar, solicita-se manifestação expressa de que poderá ser utilizado na consolidação do retorno à APIS. '
+        'Se identificadas inconsistências ou atendimentos adicionais, solicita-se o envio de '
+        '<strong>novo relatório consolidado com a relação completa de todos os atendimentos e valores validados, incluindo os registros da GEACS confirmados e os demais identificados pela DISA, '
+        f'em substituição {_documentos(docs, "ao", "aos")}</strong>, evitando duplicidades.'
+    )
 
 
-def _par_retorno():
-    return 'Após o atendimento, solicita-se o retorno do processo à unidade <strong>IPSEMG/GEACS-Utilização</strong>, para continuidade da apuração.'
-
-
-def _fecho() -> list[str]:
-    return ['', '', '', 'Atenciosamente,']
+def _par_orientacoes_consta(memo_apis: DocArvore) -> str:
+    return (
+        f'Para o retorno, solicita-se observar as orientações de consolidação constantes do {_memo_apis(memo_apis)}, '
+        'bem como aquelas tratadas no processo <strong>2010.01.0058549/2026-56</strong>, '
+        'utilizando como referência os modelos encaminhados pelo <strong>Memorando IPSEMG/GEACS nº 96/2026 (143947926)</strong>.'
+    )
 
 
 class _MemoDisa(Memorando):
     def __init__(self, *, assunto: str, paragrafos: list[str], memo_apis: DocArvore, nome_signatario: str, cargo_signatario: str):
         super().__init__(
-            destinatario_nome='IPSEMG/DISA-UTI-INDEV',
+            # Duas linhas: <br>, pois o texto entra no HTML do memo (um \n vira espaço)
+            destinatario_nome='Felippe Gonçalves Declie Fagioli<br>Diretor de Saúde - DISA',
             assunto=assunto,
-            vocativo='Prezados',
+            vocativo='Prezado Diretor',
             nome_signatario=nome_signatario,
             cargo_signatario=cargo_signatario,
             nivel_acesso='Restrito',
             hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
-            paragrafos=[*paragrafos, _par_padronizacao(), _par_lgpd(), _par_retorno(), *_fecho()],
+            paragrafos=[*paragrafos, '', '', '', 'Atenciosamente,'],
         )
         self.memo_apis = memo_apis
 
 
 class MemoDisaValidarConsta(_MemoDisa):
     """Base DISA sim e MANTIS sim: validar os atendimentos dos relatórios do
-    MANTIS e complementar com os dados da DISA (inclusive de quem consta na
-    planilha sem atendimento no MANTIS)."""
+    MANTIS e verificar outros atendimentos registrados pela DISA
+    (especialmente internações e SMU do HGIP)."""
 
     def __init__(
         self,
@@ -127,34 +138,38 @@ class MemoDisaValidarConsta(_MemoDisa):
         uso_disa: UsoRedeBeneficiarios,
         tit_usou_mantis: bool,
         deps_que_usaram_mantis: tuple[str, ...],
+        docs_relatorio_rp: tuple[str, ...],
         nome_signatario: str,
         cargo_signatario: str,
     ):
         if not (tit_usou_mantis or deps_que_usaram_mantis) or not uso_disa.alguem_usou:
             raise ValueError('Memorando DISA (validar e complementar) exige atendimento na base DISA e no MANTIS')
+        if not docs_relatorio_rp:
+            raise ValueError('Memorando DISA (validar e complementar) exige o número SEI dos relatórios da rede própria')
         verificar_texto_definido(TEXTO_DEFINIDO, 'DISA (validar e complementar)')
 
-        paragrafos = [
-            f'{_COMPETENCIA_DISA} a <strong>validação dos atendimentos realizados na Rede Própria</strong> pelos beneficiários indicados abaixo, no período de apuração informado, conforme os relatórios de utilização extraídos do sistema MANTIS e anexados a este processo, e a <strong>complementação com os dados de atendimento registrados por essa Diretoria</strong>.',
-            dados.texto_levantamento_html(),
-            f'Os relatórios anexos indicam atendimentos na Rede Própria dos beneficiários abaixo. Para cada um, indica-se se consta como atendido na {REFERENCIA_PLANILHA_REDE_PROPRIA}:',
-            _usos_mantis(uso_disa, tit_usou_mantis, deps_que_usaram_mantis),
-        ]
-        so_disa = _usos_so_disa(uso_disa, tit_usou_mantis, deps_que_usaram_mantis)
-        if so_disa:
-            paragrafos += [
-                'Constam ainda como atendidos na referida planilha, sem atendimentos no sistema MANTIS no período, os beneficiários abaixo:',
-                so_disa,
-            ]
-        paragrafos.append(
-            f'Solicita-se a confirmação dos atendimentos relacionados nos relatórios e a complementação com os atendimentos registrados por essa Diretoria e neles não relacionados, contemplando, no mínimo, a {_CAMPOS_LEVANTAMENTO}.'
+        super().__init__(
+            assunto=ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
+            paragrafos=[
+                'Em atendimento à solicitação da Assessoria de Políticas e Informações em Saúde - APIS constante deste processo, e considerando a identificação de utilização na Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791), encaminhamos o processo para <strong>validação e eventual complementação do levantamento dos atendimentos da rede própria e respectivos valores</strong>, referente aos seguintes beneficiários e períodos:',
+                '',
+                dados.texto_levantamento_html(),
+                '',
+                _par_registros_consta(docs_relatorio_rp),
+                _par_validacao_consta(docs_relatorio_rp),
+                _par_novo_relatorio_consta(docs_relatorio_rp),
+                _par_orientacoes_consta(memo_apis),
+                'Após a análise, solicita-se a devolução do processo à unidade <strong>IPSEMG/GEACS-Utilização</strong> para posterior apuração da coparticipação pelo Departamento de Processamento de Contas e Coparticipação - DEPROC.',
+            ],
+            memo_apis=memo_apis,
+            nome_signatario=nome_signatario,
+            cargo_signatario=cargo_signatario,
         )
-        super().__init__(assunto=ASSUNTO_MEMO_DISA_VALIDAR_CONSTA, paragrafos=paragrafos, memo_apis=memo_apis, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
 
 
 class MemoDisaValidarNaoConsta(_MemoDisa):
     """Base DISA não e MANTIS sim: validar os atendimentos dos relatórios do
-    MANTIS, informando que os beneficiários não constam na planilha."""
+    MANTIS, que não constam na planilha, e verificar outros atendimentos."""
 
     def __init__(
         self,
@@ -164,27 +179,37 @@ class MemoDisaValidarNaoConsta(_MemoDisa):
         uso_disa: UsoRedeBeneficiarios,
         tit_usou_mantis: bool,
         deps_que_usaram_mantis: tuple[str, ...],
+        docs_relatorio_rp: tuple[str, ...],
         nome_signatario: str,
         cargo_signatario: str,
     ):
         if not (tit_usou_mantis or deps_que_usaram_mantis) or uso_disa.alguem_usou:
             raise ValueError('Memorando DISA (validar, não consta) exige atendimento no MANTIS e nenhum na base DISA')
+        if not docs_relatorio_rp:
+            raise ValueError('Memorando DISA (validar, não consta) exige o número SEI dos relatórios da rede própria')
         verificar_texto_definido(TEXTO_DEFINIDO, 'DISA (validar, não consta na base DISA)')
 
-        paragrafos = [
-            f'{_COMPETENCIA_DISA} a <strong>validação dos atendimentos realizados na Rede Própria</strong> pelos beneficiários indicados abaixo, no período de apuração informado, conforme os relatórios de utilização extraídos do sistema MANTIS e anexados a este processo.',
-            dados.texto_levantamento_html(),
-            f'Os relatórios anexos indicam atendimentos na Rede Própria dos beneficiários abaixo, embora <strong>não constem como atendidos</strong> na {REFERENCIA_PLANILHA_REDE_PROPRIA}:',
-            _beneficiarios(uso_disa.matricula_titular if tit_usou_mantis else None, deps_que_usaram_mantis, lambda matricula, titular: ''),
-            'Solicita-se a confirmação dos atendimentos relacionados nos relatórios.',
-            _par_levantamento_complementar(),
-        ]
-        super().__init__(assunto=ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, paragrafos=paragrafos, memo_apis=memo_apis, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
+        super().__init__(
+            assunto=ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
+            paragrafos=[
+                _par_abertura_validar(memo_apis),
+                '',
+                dados.texto_levantamento_html(),
+                _par_registros_nao_consta(docs_relatorio_rp),
+                _par_validacao_nao_consta(docs_relatorio_rp),
+                'Para o retorno, solicita-se observar as orientações de consolidação constantes do memorando da APIS acima identificado, bem como aquelas tratadas no processo <strong>2010.01.0058549/2026-56</strong>, utilizando como referência os modelos encaminhados pelo <strong>Memorando IPSEMG/GEACS nº 96/2026 (143947926)</strong>.',
+                'Após a análise, solicita-se a devolução do processo à unidade <strong>IPSEMG/GEACS-Utilização</strong> para consolidação dos atendimentos e posterior apuração da coparticipação pelo Departamento de Processamento de Contas e Coparticipação - DEPROC.',
+            ],
+            memo_apis=memo_apis,
+            nome_signatario=nome_signatario,
+            cargo_signatario=cargo_signatario,
+        )
 
 
 class MemoDisaSemMantisSolicitaRelatorio(_MemoDisa):
-    """Base DISA sim e MANTIS não: relatório dos atendimentos registrados
-    pela DISA (não há relatório do MANTIS para anexar)."""
+    """Base DISA sim e MANTIS não: sem registros no MANTIS, solicita o
+    levantamento dos atendimentos e valores à DISA (não há relatório da
+    rede própria para anexar)."""
 
     def __init__(
         self,
@@ -201,11 +226,18 @@ class MemoDisaSemMantisSolicitaRelatorio(_MemoDisa):
             raise ValueError('Memorando DISA (sem MANTIS, solicita relatório) exige atendimento na base DISA e nenhum no MANTIS')
         verificar_texto_definido(TEXTO_DEFINIDO, 'DISA (sem MANTIS, solicita relatório)')
 
-        paragrafos = [
-            f'{_COMPETENCIA_DISA} o <strong>relatório dos atendimentos realizados na Rede Própria</strong> pelos beneficiários indicados abaixo, no período de apuração informado.',
-            dados.texto_levantamento_html(),
-            f'Os beneficiários abaixo constam como atendidos na {REFERENCIA_PLANILHA_REDE_PROPRIA}, mas não foram identificados atendimentos na Rede Própria no sistema MANTIS no período:',
-            _usos_so_disa(uso_disa, tit_usou_mantis, deps_que_usaram_mantis),
-            f'O relatório deverá contemplar, no mínimo, a {_CAMPOS_LEVANTAMENTO}.',
-        ]
-        super().__init__(assunto=ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, paragrafos=paragrafos, memo_apis=memo_apis, nome_signatario=nome_signatario, cargo_signatario=cargo_signatario)
+        super().__init__(
+            assunto=ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO,
+            paragrafos=[
+                _par_abertura_levantamento(memo_apis),
+                '',
+                dados.texto_levantamento_html(),
+                '',
+                'A Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791) indica utilização da rede própria, mas não foram identificados registros de faturamento correspondentes na base do SADS consultada pela GEACS.',
+                'Assim, solicita-se a <strong>inclusão do relatório consolidado dos atendimentos e respectivos valores</strong>, observando as orientações constantes do memorando da APIS acima identificado, bem como aquelas tratadas no processo <strong>2010.01.0058549/2026-56</strong>, utilizando como referência os modelos encaminhados pelo <strong>Memorando IPSEMG/GEACS nº 96/2026 (143947926)</strong>. Caso não sejam identificados atendimentos nos períodos específicos solicitados, solicita-se registrar expressamente essa informação.',
+                'Após a análise, solicita-se a devolução do processo à unidade <strong>IPSEMG/GEACS-Utilização</strong> para consolidação dos atendimentos e posterior apuração da coparticipação pelo Departamento de Processamento de Contas e Coparticipação - DEPROC.',
+            ],
+            memo_apis=memo_apis,
+            nome_signatario=nome_signatario,
+            cargo_signatario=cargo_signatario,
+        )

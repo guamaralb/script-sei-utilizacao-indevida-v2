@@ -526,6 +526,7 @@ aux = [
             F('encontrar_doc_por_nome()', 'Procura na rodada "PDF Utilização Tit.|Dep. RP|RC - &lt;matrícula&gt;"'),
             P('Já anexado?', [S('Não anexa de novo')]),
             F('transformar_xls_em_pdf() · incluir_doc_externo()', 'Gera o PDF e anexa: tipo PDF, Nato-digital, Restrito'),
+            F('numero_sei_por_nome()', 'Relê a árvore: o número SEI dos PDFs RP é citado no memo à DISA'),
         ],
         cor='aux',
     ),
