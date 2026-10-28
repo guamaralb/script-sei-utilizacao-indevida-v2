@@ -140,10 +140,11 @@ class SEIFalso:
         if tag not in self.tags:
             self.tags.append(tag)
 
-    def _remover_marcador(self, driver, tag):
+    def _remover_marcador(self, driver, marcadores):
         if self.falhar_remocao:
             raise RuntimeError('falha simulada ao remover marcador')
-        self.tags.remove(tag)
+        for tag in marcadores:
+            self.tags.remove(tag)
 
     def _incluir_memo(self, driver, **kwargs):
         self.memos_passagem += 1

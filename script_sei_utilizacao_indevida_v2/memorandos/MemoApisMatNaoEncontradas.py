@@ -34,7 +34,7 @@ def _matriculas(titular: str | None, dependentes: tuple[str, ...]) -> list[str]:
 
 def _par_conferencia(plural: bool) -> str:
     matriculas = 'das matrículas informadas' if plural else 'da matrícula informada'
-    return f'Assim, retornamos o processo para </strong>conferência {matriculas} e confirmação de que a demanda integra o levantamento abrangido pela referida planilha.</strong>'
+    return f'Assim, retornamos o processo para <strong>conferência {matriculas} e confirmação de que a demanda integra o levantamento abrangido pela referida planilha.</strong>'
 
 
 def _par_encaminhamento(plural: bool) -> str:

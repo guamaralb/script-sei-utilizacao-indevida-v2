@@ -52,7 +52,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `main.py` | Script principal: separação do VELHO (`_separar_velho`) e roteamento pelos marcadores (`_tratar`). Não roda enquanto a `sei_automacao` não tiver `remover_marcador` |
+| `main.py` | Script principal: separação do VELHO (`_separar_velho`) e roteamento pelos marcadores (`_tratar`) |
 | `processar_novo.py` | Fluxo dos processos não VELHOS (com retomada pelo marcador de estado); `obter_dados_ui()` lê o último memo da APIS destinado à GEACS; `_avaliar_mantis_e_criar_docs()` compara base DISA × MANTIS e escolhe o memo |
 | `relatorios_mantis.py` | `incluir_relatorios()`: gera os PDFs do MANTIS (titular e dependentes) e os anexa como documento externo, com retomada pelo nome na árvore |
 | `transformar_xls_em_pdf.py` | Monta o PDF do relatório de utilização (ReportLab) |
@@ -63,7 +63,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
 | `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS (só o modelo "novo_novo"; os outros são formato inválido) |
 | `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base APIS (`incluir_memo_apis_mat_nao_encontradas`) |
-| `tags.py` | Todos os marcadores, grupos de estado e pares, `registrar_tags()`, `adicionar_tag()` (troca o estado ou o par), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()`, `conferir_marcadores()` e o placeholder de `remover_marcador` |
+| `tags.py` | Todos os marcadores, grupos de estado e pares, `registrar_tags()`, `adicionar_tag()` (troca o estado ou o par), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()` e `conferir_marcadores()` |
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos, data de corte do VELHO |
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
@@ -361,10 +361,9 @@ Prefixo de todos os nomes: `Script v2 - `.
 - Os demais se acumulam: `0`, `1`, informativos (`1.1`, `1.2.1`), versão
   anterior (`1.2`, `1.2.2`, `1.3`, `1.4`) e manuais. Exceção: o `1.2.1` é
   removido quando as matrículas passam a constar na base APIS.
-- **TODO**: `remover_marcador(driver, marcador)` ainda não existe na
-  `sei_automacao` (`sei_automacao.processo`). Até existir, `tags.py` usa um
-  placeholder (`REMOCAO_DE_MARCADOR_DISPONIVEL = False`) e o `main.py` não
-  inicia.
+- A remoção usa `remover_marcador(driver, [marcador])` da `sei_automacao`
+  (`sei_automacao.processo`; recebe uma lista). Se o marcador não estiver
+  no processo, a biblioteca não faz nada.
 - O SEI limita o nome do marcador a **50 caracteres** (há teste).
 - **TODO**: editar no SEI os marcadores renomeados e cadastrar os novos
   (lista em [Pontos a validar](#pontos-a-validar-no-ambiente-real)) antes
@@ -468,12 +467,10 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 **Início**
 
-1. Sem `remover_marcador` na `sei_automacao`, para aqui (TODO em
-   [Marcadores](#marcadores-tagspy)).
-2. Lê `dados/inputs/processos_nao_processados.xlsx` (aba
+1. Lê `dados/inputs/processos_nao_processados.xlsx` (aba
    `processos_reais`, coluna `num_sei`).
-3. Carrega a base DISA, a base APIS e as bases do MANTIS.
-4. Faz login no SEI.
+2. Carrega a base DISA, a base APIS e as bases do MANTIS.
+3. Faz login no SEI.
 
 **Para cada processo**
 
@@ -652,8 +649,8 @@ perca os processos já tratados.
 
 ## Pontos a validar no ambiente real
 
-- **TODO**: implementar `remover_marcador(driver, marcador)` na
-  `sei_automacao` (`sei_automacao.processo`). Até lá o `main.py` não roda.
+- Confirmar no SEI real a remoção de marcadores (`remover_marcador` da
+  `sei_automacao`): troca de estado e de par e remoção do `1.2.1`.
 - **TODO**: no SEI (Gerenciar Marcador), **editar** os marcadores
   renomeados, antes da próxima execução:
   - `1 - Processo NOVO` → `1 - Tratado pelo Script`;

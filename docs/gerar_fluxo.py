@@ -246,7 +246,6 @@ col_main = Coluna(
     [
         T('Início'),
         F('configurar_logging()', 'Cria as pastas e o log da execução'),
-        P('remover_marcador existe<br>na sei_automacao?', [E('<b>SystemExit</b>: execução não iniciada<br>(TODO na sei_automacao)')], rotulo='Não', segue='Sim'),
         F('carregar_bases() · carregar_bases_mantis()', 'Lê processos_nao_processados.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
         F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle e faz login no SEI'),
         S('<b>Para cada processo</b>'),
@@ -599,7 +598,6 @@ legenda = [
 
 pendencias = N(
     '<b>Pendências (TODO)</b><br>'
-    '• remover_marcador na sei_automacao (sem ele o main não inicia)<br>'
     '• no SEI: editar os marcadores renomeados (1 - Tratado pelo Script, 1.5 - Aguarda APIS: Sem Memo p/ GEACS, 1.5 - Aguarda APIS: Formato Inválido, '
     '1.6.1 - Aguarda APIS: Matrículas, 1.7 - Aguarda APIS: Período Deps, 1.10 - Concluído: Memo DEPROC, 1.2.1 - Mat. N Encontradas Base APIS) '
     'e cadastrar 0 - Processo VELHO, os seis 1.6.2 / 1.8.2 / 1.8.3, os três 1.9 - Aguarda DISA e 1.10 - Aguarda APIS: Sem Uso<br>'
