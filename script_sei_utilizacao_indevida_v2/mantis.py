@@ -303,8 +303,8 @@ def avaliar_uso_rede_propria_mantis(
     """titular (com DV) e dependentes (sem DV) já normalizados.
 
     periodos_por_dependente (modelo com período por dependente): matrícula
-    do dependente, como no memo, -> período de apuração. O dependente que
-    não está nele usa o período do titular."""
+    do dependente -> período de apuração. O dependente que não está nele
+    usa o período do titular."""
     intervalos = interpretar_periodo(periodo_titular)
     periodos = {normalizar_matricula(m): p for m, p in (periodos_por_dependente or {}).items()}
     intervalos_dependentes = {d: interpretar_periodo(periodos[d], f'do dependente {d}') if d in periodos else intervalos for d in dependentes}

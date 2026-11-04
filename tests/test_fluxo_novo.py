@@ -1,10 +1,8 @@
 """Fluxo dos processos (main.py e processar_novo.py) em várias passagens,
 com o SEI simulado."""
 
-import re
 from dataclasses import replace
 
-import extrator_dados_ui
 import processar_novo
 from Registro import ProxAcao
 from relatorios_mantis import REDE_CREDENCIADA, inicio_nome_relatorio
@@ -27,7 +25,6 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import (
     ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
 )
 from tests.sei_falso import (
-    FRASE_MODELO_PERIODO_POR_DEPENDENTE,
     MANTIS_CREDENCIADA_TITULAR_USOU,
     MANTIS_DEPENDENTE_USOU,
     MANTIS_DUAS_REDES,
@@ -296,19 +293,37 @@ def test_periodo_variavel_para_dependentes(sei):
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_PERIODO_DEPS
 
 
-def test_modelo_periodo_por_dependente_usa_o_periodo_de_cada_um(sei, monkeypatch):
+def test_modelo_periodo_por_dependente_usa_o_periodo_de_cada_um(sei):
     # O dependente tem atendimento em 03/2024, fora do período dele
-    # (01/2023 a 02/2023) e dentro do período do titular: não usou. O fluxo
-    # não para pelo período variável (sem 1.1 e 1.7)
-    monkeypatch.setattr(extrator_dados_ui, '_FRASES_MODELO_PERIODO_POR_DEPENDENTE', (re.compile(FRASE_MODELO_PERIODO_POR_DEPENDENTE, flags=re.IGNORECASE),))
+    # (01/01/2023 a 28/02/2023) e dentro do período do titular: não usou. O
+    # fluxo não para pelo período variável (sem 1.1 e 1.7)
     sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
     sei.memo_apis(MEMO_APIS_PERIODO_POR_DEPENDENTE)
     registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
 
     assert registro.modelo_memo_apis == 'periodo_por_dependente'
     assert sei.tags_curtas == [NOVO, DISA_NAO, MANTIS_NAO, RC_NAO, AGUARDA_SEM_USO]
-    assert registro.to_dict()['periodos_por_dependente'] == '555: 01/2023 a 02/2023'
+    assert registro.to_dict()['periodos_por_dependente'] == '555: 01/01/2023 a 28/02/2023'
     assert 'Período de apuração do dependente 555:' in sei.texto_ultimo_memo_geacs
+
+
+def test_atendimento_no_periodo_do_dependente_conta_como_uso(sei):
+    # Atendimento em 03/2024, dentro do período próprio do dependente
+    sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
+    sei.memo_apis(MEMO_APIS_PERIODO_POR_DEPENDENTE.replace('01/01/2023 a 28/02/2023', '01/03/2024 a 31/03/2024'))
+    registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
+
+    assert sei.tags_curtas == [NOVO, DISA_NAO, MANTIS_SIM, RC_NAO, AGUARDA_N_CONSTA]
+    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA
+
+
+def test_dependente_sem_periodo_no_modelo_por_dependente_para_com_memo_a_apis(sei):
+    sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
+    sei.memo_apis(MEMO_APIS_PERIODO_POR_DEPENDENTE, extra='Matrícula do dependente: 666')
+    registro = sei.passar(bases())
+
+    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Formato Inválido']
+    assert '666' in registro.motivo_formato_invalido
 
 
 # --- Marcadores -----------------------------------------------------------------

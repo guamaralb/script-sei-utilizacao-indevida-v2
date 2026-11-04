@@ -61,7 +61,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `rede_propria.py` | Carga da base DISA e da base APIS, normalização de matrícula, `verificar_base_apis()` (existência), `avaliar_uso_rede_propria_disa()` (uso), `ErroAvaliacao` |
 | `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada, com os atendimentos), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
-| `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS: o modelo com período por dependente (procurado primeiro, pelas frases; TODO) e o "novo_novo"; os outros são formato inválido |
+| `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS: o modelo com período por dependente (procurado primeiro, pela linha do período do dependente) e o "novo_novo"; os outros são formato inválido |
 | `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base APIS (`incluir_memo_apis_mat_nao_encontradas`) |
 | `tags.py` | Todos os marcadores, grupos de estado e pares, `registrar_tags()`, `adicionar_tag()` (troca o estado ou o par), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()` e `conferir_marcadores()` |
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
@@ -179,20 +179,26 @@ a API dela.
   utilização". Sem esse pedido é o modelo novo_velho; com "Segurado(a)", o
   velho. Os dois são formato inválido.
 - **Modelo com período por dependente** (`periodo_por_dependente`): cada
-  dependente tem o seu período de apuração. É procurado **antes** do
-  novo_novo: o memo é deste modelo se o texto tiver **todas** as frases de
-  `_FRASES_MODELO_PERIODO_POR_DEPENDENTE`; senão, é analisado como hoje
-  (novo_novo ou formato inválido). Identificado, mas sem os campos do
-  titular, sem o período de nenhum dependente ou com dependente com dois
-  períodos: formato inválido. Os períodos ficam em
-  `DadosUI.periodos_por_dependente` (matrícula como no memo → período) e
-  vão para o MANTIS; o fluxo **não** para pelo período variável (sem `1.1`
-  e `1.7`). **TODO**: ainda não há modelo. Indicar as frases e ajustar os
-  padrões (`_CAMPOS_MODELO_PERIODO_POR_DEPENDENTE`,
-  `_PADRAO_PERIODO_POR_DEPENDENTE`, hoje um palpite: campos do titular do
-  novo_novo e uma linha `Matrícula do dependente: 555 - Período de
-  apuração: 01/2024 a 06/2024` por dependente). Enquanto a lista de frases
-  estiver vazia, o modelo nunca é identificado.
+  dependente tem o seu período de apuração. Os campos do titular são os do
+  novo_novo e cada dependente tem duas linhas:
+
+  ```
+  Matrícula do dependente: XXXXXXX
+  Período de apuração do dependente XXXXXXX: DD/MM/AAAA a DD/MM/AAAA.
+  ```
+
+  É procurado **antes** do novo_novo: o memo é deste modelo se tiver alguma
+  linha `Período de apuração do dependente <matrícula>:`
+  (`_PADRAO_PERIODO_POR_DEPENDENTE`; sem a matrícula na linha, é analisado
+  como novo_novo). O pedido de "atualização do levantamento" não é exigido.
+  São formato inválido: faltar campo do titular, dependente sem a linha do
+  período (ou com período vazio), período sem a linha da matrícula e
+  dependente com dois períodos. A matrícula é comparada normalizada e o
+  período aceita os formatos de [MANTIS](#bases-de-matrículas). Os períodos
+  ficam em `DadosUI.periodos_por_dependente` (matrícula normalizada →
+  período), os dependentes vão para as bases APIS, DISA e MANTIS como nos
+  outros modelos, e o MANTIS usa o período de cada um. O fluxo **não** para
+  pelo período variável (sem `1.1` e `1.7`).
 - Matrícula do titular com DV separado por barra (`1289612 / 8`) é aceita.
 - O último memo da APIS destinado à GEACS fica em `registro.memo_apis`
   (`DocArvore`: `numero_sei`, `nome_arvore` e `unidade`, como na árvore) e
@@ -537,8 +543,9 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
 2. `validar_template` e `extrair_dados_ui`: nome e matrícula do titular,
    período do titular, matrículas dos dependentes e se há período variável
    para dependentes. Primeiro procura o modelo com período por dependente
-   (pelas frases; TODO): se for ele, os períodos de cada dependente são
-   extraídos e não há período variável. Senão, analisa como novo_novo.
+   (linha `Período de apuração do dependente X:`): se for ele, os períodos
+   de cada dependente são extraídos e não há período variável. Senão,
+   analisa como novo_novo.
    - **Formato inválido** (modelo com período por dependente incompleto ou
      qualquer outro modelo diferente do novo_novo)? Cria
      `MemoApisFormatoInvalido` (bloco `7730341`), **➕ `1.5 - Aguarda APIS:
@@ -718,15 +725,12 @@ perca os processos já tratados.
 - **TODO**: revisar o rascunho do memo `MemoApisPeriodoDependentes` e
   confirmar o assunto **antes** de criar o primeiro memo (depois, ele não
   pode mudar); depois trocar `TEXTO_DEFINIDO` para `True`. O memo pede novo
-  memorando com o período individualizado por matrícula, mas qualquer data
-  depois do campo `Matrícula dos dependentes` ainda conta como período
-  variável (`_detectar_periodo_dependentes`): falta definir como tratar o
-  memorando corrigido.
+  memorando com o período individualizado por matrícula: o memorando
+  corrigido é tratado pelo modelo com período por dependente.
 - **TODO**: fluxo do processo VELHO (`main._separar_velho`).
-- **TODO**: indicar o modelo do memo da APIS com período por dependente e
-  preencher as frases que o identificam e os padrões de extração
-  (`extrator_dados_ui.py`; o exemplo dos testes, em `tests/sei_falso.py`,
-  é provisório).
+- Confirmar com um memorando real que `obter_conteudo_doc` devolve as
+  linhas `Matrícula do dependente` e `Período de apuração do dependente X`
+  separadas (o período é lido até o fim da linha).
 - **TODO**: confirmar que o pedido de "atualização do levantamento de
   utilização" é o que distingue o modelo novo_novo do novo_velho
   (`_PADRAO_ATUALIZACAO_LEVANTAMENTO` em `extrator_dados_ui.py`).

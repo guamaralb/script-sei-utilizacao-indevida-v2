@@ -40,16 +40,15 @@ Documento assinado eletronicamente"""
 # Mesmos campos, sem o pedido de atualização do levantamento
 MEMO_APIS_NOVO_VELHO = MEMO_APIS.replace('atualização do levantamento', 'o levantamento')
 
-# Modelo com período por dependente. TODO: trocar pelo modelo real quando
-# for indicado (as frases que o identificam ficam em extrator_dados_ui)
-FRASE_MODELO_PERIODO_POR_DEPENDENTE = 'período de apuração de cada dependente'
+# Modelo com período por dependente: duas linhas para cada dependente
 MEMO_APIS_PERIODO_POR_DEPENDENTE = """Memorando IPSEMG/APIS-UTILIZAÇÃO nº. 2/2026
 Para: Bruna Miller Lavarini
-solicita-se à Gerência de Auditoria e Contas da Saúde – GEACS atualização do levantamento de utilização da assistência à saúde, com o período de apuração de cada dependente
+solicita-se à Gerência de Auditoria e Contas da Saúde – GEACS atualização do levantamento de utilização da assistência à saúde
 Nome completo: FULANO
 Matrícula: 1234567 / 8
 Período de apuração do titular: (01/2024 a 06/2024)
-Matrícula do dependente: 555 - Período de apuração: 01/2023 a 02/2023
+Matrícula do dependente: 555
+Período de apuração do dependente 555: 01/01/2023 a 28/02/2023.
 {extra}
 Documento assinado eletronicamente"""
 

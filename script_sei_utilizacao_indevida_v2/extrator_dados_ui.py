@@ -2,6 +2,7 @@ import re
 from typing import Literal, get_args
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
+from script_sei_utilizacao_indevida_v2.rede_propria import normalizar_matricula
 
 
 class FormatoMemorandoInvalido(ValueError):
@@ -39,19 +40,14 @@ _CAMPOS_MODELO_NOVO: dict[str, re.Pattern] = {
 
 # --- Modelo "periodo_por_dependente" (período de apuração de cada
 # dependente) ---
-# Procurado ANTES do novo_novo: o memo é deste modelo se o texto tiver
-# TODAS as frases abaixo; senão, é analisado como hoje (novo_novo e os
-# modelos inválidos).
-# TODO: indicar o modelo (exemplo de memorando) e preencher as frases que o
-# identificam. Enquanto a lista estiver vazia, o modelo nunca é
-# identificado.
-_FRASES_MODELO_PERIODO_POR_DEPENDENTE: tuple[re.Pattern, ...] = ()
-# TODO: ajustar ao modelo. Supõe os campos do titular iguais aos do
-# novo_novo e uma linha por dependente, com a matrícula e o período:
-# "Matrícula do dependente: 555 - Período de apuração: 01/2024 a 06/2024".
-_CAMPOS_MODELO_PERIODO_POR_DEPENDENTE: dict[str, re.Pattern] = _CAMPOS_MODELO_NOVO
+# Procurado ANTES do novo_novo. Os campos do titular são os do novo_novo e
+# cada dependente tem duas linhas, que identificam o modelo:
+#   Matrícula do dependente: 555
+#   Período de apuração do dependente 555: 01/01/2024 a 30/06/2024.
+# O período fica na mesma linha: vazio é formato inválido, não a linha
+# seguinte.
 _PADRAO_PERIODO_POR_DEPENDENTE = re.compile(
-    r'Matr[íi]cula do dependente:\s*(\d[\d./\- ]*?)\s*[-–;,|]\s*Per[íi]odo de apura[çc][ãa]o:\s*(.+)',
+    r'Per[íi]odo de apura[çc][ãa]o do dependente\s+(\d[\d./\- ]*?)\s*:[^\S\n]*(.*)',
     flags=re.IGNORECASE,
 )
 
@@ -81,10 +77,8 @@ _PADRAO_SEPARADOR_MATRICULAS = re.compile(r'\s+e\s+|[;,:/.]+|\s+', flags=re.IGNO
 
 
 def eh_modelo_periodo_por_dependente(doc_text: str) -> bool:
-    """O texto tem todas as frases do modelo com período por dependente
-    (nunca, enquanto as frases não forem indicadas)."""
-    frases = _FRASES_MODELO_PERIODO_POR_DEPENDENTE
-    return bool(frases) and all(frase.search(doc_text) for frase in frases)
+    """O texto tem a linha do período de algum dependente, com a matrícula."""
+    return _PADRAO_PERIODO_POR_DEPENDENTE.search(doc_text) is not None
 
 
 def _campos_ausentes(campos: dict[str, re.Pattern], doc_text: str) -> list[str]:
@@ -92,16 +86,14 @@ def _campos_ausentes(campos: dict[str, re.Pattern], doc_text: str) -> list[str]:
 
 
 def validar_template(doc_text: str) -> ModeloMemoApis:
-    """O modelo com período por dependente é procurado primeiro (pelas
-    frases que o identificam). Senão, só o modelo "novo_novo" é aceito. Os
+    """O modelo com período por dependente é procurado primeiro (pela linha
+    do período do dependente). Senão, só o modelo "novo_novo" é aceito. Os
     modelos "novo_velho" (mesmos campos, sem o pedido de atualização do
     levantamento) e "velho" (campo "Segurado(a)") são formato inválido."""
     if eh_modelo_periodo_por_dependente(doc_text):
-        ausentes = _campos_ausentes(_CAMPOS_MODELO_PERIODO_POR_DEPENDENTE, doc_text)
+        ausentes = _campos_ausentes(_CAMPOS_MODELO_NOVO, doc_text)
         if ausentes:
             raise FormatoMemorandoInvalido(f'O memorando está no modelo com período por dependente, mas faltam os campos {ausentes}')
-        if not _PADRAO_PERIODO_POR_DEPENDENTE.search(doc_text):
-            raise FormatoMemorandoInvalido('O memorando está no modelo com período por dependente, mas não traz o período de nenhum dependente')
         return MODELO_PERIODO_POR_DEPENDENTE
 
     ausentes = _campos_ausentes(_CAMPOS_MODELO_NOVO, doc_text)
@@ -124,13 +116,16 @@ def _extrair_campo(padrao: re.Pattern, doc_text: str, nome_campo: str, *, opcion
     raise FormatoMemorandoInvalido(f'Não foi possível extrair o campo "{nome_campo}" do texto.')
 
 
+def _separar_matriculas(valor_bruto: str) -> list[str]:
+    return [matricula for matricula in _PADRAO_SEPARADOR_MATRICULAS.split(valor_bruto.strip()) if matricula]
+
+
 def _extrair_matriculas_dependentes(doc_text: str) -> str | None:
     valor_bruto = _extrair_campo(_PADRAO_MATRICULAS_DEPENDENTES_NOVO, doc_text, 'Matrícula dos dependentes', opcional=True)
     if not valor_bruto:
         return None
 
-    matriculas = [matricula for matricula in _PADRAO_SEPARADOR_MATRICULAS.split(valor_bruto.strip()) if matricula]
-    return '; '.join(matriculas)
+    return '; '.join(_separar_matriculas(valor_bruto))
 
 
 def _detectar_periodo_dependentes(doc_text: str) -> bool:
@@ -157,13 +152,25 @@ def _detectar_periodo_dependentes(doc_text: str) -> bool:
 
 
 def _extrair_periodos_por_dependente(doc_text: str) -> dict[str, str]:
-    """Matrícula do dependente (como no memo) -> período de apuração."""
+    """Matrícula do dependente (normalizada) -> período de apuração. Todo
+    dependente precisa ter a linha da matrícula e a do período: faltando
+    uma delas, não se sabe qual período vale para ele."""
     periodos = {}
     for match in _PADRAO_PERIODO_POR_DEPENDENTE.finditer(doc_text):
-        matricula, periodo = match.group(1).strip(), match.group(2).strip()
+        matricula, periodo = normalizar_matricula(match.group(1)), match.group(2).strip().rstrip('.; ')
+        if not periodo:
+            raise FormatoMemorandoInvalido(f'O dependente {matricula} está sem o período de apuração')
         if matricula in periodos and periodos[matricula] != periodo:
             raise FormatoMemorandoInvalido(f'O dependente {matricula} aparece com dois períodos de apuração diferentes')
         periodos[matricula] = periodo
+
+    matriculas = {normalizar_matricula(m) for match in _PADRAO_MATRICULAS_DEPENDENTES_NOVO.finditer(doc_text) for m in _separar_matriculas(match.group(1))}
+    sem_periodo = sorted(matriculas - periodos.keys())
+    if sem_periodo:
+        raise FormatoMemorandoInvalido(f'Dependentes sem o período de apuração: {sem_periodo}')
+    sem_matricula = sorted(periodos.keys() - matriculas)
+    if sem_matricula:
+        raise FormatoMemorandoInvalido(f'Período de apuração sem a linha "Matrícula do dependente" correspondente: {sem_matricula}')
     return periodos
 
 
