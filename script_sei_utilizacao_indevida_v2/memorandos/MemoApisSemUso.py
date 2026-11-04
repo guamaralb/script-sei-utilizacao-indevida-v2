@@ -26,7 +26,7 @@ class MemoApisSemUso(Memorando):
     def __init__(self, *, dados: DadosUI, memo_apis: DocArvore, nome_signatario: str, cargo_signatario: str):
         verificar_texto_definido(TEXTO_DEFINIDO, 'à APIS (nenhum uso nas bases)')
         super().__init__(
-            destinatario_nome='IPSEMG/APIS-Utilização',
+            destinatario_nome='Fernanda de Moura Galantini<br>Assessoria de Políticas e Informações em Saúde - APIS',
             assunto=ASSUNTO_MEMO_APIS_SEM_USO,
             vocativo='Prezados',
             nome_signatario=nome_signatario,
@@ -38,8 +38,8 @@ class MemoApisSemUso(Memorando):
                 dados.texto_levantamento_html(),
                 (
                     f'<strong>Rede Própria:</strong> os beneficiários não constam como atendidos na {REFERENCIA_PLANILHA_REDE_PROPRIA}, '
-                    'e não há registros de atendimento na Rede Própria no sistema MANTIS; '
-                    '<strong>Rede Credenciada:</strong> não há registros de atendimento no sistema MANTIS.'
+                    'e não há registros de atendimento na Rede Própria no sistema SADS; '
+                    '<strong>Rede Credenciada:</strong> não há registros de atendimento no sistema SADS.'
                 ),
                 'Dessa forma, retorna-se o processo a essa Assessoria para ciência e providências que entender cabíveis.',
                 '',

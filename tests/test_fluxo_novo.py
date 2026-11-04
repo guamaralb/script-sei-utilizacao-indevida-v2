@@ -77,6 +77,14 @@ def test_disa_nao_rp_nao_rc_sim_memo_deproc(sei):
     assert registro.memo_deproc_sei
 
 
+def test_memo_deproc_cita_o_relatorio_rc(sei):
+    sei.novo_processo()
+    sei.passar(bases(tit_usou=False), SO_RC)
+
+    pdf = next(doc for doc in sei.docs if doc['nome_arvore'].startswith(PDF_TIT_RC))
+    assert f'constantes do documento {pdf["numero_sei"]}' in sei.textos[sei.docs[-1]['numero_sei']]
+
+
 def test_nenhum_uso_memo_a_apis_sem_deproc(sei):
     sei.novo_processo()
     registro = sei.passar(bases(tit_usou=False))
@@ -349,6 +357,16 @@ def test_memo_deproc_sem_marcador_e_reaproveitado(sei):
     assert registro.memo_deproc_na_arvore
     assert registro.memo_deproc_sei == numero_deproc
     assert sei.tags_curtas == [NOVO, DISA_NAO, MANTIS_NAO, RC_SIM, CONCLUIDO_DEPROC]
+
+
+def test_memo_deproc_com_assunto_anterior_e_reaproveitado(sei):
+    sei.novo_processo()
+    sei.tags = ['Script v2 - ' + t for t in (NOVO, DISA_NAO, MANTIS_NAO, RC_SIM, MANTIS)]
+    sei.memo_geacs('Levantamento de coparticipação - utilização indevida da assistência à saúde')
+
+    registro = sei.passar(bases(tit_usou=False), SO_RC)
+    assert sei.qnt_memos_geacs == 1
+    assert registro.memo_deproc_na_arvore
 
 
 def test_memo_disa_sem_marcador_e_reaproveitado(sei):

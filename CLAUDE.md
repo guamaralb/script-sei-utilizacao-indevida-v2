@@ -69,7 +69,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
 | `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
-| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`) |
+| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; ainda fora do fluxo) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
 | `docs/gerar_fluxo.py` | Gera o `docs/fluxo.drawio` (`python docs/gerar_fluxo.py docs/fluxo.drawio`). O conteúdo do diagrama fica no script |
 | `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
@@ -553,7 +553,7 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      passou dele).
 7. Relatórios RP e RC em PDF de quem usou (em todos os casos; sem
    atendimento, nada é anexado). O número SEI dos RP vai para os memos à
-   DISA de validação.
+   DISA de validação, e o dos RC, para o memo DEPROC.
 8. **Base DISA × MANTIS** (processo inteiro):
    - **DISA sim, MANTIS RP sim**: `MemoDisaValidarConsta`, **➕ `1.9 -
      Aguarda DISA: Validar (Consta)`**; `prox_acao` = Assinar memo à DISA
@@ -565,7 +565,7 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      **➕ `1.9 - Aguarda DISA: Relat. s/ MANTIS`**; `prox_acao` = Assinar
      memo à DISA (sem MANTIS: solicita relatório) e encaminhar. Fim;
    - **DISA não, MANTIS RP não, MANTIS RC sim**: `MemoDeproc` (todos os
-     beneficiários; cita a rede credenciada; bloco `7697744`), **➕ `1.10 -
+     beneficiários; cita os relatórios RC; bloco `7697744`), **➕ `1.10 -
      Concluído: Memo DEPROC`**; `prox_acao` = Assinar memo DEPROC e
      encaminhar;
    - **DISA não, MANTIS RP não, MANTIS RC não** (nenhum uso):
@@ -678,11 +678,25 @@ perca os processos já tratados.
   `None`.
 - **TODO**: revisar o rascunho do memo à APIS sem uso
   (`MemoApisSemUso.py`) e confirmar o assunto **antes** de criar o
-  primeiro memo; depois trocar `TEXTO_DEFINIDO` para `True`. Conferir o
-  parágrafo da rede credenciada no `MemoDeproc` (`_par_rede_credenciada`).
-- **TODO**: texto e assunto do memo `MemoApisPeriodoDependentes`. Depois
-  trocar `TEXTO_DEFINIDO` para `True`. Defina o assunto **antes** de criar
-  o primeiro memo: depois, o assunto não pode mudar.
+  primeiro memo; depois trocar `TEXTO_DEFINIDO` para `True`.
+- **TODO**: o `MemoDeproc` tem duas versões. Só rede credenciada
+  (`ASSUNTO_MEMO_DEPROC`): é a do fluxo atual. Duas redes
+  (`ASSUNTO_MEMO_DEPROC_DUAS_REDES`, com `doc_relatorio_disa` e
+  `doc_manifestacao_disa`): depende do processamento do retorno da DISA,
+  ainda não implementado. Confirmar o assunto e o texto da versão só com a
+  rede credenciada. `PADRAO_ASSUNTO_MEMO_DEPROC` aceita os dois assuntos e
+  o anterior.
+- **TODO**: `MemoApisComTodasAsInformacoes` depende do processamento do
+  retorno da DISA e da DEPROC, ainda não implementado. Confirmar no SEI real
+  que as tabelas são salvas (a `sei_automacao` não trata tabelas; o memo
+  manda o HTML no formato do editor do SEI, fora do `<p>`).
+- **TODO**: revisar o rascunho do memo `MemoApisPeriodoDependentes` e
+  confirmar o assunto **antes** de criar o primeiro memo (depois, ele não
+  pode mudar); depois trocar `TEXTO_DEFINIDO` para `True`. O memo pede novo
+  memorando com o período individualizado por matrícula, mas qualquer data
+  depois do campo `Matrícula dos dependentes` ainda conta como período
+  variável (`_detectar_periodo_dependentes`): falta definir como tratar o
+  memorando corrigido.
 - **TODO**: fluxo do processo VELHO (`main._separar_velho`).
 - **TODO**: confirmar que o pedido de "atualização do levantamento de
   utilização" é o que distingue o modelo novo_novo do novo_velho

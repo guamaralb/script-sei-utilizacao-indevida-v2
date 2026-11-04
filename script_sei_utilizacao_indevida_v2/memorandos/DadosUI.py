@@ -37,3 +37,10 @@ class DadosUI:
             f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Matrícula:</strong> {self.matricula_titular}</p>'
             f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração do titular:</strong> {self.periodo_titular}</p>' + infos_dep_html
         )
+
+    def periodo_dependentes_html(self) -> str:
+        """O período do titular vale para os dependentes: o processo com
+        período variável para antes da DEPROC."""
+        if not self.matriculas_dependentes or self.periodo_dependentes:
+            return ''
+        return f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração dos dependentes:</strong> {self.periodo_titular}</p>'

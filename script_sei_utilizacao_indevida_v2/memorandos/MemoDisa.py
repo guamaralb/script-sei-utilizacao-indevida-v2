@@ -17,7 +17,7 @@ import re
 from sei_automacao.classes.Memorando import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
-from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore, identificar_doc
+from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore, citar_documentos, identificar_doc
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar_texto_definido
 from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import UsoRedeBeneficiarios
 
@@ -40,15 +40,6 @@ def _memo_apis(memo_apis: DocArvore) -> str:
     return f'<strong>{identificar_doc(memo_apis)}</strong>'
 
 
-def _documentos(docs: tuple[str, ...], singular: str, plural: str) -> str:
-    """Relatórios citados pelo número SEI, com a preposição do trecho:
-    _documentos(('1',), 'no', 'nos') -> 'no documento 1';
-    _documentos(('1', '2'), 'no', 'nos') -> 'nos documentos 1 e 2'."""
-    if len(docs) == 1:
-        return f'{singular} documento {docs[0]}'
-    return f'{plural} documentos {", ".join(docs[:-1])} e {docs[-1]}'
-
-
 def _par_abertura_validar(memo_apis: DocArvore) -> str:
     return (
         f'Em atendimento à solicitação constante do {_memo_apis(memo_apis)}, encaminhamos o processo para '
@@ -59,7 +50,7 @@ def _par_abertura_validar(memo_apis: DocArvore) -> str:
 def _par_registros_nao_consta(docs: tuple[str, ...]) -> str:
     return (
         'Embora a Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791) não indique atendimento para as matrículas relacionadas, '
-        f'a GEACS identificou registros de faturamento nas remessas exportadas ao SADS, consolidados <strong>{_documentos(docs, "no", "nos")}</strong>.'
+        f'a GEACS identificou registros de faturamento nas remessas exportadas ao SADS, consolidados <strong>{citar_documentos(docs, "no", "nos")}</strong>.'
     )
 
 
@@ -68,7 +59,7 @@ def _par_validacao_nao_consta(docs: tuple[str, ...]) -> str:
         'Solicita-se a <strong>validação dos atendimentos e valores apresentados e a verificação da existência de outros atendimentos nos períodos indicados</strong>. '
         'Caso o relatório seja confirmado integralmente e não haja outros atendimentos a acrescentar, solicita-se manifestação expressa de que poderá ser utilizado na consolidação do retorno à APIS. '
         'Se identificadas inconsistências ou atendimentos adicionais, solicita-se o envio de '
-        f'<strong>novo relatório consolidado com a relação completa dos atendimentos e valores validados, em substituição {_documentos(docs, "ao", "aos")}</strong>, evitando duplicidades.'
+        f'<strong>novo relatório consolidado com a relação completa dos atendimentos e valores validados, em substituição {citar_documentos(docs, "ao", "aos")}</strong>, evitando duplicidades.'
     )
 
 
@@ -81,7 +72,7 @@ def _par_abertura_levantamento(memo_apis: DocArvore) -> str:
 
 def _par_registros_consta(docs: tuple[str, ...]) -> str:
     return (
-        f'A Gerência de Auditoria e Contas da Saúde - GEACS identificou registros de faturamento da rede própria nas remessas exportadas ao SADS, consolidados <strong>{_documentos(docs, "no", "nos")}</strong>. '
+        f'A Gerência de Auditoria e Contas da Saúde - GEACS identificou registros de faturamento da rede própria nas remessas exportadas ao SADS, consolidados <strong>{citar_documentos(docs, "no", "nos")}</strong>. '
         'Esses registros podem corresponder à totalidade dos atendimentos identificados por essa Diretoria ou representar apenas parte deles, sendo necessária a verificação de outros atendimentos, '
         '<strong>especialmente internações e atendimentos no Serviço Médico de Urgência - SMU do Hospital Governador Israel Pinheiro - HGIP</strong>, '
         'conforme detalhado no processo <strong>2010.01.0058549/2026-56</strong>.'
@@ -89,7 +80,7 @@ def _par_registros_consta(docs: tuple[str, ...]) -> str:
 
 
 def _par_validacao_consta(docs: tuple[str, ...]) -> str:
-    return f'Assim, solicita-se a <strong>validação dos atendimentos e respectivos valores constantes {_documentos(docs, "do", "dos")} e a verificação da existência de outros atendimentos nos períodos solicitados</strong>.'
+    return f'Assim, solicita-se a <strong>validação dos atendimentos e respectivos valores constantes {citar_documentos(docs, "do", "dos")} e a verificação da existência de outros atendimentos nos períodos solicitados</strong>.'
 
 
 def _par_novo_relatorio_consta(docs: tuple[str, ...]) -> str:
@@ -97,7 +88,7 @@ def _par_novo_relatorio_consta(docs: tuple[str, ...]) -> str:
         'Caso o relatório seja confirmado integralmente e não haja outros atendimentos a acrescentar, solicita-se manifestação expressa de que poderá ser utilizado na consolidação do retorno à APIS. '
         'Se identificadas inconsistências ou atendimentos adicionais, solicita-se o envio de '
         '<strong>novo relatório consolidado com a relação completa de todos os atendimentos e valores validados, incluindo os registros da GEACS confirmados e os demais identificados pela DISA, '
-        f'em substituição {_documentos(docs, "ao", "aos")}</strong>, evitando duplicidades.'
+        f'em substituição {citar_documentos(docs, "ao", "aos")}</strong>, evitando duplicidades.'
     )
 
 
