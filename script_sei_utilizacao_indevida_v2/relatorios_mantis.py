@@ -7,7 +7,7 @@ atendimento no período de apuração. Retomada: o PDF já anexado na rodada
 atual (procurado pelo início do nome na árvore) não é anexado de novo.
 
 incluir_relatorios devolve o número SEI dos PDFs (anexados agora ou já na
-árvore), citados no memo à DISA.
+árvore), citados no memo à DISA e no memo à DEPROC.
 """
 
 import logging

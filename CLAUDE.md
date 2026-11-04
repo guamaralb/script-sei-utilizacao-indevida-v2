@@ -52,7 +52,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `main.py` | Script principal: separação do VELHO (`_separar_velho`) e roteamento pelos marcadores (`_tratar`). Não roda enquanto a `sei_automacao` não tiver `remover_marcador` |
+| `main.py` | Script principal: separação do VELHO (`_separar_velho`) e roteamento pelos marcadores (`_tratar`) |
 | `processar_novo.py` | Fluxo dos processos não VELHOS (com retomada pelo marcador de estado); `obter_dados_ui()` lê o último memo da APIS destinado à GEACS; `_avaliar_mantis_e_criar_docs()` compara base DISA × MANTIS e escolhe o memo |
 | `relatorios_mantis.py` | `incluir_relatorios()`: gera os PDFs do MANTIS (titular e dependentes) e os anexa como documento externo, com retomada pelo nome na árvore |
 | `transformar_xls_em_pdf.py` | Monta o PDF do relatório de utilização (ReportLab) |
@@ -63,13 +63,13 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
 | `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS: o modelo com período por dependente (procurado primeiro, pelas frases; TODO) e o "novo_novo"; os outros são formato inválido |
 | `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base APIS (`incluir_memo_apis_mat_nao_encontradas`) |
-| `tags.py` | Todos os marcadores, grupos de estado e pares, `registrar_tags()`, `adicionar_tag()` (troca o estado ou o par), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()`, `conferir_marcadores()` e o placeholder de `remover_marcador` |
+| `tags.py` | Todos os marcadores, grupos de estado e pares, `registrar_tags()`, `adicionar_tag()` (troca o estado ou o par), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()` e `conferir_marcadores()` |
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos, data de corte do VELHO |
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
 | `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
-| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`) |
+| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; ainda fora do fluxo) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
 | `docs/gerar_fluxo.py` | Gera o `docs/fluxo.drawio` (`python docs/gerar_fluxo.py docs/fluxo.drawio`). O conteúdo do diagrama fica no script |
 | `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
@@ -379,10 +379,9 @@ Prefixo de todos os nomes: `Script v2 - `.
 - Os demais se acumulam: `0`, `1`, informativos (`1.1`, `1.2.1`), versão
   anterior (`1.2`, `1.2.2`, `1.3`, `1.4`) e manuais. Exceção: o `1.2.1` é
   removido quando as matrículas passam a constar na base APIS.
-- **TODO**: `remover_marcador(driver, marcador)` ainda não existe na
-  `sei_automacao` (`sei_automacao.processo`). Até existir, `tags.py` usa um
-  placeholder (`REMOCAO_DE_MARCADOR_DISPONIVEL = False`) e o `main.py` não
-  inicia.
+- A remoção usa `remover_marcador(driver, [marcador])` da `sei_automacao`
+  (`sei_automacao.processo`; recebe uma lista). Se o marcador não estiver
+  no processo, a biblioteca não faz nada.
 - O SEI limita o nome do marcador a **50 caracteres** (há teste).
 - **TODO**: editar no SEI os marcadores renomeados e cadastrar os novos
   (lista em [Pontos a validar](#pontos-a-validar-no-ambiente-real)) antes
@@ -486,12 +485,10 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 **Início**
 
-1. Sem `remover_marcador` na `sei_automacao`, para aqui (TODO em
-   [Marcadores](#marcadores-tagspy)).
-2. Lê `dados/inputs/processos_nao_processados.xlsx` (aba
+1. Lê `dados/inputs/processos_nao_processados.xlsx` (aba
    `processos_reais`, coluna `num_sei`).
-3. Carrega a base DISA, a base APIS e as bases do MANTIS.
-4. Faz login no SEI.
+2. Carrega a base DISA, a base APIS e as bases do MANTIS.
+3. Faz login no SEI.
 
 **Para cada processo**
 
@@ -579,7 +576,7 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      passou dele).
 7. Relatórios RP e RC em PDF de quem usou (em todos os casos; sem
    atendimento, nada é anexado). O número SEI dos RP vai para os memos à
-   DISA de validação.
+   DISA de validação, e o dos RC, para o memo DEPROC.
 8. **Base DISA × MANTIS** (processo inteiro):
    - **DISA sim, MANTIS RP sim**: `MemoDisaValidarConsta`, **➕ `1.9 -
      Aguarda DISA: Validar (Consta)`**; `prox_acao` = Assinar memo à DISA
@@ -591,7 +588,7 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      **➕ `1.9 - Aguarda DISA: Relat. s/ MANTIS`**; `prox_acao` = Assinar
      memo à DISA (sem MANTIS: solicita relatório) e encaminhar. Fim;
    - **DISA não, MANTIS RP não, MANTIS RC sim**: `MemoDeproc` (todos os
-     beneficiários; cita a rede credenciada; bloco `7697744`), **➕ `1.10 -
+     beneficiários; cita os relatórios RC; bloco `7697744`), **➕ `1.10 -
      Concluído: Memo DEPROC`**; `prox_acao` = Assinar memo DEPROC e
      encaminhar;
    - **DISA não, MANTIS RP não, MANTIS RC não** (nenhum uso):
@@ -677,8 +674,8 @@ perca os processos já tratados.
 
 ## Pontos a validar no ambiente real
 
-- **TODO**: implementar `remover_marcador(driver, marcador)` na
-  `sei_automacao` (`sei_automacao.processo`). Até lá o `main.py` não roda.
+- Confirmar no SEI real a remoção de marcadores (`remover_marcador` da
+  `sei_automacao`): troca de estado e de par e remoção do `1.2.1`.
 - **TODO**: no SEI (Gerenciar Marcador), **editar** os marcadores
   renomeados, antes da próxima execução:
   - `1 - Processo NOVO` → `1 - Tratado pelo Script`;
@@ -706,11 +703,25 @@ perca os processos já tratados.
   `None`.
 - **TODO**: revisar o rascunho do memo à APIS sem uso
   (`MemoApisSemUso.py`) e confirmar o assunto **antes** de criar o
-  primeiro memo; depois trocar `TEXTO_DEFINIDO` para `True`. Conferir o
-  parágrafo da rede credenciada no `MemoDeproc` (`_par_rede_credenciada`).
-- **TODO**: texto e assunto do memo `MemoApisPeriodoDependentes`. Depois
-  trocar `TEXTO_DEFINIDO` para `True`. Defina o assunto **antes** de criar
-  o primeiro memo: depois, o assunto não pode mudar.
+  primeiro memo; depois trocar `TEXTO_DEFINIDO` para `True`.
+- **TODO**: o `MemoDeproc` tem duas versões. Só rede credenciada
+  (`ASSUNTO_MEMO_DEPROC`): é a do fluxo atual. Duas redes
+  (`ASSUNTO_MEMO_DEPROC_DUAS_REDES`, com `doc_relatorio_disa` e
+  `doc_manifestacao_disa`): depende do processamento do retorno da DISA,
+  ainda não implementado. Confirmar o assunto e o texto da versão só com a
+  rede credenciada. `PADRAO_ASSUNTO_MEMO_DEPROC` aceita os dois assuntos e
+  o anterior.
+- **TODO**: `MemoApisComTodasAsInformacoes` depende do processamento do
+  retorno da DISA e da DEPROC, ainda não implementado. Confirmar no SEI real
+  que as tabelas são salvas (a `sei_automacao` não trata tabelas; o memo
+  manda o HTML no formato do editor do SEI, fora do `<p>`).
+- **TODO**: revisar o rascunho do memo `MemoApisPeriodoDependentes` e
+  confirmar o assunto **antes** de criar o primeiro memo (depois, ele não
+  pode mudar); depois trocar `TEXTO_DEFINIDO` para `True`. O memo pede novo
+  memorando com o período individualizado por matrícula, mas qualquer data
+  depois do campo `Matrícula dos dependentes` ainda conta como período
+  variável (`_detectar_periodo_dependentes`): falta definir como tratar o
+  memorando corrigido.
 - **TODO**: fluxo do processo VELHO (`main._separar_velho`).
 - **TODO**: indicar o modelo do memo da APIS com período por dependente e
   preencher as frases que o identificam e os padrões de extração

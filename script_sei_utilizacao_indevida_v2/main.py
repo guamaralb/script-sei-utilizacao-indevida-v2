@@ -34,7 +34,6 @@ from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
 from sessao_sei import abrir_sei
 from tags import (
-    REMOCAO_DE_MARCADOR_DISPONIVEL,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
@@ -185,11 +184,6 @@ def main():
     for diretorio in [DIR_DADOS, DIR_INPUTS, DIR_CONTROLE, DIR_LOG, DIR_UI_ANTIGAS_XLS, DIR_UTILIZACOES_MANTIS_PDF]:
         diretorio.mkdir(parents=True, exist_ok=True)
     configurar_logging(ARQ_LOG)
-
-    if not REMOCAO_DE_MARCADOR_DISPONIVEL:
-        msg = 'A sei_automacao ainda não tem remover_marcador (sei_automacao.processo), necessária para trocar os marcadores de estado. Execução não iniciada.'
-        logger.error(msg)
-        raise SystemExit(msg)
 
     registros_processados: list[dict] = []
     driver = None

@@ -10,21 +10,8 @@ anterior do fluxo) se acumulam.
 import logging
 
 from rede_propria import ErroAvaliacao
-from sei_automacao.processo import adicionar_marcador
+from sei_automacao.processo import adicionar_marcador, remover_marcador
 from selenium import webdriver
-
-try:
-    from sei_automacao.processo import remover_marcador
-
-    REMOCAO_DE_MARCADOR_DISPONIVEL = True
-except ImportError:
-    # TODO: implementar remover_marcador(driver, marcador) na sei_automacao
-    # (sei_automacao.processo). Enquanto não existir, o main.py não roda.
-    REMOCAO_DE_MARCADOR_DISPONIVEL = False
-
-    def remover_marcador(driver: webdriver.Remote, marcador: str) -> None:
-        raise NotImplementedError(f'remover_marcador não existe na sei_automacao (marcador "{marcador}")')
-
 
 logger = logging.getLogger(__name__)
 
@@ -312,7 +299,7 @@ def conferir_marcadores(registro) -> None:
 
 
 def remover_tag(driver: webdriver.Remote, registro, tag: str) -> None:
-    remover_marcador(driver, tag)
+    remover_marcador(driver, [tag])
     registro.marcadores_atuais.remove(tag)
     registro.marcadores_removidos.append(tag)
     logger.info(f'Marcador removido: "{tag}"')

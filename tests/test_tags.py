@@ -9,7 +9,7 @@ from Registro import RegistroMain
 @pytest.fixture
 def registro(monkeypatch):
     monkeypatch.setattr(tags, 'adicionar_marcador', lambda driver, tag: None)
-    monkeypatch.setattr(tags, 'remover_marcador', lambda driver, tag: None)
+    monkeypatch.setattr(tags, 'remover_marcador', lambda driver, marcadores: None)
     reg = RegistroMain(num_processo='PROC')
     tags.registrar_tags(reg, [f' {tags.TAG_PROCESSO_NOVO} ', tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA])
     return reg

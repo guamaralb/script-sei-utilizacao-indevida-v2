@@ -19,3 +19,12 @@ def identificar_doc(doc: DocArvore) -> str:
         return f'{doc["nome_arvore"]} {doc["unidade"].upper()} ({doc["numero_sei"]})'
     tipo, numero = tipo_numero.groups()
     return f'{tipo} {doc["unidade"].upper()} nº {numero} ({doc["numero_sei"]})'
+
+
+def citar_documentos(docs: tuple[str, ...], singular: str, plural: str) -> str:
+    """Relatórios citados pelo número SEI, com a preposição do trecho:
+    citar_documentos(('1',), 'no', 'nos') -> 'no documento 1';
+    citar_documentos(('1', '2'), 'no', 'nos') -> 'nos documentos 1 e 2'."""
+    if len(docs) == 1:
+        return f'{singular} documento {docs[0]}'
+    return f'{plural} documentos {", ".join(docs[:-1])} e {docs[-1]}'
