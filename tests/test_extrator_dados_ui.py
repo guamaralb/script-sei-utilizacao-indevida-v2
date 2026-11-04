@@ -4,7 +4,7 @@ from extrator_dados_ui import FormatoMemorandoInvalido, eh_modelo_periodo_por_de
 from tests.sei_falso import MEMO_APIS, MEMO_APIS_PERIODO_POR_DEPENDENTE
 
 MEMO_NOVO_NOVO = MEMO_APIS.format(extra='')
-LINHAS_DEPENDENTE_666 = 'Matrícula do dependente: 666\nPeríodo de apuração do dependente 666: 01/03/2024 a 30/04/2024.'
+LINHAS_DEPENDENTE_666 = 'Matrícula do dependente: 666\nPeríodo de apuração do dependente: 01/03/2024 a 30/04/2024.'
 MEMO_POR_DEPENDENTE = MEMO_APIS_PERIODO_POR_DEPENDENTE.format(extra=LINHAS_DEPENDENTE_666)
 
 
@@ -30,15 +30,16 @@ def test_memorandos_trazem_o_periodo_de_cada_dependente():
 
 
 def test_dependente_com_varios_intervalos():
-    extra = 'Matrícula do dependente: 666\nPeríodo de apuração do dependente 666: (01/03/2024 a 30/04/2024) e (01/06/2024 a 30/06/2024).'
+    extra = 'Matrícula do dependente: 666\nPeríodo de apuração do dependente: (01/03/2024 a 30/04/2024) e (01/06/2024 a 30/06/2024).'
     dados = extrair_dados_ui(MEMO_APIS_PERIODO_POR_DEPENDENTE.format(extra=extra))
 
     assert dados.periodos_por_dependente['666'] == '(01/03/2024 a 30/04/2024) e (01/06/2024 a 30/06/2024)'
 
 
-def test_matricula_com_grafias_diferentes_nas_duas_linhas():
-    extra = 'Matrícula do dependente: 0666\nPeríodo de apuração do dependente 666: 01/03/2024 a 30/04/2024.'
-    dados = extrair_dados_ui(MEMO_APIS_PERIODO_POR_DEPENDENTE.format(extra=extra))
+def test_resumo_das_matriculas_e_ignorado_quando_ha_duplas():
+    # O 777 só está no resumo: valem as duplas
+    texto = MEMO_POR_DEPENDENTE.replace('Nome completo: FULANO', 'Nome completo: FULANO\nMatrículas dos dependentes: 555; 666; 777')
+    dados = extrair_dados_ui(texto)
 
     assert dados.matriculas_dependentes == '555; 666'
 
@@ -60,11 +61,19 @@ def test_periodo_sem_a_matricula_do_dependente_e_periodo_variavel():
 @pytest.mark.parametrize(
     ('extra', 'mensagem'),
     [
-        ('Matrícula do dependente: 666', r"sem o período de apuração: \['666'\]"),
-        ('Período de apuração do dependente 666: 01/03/2024 a 30/04/2024.', r"sem a linha .*\['666'\]"),
-        ('Matrícula do dependente: 666\nPeríodo de apuração do dependente 777: 01/03/2024 a 30/04/2024.', r"sem o período de apuração: \['666'\]"),
-        ('Matrícula do dependente: 666\nPeríodo de apuração do dependente 666:', 'O dependente 666 está sem o período'),
-        ('Período de apuração do dependente 555: 01/05/2024 a 30/06/2024.', 'dois períodos'),
+        ('Matrícula do dependente: 666', 'fora de dupla'),
+        ('Período de apuração do dependente: 01/03/2024 a 30/04/2024.', 'fora de dupla'),
+        ('Matrícula do dependente: 666\nMatrícula do dependente: 777\nPeríodo de apuração do dependente: 01/03/2024 a 30/04/2024.', 'fora de dupla'),
+        ('Matrícula do dependente: 666; 777\nPeríodo de apuração do dependente: 01/03/2024 a 30/04/2024.', 'única matrícula'),
+        ('Matrícula do dependente: 666 777\nPeríodo de apuração do dependente: 01/03/2024 a 30/04/2024.', 'única matrícula'),
+        ('Matrícula do dependente:\nPeríodo de apuração do dependente: 01/03/2024 a 30/04/2024.', 'única matrícula'),
+        ('Matrícula do dependente: 666\nPeríodo de apuração do dependente:', 'número par'),
+        ('Matrícula do dependente: 666\nPeríodo de apuração do dependente: 01/03/2024.', 'número par'),
+        ('Matrícula do dependente: 666\nPeríodo de apuração do dependente: 01/03/2024 a 30/04/2024 e 01/05/2024.', 'número par'),
+        ('Matrícula do dependente: 666\nPeríodo de apuração do dependente: 03/2024 a 04/2024.', 'número par'),
+        ('Matrícula do dependente: 666\nPeríodo de apuração do dependente: 01/03/2024 e 30/04/2024.', 'formato não reconhecido'),
+        ('Matrícula do dependente: 666\nPeríodo de apuração do dependente: 30/04/2024 a 01/03/2024.', 'início depois do fim'),
+        ('Matrícula do dependente: 555\nPeríodo de apuração do dependente: 01/05/2024 a 30/06/2024.', 'dois períodos'),
     ],
 )
 def test_dependentes_inconsistentes_sao_formato_invalido(extra, mensagem):

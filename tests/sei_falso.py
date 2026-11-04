@@ -48,7 +48,7 @@ Nome completo: FULANO
 Matrícula: 1234567 / 8
 Período de apuração do titular: (01/2024 a 06/2024)
 Matrícula do dependente: 555
-Período de apuração do dependente 555: 01/01/2023 a 28/02/2023.
+Período de apuração do dependente: 01/01/2023 a 28/02/2023.
 {extra}
 Documento assinado eletronicamente"""
 

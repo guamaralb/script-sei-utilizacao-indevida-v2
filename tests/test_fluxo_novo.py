@@ -323,7 +323,7 @@ def test_dependente_sem_periodo_no_modelo_por_dependente_para_com_memo_a_apis(se
     registro = sei.passar(bases())
 
     assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Formato Inválido']
-    assert '666' in registro.motivo_formato_invalido
+    assert 'fora de dupla' in registro.motivo_formato_invalido
 
 
 # --- Marcadores -----------------------------------------------------------------

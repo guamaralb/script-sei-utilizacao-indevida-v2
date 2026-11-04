@@ -320,7 +320,7 @@ col_processar = Coluna(
         F(
             'obter_dados_ui()',
             'Usa o <b>último</b> memo da APIS destinado à GEACS; os documentos depois dele são a rodada. '
-            'Procura <b>primeiro o modelo com período por dependente</b> (linha <i>Período de apuração do dependente X:</i>) e, se não for ele, analisa como novo_novo',
+            'Procura <b>primeiro o modelo com período por dependente</b> (linha <i>Período de apuração do dependente:</i>; duplas matrícula + período) e, se não for ele, analisa como novo_novo',
             chama='obter_memos_apis_para_geacs, validar_template, extrair_dados_ui',
         ),
         P(
