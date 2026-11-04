@@ -1,5 +1,5 @@
 import re
-from typing import Literal
+from typing import Literal, get_args
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 
@@ -16,7 +16,10 @@ class FormatoMemorandoInvalido(ValueError):
 
 _PADRAO_REMETENTE = re.compile(r'IPSEMG/APIS-UTILIZA[ÇC][ÃA]O', flags=re.IGNORECASE)
 
-# --- Modelo "novo_novo" (único aceito) ---
+ModeloMemoApis = Literal['periodo_por_dependente', 'novo_novo']
+MODELO_PERIODO_POR_DEPENDENTE, MODELO_NOVO_NOVO = get_args(ModeloMemoApis)
+
+# --- Modelo "novo_novo" ---
 # O que distingue o novo_novo do novo_velho (mesmos campos) é o pedido de
 # atualização do levantamento. Exemplo: Memorando IPSEMG/APIS-UTILIZAÇÃO
 # nº 2627/2026.
@@ -33,6 +36,24 @@ _CAMPOS_MODELO_NOVO: dict[str, re.Pattern] = {
     'campo "Matrícula" (titular)': _PADRAO_MATRICULA_TITULAR_NOVO,
     'campo "Período titular"': _PADRAO_PERIODO_TITULAR_NOVO,
 }
+
+# --- Modelo "periodo_por_dependente" (período de apuração de cada
+# dependente) ---
+# Procurado ANTES do novo_novo: o memo é deste modelo se o texto tiver
+# TODAS as frases abaixo; senão, é analisado como hoje (novo_novo e os
+# modelos inválidos).
+# TODO: indicar o modelo (exemplo de memorando) e preencher as frases que o
+# identificam. Enquanto a lista estiver vazia, o modelo nunca é
+# identificado.
+_FRASES_MODELO_PERIODO_POR_DEPENDENTE: tuple[re.Pattern, ...] = ()
+# TODO: ajustar ao modelo. Supõe os campos do titular iguais aos do
+# novo_novo e uma linha por dependente, com a matrícula e o período:
+# "Matrícula do dependente: 555 - Período de apuração: 01/2024 a 06/2024".
+_CAMPOS_MODELO_PERIODO_POR_DEPENDENTE: dict[str, re.Pattern] = _CAMPOS_MODELO_NOVO
+_PADRAO_PERIODO_POR_DEPENDENTE = re.compile(
+    r'Matr[íi]cula do dependente:\s*(\d[\d./\- ]*?)\s*[-–;,|]\s*Per[íi]odo de apura[çc][ãa]o:\s*(.+)',
+    flags=re.IGNORECASE,
+)
 
 # --- Modelos "novo_velho" e "velho" (não são mais aceitos; só identificados
 # para a mensagem de erro) ---
@@ -59,14 +80,34 @@ _PADRAO_MATRICULAS_DEPENDENTES_NOVO = re.compile(
 _PADRAO_SEPARADOR_MATRICULAS = re.compile(r'\s+e\s+|[;,:/.]+|\s+', flags=re.IGNORECASE)
 
 
-def validar_template(doc_text: str) -> Literal['novo_novo']:
-    """Só o modelo "novo_novo" é aceito. Os modelos "novo_velho" (mesmos
-    campos, sem o pedido de atualização do levantamento) e "velho" (campo
-    "Segurado(a)") são formato inválido."""
-    ausentes = [descricao for descricao, padrao in _CAMPOS_MODELO_NOVO.items() if not padrao.search(doc_text)]
+def eh_modelo_periodo_por_dependente(doc_text: str) -> bool:
+    """O texto tem todas as frases do modelo com período por dependente
+    (nunca, enquanto as frases não forem indicadas)."""
+    frases = _FRASES_MODELO_PERIODO_POR_DEPENDENTE
+    return bool(frases) and all(frase.search(doc_text) for frase in frases)
+
+
+def _campos_ausentes(campos: dict[str, re.Pattern], doc_text: str) -> list[str]:
+    return [descricao for descricao, padrao in campos.items() if not padrao.search(doc_text)]
+
+
+def validar_template(doc_text: str) -> ModeloMemoApis:
+    """O modelo com período por dependente é procurado primeiro (pelas
+    frases que o identificam). Senão, só o modelo "novo_novo" é aceito. Os
+    modelos "novo_velho" (mesmos campos, sem o pedido de atualização do
+    levantamento) e "velho" (campo "Segurado(a)") são formato inválido."""
+    if eh_modelo_periodo_por_dependente(doc_text):
+        ausentes = _campos_ausentes(_CAMPOS_MODELO_PERIODO_POR_DEPENDENTE, doc_text)
+        if ausentes:
+            raise FormatoMemorandoInvalido(f'O memorando está no modelo com período por dependente, mas faltam os campos {ausentes}')
+        if not _PADRAO_PERIODO_POR_DEPENDENTE.search(doc_text):
+            raise FormatoMemorandoInvalido('O memorando está no modelo com período por dependente, mas não traz o período de nenhum dependente')
+        return MODELO_PERIODO_POR_DEPENDENTE
+
+    ausentes = _campos_ausentes(_CAMPOS_MODELO_NOVO, doc_text)
     if not ausentes:
         if _PADRAO_ATUALIZACAO_LEVANTAMENTO.search(doc_text):
-            return 'novo_novo'
+            return MODELO_NOVO_NOVO
         raise FormatoMemorandoInvalido('O memorando está no modelo "novo_velho" (sem o pedido de atualização do levantamento), que não é mais aceito')
 
     if all(padrao.search(doc_text) for padrao in _MARCADORES_MODELO_VELHO.values()):
@@ -115,8 +156,35 @@ def _detectar_periodo_dependentes(doc_text: str) -> bool:
     return _PADROES_DATA.search(texto_janela) is not None
 
 
+def _extrair_periodos_por_dependente(doc_text: str) -> dict[str, str]:
+    """Matrícula do dependente (como no memo) -> período de apuração."""
+    periodos = {}
+    for match in _PADRAO_PERIODO_POR_DEPENDENTE.finditer(doc_text):
+        matricula, periodo = match.group(1).strip(), match.group(2).strip()
+        if matricula in periodos and periodos[matricula] != periodo:
+            raise FormatoMemorandoInvalido(f'O dependente {matricula} aparece com dois períodos de apuração diferentes')
+        periodos[matricula] = periodo
+    return periodos
+
+
+def _extrair_dados_ui_periodo_por_dependente(doc_text: str) -> DadosUI:
+    """Os períodos dos dependentes vêm definidos no memo: o fluxo não para
+    pelo período variável (periodo_dependentes = False) e o MANTIS usa o
+    período de cada um."""
+    periodos = _extrair_periodos_por_dependente(doc_text)
+    return DadosUI(
+        nome_titular=_extrair_campo(_PADRAO_NOME_TITULAR_NOVO, doc_text, 'Nome completo'),
+        matricula_titular=_extrair_campo(_PADRAO_MATRICULA_TITULAR_NOVO, doc_text, 'Matrícula'),
+        periodo_titular=_extrair_campo(_PADRAO_PERIODO_TITULAR_NOVO, doc_text, 'Período de apuração do titular'),
+        matriculas_dependentes='; '.join(periodos),
+        periodo_dependentes=False,
+        periodos_por_dependente=periodos,
+    )
+
+
 def extrair_dados_ui(doc_text: str) -> DadosUI:
-    validar_template(doc_text)
+    if validar_template(doc_text) == MODELO_PERIODO_POR_DEPENDENTE:
+        return _extrair_dados_ui_periodo_por_dependente(doc_text)
 
     return DadosUI(
         nome_titular=_extrair_campo(_PADRAO_NOME_TITULAR_NOVO, doc_text, 'Nome completo'),

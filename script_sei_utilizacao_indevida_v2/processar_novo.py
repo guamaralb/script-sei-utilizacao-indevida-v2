@@ -98,8 +98,10 @@ def obter_dados_ui(driver: webdriver.Remote, registro: RegistroMain) -> DadosUI:
     destinado à GEACS. Os documentos depois dele são a rodada atual
     (registro.docs_rodada).
 
+    O modelo com período por dependente é procurado antes do novo_novo.
     Levanta MemoApisNaoEncontrado (nenhum) ou FormatoMemorandoInvalido
-    (qualquer modelo diferente do novo_novo)."""
+    (modelo com período por dependente incompleto ou qualquer outro modelo
+    diferente do novo_novo)."""
     memos_para_geacs = obter_memos_apis_para_geacs(driver, registro.tds_docs)
     registro.memos_apis_geacs_sei = [memo['numero_sei'] for memo, _ in memos_para_geacs]
     if not memos_para_geacs:
@@ -123,13 +125,14 @@ def obter_dados_ui(driver: webdriver.Remote, registro: RegistroMain) -> DadosUI:
         raise
 
     registro.dados_ui = dados_ui
+    periodos_deps = f' | Períodos por dependente: {dados_ui.periodos_por_dependente}' if dados_ui.periodos_por_dependente else ''
     logger.info(
         f'Instruções da APIS extraídas (modelo {registro.modelo_memo_apis}) | '
         f'Titular: {dados_ui.matricula_titular} '
         f'| Período titular: {dados_ui.periodo_titular} | '
         f'Dependentes: {dados_ui.matriculas_dependentes or "-"} | '
         f'Período variável p/ dependentes: '
-        f'{"sim" if dados_ui.periodo_dependentes else "não"}'
+        f'{"sim" if dados_ui.periodo_dependentes else "não"}{periodos_deps}'
     )
     return dados_ui
 
@@ -405,7 +408,7 @@ def _avaliar_mantis_e_criar_docs(
 
     Em todos os casos, os relatórios RP e RC de quem usou entram antes do
     memo. Quem vai para a DISA não vai para a DEPROC."""
-    mantis = avaliar_uso_rede_propria_mantis(matriculas.titular, matriculas.dependentes, dados_ui.periodo_titular, bases_mantis)
+    mantis = avaliar_uso_rede_propria_mantis(matriculas.titular, matriculas.dependentes, dados_ui.periodo_titular, bases_mantis, dados_ui.periodos_por_dependente)
     _registrar_uso_mantis(registro, mantis)
     registro.mats_uso_mantis_alem_disa = usos_mantis_alem_disa(uso_disa, mantis.rede_propria)
     propria, credenciada = mantis.rede_propria, mantis.rede_credenciada

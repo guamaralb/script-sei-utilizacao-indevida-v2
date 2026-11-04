@@ -228,6 +228,8 @@ class RegistroMain(RegistroBase):
             'matriculas_dependentes': dados_ui.matriculas_dependentes if dados_ui else None,
             # Só indica se há período variável (sem as datas)
             'tem_periodo_var_deps': bool(periodo_deps) if dados_ui else None,
+            # Modelo com período por dependente: "555: 01/2024 a 06/2024; ..."
+            'periodos_por_dependente': '; '.join(f'{m}: {p}' for m, p in dados_ui.periodos_por_dependente.items()) if dados_ui and dados_ui.periodos_por_dependente else None,
         }
         # Logo depois das colunas de resultado (até "erro")
         itens = list(dados.items())

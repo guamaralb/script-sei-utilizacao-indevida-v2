@@ -15,9 +15,13 @@ class DadosUI:
     nome_titular: str
     matricula_titular: str
     periodo_titular: str
-    # Há datas específicas para os dependentes no memo da APIS
+    # Há datas específicas para os dependentes no memo da APIS (o fluxo para
+    # com memo à APIS)
     periodo_dependentes: bool
     matriculas_dependentes: str | None = None
+    # Modelo com período por dependente: matrícula do dependente (como no
+    # memo) -> período de apuração. None nos outros modelos
+    periodos_por_dependente: dict[str, str] | None = None
 
     @property
     def nome_titular_iniciais(self) -> str:
@@ -31,6 +35,8 @@ class DadosUI:
             infos_dep_html = f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Matrículas dos dependentes:</strong> {self.matriculas_dependentes}</p>'
             if self.periodo_dependentes:
                 infos_dep_html += '<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração dos dependentes:</strong> [ANALISAR]</p>'
+            for matricula, periodo in (self.periodos_por_dependente or {}).items():
+                infos_dep_html += f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração do dependente {matricula}:</strong> {periodo}</p>'
 
         return (
             f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Iniciais do titular:</strong> {self.nome_titular_iniciais}</p>'

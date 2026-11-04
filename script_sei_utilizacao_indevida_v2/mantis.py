@@ -3,8 +3,9 @@ credenciada).
 
 Cada arquivo tem as abas TITULARES e DEPENDENTES, com uma linha por item
 atendido. Conta como uso o atendimento com data dentro do período de
-apuração do titular (o fluxo para antes do MANTIS quando há período
-variável para dependentes, então o período do titular vale para todos).
+apuração do titular, que vale também para os dependentes (o fluxo para
+antes do MANTIS quando há período variável para dependentes). Exceção: no
+modelo de memo com período por dependente, cada dependente tem o seu.
 
 Os atendimentos de quem usou vão para os relatórios em PDF
 (relatorios_mantis): os da rede própria, para a DISA validar; os da rede
@@ -212,10 +213,11 @@ def _converter_inicio(texto: str, fim: date) -> date:
     return date(fim.year, partes[0], 1)
 
 
-def interpretar_periodo(texto: str) -> tuple[Intervalo, ...]:
+def interpretar_periodo(texto: str, descricao: str = 'do titular') -> tuple[Intervalo, ...]:
     """Converte o período de apuração do memo da APIS em intervalos de
     datas. Qualquer trecho com número fora de um intervalo reconhecido
-    gera ErroAvaliacao, para não deixar uso fora da consulta."""
+    gera ErroAvaliacao, para não deixar uso fora da consulta. descricao
+    identifica o período na mensagem de erro ("do titular")."""
     texto = str(texto or '')
     intervalos = []
     try:
@@ -223,14 +225,14 @@ def interpretar_periodo(texto: str) -> tuple[Intervalo, ...]:
             fim = _converter_fim(match.group(2))
             inicio = _converter_inicio(match.group(1), fim)
             if inicio > fim:
-                raise ErroAvaliacao(f'Período de apuração do titular com início depois do fim: "{match.group(0)}"')
+                raise ErroAvaliacao(f'Período de apuração {descricao} com início depois do fim: "{match.group(0)}"')
             intervalos.append(Intervalo(inicio, fim))
     except ValueError as e:
-        raise ErroAvaliacao(f'Período de apuração do titular com data inválida: "{texto}"') from e
+        raise ErroAvaliacao(f'Período de apuração {descricao} com data inválida: "{texto}"') from e
 
     restante = _PADRAO_INTERVALO.sub('', texto)
     if not intervalos or re.search(r'\d', restante):
-        raise ErroAvaliacao(f'Período de apuração do titular em formato não reconhecido: "{texto}"')
+        raise ErroAvaliacao(f'Período de apuração {descricao} em formato não reconhecido: "{texto}"')
     return tuple(intervalos)
 
 
@@ -269,13 +271,13 @@ def _no_periodo(atendimentos: tuple[Atendimento, ...], intervalos: tuple[Interva
     return [a for a in atendimentos if any(i.contem(a.data) for i in intervalos)]
 
 
-def _consultar(base: BaseMantis, titular: str, dependentes: tuple[str, ...], intervalos: tuple[Intervalo, ...]) -> UsoMantis:
+def _consultar(base: BaseMantis, titular: str, intervalos_titular: tuple[Intervalo, ...], intervalos_dependentes: dict[str, tuple[Intervalo, ...]]) -> UsoMantis:
     chave_titular = _sem_dv(titular)
-    tit_atendimentos = _no_periodo(base.titulares.get(chave_titular, ()), intervalos, f'o titular {titular} ({base.nome})')
+    tit_atendimentos = _no_periodo(base.titulares.get(chave_titular, ()), intervalos_titular, f'o titular {titular} ({base.nome})')
 
     deps_que_usaram = []
     deps_atendimentos = []
-    for dependente in dependentes:
+    for dependente, intervalos in intervalos_dependentes.items():
         atendimentos = _no_periodo(base.dependentes.get(dependente, ()), intervalos, f'o dependente {dependente} ({base.nome})')
         if atendimentos:
             deps_que_usaram.append(dependente)
@@ -296,12 +298,19 @@ def avaliar_uso_rede_propria_mantis(
     dependentes: tuple[str, ...],
     periodo_titular: str,
     bases: BasesMantis,
+    periodos_por_dependente: dict[str, str] | None = None,
 ) -> AvaliacaoMantis:
-    """titular (com DV) e dependentes (sem DV) já normalizados."""
+    """titular (com DV) e dependentes (sem DV) já normalizados.
+
+    periodos_por_dependente (modelo com período por dependente): matrícula
+    do dependente, como no memo, -> período de apuração. O dependente que
+    não está nele usa o período do titular."""
     intervalos = interpretar_periodo(periodo_titular)
+    periodos = {normalizar_matricula(m): p for m, p in (periodos_por_dependente or {}).items()}
+    intervalos_dependentes = {d: interpretar_periodo(periodos[d], f'do dependente {d}') if d in periodos else intervalos for d in dependentes}
     avaliacao = AvaliacaoMantis(
-        rede_propria=_consultar(bases.rede_propria, titular, dependentes, intervalos),
-        rede_credenciada=_consultar(bases.rede_credenciada, titular, dependentes, intervalos),
+        rede_propria=_consultar(bases.rede_propria, titular, intervalos, intervalos_dependentes),
+        rede_credenciada=_consultar(bases.rede_credenciada, titular, intervalos, intervalos_dependentes),
     )
     for nome, uso in (('rede própria', avaliacao.rede_propria), ('rede credenciada', avaliacao.rede_credenciada)):
         logger.info(

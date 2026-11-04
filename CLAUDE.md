@@ -61,7 +61,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `rede_propria.py` | Carga da base DISA e da base APIS, normalização de matrícula, `verificar_base_apis()` (existência), `avaliar_uso_rede_propria_disa()` (uso), `ErroAvaliacao` |
 | `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada, com os atendimentos), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
-| `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS (só o modelo "novo_novo"; os outros são formato inválido) |
+| `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS: o modelo com período por dependente (procurado primeiro, pelas frases; TODO) e o "novo_novo"; os outros são formato inválido |
 | `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base APIS (`incluir_memo_apis_mat_nao_encontradas`) |
 | `tags.py` | Todos os marcadores, grupos de estado e pares, `registrar_tags()`, `adicionar_tag()` (troca o estado ou o par), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()`, `conferir_marcadores()` e o placeholder de `remover_marcador` |
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
@@ -171,12 +171,28 @@ a API dela.
   `TRECHOS_DESTINO_GEACS` ("Solicita-se à Gerência de Auditoria e Contas da
   Saúde - GEACS", "Para: Bruna Miller Lavarini" ou "Para: Bruna Miiller
   Lavarini"; espaços e maiúsculas são ignorados).
-- Só o modelo **novo_novo** é válido (exemplo: Memorando
+- Além do modelo com período por dependente (abaixo), só o modelo
+  **novo_novo** é válido (exemplo: Memorando
   IPSEMG/APIS-UTILIZAÇÃO nº 2627/2026). Ele tem os campos `Nome completo`,
   `Matrícula`, `Período de apuração do titular` e `Matrícula dos
   dependentes` **e** o pedido de "atualização do levantamento de
   utilização". Sem esse pedido é o modelo novo_velho; com "Segurado(a)", o
   velho. Os dois são formato inválido.
+- **Modelo com período por dependente** (`periodo_por_dependente`): cada
+  dependente tem o seu período de apuração. É procurado **antes** do
+  novo_novo: o memo é deste modelo se o texto tiver **todas** as frases de
+  `_FRASES_MODELO_PERIODO_POR_DEPENDENTE`; senão, é analisado como hoje
+  (novo_novo ou formato inválido). Identificado, mas sem os campos do
+  titular, sem o período de nenhum dependente ou com dependente com dois
+  períodos: formato inválido. Os períodos ficam em
+  `DadosUI.periodos_por_dependente` (matrícula como no memo → período) e
+  vão para o MANTIS; o fluxo **não** para pelo período variável (sem `1.1`
+  e `1.7`). **TODO**: ainda não há modelo. Indicar as frases e ajustar os
+  padrões (`_CAMPOS_MODELO_PERIODO_POR_DEPENDENTE`,
+  `_PADRAO_PERIODO_POR_DEPENDENTE`, hoje um palpite: campos do titular do
+  novo_novo e uma linha `Matrícula do dependente: 555 - Período de
+  apuração: 01/2024 a 06/2024` por dependente). Enquanto a lista de frases
+  estiver vazia, o modelo nunca é identificado.
 - Matrícula do titular com DV separado por barra (`1289612 / 8`) é aceita.
 - O último memo da APIS destinado à GEACS fica em `registro.memo_apis`
   (`DocArvore`: `numero_sei`, `nome_arvore` e `unidade`, como na árvore) e
@@ -224,7 +240,9 @@ a API dela.
     `VALOR_A_PAGAR`, `NOME_PRESTADOR` e `PROCEDIMENTO`.
   - Conta como uso o atendimento com data dentro do **período de apuração
     do titular** (vale para os dependentes, pois o processo com período
-    variável para antes do MANTIS). Titular e dependentes são avaliados.
+    variável para antes do MANTIS). Exceção: no modelo com período por
+    dependente, cada dependente usa o seu (`periodos_por_dependente`; quem
+    não está nele usa o do titular). Titular e dependentes são avaliados.
   - Formatos de período aceitos: `01/08/2023 a 12/06/2024`,
     `09/2023 a 06/2024` e `02 a 06/2024`, com vários intervalos (entre
     parênteses ou não). Qualquer outro número no texto, data inválida ou
@@ -521,8 +539,11 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      memorando para a GEACS) e encaminhar. Fim.
 2. `validar_template` e `extrair_dados_ui`: nome e matrícula do titular,
    período do titular, matrículas dos dependentes e se há período variável
-   para dependentes.
-   - **Formato inválido** (qualquer modelo diferente do novo_novo)? Cria
+   para dependentes. Primeiro procura o modelo com período por dependente
+   (pelas frases; TODO): se for ele, os períodos de cada dependente são
+   extraídos e não há período variável. Senão, analisa como novo_novo.
+   - **Formato inválido** (modelo com período por dependente incompleto ou
+     qualquer outro modelo diferente do novo_novo)? Cria
      `MemoApisFormatoInvalido` (bloco `7730341`), **➕ `1.5 - Aguarda APIS:
      Formato Inválido`**, `prox_acao` = Assinar memo à APIS (formato do
      memorando inválido) e encaminhar. Motivo na coluna
@@ -541,11 +562,13 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      Base DISA: Não Usou RP`**.
    - **➕ `1.6 - Avaliado Uso Rede Própria DISA`** (se o estado ainda não
      passou dele).
-5. **Há período variável para dependentes?** Sim: **➕ `1.1`**,
+5. **Há período variável para dependentes?** (nunca no modelo com período
+   por dependente) Sim: **➕ `1.1`**,
    `MemoApisPeriodoDependentes` (bloco `7730905`), **➕ `1.7 - Aguarda APIS:
    Período Deps`**, `prox_acao` = Assinar memo à APIS (período dos
    dependentes) e encaminhar. Fim.
-6. `avaliar_uso_rede_propria_mantis` (período do titular; rede própria e
+6. `avaliar_uso_rede_propria_mantis` (período do titular ou, no modelo com
+   período por dependente, o de cada dependente; rede própria e
    rede credenciada, registradas na planilha de controle; colunas
    `caso_disa_mantis` e `mats_uso_mantis_alem_disa`). O memo do caso
    ([tabela](#decisão-base-disa--mantis)) é montado (texto pendente ou
@@ -615,7 +638,8 @@ perca os processos já tratados.
   **Não renomeie as colunas existentes** (por isso as da base APIS
   continuam com `base_geral`).
 - Rastreabilidade: `velho`, `memos_velho_sei`, `memo_apis_sei`,
-  `memos_apis_geacs_sei`, `modelo_memo_apis`, `motivo_formato_invalido`,
+  `memos_apis_geacs_sei`, `modelo_memo_apis` (`periodo_por_dependente` ou
+  `novo_novo`), `motivo_formato_invalido`,
   `memo_apis_sem_memo_sei`, `memo_apis_formato_invalido_sei`,
   `memo_apis_periodo_deps_sei`, `memo_apis_sem_uso_sei`, `memo_disa_sei`, `memo_deproc_sei`,
   `relatorios_incluidos`, `relatorios_na_arvore`, `marcadores_sei` (lidos
@@ -627,7 +651,8 @@ perca os processos já tratados.
   `deps_que_usaram_mantis_rede_propria`,
   `deps_valor_total_uso_mantis_rede_propria`, as mesmas para
   `rede_credenciada`, `mats_uso_mantis_alem_disa` e `caso_disa_mantis`.
-- `tem_periodo_var_deps` (sim/não).
+- `tem_periodo_var_deps` (sim/não) e `periodos_por_dependente` (modelo com
+  período por dependente: `555: 01/2024 a 06/2024; ...`).
 - Matrículas não encontradas na base APIS:
   `titular_nao_encontrado_base_geral` e `deps_nao_encontrados_base_geral`.
 - Formatação: cabeçalho congelado e com filtro; linha com erro em vermelho
@@ -687,6 +712,10 @@ perca os processos já tratados.
   trocar `TEXTO_DEFINIDO` para `True`. Defina o assunto **antes** de criar
   o primeiro memo: depois, o assunto não pode mudar.
 - **TODO**: fluxo do processo VELHO (`main._separar_velho`).
+- **TODO**: indicar o modelo do memo da APIS com período por dependente e
+  preencher as frases que o identificam e os padrões de extração
+  (`extrator_dados_ui.py`; o exemplo dos testes, em `tests/sei_falso.py`,
+  é provisório).
 - **TODO**: confirmar que o pedido de "atualização do levantamento de
   utilização" é o que distingue o modelo novo_novo do novo_velho
   (`_PADRAO_ATUALIZACAO_LEVANTAMENTO` em `extrator_dados_ui.py`).

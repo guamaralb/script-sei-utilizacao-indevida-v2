@@ -318,7 +318,12 @@ col_processar = Coluna(
     '3 · processar_novo()',
     'Memo da APIS, base APIS e base DISA, e as paradas com memo à APIS. Na retomada, as etapas já feitas são puladas (_etapa_feita)',
     [
-        F('obter_dados_ui()', 'Usa o <b>último</b> memo da APIS destinado à GEACS; os documentos depois dele são a rodada', chama='obter_memos_apis_para_geacs, validar_template, extrair_dados_ui'),
+        F(
+            'obter_dados_ui()',
+            'Usa o <b>último</b> memo da APIS destinado à GEACS; os documentos depois dele são a rodada. '
+            'Procura <b>primeiro o modelo com período por dependente</b> (pelas frases; TODO: modelo ainda não indicado) e, se não for ele, analisa como novo_novo',
+            chama='obter_memos_apis_para_geacs, validar_template, extrair_dados_ui',
+        ),
         P(
             'Nenhum memo da APIS<br>para a GEACS?',
             [
@@ -330,7 +335,7 @@ col_processar = Coluna(
             ],
         ),
         P(
-            'Formato inválido?<br>(não é novo_novo)',
+            'Formato inválido?<br>(período por dependente incompleto<br>ou não é novo_novo)',
             [
                 F('_parar_formato_invalido()', chama='_parar_com_memo'),
                 MEMO('MemoApisFormatoInvalido', 7730341),
@@ -368,7 +373,7 @@ col_processar = Coluna(
             M('1.6 - Avaliado Uso Rede Própria DISA<br><span style="font-weight:normal">pulado na retomada; remove o estado anterior</span>'),
         ),
         P(
-            'Período variável<br>para dependentes?',
+            'Período variável<br>para dependentes?<br><span style="font-weight:normal">(nunca no modelo com período por dependente)</span>',
             [
                 F('_parar_periodo_variavel()', chama='_parar_com_memo'),
                 M('1.1 - Período Variável p/ Dependentes'),
@@ -388,7 +393,7 @@ col_mantis = Coluna(
     'a rede credenciada (RC) só separa DEPROC de APIS quando ninguém usou a RP. Cada caso tem o seu memo e o seu bloco. '
     '<b>Os relatórios RP e RC de quem usou entram em todos os casos</b>; <b>quem vai para a DISA não vai para a DEPROC</b>',
     [
-        F('avaliar_uso_rede_propria_mantis()', 'Atendimentos no período do titular, nas duas redes', chama='interpretar_periodo'),
+        F('avaliar_uso_rede_propria_mantis()', 'Atendimentos no período do titular (no modelo com período por dependente, no de cada dependente), nas duas redes', chama='interpretar_periodo'),
         P('Período ou data<br>de atendimento<br>inválidos?', [E('<b>ErroAvaliacao</b>')]),
         F('_registrar_uso_mantis() · usos_mantis_alem_disa()', 'Planilha: uso nas duas redes, caso_disa_mantis e mats_uso_mantis_alem_disa (RP no MANTIS e fora da base DISA)'),
         S('Escolhe o memo pelo caso (abaixo) e o monta <b>antes de qualquer ação no SEI</b>'),
