@@ -7,12 +7,10 @@ from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar_texto_definido
 from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import REFERENCIA_PLANILHA_REDE_PROPRIA
 
-# TODO: revisar o texto (rascunho) e trocar para True
-TEXTO_DEFINIDO = False
+TEXTO_DEFINIDO = True
 
 # Não altere o assunto depois de criar memos: é por ele que o script os
 # encontra na árvore.
-# TODO: confirmar o assunto antes de criar o primeiro memo
 ASSUNTO_MEMO_APIS_SEM_USO = 'Ausência de utilização da assistência à saúde - utilização indevida da assistência à saúde'
 
 PADRAO_ASSUNTO_MEMO_APIS_SEM_USO = re.compile(re.escape(ASSUNTO_MEMO_APIS_SEM_USO), flags=re.IGNORECASE)

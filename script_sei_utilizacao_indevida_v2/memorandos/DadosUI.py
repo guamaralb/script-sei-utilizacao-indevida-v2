@@ -19,8 +19,8 @@ class DadosUI:
     # com memo à APIS)
     periodo_dependentes: bool
     matriculas_dependentes: str | None = None
-    # Modelo com período por dependente: matrícula do dependente (como no
-    # memo) -> período de apuração. None nos outros modelos
+    # Modelo com período por dependente: matrícula do dependente
+    # (normalizada) -> período de apuração. None nos outros modelos
     periodos_por_dependente: dict[str, str] | None = None
 
     @property
@@ -46,7 +46,8 @@ class DadosUI:
 
     def periodo_dependentes_html(self) -> str:
         """O período do titular vale para os dependentes: o processo com
-        período variável para antes da DEPROC."""
-        if not self.matriculas_dependentes or self.periodo_dependentes:
+        período variável para antes da DEPROC. No modelo com período por
+        dependente, os períodos já estão em texto_levantamento_html."""
+        if not self.matriculas_dependentes or self.periodo_dependentes or self.periodos_por_dependente:
             return ''
         return f'<p class="Texto_Justificado_Recuo_Primeira_Linha"><strong>Período de apuração dos dependentes:</strong> {self.periodo_titular}</p>'
