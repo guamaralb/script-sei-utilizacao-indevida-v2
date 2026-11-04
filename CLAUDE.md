@@ -198,7 +198,8 @@ a API dela.
   períodos ficam em `DadosUI.periodos_por_dependente` (matrícula normalizada →
   período), os dependentes vão para as bases APIS, DISA e MANTIS como nos
   outros modelos, e o MANTIS usa o período de cada um. O fluxo **não** para
-  pelo período variável (sem `1.1` e `1.7`).
+  pelo período variável (sem `1.1` e `1.7`). É por este modelo que passa o
+  memorando corrigido pedido no `MemoApisPeriodoDependentes`.
 - Matrícula do titular com DV separado por barra (`1289612 / 8`) é aceita.
 - O último memo da APIS destinado à GEACS fica em `registro.memo_apis`
   (`DocArvore`: `numero_sei`, `nome_arvore` e `unidade`, como na árvore) e
@@ -708,9 +709,6 @@ perca os processos já tratados.
 - **TODO**: blocos dos três memos à DISA (`BLOCO_MEMO_DISA_*`) e do memo
   à APIS sem uso (`BLOCO_MEMO_APIS_SEM_USO`) em `constantes.py`, hoje
   `None`.
-- **TODO**: revisar o rascunho do memo à APIS sem uso
-  (`MemoApisSemUso.py`) e confirmar o assunto **antes** de criar o
-  primeiro memo; depois trocar `TEXTO_DEFINIDO` para `True`.
 - **TODO**: o `MemoDeproc` tem duas versões. Só rede credenciada
   (`ASSUNTO_MEMO_DEPROC`): é a do fluxo atual. Duas redes
   (`ASSUNTO_MEMO_DEPROC_DUAS_REDES`, com `doc_relatorio_disa` e
@@ -722,11 +720,6 @@ perca os processos já tratados.
   retorno da DISA e da DEPROC, ainda não implementado. Confirmar no SEI real
   que as tabelas são salvas (a `sei_automacao` não trata tabelas; o memo
   manda o HTML no formato do editor do SEI, fora do `<p>`).
-- **TODO**: revisar o rascunho do memo `MemoApisPeriodoDependentes` e
-  confirmar o assunto **antes** de criar o primeiro memo (depois, ele não
-  pode mudar); depois trocar `TEXTO_DEFINIDO` para `True`. O memo pede novo
-  memorando com o período individualizado por matrícula: o memorando
-  corrigido é tratado pelo modelo com período por dependente.
 - **TODO**: fluxo do processo VELHO (`main._separar_velho`).
 - Confirmar com um memorando real que `obter_conteudo_doc` devolve as
   linhas `Matrícula do dependente` e `Período de apuração do dependente`
