@@ -1,0 +1,202 @@
+2026-11-04 15:50:09 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-04 15:50:09 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-04_15-50-09_execucao.log
+2026-11-04 15:50:09 | INFO    | -                         | __main__              | 5 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-04 15:50:09 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-04 15:50:09 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-04 15:50:09 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-04 15:50:09 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-04 15:50:09 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-04 15:50:09 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-04 15:50:09 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-04 15:50:10 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-04 15:50:11 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-04 15:50:11 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-04 15:50:43 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-04 15:51:03 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-04 15:51:03 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-04 15:51:03 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-04 15:51:03 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-04 15:51:04 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-04 15:51:04 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/utilizacoes/antigas/xlsx
+2026-11-04 15:51:17 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-04 15:51:17 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [1/5]
+2026-11-04 15:51:21 | ERROR   | 2010.01.0072062/2024-28   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 164, in _processar_linha
+    registro.registrar_arvore(listar_documentos_arvore(driver))
+                              ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/arvore.py", line 22, in listar_documentos_arvore
+    raise Exception(
+        'Identificado um número inconsistente de itens na arvore'
+    )
+Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:51:21 | INFO    | 2010.01.0072062/2024-28   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-04_15-50-09.xlsx
+2026-11-04 15:51:21 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-04 15:51:21 | WARNING | 2010.01.0072062/2024-28   | __main__              | FIM COM ERRO (3.9s) | Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:51:21 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [2/5]
+2026-11-04 15:51:23 | ERROR   | 2010.01.0071467/2024-88   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 164, in _processar_linha
+    registro.registrar_arvore(listar_documentos_arvore(driver))
+                              ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/arvore.py", line 22, in listar_documentos_arvore
+    raise Exception(
+        'Identificado um número inconsistente de itens na arvore'
+    )
+Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:51:23 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-04 15:51:23 | WARNING | 2010.01.0071467/2024-88   | __main__              | FIM COM ERRO (2.5s) | Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:51:23 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [3/5]
+2026-11-04 15:51:26 | INFO    | 2010.01.0049305/2025-66   | __main__              | Árvore: 17 documento(s) | GEACS: 2 documento(s), 1 memorando(s)
+2026-11-04 15:51:26 | INFO    | 2010.01.0049305/2025-66   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO']
+2026-11-04 15:51:26 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 518 (SEI 123170813)
+2026-11-04 15:51:29 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 123170813 lido (2075 caracteres)
+2026-11-04 15:51:29 | INFO    | 2010.01.0049305/2025-66   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-04 15:51:36 | INFO    | 2010.01.0049305/2025-66   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-04 15:51:36 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 13 (SEI 114642201)
+2026-11-04 15:51:40 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 114642201 lido (1361 caracteres)
+2026-11-04 15:51:40 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 13 (SEI 114642201)
+2026-11-04 15:51:40 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 1971 (SEI 148860469)
+2026-11-04 15:51:42 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 148860469 lido (2710 caracteres)
+2026-11-04 15:51:42 | INFO    | 2010.01.0049305/2025-66   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1971 (SEI 148860469)']
+2026-11-04 15:51:42 | INFO    | 2010.01.0049305/2025-66   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3557861-1 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 3914500 | Período variável p/ dependentes: não
+2026-11-04 15:51:42 | WARNING | 2010.01.0049305/2025-66   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 3914500
+2026-11-04 15:51:47 | INFO    | 2010.01.0049305/2025-66   | marcadores_disponiveis | Marcadores cadastrados na unidade: 53
+2026-11-04 15:51:47 | ERROR   | 2010.01.0049305/2025-66   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 169, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 156, in _tratar
+    processar_novo(driver, registro, bases, bases_mantis)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/processar_novo.py", line 492, in processar_novo
+    _parar_nao_encontradas_base_apis(driver, registro, matriculas)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/processar_novo.py", line 290, in _parar_nao_encontradas_base_apis
+    adicionar_tag_se_ausente(driver, registro, TAG_MAT_NAO_ENCONTRADAS_APIS)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/tags.py", line 331, in adicionar_tag_se_ausente
+    adicionar_tag(driver, registro, tag)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/tags.py", line 313, in adicionar_tag
+    adicionar_marcador(driver, tag)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 161, in adicionar_marcador
+    driver.refresh()
+    ~~~~~~~~~~~~~~^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 730, in refresh
+    self.execute(Command.REFRESH)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: timeout
+from aborted by navigation: Not attached to an active page
+  (Session info: chrome=153.0.8010.52)
+Stacktrace:
+#0 0x5dd7037ad9fa <unknown>
+#1 0x5dd7030e35b9 <unknown>
+#2 0x5dd7030ca5d9 <unknown>
+#3 0x5dd7030c880b <unknown>
+#4 0x5dd7030c90b0 <unknown>
+#5 0x5dd7030e7212 <unknown>
+#6 0x5dd703186f18 <unknown>
+#7 0x5dd7031838de <unknown>
+#8 0x5dd70312cb8b <unknown>
+#9 0x5dd70312d971 <unknown>
+#10 0x5dd703770667 <unknown>
+#11 0x5dd70376ee95 <unknown>
+#12 0x5dd703759f55 <unknown>
+#13 0x5dd70376faea <unknown>
+#14 0x5dd7037426c9 <unknown>
+#15 0x5dd7037979a8 <unknown>
+#16 0x5dd703797b45 <unknown>
+#17 0x5dd7037ac353 <unknown>
+#18 0x76c7db8a3dfa <unknown>
+#19 0x76c7db9375cc <unknown>
+
+2026-11-04 15:51:47 | DEBUG   | 2010.01.0049305/2025-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-04 15:51:47 | WARNING | 2010.01.0049305/2025-66   | __main__              | FIM COM ERRO (24.1s) | TimeoutException: timeout
+2026-11-04 15:51:47 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [4/5]
+2026-11-04 15:51:53 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 17 documento(s) | GEACS: 2 documento(s), 1 memorando(s)
+2026-11-04 15:51:53 | INFO    | 2010.01.0072726/2024-45   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO']
+2026-11-04 15:51:53 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 43 (SEI 105680485)
+2026-11-04 15:51:55 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 105680485 lido (1767 caracteres)
+2026-11-04 15:51:55 | INFO    | 2010.01.0072726/2024-45   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-04 15:52:01 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-04 15:52:01 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 1976 (SEI 148865233)
+2026-11-04 15:52:05 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 148865233 lido (2742 caracteres)
+2026-11-04 15:52:05 | INFO    | 2010.01.0072726/2024-45   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1976 (SEI 148865233)']
+2026-11-04 15:52:05 | INFO    | 2010.01.0072726/2024-45   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3222588-1 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 3457152; 3457153; 3472847 | Período variável p/ dependentes: não
+2026-11-04 15:52:05 | WARNING | 2010.01.0072726/2024-45   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 3472847
+2026-11-04 15:52:12 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador adicionado: "Script v2 - 1.2.1 - Mat. N Encontradas Base APIS"
+2026-11-04 15:52:44 | INFO    | 2010.01.0072726/2024-45   | memos_sei             | Memo à APIS de matrículas não encontradas criado
+2026-11-04 15:52:48 | INFO    | 2010.01.0072726/2024-45   | memos_sei             | Memo à APIS de matrículas não encontradas inserido no bloco 7711907
+2026-11-04 15:52:55 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador adicionado: "Script v2 - 1.6.1 - Aguarda APIS: Matrículas"
+2026-11-04 15:52:57 | INFO    | 2010.01.0072726/2024-45   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2055 (SEI 152905229)']
+2026-11-04 15:52:57 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-04 15:52:57 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (0h01m09s) | Próxima ação: Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-04 15:52:57 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [5/5]
+2026-11-04 15:52:59 | INFO    | 2010.01.0072584/2024-96   | __main__              | Árvore: 14 documento(s) | GEACS: 2 documento(s), 1 memorando(s)
+2026-11-04 15:52:59 | INFO    | 2010.01.0072584/2024-96   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO']
+2026-11-04 15:52:59 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Lendo documento Memorando 336 (SEI 122679452)
+2026-11-04 15:53:01 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Documento 122679452 lido (2403 caracteres)
+2026-11-04 15:53:01 | INFO    | 2010.01.0072584/2024-96   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-04 15:53:08 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-04 15:53:08 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Lendo documento Memorando 1979 (SEI 148871804)
+2026-11-04 15:53:11 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Documento 148871804 lido (2862 caracteres)
+2026-11-04 15:53:11 | INFO    | 2010.01.0072584/2024-96   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1979 (SEI 148871804)']
+2026-11-04 15:53:11 | INFO    | 2010.01.0072584/2024-96   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3218433-6 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 3304851; 3454961 | Período variável p/ dependentes: não
+2026-11-04 15:53:11 | INFO    | 2010.01.0072584/2024-96   | rede_propria          | Uso da rede própria (base DISA) | Titular 32184336: NÃO USOU | Dependentes que usaram: ['3304851'] | Dependentes que não usaram: ['3454961']
+2026-11-04 15:53:17 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1.6.2 - Base DISA: Usou RP"
+2026-11-04 15:53:24 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-11-04 15:53:24 | INFO    | 2010.01.0072584/2024-96   | mantis                | MANTIS rede própria | Titular 32184336: NÃO USOU (R$ 0.00) | Dependentes que usaram: ['3304851'] (R$ 50.00)
+2026-11-04 15:53:24 | INFO    | 2010.01.0072584/2024-96   | mantis                | MANTIS rede credenciada | Titular 32184336: USOU (R$ 3857.89) | Dependentes que usaram: ['3304851', '3454961'] (R$ 1543.34)
+2026-11-04 15:53:24 | INFO    | 2010.01.0072584/2024-96   | processar_novo        | Base DISA x MANTIS: DISA sim, MANTIS RP sim, MANTIS RC sim | RP no MANTIS e fora da base DISA: -
+2026-11-04 15:53:30 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1.8.2 - MANTIS: Usou RP"
+2026-11-04 15:53:37 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1.8.3 - MANTIS: Usou RC"
+2026-11-04 15:53:43 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1.8 - Avaliado Uso Rede Própria MANTIS"
+2026-11-04 15:53:51 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador removido: "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA"
+2026-11-04 15:53:51 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-04 15:53:51 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-04 15:53:51 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-04 15:53:51 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | Compression method 0
+2026-11-04 15:53:51 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-04 15:53:51 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-04 15:53:51 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-04 15:54:12 | INFO    | 2010.01.0072584/2024-96   | relatorios_mantis     | Relatório Rede Própria (Dependente(s)) anexado ao processo: Utilização Dep. RP - 32184336 - 20261104_155351 (152905658)
+2026-11-04 15:54:12 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-04 15:54:12 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-04 15:54:12 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-04 15:54:12 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | Compression method 0
+2026-11-04 15:54:12 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-04 15:54:12 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-04 15:54:12 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-04 15:54:33 | INFO    | 2010.01.0072584/2024-96   | relatorios_mantis     | Relatório Rede Credenciada (Titular) anexado ao processo: Utilização Tit. RC - 32184336 - 20261104_155412 (152905677)
+2026-11-04 15:54:33 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-04 15:54:33 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-04 15:54:33 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-04 15:54:33 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | Compression method 0
+2026-11-04 15:54:33 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-04 15:54:33 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-04 15:54:33 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-04 15:54:57 | INFO    | 2010.01.0072584/2024-96   | relatorios_mantis     | Relatório Rede Credenciada (Dependente(s)) anexado ao processo: Utilização Dep. RC - 32184336 - 20261104_155433 (152905779)
+2026-11-04 15:55:19 | INFO    | 2010.01.0072584/2024-96   | memos_sei             | Memo à DISA (validar e complementar) criado
+2026-11-04 15:55:23 | INFO    | 2010.01.0072584/2024-96   | memos_sei             | Memo à DISA (validar e complementar) inserido no bloco 7730939
+2026-11-04 15:55:29 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1.9 - Aguarda DISA: Validar (Consta)"
+2026-11-04 15:55:37 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador removido: "Script v2 - 1.8 - Avaliado Uso Rede Própria MANTIS"
+2026-11-04 15:55:37 | INFO    | 2010.01.0072584/2024-96   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2056 (SEI 152905896)']
+2026-11-04 15:55:37 | DEBUG   | 2010.01.0072584/2024-96   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-04 15:55:37 | INFO    | 2010.01.0072584/2024-96   | __main__              | FIM (0h02m40s) | Próxima ação: Assinar memo à DISA (validar e complementar) e encaminhar
+2026-11-04 15:55:37 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-04 15:55:37 | INFO    | -                         | __main__              | Processos: 5 | Sem erro: 2 | Com erro: 3
+2026-11-04 15:55:37 | INFO    | -                         | __main__              |     1 | Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-04 15:55:37 | INFO    | -                         | __main__              |     1 | Assinar memo à DISA (validar e complementar) e encaminhar
+2026-11-04 15:55:37 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072062/2024-28 | Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:55:37 | INFO    | -                         | __main__              | ERRO  | 2010.01.0071467/2024-88 | Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:55:37 | INFO    | -                         | __main__              | ERRO  | 2010.01.0049305/2025-66 | TimeoutException: timeout
+2026-11-04 15:55:37 | INFO    | -                         | __main__              | Duração total da execução: 0h05m28s
+2026-11-04 15:55:37 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

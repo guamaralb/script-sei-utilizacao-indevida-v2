@@ -34,11 +34,11 @@ TAG_MAT_NAO_ENCONTRADAS_APIS = 'Script v2 - 1.2.1 - Mat. N Encontradas Base APIS
 # Versão anterior do fluxo e rotina de correção (não são mais adicionados).
 # Com "Memos DISA e DEPROC no Bloco", o processo é VELHO: foi enviado à DISA
 # e à DEPROC antes da avaliação da rede própria.
-TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO = 'Script v2 - 1.2.2 - Mat. N Encontradas Base DISA'
-TAG_AVALIADO_USO_REDE_PROPRIA = 'Script v2 - 1.2 - Avaliado Se Usou Rede Própria'
-TAG_MEMOS_DISA_DEPROC_NO_BLOCO = 'Script v2 - 1.3 - Memos DISA e DEPROC no Bloco'
-TAG_MEMO_DEPROC_NO_BLOCO = 'Script v2 - 1.3 - Memo DEPROC no Bloco'
-TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO = 'Script v2 - 1.4 - Memo Não Usou Rede no Bloco'
+TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO = 'Script v2v - 1.2.2 - Mat. N Encontradas Base DISA'
+TAG_AVALIADO_USO_REDE_PROPRIA = 'Script v2v - 1.2 - Avaliado Se Usou Rede Própria'
+TAG_MEMOS_DISA_DEPROC_NO_BLOCO = 'Script v2v - 1.3 - Memos DISA e DEPROC no Bloco'
+TAG_MEMO_DEPROC_NO_BLOCO = 'Script v2v - 1.3 - Memo DEPROC no Bloco'
+TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO = 'Script v2v - 1.4 - Memo Não Usou Rede no Bloco'
 
 # Informativos da comparação base DISA x MANTIS, um par por base (e por
 # rede, no MANTIS). Os do mesmo par são alternativos

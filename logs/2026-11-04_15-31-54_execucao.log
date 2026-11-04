@@ -1,0 +1,222 @@
+2026-11-04 15:31:54 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-04 15:31:54 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-04_15-31-54_execucao.log
+2026-11-04 15:31:54 | INFO    | -                         | __main__              | 5 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-04 15:31:54 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-04 15:31:54 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-04 15:31:55 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-04 15:31:55 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-04 15:31:55 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-04 15:31:55 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-04 15:31:55 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-04 15:31:56 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-04 15:31:57 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-04 15:31:57 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-04 15:32:29 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-04 15:32:50 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-04 15:32:50 | INFO    | -                         | planilha_controle     | Planilha de controle geral ainda não existe; será criada: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx
+2026-11-04 15:32:50 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-04 15:32:50 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-04 15:32:50 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-04 15:32:50 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-04 15:32:50 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/utilizacoes/antigas/xlsx
+2026-11-04 15:33:03 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-04 15:33:03 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [1/5]
+2026-11-04 15:33:06 | ERROR   | 2010.01.0072062/2024-28   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 164, in _processar_linha
+    registro.registrar_arvore(listar_documentos_arvore(driver))
+                              ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/arvore.py", line 22, in listar_documentos_arvore
+    raise Exception(
+        'Identificado um número inconsistente de itens na arvore'
+    )
+Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:33:06 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-04 15:33:06 | WARNING | 2010.01.0072062/2024-28   | __main__              | FIM COM ERRO (2.9s) | Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:33:06 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [2/5]
+2026-11-04 15:33:09 | ERROR   | 2010.01.0071467/2024-88   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 164, in _processar_linha
+    registro.registrar_arvore(listar_documentos_arvore(driver))
+                              ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/arvore.py", line 22, in listar_documentos_arvore
+    raise Exception(
+        'Identificado um número inconsistente de itens na arvore'
+    )
+Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:33:09 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-04 15:33:09 | WARNING | 2010.01.0071467/2024-88   | __main__              | FIM COM ERRO (2.9s) | Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:33:09 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [3/5]
+2026-11-04 15:33:11 | INFO    | 2010.01.0049305/2025-66   | __main__              | Árvore: 17 documento(s) | GEACS: 2 documento(s), 1 memorando(s)
+2026-11-04 15:33:11 | INFO    | 2010.01.0049305/2025-66   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO']
+2026-11-04 15:33:11 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 518 (SEI 123170813)
+2026-11-04 15:33:13 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 123170813 lido (2075 caracteres)
+2026-11-04 15:33:13 | INFO    | 2010.01.0049305/2025-66   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-04 15:33:28 | ERROR   | 2010.01.0049305/2025-66   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 169, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 151, in _tratar
+    adicionar_tag(driver, registro, TAG_PROCESSO_NOVO)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/tags.py", line 313, in adicionar_tag
+    adicionar_marcador(driver, tag)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 176, in adicionar_marcador
+    selecionar_marcador_lista_suspensa(driver, marcador)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/marcadores.py", line 70, in selecionar_marcador_lista_suspensa
+    opcao_planilhado: WebElement = WebDriverWait(driver, 10).until(
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        ))
+        ^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x57fc5c3639fa <unknown>
+#1 0x57fc5bc995b9 <unknown>
+#2 0x57fc5bcefdfc <unknown>
+#3 0x57fc5bcf0071 <unknown>
+#4 0x57fc5bd3c664 <unknown>
+#5 0x57fc5bd398de <unknown>
+#6 0x57fc5bce2b8b <unknown>
+#7 0x57fc5bce3971 <unknown>
+#8 0x57fc5c326667 <unknown>
+#9 0x57fc5c324e95 <unknown>
+#10 0x57fc5c30ff55 <unknown>
+#11 0x57fc5c325aea <unknown>
+#12 0x57fc5c2f86c9 <unknown>
+#13 0x57fc5c34d9a8 <unknown>
+#14 0x57fc5c34db45 <unknown>
+#15 0x57fc5c362353 <unknown>
+#16 0x7362cd0a3dfa <unknown>
+#17 0x7362cd1375cc <unknown>
+
+2026-11-04 15:33:28 | DEBUG   | 2010.01.0049305/2025-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-04 15:33:28 | WARNING | 2010.01.0049305/2025-66   | __main__              | FIM COM ERRO (19.0s) | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_marcador_lista_suspensa (detalhes no log)
+2026-11-04 15:33:28 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [4/5]
+2026-11-04 15:33:31 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 17 documento(s) | GEACS: 2 documento(s), 1 memorando(s)
+2026-11-04 15:33:31 | INFO    | 2010.01.0072726/2024-45   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO']
+2026-11-04 15:33:31 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 43 (SEI 105680485)
+2026-11-04 15:33:32 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 105680485 lido (1767 caracteres)
+2026-11-04 15:33:32 | INFO    | 2010.01.0072726/2024-45   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-04 15:33:46 | ERROR   | 2010.01.0072726/2024-45   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 169, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 151, in _tratar
+    adicionar_tag(driver, registro, TAG_PROCESSO_NOVO)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/tags.py", line 313, in adicionar_tag
+    adicionar_marcador(driver, tag)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 176, in adicionar_marcador
+    selecionar_marcador_lista_suspensa(driver, marcador)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/marcadores.py", line 70, in selecionar_marcador_lista_suspensa
+    opcao_planilhado: WebElement = WebDriverWait(driver, 10).until(
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        ))
+        ^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x57fc5c3639fa <unknown>
+#1 0x57fc5bc995b9 <unknown>
+#2 0x57fc5bcefdfc <unknown>
+#3 0x57fc5bcf0071 <unknown>
+#4 0x57fc5bd3c664 <unknown>
+#5 0x57fc5bd398de <unknown>
+#6 0x57fc5bce2b8b <unknown>
+#7 0x57fc5bce3971 <unknown>
+#8 0x57fc5c326667 <unknown>
+#9 0x57fc5c324e95 <unknown>
+#10 0x57fc5c30ff55 <unknown>
+#11 0x57fc5c325aea <unknown>
+#12 0x57fc5c2f86c9 <unknown>
+#13 0x57fc5c34d9a8 <unknown>
+#14 0x57fc5c34db45 <unknown>
+#15 0x57fc5c362353 <unknown>
+#16 0x7362cd0a3dfa <unknown>
+#17 0x7362cd1375cc <unknown>
+
+2026-11-04 15:33:47 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-04 15:33:47 | WARNING | 2010.01.0072726/2024-45   | __main__              | FIM COM ERRO (18.5s) | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_marcador_lista_suspensa (detalhes no log)
+2026-11-04 15:33:47 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [5/5]
+2026-11-04 15:33:50 | INFO    | 2010.01.0072584/2024-96   | __main__              | Árvore: 14 documento(s) | GEACS: 2 documento(s), 1 memorando(s)
+2026-11-04 15:33:50 | INFO    | 2010.01.0072584/2024-96   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO']
+2026-11-04 15:33:50 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Lendo documento Memorando 336 (SEI 122679452)
+2026-11-04 15:33:51 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Documento 122679452 lido (2403 caracteres)
+2026-11-04 15:33:51 | INFO    | 2010.01.0072584/2024-96   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-04 15:34:06 | ERROR   | 2010.01.0072584/2024-96   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 169, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main.py", line 151, in _tratar
+    adicionar_tag(driver, registro, TAG_PROCESSO_NOVO)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/tags.py", line 313, in adicionar_tag
+    adicionar_marcador(driver, tag)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 176, in adicionar_marcador
+    selecionar_marcador_lista_suspensa(driver, marcador)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/marcadores.py", line 70, in selecionar_marcador_lista_suspensa
+    opcao_planilhado: WebElement = WebDriverWait(driver, 10).until(
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        ))
+        ^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x57fc5c3639fa <unknown>
+#1 0x57fc5bc995b9 <unknown>
+#2 0x57fc5bcefdfc <unknown>
+#3 0x57fc5bcf0071 <unknown>
+#4 0x57fc5bd3c664 <unknown>
+#5 0x57fc5bd398de <unknown>
+#6 0x57fc5bce2b8b <unknown>
+#7 0x57fc5bce3971 <unknown>
+#8 0x57fc5c326667 <unknown>
+#9 0x57fc5c324e95 <unknown>
+#10 0x57fc5c30ff55 <unknown>
+#11 0x57fc5c325aea <unknown>
+#12 0x57fc5c2f86c9 <unknown>
+#13 0x57fc5c34d9a8 <unknown>
+#14 0x57fc5c34db45 <unknown>
+#15 0x57fc5c362353 <unknown>
+#16 0x7362cd0a3dfa <unknown>
+#17 0x7362cd1375cc <unknown>
+
+2026-11-04 15:34:06 | DEBUG   | 2010.01.0072584/2024-96   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-04 15:34:06 | WARNING | 2010.01.0072584/2024-96   | __main__              | FIM COM ERRO (19.4s) | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_marcador_lista_suspensa (detalhes no log)
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | Processos: 5 | Sem erro: 0 | Com erro: 5
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072062/2024-28 | Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | ERRO  | 2010.01.0071467/2024-88 | Exception: Identificado um número inconsistente de itens na arvore
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | ERRO  | 2010.01.0049305/2025-66 | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_marcador_lista_suspensa (detalhes no log)
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072726/2024-45 | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_marcador_lista_suspensa (detalhes no log)
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072584/2024-96 | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_marcador_lista_suspensa (detalhes no log)
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | Duração total da execução: 0h02m11s
+2026-11-04 15:34:06 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================
