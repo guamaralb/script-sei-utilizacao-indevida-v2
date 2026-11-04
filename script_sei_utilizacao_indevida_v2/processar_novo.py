@@ -410,7 +410,7 @@ def _avaliar_mantis_e_criar_docs(
 
     Em todos os casos, os relatórios RP e RC de quem usou entram antes do
     memo. Quem vai para a DISA não vai para a DEPROC."""
-    mantis = avaliar_uso_rede_propria_mantis(matriculas.titular, matriculas.dependentes, dados_ui.periodo_titular, bases_mantis, dados_ui.periodos_por_dependente)
+    mantis = avaliar_uso_rede_propria_mantis(matriculas.titular, matriculas.dependentes, dados_ui.periodo_titular, bases_mantis, matriculas.periodos_dos_dependentes(dados_ui.periodos_por_dependente))
     _registrar_uso_mantis(registro, mantis)
     registro.mats_uso_mantis_alem_disa = usos_mantis_alem_disa(uso_disa, mantis.rede_propria)
     propria, credenciada = mantis.rede_propria, mantis.rede_credenciada

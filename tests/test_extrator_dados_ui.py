@@ -44,6 +44,27 @@ def test_resumo_das_matriculas_e_ignorado_quando_ha_duplas():
     assert dados.matriculas_dependentes == '555; 666'
 
 
+@pytest.mark.parametrize(
+    ('campo', 'esperado'),
+    [
+        ('1234567-8; 7654321-0', '1234567-8; 7654321-0'),
+        ('1234567 / 8, 7654321/0', '1234567 / 8; 7654321/0'),
+        ('1234567 e 76543210', '1234567; 76543210'),
+    ],
+)
+def test_matriculas_dos_dependentes_com_ou_sem_dv(campo, esperado):
+    texto = MEMO_NOVO_NOVO.replace('Matrícula dos dependentes: 555', f'Matrícula dos dependentes: {campo}')
+
+    assert extrair_dados_ui(texto).matriculas_dependentes == esperado
+
+
+def test_dupla_com_dv_separado():
+    extra = 'Matrícula do dependente: 1234567 / 8\nPeríodo de apuração do dependente: 01/03/2024 a 30/04/2024.'
+    dados = extrair_dados_ui(MEMO_APIS_PERIODO_POR_DEPENDENTE.format(extra=extra))
+
+    assert dados.periodos_por_dependente['12345678'] == '01/03/2024 a 30/04/2024'
+
+
 def test_sem_a_linha_do_periodo_o_memo_e_analisado_como_hoje():
     assert not eh_modelo_periodo_por_dependente(MEMO_NOVO_NOVO)
     assert validar_template(MEMO_NOVO_NOVO) == 'novo_novo'

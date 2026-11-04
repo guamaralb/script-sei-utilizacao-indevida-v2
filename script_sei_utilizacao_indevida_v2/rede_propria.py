@@ -4,7 +4,7 @@ partir da base APIS)."""
 
 import logging
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import pandas as pd
@@ -19,8 +19,9 @@ _RESPOSTAS_UTILIZOU = {'SIM': True, 'NÃO': False, 'NAO': False}
 _ABA_TITULARES = ('UI 2025 EX-TITULARES', 'MATRICULAS TITULARES')
 _ABA_DEPENDENTES = ('UI 2025 EX-DEPENDENTES', 'MATRICULAS DEPENDENTES - SEM DV')
 
-# Base APIS: titulares e dependentes com DV. Nos processos, os dependentes
-# vêm sem DV, então o DV (último dígito) é retirado dos dependentes da base.
+# Base APIS: titulares e dependentes com DV (o último dígito). Nos memorandos,
+# as matrículas podem vir com ou sem DV: é a base APIS que diz qual é a
+# matrícula (verificar_base_apis).
 _ABA_APIS_TITULARES = ('UI 2025 EX-TITULARES', 'MATRICULAS TITULARES')
 _ABA_APIS_DEPENDENTES = ('UI 2025 EX-DEPENDENTES', 'MATRICULAS DEPENDENTES')
 
@@ -63,14 +64,13 @@ class BasesUso:
 
     titulares: dict[str, bool | None]
     dependentes: dict[str, bool | None]
-    # Base APIS (sem resposta de uso). Dependentes sem DV.
+    # Base APIS (sem resposta de uso). Todas as matrículas com DV.
     apis_titulares: frozenset[str]
     apis_dependentes: frozenset[str]
 
 
 def normalizar_matricula(valor) -> str | None:
-    """Padroniza a matrícula no formato da planilha de rede própria:
-    com dígito verificador, sem separadores e sem zeros à esquerda."""
+    """Sem separadores e sem zeros à esquerda (não mexe no DV)."""
     if valor is None or pd.isna(valor):
         return None
     if isinstance(valor, float):
@@ -83,6 +83,11 @@ def normalizar_matricula(valor) -> str | None:
 
     mat = _PADRAO_SEPARADORES.sub('', mat).lstrip('0')
     return mat or None
+
+
+def sem_dv(matricula: str) -> str | None:
+    """Retira o DV (último dígito) de uma matrícula normalizada."""
+    return matricula[:-1].lstrip('0') or None
 
 
 def _combinar_respostas(atual: bool | None, nova: bool | None) -> bool | None:
@@ -132,7 +137,7 @@ def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str) -> dict[str, b
     return uso
 
 
-def _carregar_aba_apis(arquivo: Path, aba: str, coluna_matricula: str, *, retirar_dv: bool) -> frozenset[str]:
+def _carregar_aba_apis(arquivo: Path, aba: str, coluna_matricula: str) -> frozenset[str]:
     df = pd.read_excel(io=arquivo, sheet_name=aba, dtype=str)
     # A planilha tem cabeçalho com espaço sobrando ("MATRICULAS TITULARES ")
     df.columns = df.columns.str.strip()
@@ -140,8 +145,6 @@ def _carregar_aba_apis(arquivo: Path, aba: str, coluna_matricula: str, *, retira
     matriculas = set()
     for valor in df[coluna_matricula]:
         mat = normalizar_matricula(valor)
-        if mat and retirar_dv:
-            mat = mat[:-1].lstrip('0')
         if mat:
             matriculas.add(mat)
 
@@ -158,8 +161,8 @@ def carregar_bases(arquivo_uso: Path, arquivo_apis: Path) -> BasesUso:
     return BasesUso(
         titulares=titulares,
         dependentes=dependentes,
-        apis_titulares=_carregar_aba_apis(arquivo_apis, *_ABA_APIS_TITULARES, retirar_dv=False),
-        apis_dependentes=_carregar_aba_apis(arquivo_apis, *_ABA_APIS_DEPENDENTES, retirar_dv=True),
+        apis_titulares=_carregar_aba_apis(arquivo_apis, *_ABA_APIS_TITULARES),
+        apis_dependentes=_carregar_aba_apis(arquivo_apis, *_ABA_APIS_DEPENDENTES),
     )
 
 
@@ -220,25 +223,64 @@ def _logar_uso(uso: UsoRedeBeneficiarios) -> None:
 
 @dataclass(frozen=True)
 class MatriculasProcesso:
-    """Matrículas do processo, normalizadas, e as que faltam na base APIS."""
+    """Matrículas do processo, normalizadas, e as que faltam na base APIS.
+    Encontrado na base, o titular fica com DV e o dependente, sem DV, venha
+    como vier no memo. Quem falta fica como no memo."""
 
     titular: str
     dependentes: tuple[str, ...]
     nao_encontradas_apis: NaoEncontradas
+    # Dependente como no memo (normalizado) -> como está em dependentes
+    dependentes_do_memo: dict[str, str] = field(default_factory=dict)
+
+    def periodos_dos_dependentes(self, periodos: dict[str, str] | None) -> dict[str, str] | None:
+        """Troca a matrícula do memo pela de dependentes nos períodos por
+        dependente."""
+        if periodos is None:
+            return None
+        resolvidos: dict[str, str] = {}
+        for matricula_memo, periodo in periodos.items():
+            matricula = self.dependentes_do_memo[matricula_memo]
+            if resolvidos.get(matricula, periodo) != periodo:
+                raise ErroAvaliacao(f'O dependente {matricula} aparece no memo com e sem DV, com períodos de apuração diferentes')
+            resolvidos[matricula] = periodo
+        return resolvidos
+
+
+def _encontrar_na_base_apis(matricula: str, base: frozenset[str], descricao: str) -> str | None:
+    """A matrícula da base APIS (com DV) que corresponde à do memo, que pode
+    ter o DV ou não. O tamanho não diz qual é o caso, pois há matrículas com
+    menos dígitos: as duas formas são procuradas."""
+    encontradas = sorted(m for m in base if matricula in {m, sem_dv(m)})
+    if len(encontradas) > 1:
+        raise ErroAvaliacao(f'Matrícula de {descricao} {matricula} ambígua: corresponde a {", ".join(encontradas)} na base APIS')
+    return encontradas[0] if encontradas else None
 
 
 def verificar_base_apis(matricula_titular, matriculas_dependentes, bases: BasesUso) -> MatriculasProcesso:
-    """Procura o titular e os dependentes na base APIS. A existência das
-    matrículas é conferida só nela (a base DISA é feita a partir dela). Não
-    para quando falta matrícula: quem chama decide."""
-    titular, dependentes = _preparar_matriculas(matricula_titular, matriculas_dependentes)
-    nao_encontradas = NaoEncontradas(
-        titular=titular if titular not in bases.apis_titulares else None,
-        dependentes=tuple(m for m in dependentes if m not in bases.apis_dependentes),
-    )
+    """Procura o titular e os dependentes na base APIS, com ou sem DV. A
+    existência das matrículas é conferida só nela (a base DISA é feita a
+    partir dela). Não para quando falta matrícula: quem chama decide."""
+    titular_memo, dependentes_memo = _preparar_matriculas(matricula_titular, matriculas_dependentes)
+    titular = _encontrar_na_base_apis(titular_memo, bases.apis_titulares, 'titular')
+
+    dependentes_do_memo = {}
+    deps_nao_encontrados = []
+    for dependente in dependentes_memo:
+        encontrada = _encontrar_na_base_apis(dependente, bases.apis_dependentes, 'dependente')
+        dependentes_do_memo[dependente] = sem_dv(encontrada) if encontrada else dependente
+        if not encontrada:
+            deps_nao_encontrados.append(dependente)
+
+    nao_encontradas = NaoEncontradas(titular=None if titular else titular_memo, dependentes=tuple(deps_nao_encontrados))
     if nao_encontradas:
         logger.warning(f'Não encontrado(s) na base APIS | {nao_encontradas.descrever()}')
-    return MatriculasProcesso(titular=titular, dependentes=tuple(dependentes), nao_encontradas_apis=nao_encontradas)
+    return MatriculasProcesso(
+        titular=titular or titular_memo,
+        dependentes=tuple(dict.fromkeys(dependentes_do_memo.values())),
+        nao_encontradas_apis=nao_encontradas,
+        dependentes_do_memo=dependentes_do_memo,
+    )
 
 
 def _consultar_disa(matriculas: list[str], base: dict[str, bool | None], descricao: str) -> tuple[list[str], list[str]]:

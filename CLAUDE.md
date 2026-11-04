@@ -200,7 +200,8 @@ a API dela.
   outros modelos, e o MANTIS usa o período de cada um. O fluxo **não** para
   pelo período variável (sem `1.1` e `1.7`). É por este modelo que passa o
   memorando corrigido pedido no `MemoApisPeriodoDependentes`.
-- Matrícula do titular com DV separado por barra (`1289612 / 8`) é aceita.
+- Nas matrículas do memo, titular e dependentes, o DV é opcional: junto ou
+  separado (`1289612 / 8`, `1289612-8`) são aceitos.
 - O último memo da APIS destinado à GEACS fica em `registro.memo_apis`
   (`DocArvore`: `numero_sei`, `nome_arvore` e `unidade`, como na árvore) e
   é passado a **todos** os memorandos (`memo_apis=`), exceto o
@@ -228,9 +229,18 @@ a API dela.
   a resposta em `UTILIZOU A REDE PRÓPRIA?`. Diz só se houve atendimento.
   Matrícula fora dela conta como **não usou** (sem marcador; o `1.2.2` é da
   versão anterior).
-- Nos processos, o **titular vem com DV** e os **dependentes vêm sem DV**.
-  O DV é o último dígito: ele é retirado dos dependentes da base APIS na
-  carga.
+- **DV** (último dígito): base APIS com DV; MANTIS sem DV (conferido nas
+  planilhas: todas as matrículas batem sem o DV); memorandos com ou sem,
+  tanto titular quanto dependentes. O tamanho não diz qual é o caso, pois há
+  matrículas com menos dígitos. Por isso `verificar_base_apis` procura a
+  matrícula do memo na base APIS com e sem DV:
+  - achou uma: dali em diante o titular fica **com DV** (base DISA) e o
+    dependente **sem DV** (base DISA e MANTIS);
+  - não achou: matrícula não encontrada, inclusive com DV errado (`1.2.1`);
+  - achou mais de uma: `ErroAvaliacao`, sem ação no SEI (hoje não acontece
+    na base APIS).
+  Os períodos por dependente passam pela mesma conversão
+  (`periodos_dos_dependentes`).
 - Matrícula normalizada: sem hífen, ponto, barra ou espaço e sem zeros à
   esquerda.
 - Matrícula repetida na base DISA: um SIM prevalece. Resposta inválida
@@ -256,9 +266,6 @@ a API dela.
     início depois do fim: `ErroAvaliacao`.
   - Atendimento sem data válida de uma matrícula consultada:
     `ErroAvaliacao`. Sem valor: conta como 0.
-  - **TODO**: confirmar o DV. Assume-se titular **sem DV**
-    (`TITULAR_MANTIS_COM_DV = False`) e dependentes sem DV
-    (`DEPENDENTE_MANTIS_COM_DV = False`).
 
 ### Decisão base DISA × MANTIS
 
@@ -554,7 +561,7 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      memorando inválido) e encaminhar. Motivo na coluna
      `motivo_formato_invalido`. Fim.
 3. `verificar_base_apis`: procura titular e dependentes **só na base
-   APIS** (matrícula em formato inválido: erro).
+   APIS**, com ou sem DV (matrícula em formato inválido ou ambígua: erro).
    - **Faltou matrícula?** **➕ `1.2.1 - Mat. N Encontradas Base APIS`**,
      memo à APIS (`incluir_memo_apis_mat_nao_encontradas`; bloco
      `7711907`), **➕ `1.6.1 - Aguarda APIS: Matrículas`**, `prox_acao` =
@@ -727,8 +734,7 @@ perca os processos já tratados.
 - **TODO**: confirmar que o pedido de "atualização do levantamento de
   utilização" é o que distingue o modelo novo_novo do novo_velho
   (`_PADRAO_ATUALIZACAO_LEVANTAMENTO` em `extrator_dados_ui.py`).
-- **TODO**: confirmar o DV das matrículas nas bases do MANTIS e usar as
-  planilhas completas. As planilhas de exemplo atuais ainda têm as colunas
+- **TODO**: usar as planilhas completas do MANTIS. As planilhas de exemplo atuais ainda têm as colunas
   antigas (`MATRICULA_BENEFICIARIO`, `DAT_ATENDIMENTO`, `VAL_PAGAR`) e não
   carregam.
 - **TODO**: processamento dos processos parados (`1.5`, `1.6.1`, `1.7`,

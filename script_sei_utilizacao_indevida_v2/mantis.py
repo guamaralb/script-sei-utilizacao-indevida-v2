@@ -21,7 +21,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
-from rede_propria import ErroAvaliacao, normalizar_matricula
+from rede_propria import ErroAvaliacao, normalizar_matricula, sem_dv
 
 from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import UsoRedeBeneficiarios
 
@@ -35,12 +35,6 @@ _COLUNA_VALOR = 'VALOR_A_PAGAR'
 _COLUNA_PRESTADOR = 'NOME_PRESTADOR'
 _COLUNA_PROCEDIMENTO = 'PROCEDIMENTO'
 _COLUNA_NOME_DEPENDENTE = 'NOME_DEPENDENTE'
-
-# TODO: confirmar com as planilhas completas. No exemplo, o titular vem SEM
-# DV (2362911 corresponde a 23629118). Para os dependentes ainda não há
-# confirmação; assume-se sem DV, como nos processos.
-TITULAR_MANTIS_COM_DV = False
-DEPENDENTE_MANTIS_COM_DV = False
 
 # Datas do Excel guardadas como número de série
 _ORIGEM_DATA_EXCEL = datetime(1899, 12, 30)
@@ -68,10 +62,6 @@ class BaseMantis:
 class BasesMantis:
     rede_propria: BaseMantis
     rede_credenciada: BaseMantis
-
-
-def _sem_dv(matricula: str) -> str | None:
-    return matricula[:-1].lstrip('0') or None
 
 
 def _converter_data(valor) -> date | None:
@@ -102,7 +92,7 @@ def _texto(valor) -> str:
     return '' if valor is None or pd.isna(valor) else str(valor).strip()
 
 
-def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str, *, com_dv: bool) -> dict[str, tuple[Atendimento, ...]]:
+def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str) -> dict[str, tuple[Atendimento, ...]]:
     df = pd.read_excel(io=arquivo, sheet_name=aba, dtype={coluna_matricula: str})
     df.columns = df.columns.str.strip()
     if _COLUNA_NOME_DEPENDENTE not in df.columns:
@@ -123,8 +113,6 @@ def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str, *, com_dv: boo
     )
     for matricula, data_bruta, valor_bruto, prestador, procedimento, nome_dependente in linhas:
         mat = normalizar_matricula(matricula)
-        if mat and com_dv:
-            mat = _sem_dv(mat)
         if not mat:
             sem_matricula += 1
             continue
@@ -156,8 +144,8 @@ def _carregar_base(arquivo: Path, nome: str) -> BaseMantis:
     logger.info(f'Carregando base do MANTIS ({nome}): {arquivo.name}')
     return BaseMantis(
         nome=nome,
-        titulares=_carregar_aba(arquivo, *_ABA_TITULARES, com_dv=TITULAR_MANTIS_COM_DV),
-        dependentes=_carregar_aba(arquivo, *_ABA_DEPENDENTES, com_dv=DEPENDENTE_MANTIS_COM_DV),
+        titulares=_carregar_aba(arquivo, *_ABA_TITULARES),
+        dependentes=_carregar_aba(arquivo, *_ABA_DEPENDENTES),
     )
 
 
@@ -272,7 +260,7 @@ def _no_periodo(atendimentos: tuple[Atendimento, ...], intervalos: tuple[Interva
 
 
 def _consultar(base: BaseMantis, titular: str, intervalos_titular: tuple[Intervalo, ...], intervalos_dependentes: dict[str, tuple[Intervalo, ...]]) -> UsoMantis:
-    chave_titular = _sem_dv(titular)
+    chave_titular = sem_dv(titular)
     tit_atendimentos = _no_periodo(base.titulares.get(chave_titular, ()), intervalos_titular, f'o titular {titular} ({base.nome})')
 
     deps_que_usaram = []
@@ -300,7 +288,8 @@ def avaliar_uso_rede_propria_mantis(
     bases: BasesMantis,
     periodos_por_dependente: dict[str, str] | None = None,
 ) -> AvaliacaoMantis:
-    """titular (com DV) e dependentes (sem DV) já normalizados.
+    """titular (com DV) e dependentes (sem DV) como em MatriculasProcesso;
+    as bases do MANTIS são sem DV.
 
     periodos_por_dependente (modelo com período por dependente): matrícula
     do dependente -> período de apuração. O dependente que não está nele

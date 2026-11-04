@@ -54,6 +54,7 @@ Documento assinado eletronicamente"""
 
 TITULAR = '12345678'
 DEPENDENTE = '555'
+DEPENDENTE_COM_DV = '5559'
 
 _VAZIA = BaseMantis('vazia', {}, {})
 _ATENDIMENTO = Atendimento(date(2024, 3, 1), 10.0, prestador='HOSPITAL', procedimento='CONSULTA')
@@ -70,7 +71,7 @@ def bases(*, tit_usou=True, tit_na_disa=True, tit_na_apis=True) -> BasesUso:
         titulares={TITULAR: tit_usou} if tit_na_disa else {},
         dependentes={DEPENDENTE: False},
         apis_titulares=frozenset({TITULAR} if tit_na_apis else set()),
-        apis_dependentes=frozenset({DEPENDENTE}),
+        apis_dependentes=frozenset({DEPENDENTE_COM_DV}),
     )
 
 

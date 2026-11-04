@@ -57,7 +57,7 @@ _PADRAO_DUPLA_DEPENDENTE = re.compile(
     rf'{_TRECHO_MATRICULA_DEPENDENTE}[^\S\n]*(.*?)\s*{_TRECHO_PERIODO_DEPENDENTE}[^\S\n]*(.*)',
     flags=re.IGNORECASE,
 )
-_PADRAO_MATRICULA_UNICA = re.compile(r'\d+(?:[-./]\d+)*')
+_PADRAO_MATRICULA_UNICA = re.compile(r'\d+(?:\s*[-./]\s*\d+)*')
 
 # --- Modelos "novo_velho" e "velho" (não são mais aceitos; só identificados
 # para a mensagem de erro) ---
@@ -75,13 +75,15 @@ _MARCADORES_MODELO_VELHO: dict[str, re.Pattern] = {
 }
 
 _PADROES_DATA = re.compile(r'\b\d{2}/\d{2}/\d{4}\b')
+# A matrícula pode vir sem DV, com ele junto ou separado ("1234567 / 8",
+# "1234567-8")
+_TRECHO_MATRICULA = r'\d{3,10}(?:[^\S\n]*[-/][^\S\n]*\d(?!\d))?'
+_PADRAO_MATRICULA = re.compile(_TRECHO_MATRICULA)
 _PADRAO_MATRICULAS_DEPENDENTES_NOVO = re.compile(
     r'Matr[íi]culas? d(?:o|os) dependentes?:\s*'
-    r'(\d{3,10}(?:(?:\s*[,;:/.]\s*|\s+e\s+|\s+)\d{3,10})*|)',
+    rf'({_TRECHO_MATRICULA}(?:(?:\s*[,;:/.]\s*|\s+e\s+|\s+){_TRECHO_MATRICULA})*|)',
     flags=re.IGNORECASE,
 )
-
-_PADRAO_SEPARADOR_MATRICULAS = re.compile(r'\s+e\s+|[;,:/.]+|\s+', flags=re.IGNORECASE)
 
 
 def eh_modelo_periodo_por_dependente(doc_text: str) -> bool:
@@ -129,8 +131,7 @@ def _extrair_matriculas_dependentes(doc_text: str) -> str | None:
     if not valor_bruto:
         return None
 
-    matriculas = [matricula for matricula in _PADRAO_SEPARADOR_MATRICULAS.split(valor_bruto.strip()) if matricula]
-    return '; '.join(matriculas)
+    return '; '.join(_PADRAO_MATRICULA.findall(valor_bruto))
 
 
 def _detectar_periodo_dependentes(doc_text: str) -> bool:

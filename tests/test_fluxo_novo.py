@@ -317,6 +317,19 @@ def test_atendimento_no_periodo_do_dependente_conta_como_uso(sei):
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA
 
 
+def test_matriculas_do_memo_com_e_sem_dv(sei):
+    # Titular sem DV e dependente com DV no memo: as bases são consultadas
+    # do mesmo jeito, e o período do dependente continua valendo
+    texto = MEMO_APIS_PERIODO_POR_DEPENDENTE.replace('01/01/2023 a 28/02/2023', '01/03/2024 a 31/03/2024')
+    sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
+    sei.memo_apis(texto.replace('Matrícula: 1234567 / 8', 'Matrícula: 1234567').replace('Matrícula do dependente: 555', 'Matrícula do dependente: 5559'))
+    registro = sei.passar(bases(), MANTIS_DEPENDENTE_USOU)
+
+    assert sei.tags_curtas == [NOVO, DISA_SIM, MANTIS_SIM, RC_NAO, AGUARDA_CONSTA]
+    assert registro.tit_usou
+    assert registro.deps_que_usaram_mantis_rede_propria == ['555']
+
+
 def test_dependente_sem_periodo_no_modelo_por_dependente_para_com_memo_a_apis(sei):
     sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
     sei.memo_apis(MEMO_APIS_PERIODO_POR_DEPENDENTE, extra='Matrícula do dependente: 666')

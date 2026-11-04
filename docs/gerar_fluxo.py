@@ -343,7 +343,7 @@ col_processar = Coluna(
                 T('prox_acao = Assinar memo à APIS (formato inválido)'),
             ],
         ),
-        F('verificar_base_apis()', 'A existência das matrículas é conferida <b>só na base APIS</b> (a base DISA é feita a partir dela)'),
+        F('verificar_base_apis()', 'A existência das matrículas é conferida <b>só na base APIS</b> (a base DISA é feita a partir dela). Do memo, vêm com ou sem DV; a base APIS diz qual é a matrícula'),
         P('Matrícula em<br>formato inválido?', [E('<b>ErroAvaliacao</b>')]),
         P(
             'Faltou matrícula<br>na base APIS?',
