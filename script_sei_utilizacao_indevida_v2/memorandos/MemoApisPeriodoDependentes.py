@@ -5,12 +5,10 @@ from sei_automacao.classes.Memorando import Memorando
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore, identificar_doc
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar_texto_definido
 
-# TODO: revisar o texto (rascunho) e trocar para True
-TEXTO_DEFINIDO = False
+TEXTO_DEFINIDO = True
 
 # Não altere o assunto depois de criar memos: é por ele que o script os
 # encontra na árvore
-# TODO: confirmar o assunto antes de criar o primeiro memo
 ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES = 'Individualização do período de apuração dos dependentes'
 
 # O script procura o memo por este padrão antes de criar (retomada)
