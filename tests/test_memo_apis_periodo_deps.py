@@ -17,7 +17,8 @@ def texto_liberado(monkeypatch):
     monkeypatch.setattr(MemoApisPeriodoDependentes, 'TEXTO_DEFINIDO', True)
 
 
-def test_texto_pendente_nao_cria_memo():
+def test_texto_pendente_nao_cria_memo(monkeypatch):
+    monkeypatch.setattr(MemoApisPeriodoDependentes, 'TEXTO_DEFINIDO', False)
     with pytest.raises(TextoMemoPendente):
         _texto(('555',))
 
