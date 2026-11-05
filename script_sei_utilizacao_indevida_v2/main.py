@@ -34,6 +34,7 @@ from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
 from sessao_sei import abrir_sei
 from tags import (
+    TAG_AGUARDA_FLUXO_NORMAL,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
@@ -48,6 +49,7 @@ from tags import (
     eh_velho_pelos_marcadores,
     estado_atual,
     registrar_tags,
+    remover_tag,
     tem_tag,
 )
 
@@ -79,6 +81,12 @@ def _conferir_marcadores(registro: RegistroMain, momento: str) -> None:
         raise
 
 
+def _sair_da_espera_do_fluxo_normal(driver: webdriver.Remote, registro: RegistroMain) -> None:
+    """O VELHO não segue o fluxo normal: não fica aguardando por ele."""
+    if tem_tag(registro, TAG_AGUARDA_FLUXO_NORMAL):
+        remover_tag(driver, registro, TAG_AGUARDA_FLUXO_NORMAL)
+
+
 def _separar_velho(driver: webdriver.Remote, registro: RegistroMain) -> None:
     """Processo VELHO: marcado e não processado.
 
@@ -91,12 +99,14 @@ def _separar_velho(driver: webdriver.Remote, registro: RegistroMain) -> None:
         logger.info(f'VELHO tratado manualmente ({sorted(manuais)}): fora do escopo')
         registro.fluxo = 'VELHO - tratado manualmente'
         registro.prox_acao = ProxAcao.FORA_DO_ESCOPO
+        _sair_da_espera_do_fluxo_normal(driver, registro)
         return
 
     logger.info('Fluxo: VELHO - não processado (fluxo ainda não definido)')
     registro.fluxo = 'VELHO - não processado'
     garantir_marcadores_no_sei(driver, [TAG_PROCESSO_VELHO])
     adicionar_tag_se_ausente(driver, registro, TAG_PROCESSO_VELHO)
+    _sair_da_espera_do_fluxo_normal(driver, registro)
     registro.prox_acao = ProxAcao.VELHO_AGUARDAR_DEFINICAO
 
 
@@ -151,6 +161,9 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         adicionar_tag(driver, registro, TAG_PROCESSO_NOVO)
     elif estado is None:
         logger.info('Fluxo: NOVO - do início')
+    elif estado == TAG_AGUARDA_FLUXO_NORMAL:
+        # O próximo estado do fluxo substitui este
+        logger.info('Fluxo: NOVO - do início (veio do fluxo ALT 1)')
     else:
         logger.info(f'Fluxo: retomada (estado "{estado}")')
     processar_novo(driver, registro, bases, bases_mantis)
@@ -195,7 +208,7 @@ def main():
 
         df_processos = pd.read_excel(
             io=ARQ_PROCESSOS_NAO_PROCESSADOS,
-            sheet_name='processos_reais',
+            sheet_name='fluxo',
         )
         total = len(df_processos)
         logger.info(f'{total} processo(s) lido(s) de {ARQ_PROCESSOS_NAO_PROCESSADOS.name}')

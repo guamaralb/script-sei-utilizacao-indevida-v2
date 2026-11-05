@@ -95,6 +95,10 @@ def _registro_com(*marcadores) -> RegistroMain:
         # Sem estado: versão anterior ou falha antes do memo à APIS
         (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS),
         (tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO,),
+        # 1.0 (veio do ALT 1): informativo antigo equivale a sem estado
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_FLUXO_NORMAL),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_AGUARDA_FLUXO_NORMAL),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_AGUARDA_FLUXO_NORMAL),
     ],
 )
 def test_marcadores_consistentes(marcadores):
@@ -106,6 +110,7 @@ def test_marcadores_consistentes(marcadores):
     [
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA, tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS), 'mais de um marcador de estado'),
         ((tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA,), 'sem o marcador'),
+        ((tags.TAG_AGUARDA_FLUXO_NORMAL,), 'sem o marcador'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO, tags.TAG_MEMO_DEPROC_NO_BLOCO), 'os dois marcadores 1.3'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_DEPROC_NO_BLOCO, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA), 'concluído na versão anterior'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), '1.2.1 - Mat. N Encontradas Base APIS com o estado 1.10'),

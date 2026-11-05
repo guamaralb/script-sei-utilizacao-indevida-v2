@@ -16,8 +16,8 @@ selenium = "^4.39.0"
 python-dotenv = "^1.2.1"
 reportlab = "^4.4.10"
 # PATH do sei-automacao: Alterar para seu PC
-# sei-automacao = { path = "../../../sei-automacao", develop = true }
-sei-automacao = { path = "../sei-automacao", develop = true }
+sei-automacao = { path = "../../../sei-automacao", develop = true }
+# sei-automacao = { path = "../sei-automacao", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 taskipy = "^1.14.1"
@@ -35,6 +35,8 @@ pre_format = {cmd = 'poetry run ruff check --fix'}
 format = {cmd = 'poetry run ruff format'}
 pre_run = {cmd = "poetry run task format"}
 run = 'python script_sei_utilizacao_indevida_v2/main.py'
+pre_run_alt_1 = {cmd = "poetry run task format"}
+run_alt_1 = 'python script_sei_utilizacao_indevida_v2/main_alt_1.py'
 test = 'pytest'
 
 [tool.pytest.ini_options]

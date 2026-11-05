@@ -309,7 +309,10 @@ col_tratar = Coluna(
         P('Par sem data<br>legível?', [E('<b>ErroAvaliacao</b>: não dá para saber se é VELHO; nada é feito no SEI')]),
         P('<b>VELHO</b> pelos memos<br>da GEACS?', [IR('_separar_velho()<br><span style="font-weight:normal">à direita</span>')]),
         P('Sem o marcador<br><b>1 - Tratado pelo Script</b>?', [M('1 - Tratado pelo Script'), IR('processar_novo() do início — coluna 3')]),
-        IR('processar_novo() — coluna 3<br><span style="font-weight:normal">do início ou retomando de 1.6 - Avaliado Uso Rede Própria DISA ou 1.8 - Avaliado Uso Rede Própria MANTIS</span>'),
+        IR(
+            'processar_novo() — coluna 3<br><span style="font-weight:normal">do início (sem estado ou com 1.0 - Aguarda Script: Fluxo Normal, que o fluxo ALT 1 deixa) '
+            'ou retomando de 1.6 - Avaliado Uso Rede Própria DISA ou 1.8 - Avaliado Uso Rede Própria MANTIS</span>'
+        ),
     ],
 )
 
@@ -488,9 +491,10 @@ aux = [
         '_separar_velho()',
         '<b>Processo VELHO</b> (enviado à DISA e à DEPROC antes da avaliação): marcado e <b>não processado</b>. TODO: definir o fluxo do VELHO',
         [
-            P('Tem MANUAL<br>ou ASSINADO?', [T('prox_acao = Fora do escopo (tratado manualmente)')]),
+            P('Tem MANUAL<br>ou ASSINADO?', [R('1.0 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'), T('prox_acao = Fora do escopo (tratado manualmente)')]),
             F('garantir_marcadores_no_sei()'),
             M('0 - Processo VELHO<br><span style="font-weight:normal">se ainda não tiver</span>'),
+            R('1.0 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'),
             T('prox_acao = VELHO: não processado (fluxo ainda não definido)'),
         ],
         cor='aux',
@@ -557,6 +561,7 @@ marcadores = N(
     '1 - Tratado pelo Script<br>'
     '1.1 - Período Variável p/ Dependentes<br>'
     '1.2.1 - Mat. N Encontradas Base APIS<br>'
+    '★ 1.0 - Aguarda Script: Fluxo Normal (adicionado pelo fluxo ALT 1)<br>'
     '★ 1.5 - Aguarda APIS: Sem Memo p/ GEACS<br>'
     '★ 1.5 - Aguarda APIS: Formato Inválido<br>'
     '★ 1.6 - Avaliado Uso Rede Própria DISA<br>'
@@ -605,7 +610,7 @@ pendencias = N(
     '<b>Pendências (TODO)</b><br>'
     '• no SEI: editar os marcadores renomeados (1 - Tratado pelo Script, 1.5 - Aguarda APIS: Sem Memo p/ GEACS, 1.5 - Aguarda APIS: Formato Inválido, '
     '1.6.1 - Aguarda APIS: Matrículas, 1.7 - Aguarda APIS: Período Deps, 1.10 - Concluído: Memo DEPROC, 1.2.1 - Mat. N Encontradas Base APIS) '
-    'e cadastrar 0 - Processo VELHO, os seis 1.6.2 / 1.8.2 / 1.8.3, os três 1.9 - Aguarda DISA e 1.10 - Aguarda APIS: Sem Uso<br>'
+    'e cadastrar 0 - Processo VELHO, 1.0 - Aguarda Script: Fluxo Normal, os seis 1.6.2 / 1.8.2 / 1.8.3, os três 1.9 - Aguarda DISA e 1.10 - Aguarda APIS: Sem Uso<br>'
     '• blocos dos três memos à DISA e do memo à APIS sem uso (constantes = None)<br>'
     '• revisar os textos e assuntos dos memos com TEXTO_DEFINIDO = False<br>'
     '• fluxo do processo VELHO<br>'

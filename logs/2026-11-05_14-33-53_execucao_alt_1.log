@@ -1,0 +1,987 @@
+2026-11-05 14:33:53 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ALT 1 - SOMENTE INSERIR PDF) =================
+2026-11-05 14:33:53 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-05_14-33-53_execucao_alt_1.log
+2026-11-05 14:33:53 | INFO    | -                         | __main__              | 26 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-05 14:33:53 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-05 14:33:53 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-05 14:33:53 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-05 14:33:54 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-05 14:33:54 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\alt_1\planilhas_baixadas
+2026-11-05 14:33:56 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-05 14:33:56 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/26]
+2026-11-05 14:34:00 | INFO    | 2010.01.0082932/2024-60   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-05 14:34:00 | INFO    | 2010.01.0082932/2024-60   | __main__              | Árvore: 16 documento(s)
+2026-11-05 14:34:00 | INFO    | 2010.01.0082932/2024-60   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-05 14:34:01 | INFO    | 2010.01.0082932/2024-60   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTO (SEI 105205949) em 105205949_DANIELE_ROSE_DE_OLIVEIRA.xlsx
+2026-11-05 14:34:01 | WARNING | 2010.01.0082932/2024-60   | planilhas_alt_1       | Retomada: PDF do Anexo 105205949 já está na árvore (152997185); não será anexado de novo
+2026-11-05 14:34:01 | INFO    | 2010.01.0082932/2024-60   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:01 | INFO    | 2010.01.0082932/2024-60   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:01 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-05_14-33-53.xlsx
+2026-11-05 14:34:01 | ERROR   | 2010.01.0082932/2024-60   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:01 | ERROR   | 2010.01.0082932/2024-60   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:01 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (5.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:01 | INFO    | 2010.01.0050804/2025-42   | __main__              | INÍCIO [2/26]
+2026-11-05 14:34:03 | INFO    | 2010.01.0050804/2025-42   | __main__              | Árvore: 20 documento(s)
+2026-11-05 14:34:03 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3542985', 'Planilha Utilização Dependentes - 3542985']
+2026-11-05 14:34:03 | WARNING | 2010.01.0050804/2025-42   | planilhas_alt_1       | Retomada: PDF da planilha 125202990 já está na árvore (152997223); não será anexado de novo
+2026-11-05 14:34:03 | WARNING | 2010.01.0050804/2025-42   | planilhas_alt_1       | Retomada: PDF da planilha 125202957 já está na árvore (152997251); não será anexado de novo
+2026-11-05 14:34:03 | INFO    | 2010.01.0050804/2025-42   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:03 | INFO    | 2010.01.0050804/2025-42   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:03 | ERROR   | 2010.01.0050804/2025-42   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:03 | ERROR   | 2010.01.0050804/2025-42   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:03 | INFO    | 2010.01.0050804/2025-42   | __main__              | FIM (1.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:03 | INFO    | 2010.01.0076235/2024-71   | __main__              | INÍCIO [3/26]
+2026-11-05 14:34:04 | INFO    | 2010.01.0076235/2024-71   | __main__              | Árvore: 18 documento(s)
+2026-11-05 14:34:04 | INFO    | 2010.01.0076235/2024-71   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-05 14:34:05 | INFO    | 2010.01.0076235/2024-71   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTO (SEI 104647316) em 104647316_DENISE_GONCALVES_DE_SOUZA_PAULA.xlsx
+2026-11-05 14:34:05 | WARNING | 2010.01.0076235/2024-71   | planilhas_alt_1       | Retomada: PDF do Anexo 104647316 já está na árvore (152997331); não será anexado de novo
+2026-11-05 14:34:05 | INFO    | 2010.01.0076235/2024-71   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:05 | INFO    | 2010.01.0076235/2024-71   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:05 | ERROR   | 2010.01.0076235/2024-71   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:06 | ERROR   | 2010.01.0076235/2024-71   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:06 | INFO    | 2010.01.0076235/2024-71   | __main__              | FIM (2.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:06 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [4/26]
+2026-11-05 14:34:07 | INFO    | 2010.01.0071357/2024-51   | __main__              | Árvore: 18 documento(s)
+2026-11-05 14:34:07 | INFO    | 2010.01.0071357/2024-51   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-05 14:34:08 | INFO    | 2010.01.0071357/2024-51   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTOS (SEI 105641135) em 105641135_MARILDA_MARTINS_MIRANDA.xlsx
+2026-11-05 14:34:08 | WARNING | 2010.01.0071357/2024-51   | planilhas_alt_1       | Retomada: PDF do Anexo 105641135 já está na árvore (152997395); não será anexado de novo
+2026-11-05 14:34:08 | INFO    | 2010.01.0071357/2024-51   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:08 | INFO    | 2010.01.0071357/2024-51   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:08 | ERROR   | 2010.01.0071357/2024-51   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:08 | ERROR   | 2010.01.0071357/2024-51   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:08 | INFO    | 2010.01.0071357/2024-51   | __main__              | FIM (2.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:08 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [5/26]
+2026-11-05 14:34:10 | INFO    | 2010.01.0072062/2024-28   | __main__              | Árvore: 28 documento(s)
+2026-11-05 14:34:10 | INFO    | 2010.01.0072062/2024-28   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3631854', 'Planilha Utilização Dependentes - 3631854']
+2026-11-05 14:34:10 | WARNING | 2010.01.0072062/2024-28   | planilhas_alt_1       | Retomada: PDF da planilha 123625018 já está na árvore (152997444); não será anexado de novo
+2026-11-05 14:34:10 | WARNING | 2010.01.0072062/2024-28   | planilhas_alt_1       | Retomada: PDF da planilha 123625056 já está na árvore (152997528); não será anexado de novo
+2026-11-05 14:34:10 | INFO    | 2010.01.0072062/2024-28   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:10 | INFO    | 2010.01.0072062/2024-28   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:10 | ERROR   | 2010.01.0072062/2024-28   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:10 | ERROR   | 2010.01.0072062/2024-28   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:10 | INFO    | 2010.01.0072062/2024-28   | __main__              | FIM (2.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:10 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [6/26]
+2026-11-05 14:34:12 | INFO    | 2010.01.0071467/2024-88   | __main__              | Árvore: 27 documento(s)
+2026-11-05 14:34:12 | INFO    | 2010.01.0071467/2024-88   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-05 14:34:12 | INFO    | 2010.01.0071467/2024-88   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTOS (SEI 121769008) em 121769008_OSVALDO_GOMES_COURA_FILHO.xlsx
+2026-11-05 14:34:13 | DEBUG   | 2010.01.0071467/2024-88   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 14:34:13 | DEBUG   | 2010.01.0071467/2024-88   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 14:34:13 | DEBUG   | 2010.01.0071467/2024-88   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 14:34:13 | DEBUG   | 2010.01.0071467/2024-88   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 14:34:13 | DEBUG   | 2010.01.0071467/2024-88   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 14:34:13 | DEBUG   | 2010.01.0071467/2024-88   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 14:34:13 | DEBUG   | 2010.01.0071467/2024-88   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 14:34:28 | INFO    | 2010.01.0071467/2024-88   | planilhas_alt_1       | PDF anexado ao processo: Utilização Ben. - 3542998 e mais 3 (153002969)
+2026-11-05 14:34:28 | INFO    | 2010.01.0071467/2024-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:28 | INFO    | 2010.01.0071467/2024-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:28 | ERROR   | 2010.01.0071467/2024-88   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:28 | ERROR   | 2010.01.0071467/2024-88   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:28 | INFO    | 2010.01.0071467/2024-88   | __main__              | FIM (18.5s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:28 | INFO    | 2010.01.0049247/2025-80   | __main__              | INÍCIO [7/26]
+2026-11-05 14:34:30 | INFO    | 2010.01.0049247/2025-80   | __main__              | Árvore: 18 documento(s)
+2026-11-05 14:34:30 | INFO    | 2010.01.0049247/2025-80   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3991572']
+2026-11-05 14:34:30 | WARNING | 2010.01.0049247/2025-80   | planilhas_alt_1       | Retomada: PDF da planilha 123419508 já está na árvore (152997655); não será anexado de novo
+2026-11-05 14:34:30 | INFO    | 2010.01.0049247/2025-80   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:30 | INFO    | 2010.01.0049247/2025-80   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:30 | ERROR   | 2010.01.0049247/2025-80   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:30 | ERROR   | 2010.01.0049247/2025-80   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:30 | INFO    | 2010.01.0049247/2025-80   | __main__              | FIM (1.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:30 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [8/26]
+2026-11-05 14:34:32 | INFO    | 2010.01.0049305/2025-66   | __main__              | Árvore: 18 documento(s)
+2026-11-05 14:34:32 | INFO    | 2010.01.0049305/2025-66   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3557861']
+2026-11-05 14:34:32 | WARNING | 2010.01.0049305/2025-66   | planilhas_alt_1       | Retomada: PDF da planilha 123170837 já está na árvore (152997785); não será anexado de novo
+2026-11-05 14:34:32 | INFO    | 2010.01.0049305/2025-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:32 | INFO    | 2010.01.0049305/2025-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:32 | ERROR   | 2010.01.0049305/2025-66   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:32 | ERROR   | 2010.01.0049305/2025-66   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:32 | INFO    | 2010.01.0049305/2025-66   | __main__              | FIM (2.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:32 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [9/26]
+2026-11-05 14:34:33 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 17 documento(s)
+2026-11-05 14:34:33 | INFO    | 2010.01.0072726/2024-45   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-05 14:34:34 | INFO    | 2010.01.0072726/2024-45   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTO (SEI 105680512) em 105680512_MARIA_LEONI_LEAL_SILVA_CARDOSO.xlsx
+2026-11-05 14:34:34 | DEBUG   | 2010.01.0072726/2024-45   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 14:34:34 | DEBUG   | 2010.01.0072726/2024-45   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 14:34:34 | DEBUG   | 2010.01.0072726/2024-45   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 14:34:34 | DEBUG   | 2010.01.0072726/2024-45   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 14:34:34 | DEBUG   | 2010.01.0072726/2024-45   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 14:34:34 | DEBUG   | 2010.01.0072726/2024-45   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 14:34:34 | DEBUG   | 2010.01.0072726/2024-45   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 14:34:48 | INFO    | 2010.01.0072726/2024-45   | planilhas_alt_1       | PDF anexado ao processo: Utilização Ben. - 3222588 e mais 2 (153003010)
+2026-11-05 14:34:51 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:34:53 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:34:53 | ERROR   | 2010.01.0072726/2024-45   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:34:54 | ERROR   | 2010.01.0072726/2024-45   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:34:54 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (21.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:34:54 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [10/26]
+2026-11-05 14:34:55 | INFO    | 2010.01.0072584/2024-96   | __main__              | Árvore: 14 documento(s)
+2026-11-05 14:34:55 | INFO    | 2010.01.0072584/2024-96   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-05 14:34:56 | INFO    | 2010.01.0072584/2024-96   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTOS (SEI 122679446) em 122679446_MARIA_VERONICA_BROZINGA.xlsx
+2026-11-05 14:34:56 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 14:34:56 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 14:34:56 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 14:34:56 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 14:34:56 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 14:34:56 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 14:34:56 | DEBUG   | 2010.01.0072584/2024-96   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 14:35:10 | INFO    | 2010.01.0072584/2024-96   | planilhas_alt_1       | PDF anexado ao processo: Utilização Ben. - 3218433 e mais 3 (153003161)
+2026-11-05 14:35:13 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:35:17 | INFO    | 2010.01.0072584/2024-96   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:35:17 | ERROR   | 2010.01.0072584/2024-96   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:35:17 | ERROR   | 2010.01.0072584/2024-96   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:35:17 | INFO    | 2010.01.0072584/2024-96   | __main__              | FIM (23.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:35:17 | INFO    | 2010.01.0071348/2024-03   | __main__              | INÍCIO [11/26]
+2026-11-05 14:35:19 | INFO    | 2010.01.0071348/2024-03   | __main__              | Árvore: 18 documento(s)
+2026-11-05 14:35:19 | INFO    | 2010.01.0071348/2024-03   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-05 14:35:20 | INFO    | 2010.01.0071348/2024-03   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTOS (SEI 104636465) em 104636465_ORESTES_MARQUES_JUNIOR.xlsx
+2026-11-05 14:35:20 | WARNING | 2010.01.0071348/2024-03   | planilhas_alt_1       | Retomada: PDF do Anexo 104636465 já está na árvore (152997909); não será anexado de novo
+2026-11-05 14:35:20 | INFO    | 2010.01.0071348/2024-03   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:35:20 | INFO    | 2010.01.0071348/2024-03   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:35:20 | ERROR   | 2010.01.0071348/2024-03   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:35:20 | ERROR   | 2010.01.0071348/2024-03   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:35:20 | INFO    | 2010.01.0071348/2024-03   | __main__              | FIM (3.1s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:35:20 | INFO    | 2010.01.0050757/2025-50   | __main__              | INÍCIO [12/26]
+2026-11-05 14:35:23 | INFO    | 2010.01.0050757/2025-50   | __main__              | Árvore: 21 documento(s)
+2026-11-05 14:35:23 | INFO    | 2010.01.0050757/2025-50   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3557834', 'Planilha Utilização Dependentes - 3557834']
+2026-11-05 14:35:23 | WARNING | 2010.01.0050757/2025-50   | planilhas_alt_1       | Retomada: PDF da planilha 125202600 já está na árvore (152998025); não será anexado de novo
+2026-11-05 14:35:23 | WARNING | 2010.01.0050757/2025-50   | planilhas_alt_1       | Retomada: PDF da planilha 125202631 já está na árvore (152998051); não será anexado de novo
+2026-11-05 14:35:23 | INFO    | 2010.01.0050757/2025-50   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:35:23 | INFO    | 2010.01.0050757/2025-50   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:35:23 | ERROR   | 2010.01.0050757/2025-50   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:35:24 | ERROR   | 2010.01.0050757/2025-50   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:35:24 | INFO    | 2010.01.0050757/2025-50   | __main__              | FIM (3.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:35:24 | INFO    | 2010.01.0072057/2024-66   | __main__              | INÍCIO [13/26]
+2026-11-05 14:35:27 | INFO    | 2010.01.0072057/2024-66   | __main__              | Árvore: 28 documento(s)
+2026-11-05 14:35:27 | INFO    | 2010.01.0072057/2024-66   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3713817']
+2026-11-05 14:35:27 | WARNING | 2010.01.0072057/2024-66   | planilhas_alt_1       | Retomada: PDF da planilha 123601662 já está na árvore (152998099); não será anexado de novo
+2026-11-05 14:35:27 | INFO    | 2010.01.0072057/2024-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:35:27 | INFO    | 2010.01.0072057/2024-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:35:27 | ERROR   | 2010.01.0072057/2024-66   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:35:27 | ERROR   | 2010.01.0072057/2024-66   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:35:27 | INFO    | 2010.01.0072057/2024-66   | __main__              | FIM (3.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:35:27 | INFO    | 2010.01.0082953/2024-75   | __main__              | INÍCIO [14/26]
+2026-11-05 14:35:28 | INFO    | 2010.01.0082953/2024-75   | __main__              | Árvore: 19 documento(s)
+2026-11-05 14:35:28 | INFO    | 2010.01.0082953/2024-75   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-05 14:36:29 | ERROR   | 2010.01.0082953/2024-75   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:36:29 | ERROR   | 2010.01.0082953/2024-75   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:36:29 | WARNING | 2010.01.0082953/2024-75   | __main__              | FIM COM ERRO (0h01m02s) | ErroAvaliacao: Planilha 108832663 não foi baixada em 60s
+2026-11-05 14:36:29 | INFO    | 2010.01.0050829/2025-46   | __main__              | INÍCIO [15/26]
+2026-11-05 14:36:32 | INFO    | 2010.01.0050829/2025-46   | __main__              | Árvore: 22 documento(s)
+2026-11-05 14:36:32 | INFO    | 2010.01.0050829/2025-46   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Tit. - 3549507 - 10/12/2025', 'Planilha Utilização Dep. - 3549507 - 10/12/2025']
+2026-11-05 14:36:32 | WARNING | 2010.01.0050829/2025-46   | planilhas_alt_1       | Retomada: PDF da planilha 129186639 já está na árvore (152998216); não será anexado de novo
+2026-11-05 14:36:32 | WARNING | 2010.01.0050829/2025-46   | planilhas_alt_1       | Retomada: PDF da planilha 129186755 já está na árvore (152998290); não será anexado de novo
+2026-11-05 14:36:32 | INFO    | 2010.01.0050829/2025-46   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:36:32 | INFO    | 2010.01.0050829/2025-46   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:36:32 | ERROR   | 2010.01.0050829/2025-46   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:36:32 | ERROR   | 2010.01.0050829/2025-46   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:36:32 | INFO    | 2010.01.0050829/2025-46   | __main__              | FIM (3.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:36:32 | INFO    | 2010.01.0050841/2025-13   | __main__              | INÍCIO [16/26]
+2026-11-05 14:36:35 | INFO    | 2010.01.0050841/2025-13   | __main__              | Árvore: 17 documento(s)
+2026-11-05 14:36:35 | INFO    | 2010.01.0050841/2025-13   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3706058']
+2026-11-05 14:36:35 | WARNING | 2010.01.0050841/2025-13   | planilhas_alt_1       | Retomada: PDF da planilha 125072984 já está na árvore (152998385); não será anexado de novo
+2026-11-05 14:36:35 | INFO    | 2010.01.0050841/2025-13   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:36:35 | INFO    | 2010.01.0050841/2025-13   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:36:35 | ERROR   | 2010.01.0050841/2025-13   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:36:35 | ERROR   | 2010.01.0050841/2025-13   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:36:35 | INFO    | 2010.01.0050841/2025-13   | __main__              | FIM (2.5s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:36:35 | INFO    | 2010.01.0050849/2025-88   | __main__              | INÍCIO [17/26]
+2026-11-05 14:36:38 | INFO    | 2010.01.0050849/2025-88   | __main__              | Árvore: 15 documento(s)
+2026-11-05 14:36:38 | INFO    | 2010.01.0050849/2025-88   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3551518', 'Planilha Utilização Dependentes - 3551518']
+2026-11-05 14:36:38 | WARNING | 2010.01.0050849/2025-88   | planilhas_alt_1       | Retomada: PDF da planilha 123495626 já está na árvore (152998429); não será anexado de novo
+2026-11-05 14:36:38 | WARNING | 2010.01.0050849/2025-88   | planilhas_alt_1       | Retomada: PDF da planilha 123495656 já está na árvore (153000487); não será anexado de novo
+2026-11-05 14:36:38 | INFO    | 2010.01.0050849/2025-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:36:38 | INFO    | 2010.01.0050849/2025-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:36:38 | ERROR   | 2010.01.0050849/2025-88   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:36:38 | ERROR   | 2010.01.0050849/2025-88   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:36:38 | INFO    | 2010.01.0050849/2025-88   | __main__              | FIM (3.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:36:38 | INFO    | 2010.01.0050885/2025-86   | __main__              | INÍCIO [18/26]
+2026-11-05 14:36:41 | INFO    | 2010.01.0050885/2025-86   | __main__              | Árvore: 20 documento(s)
+2026-11-05 14:36:41 | INFO    | 2010.01.0050885/2025-86   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3712763']
+2026-11-05 14:36:41 | WARNING | 2010.01.0050885/2025-86   | planilhas_alt_1       | Retomada: PDF da planilha 123692233 já está na árvore (152998581); não será anexado de novo
+2026-11-05 14:36:41 | INFO    | 2010.01.0050885/2025-86   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:36:41 | INFO    | 2010.01.0050885/2025-86   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:36:41 | ERROR   | 2010.01.0050885/2025-86   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:36:41 | ERROR   | 2010.01.0050885/2025-86   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:36:41 | INFO    | 2010.01.0050885/2025-86   | __main__              | FIM (2.9s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:36:41 | INFO    | 2010.01.0051097/2025-85   | __main__              | INÍCIO [19/26]
+2026-11-05 14:36:44 | INFO    | 2010.01.0051097/2025-85   | __main__              | Árvore: 18 documento(s)
+2026-11-05 14:36:44 | INFO    | 2010.01.0051097/2025-85   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Dependentes - 3748184']
+2026-11-05 14:36:44 | WARNING | 2010.01.0051097/2025-85   | planilhas_alt_1       | Retomada: PDF da planilha 123182649 já está na árvore (152998567); não será anexado de novo
+2026-11-05 14:36:44 | INFO    | 2010.01.0051097/2025-85   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:36:44 | INFO    | 2010.01.0051097/2025-85   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:36:44 | ERROR   | 2010.01.0051097/2025-85   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:36:44 | ERROR   | 2010.01.0051097/2025-85   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:36:44 | INFO    | 2010.01.0051097/2025-85   | __main__              | FIM (2.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:36:44 | INFO    | 2010.01.0050905/2025-31   | __main__              | INÍCIO [20/26]
+2026-11-05 14:36:47 | INFO    | 2010.01.0050905/2025-31   | __main__              | Árvore: 18 documento(s)
+2026-11-05 14:36:47 | INFO    | 2010.01.0050905/2025-31   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 2608097']
+2026-11-05 14:37:48 | ERROR   | 2010.01.0050905/2025-31   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:37:48 | ERROR   | 2010.01.0050905/2025-31   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:37:48 | WARNING | 2010.01.0050905/2025-31   | __main__              | FIM COM ERRO (0h01m04s) | ErroAvaliacao: Planilha 123418137 não foi baixada em 60s
+2026-11-05 14:37:48 | INFO    | 2010.01.0051096/2025-15   | __main__              | INÍCIO [21/26]
+2026-11-05 14:37:51 | INFO    | 2010.01.0051096/2025-15   | __main__              | Árvore: 20 documento(s)
+2026-11-05 14:37:51 | INFO    | 2010.01.0051096/2025-15   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3551170', 'Planilha Utilização Dependentes - 3551170']
+2026-11-05 14:37:51 | WARNING | 2010.01.0051096/2025-15   | planilhas_alt_1       | Retomada: PDF da planilha 123416770 já está na árvore (152998941); não será anexado de novo
+2026-11-05 14:37:51 | WARNING | 2010.01.0051096/2025-15   | planilhas_alt_1       | Retomada: PDF da planilha 123416776 já está na árvore (152998983); não será anexado de novo
+2026-11-05 14:37:51 | INFO    | 2010.01.0051096/2025-15   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:37:51 | INFO    | 2010.01.0051096/2025-15   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:37:51 | ERROR   | 2010.01.0051096/2025-15   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:37:51 | ERROR   | 2010.01.0051096/2025-15   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:37:51 | INFO    | 2010.01.0051096/2025-15   | __main__              | FIM (2.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:37:51 | INFO    | 2010.01.0049549/2025-74   | __main__              | INÍCIO [22/26]
+2026-11-05 14:37:54 | INFO    | 2010.01.0049549/2025-74   | __main__              | Árvore: 22 documento(s)
+2026-11-05 14:37:54 | INFO    | 2010.01.0049549/2025-74   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3565452', 'Planilha Utilização Dependentes - 3565452']
+2026-11-05 14:37:54 | WARNING | 2010.01.0049549/2025-74   | planilhas_alt_1       | Retomada: PDF da planilha 123732185 já está na árvore (152999054); não será anexado de novo
+2026-11-05 14:37:54 | WARNING | 2010.01.0049549/2025-74   | planilhas_alt_1       | Retomada: PDF da planilha 123732236 já está na árvore (152999096); não será anexado de novo
+2026-11-05 14:37:54 | INFO    | 2010.01.0049549/2025-74   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:37:54 | INFO    | 2010.01.0049549/2025-74   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:37:54 | ERROR   | 2010.01.0049549/2025-74   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:37:54 | ERROR   | 2010.01.0049549/2025-74   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:37:54 | INFO    | 2010.01.0049549/2025-74   | __main__              | FIM (3.1s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:37:54 | INFO    | 2010.01.0051875/2025-31   | __main__              | INÍCIO [23/26]
+2026-11-05 14:37:56 | INFO    | 2010.01.0051875/2025-31   | __main__              | Árvore: 13 documento(s)
+2026-11-05 14:37:56 | INFO    | 2010.01.0051875/2025-31   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Tit. - 3273809 - 10/12/2025']
+2026-11-05 14:38:57 | ERROR   | 2010.01.0051875/2025-31   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:38:57 | ERROR   | 2010.01.0051875/2025-31   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:38:57 | WARNING | 2010.01.0051875/2025-31   | __main__              | FIM COM ERRO (0h01m03s) | ErroAvaliacao: Planilha 129185945 não foi baixada em 60s
+2026-11-05 14:38:57 | INFO    | 2010.01.0051843/2025-22   | __main__              | INÍCIO [24/26]
+2026-11-05 14:39:00 | ERROR   | 2010.01.0051843/2025-22   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 48, in _processar_linha
+    registro.registrar_arvore(listar_documentos_arvore(driver))
+                              ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 113, in listar_documentos_arvore
+    item_text, item_num_com_parenteses = item_text_and_num.rsplit(' ', 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+2026-11-05 14:39:00 | ERROR   | 2010.01.0051843/2025-22   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:39:00 | ERROR   | 2010.01.0051843/2025-22   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:39:00 | WARNING | 2010.01.0051843/2025-22   | __main__              | FIM COM ERRO (2.5s) | ValueError: not enough values to unpack (expected 2, got 1)
+2026-11-05 14:39:00 | INFO    | 2010.01.0052516/2025-87   | __main__              | INÍCIO [25/26]
+2026-11-05 14:39:02 | INFO    | 2010.01.0052516/2025-87   | __main__              | Árvore: 11 documento(s)
+2026-11-05 14:39:02 | INFO    | 2010.01.0052516/2025-87   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 2289385', 'Planilha Utilização Dependentes - 2289385']
+2026-11-05 14:39:02 | WARNING | 2010.01.0052516/2025-87   | planilhas_alt_1       | Retomada: PDF da planilha 123176855 já está na árvore (152999199); não será anexado de novo
+2026-11-05 14:39:02 | WARNING | 2010.01.0052516/2025-87   | planilhas_alt_1       | Retomada: PDF da planilha 123176947 já está na árvore (152999275); não será anexado de novo
+2026-11-05 14:39:02 | INFO    | 2010.01.0052516/2025-87   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:39:02 | INFO    | 2010.01.0052516/2025-87   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:39:02 | ERROR   | 2010.01.0052516/2025-87   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:39:02 | ERROR   | 2010.01.0052516/2025-87   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:39:02 | INFO    | 2010.01.0052516/2025-87   | __main__              | FIM (2.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:39:02 | INFO    | 2010.01.0053646/2025-35   | __main__              | INÍCIO [26/26]
+2026-11-05 14:39:04 | INFO    | 2010.01.0053646/2025-35   | __main__              | Árvore: 11 documento(s)
+2026-11-05 14:39:04 | INFO    | 2010.01.0053646/2025-35   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3700367']
+2026-11-05 14:39:04 | WARNING | 2010.01.0053646/2025-35   | planilhas_alt_1       | Retomada: PDF da planilha 123720542 já está na árvore (152999350); não será anexado de novo
+2026-11-05 14:39:04 | INFO    | 2010.01.0053646/2025-35   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 14:39:04 | INFO    | 2010.01.0053646/2025-35   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 14:39:04 | ERROR   | 2010.01.0053646/2025-35   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 14:39:05 | ERROR   | 2010.01.0053646/2025-35   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_14-33-53_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 14:39:05 | INFO    | 2010.01.0053646/2025-35   | __main__              | FIM (2.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:39:07 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-05 14:39:07 | INFO    | -                         | __main__              | Processos: 26 | Sem erro: 22 | Com erro: 4
+2026-11-05 14:39:07 | INFO    | -                         | __main__              |    22 | ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 14:39:07 | INFO    | -                         | __main__              | ERRO  | 2010.01.0082953/2024-75 | ErroAvaliacao: Planilha 108832663 não foi baixada em 60s
+2026-11-05 14:39:07 | INFO    | -                         | __main__              | ERRO  | 2010.01.0050905/2025-31 | ErroAvaliacao: Planilha 123418137 não foi baixada em 60s
+2026-11-05 14:39:07 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051875/2025-31 | ErroAvaliacao: Planilha 129185945 não foi baixada em 60s
+2026-11-05 14:39:07 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051843/2025-22 | ValueError: not enough values to unpack (expected 2, got 1)
+2026-11-05 14:39:07 | INFO    | -                         | __main__              | Duração total da execução: 0h05m13s
+2026-11-05 14:39:07 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

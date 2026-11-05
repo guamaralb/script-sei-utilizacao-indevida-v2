@@ -82,6 +82,11 @@ TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO = 'Script v2 - 1.10 - Concluído: Memos DIS
 TAG_VELHO_MEMO_DISA = 'Script v2 - 1.11 - VELHO Concluído: Memo DISA'
 TAG_VELHO_MEMO_DEPROC = 'Script v2 - 1.11 - VELHO Concluído: Memo DEPROC'
 
+# Estado de entrada: PDF das planilhas inserido pelo fluxo ALT 1
+# (main_alt_1.py). O fluxo normal trata o processo do início e troca este
+# estado pelo seguinte
+TAG_AGUARDA_FLUXO_NORMAL = 'Script v2 - 1.0 - Aguarda Script: Fluxo Normal'
+
 # Marcadores manuais (não são colocados pelo script)
 TAG_PLANILHADO = 'PLANILHADO'
 TAG_UI_INSERIDA = 'UTILIZAÇÃO INSERIDA'
@@ -115,7 +120,7 @@ TAGS_RETOMADA_NOVO = (
     TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
     TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
 )
-TAGS_ESTADO_NOVO = TAGS_PARADA_NOVO + TAGS_RETOMADA_NOVO + TAGS_CONCLUSAO_NOVO
+TAGS_ESTADO_NOVO = (TAG_AGUARDA_FLUXO_NORMAL, *TAGS_PARADA_NOVO, *TAGS_RETOMADA_NOVO, *TAGS_CONCLUSAO_NOVO)
 TAGS_DUPLA_DISA = (TAG_DISA_USOU_RP, TAG_DISA_NAO_USOU_RP)
 TAGS_DUPLA_MANTIS = (TAG_MANTIS_USOU_RP, TAG_MANTIS_NAO_USOU_RP)
 TAGS_DUPLA_MANTIS_RC = (TAG_MANTIS_USOU_RC, TAG_MANTIS_NAO_USOU_RC)
@@ -128,6 +133,7 @@ _GRUPOS_ALTERNATIVOS = (TAGS_ESTADO_NOVO, *_DUPLAS)
 _COLUNA_POR_TAG = {
     TAG_PROCESSO_VELHO: 'tag_processo_velho',
     TAG_PROCESSO_NOVO: 'tag_processo_novo',
+    TAG_AGUARDA_FLUXO_NORMAL: 'tag_aguarda_fluxo_normal',
     TAG_PLANILHADO: 'tag_planilhado',
     TAG_UI_INSERIDA: 'tag_ui_inserida',
     TAG_PERIODO_VAR_DEP: 'tag_periodo_variavel_deps',
@@ -285,7 +291,8 @@ def conferir_marcadores(registro) -> None:
     if TAG_MEMO_DEPROC_NO_BLOCO in atuais and estados:
         problemas.append(f'concluído na versão anterior ({_curto(TAG_MEMO_DEPROC_NO_BLOCO)}) com estado do fluxo atual')
     for tag, possiveis in _ESTADOS_POSSIVEIS_POR_INFORMATIVO.items():
-        if tag in atuais and estado is not None and estado not in possiveis:
+        # O 1.0 vem antes de todos: equivale a sem estado (informativo antigo)
+        if tag in atuais and estado not in {None, TAG_AGUARDA_FLUXO_NORMAL} and estado not in possiveis:
             problemas.append(f'{_curto(tag)} com o estado {_curto(estado)}')
     for tag, exigidos in _EXIGIDOS.items():
         faltando = [e for e in exigidos if e not in atuais]

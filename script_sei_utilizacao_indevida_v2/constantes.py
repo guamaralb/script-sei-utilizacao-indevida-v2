@@ -20,6 +20,11 @@ DIR_UTILIZACOES_OUTRAS_PDF = DIR_UTILIZACOES_OUTRAS / 'pdf'
 # Relatórios em PDF dos atendimentos do MANTIS, anexados aos processos
 DIR_UTILIZACOES_MANTIS_PDF = DIR_UTILIZACOES / 'mantis' / 'pdf'
 
+# Fluxo alternativo ALT 1: planilhas baixadas do SEI e PDFs gerados
+DIR_ALT_1 = DIR_DADOS / 'alt_1'
+DIR_ALT_1_PLANILHAS = DIR_ALT_1 / 'planilhas_baixadas'
+DIR_ALT_1_PDF = DIR_ALT_1 / 'pdfs'
+
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'
 # Base APIS: listagem de todos os beneficiários da demanda (a base DISA é
 # feita a partir dela). Matrículas com DV.

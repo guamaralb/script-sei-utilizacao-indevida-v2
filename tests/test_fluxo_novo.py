@@ -7,6 +7,7 @@ import processar_novo
 from Registro import ProxAcao
 from relatorios_mantis import REDE_CREDENCIADA, inicio_nome_relatorio
 from tags import (
+    TAG_AGUARDA_FLUXO_NORMAL,
     TAG_MANUAL,
     TAG_MAT_NAO_ENCONTRADAS_APIS,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
@@ -441,6 +442,33 @@ def test_memo_a_apis_sem_marcador_e_reaproveitado(sei):
     assert sei.tags_curtas[-1] == '1.6.1 - Aguarda APIS: Matrículas'
 
 
+# --- Vindo do fluxo ALT 1 ------------------------------------------------------
+
+
+def test_aguardando_fluxo_normal_e_tratado_do_inicio(sei):
+    sei.novo_processo()
+    sei.novo_doc('PDF Utilização Tit. - 3542985 - SEI 1000', 'IPSEMG/GEACS - Utilização', '')
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
+
+    registro = sei.passar(bases(tit_usou=False), SO_RC)
+
+    assert sei.tags_curtas == [NOVO, DISA_NAO, MANTIS_NAO, RC_SIM, CONCLUIDO_DEPROC]
+    assert TAG_AGUARDA_FLUXO_NORMAL in registro.marcadores_removidos
+    assert registro.prox_acao == ProxAcao.ASSINAR_DEPROC
+    assert registro.erro is None
+    # O PDF do ALT 1 fica no processo, e o relatório do MANTIS entra também
+    assert PDF_TIT_RC in sei.pdfs
+
+
+def test_aguardando_fluxo_normal_parado_troca_o_estado(sei):
+    sei.novo_processo(com_memo_apis=False)
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
+
+    sei.passar(bases())
+
+    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Sem Memo p/ GEACS']
+
+
 # --- VELHO (enviado à DISA e à DEPROC antes de 01/10/2026) ---------------------
 
 
@@ -465,6 +493,27 @@ def test_velho_pelos_memos_disa_e_deproc_nao_e_processado(sei):
     registro = sei.passar(bases(), MANTIS_DUAS_REDES)
     assert registro.prox_acao == ProxAcao.VELHO_AGUARDAR_DEFINICAO
     assert registro.marcadores_adicionados == []
+
+
+def test_velho_pelos_memos_prevalece_sobre_o_aguardo_do_fluxo_normal(sei):
+    _memos_disa_deproc(sei)
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
+
+    registro = sei.passar(bases(), MANTIS_DUAS_REDES)
+
+    assert registro.prox_acao == ProxAcao.VELHO_AGUARDAR_DEFINICAO
+    assert sei.tags_curtas == [NOVO, VELHO]
+    assert registro.memos_criados == []
+
+
+def test_velho_tratado_manualmente_sai_do_aguardo_do_fluxo_normal(sei):
+    _memos_disa_deproc(sei)
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL, TAG_MANUAL]
+
+    registro = sei.passar(bases(), MANTIS_DUAS_REDES)
+
+    assert registro.prox_acao == ProxAcao.FORA_DO_ESCOPO
+    assert TAG_AGUARDA_FLUXO_NORMAL not in sei.tags
 
 
 def test_velho_pelo_marcador_1_3_da_versao_anterior(sei):

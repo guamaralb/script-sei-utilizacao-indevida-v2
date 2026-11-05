@@ -67,9 +67,11 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos, data de corte do VELHO |
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
-| `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
+| `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroAlt1`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
 | `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; ainda fora do fluxo) |
+| `main_alt_1.py` | Fluxo alternativo ALT 1 (`poetry run task run_alt_1`): loop dos processos e registro na planilha de controle ([seção](#fluxo-alternativo-alt-1)) |
+| `planilhas_alt_1.py` | ALT 1: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
 | `docs/gerar_fluxo.py` | Gera o `docs/fluxo.drawio` (`python docs/gerar_fluxo.py docs/fluxo.drawio`). O conteúdo do diagrama fica no script |
 | `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
@@ -84,7 +86,9 @@ a API dela.
 - Código, nomes e mensagens em português.
 - Aspas simples.
 - Lint com **ruff** (preview ativo, ex.: PLR6301).
-- Testes com **pytest** (`poetry run task test`). O main não tem efeito
+- Testes com **pytest** (`poetry run task test`). **Atenção:** com
+  `SEI_TESTE_REAL` e `SEI_TESTE_REAL_<MEMO>` em `'1'` no `.env`, a suíte cria
+  memos no SEI real (`tests/test_memos_sei_real.py`). O main não tem efeito
   colateral ao importar (logging e pastas são configurados em `main()`).
   Ao mudar o fluxo, ajuste ou acrescente o cenário em
   `tests/test_fluxo_novo.py`.
@@ -324,6 +328,7 @@ Prefixo de todos os nomes: `Script v2 - `.
 |---|---|
 | `0 - Processo VELHO` | Processo VELHO, não processado (TODO: fluxo próprio). Sem o `1` |
 | `1 - Tratado pelo Script` | Processo tratado pelo script (todos, exceto o VELHO). Adicionado se faltar, e o fluxo começa do início |
+| `1.0 - Aguarda Script: Fluxo Normal` | Estado (entrada): PDFs inseridos pelo [fluxo ALT 1](#fluxo-alternativo-alt-1). O fluxo normal trata o processo do início e o próximo estado o substitui. Sai também se o processo for VELHO |
 | `1.1 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes |
 | `1.2.1 - Mat. N Encontradas Base APIS` | Matrícula não encontrada na base APIS (renomeado de `... Base Geral`) |
 | `1.5 - Aguarda APIS: Sem Memo p/ GEACS` | Estado (parada): memo à APIS (sem memorando para a GEACS) no bloco |
@@ -353,8 +358,8 @@ Prefixo de todos os nomes: `Script v2 - `.
 
 - Numeração: o número após `1.` é a ordem de inserção. **Mesmo número =
   alternativas** (o processo recebe um ou outro).
-- **Marcadores de estado** (`TAGS_ESTADO_NOVO`: parada, retomada e
-  conclusão): o processo tem no máximo um. Ao adicionar um estado,
+- **Marcadores de estado** (`TAGS_ESTADO_NOVO`: entrada, parada, retomada
+  e conclusão): o processo tem no máximo um. Ao adicionar um estado,
   `adicionar_tag` remove o anterior (primeiro adiciona, depois remove).
   Mais de um estado no processo é erro (a remoção falhou): remova
   manualmente o(s) anterior(es).
@@ -363,7 +368,8 @@ Prefixo de todos os nomes: `Script v2 - `.
   São reavaliados a cada passagem; se a base mudou, `adicionar_tag` troca o
   marcador do par.
 - Nomes: parada = `Aguarda <unidade>: <motivo>`; conclusão = `Concluído:
-  <memos no bloco>`; retomada = `Avaliado ...`.
+  <memos no bloco>`; retomada = `Avaliado ...`; entrada = `Aguarda Script:
+  <motivo>`.
 - **Conferência** (`conferir_marcadores`): no início e no fim de **toda**
   passagem, o script confere se a combinação de marcadores é possível no
   fluxo. Se não for, levanta `MarcadoresInconsistentes` (nenhuma ação no
@@ -371,8 +377,8 @@ Prefixo de todos os nomes: `Script v2 - `.
   inconsistentes, e a coluna `erro` lista todos os problemas. Regras:
   - no máximo um marcador de estado e um de cada par;
   - estado ou informativo (`1.1`, `1.2.1`, `1.2.2`, pares) exige o `1`;
-  - informativo só com os estados que vêm depois dele (sem estado, não há
-    regra): `1.2.2` com qualquer estado exceto `1.5`; `1.2.1` com `1.6`,
+  - informativo só com os estados que vêm depois dele (sem estado ou com
+    `1.0`, não há regra): `1.2.2` com qualquer estado exceto `1.5`; `1.2.1` com `1.6`,
     `1.8` (falhou antes do memo) ou `1.6.1`; `1.1` com `1.6` ou `1.7`;
     `1.6.2 Usou` com `1.6`, `1.7`, `1.8`, `1.9 Validar (Consta)` ou `1.9
     Relat. s/ MANTIS`; `1.6.2 Não Usou` com `1.6`, `1.7`, `1.8`, `1.9
@@ -490,17 +496,18 @@ Prefixo de todos os nomes: `Script v2 - `.
 | DISA sim, RP não | `1` + `1.6.2 Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3` + `1.8` → `1.9 Relat. s/ MANTIS` | `1`, `1.6.2 Usou`, `1.8.2 Não Usou`, `1.8.3`, `1.9 Relat. s/ MANTIS` |
 | DISA não, RP não, RC sim | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3 Usou` + `1.8` → `1.10 Concluído: Memo DEPROC` | `1`, `1.6.2 Não Usou`, `1.8.2 Não Usou`, `1.8.3 Usou`, `1.10 Concluído: Memo DEPROC` |
 | DISA não, RP não, RC não | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3 Não Usou` + `1.8` → `1.10 Aguarda APIS: Sem Uso` | `1`, `1.6.2 Não Usou`, `1.8.2 Não Usou`, `1.8.3 Não Usou`, `1.10 Aguarda APIS: Sem Uso` |
+| Vindo do fluxo ALT 1 | `1` + `1.0` → (um dos caminhos acima ou abaixo, do início) | como no caminho seguido |
 | Parado pelo memo da APIS | `1` + `1.5` (um dos dois) | `1`, `1.5` |
 | Parado pela base APIS | `1` + `1.2.1` + `1.6.1` | `1`, `1.2.1`, `1.6.1` |
 | Parado pelo período dos dependentes | `1` + `1.6.2` + `1.6` + `1.1` → `1.7` | `1`, `1.6.2`, `1.1`, `1.7` |
-| VELHO | `0` (+ o que já tinha) | `0`, … |
+| VELHO | `0` (+ o que já tinha; o `1.0` sai) | `0`, … |
 
 ### 1. Script principal (`main.py`)
 
 **Início**
 
 1. Lê `dados/inputs/processos_nao_processados.xlsx` (aba
-   `processos_reais`, coluna `num_sei`).
+   `fluxo`, coluna `num_sei`).
 2. Carrega a base DISA, a base APIS e as bases do MANTIS.
 3. Faz login no SEI.
 
@@ -514,13 +521,13 @@ Prefixo de todos os nomes: `Script v2 - `.
 | # | Pergunta | Se sim |
 |---|---|---|
 | 1 | Marcadores inconsistentes (`conferir_marcadores`, [regras](#marcadores-tagspy))? | Erro, antes de qualquer ação. `prox_acao` = Verificar marcadores inconsistentes (corrigir no SEI) |
-| 2 | VELHO pelos marcadores (`0` ou `1.3 Memos DISA e DEPROC`)? | `_separar_velho`: com `MANUAL`/`ASSINADO`, `prox_acao` = Fora do escopo; senão **➕ `0`** (se faltar), `prox_acao` = VELHO: não processado. **TODO**: fluxo do VELHO |
+| 2 | VELHO pelos marcadores (`0` ou `1.3 Memos DISA e DEPROC`)? | `_separar_velho`: com `MANUAL`/`ASSINADO`, `prox_acao` = Fora do escopo; senão **➕ `0`** (se faltar), `prox_acao` = VELHO: não processado. Nos dois casos, **➖ `1.0`** (se tiver). **TODO**: fluxo do VELHO |
 | 3 | Estado de parada (`1.5`, `1.6.1`, `1.7`, `1.9 - Aguarda DISA`, `1.10 - Aguarda APIS: Sem Uso`; versão anterior: `1.8.1`, `1.9 Memo DISA`)? | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. **TODO**: processamento depois da resposta |
 | 4 | Estado de conclusão (`1.10`)? | Concluído. `prox_acao` = assinar os memos correspondentes e encaminhar |
 | 5 | Sem estado com `1.3 Memo DEPROC`? | Concluído na versão anterior. `prox_acao` = Assinar memo DEPROC e encaminhar |
 | 6 | VELHO pelos memos da GEACS (`encontrar_memos_velho`, [regra](#processo-velho))? | `_separar_velho` (como no 2). Par sem data legível: erro, sem ação |
 | 7 | **Não** tem `1`? | **➕ `1`** e [seção 2](#2-fluxo-processar_novo) do início (inclusive com documento da GEACS ou com o antigo `2`) |
-| — | (nenhuma das anteriores) | [Seção 2](#2-fluxo-processar_novo), do início ou retomando (`1.6`, `1.8`) |
+| — | (nenhuma das anteriores) | [Seção 2](#2-fluxo-processar_novo), do início (sem estado ou com `1.0`, vindo do ALT 1) ou retomando (`1.6`, `1.8`) |
 
 Depois do roteamento (sem erro), os marcadores são conferidos de novo
 (`conferir_marcadores`); se a passagem deixou uma combinação impossível,
@@ -623,6 +630,81 @@ dois estados (erro da conferência, pergunta 1 da seção 1).
 
 ---
 
+## Fluxo alternativo ALT 1
+
+`poetry run task run_alt_1` (`main_alt_1.py`). Insere nos processos o PDF
+das planilhas de utilização e os deixa aguardando o fluxo normal: não avalia
+bases e não cria memos. Lê a mesma aba `fluxo` de
+`dados/inputs/processos_nao_processados.xlsx`.
+
+Para cada processo:
+
+1. Lê os marcadores, confere se o `1` e o `1.0` existem no SEI
+   (`garantir_marcadores_no_sei`; faltando, nada é inserido) e lista a
+   árvore.
+2. Procura as planilhas pelas três primeiras palavras do nome na árvore:
+   `Planilha Utilização Titular`, `Planilha Utilização Dependentes` e
+   `Anexo RELAÇÃO ATENDIMENTO`. Os nomes são digitados à mão: acentos,
+   maiúsculas e preposições são ignorados, `Tit.` e `Dep.` valem como
+   `Titular` e `Dependentes`, e cada palavra é comparada com
+   similaridade de 80% (`Anexo RELACAO ANTENDIMENTOS` é aceito; `Anexo RELAÇÃO
+   PAGAMENTO`, não).
+   - **Nenhuma?** `prox_acao` = ALT 1: nenhuma planilha no processo
+     (verificar), sem marcador. Fim.
+3. Para cada planilha cujo PDF ainda não está na árvore:
+   - abre o documento, o que inicia o download, para
+     `dados/alt_1/planilhas_baixadas/<nº SEI>_<nome original>`;
+   - lê a primeira aba; titular em `NOME_BENEFICIARIO` e
+     `MATRICULA_BENEFICIARIO` (valor único). A linha `TOTAL` do Anexo é
+     removida. `DAT_ATENDIMENTO` é data do Excel ou texto `DD/MM/AAAA`; sem
+     data válida, com coluna faltando ou sem atendimentos: `ErroAvaliacao`.
+     Sem valor: conta como 0. Só `.xlsx`;
+   - gera o PDF (`transformar_xls_em_pdf`), em
+     `dados/alt_1/pdfs/<nº SEI da planilha>/`, no layout dos relatórios do
+     MANTIS (o de dependentes não tem `PROCEDIMENTO`). O Anexo tem modelo
+     próprio, baseado no de dependentes: título `Relatório de Utilização Por
+     Beneficiário(s)`, sem a linha do titular no cabeçalho, com as colunas
+     `MATRICULA BENEFICIARIO` e `NOME BENEFICIARIO`, e aceita vários
+     beneficiários;
+   - insere o documento externo (`anexar_pdf`): tipo `PDF`, número
+     `Utilização <Tit.|Dep.> - <matrícula do titular> - SEI <nº SEI da
+     planilha>`, Nato-digital, Restrito, Informação Pessoal.
+4. **Já tem estado** (exceto o `1.0`), é VELHO pelos marcadores ou tem `1.3
+   Memo DEPROC`? Continua onde estava, sem marcador novo (adicionar o `1.0`
+   apagaria o estado). `prox_acao` = ALT 1: PDFs inseridos; processo mantido
+   no estado atual.
+5. Senão: **➕ `1`** (se faltar), **➕ `1.0 - Aguarda Script: Fluxo Normal`**
+   (se faltar), `prox_acao` = ALT 1: PDFs inseridos; aguarda o fluxo normal.
+
+Depois, na execução do `main.py`, o processo com `1.0` segue a [seção
+2](#2-fluxo-processar_novo) do início, e o próximo estado substitui o `1.0`.
+A separação do VELHO vem antes: se os memos da GEACS identificarem o VELHO,
+ele recebe o `0`, perde o `1.0` e não é processado. Os PDFs do ALT 1 ficam no
+processo como histórico: o fluxo normal anexa os relatórios do MANTIS e os
+memos citam só estes.
+
+- Anexo: o PDF se chama `Utilização Ben. - <matrícula>` ou, com vários
+  beneficiários, `Utilização Ben. - <primeira matrícula da planilha> e mais
+  <quantidade das outras>`, sem o número SEI. Por isso
+  ele é sempre baixado, e só depois procurado na árvore pelo nome exato; os
+  Anexos vêm depois das planilhas de titular e dependentes. Dois Anexos do
+  processo com o mesmo nome de PDF: `ErroAvaliacao`, antes de inserir qualquer
+  Anexo. PDF de Anexo no modelo antigo (`Utilização Tit. - ... - SEI <nº do
+  Anexo>`) não conta como pronto: o novo é inserido e o antigo vai para a
+  coluna `pdfs_antigos_a_excluir` (o script não exclui; excluir no SEI).
+- Retomada (titular e dependentes): o número SEI da planilha está no nome do PDF. Procura em toda a
+  árvore (não há rodada); PDF já presente não é baixado nem inserido de novo.
+  Um erro para o processo, com o que já foi inserido mantido; a próxima
+  execução continua da planilha que falhou.
+- Planilha de controle: `script` = `alt_1`, `fluxo` = `ALT 1 - SOMENTE
+  INSERIR PDF`, colunas `planilhas_sei`, `pdfs_incluidos`, `pdfs_na_arvore` e `pdfs_antigos_a_excluir`.
+  Na aba `processos`, a linha do processo fica com a última passagem
+  (`fluxo` e `prox_acao` do ALT 1), mas as colunas de resultado do fluxo
+  principal não são gravadas (`_CAMPOS_SO_FLUXO_PRINCIPAL`) e continuam lá.
+- Log: `logs/<data>_execucao_alt_1.log`.
+
+---
+
 ## Saídas
 
 ### Planilha de controle geral
@@ -713,6 +795,11 @@ perca os processos já tratados.
   Validar (N Consta)`, `1.9 - Aguarda DISA: Relat. s/ MANTIS` e `1.10 -
   Aguarda APIS: Sem Uso`.
   Todos com o prefixo `Script v2 - `, idênticos aos de `tags.py`.
+- **TODO**: cadastrar no SEI o marcador `Script v2 - 1.0 - Aguarda Script:
+  Fluxo Normal` antes de rodar o ALT 1 (sem ele, nenhum PDF é inserido).
+- ALT 1: confirmar na primeira execução que abrir a planilha na árvore inicia
+  o download sem pedir permissão do Chrome para vários downloads, que o PDF
+  entra no fim da árvore e que o nome real dos documentos bate com o padrão.
 - **TODO**: blocos dos três memos à DISA (`BLOCO_MEMO_DISA_*`) e do memo
   à APIS sem uso (`BLOCO_MEMO_APIS_SEM_USO`) em `constantes.py`, hoje
   `None`.

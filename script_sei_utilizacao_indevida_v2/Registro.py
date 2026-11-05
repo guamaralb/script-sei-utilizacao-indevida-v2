@@ -36,6 +36,11 @@ class ProxAcao:
     VERIFICAR_MARCADORES = 'Verificar marcadores inconsistentes (corrigir no SEI)'
     VERIFICAR_ERRO = 'Verificar erro'
 
+    # Fluxo alternativo ALT 1
+    ALT_1_AGUARDA_FLUXO_NORMAL = 'ALT 1: PDFs inseridos; aguarda o fluxo normal'
+    ALT_1_ESTADO_MANTIDO = 'ALT 1: PDFs inseridos; processo mantido no estado atual'
+    ALT_1_SEM_PLANILHAS = 'ALT 1: nenhuma planilha no processo (verificar)'
+
 
 # Próximas ações definidas antes do erro que devem ser mantidas
 _PROX_ACOES_DE_ERRO = frozenset({
@@ -80,6 +85,20 @@ def _agora() -> datetime:
 
 # Dados de trabalho da passagem, fora da planilha de controle
 _CAMPOS_INTERNOS = frozenset({'marcadores_atuais', 'tds_docs', 'docs_geacs', 'memos_geacs', 'docs_rodada', 'memos_criados', 'dados_ui', 'memo_apis'})
+
+# Resultados do fluxo principal: o ALT 1 não os avalia e não pode apagá-los da
+# linha do processo na planilha de controle
+_CAMPOS_SO_FLUXO_PRINCIPAL = frozenset({
+    'tit_usou',
+    'deps_que_usaram',
+    'deps_que_nao_usaram',
+    'titular_nao_encontrado_base_geral',
+    'deps_nao_encontrados_base_geral',
+    'memo_apis_mat_nao_encontradas_criado',
+    'memo_apis_mat_nao_encontradas_inserido_bloco',
+    'memo_apis_mat_nao_encontradas_na_arvore',
+    'memo_apis_mat_nao_encontradas_sei',
+})
 
 
 @dataclass
@@ -235,3 +254,19 @@ class RegistroMain(RegistroBase):
         itens = list(dados.items())
         posicao = list(dados).index('erro') + 1
         return dict(itens[:posicao] + list(colunas_ui.items()) + itens[posicao:])
+
+
+@dataclass
+class RegistroAlt1(RegistroBase):
+    """Uma passagem pelo fluxo alternativo ALT 1 (main_alt_1.py)."""
+
+    # Planilhas na árvore (número SEI), PDFs anexados na passagem (nome na
+    # árvore) e PDFs que já estavam na árvore (número SEI, retomada)
+    planilhas_sei: list[str] = field(default_factory=list)
+    pdfs_incluidos: list[str] = field(default_factory=list)
+    pdfs_na_arvore: list[str] = field(default_factory=list)
+    # PDFs de Anexo no modelo antigo (número SEI), a excluir manualmente
+    pdfs_antigos_a_excluir: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        return {coluna: valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_SO_FLUXO_PRINCIPAL}

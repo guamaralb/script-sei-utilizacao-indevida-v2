@@ -12,6 +12,7 @@ incluir_relatorios devolve o número SEI dos PDFs (anexados agora ou já na
 
 import logging
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 from constantes import DIR_UTILIZACOES_MANTIS_PDF
@@ -68,6 +69,19 @@ def inicio_nome_relatorio(rede: tuple[str, str], tipo_curto: str, matricula_titu
     return f'Utilização {tipo_curto} {rede[0]} - {matricula_titular}'
 
 
+def anexar_pdf(driver: webdriver.Remote, num: str, caminho_pdf: Path, data: datetime) -> None:
+    incluir_doc_externo(
+        driver,
+        tipo_doc=TIPO_DOC,
+        num=num,
+        formato='Nato-digital',
+        data=f'{data:%d/%m/%Y}',
+        path_anexo=caminho_pdf,
+        nivel_acesso='Restrito',
+        hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
+    )
+
+
 def _incluir(
     driver: webdriver.Remote,
     registro,
@@ -96,16 +110,7 @@ def _incluir(
         rede=rede[1],
     )
     num = f'{inicio} - {agora:%Y%m%d_%H%M%S}'
-    incluir_doc_externo(
-        driver,
-        tipo_doc=TIPO_DOC,
-        num=num,
-        formato='Nato-digital',
-        data=f'{agora:%d/%m/%Y}',
-        path_anexo=caminho_pdf,
-        nivel_acesso='Restrito',
-        hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
-    )
+    anexar_pdf(driver, num, caminho_pdf, agora)
     registro.relatorios_incluidos.append(num)
     numero_sei = numero_sei_por_nome(driver, f'{TIPO_DOC} {num}')
     if numero_sei is None:

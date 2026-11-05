@@ -1,0 +1,670 @@
+2026-11-05 12:42:03 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ALT 1 - SOMENTE INSERIR PDF) =================
+2026-11-05 12:42:03 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-05_12-42-03_execucao_alt_1.log
+2026-11-05 12:42:04 | INFO    | -                         | __main__              | 26 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-05 12:42:04 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-05 12:42:04 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-05 12:42:04 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-05 12:42:04 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-05 12:42:05 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\alt_1\planilhas_baixadas
+2026-11-05 12:42:06 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-05 12:42:06 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/26]
+2026-11-05 12:42:09 | INFO    | 2010.01.0082932/2024-60   | marcadores_disponiveis | Marcadores cadastrados na unidade: 54
+2026-11-05 12:42:10 | INFO    | 2010.01.0082932/2024-60   | __main__              | Árvore: 15 documento(s)
+2026-11-05 12:42:10 | INFO    | 2010.01.0082932/2024-60   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-05 12:42:10 | INFO    | 2010.01.0082932/2024-60   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTO (SEI 105205949) em 105205949_DANIELE_ROSE_DE_OLIVEIRA.xlsx
+2026-11-05 12:42:10 | DEBUG   | 2010.01.0082932/2024-60   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:42:10 | DEBUG   | 2010.01.0082932/2024-60   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:42:10 | DEBUG   | 2010.01.0082932/2024-60   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:42:10 | DEBUG   | 2010.01.0082932/2024-60   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:42:10 | DEBUG   | 2010.01.0082932/2024-60   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:42:10 | DEBUG   | 2010.01.0082932/2024-60   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:42:10 | DEBUG   | 2010.01.0082932/2024-60   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:42:25 | INFO    | 2010.01.0082932/2024-60   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3803868 - SEI 105205949 (152983662)
+2026-11-05 12:42:28 | INFO    | 2010.01.0082932/2024-60   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:42:30 | INFO    | 2010.01.0082932/2024-60   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:42:30 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-05_12-42-03.xlsx
+2026-11-05 12:42:30 | ERROR   | 2010.01.0082932/2024-60   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:42:30 | ERROR   | 2010.01.0082932/2024-60   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:42:30 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (23.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:42:30 | INFO    | 2010.01.0050804/2025-42   | __main__              | INÍCIO [2/26]
+2026-11-05 12:42:32 | INFO    | 2010.01.0050804/2025-42   | __main__              | Árvore: 18 documento(s)
+2026-11-05 12:42:32 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3542985', 'Planilha Utilização Dependentes - 3542985']
+2026-11-05 12:42:32 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3542985 (SEI 125202990) em 125202990_Utilizacao_Titular_3542985.xlsx
+2026-11-05 12:42:33 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:42:33 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:42:33 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:42:33 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:42:33 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:42:33 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:42:33 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:42:44 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3542985 - SEI 125202990 (152983776)
+2026-11-05 12:42:45 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Dependentes - 3542985 (SEI 125202957) em 125202957_Utilizacao_Dependentes_3542985.xlsx
+2026-11-05 12:42:45 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:42:45 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:42:45 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:42:45 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:42:45 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:42:45 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:42:45 | DEBUG   | 2010.01.0050804/2025-42   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:42:56 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | PDF anexado ao processo: Utilização Dep. - 3542985 - SEI 125202957 (152983792)
+2026-11-05 12:42:59 | INFO    | 2010.01.0050804/2025-42   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:43:02 | INFO    | 2010.01.0050804/2025-42   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:43:02 | ERROR   | 2010.01.0050804/2025-42   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:43:02 | ERROR   | 2010.01.0050804/2025-42   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:43:02 | INFO    | 2010.01.0050804/2025-42   | __main__              | FIM (32.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:43:02 | INFO    | 2010.01.0076235/2024-71   | __main__              | INÍCIO [3/26]
+2026-11-05 12:43:04 | INFO    | 2010.01.0076235/2024-71   | __main__              | Árvore: 17 documento(s)
+2026-11-05 12:43:04 | INFO    | 2010.01.0076235/2024-71   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-05 12:43:05 | INFO    | 2010.01.0076235/2024-71   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTO (SEI 104647316) em 104647316_DENISE_GONCALVES_DE_SOUZA_PAULA.xlsx
+2026-11-05 12:43:05 | DEBUG   | 2010.01.0076235/2024-71   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:43:05 | DEBUG   | 2010.01.0076235/2024-71   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:43:05 | DEBUG   | 2010.01.0076235/2024-71   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:43:05 | DEBUG   | 2010.01.0076235/2024-71   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:43:05 | DEBUG   | 2010.01.0076235/2024-71   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:43:05 | DEBUG   | 2010.01.0076235/2024-71   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:43:05 | DEBUG   | 2010.01.0076235/2024-71   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:43:17 | INFO    | 2010.01.0076235/2024-71   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3316142 - SEI 104647316 (152983815)
+2026-11-05 12:43:19 | INFO    | 2010.01.0076235/2024-71   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:43:22 | INFO    | 2010.01.0076235/2024-71   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:43:22 | ERROR   | 2010.01.0076235/2024-71   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:43:22 | ERROR   | 2010.01.0076235/2024-71   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:43:22 | INFO    | 2010.01.0076235/2024-71   | __main__              | FIM (20.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:43:22 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [4/26]
+2026-11-05 12:43:24 | INFO    | 2010.01.0071357/2024-51   | __main__              | Árvore: 17 documento(s)
+2026-11-05 12:43:24 | WARNING | 2010.01.0071357/2024-51   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-05 12:43:24 | ERROR   | 2010.01.0071357/2024-51   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:43:24 | ERROR   | 2010.01.0071357/2024-51   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:43:24 | INFO    | 2010.01.0071357/2024-51   | __main__              | FIM (1.5s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-05 12:43:24 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [5/26]
+2026-11-05 12:43:26 | INFO    | 2010.01.0072062/2024-28   | __main__              | Árvore: 26 documento(s)
+2026-11-05 12:43:26 | INFO    | 2010.01.0072062/2024-28   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3631854', 'Planilha Utilização Dependentes - 3631854']
+2026-11-05 12:43:26 | INFO    | 2010.01.0072062/2024-28   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3631854 (SEI 123625018) em 123625018_Utilizacao_Titular_3631854.xlsx
+2026-11-05 12:43:27 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:43:27 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:43:27 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:43:27 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:43:27 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:43:27 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:43:27 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:43:39 | INFO    | 2010.01.0072062/2024-28   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3631854 - SEI 123625018 (152983839)
+2026-11-05 12:43:40 | INFO    | 2010.01.0072062/2024-28   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Dependentes - 3631854 (SEI 123625056) em 123625056_Utilizacao_Dependentes_3631854.xlsx
+2026-11-05 12:43:40 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:43:40 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:43:40 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:43:40 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:43:40 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:43:40 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:43:40 | DEBUG   | 2010.01.0072062/2024-28   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:43:52 | INFO    | 2010.01.0072062/2024-28   | planilhas_alt_1       | PDF anexado ao processo: Utilização Dep. - 3631854 - SEI 123625056 (152983857)
+2026-11-05 12:43:52 | INFO    | 2010.01.0072062/2024-28   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:43:55 | INFO    | 2010.01.0072062/2024-28   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:43:55 | ERROR   | 2010.01.0072062/2024-28   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:43:56 | ERROR   | 2010.01.0072062/2024-28   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:43:56 | INFO    | 2010.01.0072062/2024-28   | __main__              | FIM (31.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:43:56 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [6/26]
+2026-11-05 12:43:57 | INFO    | 2010.01.0071467/2024-88   | __main__              | Árvore: 27 documento(s)
+2026-11-05 12:43:57 | WARNING | 2010.01.0071467/2024-88   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-05 12:43:57 | ERROR   | 2010.01.0071467/2024-88   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:43:57 | ERROR   | 2010.01.0071467/2024-88   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:43:57 | INFO    | 2010.01.0071467/2024-88   | __main__              | FIM (1.8s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-05 12:43:57 | INFO    | 2010.01.0049247/2025-80   | __main__              | INÍCIO [7/26]
+2026-11-05 12:43:58 | INFO    | 2010.01.0049247/2025-80   | __main__              | Árvore: 17 documento(s)
+2026-11-05 12:43:58 | INFO    | 2010.01.0049247/2025-80   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3991572']
+2026-11-05 12:43:59 | INFO    | 2010.01.0049247/2025-80   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3991572 (SEI 123419508) em 123419508_Utilizacao_Titular_3991572.xlsx
+2026-11-05 12:43:59 | DEBUG   | 2010.01.0049247/2025-80   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:43:59 | DEBUG   | 2010.01.0049247/2025-80   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:43:59 | DEBUG   | 2010.01.0049247/2025-80   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:43:59 | DEBUG   | 2010.01.0049247/2025-80   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:43:59 | DEBUG   | 2010.01.0049247/2025-80   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:43:59 | DEBUG   | 2010.01.0049247/2025-80   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:43:59 | DEBUG   | 2010.01.0049247/2025-80   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:44:11 | INFO    | 2010.01.0049247/2025-80   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3991572 - SEI 123419508 (152983930)
+2026-11-05 12:44:14 | INFO    | 2010.01.0049247/2025-80   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:44:16 | INFO    | 2010.01.0049247/2025-80   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:44:16 | ERROR   | 2010.01.0049247/2025-80   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:44:16 | ERROR   | 2010.01.0049247/2025-80   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:44:16 | INFO    | 2010.01.0049247/2025-80   | __main__              | FIM (19.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:44:16 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [8/26]
+2026-11-05 12:44:18 | INFO    | 2010.01.0049305/2025-66   | __main__              | Árvore: 18 documento(s)
+2026-11-05 12:44:18 | INFO    | 2010.01.0049305/2025-66   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3557861']
+2026-11-05 12:44:19 | INFO    | 2010.01.0049305/2025-66   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3557861 (SEI 123170837) em 123170837_Utilizacao_Titular_3557861.xlsx
+2026-11-05 12:44:19 | DEBUG   | 2010.01.0049305/2025-66   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:44:19 | DEBUG   | 2010.01.0049305/2025-66   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:44:19 | DEBUG   | 2010.01.0049305/2025-66   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:44:19 | DEBUG   | 2010.01.0049305/2025-66   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:44:19 | DEBUG   | 2010.01.0049305/2025-66   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:44:19 | DEBUG   | 2010.01.0049305/2025-66   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:44:19 | DEBUG   | 2010.01.0049305/2025-66   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:44:31 | INFO    | 2010.01.0049305/2025-66   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3557861 - SEI 123170837 (152983997)
+2026-11-05 12:44:31 | INFO    | 2010.01.0049305/2025-66   | planilhas_alt_1       | Processo já no fluxo normal ou VELHO: mantido no estado atual
+2026-11-05 12:44:31 | ERROR   | 2010.01.0049305/2025-66   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:44:31 | ERROR   | 2010.01.0049305/2025-66   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:44:31 | INFO    | 2010.01.0049305/2025-66   | __main__              | FIM (14.6s) | Próxima ação: ALT 1: PDFs inseridos; processo mantido no estado atual
+2026-11-05 12:44:31 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [9/26]
+2026-11-05 12:44:32 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 18 documento(s)
+2026-11-05 12:44:32 | INFO    | 2010.01.0072726/2024-45   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-05 12:44:33 | INFO    | 2010.01.0072726/2024-45   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTO (SEI 105680512) em 105680512_MARIA_LEONI_LEAL_SILVA_CARDOSO.xlsx
+2026-11-05 12:44:33 | ERROR   | 2010.01.0072726/2024-45   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:44:33 | ERROR   | 2010.01.0072726/2024-45   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:44:33 | WARNING | 2010.01.0072726/2024-45   | __main__              | FIM COM ERRO (2.3s) | ErroAvaliacao: Planilha 105680512_MARIA_LEONI_LEAL_SILVA_CARDOSO.xlsx: esperado um único valor em MATRICULA_BENEFICIARIO, encontrados 3
+2026-11-05 12:44:33 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [10/26]
+2026-11-05 12:44:35 | INFO    | 2010.01.0072584/2024-96   | __main__              | Árvore: 18 documento(s)
+2026-11-05 12:44:35 | WARNING | 2010.01.0072584/2024-96   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-05 12:44:35 | ERROR   | 2010.01.0072584/2024-96   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:44:35 | ERROR   | 2010.01.0072584/2024-96   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:44:35 | INFO    | 2010.01.0072584/2024-96   | __main__              | FIM (1.5s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-05 12:44:35 | INFO    | 2010.01.0071348/2024-03   | __main__              | INÍCIO [11/26]
+2026-11-05 12:44:36 | INFO    | 2010.01.0071348/2024-03   | __main__              | Árvore: 17 documento(s)
+2026-11-05 12:44:36 | WARNING | 2010.01.0071348/2024-03   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-05 12:44:36 | ERROR   | 2010.01.0071348/2024-03   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 187, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 117, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-05 12:44:36 | ERROR   | 2010.01.0071348/2024-03   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-05 12:44:36 | INFO    | 2010.01.0071348/2024-03   | __main__              | FIM (1.4s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-05 12:44:36 | INFO    | 2010.01.0050757/2025-50   | __main__              | INÍCIO [12/26]
+2026-11-05 12:44:37 | INFO    | 2010.01.0050757/2025-50   | __main__              | Árvore: 19 documento(s)
+2026-11-05 12:44:37 | INFO    | 2010.01.0050757/2025-50   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3557834', 'Planilha Utilização Dependentes - 3557834']
+2026-11-05 12:44:38 | INFO    | 2010.01.0050757/2025-50   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3557834 (SEI 125202600) em 125202600_Utilizacao_Titular_3557834.xlsx
+2026-11-05 12:44:38 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:44:38 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:44:38 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:44:38 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:44:38 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:44:38 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:44:38 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:44:50 | INFO    | 2010.01.0050757/2025-50   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3557834 - SEI 125202600 (152984042)
+2026-11-05 12:44:51 | INFO    | 2010.01.0050757/2025-50   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Dependentes - 3557834 (SEI 125202631) em 125202631_Utilizacao_Dependentes_3557834.xlsx
+2026-11-05 12:44:51 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:44:51 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:44:51 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:44:51 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:44:51 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:44:51 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:44:51 | DEBUG   | 2010.01.0050757/2025-50   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:45:03 | INFO    | 2010.01.0050757/2025-50   | planilhas_alt_1       | PDF anexado ao processo: Utilização Dep. - 3557834 - SEI 125202631 (152984058)
+2026-11-05 12:45:05 | INFO    | 2010.01.0050757/2025-50   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:45:08 | INFO    | 2010.01.0050757/2025-50   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:45:08 | DEBUG   | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-05 12:45:08 | INFO    | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral voltou a ser gravada com todas as passagens; C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-05_12-42-03_NAO_INCORPORADO.xlsx pode ser apagado
+2026-11-05 12:45:08 | INFO    | 2010.01.0050757/2025-50   | __main__              | FIM (31.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:45:08 | INFO    | 2010.01.0072057/2024-66   | __main__              | INÍCIO [13/26]
+2026-11-05 12:45:09 | INFO    | 2010.01.0072057/2024-66   | __main__              | Árvore: 27 documento(s)
+2026-11-05 12:45:09 | INFO    | 2010.01.0072057/2024-66   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3713817']
+2026-11-05 12:45:10 | INFO    | 2010.01.0072057/2024-66   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3713817 (SEI 123601662) em 123601662_Utilizacao_Titular_3713817.xlsx
+2026-11-05 12:45:10 | DEBUG   | 2010.01.0072057/2024-66   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:45:10 | DEBUG   | 2010.01.0072057/2024-66   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:45:10 | DEBUG   | 2010.01.0072057/2024-66   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:45:10 | DEBUG   | 2010.01.0072057/2024-66   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:45:10 | DEBUG   | 2010.01.0072057/2024-66   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:45:10 | DEBUG   | 2010.01.0072057/2024-66   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:45:10 | DEBUG   | 2010.01.0072057/2024-66   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:45:22 | INFO    | 2010.01.0072057/2024-66   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3713817 - SEI 123601662 (152984133)
+2026-11-05 12:45:25 | INFO    | 2010.01.0072057/2024-66   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:45:27 | INFO    | 2010.01.0072057/2024-66   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:45:27 | DEBUG   | 2010.01.0072057/2024-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-05 12:45:27 | INFO    | 2010.01.0072057/2024-66   | __main__              | FIM (19.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:45:27 | INFO    | 2010.01.0082953/2024-75   | __main__              | INÍCIO [14/26]
+2026-11-05 12:45:29 | INFO    | 2010.01.0082953/2024-75   | __main__              | Árvore: 19 documento(s)
+2026-11-05 12:45:29 | WARNING | 2010.01.0082953/2024-75   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-05 12:45:29 | DEBUG   | 2010.01.0082953/2024-75   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-05 12:45:29 | INFO    | 2010.01.0082953/2024-75   | __main__              | FIM (1.3s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-05 12:45:29 | INFO    | 2010.01.0050829/2025-46   | __main__              | INÍCIO [15/26]
+2026-11-05 12:45:30 | INFO    | 2010.01.0050829/2025-46   | __main__              | Árvore: 20 documento(s)
+2026-11-05 12:45:30 | WARNING | 2010.01.0050829/2025-46   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-05 12:45:30 | DEBUG   | 2010.01.0050829/2025-46   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-05 12:45:30 | INFO    | 2010.01.0050829/2025-46   | __main__              | FIM (1.5s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-05 12:45:30 | INFO    | 2010.01.0050841/2025-13   | __main__              | INÍCIO [16/26]
+2026-11-05 12:45:31 | INFO    | 2010.01.0050841/2025-13   | __main__              | Árvore: 16 documento(s)
+2026-11-05 12:45:31 | INFO    | 2010.01.0050841/2025-13   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3706058']
+2026-11-05 12:45:32 | INFO    | 2010.01.0050841/2025-13   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3706058 (SEI 125072984) em 125072984_Utilizacao_Titular_3706058.xlsx
+2026-11-05 12:45:32 | DEBUG   | 2010.01.0050841/2025-13   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:45:32 | DEBUG   | 2010.01.0050841/2025-13   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:45:32 | DEBUG   | 2010.01.0050841/2025-13   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:45:32 | DEBUG   | 2010.01.0050841/2025-13   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:45:32 | DEBUG   | 2010.01.0050841/2025-13   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:45:32 | DEBUG   | 2010.01.0050841/2025-13   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:45:32 | DEBUG   | 2010.01.0050841/2025-13   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:45:44 | INFO    | 2010.01.0050841/2025-13   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3706058 - SEI 125072984 (152984194)
+2026-11-05 12:45:47 | INFO    | 2010.01.0050841/2025-13   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:45:49 | INFO    | 2010.01.0050841/2025-13   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:45:50 | DEBUG   | 2010.01.0050841/2025-13   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-05 12:45:50 | INFO    | 2010.01.0050841/2025-13   | __main__              | FIM (19.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:45:50 | INFO    | 2010.01.0050849/2025-88   | __main__              | INÍCIO [17/26]
+2026-11-05 12:45:50 | INFO    | 2010.01.0050849/2025-88   | __main__              | Árvore: 13 documento(s)
+2026-11-05 12:45:50 | INFO    | 2010.01.0050849/2025-88   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3551518', 'Planilha Utilização Dependentes - 3551518']
+2026-11-05 12:45:51 | INFO    | 2010.01.0050849/2025-88   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3551518 (SEI 123495626) em 123495626_Utilizacao_Titular_3551518.xlsx
+2026-11-05 12:45:51 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:45:51 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:45:51 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:45:51 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:45:51 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:45:51 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:45:51 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:46:03 | INFO    | 2010.01.0050849/2025-88   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3551518 - SEI 123495626 (152984213)
+2026-11-05 12:46:04 | INFO    | 2010.01.0050849/2025-88   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Dependentes - 3551518 (SEI 123495656) em 123495656_Utilizacao_Dependentes_3551518.xlsx
+2026-11-05 12:46:04 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:46:04 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:46:04 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:46:04 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:46:04 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:46:04 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:46:04 | DEBUG   | 2010.01.0050849/2025-88   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:46:15 | INFO    | 2010.01.0050849/2025-88   | planilhas_alt_1       | PDF anexado ao processo: Utilização Dep. - 3551518 - SEI 123495656 (152984275)
+2026-11-05 12:46:18 | INFO    | 2010.01.0050849/2025-88   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:46:20 | INFO    | 2010.01.0050849/2025-88   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:46:20 | DEBUG   | 2010.01.0050849/2025-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-05 12:46:20 | INFO    | 2010.01.0050849/2025-88   | __main__              | FIM (30.9s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:46:20 | INFO    | 2010.01.0050885/2025-86   | __main__              | INÍCIO [18/26]
+2026-11-05 12:46:22 | INFO    | 2010.01.0050885/2025-86   | __main__              | Árvore: 19 documento(s)
+2026-11-05 12:46:22 | INFO    | 2010.01.0050885/2025-86   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3712763']
+2026-11-05 12:46:23 | INFO    | 2010.01.0050885/2025-86   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3712763 (SEI 123692233) em 123692233_Utilizacao_Titular_3712763.xlsx
+2026-11-05 12:46:23 | DEBUG   | 2010.01.0050885/2025-86   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:46:23 | DEBUG   | 2010.01.0050885/2025-86   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:46:23 | DEBUG   | 2010.01.0050885/2025-86   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:46:23 | DEBUG   | 2010.01.0050885/2025-86   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:46:23 | DEBUG   | 2010.01.0050885/2025-86   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:46:23 | DEBUG   | 2010.01.0050885/2025-86   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:46:23 | DEBUG   | 2010.01.0050885/2025-86   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:46:35 | INFO    | 2010.01.0050885/2025-86   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3712763 - SEI 123692233 (152984246)
+2026-11-05 12:46:37 | INFO    | 2010.01.0050885/2025-86   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:46:40 | INFO    | 2010.01.0050885/2025-86   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:46:40 | DEBUG   | 2010.01.0050885/2025-86   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-05 12:46:40 | INFO    | 2010.01.0050885/2025-86   | __main__              | FIM (19.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:46:40 | INFO    | 2010.01.0051097/2025-85   | __main__              | INÍCIO [19/26]
+2026-11-05 12:46:41 | INFO    | 2010.01.0051097/2025-85   | __main__              | Árvore: 17 documento(s)
+2026-11-05 12:46:41 | INFO    | 2010.01.0051097/2025-85   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Dependentes - 3748184']
+2026-11-05 12:46:42 | INFO    | 2010.01.0051097/2025-85   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Dependentes - 3748184 (SEI 123182649) em 123182649_Utilizacao_Dependentes_3748184.xlsx
+2026-11-05 12:46:42 | DEBUG   | 2010.01.0051097/2025-85   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:46:42 | DEBUG   | 2010.01.0051097/2025-85   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:46:42 | DEBUG   | 2010.01.0051097/2025-85   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:46:42 | DEBUG   | 2010.01.0051097/2025-85   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:46:42 | DEBUG   | 2010.01.0051097/2025-85   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:46:42 | DEBUG   | 2010.01.0051097/2025-85   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:46:42 | DEBUG   | 2010.01.0051097/2025-85   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:46:54 | INFO    | 2010.01.0051097/2025-85   | planilhas_alt_1       | PDF anexado ao processo: Utilização Dep. - 3748184 - SEI 123182649 (152984308)
+2026-11-05 12:46:56 | INFO    | 2010.01.0051097/2025-85   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 12:46:59 | INFO    | 2010.01.0051097/2025-85   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 12:46:59 | DEBUG   | 2010.01.0051097/2025-85   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-05 12:46:59 | INFO    | 2010.01.0051097/2025-85   | __main__              | FIM (19.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 12:46:59 | INFO    | 2010.01.0050905/2025-31   | __main__              | INÍCIO [20/26]
+2026-11-05 12:47:00 | INFO    | 2010.01.0050905/2025-31   | __main__              | Árvore: 18 documento(s)
+2026-11-05 12:47:00 | INFO    | 2010.01.0050905/2025-31   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 2608097']
+2026-11-05 12:47:01 | INFO    | 2010.01.0050905/2025-31   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 2608097 (SEI 123418137) em 123418137_Utilizacao_Titular_2608097.xlsx
+2026-11-05 12:47:01 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:47:01 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:47:01 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:47:01 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:47:01 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:47:01 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:47:01 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:47:13 | ERROR   | 2010.01.0050905/2025-31   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 51, in _processar_linha
+    inserir_pdfs_das_planilhas(driver, registro)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilhas_alt_1.py", line 274, in inserir_pdfs_das_planilhas
+    _inserir_pdf(driver, registro, doc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilhas_alt_1.py", line 245, in _inserir_pdf
+    anexar_pdf(driver, num, caminho_pdf, datetime.now())
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\relatorios_mantis.py", line 73, in anexar_pdf
+    incluir_doc_externo(
+    ~~~~~~~~~~~~~~~~~~~^
+        driver,
+        ^^^^^^^
+    ...<6 lines>...
+        hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\__init__.py", line 72, in incluir_doc_externo
+    clicar_incluir_doc(driver)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\documentos.py", line 24, in clicar_incluir_doc
+    img_incluir_doc: WebElement = WebDriverWait(driver, 10).until(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.presence_of_element_located((
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        ))
+        ^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec360]
+	(No symbol) [0xe37b76]
+	(No symbol) [0xe37d4b]
+	(No symbol) [0xe82202]
+	(No symbol) [0xe5a7a4]
+	(No symbol) [0xe7fa73]
+	(No symbol) [0xe5a4f6]
+	(No symbol) [0xe2c85a]
+	(No symbol) [0xe2d6e4]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xff40a8]
+	(No symbol) [0xff4255]
+	(No symbol) [0xfe05f7]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 12:47:13 | DEBUG   | 2010.01.0050905/2025-31   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-05 12:47:13 | WARNING | 2010.01.0050905/2025-31   | __main__              | FIM COM ERRO (13.7s) | TimeoutException: Tempo esgotado esperando elemento do SEI em clicar_incluir_doc (detalhes no log)
+2026-11-05 12:47:13 | INFO    | 2010.01.0051096/2025-15   | __main__              | INÍCIO [21/26]
+2026-11-05 12:47:14 | INFO    | 2010.01.0051096/2025-15   | __main__              | Árvore: 18 documento(s)
+2026-11-05 12:47:14 | INFO    | 2010.01.0051096/2025-15   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3551170', 'Planilha Utilização Dependentes - 3551170']
+2026-11-05 12:47:15 | INFO    | 2010.01.0051096/2025-15   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3551170 (SEI 123416770) em 123416770_Utilizacao_Titular_3551170.xlsx
+2026-11-05 12:47:15 | DEBUG   | 2010.01.0051096/2025-15   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-05 12:47:15 | DEBUG   | 2010.01.0051096/2025-15   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-05 12:47:15 | DEBUG   | 2010.01.0051096/2025-15   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-05 12:47:15 | DEBUG   | 2010.01.0051096/2025-15   | PIL.PngImagePlugin    | Compression method 0
+2026-11-05 12:47:15 | DEBUG   | 2010.01.0051096/2025-15   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-05 12:47:15 | DEBUG   | 2010.01.0051096/2025-15   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-05 12:47:15 | DEBUG   | 2010.01.0051096/2025-15   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-05 12:47:25 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None)': /session/aa1395f8c584c01a90c2dfab1b7ef0b6

@@ -1,0 +1,303 @@
+2026-11-05 10:58:07 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-05 10:58:07 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-05_10-58-07_execucao.log
+2026-11-05 10:58:07 | INFO    | -                         | __main__              | 5 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-05 10:58:07 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-05 10:58:07 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-05 10:58:08 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-05 10:58:08 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-05 10:58:08 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-05 10:58:08 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-05 10:58:08 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-05 10:58:09 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-05 10:58:09 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-05 10:58:09 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-05 10:58:38 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-05 10:58:57 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-05 10:58:57 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-05 10:58:57 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-05 10:58:57 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-05 10:58:58 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-05 10:58:58 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-11-05 10:59:00 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-05 10:59:00 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [1/5]
+2026-11-05 10:59:02 | INFO    | 2010.01.0072062/2024-28   | __main__              | Árvore: 26 documento(s) | GEACS: 6 documento(s), 2 memorando(s)
+2026-11-05 10:59:02 | INFO    | 2010.01.0072062/2024-28   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO']
+2026-11-05 10:59:02 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 6 (SEI 98132572)
+2026-11-05 10:59:03 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 98132572 lido (2083 caracteres)
+2026-11-05 10:59:03 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 1363 (SEI 123625085)
+2026-11-05 10:59:04 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 123625085 lido (2115 caracteres)
+2026-11-05 10:59:04 | INFO    | 2010.01.0072062/2024-28   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-05 10:59:07 | INFO    | 2010.01.0072062/2024-28   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 10:59:07 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 44 (SEI 114761013)
+2026-11-05 10:59:08 | ERROR   | 2010.01.0072062/2024-28   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 146, in selecionar_doc_arvore
+    doc_element = driver.find_element(
+        By.XPATH, f'//a[span[contains(text(), "{numero_sei}")]]'
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 910, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"xpath","selector":"//a[span[contains(text(), "114761013")]]"}
+  (Session info: chrome=156.0.8078.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x4a0cd3]
+	(No symbol) [0x3aaf34]
+	(No symbol) [0x1ac360]
+	(No symbol) [0x1f7b76]
+	(No symbol) [0x1f7d4b]
+	(No symbol) [0x242202]
+	(No symbol) [0x21a7a4]
+	(No symbol) [0x23fa73]
+	(No symbol) [0x21a4f6]
+	(No symbol) [0x1ec85a]
+	(No symbol) [0x1ed6e4]
+	(No symbol) [0x961174]
+	(No symbol) [0x97f6bb]
+	(No symbol) [0x5f7182]
+	(No symbol) [0x5ff6b3]
+	(No symbol) [0x3b9538]
+	(No symbol) [0x3b40a8]
+	(No symbol) [0x3b4255]
+	(No symbol) [0x3a05f7]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+	(No symbol) [(nil)]
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 152, in selecionar_doc_arvore
+    doc_element = driver.find_element(
+        By.XPATH, f'//a[span[contains(text(), "{nome}")]]'
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 910, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"xpath","selector":"//a[span[contains(text(), "None")]]"}
+  (Session info: chrome=156.0.8078.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x4a0cd3]
+	(No symbol) [0x3aaf34]
+	(No symbol) [0x1ac360]
+	(No symbol) [0x1f7b76]
+	(No symbol) [0x1f7d4b]
+	(No symbol) [0x242202]
+	(No symbol) [0x21a7a4]
+	(No symbol) [0x23fa73]
+	(No symbol) [0x21a4f6]
+	(No symbol) [0x1ec85a]
+	(No symbol) [0x1ed6e4]
+	(No symbol) [0x961174]
+	(No symbol) [0x97f6bb]
+	(No symbol) [0x5f7182]
+	(No symbol) [0x5ff6b3]
+	(No symbol) [0x3b9538]
+	(No symbol) [0x3b40a8]
+	(No symbol) [0x3b4255]
+	(No symbol) [0x3a05f7]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+	(No symbol) [(nil)]
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 169, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 156, in _tratar
+    processar_novo(driver, registro, bases, bases_mantis)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 482, in processar_novo
+    dados_ui = obter_dados_ui(driver, registro)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 105, in obter_dados_ui
+    memos_para_geacs = obter_memos_apis_para_geacs(driver, registro.tds_docs)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 75, in obter_memos_apis_para_geacs
+    texto = ler_texto_doc(driver, memo)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 86, in ler_texto_doc
+    selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 157, in selecionar_doc_arvore
+    raise Exception('Documento não encontrado')
+Exception: Documento não encontrado
+2026-11-05 10:59:08 | INFO    | 2010.01.0072062/2024-28   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-05_10-58-07.xlsx
+2026-11-05 10:59:08 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-05 10:59:08 | WARNING | 2010.01.0072062/2024-28   | __main__              | FIM COM ERRO (7.8s) | Exception: Documento não encontrado
+2026-11-05 10:59:08 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [2/5]
+2026-11-05 10:59:10 | INFO    | 2010.01.0071467/2024-88   | __main__              | Árvore: 27 documento(s) | GEACS: 7 documento(s), 2 memorando(s)
+2026-11-05 10:59:10 | INFO    | 2010.01.0071467/2024-88   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO']
+2026-11-05 10:59:10 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 42 (SEI 100051973)
+2026-11-05 10:59:11 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 100051973 lido (2347 caracteres)
+2026-11-05 10:59:11 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 157 (SEI 121766959)
+2026-11-05 10:59:12 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 121766959 lido (1959 caracteres)
+2026-11-05 10:59:12 | INFO    | 2010.01.0071467/2024-88   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-05 10:59:14 | INFO    | 2010.01.0071467/2024-88   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 10:59:14 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 53 (SEI 114830412)
+2026-11-05 10:59:15 | ERROR   | 2010.01.0071467/2024-88   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 146, in selecionar_doc_arvore
+    doc_element = driver.find_element(
+        By.XPATH, f'//a[span[contains(text(), "{numero_sei}")]]'
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 910, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"xpath","selector":"//a[span[contains(text(), "114830412")]]"}
+  (Session info: chrome=156.0.8078.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x4a0cd3]
+	(No symbol) [0x3aaf34]
+	(No symbol) [0x1ac360]
+	(No symbol) [0x1f7b76]
+	(No symbol) [0x1f7d4b]
+	(No symbol) [0x242202]
+	(No symbol) [0x21a7a4]
+	(No symbol) [0x23fa73]
+	(No symbol) [0x21a4f6]
+	(No symbol) [0x1ec85a]
+	(No symbol) [0x1ed6e4]
+	(No symbol) [0x961174]
+	(No symbol) [0x97f6bb]
+	(No symbol) [0x5f7182]
+	(No symbol) [0x5ff6b3]
+	(No symbol) [0x3b9538]
+	(No symbol) [0x3b40a8]
+	(No symbol) [0x3b4255]
+	(No symbol) [0x3a05f7]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+	(No symbol) [(nil)]
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 152, in selecionar_doc_arvore
+    doc_element = driver.find_element(
+        By.XPATH, f'//a[span[contains(text(), "{nome}")]]'
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 910, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"xpath","selector":"//a[span[contains(text(), "None")]]"}
+  (Session info: chrome=156.0.8078.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x4a0cd3]
+	(No symbol) [0x3aaf34]
+	(No symbol) [0x1ac360]
+	(No symbol) [0x1f7b76]
+	(No symbol) [0x1f7d4b]
+	(No symbol) [0x242202]
+	(No symbol) [0x21a7a4]
+	(No symbol) [0x23fa73]
+	(No symbol) [0x21a4f6]
+	(No symbol) [0x1ec85a]
+	(No symbol) [0x1ed6e4]
+	(No symbol) [0x961174]
+	(No symbol) [0x97f6bb]
+	(No symbol) [0x5f7182]
+	(No symbol) [0x5ff6b3]
+	(No symbol) [0x3b9538]
+	(No symbol) [0x3b40a8]
+	(No symbol) [0x3b4255]
+	(No symbol) [0x3a05f7]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+	(No symbol) [(nil)]
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 169, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 156, in _tratar
+    processar_novo(driver, registro, bases, bases_mantis)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 482, in processar_novo
+    dados_ui = obter_dados_ui(driver, registro)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 105, in obter_dados_ui
+    memos_para_geacs = obter_memos_apis_para_geacs(driver, registro.tds_docs)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 75, in obter_memos_apis_para_geacs
+    texto = ler_texto_doc(driver, memo)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 86, in ler_texto_doc
+    selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 157, in selecionar_doc_arvore
+    raise Exception('Documento não encontrado')
+Exception: Documento não encontrado
+2026-11-05 10:59:15 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-05 10:59:15 | WARNING | 2010.01.0071467/2024-88   | __main__              | FIM COM ERRO (6.7s) | Exception: Documento não encontrado
+2026-11-05 10:59:15 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [3/5]
+2026-11-05 10:59:17 | INFO    | 2010.01.0049305/2025-66   | __main__              | Árvore: 17 documento(s) | GEACS: 2 documento(s), 1 memorando(s)
+2026-11-05 10:59:17 | INFO    | 2010.01.0049305/2025-66   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1 - Tratado pelo Script']
+2026-11-05 10:59:17 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 518 (SEI 123170813)
+2026-11-05 10:59:17 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 123170813 lido (2075 caracteres)
+2026-11-05 10:59:17 | INFO    | 2010.01.0049305/2025-66   | __main__              | Fluxo: NOVO - do início
+2026-11-05 10:59:17 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 13 (SEI 114642201)
+2026-11-05 10:59:18 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 114642201 lido (1361 caracteres)
+2026-11-05 10:59:18 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 13 (SEI 114642201)
+2026-11-05 10:59:18 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 1971 (SEI 148860469)
+2026-11-05 10:59:19 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 148860469 lido (2710 caracteres)
+2026-11-05 10:59:19 | INFO    | 2010.01.0049305/2025-66   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1971 (SEI 148860469)']
+2026-11-05 10:59:19 | INFO    | 2010.01.0049305/2025-66   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3557861-1 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 3914500 | Período variável p/ dependentes: não
+2026-11-05 10:59:19 | WARNING | 2010.01.0049305/2025-66   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 3914500
+2026-11-05 10:59:22 | INFO    | 2010.01.0049305/2025-66   | marcadores_disponiveis | Marcadores cadastrados na unidade: 53
+2026-11-05 10:59:24 | INFO    | 2010.01.0049305/2025-66   | tags                  | Marcador adicionado: "Script v2 - 1.2.1 - Mat. N Encontradas Base APIS"
+2026-11-05 10:59:43 | INFO    | 2010.01.0049305/2025-66   | memos_sei             | Memo à APIS de matrículas não encontradas criado
+2026-11-05 10:59:46 | INFO    | 2010.01.0049305/2025-66   | memos_sei             | Memo à APIS de matrículas não encontradas inserido no bloco 7711907
+2026-11-05 10:59:49 | INFO    | 2010.01.0049305/2025-66   | tags                  | Marcador adicionado: "Script v2 - 1.6.1 - Aguarda APIS: Matrículas"
+2026-11-05 10:59:50 | INFO    | 2010.01.0049305/2025-66   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2062 (SEI 152966100)']
+2026-11-05 10:59:50 | DEBUG   | 2010.01.0049305/2025-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-05 10:59:50 | INFO    | 2010.01.0049305/2025-66   | __main__              | FIM (35.0s) | Próxima ação: Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-05 10:59:50 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [4/5]
+2026-11-05 10:59:52 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 18 documento(s) | GEACS: 3 documento(s), 2 memorando(s)
+2026-11-05 10:59:52 | INFO    | 2010.01.0072726/2024-45   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1.2.1 - Mat. N Encontradas Base APIS', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.1 - Aguarda APIS: Matrículas']
+2026-11-05 10:59:52 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-05 10:59:52 | WARNING | 2010.01.0072726/2024-45   | __main__              | FIM COM ERRO (2.2s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (Script v2 - 1.6.1 - Aguarda APIS: Matrículas)
+2026-11-05 10:59:52 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [5/5]
+2026-11-05 10:59:53 | INFO    | 2010.01.0072584/2024-96   | __main__              | Árvore: 18 documento(s) | GEACS: 6 documento(s), 2 memorando(s)
+2026-11-05 10:59:53 | INFO    | 2010.01.0072584/2024-96   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Usou RP', 'Script v2 - 1.8.2 - MANTIS: Usou RP', 'Script v2 - 1.8.3 - MANTIS: Usou RC', 'Script v2 - 1.9 - Aguarda DISA: Validar (Consta)']
+2026-11-05 10:59:53 | DEBUG   | 2010.01.0072584/2024-96   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-05 10:59:53 | WARNING | 2010.01.0072584/2024-96   | __main__              | FIM COM ERRO (1.5s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (Script v2 - 1.9 - Aguarda DISA: Validar (Consta))
+2026-11-05 10:59:56 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-05 10:59:56 | INFO    | -                         | __main__              | Processos: 5 | Sem erro: 1 | Com erro: 4
+2026-11-05 10:59:56 | INFO    | -                         | __main__              |     1 | Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-05 10:59:56 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072062/2024-28 | Exception: Documento não encontrado
+2026-11-05 10:59:56 | INFO    | -                         | __main__              | ERRO  | 2010.01.0071467/2024-88 | Exception: Documento não encontrado
+2026-11-05 10:59:56 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072726/2024-45 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (Script v2 - 1.6.1 - Aguarda APIS: Matrículas)
+2026-11-05 10:59:56 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072584/2024-96 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (Script v2 - 1.9 - Aguarda DISA: Validar (Consta))
+2026-11-05 10:59:56 | INFO    | -                         | __main__              | Duração total da execução: 0h01m48s
+2026-11-05 10:59:56 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

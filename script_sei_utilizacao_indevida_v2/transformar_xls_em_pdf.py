@@ -26,6 +26,14 @@ COL_WITDHS_DEP_DICT = {
     'VALOR PAGO': 80,
 }
 
+COL_WITDHS_BEN_DICT = {
+    'PRESTADOR': 180,
+    'MATRICULA BENEFICIARIO': 90,
+    'NOME BENEFICIARIO': 180,
+    'DATA DO ATENDIMENTO': 90,
+    'VALOR PAGO': 80,
+}
+
 COL_WITDHS_TIT_DICT = {
     'PRESTADOR': 300,
     'DATA DO ATENDIMENTO': 90,
@@ -59,15 +67,21 @@ def _build_table_row(row, valor_col_index, matricula_dep_index, normal):
     return linha
 
 
+def _texto_cabecalho(tit_matricula: str, tit_nome: str, tipo: str, rede: str) -> str:
+    titulo = f'<b>Relatório de Utilização{f" na {escape(rede)}" if rede else ""} Por {tipo}</b>'
+    return f'{titulo}<br/>Beneficiário Titular: {escape(tit_nome)} - {tit_matricula}' if tit_nome else titulo
+
+
 def transformar_xls_em_pdf(
     tit_matricula: str,
     tit_nome: str,
-    tipo: Literal['Titular', 'Dependente(s)'],
+    tipo: Literal['Titular', 'Dependente(s)', 'Beneficiário(s)'],
     df: pd.DataFrame,
     path_destino: Path,
     rede: str = '',
 ) -> Path:
-    """rede (opcional): nome da rede no título e no nome do arquivo."""
+    """rede (opcional): nome da rede no título e no nome do arquivo.
+    tit_nome vazio: sem a linha do titular no cabeçalho."""
     styles = getSampleStyleSheet()
     normal = styles['BodyText']
     header_style = styles['Heading4']
@@ -94,15 +108,12 @@ def transformar_xls_em_pdf(
     elements = []
 
     logo = Image(str(ARQ_LOGO), width=120, height=60)
-    info = Paragraph(
-        f'<b>Relatório de Utilização{f" na {escape(rede)}" if rede else ""} Por {tipo}</b><br/>Beneficiário Titular: {escape(tit_nome)} - {tit_matricula}',
-        header_style,
-    )
+    info = Paragraph(_texto_cabecalho(tit_matricula, tit_nome, tipo, rede), header_style)
     elements.append(Table([[logo, info]], colWidths=[150, 650]))
     elements.append(Spacer(1, 20))
 
     valor_col_index = df.columns.get_loc('VALOR PAGO') if 'VALOR PAGO' in df.columns else None
-    matricula_dep_index = df.columns.get_loc('MATRICULA DEPENDENTE') if 'MATRICULA DEPENDENTE' in df.columns else None
+    matricula_dep_index = next((df.columns.get_loc(coluna) for coluna in ('MATRICULA DEPENDENTE', 'MATRICULA BENEFICIARIO') if coluna in df.columns), None)
 
     data = [[Paragraph(col, table_header) for col in df.columns]]
     for _, row in df.iterrows():
@@ -112,6 +123,8 @@ def transformar_xls_em_pdf(
         col_widths = [COL_WITDHS_TIT_DICT.get(col, 100) for col in df.columns]
     elif tipo == 'Dependente(s)':
         col_widths = [COL_WITDHS_DEP_DICT.get(col, 100) for col in df.columns]
+    elif tipo == 'Beneficiário(s)':
+        col_widths = [COL_WITDHS_BEN_DICT.get(col, 100) for col in df.columns]
     else:
         col_widths = []
 

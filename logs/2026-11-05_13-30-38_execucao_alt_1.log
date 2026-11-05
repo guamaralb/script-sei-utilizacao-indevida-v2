@@ -1,0 +1,557 @@
+2026-11-05 13:30:38 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ALT 1 - SOMENTE INSERIR PDF) =================
+2026-11-05 13:30:38 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-05_13-30-38_execucao_alt_1.log
+2026-11-05 13:30:38 | INFO    | -                         | __main__              | 26 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-05 13:30:39 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-05 13:30:39 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-05 13:30:39 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-05 13:30:39 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-05 13:30:40 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\alt_1\planilhas_baixadas
+2026-11-05 13:30:41 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-05 13:30:41 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/26]
+2026-11-05 13:30:45 | INFO    | 2010.01.0082932/2024-60   | marcadores_disponiveis | Marcadores cadastrados na unidade: 54
+2026-11-05 13:30:46 | INFO    | 2010.01.0082932/2024-60   | __main__              | Árvore: 16 documento(s)
+2026-11-05 13:30:46 | INFO    | 2010.01.0082932/2024-60   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-05 13:30:46 | WARNING | 2010.01.0082932/2024-60   | planilhas_alt_1       | Retomada: PDF da planilha 105205949 já está na árvore (152983662); não será anexado de novo
+2026-11-05 13:30:46 | INFO    | 2010.01.0082932/2024-60   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 13:30:46 | INFO    | 2010.01.0082932/2024-60   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 13:30:46 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-05_13-30-38.xlsx
+2026-11-05 13:30:46 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-05 13:30:46 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (4.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 13:30:46 | INFO    | 2010.01.0050804/2025-42   | __main__              | INÍCIO [2/26]
+2026-11-05 13:30:48 | INFO    | 2010.01.0050804/2025-42   | __main__              | Árvore: 20 documento(s)
+2026-11-05 13:30:48 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3542985', 'Planilha Utilização Dependentes - 3542985']
+2026-11-05 13:30:48 | WARNING | 2010.01.0050804/2025-42   | planilhas_alt_1       | Retomada: PDF da planilha 125202990 já está na árvore (152983776); não será anexado de novo
+2026-11-05 13:30:48 | WARNING | 2010.01.0050804/2025-42   | planilhas_alt_1       | Retomada: PDF da planilha 125202957 já está na árvore (152983792); não será anexado de novo
+2026-11-05 13:30:48 | INFO    | 2010.01.0050804/2025-42   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-05 13:30:48 | INFO    | 2010.01.0050804/2025-42   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-05 13:30:48 | DEBUG   | 2010.01.0050804/2025-42   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-05 13:30:48 | INFO    | 2010.01.0050804/2025-42   | __main__              | FIM (2.1s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-05 13:30:48 | INFO    | 2010.01.0076235/2024-71   | __main__              | INÍCIO [3/26]
+2026-11-05 13:30:48 | ERROR   | 2010.01.0076235/2024-71   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=156.0.8078.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec360]
+	(No symbol) [0xddb52e]
+	(No symbol) [0xdf9d89]
+	(No symbol) [0xe615ac]
+	(No symbol) [0xe7f4b9]
+	(No symbol) [0xe5a4f6]
+	(No symbol) [0xe2c85a]
+	(No symbol) [0xe2d6e4]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xff40a8]
+	(No symbol) [0xff4255]
+	(No symbol) [0xfe05f7]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:49 | DEBUG   | 2010.01.0076235/2024-71   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-05 13:30:49 | WARNING | 2010.01.0076235/2024-71   | __main__              | FIM COM ERRO (0.7s) | InvalidSessionIdException: invalid session id: session deleted as the browser has closed the connection
+2026-11-05 13:30:49 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [4/26]
+2026-11-05 13:30:49 | ERROR   | 2010.01.0071357/2024-51   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:50 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-05 13:30:50 | WARNING | 2010.01.0071357/2024-51   | __main__              | FIM COM ERRO (0.5s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:50 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [5/26]
+2026-11-05 13:30:50 | ERROR   | 2010.01.0072062/2024-28   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:50 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-05 13:30:50 | WARNING | 2010.01.0072062/2024-28   | __main__              | FIM COM ERRO (0.5s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:50 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [6/26]
+2026-11-05 13:30:50 | ERROR   | 2010.01.0071467/2024-88   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:51 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-05 13:30:51 | WARNING | 2010.01.0071467/2024-88   | __main__              | FIM COM ERRO (0.5s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:51 | INFO    | 2010.01.0049247/2025-80   | __main__              | INÍCIO [7/26]
+2026-11-05 13:30:51 | ERROR   | 2010.01.0049247/2025-80   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:51 | DEBUG   | 2010.01.0049247/2025-80   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-05 13:30:51 | WARNING | 2010.01.0049247/2025-80   | __main__              | FIM COM ERRO (0.5s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:51 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [8/26]
+2026-11-05 13:30:51 | ERROR   | 2010.01.0049305/2025-66   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:51 | DEBUG   | 2010.01.0049305/2025-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-05 13:30:51 | WARNING | 2010.01.0049305/2025-66   | __main__              | FIM COM ERRO (0.3s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:51 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [9/26]
+2026-11-05 13:30:51 | ERROR   | 2010.01.0072726/2024-45   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:52 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-05 13:30:52 | WARNING | 2010.01.0072726/2024-45   | __main__              | FIM COM ERRO (0.3s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:52 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [10/26]
+2026-11-05 13:30:52 | ERROR   | 2010.01.0072584/2024-96   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:52 | DEBUG   | 2010.01.0072584/2024-96   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-05 13:30:52 | WARNING | 2010.01.0072584/2024-96   | __main__              | FIM COM ERRO (0.3s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:52 | INFO    | 2010.01.0071348/2024-03   | __main__              | INÍCIO [11/26]
+2026-11-05 13:30:52 | ERROR   | 2010.01.0071348/2024-03   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:52 | DEBUG   | 2010.01.0071348/2024-03   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-05 13:30:52 | WARNING | 2010.01.0071348/2024-03   | __main__              | FIM COM ERRO (0.2s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:52 | INFO    | 2010.01.0050757/2025-50   | __main__              | INÍCIO [12/26]
+2026-11-05 13:30:52 | ERROR   | 2010.01.0050757/2025-50   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:52 | DEBUG   | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-05 13:30:52 | WARNING | 2010.01.0050757/2025-50   | __main__              | FIM COM ERRO (0.3s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:52 | INFO    | 2010.01.0072057/2024-66   | __main__              | INÍCIO [13/26]
+2026-11-05 13:30:52 | ERROR   | 2010.01.0072057/2024-66   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:53 | DEBUG   | 2010.01.0072057/2024-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-05 13:30:53 | WARNING | 2010.01.0072057/2024-66   | __main__              | FIM COM ERRO (0.2s) | InvalidSessionIdException: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+2026-11-05 13:30:53 | INFO    | 2010.01.0082953/2024-75   | __main__              | INÍCIO [14/26]
+2026-11-05 13:30:53 | ERROR   | 2010.01.0082953/2024-75   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_alt_1.py", line 43, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\ubiquo\busca.py", line 12, in acessar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x10e0cd3]
+	(No symbol) [0xfeaf34]
+	(No symbol) [0xdec19e]
+	(No symbol) [0xe2bb27]
+	(No symbol) [0xe5a616]
+	(No symbol) [0xe558f3]
+	(No symbol) [0xe552c0]
+	(No symbol) [0xdbed81]
+	(No symbol) [0xdbf333]
+	(No symbol) [0xdbf87d]
+	(No symbol) [0x15a1174]
+	(No symbol) [0x15bf6bb]
+	(No symbol) [0x1237182]
+	(No symbol) [0x123f6b3]
+	(No symbol) [0xff9538]
+	(No symbol) [0xdbe4d0]
+	(No symbol) [0xdbdbc2]
+	(No symbol) [0x160e441]
+	(No symbol) [0x758f5d49]
+	(No symbol) [0x77d9e1fb]
+	(No symbol) [0x77d9e181]
+
+2026-11-05 13:30:53 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None)': /session/6b258d977786d6bd3c113434ff420046
