@@ -1,0 +1,172 @@
+"""Fluxo PDF (main_fluxo_pdf.py e planilhas_fluxo_pdf.py), com o SEI simulado e
+planilhas geradas nos testes."""
+
+import unicodedata
+
+import main_alt_1
+import planilhas_alt_1
+import planilhas_fluxo_pdf
+import pytest
+from constantes import UNIDADE_APIS
+from planilhas_alt_1 import TIPO_DOC
+from planilhas_fluxo_pdf import arquivos_do_processo, documento_da_arvore, prefixo_do_processo
+from rede_propria import ErroAvaliacao
+from Registro import ProxAcao, RegistroAlt1
+from tags import TAG_AGUARDA_DISA_VALIDAR_CONSTA, TAG_AGUARDA_FLUXO_NORMAL, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RC, TAG_MANTIS_USOU_RP, TAG_PROCESSO_NOVO
+
+from tests.test_fluxo_alt_1 import BASE, DEPENDENTE, MATRICULA, DriverFalso, gravar
+
+PROCESSO = '2010.01.0082953/2024-75'
+ANEXO = 'Anexo RELAÇÃO ATENDIMENTOS'
+TITULAR = f'Planilha Utilização Titular - {MATRICULA}'
+
+
+class Pasta:
+    def __init__(self, caminho):
+        self.caminho = caminho
+        self.pdfs: list[dict] = []
+
+    def planilha(self, nome: str, linhas: list[dict] | None = None, processo: str = PROCESSO):
+        return gravar(self.caminho / f'{prefixo_do_processo(processo)}{nome}.xlsx', linhas or [BASE])
+
+    def transformar(self, **kwargs):
+        self.pdfs.append(kwargs)
+        return kwargs['path_destino'] / 'relatorio.pdf'
+
+
+@pytest.fixture
+def pasta(sei, monkeypatch, tmp_path):
+    falsa = Pasta(tmp_path)
+    monkeypatch.setattr(planilhas_fluxo_pdf, 'DIR_FLUXO_PDF_PLANILHAS', tmp_path)
+    monkeypatch.setattr(planilhas_fluxo_pdf, 'DIR_FLUXO_PDF_PDF', tmp_path / 'pdf')
+    monkeypatch.setattr(planilhas_alt_1, '_ESPERA_PROCESSO', 0)
+    monkeypatch.setattr(planilhas_alt_1, 'clicar_num_processo', lambda driver: None)
+    monkeypatch.setattr(planilhas_alt_1, 'transformar_xls_em_pdf', falsa.transformar)
+    monkeypatch.setattr(main_alt_1, 'acessar_processo', lambda driver, num: None)
+    monkeypatch.setattr(main_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
+    monkeypatch.setattr(main_alt_1, 'listar_marcadores', lambda driver: list(sei.tags))
+    monkeypatch.setattr(main_alt_1, 'garantir_marcadores_no_sei', lambda driver, lista: None)
+    return falsa
+
+
+def passar() -> RegistroAlt1:
+    return main_alt_1._processar_linha(DriverFalso(), PROCESSO, 'FLUXO PDF', 'agora', planilhas_fluxo_pdf.inserir_pdfs_da_pasta)
+
+
+def test_insere_o_pdf_de_cada_arquivo_com_o_nome_do_alt_1_e_os_marcadores(sei, pasta):
+    tit = sei.novo_doc(TITULAR, UNIDADE_APIS, '')
+    anexo = sei.novo_doc(ANEXO, UNIDADE_APIS, '')
+    pasta.planilha(ANEXO)
+    pasta.planilha(TITULAR)
+
+    registro = passar()
+
+    assert sei.nomes[-2:] == [f'{TIPO_DOC} Utilização Tit. - {MATRICULA} - SEI {tit}', f'{TIPO_DOC} Utilização Ben. - {MATRICULA}']
+    assert sei.tags == [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
+    assert registro.prox_acao == ProxAcao.FLUXO_PDF_AGUARDA_FLUXO_NORMAL
+    assert registro.erro is None
+    assert sorted(registro.planilhas_sei) == sorted([tit, anexo])
+    assert pasta.pdfs[0]['path_destino'] == pasta.caminho / 'pdf' / tit
+
+
+def test_pdf_ja_inserido_pelo_alt_1_nao_duplica(sei, pasta):
+    tit = sei.novo_doc(TITULAR, UNIDADE_APIS, '')
+    sei.novo_doc(f'{TIPO_DOC} Utilização Tit. - {MATRICULA} - SEI {tit}', UNIDADE_APIS, '')
+    pasta.planilha(TITULAR)
+
+    registro = passar()
+
+    assert not pasta.pdfs
+    assert not registro.pdfs_incluidos
+    assert len(registro.pdfs_na_arvore) == 1
+
+
+def test_segunda_passagem_nao_duplica(sei, pasta):
+    sei.novo_doc(ANEXO, UNIDADE_APIS, '')
+    pasta.planilha(ANEXO)
+    passar()
+    registro = passar()
+    assert len(sei.pdfs) == 1
+    assert len(registro.pdfs_na_arvore) == 1
+
+
+def test_ja_no_fluxo_normal_recebe_pdf_e_fica_onde_esta(sei, pasta):
+    sei.tags.extend([TAG_PROCESSO_NOVO, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RP, TAG_MANTIS_USOU_RC, TAG_AGUARDA_DISA_VALIDAR_CONSTA])
+    antes = list(sei.tags)
+    sei.novo_doc(ANEXO, UNIDADE_APIS, '')
+    pasta.planilha(ANEXO)
+
+    registro = passar()
+
+    assert sei.tags == antes
+    assert registro.prox_acao == ProxAcao.FLUXO_PDF_ESTADO_MANTIDO
+
+
+def test_planilha_de_dependentes_usa_o_layout_dele(sei, pasta):
+    nome = f'Planilha Utilização Dependentes - {MATRICULA}'
+    sei.novo_doc(nome, UNIDADE_APIS, '')
+    pasta.planilha(nome, [{**BASE, **DEPENDENTE}])
+    passar()
+    assert pasta.pdfs[0]['tipo'] == 'Dependente(s)'
+
+
+def test_sem_arquivo_na_pasta_nao_recebe_marcador(sei, pasta):
+    sei.novo_doc(ANEXO, UNIDADE_APIS, '')
+    pasta.planilha(ANEXO, processo='2010.01.0000001/2024-11')
+
+    registro = passar()
+
+    assert registro.prox_acao == ProxAcao.FLUXO_PDF_SEM_PLANILHAS
+    assert registro.erro is None
+    assert not sei.tags
+    assert not sei.pdfs
+
+
+@pytest.mark.parametrize(
+    ('arquivo_extra', 'mensagem'),
+    [
+        ('RELAÇÃO ATENDIMENTOS', 'não é de planilha de utilização'),
+        ('Anexo RELAÇÃO ATENDIMENTOS 2', 'não encontrado na árvore'),
+    ],
+)
+def test_arquivo_invalido_para_antes_de_inserir_qualquer_pdf(sei, pasta, arquivo_extra, mensagem):
+    sei.novo_doc(ANEXO, UNIDADE_APIS, '')
+    pasta.planilha(ANEXO)
+    pasta.planilha(arquivo_extra)
+
+    registro = passar()
+
+    assert registro.tipo_erro == 'ErroAvaliacao'
+    assert mensagem in registro.erro
+    assert registro.prox_acao == ProxAcao.VERIFICAR_ERRO
+    assert not sei.pdfs
+    assert not sei.tags
+
+
+def test_formato_diferente_de_xlsx_e_erro(sei, pasta):
+    sei.novo_doc(ANEXO, UNIDADE_APIS, '')
+    (pasta.caminho / f'{prefixo_do_processo(PROCESSO)}{ANEXO}.xls').write_bytes(b'')
+
+    registro = passar()
+
+    assert 'só o formato .xlsx' in registro.erro
+    assert not sei.pdfs
+
+
+def test_arquivos_do_processo_ignora_zone_identifier_e_outros_processos(pasta):
+    caminho = pasta.planilha(ANEXO)
+    pasta.planilha(ANEXO, processo='2010.01.0000001/2024-11')
+    (pasta.caminho / f'{caminho.name}:Zone.Identifier').write_text('[ZoneTransfer]')
+
+    assert arquivos_do_processo(PROCESSO) == {ANEXO: caminho}
+
+
+def test_documento_da_arvore_ignora_forma_unicode_maiusculas_e_espacos():
+    doc = {'numero_sei': '1', 'nome_arvore': ANEXO}
+    assert documento_da_arvore(unicodedata.normalize('NFD', 'anexo  relação atendimentos'), [doc]) == doc
+
+
+def test_dois_documentos_com_o_mesmo_nome_sao_erro():
+    docs = [{'numero_sei': '1', 'nome_arvore': ANEXO}, {'numero_sei': '2', 'nome_arvore': ANEXO}]
+    with pytest.raises(ErroAvaliacao, match='mais de um documento'):
+        documento_da_arvore(ANEXO, docs)

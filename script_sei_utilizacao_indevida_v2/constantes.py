@@ -21,9 +21,14 @@ DIR_UTILIZACOES_OUTRAS_PDF = DIR_UTILIZACOES_OUTRAS / 'pdf'
 DIR_UTILIZACOES_MANTIS_PDF = DIR_UTILIZACOES / 'mantis' / 'pdf'
 
 # Fluxo alternativo ALT 1: planilhas baixadas do SEI e PDFs gerados
-DIR_ALT_1 = DIR_DADOS / 'alt_1'
+DIR_ALT_1 = DIR_DADOS / 'fluxo_alt_1'
 DIR_ALT_1_PLANILHAS = DIR_ALT_1 / 'planilhas_baixadas'
 DIR_ALT_1_PDF = DIR_ALT_1 / 'pdfs'
+
+# Fluxo PDF: planilhas colocadas à mão na pasta e PDFs gerados
+DIR_FLUXO_PDF = DIR_DADOS / 'fluxo_pdf'
+DIR_FLUXO_PDF_PLANILHAS = DIR_FLUXO_PDF / 'planilhas'
+DIR_FLUXO_PDF_PDF = DIR_FLUXO_PDF / 'pdf'
 
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'
 # Base APIS: listagem de todos os beneficiários da demanda (a base DISA é

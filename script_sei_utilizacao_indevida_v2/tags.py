@@ -205,7 +205,7 @@ class MarcadoresInconsistentes(ErroAvaliacao):
 
 
 def _curto(tag: str) -> str:
-    return tag.removeprefix('Script v2 - ')
+    return tag.removeprefix('Script v2 - ').removeprefix('Script v2v - ')
 
 
 _ESTADOS_DISA = (TAG_AGUARDA_DISA_VALIDAR_CONSTA, TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA, TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO)

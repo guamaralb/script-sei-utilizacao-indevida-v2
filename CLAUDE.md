@@ -71,7 +71,9 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
 | `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; ainda fora do fluxo) |
 | `main_alt_1.py` | Fluxo alternativo ALT 1 (`poetry run task run_alt_1`): loop dos processos e registro na planilha de controle ([seção](#fluxo-alternativo-alt-1)) |
-| `planilhas_alt_1.py` | ALT 1: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`) |
+| `planilhas_alt_1.py` | ALT 1: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`; `inserir_pdfs` e `deixar_aguardando_fluxo_normal` são usados também pelo fluxo PDF) |
+| `main_fluxo_pdf.py` | Fluxo PDF (`poetry run task run_pdf`): usa o loop `executar` do `main_alt_1.py` ([seção](#fluxo-pdf)) |
+| `planilhas_fluxo_pdf.py` | Fluxo PDF: acha os arquivos do processo em `dados/fluxo_pdf/planilhas`, o documento na árvore e insere os PDFs (`inserir_pdfs_da_pasta`) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
 | `docs/gerar_fluxo.py` | Gera o `docs/fluxo.drawio` (`python docs/gerar_fluxo.py docs/fluxo.drawio`). O conteúdo do diagrama fica no script |
 | `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
@@ -322,7 +324,9 @@ período. Cada um tem um par de marcadores (`1.6.2`, `1.8.2` e `1.8.3`,
 
 ### Marcadores (`tags.py`)
 
-Prefixo de todos os nomes: `Script v2 - `.
+Prefixo de todos os nomes: `Script v2 - `. Exceção: os marcadores velhos `1.2`,
+`1.2.2`, `1.3` e `1.4` usam `Script v2v - `, de propósito, para sinalizar que
+são velhos.
 
 | Marcador | Significado |
 |---|---|
@@ -653,14 +657,14 @@ Para cada processo:
      (verificar), sem marcador. Fim.
 3. Para cada planilha cujo PDF ainda não está na árvore:
    - abre o documento, o que inicia o download, para
-     `dados/alt_1/planilhas_baixadas/<nº SEI>_<nome original>`;
+     `dados/fluxo_alt_1/planilhas_baixadas/<nº SEI>_<nome original>`;
    - lê a primeira aba; titular em `NOME_BENEFICIARIO` e
      `MATRICULA_BENEFICIARIO` (valor único). A linha `TOTAL` do Anexo é
      removida. `DAT_ATENDIMENTO` é data do Excel ou texto `DD/MM/AAAA`; sem
      data válida, com coluna faltando ou sem atendimentos: `ErroAvaliacao`.
      Sem valor: conta como 0. Só `.xlsx`;
    - gera o PDF (`transformar_xls_em_pdf`), em
-     `dados/alt_1/pdfs/<nº SEI da planilha>/`, no layout dos relatórios do
+     `dados/fluxo_alt_1/pdfs/<nº SEI da planilha>/`, no layout dos relatórios do
      MANTIS (o de dependentes não tem `PROCEDIMENTO`). O Anexo tem modelo
      próprio, baseado no de dependentes: título `Relatório de Utilização Por
      Beneficiário(s)`, sem a linha do titular no cabeçalho, com as colunas
@@ -702,6 +706,38 @@ memos citam só estes.
   (`fluxo` e `prox_acao` do ALT 1), mas as colunas de resultado do fluxo
   principal não são gravadas (`_CAMPOS_SO_FLUXO_PRINCIPAL`) e continuam lá.
 - Log: `logs/<data>_execucao_alt_1.log`.
+
+---
+
+## Fluxo PDF
+
+`poetry run task run_pdf` (`main_fluxo_pdf.py`). É o [ALT 1](#fluxo-alternativo-alt-1)
+sem o download, para as planilhas que o Chrome não baixa: elas são colocadas à
+mão em `dados/fluxo_pdf/planilhas`. Lê a mesma aba `fluxo` de
+`dados/inputs/processos_nao_processados.xlsx`.
+
+- Nome do arquivo: número do processo com `_` no lugar da barra, `-` e o nome
+  do documento na árvore (`2010.01.0082953_2024-75-Anexo RELAÇÃO
+  ATENDIMENTOS.xlsx`). Os `:Zone.Identifier` são ignorados.
+- Para cada processo: lê os marcadores, confere se o `1` e o `1.0` existem no
+  SEI e lista a árvore, como no ALT 1. Depois:
+  1. **Nenhum arquivo do processo na pasta?** `prox_acao` = Fluxo PDF: nenhuma
+     planilha na pasta (verificar), sem marcador. Fim.
+  2. Confere todos os arquivos antes de inserir qualquer PDF. O nome precisa
+     ser dos três padrões do ALT 1 (`Planilha Utilização Titular`, `Planilha
+     Utilização Dependentes`, `Anexo RELAÇÃO ATENDIMENTO`, sem aceitar a
+     falta do `Anexo`) e do documento na árvore (nome inteiro; acento, maiúsculas e
+     espaços são ignorados). Fora do padrão, sem documento ou com dois
+     documentos do mesmo nome: `ErroAvaliacao`, sem inserir nada.
+  3. Insere os PDFs como no ALT 1: mesmo layout, mesmo nome (com o número SEI
+     do documento da árvore), mesma retomada. Um PDF que o ALT 1 já inseriu não
+     é duplicado. Arquivos em `dados/fluxo_pdf/pdf/<nº SEI da planilha>/`.
+  4. Marcadores como nos passos 4 e 5 do ALT 1, com as `prox_acao` `Fluxo PDF:
+     PDFs inseridos; ...`.
+- Planilha de controle: `script` = `fluxo_pdf`, `fluxo` = `FLUXO PDF -
+  PLANILHAS DA PASTA`, mesmas colunas e regras do ALT 1. Processo sem arquivo
+  na pasta também atualiza `fluxo` e `prox_acao` da linha na aba `processos`.
+- Log: `logs/<data>_execucao_fluxo_pdf.log`.
 
 ---
 

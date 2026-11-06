@@ -41,6 +41,11 @@ class ProxAcao:
     ALT_1_ESTADO_MANTIDO = 'ALT 1: PDFs inseridos; processo mantido no estado atual'
     ALT_1_SEM_PLANILHAS = 'ALT 1: nenhuma planilha no processo (verificar)'
 
+    # Fluxo PDF (planilhas da pasta)
+    FLUXO_PDF_AGUARDA_FLUXO_NORMAL = 'Fluxo PDF: PDFs inseridos; aguarda o fluxo normal'
+    FLUXO_PDF_ESTADO_MANTIDO = 'Fluxo PDF: PDFs inseridos; processo mantido no estado atual'
+    FLUXO_PDF_SEM_PLANILHAS = 'Fluxo PDF: nenhuma planilha na pasta (verificar)'
+
 
 # Próximas ações definidas antes do erro que devem ser mantidas
 _PROX_ACOES_DE_ERRO = frozenset({
@@ -258,7 +263,8 @@ class RegistroMain(RegistroBase):
 
 @dataclass
 class RegistroAlt1(RegistroBase):
-    """Uma passagem pelo fluxo alternativo ALT 1 (main_alt_1.py)."""
+    """Uma passagem pelo fluxo alternativo ALT 1 (main_alt_1.py) ou pelo fluxo
+    PDF (main_fluxo_pdf.py)."""
 
     # Planilhas na árvore (número SEI), PDFs anexados na passagem (nome na
     # árvore) e PDFs que já estavam na árvore (número SEI, retomada)

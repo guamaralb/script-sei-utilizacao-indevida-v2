@@ -17,6 +17,7 @@ import logging
 import re
 import time
 import unicodedata
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
 from difflib import SequenceMatcher
@@ -273,9 +274,9 @@ def baixar_planilha(driver: webdriver.Remote, doc: dict) -> Path:
 # ---------------------------------------------------------------------------
 
 
-def _inserir_pdf(driver: webdriver.Remote, registro, tipo: TipoPlanilha, relatorio: RelatorioPlanilha, numero_planilha: str) -> None:
+def _inserir_pdf(driver: webdriver.Remote, registro, tipo: TipoPlanilha, relatorio: RelatorioPlanilha, numero_planilha: str, dir_pdf: Path) -> None:
     # Uma pasta por planilha: o processo pode ter mais de uma do mesmo titular
-    pasta_pdf = DIR_ALT_1_PDF / numero_planilha
+    pasta_pdf = dir_pdf / numero_planilha
     pasta_pdf.mkdir(parents=True, exist_ok=True)
     caminho_pdf = transformar_xls_em_pdf(
         tit_matricula=relatorio.matricula_titular,
@@ -296,10 +297,10 @@ def _inserir_pdf(driver: webdriver.Remote, registro, tipo: TipoPlanilha, relator
     logger.info(f'PDF anexado ao processo: {num} ({numero_sei})')
 
 
-def _tratar_anexos(driver: webdriver.Remote, registro, anexos: list[dict]) -> None:
+def _tratar_anexos(driver: webdriver.Remote, registro, anexos: list[dict], obter_arquivo: Callable[[dict], Path], dir_pdf: Path) -> None:
     """O nome do PDF do Anexo não identifica a planilha: dois com o mesmo nome
     não dão para distinguir, e o processo para antes de inserir qualquer um."""
-    relatorios = {doc['numero_sei']: ler_planilha(baixar_planilha(driver, doc), ANEXO) for doc in anexos}
+    relatorios = {doc['numero_sei']: ler_planilha(obter_arquivo(doc), ANEXO) for doc in anexos}
     nomes = {numero: nome_pdf(ANEXO, relatorio.matricula_titular, numero) for numero, relatorio in relatorios.items()}
     repetidos = sorted({nome for nome in nomes.values() if list(nomes.values()).count(nome) > 1})
     if repetidos:
@@ -312,7 +313,7 @@ def _tratar_anexos(driver: webdriver.Remote, registro, anexos: list[dict]) -> No
             registro.pdfs_na_arvore.append(existente['numero_sei'])
             logger.warning(f'Retomada: PDF do Anexo {numero} já está na árvore ({existente["numero_sei"]}); não será anexado de novo')
         else:
-            _inserir_pdf(driver, registro, ANEXO, relatorios[numero], numero)
+            _inserir_pdf(driver, registro, ANEXO, relatorios[numero], numero, dir_pdf)
 
         antigo = encontrar_pdf_da_planilha(registro.tds_docs, numero)
         if antigo is not None:
@@ -326,15 +327,9 @@ def _fica_no_estado_atual(registro) -> bool:
     return eh_velho_pelos_marcadores(registro) or tem_tag(registro, TAG_MEMO_DEPROC_NO_BLOCO) or estado_atual(registro) not in {None, TAG_AGUARDA_FLUXO_NORMAL}
 
 
-def inserir_pdfs_das_planilhas(driver: webdriver.Remote, registro) -> None:
-    planilhas = encontrar_planilhas(registro.tds_docs)
-    registro.planilhas_sei = [doc['numero_sei'] for doc in planilhas]
-    if not planilhas:
-        logger.warning('Nenhuma planilha de utilização na árvore')
-        registro.prox_acao = ProxAcao.ALT_1_SEM_PLANILHAS
-        return
-
-    logger.info(f'{len(planilhas)} planilha(s) na árvore: {[doc["nome_arvore"] for doc in planilhas]}')
+def inserir_pdfs(driver: webdriver.Remote, registro, planilhas: list[dict], obter_arquivo: Callable[[dict], Path], dir_pdf: Path) -> None:
+    """Insere o PDF das planilhas da árvore que ainda não têm. obter_arquivo
+    devolve o arquivo .xlsx de cada uma (usado também pelo fluxo PDF)."""
     for doc in planilhas:
         if tipo_da_planilha(doc) is ANEXO:
             continue
@@ -344,15 +339,31 @@ def inserir_pdfs_das_planilhas(driver: webdriver.Remote, registro) -> None:
             logger.warning(f'Retomada: PDF da planilha {doc["numero_sei"]} já está na árvore ({existente["numero_sei"]}); não será anexado de novo')
             continue
         tipo = tipo_da_planilha(doc)
-        _inserir_pdf(driver, registro, tipo, ler_planilha(baixar_planilha(driver, doc), tipo), doc['numero_sei'])
+        _inserir_pdf(driver, registro, tipo, ler_planilha(obter_arquivo(doc), tipo), doc['numero_sei'], dir_pdf)
 
-    _tratar_anexos(driver, registro, [doc for doc in planilhas if tipo_da_planilha(doc) is ANEXO])
+    _tratar_anexos(driver, registro, [doc for doc in planilhas if tipo_da_planilha(doc) is ANEXO], obter_arquivo, dir_pdf)
 
+
+def deixar_aguardando_fluxo_normal(driver: webdriver.Remote, registro) -> bool:
+    """Adiciona os marcadores que deixam o processo para o fluxo normal.
+    False se ele fica como está (já no fluxo normal ou VELHO)."""
     if _fica_no_estado_atual(registro):
         logger.info('Processo já no fluxo normal ou VELHO: mantido no estado atual')
-        registro.prox_acao = ProxAcao.ALT_1_ESTADO_MANTIDO
-        return
+        return False
 
     adicionar_tag_se_ausente(driver, registro, TAG_PROCESSO_NOVO)
     adicionar_tag_se_ausente(driver, registro, TAG_AGUARDA_FLUXO_NORMAL)
-    registro.prox_acao = ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL
+    return True
+
+
+def inserir_pdfs_das_planilhas(driver: webdriver.Remote, registro) -> None:
+    planilhas = encontrar_planilhas(registro.tds_docs)
+    registro.planilhas_sei = [doc['numero_sei'] for doc in planilhas]
+    if not planilhas:
+        logger.warning('Nenhuma planilha de utilização na árvore')
+        registro.prox_acao = ProxAcao.ALT_1_SEM_PLANILHAS
+        return
+
+    logger.info(f'{len(planilhas)} planilha(s) na árvore: {[doc["nome_arvore"] for doc in planilhas]}')
+    inserir_pdfs(driver, registro, planilhas, lambda doc: baixar_planilha(driver, doc), DIR_ALT_1_PDF)
+    registro.prox_acao = ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL if deixar_aguardando_fluxo_normal(driver, registro) else ProxAcao.ALT_1_ESTADO_MANTIDO
