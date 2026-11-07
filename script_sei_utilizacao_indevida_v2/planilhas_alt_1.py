@@ -5,8 +5,9 @@ RELAÇÃO ATENDIMENTO), baixa cada uma, gera o PDF e o insere no processo.
 
 Retomada: o nome do PDF traz o número SEI da planilha de origem. Planilha
 cujo PDF já está na árvore não é baixada nem inserida de novo. O Anexo tem
-modelo próprio, por beneficiário, e o nome do PDF traz só a matrícula: ele é
-baixado para saber o nome e só então procurado na árvore.
+modelo próprio, por beneficiário, e o nome do PDF traz só a matrícula: se cada
+Anexo tem um PDF depois dele na árvore, nada é baixado; senão, os Anexos são
+baixados para saber o nome e só então procurados na árvore.
 
 No fim, o processo fica aguardando o fluxo normal (main.py). O que já está no
 fluxo normal ou é VELHO recebe os PDFs e continua onde estava: adicionar o
@@ -17,6 +18,7 @@ import logging
 import re
 import time
 import unicodedata
+from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
@@ -26,11 +28,14 @@ from pathlib import Path
 import pandas as pd
 from constantes import DIR_ALT_1_PDF, DIR_ALT_1_PLANILHAS
 from docs_processo import numero_sei_por_nome
+from processo_fechado import tem_incluir_documento
 from rede_propria import ErroAvaliacao
 from Registro import ProxAcao
 from relatorios_mantis import TIPO_DOC, anexar_pdf
-from sei_automacao.processo.arvore import clicar_num_processo, selecionar_doc_arvore
+from sei_automacao.processo import reabrir_processo
+from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
     TAG_MEMO_DEPROC_NO_BLOCO,
@@ -47,7 +52,13 @@ logger = logging.getLogger(__name__)
 TIMEOUT_DOWNLOAD = 60
 _INTERVALO_DOWNLOAD = 0.5
 _SUFIXOS_TEMPORARIOS = ('.crdownload', '.tmp')
-_ESPERA_PROCESSO = 1
+_TENTATIVAS_ANEXAR = 3
+_ESPERA_NOVA_TENTATIVA = 5
+
+# Maior Anexo visto: 7 beneficiários. Acima do limite é uma base geral, com
+# dados de terceiros, e não vira PDF
+_MAX_BENEFICIARIOS_ANEXO = 20
+_TOLERANCIA_TOTAL = 0.01
 
 # Os nomes são digitados à mão no SEI: variam em acento, plural e digitação
 # (ex.: "Anexo RELACAO ANTENDIMENTOS"). Cada palavra é comparada com a esperada
@@ -179,6 +190,21 @@ def _valor_unico(df: pd.DataFrame, coluna: str, nome_arquivo: str):
     return valores[0]
 
 
+def _nome_do_titular(df: pd.DataFrame, nome_arquivo: str) -> str:
+    """A matrícula é única, mas o nome varia: outras maiúsculas, acentos ou
+    preposições, casamento e erro de digitação. Vale o nome com mais linhas
+    (um erro de digitação isolado não vira o nome do PDF) e, dentro dele, a
+    forma mais completa."""
+    nomes = [str(nome).strip() for nome in df[_NOME_BENEFICIARIO].dropna()]
+    contagem = Counter(tuple(_palavras(nome)) for nome in nomes)
+    if not contagem:
+        raise ErroAvaliacao(f'Planilha {nome_arquivo}: esperado um único valor em {_NOME_BENEFICIARIO}, encontrados 0')
+    if len(contagem) > 1:
+        logger.warning(f'Planilha {nome_arquivo}: {len(contagem)} nomes para a mesma matrícula; vale o mais frequente')
+    mais_frequente = contagem.most_common(1)[0][0]
+    return max((nome for nome in nomes if tuple(_palavras(nome)) == mais_frequente), key=len)
+
+
 def _matricula_em_texto(valor) -> str:
     return f'{valor:.0f}' if isinstance(valor, float) else str(valor).strip()
 
@@ -190,10 +216,30 @@ def _numerico(coluna: pd.Series, nome_arquivo: str) -> pd.Series:
         raise ErroAvaliacao(f'Planilha {nome_arquivo}: valor não numérico em {coluna.name}') from e
 
 
+def _remover_rodape(df: pd.DataFrame) -> pd.DataFrame:
+    """Rodapé de total fora do padrão (ex.: COD_PRESTADOR = TOTAL): última
+    linha sem matrícula e sem data, com a soma das demais. Sem a soma não é
+    rodapé, e a linha segue para a validação."""
+    ultima = df.iloc[-1]
+    if len(df) < 2 or pd.notna(ultima[_MATRICULA_BENEFICIARIO]) or pd.notna(ultima[_DATA]):  # noqa: PLR2004
+        return df
+    valores = pd.to_numeric(df[_VALOR], errors='coerce')
+    if abs(valores.iloc[-1] - valores.iloc[:-1].sum()) <= _TOLERANCIA_TOTAL:
+        return df.iloc[:-1].copy()
+    return df
+
+
 def ler_planilha(arquivo: Path, tipo: TipoPlanilha) -> RelatorioPlanilha:
     """Lê a primeira aba e devolve o titular e os dados no layout do PDF."""
     if arquivo.suffix.casefold() != '.xlsx':
         raise ErroAvaliacao(f'Planilha {arquivo.name}: só o formato .xlsx é aceito')
+
+    # Já houve planilha com a base geral na primeira aba e o processo na
+    # segunda: não dá para escolher a aba sem conferir
+    with pd.ExcelFile(arquivo) as planilha:
+        abas = planilha.sheet_names
+    if len(abas) > 1:
+        raise ErroAvaliacao(f'Planilha {arquivo.name}: {len(abas)} abas ({", ".join(abas)}): conferir manualmente qual é a do processo')
 
     colunas = dict(tipo.colunas)
     df = pd.read_excel(arquivo)
@@ -206,6 +252,7 @@ def ler_planilha(arquivo: Path, tipo: TipoPlanilha) -> RelatorioPlanilha:
     df = df[df[_REFERENCIA].astype(str).str.strip().str.casefold() != 'total'].copy()
     if df.empty:
         raise ErroAvaliacao(f'Planilha {arquivo.name}: sem atendimentos')
+    df = _remover_rodape(df)
 
     df[_DATA] = df[_DATA].map(_converter_data)
     if df[_DATA].isna().any():
@@ -222,11 +269,13 @@ def ler_planilha(arquivo: Path, tipo: TipoPlanilha) -> RelatorioPlanilha:
     relatorio[textos] = relatorio[textos].fillna('')
     if tipo is ANEXO:
         matriculas = df[_MATRICULA_BENEFICIARIO].unique()
+        if len(matriculas) > _MAX_BENEFICIARIOS_ANEXO:
+            raise ErroAvaliacao(f'Planilha {arquivo.name}: {len(matriculas)} beneficiários (máximo {_MAX_BENEFICIARIOS_ANEXO}): conferir se é a planilha do processo')
         primeira = _matricula_em_texto(matriculas[0])
         return RelatorioPlanilha(primeira if len(matriculas) == 1 else f'{primeira} e mais {len(matriculas) - 1}', '', relatorio)
     return RelatorioPlanilha(
         matricula_titular=_matricula_em_texto(_valor_unico(df, _MATRICULA_BENEFICIARIO, arquivo.name)),
-        nome_titular=str(_valor_unico(df, _NOME_BENEFICIARIO, arquivo.name)).strip(),
+        nome_titular=_nome_do_titular(df, arquivo.name),
         df=relatorio,
     )
 
@@ -238,6 +287,29 @@ def ler_planilha(arquivo: Path, tipo: TipoPlanilha) -> RelatorioPlanilha:
 
 def _arquivos_baixados() -> set[Path]:
     return {caminho for caminho in DIR_ALT_1_PLANILHAS.iterdir() if caminho.is_file()}
+
+
+def _downloads_em_andamento() -> set[Path]:
+    return {caminho for caminho in _arquivos_baixados() if caminho.suffix.casefold() in _SUFIXOS_TEMPORARIOS}
+
+
+def _descartar_downloads_em_andamento() -> None:
+    """O arquivo que chegasse depois seria confundido com o da próxima planilha."""
+    for caminho in _downloads_em_andamento():
+        logger.warning(f'Download não terminou em {TIMEOUT_DOWNLOAD}s; descartado: {caminho.name}')
+        caminho.unlink(missing_ok=True)
+
+
+def _esperar_downloads_anteriores() -> None:
+    """Rede de segurança: o download demorado é descartado ao passar do tempo,
+    mas o temporário pode aparecer depois disso. O que não terminar é
+    descartado, para um arquivo preso não parar os processos seguintes."""
+    limite = time.monotonic() + TIMEOUT_DOWNLOAD
+    while time.monotonic() < limite:
+        if not _downloads_em_andamento():
+            return
+        time.sleep(_INTERVALO_DOWNLOAD)
+    _descartar_downloads_em_andamento()
 
 
 def _esperar_download(antes: set[Path], numero_sei: str) -> Path:
@@ -254,6 +326,7 @@ def baixar_planilha(driver: webdriver.Remote, doc: dict) -> Path:
     """Abrir a planilha na árvore já inicia o download. O arquivo é salvo
     com o número SEI no início do nome, pois o nome original não identifica
     o documento e pode se repetir."""
+    _esperar_downloads_anteriores()
     antes = _arquivos_baixados()
     try:
         selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
@@ -262,7 +335,12 @@ def baixar_planilha(driver: webdriver.Remote, doc: dict) -> Path:
         logger.debug(f'Planilha {doc["numero_sei"]} aberta sem o iframe de visualização')
     driver.switch_to.default_content()
 
-    baixado = _esperar_download(antes, doc['numero_sei'])
+    try:
+        baixado = _esperar_download(antes, doc['numero_sei'])
+    except ErroAvaliacao:
+        # O erro para o processo, e a execução segue sem esperar esta planilha
+        _descartar_downloads_em_andamento()
+        raise
     destino = DIR_ALT_1_PLANILHAS / f'{doc["numero_sei"]}_{baixado.name}'
     baixado.replace(destino)
     logger.info(f'Planilha baixada: {doc["nome_arvore"]} (SEI {doc["numero_sei"]}) em {destino.name}')
@@ -272,6 +350,62 @@ def baixar_planilha(driver: webdriver.Remote, doc: dict) -> Path:
 # ---------------------------------------------------------------------------
 # Fluxo
 # ---------------------------------------------------------------------------
+
+
+def _reabrir_processo(driver: webdriver.Remote, registro) -> None:
+    logger.warning('Processo sem "Incluir Documento": reabrindo')
+    try:
+        reabrir_processo(driver)
+    except ValueError as e:
+        raise ErroAvaliacao(f'Processo sem "Incluir Documento" e não foi possível reabrir: {e}') from e
+
+    time.sleep(_ESPERA_NOVA_TENTATIVA)
+    driver.refresh()
+    if not tem_incluir_documento(driver):
+        raise ErroAvaliacao('Processo sem "Incluir Documento" depois de reabrir')
+    registro.processo_reaberto = True
+    logger.info('Processo reaberto na unidade')
+
+
+def _garantir_processo_aberto(driver: webdriver.Remote, registro) -> None:
+    """Processo sem "Incluir Documento" (ex.: concluído na unidade) é reaberto
+    e continua aberto depois de receber os PDFs. Chamada antes de baixar as
+    planilhas: sem como reabrir, o processo para aqui."""
+    # Abrir as pastas da árvore pode trocar a tela, e o botão sumiria sem o
+    # processo estar fechado
+    driver.refresh()
+    if not tem_incluir_documento(driver):
+        _reabrir_processo(driver, registro)
+    # O refresh fecha as pastas da árvore, onde estão as planilhas
+    listar_documentos_arvore(driver)
+
+
+def _recarregar_processo(driver: webdriver.Remote) -> None:
+    """Depois de anexar um PDF, a tela muda e a inclusão seguinte falhava
+    quase sempre. Recarregar volta à tela do processo, como no 1º PDF."""
+    driver.refresh()
+    if not tem_incluir_documento(driver):
+        raise TimeoutException('Tela do processo sem "Incluir Documento"')
+
+
+def _anexar_pdf_com_novas_tentativas(driver: webdriver.Remote, num: str, caminho_pdf: Path) -> None:
+    """Com o SEI lento, a tela do processo pode não carregar a tempo. O tempo
+    esgotado pode vir depois de salvar: só tenta de novo se o PDF não entrou."""
+    for tentativa in range(1, _TENTATIVAS_ANEXAR + 1):
+        try:
+            _recarregar_processo(driver)
+            anexar_pdf(driver, num, caminho_pdf, datetime.now())
+            return
+        except (TimeoutException, StaleElementReferenceException):
+            if tentativa == _TENTATIVAS_ANEXAR:
+                raise
+            logger.warning(f'Tempo esgotado ao anexar {num} (tentativa {tentativa} de {_TENTATIVAS_ANEXAR})')
+            logger.debug('Detalhes da tentativa', exc_info=True)
+
+        time.sleep(_ESPERA_NOVA_TENTATIVA)
+        if encontrar_pdf_pelo_nome_exato(listar_documentos_arvore(driver), num) is not None:
+            logger.info(f'PDF {num} entrou na árvore apesar do tempo esgotado')
+            return
 
 
 def _inserir_pdf(driver: webdriver.Remote, registro, tipo: TipoPlanilha, relatorio: RelatorioPlanilha, numero_planilha: str, dir_pdf: Path) -> None:
@@ -287,9 +421,7 @@ def _inserir_pdf(driver: webdriver.Remote, registro, tipo: TipoPlanilha, relator
     )
 
     num = nome_pdf(tipo, relatorio.matricula_titular, numero_planilha)
-    clicar_num_processo(driver)
-    time.sleep(_ESPERA_PROCESSO)
-    anexar_pdf(driver, num, caminho_pdf, datetime.now())
+    _anexar_pdf_com_novas_tentativas(driver, num, caminho_pdf)
     registro.pdfs_incluidos.append(num)
     numero_sei = numero_sei_por_nome(driver, f'{TIPO_DOC} {num}')
     if numero_sei is None:
@@ -297,7 +429,24 @@ def _inserir_pdf(driver: webdriver.Remote, registro, tipo: TipoPlanilha, relator
     logger.info(f'PDF anexado ao processo: {num} ({numero_sei})')
 
 
-def _tratar_anexos(driver: webdriver.Remote, registro, anexos: list[dict], obter_arquivo: Callable[[dict], Path], dir_pdf: Path) -> None:
+def _pdfs_de_todos_os_anexos(tds_docs: list[dict]) -> list[dict] | None:
+    """PDFs de Anexo da árvore, se cada Anexo tem um depois dele (o PDF entra
+    depois da planilha). Senão, None: o nome não diz de qual Anexo é o PDF, e
+    um Anexo novo depois de um PDF antigo ainda precisa do seu."""
+    pdfs: list[dict] = []
+    disponiveis = 0
+    for doc in reversed(tds_docs):
+        if doc['nome_arvore'].startswith(f'{TIPO_DOC} Utilização {ANEXO.tipo_curto} - '):
+            pdfs.append(doc)
+            disponiveis += 1
+        elif tipo_da_planilha(doc) is ANEXO:
+            if disponiveis == 0:
+                return None
+            disponiveis -= 1
+    return pdfs
+
+
+def _inserir_pdfs_dos_anexos(driver: webdriver.Remote, registro, anexos: list[dict], obter_arquivo: Callable[[dict], Path], dir_pdf: Path) -> None:
     """O nome do PDF do Anexo não identifica a planilha: dois com o mesmo nome
     não dão para distinguir, e o processo para antes de inserir qualquer um."""
     relatorios = {doc['numero_sei']: ler_planilha(obter_arquivo(doc), ANEXO) for doc in anexos}
@@ -315,6 +464,20 @@ def _tratar_anexos(driver: webdriver.Remote, registro, anexos: list[dict], obter
         else:
             _inserir_pdf(driver, registro, ANEXO, relatorios[numero], numero, dir_pdf)
 
+
+def _tratar_anexos(driver: webdriver.Remote, registro, anexos: list[dict], obter_arquivo: Callable[[dict], Path], dir_pdf: Path) -> None:
+    if not anexos:
+        return
+
+    existentes = _pdfs_de_todos_os_anexos(registro.tds_docs)
+    if existentes is None:
+        _inserir_pdfs_dos_anexos(driver, registro, anexos, obter_arquivo, dir_pdf)
+    else:
+        registro.pdfs_na_arvore += [doc['numero_sei'] for doc in existentes]
+        logger.warning(f'Retomada: PDF dos {len(anexos)} Anexo(s) já está na árvore; a planilha não será baixada')
+
+    for doc in anexos:
+        numero = doc['numero_sei']
         antigo = encontrar_pdf_da_planilha(registro.tds_docs, numero)
         if antigo is not None:
             registro.pdfs_antigos_a_excluir.append(antigo['numero_sei'])
@@ -327,9 +490,21 @@ def _fica_no_estado_atual(registro) -> bool:
     return eh_velho_pelos_marcadores(registro) or tem_tag(registro, TAG_MEMO_DEPROC_NO_BLOCO) or estado_atual(registro) not in {None, TAG_AGUARDA_FLUXO_NORMAL}
 
 
+def _falta_pdf(tds_docs: list[dict], planilhas: list[dict]) -> bool:
+    """Do Anexo só se sabe o nome do PDF lendo a planilha: se _pdfs_de_todos_os_anexos
+    não resolve, conta como faltando."""
+    anexos = [doc for doc in planilhas if tipo_da_planilha(doc) is ANEXO]
+    if anexos and _pdfs_de_todos_os_anexos(tds_docs) is None:
+        return True
+    return any(encontrar_pdf_da_planilha(tds_docs, doc['numero_sei']) is None for doc in planilhas if tipo_da_planilha(doc) is not ANEXO)
+
+
 def inserir_pdfs(driver: webdriver.Remote, registro, planilhas: list[dict], obter_arquivo: Callable[[dict], Path], dir_pdf: Path) -> None:
     """Insere o PDF das planilhas da árvore que ainda não têm. obter_arquivo
     devolve o arquivo .xlsx de cada uma (usado também pelo fluxo PDF)."""
+    if _falta_pdf(registro.tds_docs, planilhas):
+        _garantir_processo_aberto(driver, registro)
+
     for doc in planilhas:
         if tipo_da_planilha(doc) is ANEXO:
             continue

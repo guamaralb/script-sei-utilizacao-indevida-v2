@@ -15,9 +15,14 @@ webdriver-manager = "^4.0.2"
 selenium = "^4.39.0"
 python-dotenv = "^1.2.1"
 reportlab = "^4.4.10"
-# PATH do sei-automacao: Alterar para seu PC
-sei-automacao = { path = "../../../sei-automacao", develop = true }
-# sei-automacao = { path = "../sei-automacao", develop = true }
+
+##### PATH do sei-automacao: Alterar para seu PC #####
+
+# CAMG
+# sei-automacao = { path = "../../../sei-automacao", develop = true }
+
+# CASA
+sei-automacao = { path = "../sei-automacao", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 taskipy = "^1.14.1"
@@ -33,12 +38,19 @@ build-backend = "poetry.core.masonry.api"
 lint = {cmd = 'poetry run ruff check'}
 pre_format = {cmd = 'poetry run ruff check --fix'}
 format = {cmd = 'poetry run ruff format'}
-pre_run = {cmd = "poetry run task format"}
+
+# FLUXO NORMAL
 run = 'python script_sei_utilizacao_indevida_v2/main.py'
-pre_run_alt_1 = {cmd = "poetry run task format"}
+pre_run = {cmd = "poetry run task format"}
+
+# BAIXA A PLANILHA ANTIGA DO SEI E ADD PDF NO PROCESSO
 run_alt_1 = 'python script_sei_utilizacao_indevida_v2/main_alt_1.py'
-pre_run_pdf = {cmd = "poetry run task format"}
+pre_run_alt_1 = {cmd = "poetry run task format"}
+
+# PEGA PLANILHAS BAIXADAS MANUALMENTE E ADD PDF NO PROCESSO
+# - Planilhas devem seguir o padrão
 run_pdf = 'python script_sei_utilizacao_indevida_v2/main_fluxo_pdf.py'
+pre_run_pdf = {cmd = "poetry run task format"}
 test = 'pytest'
 
 [tool.pytest.ini_options]

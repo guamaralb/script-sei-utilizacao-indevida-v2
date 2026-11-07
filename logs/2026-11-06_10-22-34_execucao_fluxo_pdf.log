@@ -1,0 +1,52 @@
+2026-11-06 10:22:34 | INFO    | -                         | main_alt_1            | ================= INÍCIO DA EXECUÇÃO (FLUXO PDF - PLANILHAS DA PASTA) =================
+2026-11-06 10:22:34 | INFO    | -                         | main_alt_1            | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-06_10-22-34_execucao_fluxo_pdf.log
+2026-11-06 10:22:34 | INFO    | -                         | main_alt_1            | 3 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-06 10:22:34 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-06 10:22:34 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-06 10:22:34 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-06 10:22:37 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-06 10:22:38 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-06 10:22:55 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-06 10:22:55 | INFO    | 2010.01.0082953/2024-75   | main_alt_1            | INÍCIO [1/3]
+2026-11-06 10:23:13 | INFO    | 2010.01.0082953/2024-75   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-06 10:23:15 | INFO    | 2010.01.0082953/2024-75   | main_alt_1            | Árvore: 19 documento(s)
+2026-11-06 10:23:15 | INFO    | 2010.01.0082953/2024-75   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0082953_2024-75-Anexo RELAÇÃO ATENDIMENTOS.xlsx']
+2026-11-06 10:23:15 | DEBUG   | 2010.01.0082953/2024-75   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-06 10:23:15 | DEBUG   | 2010.01.0082953/2024-75   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-06 10:23:15 | DEBUG   | 2010.01.0082953/2024-75   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-06 10:23:15 | DEBUG   | 2010.01.0082953/2024-75   | PIL.PngImagePlugin    | Compression method 0
+2026-11-06 10:23:15 | DEBUG   | 2010.01.0082953/2024-75   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-06 10:23:15 | DEBUG   | 2010.01.0082953/2024-75   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-06 10:23:15 | DEBUG   | 2010.01.0082953/2024-75   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-06 10:23:49 | INFO    | 2010.01.0082953/2024-75   | planilhas_alt_1       | PDF anexado ao processo: Utilização Ben. - 3541437 e mais 2 (153069204)
+2026-11-06 10:23:57 | INFO    | 2010.01.0082953/2024-75   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 10:24:05 | INFO    | 2010.01.0082953/2024-75   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 10:24:05 | INFO    | 2010.01.0082953/2024-75   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-06_10-22-34.xlsx
+2026-11-06 10:24:05 | DEBUG   | 2010.01.0082953/2024-75   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-06 10:24:05 | INFO    | 2010.01.0082953/2024-75   | main_alt_1            | FIM (0h01m09s) | Próxima ação: Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 10:24:05 | INFO    | 2010.01.0050905/2025-31   | main_alt_1            | INÍCIO [2/3]
+2026-11-06 10:24:09 | INFO    | 2010.01.0050905/2025-31   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 10:24:09 | INFO    | 2010.01.0050905/2025-31   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0050905_2025-31-Planilha Utilização Titular - 2608097.xlsx']
+2026-11-06 10:24:09 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-06 10:24:09 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-06 10:24:09 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-06 10:24:09 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | Compression method 0
+2026-11-06 10:24:09 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-06 10:24:09 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-06 10:24:09 | DEBUG   | 2010.01.0050905/2025-31   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-06 10:24:34 | INFO    | 2010.01.0050905/2025-31   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 2608097 - SEI 123418137 (153069419)
+2026-11-06 10:24:41 | INFO    | 2010.01.0050905/2025-31   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 10:24:50 | INFO    | 2010.01.0050905/2025-31   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 10:24:50 | DEBUG   | 2010.01.0050905/2025-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-06 10:24:50 | INFO    | 2010.01.0050905/2025-31   | main_alt_1            | FIM (44.7s) | Próxima ação: Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 10:24:50 | INFO    | 2010.01.0051875/2025-31   | main_alt_1            | INÍCIO [3/3]
+2026-11-06 10:24:53 | INFO    | 2010.01.0051875/2025-31   | main_alt_1            | Árvore: 13 documento(s)
+2026-11-06 10:24:53 | INFO    | 2010.01.0051875/2025-31   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0051875_2025-31 - Planilha Utilização Tit. - 3273809 - 10_12_2025.xlsx']
+2026-11-06 10:24:53 | DEBUG   | 2010.01.0051875/2025-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-06 10:24:53 | WARNING | 2010.01.0051875/2025-31   | main_alt_1            | FIM COM ERRO (3.3s) | ErroAvaliacao: Planilha 2010.01.0051875_2025-31 - Planilha Utilização Tit. - 3273809 - 10_12_2025.xlsx: esperado um único valor em NOME_BENEFICIARIO, encontrados 3
+2026-11-06 10:24:53 | INFO    | -                         | main_alt_1            | ------------------------ RESUMO ------------------------
+2026-11-06 10:24:53 | INFO    | -                         | main_alt_1            | Processos: 3 | Sem erro: 2 | Com erro: 1
+2026-11-06 10:24:53 | INFO    | -                         | main_alt_1            |     2 | Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 10:24:53 | INFO    | -                         | main_alt_1            | ERRO  | 2010.01.0051875/2025-31 | ErroAvaliacao: Planilha 2010.01.0051875_2025-31 - Planilha Utilização Tit. - 3273809 - 10_12_2025.xlsx: esperado um único valor em NOME_BENEFICIARIO, encontrados 3
+2026-11-06 10:24:53 | INFO    | -                         | main_alt_1            | Duração total da execução: 0h02m18s
+2026-11-06 10:24:53 | INFO    | -                         | main_alt_1            | ================== FIM DA EXECUÇÃO ==================

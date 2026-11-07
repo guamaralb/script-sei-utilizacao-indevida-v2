@@ -4,7 +4,7 @@
   contexto_processo), inclusive as mensagens emitidas pelos módulos
   auxiliares (rede_propria, docs_processo etc.).
 - Arquivo: nível DEBUG (detalhado). Console: nível INFO.
-- Bibliotecas ruidosas (selenium, urllib3) ficam em WARNING.
+- Bibliotecas ruidosas (selenium, urllib3, PIL) ficam em WARNING.
 """
 
 import contextvars
@@ -21,7 +21,7 @@ _processo_atual = contextvars.ContextVar('processo_atual', default=_SEM_PROCESSO
 _FORMATO = '%(asctime)s | %(levelname)-7s | %(processo)-25s | %(name)-21s | %(message)s'
 _FORMATO_DATA = '%Y-%m-%d %H:%M:%S'
 
-_LOGGERS_RUIDOSOS = ('selenium', 'urllib3', 'WDM', 'webdriver_manager')
+_LOGGERS_RUIDOSOS = ('selenium', 'urllib3', 'WDM', 'webdriver_manager', 'PIL')
 
 
 def _adicionar_processo(record: logging.LogRecord) -> bool:

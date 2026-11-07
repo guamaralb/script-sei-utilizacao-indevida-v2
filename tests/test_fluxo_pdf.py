@@ -9,7 +9,7 @@ import planilhas_fluxo_pdf
 import pytest
 from constantes import UNIDADE_APIS
 from planilhas_alt_1 import TIPO_DOC
-from planilhas_fluxo_pdf import arquivos_do_processo, documento_da_arvore, prefixo_do_processo
+from planilhas_fluxo_pdf import arquivos_do_processo, documento_da_arvore
 from rede_propria import ErroAvaliacao
 from Registro import ProxAcao, RegistroAlt1
 from tags import TAG_AGUARDA_DISA_VALIDAR_CONSTA, TAG_AGUARDA_FLUXO_NORMAL, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RC, TAG_MANTIS_USOU_RP, TAG_PROCESSO_NOVO
@@ -21,13 +21,17 @@ ANEXO = 'Anexo RELAÇÃO ATENDIMENTOS'
 TITULAR = f'Planilha Utilização Titular - {MATRICULA}'
 
 
+def nome_arquivo(processo: str, nome: str, separador: str = '-', extensao: str = 'xlsx') -> str:
+    return f'{processo.replace("/", "_")}{separador}{nome}.{extensao}'
+
+
 class Pasta:
     def __init__(self, caminho):
         self.caminho = caminho
         self.pdfs: list[dict] = []
 
-    def planilha(self, nome: str, linhas: list[dict] | None = None, processo: str = PROCESSO):
-        return gravar(self.caminho / f'{prefixo_do_processo(processo)}{nome}.xlsx', linhas or [BASE])
+    def planilha(self, nome: str, linhas: list[dict] | None = None, processo: str = PROCESSO, separador: str = '-'):
+        return gravar(self.caminho / nome_arquivo(processo, nome, separador), linhas or [BASE])
 
     def transformar(self, **kwargs):
         self.pdfs.append(kwargs)
@@ -39,8 +43,8 @@ def pasta(sei, monkeypatch, tmp_path):
     falsa = Pasta(tmp_path)
     monkeypatch.setattr(planilhas_fluxo_pdf, 'DIR_FLUXO_PDF_PLANILHAS', tmp_path)
     monkeypatch.setattr(planilhas_fluxo_pdf, 'DIR_FLUXO_PDF_PDF', tmp_path / 'pdf')
-    monkeypatch.setattr(planilhas_alt_1, '_ESPERA_PROCESSO', 0)
-    monkeypatch.setattr(planilhas_alt_1, 'clicar_num_processo', lambda driver: None)
+    monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: True)
+    monkeypatch.setattr(planilhas_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
     monkeypatch.setattr(planilhas_alt_1, 'transformar_xls_em_pdf', falsa.transformar)
     monkeypatch.setattr(main_alt_1, 'acessar_processo', lambda driver, num: None)
     monkeypatch.setattr(main_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
@@ -145,7 +149,7 @@ def test_arquivo_invalido_para_antes_de_inserir_qualquer_pdf(sei, pasta, arquivo
 
 def test_formato_diferente_de_xlsx_e_erro(sei, pasta):
     sei.novo_doc(ANEXO, UNIDADE_APIS, '')
-    (pasta.caminho / f'{prefixo_do_processo(PROCESSO)}{ANEXO}.xls').write_bytes(b'')
+    (pasta.caminho / nome_arquivo(PROCESSO, ANEXO, extensao='xls')).write_bytes(b'')
 
     registro = passar()
 
@@ -159,6 +163,29 @@ def test_arquivos_do_processo_ignora_zone_identifier_e_outros_processos(pasta):
     (pasta.caminho / f'{caminho.name}:Zone.Identifier').write_text('[ZoneTransfer]')
 
     assert arquivos_do_processo(PROCESSO) == {ANEXO: caminho}
+
+
+@pytest.mark.parametrize('separador', ['-', ' - ', ' -', '- '])
+def test_hifen_depois_do_processo_aceita_espacos(pasta, separador):
+    caminho = pasta.planilha(ANEXO, separador=separador)
+    assert arquivos_do_processo(PROCESSO) == {ANEXO: caminho}
+
+
+def test_arquivo_sem_o_numero_do_processo_no_inicio_e_ignorado(pasta):
+    gravar(pasta.caminho / f'Copia {nome_arquivo(PROCESSO, ANEXO)}', [BASE])
+    assert not arquivos_do_processo(PROCESSO)
+
+
+def test_nome_com_data_e_separador_com_espacos_acha_o_documento_com_barras(sei, pasta):
+    nome_arvore = f'Planilha Utilização Tit. - {MATRICULA} - 10/12/2024'
+    numero = sei.novo_doc(nome_arvore, UNIDADE_APIS, '')
+    pasta.planilha(nome_arvore.replace('/', '_'), separador=' - ')
+
+    registro = passar()
+
+    assert registro.erro is None
+    assert registro.planilhas_sei == [numero]
+    assert sei.nomes[-1] == f'{TIPO_DOC} Utilização Tit. - {MATRICULA} - SEI {numero}'
 
 
 def test_documento_da_arvore_ignora_forma_unicode_maiusculas_e_espacos():

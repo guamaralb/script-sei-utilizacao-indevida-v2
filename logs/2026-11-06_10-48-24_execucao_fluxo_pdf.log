@@ -1,0 +1,31 @@
+2026-11-06 10:48:24 | INFO    | -                         | main_alt_1            | ================= INÍCIO DA EXECUÇÃO (FLUXO PDF - PLANILHAS DA PASTA) =================
+2026-11-06 10:48:24 | INFO    | -                         | main_alt_1            | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-06_10-48-24_execucao_fluxo_pdf.log
+2026-11-06 10:48:24 | INFO    | -                         | main_alt_1            | 1 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-06 10:48:24 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-06 10:48:24 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-06 10:48:24 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-06 10:48:24 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-06 10:48:25 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-06 10:48:43 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-06 10:48:43 | INFO    | 2010.01.0051875/2025-31   | main_alt_1            | INÍCIO [1/1]
+2026-11-06 10:49:10 | INFO    | 2010.01.0051875/2025-31   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-06 10:49:13 | INFO    | 2010.01.0051875/2025-31   | main_alt_1            | Árvore: 13 documento(s)
+2026-11-06 10:49:13 | INFO    | 2010.01.0051875/2025-31   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0051875_2025-31 - Planilha Utilização Tit. - 3273809 - 10_12_2025.xlsx']
+2026-11-06 10:49:13 | DEBUG   | 2010.01.0051875/2025-31   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-06 10:49:13 | DEBUG   | 2010.01.0051875/2025-31   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-06 10:49:13 | DEBUG   | 2010.01.0051875/2025-31   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-06 10:49:13 | DEBUG   | 2010.01.0051875/2025-31   | PIL.PngImagePlugin    | Compression method 0
+2026-11-06 10:49:13 | DEBUG   | 2010.01.0051875/2025-31   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-06 10:49:13 | DEBUG   | 2010.01.0051875/2025-31   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-06 10:49:13 | DEBUG   | 2010.01.0051875/2025-31   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-06 10:49:50 | INFO    | 2010.01.0051875/2025-31   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3273809 - SEI 129185945 (153074488)
+2026-11-06 10:49:58 | INFO    | 2010.01.0051875/2025-31   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 10:50:05 | INFO    | 2010.01.0051875/2025-31   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 10:50:05 | INFO    | 2010.01.0051875/2025-31   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-06_10-48-24.xlsx
+2026-11-06 10:50:05 | DEBUG   | 2010.01.0051875/2025-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-06 10:50:05 | INFO    | 2010.01.0051875/2025-31   | main_alt_1            | FIM (0h01m22s) | Próxima ação: Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 10:50:05 | INFO    | -                         | main_alt_1            | ------------------------ RESUMO ------------------------
+2026-11-06 10:50:05 | INFO    | -                         | main_alt_1            | Processos: 1 | Sem erro: 1 | Com erro: 0
+2026-11-06 10:50:05 | INFO    | -                         | main_alt_1            |     1 | Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 10:50:05 | INFO    | -                         | main_alt_1            | Duração total da execução: 0h01m41s
+2026-11-06 10:50:05 | INFO    | -                         | main_alt_1            | ================== FIM DA EXECUÇÃO ==================

@@ -1,0 +1,162 @@
+2026-11-06 11:27:57 | INFO    | -                         | main_alt_1            | ================= INÍCIO DA EXECUÇÃO (FLUXO PDF - PLANILHAS DA PASTA) =================
+2026-11-06 11:27:57 | INFO    | -                         | main_alt_1            | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-06_11-27-57_execucao_fluxo_pdf.log
+2026-11-06 11:27:57 | INFO    | -                         | main_alt_1            | 431 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-06 11:27:57 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-06 11:27:57 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-06 11:27:57 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-06 11:27:57 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-06 11:27:57 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-06 11:28:15 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-06 11:28:15 | INFO    | 2010.01.0082932/2024-60   | main_alt_1            | INÍCIO [1/431]
+2026-11-06 11:28:42 | INFO    | 2010.01.0082932/2024-60   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-06 11:28:45 | INFO    | 2010.01.0082932/2024-60   | main_alt_1            | Árvore: 16 documento(s)
+2026-11-06 11:28:45 | WARNING | 2010.01.0082932/2024-60   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:28:45 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-06_11-27-57.xlsx
+2026-11-06 11:28:45 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-06 11:28:45 | INFO    | 2010.01.0082932/2024-60   | main_alt_1            | FIM (29.9s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:28:45 | INFO    | 2010.01.0050804/2025-42   | main_alt_1            | INÍCIO [2/431]
+2026-11-06 11:28:49 | INFO    | 2010.01.0050804/2025-42   | main_alt_1            | Árvore: 20 documento(s)
+2026-11-06 11:28:49 | WARNING | 2010.01.0050804/2025-42   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:28:49 | DEBUG   | 2010.01.0050804/2025-42   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-06 11:28:49 | INFO    | 2010.01.0050804/2025-42   | main_alt_1            | FIM (4.1s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:28:49 | INFO    | 2010.01.0072060/2024-82   | main_alt_1            | INÍCIO [3/431]
+2026-11-06 11:28:55 | INFO    | 2010.01.0072060/2024-82   | main_alt_1            | Árvore: 21 documento(s)
+2026-11-06 11:28:55 | WARNING | 2010.01.0072060/2024-82   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:28:55 | DEBUG   | 2010.01.0072060/2024-82   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-06 11:28:55 | INFO    | 2010.01.0072060/2024-82   | main_alt_1            | FIM (5.6s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:28:55 | INFO    | 2010.01.0071353/2024-62   | main_alt_1            | INÍCIO [4/431]
+2026-11-06 11:29:01 | INFO    | 2010.01.0071353/2024-62   | main_alt_1            | Árvore: 33 documento(s)
+2026-11-06 11:29:01 | WARNING | 2010.01.0071353/2024-62   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:01 | DEBUG   | 2010.01.0071353/2024-62   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-06 11:29:01 | INFO    | 2010.01.0071353/2024-62   | main_alt_1            | FIM (6.6s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:01 | INFO    | 2010.01.0076235/2024-71   | main_alt_1            | INÍCIO [5/431]
+2026-11-06 11:29:06 | INFO    | 2010.01.0076235/2024-71   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 11:29:06 | WARNING | 2010.01.0076235/2024-71   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:06 | DEBUG   | 2010.01.0076235/2024-71   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-06 11:29:06 | INFO    | 2010.01.0076235/2024-71   | main_alt_1            | FIM (4.5s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:06 | INFO    | 2010.01.0071357/2024-51   | main_alt_1            | INÍCIO [6/431]
+2026-11-06 11:29:10 | INFO    | 2010.01.0071357/2024-51   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 11:29:10 | WARNING | 2010.01.0071357/2024-51   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:11 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-06 11:29:11 | INFO    | 2010.01.0071357/2024-51   | main_alt_1            | FIM (4.6s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:11 | INFO    | 2010.01.0049339/2025-21   | main_alt_1            | INÍCIO [7/431]
+2026-11-06 11:29:16 | INFO    | 2010.01.0049339/2025-21   | main_alt_1            | Árvore: 24 documento(s)
+2026-11-06 11:29:16 | WARNING | 2010.01.0049339/2025-21   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:16 | DEBUG   | 2010.01.0049339/2025-21   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-06 11:29:16 | INFO    | 2010.01.0049339/2025-21   | main_alt_1            | FIM (5.4s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:16 | INFO    | 2010.01.0072062/2024-28   | main_alt_1            | INÍCIO [8/431]
+2026-11-06 11:29:21 | INFO    | 2010.01.0072062/2024-28   | main_alt_1            | Árvore: 28 documento(s)
+2026-11-06 11:29:21 | WARNING | 2010.01.0072062/2024-28   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:21 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-06 11:29:21 | INFO    | 2010.01.0072062/2024-28   | main_alt_1            | FIM (5.3s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:21 | INFO    | 2010.01.0071467/2024-88   | main_alt_1            | INÍCIO [9/431]
+2026-11-06 11:29:27 | INFO    | 2010.01.0071467/2024-88   | main_alt_1            | Árvore: 28 documento(s)
+2026-11-06 11:29:27 | WARNING | 2010.01.0071467/2024-88   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:28 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-06 11:29:28 | INFO    | 2010.01.0071467/2024-88   | main_alt_1            | FIM (6.4s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:28 | INFO    | 2010.01.0049247/2025-80   | main_alt_1            | INÍCIO [10/431]
+2026-11-06 11:29:31 | INFO    | 2010.01.0049247/2025-80   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 11:29:31 | WARNING | 2010.01.0049247/2025-80   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:32 | DEBUG   | 2010.01.0049247/2025-80   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-06 11:29:32 | INFO    | 2010.01.0049247/2025-80   | main_alt_1            | FIM (4.0s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:32 | INFO    | 2010.01.0049305/2025-66   | main_alt_1            | INÍCIO [11/431]
+2026-11-06 11:29:36 | INFO    | 2010.01.0049305/2025-66   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 11:29:36 | WARNING | 2010.01.0049305/2025-66   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:36 | DEBUG   | 2010.01.0049305/2025-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-06 11:29:36 | INFO    | 2010.01.0049305/2025-66   | main_alt_1            | FIM (4.4s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:36 | INFO    | 2010.01.0072726/2024-45   | main_alt_1            | INÍCIO [12/431]
+2026-11-06 11:29:40 | INFO    | 2010.01.0072726/2024-45   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 11:29:40 | WARNING | 2010.01.0072726/2024-45   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:40 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-06 11:29:40 | INFO    | 2010.01.0072726/2024-45   | main_alt_1            | FIM (4.0s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:40 | INFO    | 2010.01.0072584/2024-96   | main_alt_1            | INÍCIO [13/431]
+2026-11-06 11:29:43 | INFO    | 2010.01.0072584/2024-96   | main_alt_1            | Árvore: 15 documento(s)
+2026-11-06 11:29:43 | WARNING | 2010.01.0072584/2024-96   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:44 | DEBUG   | 2010.01.0072584/2024-96   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-06 11:29:44 | INFO    | 2010.01.0072584/2024-96   | main_alt_1            | FIM (3.6s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:44 | INFO    | 2010.01.0071348/2024-03   | main_alt_1            | INÍCIO [14/431]
+2026-11-06 11:29:48 | INFO    | 2010.01.0071348/2024-03   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 11:29:48 | WARNING | 2010.01.0071348/2024-03   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:48 | DEBUG   | 2010.01.0071348/2024-03   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-06 11:29:48 | INFO    | 2010.01.0071348/2024-03   | main_alt_1            | FIM (4.3s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:48 | INFO    | 2010.01.0050757/2025-50   | main_alt_1            | INÍCIO [15/431]
+2026-11-06 11:29:54 | INFO    | 2010.01.0050757/2025-50   | main_alt_1            | Árvore: 21 documento(s)
+2026-11-06 11:29:54 | WARNING | 2010.01.0050757/2025-50   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:54 | DEBUG   | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-06 11:29:54 | INFO    | 2010.01.0050757/2025-50   | main_alt_1            | FIM (6.2s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:54 | INFO    | 2010.01.0071355/2024-08   | main_alt_1            | INÍCIO [16/431]
+2026-11-06 11:29:58 | INFO    | 2010.01.0071355/2024-08   | main_alt_1            | Árvore: 20 documento(s)
+2026-11-06 11:29:58 | WARNING | 2010.01.0071355/2024-08   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:29:58 | DEBUG   | 2010.01.0071355/2024-08   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-06 11:29:58 | INFO    | 2010.01.0071355/2024-08   | main_alt_1            | FIM (4.2s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:29:58 | INFO    | 2010.01.0072057/2024-66   | main_alt_1            | INÍCIO [17/431]
+2026-11-06 11:30:04 | INFO    | 2010.01.0072057/2024-66   | main_alt_1            | Árvore: 28 documento(s)
+2026-11-06 11:30:04 | WARNING | 2010.01.0072057/2024-66   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:04 | DEBUG   | 2010.01.0072057/2024-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-06 11:30:04 | INFO    | 2010.01.0072057/2024-66   | main_alt_1            | FIM (6.1s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:04 | INFO    | 2010.01.0082953/2024-75   | main_alt_1            | INÍCIO [18/431]
+2026-11-06 11:30:09 | INFO    | 2010.01.0082953/2024-75   | main_alt_1            | Árvore: 20 documento(s)
+2026-11-06 11:30:09 | INFO    | 2010.01.0082953/2024-75   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0082953_2024-75-Anexo RELAÇÃO ATENDIMENTOS.xlsx']
+2026-11-06 11:30:09 | WARNING | 2010.01.0082953/2024-75   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 11:30:09 | INFO    | 2010.01.0082953/2024-75   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:30:09 | INFO    | 2010.01.0082953/2024-75   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:30:09 | DEBUG   | 2010.01.0082953/2024-75   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-06 11:30:09 | INFO    | 2010.01.0082953/2024-75   | main_alt_1            | FIM (4.7s) | Próxima ação: Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:30:09 | INFO    | 2010.01.0050829/2025-46   | main_alt_1            | INÍCIO [19/431]
+2026-11-06 11:30:15 | INFO    | 2010.01.0050829/2025-46   | main_alt_1            | Árvore: 22 documento(s)
+2026-11-06 11:30:15 | WARNING | 2010.01.0050829/2025-46   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:15 | DEBUG   | 2010.01.0050829/2025-46   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-06 11:30:15 | INFO    | 2010.01.0050829/2025-46   | main_alt_1            | FIM (5.6s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:15 | INFO    | 2010.01.0050841/2025-13   | main_alt_1            | INÍCIO [20/431]
+2026-11-06 11:30:19 | INFO    | 2010.01.0050841/2025-13   | main_alt_1            | Árvore: 17 documento(s)
+2026-11-06 11:30:19 | WARNING | 2010.01.0050841/2025-13   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:19 | DEBUG   | 2010.01.0050841/2025-13   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-06 11:30:19 | INFO    | 2010.01.0050841/2025-13   | main_alt_1            | FIM (4.2s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:19 | INFO    | 2010.01.0050849/2025-88   | main_alt_1            | INÍCIO [21/431]
+2026-11-06 11:30:23 | INFO    | 2010.01.0050849/2025-88   | main_alt_1            | Árvore: 15 documento(s)
+2026-11-06 11:30:23 | WARNING | 2010.01.0050849/2025-88   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:23 | DEBUG   | 2010.01.0050849/2025-88   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-06 11:30:23 | INFO    | 2010.01.0050849/2025-88   | main_alt_1            | FIM (3.9s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:23 | INFO    | 2010.01.0050869/2025-33   | main_alt_1            | INÍCIO [22/431]
+2026-11-06 11:30:27 | INFO    | 2010.01.0050869/2025-33   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 11:30:27 | WARNING | 2010.01.0050869/2025-33   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:27 | DEBUG   | 2010.01.0050869/2025-33   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-06 11:30:27 | INFO    | 2010.01.0050869/2025-33   | main_alt_1            | FIM (4.1s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:27 | INFO    | 2010.01.0050885/2025-86   | main_alt_1            | INÍCIO [23/431]
+2026-11-06 11:30:31 | INFO    | 2010.01.0050885/2025-86   | main_alt_1            | Árvore: 20 documento(s)
+2026-11-06 11:30:31 | WARNING | 2010.01.0050885/2025-86   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:31 | DEBUG   | 2010.01.0050885/2025-86   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-06 11:30:31 | INFO    | 2010.01.0050885/2025-86   | main_alt_1            | FIM (4.3s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:31 | INFO    | 2010.01.0051097/2025-85   | main_alt_1            | INÍCIO [24/431]
+2026-11-06 11:30:35 | INFO    | 2010.01.0051097/2025-85   | main_alt_1            | Árvore: 18 documento(s)
+2026-11-06 11:30:35 | WARNING | 2010.01.0051097/2025-85   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:35 | DEBUG   | 2010.01.0051097/2025-85   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-06 11:30:35 | INFO    | 2010.01.0051097/2025-85   | main_alt_1            | FIM (4.3s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:35 | INFO    | 2010.01.0050905/2025-31   | main_alt_1            | INÍCIO [25/431]
+2026-11-06 11:30:39 | INFO    | 2010.01.0050905/2025-31   | main_alt_1            | Árvore: 19 documento(s)
+2026-11-06 11:30:39 | INFO    | 2010.01.0050905/2025-31   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0050905_2025-31-Planilha Utilização Titular - 2608097.xlsx']
+2026-11-06 11:30:39 | WARNING | 2010.01.0050905/2025-31   | planilhas_alt_1       | Retomada: PDF da planilha 123418137 já está na árvore (153069419); não será anexado de novo
+2026-11-06 11:30:39 | INFO    | 2010.01.0050905/2025-31   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:30:39 | INFO    | 2010.01.0050905/2025-31   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:30:39 | DEBUG   | 2010.01.0050905/2025-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-06 11:30:39 | INFO    | 2010.01.0050905/2025-31   | main_alt_1            | FIM (3.9s) | Próxima ação: Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:30:39 | INFO    | 2010.01.0051096/2025-15   | main_alt_1            | INÍCIO [26/431]
+2026-11-06 11:30:45 | INFO    | 2010.01.0051096/2025-15   | main_alt_1            | Árvore: 20 documento(s)
+2026-11-06 11:30:45 | WARNING | 2010.01.0051096/2025-15   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:45 | DEBUG   | 2010.01.0051096/2025-15   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (26 passagem(ns) nesta execução)
+2026-11-06 11:30:45 | INFO    | 2010.01.0051096/2025-15   | main_alt_1            | FIM (5.3s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:45 | INFO    | 2010.01.0072706/2024-03   | main_alt_1            | INÍCIO [27/431]
+2026-11-06 11:30:51 | INFO    | 2010.01.0072706/2024-03   | main_alt_1            | Árvore: 24 documento(s)
+2026-11-06 11:30:51 | WARNING | 2010.01.0072706/2024-03   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 11:30:51 | DEBUG   | 2010.01.0072706/2024-03   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (27 passagem(ns) nesta execução)
+2026-11-06 11:30:51 | INFO    | 2010.01.0072706/2024-03   | main_alt_1            | FIM (6.0s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:51 | INFO    | 2010.01.0072778/2024-96   | main_alt_1            | INÍCIO [28/431]
+2026-11-06 11:30:53 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=44279): Failed to establish a new connection: [Errno 111] Connection refused")': /session/12437be1b22fa0c81b2a02e27133df86
+2026-11-06 11:30:53 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=44279): Failed to establish a new connection: [Errno 111] Connection refused")': /session/12437be1b22fa0c81b2a02e27133df86
+2026-11-06 11:30:53 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=44279): Failed to establish a new connection: [Errno 111] Connection refused")': /session/12437be1b22fa0c81b2a02e27133df86
+2026-11-06 11:30:53 | INFO    | -                         | main_alt_1            | ------------------------ RESUMO ------------------------
+2026-11-06 11:30:53 | INFO    | -                         | main_alt_1            | Processos: 27 | Sem erro: 27 | Com erro: 0
+2026-11-06 11:30:53 | INFO    | -                         | main_alt_1            |    25 | Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 11:30:53 | INFO    | -                         | main_alt_1            |     2 | Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:30:53 | INFO    | -                         | main_alt_1            | Duração total da execução: 0h02m56s
+2026-11-06 11:30:53 | INFO    | -                         | main_alt_1            | ================== FIM DA EXECUÇÃO ==================

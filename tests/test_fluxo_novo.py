@@ -3,9 +3,12 @@ com o SEI simulado."""
 
 from dataclasses import replace
 
+import main
+import pandas as pd
 import processar_novo
-from Registro import ProxAcao
+from Registro import ProxAcao, RegistroMain, registrar_erro
 from relatorios_mantis import REDE_CREDENCIADA, inicio_nome_relatorio
+from selenium.common.exceptions import InvalidSessionIdException
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
     TAG_MANUAL,
@@ -581,3 +584,55 @@ def test_versao_anterior_so_deproc_e_concluido(sei):
 
 def test_nome_do_relatorio_cabe_no_sei():
     assert len(f'{inicio_nome_relatorio(REDE_CREDENCIADA, "Dep.", "123456789")} - 20261022_103324') <= 50
+
+
+def test_processo_fechado_no_setor_e_erro_sem_acao_no_sei(sei):
+    sei.processo_fechado = True
+    sei.tags.append(TAG_AGUARDA_FLUXO_NORMAL)
+    docs_antes = list(sei.nomes)
+
+    registro = sei.passar(bases(tit_usou=False))
+
+    assert registro.tipo_erro == 'ProcessoFechadoNoSetor'
+    assert registro.erro == 'Processo fechado no setor: sem o botão Incluir Documento'
+    assert registro.prox_acao == ProxAcao.VERIFICAR_ERRO
+    assert registro.marcadores_sei == [TAG_AGUARDA_FLUXO_NORMAL]
+    assert sei.tags == [TAG_AGUARDA_FLUXO_NORMAL]
+    assert sei.nomes == docs_antes
+
+
+def test_navegador_fechado_registra_o_erro_do_processo_e_para_o_loop(monkeypatch, tmp_path):
+    gravados: list[tuple] = []
+
+    class Controle:
+        def __init__(self, *args):
+            pass
+
+        @staticmethod
+        def registrar(linha):
+            gravados.append((linha['num_processo'], linha['tipo_erro']))
+
+    class Driver:
+        @staticmethod
+        def quit():
+            return None
+
+    def processar(driver, num_processo, *args):
+        registro = RegistroMain(num_processo=num_processo, data_execucao='agora')
+        if num_processo != 'P1':
+            registrar_erro(registro, InvalidSessionIdException('invalid session id'))
+        return registro
+
+    monkeypatch.setattr(main, 'configurar_logging', lambda arquivo: None)
+    monkeypatch.setattr(main.pd, 'read_excel', lambda **kwargs: pd.DataFrame({'num_sei': ['P1', 'P2', 'P3']}))
+    monkeypatch.setattr(main, 'carregar_bases', lambda *args: None)
+    monkeypatch.setattr(main, 'carregar_bases_mantis', lambda *args: None)
+    monkeypatch.setattr(main, 'PlanilhaControleGeral', Controle)
+    monkeypatch.setattr(main, 'abrir_sei', lambda download_dir=None: Driver())
+    monkeypatch.setattr(main, '_processar_linha', processar)
+    for constante in ('DIR_DADOS', 'DIR_INPUTS', 'DIR_CONTROLE', 'DIR_LOG', 'DIR_UI_ANTIGAS_XLS', 'DIR_UTILIZACOES_MANTIS_PDF'):
+        monkeypatch.setattr(main, constante, tmp_path)
+
+    main.main()
+
+    assert gravados == [('P1', None), ('P2', 'InvalidSessionIdException')]

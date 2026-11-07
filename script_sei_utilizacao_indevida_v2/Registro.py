@@ -273,6 +273,8 @@ class RegistroAlt1(RegistroBase):
     pdfs_na_arvore: list[str] = field(default_factory=list)
     # PDFs de Anexo no modelo antigo (número SEI), a excluir manualmente
     pdfs_antigos_a_excluir: list[str] = field(default_factory=list)
+    # Reaberto na unidade para receber os PDFs (o script não conclui de novo)
+    processo_reaberto: bool = False
 
     def to_dict(self) -> dict:
         return {coluna: valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_SO_FLUXO_PRINCIPAL}

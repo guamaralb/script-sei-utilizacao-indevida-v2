@@ -67,6 +67,13 @@ def _build_table_row(row, valor_col_index, matricula_dep_index, normal):
     return linha
 
 
+def _build_linha_total(df: pd.DataFrame, valor_col_index: int) -> list[str]:
+    linha = [''] * len(df.columns)
+    linha[0] = 'TOTAL'
+    linha[valor_col_index] = _formatar_valor_monetario(df['VALOR PAGO'].astype(float).sum())
+    return linha
+
+
 def _texto_cabecalho(tit_matricula: str, tit_nome: str, tipo: str, rede: str) -> str:
     titulo = f'<b>Relatório de Utilização{f" na {escape(rede)}" if rede else ""} Por {tipo}</b>'
     return f'{titulo}<br/>Beneficiário Titular: {escape(tit_nome)} - {tit_matricula}' if tit_nome else titulo
@@ -118,6 +125,8 @@ def transformar_xls_em_pdf(
     data = [[Paragraph(col, table_header) for col in df.columns]]
     for _, row in df.iterrows():
         data.append(_build_table_row(row, valor_col_index, matricula_dep_index, normal))
+    if valor_col_index is not None:
+        data.append(_build_linha_total(df, valor_col_index))
 
     if tipo == 'Titular':
         col_widths = [COL_WITDHS_TIT_DICT.get(col, 100) for col in df.columns]
@@ -134,7 +143,7 @@ def transformar_xls_em_pdf(
         ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightblue]),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -2 if valor_col_index is not None else -1), [colors.white, colors.lightblue]),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
     ]
 
@@ -151,6 +160,12 @@ def transformar_xls_em_pdf(
             (valor_col_index, 0),
             'RIGHT',
         ))
+        style_commands.extend([
+            ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
+            ('BACKGROUND', (0, -1), (-1, -1), colors.lightgrey),
+        ])
+        if valor_col_index > 0:
+            style_commands.append(('SPAN', (0, -1), (valor_col_index - 1, -1)))
 
     table.setStyle(TableStyle(style_commands))
     elements.append(table)

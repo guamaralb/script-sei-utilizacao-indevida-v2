@@ -1,0 +1,375 @@
+2026-11-06 11:31:00 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ALT 1 - SOMENTE INSERIR PDF) =================
+2026-11-06 11:31:00 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-06_11-31-00_execucao_alt_1.log
+2026-11-06 11:31:00 | INFO    | -                         | __main__              | 431 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-06 11:31:00 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-06 11:31:00 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-06 11:31:00 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-06 11:31:00 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-06 11:31:01 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/fluxo_alt_1/planilhas_baixadas
+2026-11-06 11:31:20 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-06 11:31:20 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/431]
+2026-11-06 11:31:45 | INFO    | 2010.01.0082932/2024-60   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-06 11:31:47 | INFO    | 2010.01.0082932/2024-60   | __main__              | Árvore: 16 documento(s)
+2026-11-06 11:31:47 | INFO    | 2010.01.0082932/2024-60   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 11:31:47 | WARNING | 2010.01.0082932/2024-60   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 11:31:47 | INFO    | 2010.01.0082932/2024-60   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:31:47 | INFO    | 2010.01.0082932/2024-60   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:31:47 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-06_11-31-00.xlsx
+2026-11-06 11:31:48 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-06 11:31:48 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (27.9s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:31:48 | INFO    | 2010.01.0050804/2025-42   | __main__              | INÍCIO [2/431]
+2026-11-06 11:31:51 | INFO    | 2010.01.0050804/2025-42   | __main__              | Árvore: 20 documento(s)
+2026-11-06 11:31:51 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3542985', 'Planilha Utilização Dependentes - 3542985']
+2026-11-06 11:31:51 | WARNING | 2010.01.0050804/2025-42   | planilhas_alt_1       | Retomada: PDF da planilha 125202990 já está na árvore (152997223); não será anexado de novo
+2026-11-06 11:31:51 | WARNING | 2010.01.0050804/2025-42   | planilhas_alt_1       | Retomada: PDF da planilha 125202957 já está na árvore (152997251); não será anexado de novo
+2026-11-06 11:31:51 | INFO    | 2010.01.0050804/2025-42   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:31:51 | INFO    | 2010.01.0050804/2025-42   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:31:51 | DEBUG   | 2010.01.0050804/2025-42   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-06 11:31:51 | INFO    | 2010.01.0050804/2025-42   | __main__              | FIM (3.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:31:51 | INFO    | 2010.01.0072060/2024-82   | __main__              | INÍCIO [3/431]
+2026-11-06 11:31:56 | INFO    | 2010.01.0072060/2024-82   | __main__              | Árvore: 21 documento(s)
+2026-11-06 11:31:56 | WARNING | 2010.01.0072060/2024-82   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-06 11:31:57 | DEBUG   | 2010.01.0072060/2024-82   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-06 11:31:57 | INFO    | 2010.01.0072060/2024-82   | __main__              | FIM (5.2s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-06 11:31:57 | INFO    | 2010.01.0071353/2024-62   | __main__              | INÍCIO [4/431]
+2026-11-06 11:32:02 | INFO    | 2010.01.0071353/2024-62   | __main__              | Árvore: 33 documento(s)
+2026-11-06 11:32:02 | INFO    | 2010.01.0071353/2024-62   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 2284803', 'Planilha Utilização Dependentes - 2284803']
+2026-11-06 11:32:04 | INFO    | 2010.01.0071353/2024-62   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 2284803 (SEI 123590457) em 123590457_Utilizacao_Titular_2284803.xlsx
+2026-11-06 11:32:04 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-06 11:32:04 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-06 11:32:04 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-06 11:32:04 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | Compression method 0
+2026-11-06 11:32:04 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-06 11:32:04 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-06 11:32:04 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-06 11:32:45 | INFO    | 2010.01.0071353/2024-62   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 2284803 - SEI 123590457 (153083078)
+2026-11-06 11:32:47 | INFO    | 2010.01.0071353/2024-62   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Dependentes - 2284803 (SEI 123590613) em 123590613_Utilizacao_Dependentes_2284803.xlsx
+2026-11-06 11:32:47 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-06 11:32:47 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-06 11:32:47 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-06 11:32:47 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | Compression method 0
+2026-11-06 11:32:47 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-06 11:32:47 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-06 11:32:47 | DEBUG   | 2010.01.0071353/2024-62   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-06 11:33:04 | ERROR   | 2010.01.0071353/2024-62   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/documentos.py", line 35, in selecionar_tipo_doc
+    WebDriverWait(driver, 2).until(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.presence_of_element_located((
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        ))
+        ^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x59a31b6779fa <unknown>
+#1 0x59a31afad5b9 <unknown>
+#2 0x59a31b003dfc <unknown>
+#3 0x59a31b004071 <unknown>
+#4 0x59a31b050664 <unknown>
+#5 0x59a31b04d8de <unknown>
+#6 0x59a31aff6b8b <unknown>
+#7 0x59a31aff7971 <unknown>
+#8 0x59a31b63a667 <unknown>
+#9 0x59a31b638e95 <unknown>
+#10 0x59a31b623f55 <unknown>
+#11 0x59a31b639aea <unknown>
+#12 0x59a31b60c6c9 <unknown>
+#13 0x59a31b6619a8 <unknown>
+#14 0x59a31b661b45 <unknown>
+#15 0x59a31b676353 <unknown>
+#16 0x7731aeca3dfa <unknown>
+#17 0x7731aed375cc <unknown>
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_alt_1.py", line 59, in _processar_linha
+    inserir(driver, registro)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/planilhas_alt_1.py", line 411, in inserir_pdfs_das_planilhas
+    inserir_pdfs(driver, registro, planilhas, lambda doc: baixar_planilha(driver, doc), DIR_ALT_1_PDF)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/planilhas_alt_1.py", line 385, in inserir_pdfs
+    _inserir_pdf(driver, registro, tipo, ler_planilha(obter_arquivo(doc), tipo), doc['numero_sei'], dir_pdf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/planilhas_alt_1.py", line 304, in _inserir_pdf
+    anexar_pdf(driver, num, caminho_pdf, datetime.now())
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/relatorios_mantis.py", line 73, in anexar_pdf
+    incluir_doc_externo(
+    ~~~~~~~~~~~~~~~~~~~^
+        driver,
+        ^^^^^^^
+    ...<6 lines>...
+        hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 74, in incluir_doc_externo
+    selecionar_tipo_doc(driver, 'Externo')
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/documentos.py", line 44, in selecionar_tipo_doc
+    a_exibir_todos_tipos_doc: WebElement = WebDriverWait(driver, 10).until(
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.presence_of_element_located((
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        ))
+        ^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x59a31b6779fa <unknown>
+#1 0x59a31afad5b9 <unknown>
+#2 0x59a31b003dfc <unknown>
+#3 0x59a31b004071 <unknown>
+#4 0x59a31b050664 <unknown>
+#5 0x59a31b04d8de <unknown>
+#6 0x59a31aff6b8b <unknown>
+#7 0x59a31aff7971 <unknown>
+#8 0x59a31b63a667 <unknown>
+#9 0x59a31b638e95 <unknown>
+#10 0x59a31b623f55 <unknown>
+#11 0x59a31b639aea <unknown>
+#12 0x59a31b60c6c9 <unknown>
+#13 0x59a31b6619a8 <unknown>
+#14 0x59a31b661b45 <unknown>
+#15 0x59a31b676353 <unknown>
+#16 0x7731aeca3dfa <unknown>
+#17 0x7731aed375cc <unknown>
+
+2026-11-06 11:33:04 | DEBUG   | 2010.01.0071353/2024-62   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-06 11:33:04 | WARNING | 2010.01.0071353/2024-62   | __main__              | FIM COM ERRO (0h01m07s) | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_tipo_doc (detalhes no log)
+2026-11-06 11:33:04 | INFO    | 2010.01.0076235/2024-71   | __main__              | INÍCIO [5/431]
+2026-11-06 11:33:08 | INFO    | 2010.01.0076235/2024-71   | __main__              | Árvore: 18 documento(s)
+2026-11-06 11:33:08 | INFO    | 2010.01.0076235/2024-71   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 11:33:08 | WARNING | 2010.01.0076235/2024-71   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 11:33:08 | INFO    | 2010.01.0076235/2024-71   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:33:08 | INFO    | 2010.01.0076235/2024-71   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:33:08 | DEBUG   | 2010.01.0076235/2024-71   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-06 11:33:08 | INFO    | 2010.01.0076235/2024-71   | __main__              | FIM (3.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:33:08 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [6/431]
+2026-11-06 11:33:11 | INFO    | 2010.01.0071357/2024-51   | __main__              | Árvore: 18 documento(s)
+2026-11-06 11:33:11 | INFO    | 2010.01.0071357/2024-51   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 11:33:11 | WARNING | 2010.01.0071357/2024-51   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 11:33:11 | INFO    | 2010.01.0071357/2024-51   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:33:11 | INFO    | 2010.01.0071357/2024-51   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:33:12 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-06 11:33:12 | INFO    | 2010.01.0071357/2024-51   | __main__              | FIM (3.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:33:12 | INFO    | 2010.01.0049339/2025-21   | __main__              | INÍCIO [7/431]
+2026-11-06 11:33:16 | INFO    | 2010.01.0049339/2025-21   | __main__              | Árvore: 24 documento(s)
+2026-11-06 11:33:16 | INFO    | 2010.01.0049339/2025-21   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3270868', 'Planilha Utilização Dependentes - 3270868']
+2026-11-06 11:33:18 | INFO    | 2010.01.0049339/2025-21   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 3270868 (SEI 123273748) em 123273748_Utilizacao_Titular_3270868.xlsx
+2026-11-06 11:33:18 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-06 11:33:18 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-06 11:33:18 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-06 11:33:18 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | Compression method 0
+2026-11-06 11:33:18 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-06 11:33:18 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-06 11:33:18 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-06 11:33:48 | INFO    | 2010.01.0049339/2025-21   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 3270868 - SEI 123273748 (153083240)
+2026-11-06 11:33:50 | INFO    | 2010.01.0049339/2025-21   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Dependentes - 3270868 (SEI 123273961) em 123273961_Utilizacao_Dependentes_3270868.xlsx
+2026-11-06 11:33:50 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-06 11:33:50 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-06 11:33:50 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-06 11:33:50 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | Compression method 0
+2026-11-06 11:33:50 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-06 11:33:50 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-06 11:33:50 | DEBUG   | 2010.01.0049339/2025-21   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-06 11:34:06 | ERROR   | 2010.01.0049339/2025-21   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/documentos.py", line 35, in selecionar_tipo_doc
+    WebDriverWait(driver, 2).until(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.presence_of_element_located((
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        ))
+        ^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x59a31b6779fa <unknown>
+#1 0x59a31afad5b9 <unknown>
+#2 0x59a31b003dfc <unknown>
+#3 0x59a31b004071 <unknown>
+#4 0x59a31b050664 <unknown>
+#5 0x59a31b04d8de <unknown>
+#6 0x59a31aff6b8b <unknown>
+#7 0x59a31aff7971 <unknown>
+#8 0x59a31b63a667 <unknown>
+#9 0x59a31b638e95 <unknown>
+#10 0x59a31b623f55 <unknown>
+#11 0x59a31b639aea <unknown>
+#12 0x59a31b60c6c9 <unknown>
+#13 0x59a31b6619a8 <unknown>
+#14 0x59a31b661b45 <unknown>
+#15 0x59a31b676353 <unknown>
+#16 0x7731aeca3dfa <unknown>
+#17 0x7731aed375cc <unknown>
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_alt_1.py", line 59, in _processar_linha
+    inserir(driver, registro)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/planilhas_alt_1.py", line 411, in inserir_pdfs_das_planilhas
+    inserir_pdfs(driver, registro, planilhas, lambda doc: baixar_planilha(driver, doc), DIR_ALT_1_PDF)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/planilhas_alt_1.py", line 385, in inserir_pdfs
+    _inserir_pdf(driver, registro, tipo, ler_planilha(obter_arquivo(doc), tipo), doc['numero_sei'], dir_pdf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/planilhas_alt_1.py", line 304, in _inserir_pdf
+    anexar_pdf(driver, num, caminho_pdf, datetime.now())
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/relatorios_mantis.py", line 73, in anexar_pdf
+    incluir_doc_externo(
+    ~~~~~~~~~~~~~~~~~~~^
+        driver,
+        ^^^^^^^
+    ...<6 lines>...
+        hipotese_legal='Informação Pessoal (Art. 31 da Lei nº 12.527/2011)',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/__init__.py", line 74, in incluir_doc_externo
+    selecionar_tipo_doc(driver, 'Externo')
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/documentos.py", line 44, in selecionar_tipo_doc
+    a_exibir_todos_tipos_doc: WebElement = WebDriverWait(driver, 10).until(
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.presence_of_element_located((
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        ))
+        ^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x59a31b6779fa <unknown>
+#1 0x59a31afad5b9 <unknown>
+#2 0x59a31b003dfc <unknown>
+#3 0x59a31b004071 <unknown>
+#4 0x59a31b050664 <unknown>
+#5 0x59a31b04d8de <unknown>
+#6 0x59a31aff6b8b <unknown>
+#7 0x59a31aff7971 <unknown>
+#8 0x59a31b63a667 <unknown>
+#9 0x59a31b638e95 <unknown>
+#10 0x59a31b623f55 <unknown>
+#11 0x59a31b639aea <unknown>
+#12 0x59a31b60c6c9 <unknown>
+#13 0x59a31b6619a8 <unknown>
+#14 0x59a31b661b45 <unknown>
+#15 0x59a31b676353 <unknown>
+#16 0x7731aeca3dfa <unknown>
+#17 0x7731aed375cc <unknown>
+
+2026-11-06 11:34:07 | DEBUG   | 2010.01.0049339/2025-21   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-06 11:34:07 | WARNING | 2010.01.0049339/2025-21   | __main__              | FIM COM ERRO (55.0s) | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_tipo_doc (detalhes no log)
+2026-11-06 11:34:07 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [8/431]
+2026-11-06 11:34:12 | INFO    | 2010.01.0072062/2024-28   | __main__              | Árvore: 28 documento(s)
+2026-11-06 11:34:12 | INFO    | 2010.01.0072062/2024-28   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3631854', 'Planilha Utilização Dependentes - 3631854']
+2026-11-06 11:34:12 | WARNING | 2010.01.0072062/2024-28   | planilhas_alt_1       | Retomada: PDF da planilha 123625018 já está na árvore (152997444); não será anexado de novo
+2026-11-06 11:34:12 | WARNING | 2010.01.0072062/2024-28   | planilhas_alt_1       | Retomada: PDF da planilha 123625056 já está na árvore (152997528); não será anexado de novo
+2026-11-06 11:34:12 | INFO    | 2010.01.0072062/2024-28   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:34:12 | INFO    | 2010.01.0072062/2024-28   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:34:12 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-06 11:34:12 | INFO    | 2010.01.0072062/2024-28   | __main__              | FIM (5.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:12 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [9/431]
+2026-11-06 11:34:16 | INFO    | 2010.01.0071467/2024-88   | __main__              | Árvore: 28 documento(s)
+2026-11-06 11:34:16 | INFO    | 2010.01.0071467/2024-88   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 11:34:16 | WARNING | 2010.01.0071467/2024-88   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 11:34:16 | INFO    | 2010.01.0071467/2024-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:34:16 | INFO    | 2010.01.0071467/2024-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:34:17 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-06 11:34:17 | INFO    | 2010.01.0071467/2024-88   | __main__              | FIM (4.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:17 | INFO    | 2010.01.0049247/2025-80   | __main__              | INÍCIO [10/431]
+2026-11-06 11:34:20 | INFO    | 2010.01.0049247/2025-80   | __main__              | Árvore: 18 documento(s)
+2026-11-06 11:34:20 | INFO    | 2010.01.0049247/2025-80   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3991572']
+2026-11-06 11:34:20 | WARNING | 2010.01.0049247/2025-80   | planilhas_alt_1       | Retomada: PDF da planilha 123419508 já está na árvore (152997655); não será anexado de novo
+2026-11-06 11:34:20 | INFO    | 2010.01.0049247/2025-80   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:34:20 | INFO    | 2010.01.0049247/2025-80   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:34:20 | DEBUG   | 2010.01.0049247/2025-80   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-06 11:34:20 | INFO    | 2010.01.0049247/2025-80   | __main__              | FIM (3.9s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:20 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [11/431]
+2026-11-06 11:34:24 | INFO    | 2010.01.0049305/2025-66   | __main__              | Árvore: 18 documento(s)
+2026-11-06 11:34:24 | INFO    | 2010.01.0049305/2025-66   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3557861']
+2026-11-06 11:34:24 | WARNING | 2010.01.0049305/2025-66   | planilhas_alt_1       | Retomada: PDF da planilha 123170837 já está na árvore (152997785); não será anexado de novo
+2026-11-06 11:34:24 | INFO    | 2010.01.0049305/2025-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:34:24 | INFO    | 2010.01.0049305/2025-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:34:25 | DEBUG   | 2010.01.0049305/2025-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-06 11:34:25 | INFO    | 2010.01.0049305/2025-66   | __main__              | FIM (4.3s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:25 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [12/431]
+2026-11-06 11:34:28 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 18 documento(s)
+2026-11-06 11:34:28 | INFO    | 2010.01.0072726/2024-45   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 11:34:28 | WARNING | 2010.01.0072726/2024-45   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 11:34:28 | INFO    | 2010.01.0072726/2024-45   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:34:28 | INFO    | 2010.01.0072726/2024-45   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:34:28 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-06 11:34:28 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (3.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:28 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [13/431]
+2026-11-06 11:34:32 | INFO    | 2010.01.0072584/2024-96   | __main__              | Árvore: 15 documento(s)
+2026-11-06 11:34:32 | INFO    | 2010.01.0072584/2024-96   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 11:34:32 | WARNING | 2010.01.0072584/2024-96   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 11:34:32 | INFO    | 2010.01.0072584/2024-96   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:34:32 | INFO    | 2010.01.0072584/2024-96   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:34:32 | DEBUG   | 2010.01.0072584/2024-96   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-06 11:34:32 | INFO    | 2010.01.0072584/2024-96   | __main__              | FIM (3.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:32 | INFO    | 2010.01.0071348/2024-03   | __main__              | INÍCIO [14/431]
+2026-11-06 11:34:36 | INFO    | 2010.01.0071348/2024-03   | __main__              | Árvore: 18 documento(s)
+2026-11-06 11:34:36 | INFO    | 2010.01.0071348/2024-03   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 11:34:36 | WARNING | 2010.01.0071348/2024-03   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 11:34:36 | INFO    | 2010.01.0071348/2024-03   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:34:36 | INFO    | 2010.01.0071348/2024-03   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:34:36 | DEBUG   | 2010.01.0071348/2024-03   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-06 11:34:36 | INFO    | 2010.01.0071348/2024-03   | __main__              | FIM (3.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:36 | INFO    | 2010.01.0050757/2025-50   | __main__              | INÍCIO [15/431]
+2026-11-06 11:34:40 | INFO    | 2010.01.0050757/2025-50   | __main__              | Árvore: 21 documento(s)
+2026-11-06 11:34:40 | INFO    | 2010.01.0050757/2025-50   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3557834', 'Planilha Utilização Dependentes - 3557834']
+2026-11-06 11:34:40 | WARNING | 2010.01.0050757/2025-50   | planilhas_alt_1       | Retomada: PDF da planilha 125202600 já está na árvore (152998025); não será anexado de novo
+2026-11-06 11:34:40 | WARNING | 2010.01.0050757/2025-50   | planilhas_alt_1       | Retomada: PDF da planilha 125202631 já está na árvore (152998051); não será anexado de novo
+2026-11-06 11:34:40 | INFO    | 2010.01.0050757/2025-50   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 11:34:40 | INFO    | 2010.01.0050757/2025-50   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 11:34:40 | DEBUG   | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-06 11:34:40 | INFO    | 2010.01.0050757/2025-50   | __main__              | FIM (4.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:40 | INFO    | 2010.01.0071355/2024-08   | __main__              | INÍCIO [16/431]
+2026-11-06 11:34:44 | INFO    | 2010.01.0071355/2024-08   | __main__              | Árvore: 20 documento(s)
+2026-11-06 11:34:44 | INFO    | 2010.01.0071355/2024-08   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 11:34:45 | INFO    | 2010.01.0071355/2024-08   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTOS (SEI 105889094) em 105889094_MARCOS_ALEXANDRE_PEREIRA_DE_CARVALHO.xlsx
+2026-11-06 11:34:45 | DEBUG   | 2010.01.0071355/2024-08   | PIL.PngImagePlugin    | STREAM b'IHDR' 16 13
+2026-11-06 11:34:45 | DEBUG   | 2010.01.0071355/2024-08   | PIL.PngImagePlugin    | STREAM b'iCCP' 41 294
+2026-11-06 11:34:45 | DEBUG   | 2010.01.0071355/2024-08   | PIL.PngImagePlugin    | iCCP profile name b'Adobe RGB (1998)'
+2026-11-06 11:34:45 | DEBUG   | 2010.01.0071355/2024-08   | PIL.PngImagePlugin    | Compression method 0
+2026-11-06 11:34:45 | DEBUG   | 2010.01.0071355/2024-08   | PIL.PngImagePlugin    | STREAM b'pHYs' 347 9
+2026-11-06 11:34:45 | DEBUG   | 2010.01.0071355/2024-08   | PIL.PngImagePlugin    | STREAM b'iTXt' 368 2391
+2026-11-06 11:34:45 | DEBUG   | 2010.01.0071355/2024-08   | PIL.PngImagePlugin    | STREAM b'IDAT' 2771 38623
+2026-11-06 11:34:58 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=33993): Failed to establish a new connection: [Errno 111] Connection refused")': /session/02dc863913f4b5959bf6a9863d1897de
+2026-11-06 11:34:58 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=33993): Failed to establish a new connection: [Errno 111] Connection refused")': /session/02dc863913f4b5959bf6a9863d1897de
+2026-11-06 11:34:58 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=33993): Failed to establish a new connection: [Errno 111] Connection refused")': /session/02dc863913f4b5959bf6a9863d1897de
+2026-11-06 11:34:58 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-06 11:34:58 | INFO    | -                         | __main__              | Processos: 15 | Sem erro: 13 | Com erro: 2
+2026-11-06 11:34:58 | INFO    | -                         | __main__              |    12 | ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 11:34:58 | INFO    | -                         | __main__              |     1 | ALT 1: nenhuma planilha no processo (verificar)
+2026-11-06 11:34:58 | INFO    | -                         | __main__              | ERRO  | 2010.01.0071353/2024-62 | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_tipo_doc (detalhes no log)
+2026-11-06 11:34:58 | INFO    | -                         | __main__              | ERRO  | 2010.01.0049339/2025-21 | TimeoutException: Tempo esgotado esperando elemento do SEI em selecionar_tipo_doc (detalhes no log)
+2026-11-06 11:34:58 | INFO    | -                         | __main__              | Duração total da execução: 0h03m58s
+2026-11-06 11:34:58 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

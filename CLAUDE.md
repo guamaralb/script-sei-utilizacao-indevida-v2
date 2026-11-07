@@ -57,7 +57,8 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `relatorios_mantis.py` | `incluir_relatorios()`: gera os PDFs do MANTIS (titular e dependentes) e os anexa como documento externo, com retomada pelo nome na árvore |
 | `transformar_xls_em_pdf.py` | Monta o PDF do relatório de utilização (ReportLab) |
 | `memos_sei.py` | `incluir_memo()` (procura o memo pelo assunto na rodada, ou cria e insere no bloco) e `registrar_numeros_memos()` (número SEI dos memos criados) |
-| `sessao_sei.py` | `abrir_sei()`: navegador e login (credenciais do `.env`) |
+| `sessao_sei.py` | `abrir_sei()`: navegador e login (credenciais do `.env`); `sessao_encerrada()`: navegador fechado |
+| `processo_fechado.py` | `tem_incluir_documento()` e `exigir_processo_aberto()`: processo fechado no setor (`ProcessoFechadoNoSetor`) |
 | `rede_propria.py` | Carga da base DISA e da base APIS, normalização de matrícula, `verificar_base_apis()` (existência), `avaliar_uso_rede_propria_disa()` (uso), `ErroAvaliacao` |
 | `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada, com os atendimentos), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
@@ -107,7 +108,12 @@ a API dela.
     `FormatoMemorandoInvalido`; é logado sem traceback (`TextoMemoPendente`
     também);
   - falha inesperada: logada com `logger.exception`.
-- Um erro em um processo **nunca** interrompe os demais.
+- Um erro em um processo **nunca** interrompe os demais. Exceção: navegador
+  fechado (`sessao_sei.sessao_encerrada`). O erro é registrado no processo em
+  andamento e o loop para com um aviso, sem gravar os restantes; resumo e
+  `driver.quit()` continuam.
+- Todo motivo de falha no processamento é registrado como erro
+  (`registrar_erro`: colunas `tipo_erro` e `erro`), sem coluna própria.
 - Logs:
   - use `logging.getLogger(__name__)`;
   - não prefixe o número do processo na mensagem, pois
@@ -308,7 +314,9 @@ período. Cada um tem um par de marcadores (`1.6.2`, `1.8.2` e `1.8.3`,
 
 - Um PDF para o titular (prestador, data, procedimento, valor) e um para os
   dependentes (prestador, matrícula e nome do dependente, data, valor), só
-  de quem tem atendimento.
+  de quem tem atendimento. Todos os PDFs de `transformar_xls_em_pdf`,
+  inclusive os do ALT 1 e do fluxo PDF, terminam com a linha `TOTAL`, a soma
+  de `VALOR PAGO`.
 - Documento externo: tipo `PDF`, número `Utilização <Tit.|Dep.> <RP|RC> -
   <matrícula do titular> - <AAAAMMDD_HHMMSS>`, Nato-digital, data de hoje,
   Restrito, Informação Pessoal. O SEI limita o nome a 50 caracteres (há
@@ -517,9 +525,13 @@ são velhos.
 
 **Para cada processo**
 
-1. Abre o processo, lista a árvore e lê os marcadores **do SEI** (tudo
-   fica no registro).
-2. Roteamento (`_tratar`). **Nenhum marcador é adicionado aqui**, exceto o
+1. Abre o processo e lê os marcadores **do SEI**.
+2. **Sem o botão `Incluir Documento`** (`exigir_processo_aberto`, antes da
+   árvore)? Processo fechado no setor: `ProcessoFechadoNoSetor`, sem nenhuma
+   ação no SEI, em qualquer estado, inclusive parado ou concluído.
+   `prox_acao` = Verificar erro. **TODO**: definir o que fazer nesses casos.
+3. Lista a árvore (fica no registro).
+4. Roteamento (`_tratar`). **Nenhum marcador é adicionado aqui**, exceto o
    `1` e o `0` (em `_separar_velho`):
 
 | # | Pergunta | Se sim |
@@ -655,12 +667,28 @@ Para cada processo:
    PAGAMENTO`, não).
    - **Nenhuma?** `prox_acao` = ALT 1: nenhuma planilha no processo
      (verificar), sem marcador. Fim.
-3. Para cada planilha cujo PDF ainda não está na árvore:
+3. Se falta algum PDF e o processo não tem o ícone `Incluir Documento` (ex.:
+   concluído na unidade), reabre com `reabrir_processo` da `sei_automacao`
+   (coluna `processo_reaberto`), antes de baixar. O processo **continua aberto**
+   depois de receber os PDFs. Sem como reabrir: `ErroAvaliacao`, sem baixar
+   nada. Processo sem PDF faltando não é reaberto.
+   Para cada planilha cujo PDF ainda não está na árvore:
    - abre o documento, o que inicia o download, para
-     `dados/fluxo_alt_1/planilhas_baixadas/<nº SEI>_<nome original>`;
-   - lê a primeira aba; titular em `NOME_BENEFICIARIO` e
-     `MATRICULA_BENEFICIARIO` (valor único). A linha `TOTAL` do Anexo é
-     removida. `DAT_ATENDIMENTO` é data do Excel ou texto `DD/MM/AAAA`; sem
+     `dados/fluxo_alt_1/planilhas_baixadas/<nº SEI>_<nome original>`. Passou de
+     `TIMEOUT_DOWNLOAD` (60s): `ErroAvaliacao`, sem marcador, e a execução
+     segue para o próximo processo. O temporário (`.crdownload`, `.tmp`) é
+     descartado, para não ser confundido com a próxima planilha. Antes de baixar, espera sumir um temporário que ainda exista
+     (no máximo o mesmo prazo; depois, descarta);
+   - lê a planilha, que precisa ter **uma aba só**, contando as ocultas: já
+     houve arquivo com a base geral na primeira aba (542 mil linhas, 4.869
+     beneficiários) e o processo na segunda. Com mais de uma: `ErroAvaliacao`,
+     sem PDF, para conferir manualmente. O Anexo aceita até
+     `_MAX_BENEFICIARIOS_ANEXO` (20) beneficiários, pelo mesmo motivo. Titular em
+     `NOME_BENEFICIARIO` e `MATRICULA_BENEFICIARIO` (matrícula única; o nome
+     pode variar, e vale o que aparece em mais linhas, na forma mais
+     completa, com aviso no log). A linha `TOTAL` é removida; também a última
+     linha sem matrícula e sem data cujo valor é a soma das demais (tolerância
+     de 0,01). `DAT_ATENDIMENTO` é data do Excel ou texto `DD/MM/AAAA`; sem
      data válida, com coluna faltando ou sem atendimentos: `ErroAvaliacao`.
      Sem valor: conta como 0. Só `.xlsx`;
    - gera o PDF (`transformar_xls_em_pdf`), em
@@ -689,9 +717,10 @@ memos citam só estes.
 
 - Anexo: o PDF se chama `Utilização Ben. - <matrícula>` ou, com vários
   beneficiários, `Utilização Ben. - <primeira matrícula da planilha> e mais
-  <quantidade das outras>`, sem o número SEI. Por isso
-  ele é sempre baixado, e só depois procurado na árvore pelo nome exato; os
-  Anexos vêm depois das planilhas de titular e dependentes. Dois Anexos do
+  <quantidade das outras>`, sem o número SEI. Se cada Anexo tem um PDF `Utilização
+  Ben.` depois dele na árvore, nada é baixado. Senão (o nome não diz de qual
+  Anexo é o PDF), todos os Anexos são baixados e o PDF é procurado na árvore
+  pelo nome exato. Os Anexos vêm depois das planilhas de titular e dependentes. Dois Anexos do
   processo com o mesmo nome de PDF: `ErroAvaliacao`, antes de inserir qualquer
   Anexo. PDF de Anexo no modelo antigo (`Utilização Tit. - ... - SEI <nº do
   Anexo>`) não conta como pronto: o novo é inserido e o antigo vai para a
@@ -699,9 +728,17 @@ memos citam só estes.
 - Retomada (titular e dependentes): o número SEI da planilha está no nome do PDF. Procura em toda a
   árvore (não há rodada); PDF já presente não é baixado nem inserido de novo.
   Um erro para o processo, com o que já foi inserido mantido; a próxima
-  execução continua da planilha que falhou.
+  execução continua da planilha que falhou. Processo com só parte dos PDFs é
+  completado assim: só as planilhas sem PDF são baixadas. Ele fica sem o `1.0`
+  e com `prox_acao` = Verificar erro até ter todos.
+- Antes de cada inclusão, a página é recarregada (`_recarregar_processo`): sem
+  isso, o 2º PDF do processo falhava quase sempre na 1ª tentativa. Tempo
+  esgotado ou elemento obsoleto ao anexar: até 3 tentativas
+  (`_anexar_pdf_com_novas_tentativas`, usado também pelo fluxo PDF), com o
+  traceback em DEBUG. Antes de repetir, relê a árvore: se o PDF entrou, não
+  anexa de novo.
 - Planilha de controle: `script` = `alt_1`, `fluxo` = `ALT 1 - SOMENTE
-  INSERIR PDF`, colunas `planilhas_sei`, `pdfs_incluidos`, `pdfs_na_arvore` e `pdfs_antigos_a_excluir`.
+  INSERIR PDF`, colunas `planilhas_sei`, `pdfs_incluidos`, `pdfs_na_arvore`, `pdfs_antigos_a_excluir` e `processo_reaberto`.
   Na aba `processos`, a linha do processo fica com a última passagem
   (`fluxo` e `prox_acao` do ALT 1), mas as colunas de resultado do fluxo
   principal não são gravadas (`_CAMPOS_SO_FLUXO_PRINCIPAL`) e continuam lá.
@@ -716,9 +753,11 @@ sem o download, para as planilhas que o Chrome não baixa: elas são colocadas �
 mão em `dados/fluxo_pdf/planilhas`. Lê a mesma aba `fluxo` de
 `dados/inputs/processos_nao_processados.xlsx`.
 
-- Nome do arquivo: número do processo com `_` no lugar da barra, `-` e o nome
-  do documento na árvore (`2010.01.0082953_2024-75-Anexo RELAÇÃO
-  ATENDIMENTOS.xlsx`). Os `:Zone.Identifier` são ignorados.
+- Nome do arquivo: número do processo com `_` no lugar da barra, `-` (com ou
+  sem espaços em volta) e o nome do documento na árvore
+  (`2010.01.0082953_2024-75-Anexo RELAÇÃO ATENDIMENTOS.xlsx`). O número do
+  processo sai do início do nome; o que vem depois do hífen é o nome na árvore.
+  Os `:Zone.Identifier` são ignorados.
 - Para cada processo: lê os marcadores, confere se o `1` e o `1.0` existem no
   SEI e lista a árvore, como no ALT 1. Depois:
   1. **Nenhum arquivo do processo na pasta?** `prox_acao` = Fluxo PDF: nenhuma
@@ -727,7 +766,8 @@ mão em `dados/fluxo_pdf/planilhas`. Lê a mesma aba `fluxo` de
      ser dos três padrões do ALT 1 (`Planilha Utilização Titular`, `Planilha
      Utilização Dependentes`, `Anexo RELAÇÃO ATENDIMENTO`, sem aceitar a
      falta do `Anexo`) e do documento na árvore (nome inteiro; acento, maiúsculas e
-     espaços são ignorados). Fora do padrão, sem documento ou com dois
+     espaços são ignorados, e `_` vale como `/`, que não existe em nome de
+     arquivo). Fora do padrão, sem documento ou com dois
      documentos do mesmo nome: `ErroAvaliacao`, sem inserir nada.
   3. Insere os PDFs como no ALT 1: mesmo layout, mesmo nome (com o número SEI
      do documento da árvore), mesma retomada. Um PDF que o ALT 1 já inseriu não
@@ -833,6 +873,12 @@ perca os processos já tratados.
   Todos com o prefixo `Script v2 - `, idênticos aos de `tags.py`.
 - **TODO**: cadastrar no SEI o marcador `Script v2 - 1.0 - Aguarda Script:
   Fluxo Normal` antes de rodar o ALT 1 (sem ele, nenhum PDF é inserido).
+- ALT 1: confirmar no SEI real que `reabrir_processo` funciona nos processos sem
+  `Incluir Documento` (a causa, processo concluído na unidade, ainda é hipótese)
+  e se os reabertos (coluna `processo_reaberto`) devem ser concluídos de novo.
+  Se o 2º PDF ainda falhar na 1ª tentativa, o traceback está no log (DEBUG).
+- ALT 1: confirmar que apagar um `.crdownload` preso impede o arquivo de
+  aparecer depois.
 - ALT 1: confirmar na primeira execução que abrir a planilha na árvore inicia
   o download sem pedir permissão do Chrome para vários downloads, que o PDF
   entra no fim da árvore e que o nome real dos documentos bate com o padrão.
@@ -851,6 +897,9 @@ perca os processos já tratados.
   que as tabelas são salvas (a `sei_automacao` não trata tabelas; o memo
   manda o HTML no formato do editor do SEI, fora do `<p>`).
 - **TODO**: fluxo do processo VELHO (`main._separar_velho`).
+- **TODO**: definir o que fazer com o processo fechado no setor no fluxo normal
+  (`processo_fechado.exigir_processo_aberto`). Hoje é só erro; o ALT 1 reabre.
+  Confirmar também que todo processo aberto no setor mostra `Incluir Documento`.
 - Confirmar com um memorando real que `obter_conteudo_doc` devolve as
   linhas `Matrícula do dependente` e `Período de apuração do dependente`
   separadas (o período é lido até o fim da linha).

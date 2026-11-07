@@ -1,0 +1,30 @@
+2026-11-06 10:46:17 | INFO    | -                         | main_alt_1            | ================= INÍCIO DA EXECUÇÃO (FLUXO PDF - PLANILHAS DA PASTA) =================
+2026-11-06 10:46:17 | INFO    | -                         | main_alt_1            | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-06_10-46-17_execucao_fluxo_pdf.log
+2026-11-06 10:46:17 | INFO    | -                         | main_alt_1            | 26 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-06 10:46:17 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-06 10:46:17 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-06 10:46:17 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-06 10:46:17 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-06 10:46:18 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-06 10:46:37 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-06 10:46:37 | INFO    | 2010.01.0082932/2024-60   | main_alt_1            | INÍCIO [1/26]
+2026-11-06 10:47:02 | INFO    | 2010.01.0082932/2024-60   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-06 10:47:05 | INFO    | 2010.01.0082932/2024-60   | main_alt_1            | Árvore: 16 documento(s)
+2026-11-06 10:47:05 | WARNING | 2010.01.0082932/2024-60   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 10:47:05 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-06_10-46-17.xlsx
+2026-11-06 10:47:05 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-06 10:47:05 | INFO    | 2010.01.0082932/2024-60   | main_alt_1            | FIM (28.1s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 10:47:05 | INFO    | 2010.01.0050804/2025-42   | main_alt_1            | INÍCIO [2/26]
+2026-11-06 10:47:09 | INFO    | 2010.01.0050804/2025-42   | main_alt_1            | Árvore: 20 documento(s)
+2026-11-06 10:47:09 | WARNING | 2010.01.0050804/2025-42   | planilhas_fluxo_pdf   | Nenhuma planilha do processo na pasta
+2026-11-06 10:47:10 | DEBUG   | 2010.01.0050804/2025-42   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-06 10:47:10 | INFO    | 2010.01.0050804/2025-42   | main_alt_1            | FIM (4.1s) | Próxima ação: Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 10:47:10 | INFO    | 2010.01.0076235/2024-71   | main_alt_1            | INÍCIO [3/26]
+2026-11-06 10:47:12 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=39653): Failed to establish a new connection: [Errno 111] Connection refused")': /session/7cf5bb4507e556428c5e20c4453b3ca3
+2026-11-06 10:47:12 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=39653): Failed to establish a new connection: [Errno 111] Connection refused")': /session/7cf5bb4507e556428c5e20c4453b3ca3
+2026-11-06 10:47:12 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=39653): Failed to establish a new connection: [Errno 111] Connection refused")': /session/7cf5bb4507e556428c5e20c4453b3ca3
+2026-11-06 10:47:12 | INFO    | -                         | main_alt_1            | ------------------------ RESUMO ------------------------
+2026-11-06 10:47:12 | INFO    | -                         | main_alt_1            | Processos: 2 | Sem erro: 2 | Com erro: 0
+2026-11-06 10:47:12 | INFO    | -                         | main_alt_1            |     2 | Fluxo PDF: nenhuma planilha na pasta (verificar)
+2026-11-06 10:47:12 | INFO    | -                         | main_alt_1            | Duração total da execução: 55.3s
+2026-11-06 10:47:12 | INFO    | -                         | main_alt_1            | ================== FIM DA EXECUÇÃO ==================

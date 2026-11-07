@@ -1,0 +1,425 @@
+2026-11-06 16:17:37 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ALT 1 - SOMENTE INSERIR PDF) =================
+2026-11-06 16:17:37 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-06_16-17-37_execucao_alt_1.log
+2026-11-06 16:17:37 | INFO    | -                         | __main__              | 431 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-06 16:17:37 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-06 16:17:37 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-06 16:17:37 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-06 16:17:37 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-06 16:17:38 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/fluxo_alt_1/planilhas_baixadas
+2026-11-06 16:17:56 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-06 16:17:56 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/431]
+2026-11-06 16:18:16 | INFO    | 2010.01.0082932/2024-60   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-06 16:18:21 | INFO    | 2010.01.0082932/2024-60   | __main__              | Árvore: 16 documento(s)
+2026-11-06 16:18:21 | INFO    | 2010.01.0082932/2024-60   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:18:21 | WARNING | 2010.01.0082932/2024-60   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:18:21 | INFO    | 2010.01.0082932/2024-60   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:18:21 | INFO    | 2010.01.0082932/2024-60   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:18:21 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-06_16-17-37.xlsx
+2026-11-06 16:18:22 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-06 16:18:22 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (26.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:18:22 | INFO    | 2010.01.0050804/2025-42   | __main__              | INÍCIO [2/431]
+2026-11-06 16:18:25 | INFO    | 2010.01.0050804/2025-42   | __main__              | Árvore: 20 documento(s)
+2026-11-06 16:18:25 | INFO    | 2010.01.0050804/2025-42   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3542985', 'Planilha Utilização Dependentes - 3542985']
+2026-11-06 16:18:25 | WARNING | 2010.01.0050804/2025-42   | planilhas_alt_1       | Retomada: PDF da planilha 125202990 já está na árvore (152997223); não será anexado de novo
+2026-11-06 16:18:25 | WARNING | 2010.01.0050804/2025-42   | planilhas_alt_1       | Retomada: PDF da planilha 125202957 já está na árvore (152997251); não será anexado de novo
+2026-11-06 16:18:25 | INFO    | 2010.01.0050804/2025-42   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:18:25 | INFO    | 2010.01.0050804/2025-42   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:18:26 | DEBUG   | 2010.01.0050804/2025-42   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-06 16:18:26 | INFO    | 2010.01.0050804/2025-42   | __main__              | FIM (4.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:18:26 | INFO    | 2010.01.0072060/2024-82   | __main__              | INÍCIO [3/431]
+2026-11-06 16:18:30 | INFO    | 2010.01.0072060/2024-82   | __main__              | Árvore: 21 documento(s)
+2026-11-06 16:18:30 | WARNING | 2010.01.0072060/2024-82   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-06 16:18:31 | DEBUG   | 2010.01.0072060/2024-82   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-06 16:18:31 | INFO    | 2010.01.0072060/2024-82   | __main__              | FIM (5.3s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-06 16:18:31 | INFO    | 2010.01.0071353/2024-62   | __main__              | INÍCIO [4/431]
+2026-11-06 16:18:37 | INFO    | 2010.01.0071353/2024-62   | __main__              | Árvore: 35 documento(s)
+2026-11-06 16:18:37 | INFO    | 2010.01.0071353/2024-62   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 2284803', 'Planilha Utilização Dependentes - 2284803']
+2026-11-06 16:18:37 | WARNING | 2010.01.0071353/2024-62   | planilhas_alt_1       | Retomada: PDF da planilha 123590457 já está na árvore (153083078); não será anexado de novo
+2026-11-06 16:18:37 | WARNING | 2010.01.0071353/2024-62   | planilhas_alt_1       | Retomada: PDF da planilha 123590613 já está na árvore (153085677); não será anexado de novo
+2026-11-06 16:18:37 | INFO    | 2010.01.0071353/2024-62   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:18:37 | INFO    | 2010.01.0071353/2024-62   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:18:38 | DEBUG   | 2010.01.0071353/2024-62   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-06 16:18:38 | INFO    | 2010.01.0071353/2024-62   | __main__              | FIM (6.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:18:38 | INFO    | 2010.01.0076235/2024-71   | __main__              | INÍCIO [5/431]
+2026-11-06 16:18:41 | INFO    | 2010.01.0076235/2024-71   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:18:41 | INFO    | 2010.01.0076235/2024-71   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:18:41 | WARNING | 2010.01.0076235/2024-71   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:18:41 | INFO    | 2010.01.0076235/2024-71   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:18:41 | INFO    | 2010.01.0076235/2024-71   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:18:42 | DEBUG   | 2010.01.0076235/2024-71   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-06 16:18:42 | INFO    | 2010.01.0076235/2024-71   | __main__              | FIM (4.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:18:42 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [6/431]
+2026-11-06 16:18:46 | INFO    | 2010.01.0071357/2024-51   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:18:46 | INFO    | 2010.01.0071357/2024-51   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:18:46 | WARNING | 2010.01.0071357/2024-51   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:18:46 | INFO    | 2010.01.0071357/2024-51   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:18:46 | INFO    | 2010.01.0071357/2024-51   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:18:47 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-06 16:18:47 | INFO    | 2010.01.0071357/2024-51   | __main__              | FIM (4.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:18:47 | INFO    | 2010.01.0049339/2025-21   | __main__              | INÍCIO [7/431]
+2026-11-06 16:18:53 | INFO    | 2010.01.0049339/2025-21   | __main__              | Árvore: 26 documento(s)
+2026-11-06 16:18:53 | INFO    | 2010.01.0049339/2025-21   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3270868', 'Planilha Utilização Dependentes - 3270868']
+2026-11-06 16:18:53 | WARNING | 2010.01.0049339/2025-21   | planilhas_alt_1       | Retomada: PDF da planilha 123273748 já está na árvore (153083240); não será anexado de novo
+2026-11-06 16:18:53 | WARNING | 2010.01.0049339/2025-21   | planilhas_alt_1       | Retomada: PDF da planilha 123273961 já está na árvore (153085757); não será anexado de novo
+2026-11-06 16:18:53 | INFO    | 2010.01.0049339/2025-21   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:18:53 | INFO    | 2010.01.0049339/2025-21   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:18:53 | DEBUG   | 2010.01.0049339/2025-21   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-06 16:18:53 | INFO    | 2010.01.0049339/2025-21   | __main__              | FIM (6.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:18:53 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [8/431]
+2026-11-06 16:18:58 | INFO    | 2010.01.0072062/2024-28   | __main__              | Árvore: 28 documento(s)
+2026-11-06 16:18:58 | INFO    | 2010.01.0072062/2024-28   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3631854', 'Planilha Utilização Dependentes - 3631854']
+2026-11-06 16:18:58 | WARNING | 2010.01.0072062/2024-28   | planilhas_alt_1       | Retomada: PDF da planilha 123625018 já está na árvore (152997444); não será anexado de novo
+2026-11-06 16:18:58 | WARNING | 2010.01.0072062/2024-28   | planilhas_alt_1       | Retomada: PDF da planilha 123625056 já está na árvore (152997528); não será anexado de novo
+2026-11-06 16:18:58 | INFO    | 2010.01.0072062/2024-28   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:18:58 | INFO    | 2010.01.0072062/2024-28   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:18:59 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-06 16:18:59 | INFO    | 2010.01.0072062/2024-28   | __main__              | FIM (5.3s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:18:59 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [9/431]
+2026-11-06 16:19:07 | INFO    | 2010.01.0071467/2024-88   | __main__              | Árvore: 28 documento(s)
+2026-11-06 16:19:07 | INFO    | 2010.01.0071467/2024-88   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:19:07 | WARNING | 2010.01.0071467/2024-88   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:19:07 | INFO    | 2010.01.0071467/2024-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:19:07 | INFO    | 2010.01.0071467/2024-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:19:08 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-06 16:19:08 | INFO    | 2010.01.0071467/2024-88   | __main__              | FIM (9.1s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:19:08 | INFO    | 2010.01.0049247/2025-80   | __main__              | INÍCIO [10/431]
+2026-11-06 16:19:11 | INFO    | 2010.01.0049247/2025-80   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:19:11 | INFO    | 2010.01.0049247/2025-80   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3991572']
+2026-11-06 16:19:11 | WARNING | 2010.01.0049247/2025-80   | planilhas_alt_1       | Retomada: PDF da planilha 123419508 já está na árvore (152997655); não será anexado de novo
+2026-11-06 16:19:11 | INFO    | 2010.01.0049247/2025-80   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:19:11 | INFO    | 2010.01.0049247/2025-80   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:19:12 | DEBUG   | 2010.01.0049247/2025-80   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-06 16:19:12 | INFO    | 2010.01.0049247/2025-80   | __main__              | FIM (4.3s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:19:12 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [11/431]
+2026-11-06 16:19:16 | INFO    | 2010.01.0049305/2025-66   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:19:16 | INFO    | 2010.01.0049305/2025-66   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3557861']
+2026-11-06 16:19:16 | WARNING | 2010.01.0049305/2025-66   | planilhas_alt_1       | Retomada: PDF da planilha 123170837 já está na árvore (152997785); não será anexado de novo
+2026-11-06 16:19:16 | INFO    | 2010.01.0049305/2025-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:19:16 | INFO    | 2010.01.0049305/2025-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:19:17 | DEBUG   | 2010.01.0049305/2025-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-06 16:19:17 | INFO    | 2010.01.0049305/2025-66   | __main__              | FIM (4.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:19:17 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [12/431]
+2026-11-06 16:19:21 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:19:21 | INFO    | 2010.01.0072726/2024-45   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:19:21 | WARNING | 2010.01.0072726/2024-45   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:19:21 | INFO    | 2010.01.0072726/2024-45   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:19:21 | INFO    | 2010.01.0072726/2024-45   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:19:21 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-06 16:19:21 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (4.5s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:19:21 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [13/431]
+2026-11-06 16:19:42 | INFO    | 2010.01.0072584/2024-96   | __main__              | Árvore: 15 documento(s)
+2026-11-06 16:19:42 | INFO    | 2010.01.0072584/2024-96   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:19:42 | WARNING | 2010.01.0072584/2024-96   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:19:42 | INFO    | 2010.01.0072584/2024-96   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:19:42 | INFO    | 2010.01.0072584/2024-96   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:19:42 | DEBUG   | 2010.01.0072584/2024-96   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-06 16:19:42 | INFO    | 2010.01.0072584/2024-96   | __main__              | FIM (21.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:19:42 | INFO    | 2010.01.0071348/2024-03   | __main__              | INÍCIO [14/431]
+2026-11-06 16:19:46 | INFO    | 2010.01.0071348/2024-03   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:19:46 | INFO    | 2010.01.0071348/2024-03   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:19:46 | WARNING | 2010.01.0071348/2024-03   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:19:46 | INFO    | 2010.01.0071348/2024-03   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:19:46 | INFO    | 2010.01.0071348/2024-03   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:19:47 | DEBUG   | 2010.01.0071348/2024-03   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-06 16:19:47 | INFO    | 2010.01.0071348/2024-03   | __main__              | FIM (4.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:19:47 | INFO    | 2010.01.0050757/2025-50   | __main__              | INÍCIO [15/431]
+2026-11-06 16:19:52 | INFO    | 2010.01.0050757/2025-50   | __main__              | Árvore: 21 documento(s)
+2026-11-06 16:19:52 | INFO    | 2010.01.0050757/2025-50   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3557834', 'Planilha Utilização Dependentes - 3557834']
+2026-11-06 16:19:52 | WARNING | 2010.01.0050757/2025-50   | planilhas_alt_1       | Retomada: PDF da planilha 125202600 já está na árvore (152998025); não será anexado de novo
+2026-11-06 16:19:52 | WARNING | 2010.01.0050757/2025-50   | planilhas_alt_1       | Retomada: PDF da planilha 125202631 já está na árvore (152998051); não será anexado de novo
+2026-11-06 16:19:52 | INFO    | 2010.01.0050757/2025-50   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:19:52 | INFO    | 2010.01.0050757/2025-50   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:19:53 | DEBUG   | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-06 16:19:53 | INFO    | 2010.01.0050757/2025-50   | __main__              | FIM (5.5s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:19:53 | INFO    | 2010.01.0071355/2024-08   | __main__              | INÍCIO [16/431]
+2026-11-06 16:19:57 | INFO    | 2010.01.0071355/2024-08   | __main__              | Árvore: 21 documento(s)
+2026-11-06 16:19:57 | INFO    | 2010.01.0071355/2024-08   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:19:57 | WARNING | 2010.01.0071355/2024-08   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:19:57 | INFO    | 2010.01.0071355/2024-08   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:19:57 | INFO    | 2010.01.0071355/2024-08   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:19:57 | DEBUG   | 2010.01.0071355/2024-08   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-06 16:19:57 | INFO    | 2010.01.0071355/2024-08   | __main__              | FIM (4.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:19:57 | INFO    | 2010.01.0072057/2024-66   | __main__              | INÍCIO [17/431]
+2026-11-06 16:20:02 | INFO    | 2010.01.0072057/2024-66   | __main__              | Árvore: 28 documento(s)
+2026-11-06 16:20:02 | INFO    | 2010.01.0072057/2024-66   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3713817']
+2026-11-06 16:20:02 | WARNING | 2010.01.0072057/2024-66   | planilhas_alt_1       | Retomada: PDF da planilha 123601662 já está na árvore (152998099); não será anexado de novo
+2026-11-06 16:20:02 | INFO    | 2010.01.0072057/2024-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:02 | INFO    | 2010.01.0072057/2024-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:03 | DEBUG   | 2010.01.0072057/2024-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-06 16:20:03 | INFO    | 2010.01.0072057/2024-66   | __main__              | FIM (5.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:03 | INFO    | 2010.01.0082953/2024-75   | __main__              | INÍCIO [18/431]
+2026-11-06 16:20:07 | INFO    | 2010.01.0082953/2024-75   | __main__              | Árvore: 20 documento(s)
+2026-11-06 16:20:07 | INFO    | 2010.01.0082953/2024-75   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:20:07 | WARNING | 2010.01.0082953/2024-75   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:20:07 | INFO    | 2010.01.0082953/2024-75   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:07 | INFO    | 2010.01.0082953/2024-75   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:07 | DEBUG   | 2010.01.0082953/2024-75   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-06 16:20:07 | INFO    | 2010.01.0082953/2024-75   | __main__              | FIM (4.3s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:07 | INFO    | 2010.01.0050829/2025-46   | __main__              | INÍCIO [19/431]
+2026-11-06 16:20:12 | INFO    | 2010.01.0050829/2025-46   | __main__              | Árvore: 22 documento(s)
+2026-11-06 16:20:12 | INFO    | 2010.01.0050829/2025-46   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Tit. - 3549507 - 10/12/2025', 'Planilha Utilização Dep. - 3549507 - 10/12/2025']
+2026-11-06 16:20:12 | WARNING | 2010.01.0050829/2025-46   | planilhas_alt_1       | Retomada: PDF da planilha 129186639 já está na árvore (152998216); não será anexado de novo
+2026-11-06 16:20:12 | WARNING | 2010.01.0050829/2025-46   | planilhas_alt_1       | Retomada: PDF da planilha 129186755 já está na árvore (152998290); não será anexado de novo
+2026-11-06 16:20:12 | INFO    | 2010.01.0050829/2025-46   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:12 | INFO    | 2010.01.0050829/2025-46   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:12 | DEBUG   | 2010.01.0050829/2025-46   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-06 16:20:12 | INFO    | 2010.01.0050829/2025-46   | __main__              | FIM (4.9s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:12 | INFO    | 2010.01.0050841/2025-13   | __main__              | INÍCIO [20/431]
+2026-11-06 16:20:15 | INFO    | 2010.01.0050841/2025-13   | __main__              | Árvore: 17 documento(s)
+2026-11-06 16:20:15 | INFO    | 2010.01.0050841/2025-13   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3706058']
+2026-11-06 16:20:15 | WARNING | 2010.01.0050841/2025-13   | planilhas_alt_1       | Retomada: PDF da planilha 125072984 já está na árvore (152998385); não será anexado de novo
+2026-11-06 16:20:15 | INFO    | 2010.01.0050841/2025-13   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:15 | INFO    | 2010.01.0050841/2025-13   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:16 | DEBUG   | 2010.01.0050841/2025-13   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-06 16:20:16 | INFO    | 2010.01.0050841/2025-13   | __main__              | FIM (4.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:16 | INFO    | 2010.01.0050849/2025-88   | __main__              | INÍCIO [21/431]
+2026-11-06 16:20:19 | INFO    | 2010.01.0050849/2025-88   | __main__              | Árvore: 15 documento(s)
+2026-11-06 16:20:19 | INFO    | 2010.01.0050849/2025-88   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3551518', 'Planilha Utilização Dependentes - 3551518']
+2026-11-06 16:20:19 | WARNING | 2010.01.0050849/2025-88   | planilhas_alt_1       | Retomada: PDF da planilha 123495626 já está na árvore (152998429); não será anexado de novo
+2026-11-06 16:20:19 | WARNING | 2010.01.0050849/2025-88   | planilhas_alt_1       | Retomada: PDF da planilha 123495656 já está na árvore (153000487); não será anexado de novo
+2026-11-06 16:20:19 | INFO    | 2010.01.0050849/2025-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:19 | INFO    | 2010.01.0050849/2025-88   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:20 | DEBUG   | 2010.01.0050849/2025-88   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-06 16:20:20 | INFO    | 2010.01.0050849/2025-88   | __main__              | FIM (4.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:20 | INFO    | 2010.01.0050869/2025-33   | __main__              | INÍCIO [22/431]
+2026-11-06 16:20:24 | INFO    | 2010.01.0050869/2025-33   | __main__              | Árvore: 19 documento(s)
+2026-11-06 16:20:24 | INFO    | 2010.01.0050869/2025-33   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 1358523']
+2026-11-06 16:20:24 | WARNING | 2010.01.0050869/2025-33   | planilhas_alt_1       | Retomada: PDF da planilha 123374120 já está na árvore (153086251); não será anexado de novo
+2026-11-06 16:20:24 | INFO    | 2010.01.0050869/2025-33   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:24 | INFO    | 2010.01.0050869/2025-33   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:24 | DEBUG   | 2010.01.0050869/2025-33   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-06 16:20:24 | INFO    | 2010.01.0050869/2025-33   | __main__              | FIM (4.1s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:24 | INFO    | 2010.01.0050885/2025-86   | __main__              | INÍCIO [23/431]
+2026-11-06 16:20:28 | INFO    | 2010.01.0050885/2025-86   | __main__              | Árvore: 20 documento(s)
+2026-11-06 16:20:28 | INFO    | 2010.01.0050885/2025-86   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3712763']
+2026-11-06 16:20:28 | WARNING | 2010.01.0050885/2025-86   | planilhas_alt_1       | Retomada: PDF da planilha 123692233 já está na árvore (152998581); não será anexado de novo
+2026-11-06 16:20:28 | INFO    | 2010.01.0050885/2025-86   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:28 | INFO    | 2010.01.0050885/2025-86   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:29 | DEBUG   | 2010.01.0050885/2025-86   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-06 16:20:29 | INFO    | 2010.01.0050885/2025-86   | __main__              | FIM (4.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:29 | INFO    | 2010.01.0051097/2025-85   | __main__              | INÍCIO [24/431]
+2026-11-06 16:20:32 | INFO    | 2010.01.0051097/2025-85   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:20:32 | INFO    | 2010.01.0051097/2025-85   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Dependentes - 3748184']
+2026-11-06 16:20:32 | WARNING | 2010.01.0051097/2025-85   | planilhas_alt_1       | Retomada: PDF da planilha 123182649 já está na árvore (152998567); não será anexado de novo
+2026-11-06 16:20:32 | INFO    | 2010.01.0051097/2025-85   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:32 | INFO    | 2010.01.0051097/2025-85   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:33 | DEBUG   | 2010.01.0051097/2025-85   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-06 16:20:33 | INFO    | 2010.01.0051097/2025-85   | __main__              | FIM (4.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:33 | INFO    | 2010.01.0050905/2025-31   | __main__              | INÍCIO [25/431]
+2026-11-06 16:20:37 | INFO    | 2010.01.0050905/2025-31   | __main__              | Árvore: 19 documento(s)
+2026-11-06 16:20:37 | INFO    | 2010.01.0050905/2025-31   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 2608097']
+2026-11-06 16:20:37 | WARNING | 2010.01.0050905/2025-31   | planilhas_alt_1       | Retomada: PDF da planilha 123418137 já está na árvore (153069419); não será anexado de novo
+2026-11-06 16:20:37 | INFO    | 2010.01.0050905/2025-31   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:37 | INFO    | 2010.01.0050905/2025-31   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:37 | DEBUG   | 2010.01.0050905/2025-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-06 16:20:37 | INFO    | 2010.01.0050905/2025-31   | __main__              | FIM (4.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:37 | INFO    | 2010.01.0051096/2025-15   | __main__              | INÍCIO [26/431]
+2026-11-06 16:20:41 | INFO    | 2010.01.0051096/2025-15   | __main__              | Árvore: 20 documento(s)
+2026-11-06 16:20:41 | INFO    | 2010.01.0051096/2025-15   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3551170', 'Planilha Utilização Dependentes - 3551170']
+2026-11-06 16:20:41 | WARNING | 2010.01.0051096/2025-15   | planilhas_alt_1       | Retomada: PDF da planilha 123416770 já está na árvore (152998941); não será anexado de novo
+2026-11-06 16:20:41 | WARNING | 2010.01.0051096/2025-15   | planilhas_alt_1       | Retomada: PDF da planilha 123416776 já está na árvore (152998983); não será anexado de novo
+2026-11-06 16:20:41 | INFO    | 2010.01.0051096/2025-15   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:41 | INFO    | 2010.01.0051096/2025-15   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:42 | DEBUG   | 2010.01.0051096/2025-15   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (26 passagem(ns) nesta execução)
+2026-11-06 16:20:42 | INFO    | 2010.01.0051096/2025-15   | __main__              | FIM (4.5s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:42 | INFO    | 2010.01.0072706/2024-03   | __main__              | INÍCIO [27/431]
+2026-11-06 16:20:46 | INFO    | 2010.01.0072706/2024-03   | __main__              | Árvore: 26 documento(s)
+2026-11-06 16:20:46 | INFO    | 2010.01.0072706/2024-03   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3246660', 'Planilha Utilização Dependentes - 3246660']
+2026-11-06 16:20:46 | WARNING | 2010.01.0072706/2024-03   | planilhas_alt_1       | Retomada: PDF da planilha 123730605 já está na árvore (153086468); não será anexado de novo
+2026-11-06 16:20:46 | WARNING | 2010.01.0072706/2024-03   | planilhas_alt_1       | Retomada: PDF da planilha 123730606 já está na árvore (153086624); não será anexado de novo
+2026-11-06 16:20:46 | INFO    | 2010.01.0072706/2024-03   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:46 | INFO    | 2010.01.0072706/2024-03   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:47 | DEBUG   | 2010.01.0072706/2024-03   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (27 passagem(ns) nesta execução)
+2026-11-06 16:20:47 | INFO    | 2010.01.0072706/2024-03   | __main__              | FIM (5.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:47 | INFO    | 2010.01.0072778/2024-96   | __main__              | INÍCIO [28/431]
+2026-11-06 16:20:51 | INFO    | 2010.01.0072778/2024-96   | __main__              | Árvore: 27 documento(s)
+2026-11-06 16:20:51 | INFO    | 2010.01.0072778/2024-96   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3542025', 'Planilha Utilização Dependentes - 3542025']
+2026-11-06 16:20:51 | WARNING | 2010.01.0072778/2024-96   | planilhas_alt_1       | Retomada: PDF da planilha 123730899 já está na árvore (153086686); não será anexado de novo
+2026-11-06 16:20:51 | WARNING | 2010.01.0072778/2024-96   | planilhas_alt_1       | Retomada: PDF da planilha 123730850 já está na árvore (153086830); não será anexado de novo
+2026-11-06 16:20:51 | INFO    | 2010.01.0072778/2024-96   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:51 | INFO    | 2010.01.0072778/2024-96   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:52 | DEBUG   | 2010.01.0072778/2024-96   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (28 passagem(ns) nesta execução)
+2026-11-06 16:20:52 | INFO    | 2010.01.0072778/2024-96   | __main__              | FIM (4.9s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:52 | INFO    | 2010.01.0049499/2025-66   | __main__              | INÍCIO [29/431]
+2026-11-06 16:20:56 | INFO    | 2010.01.0049499/2025-66   | __main__              | Árvore: 23 documento(s)
+2026-11-06 16:20:56 | INFO    | 2010.01.0049499/2025-66   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 1304287']
+2026-11-06 16:20:56 | WARNING | 2010.01.0049499/2025-66   | planilhas_alt_1       | Retomada: PDF da planilha 123272160 já está na árvore (153086914); não será anexado de novo
+2026-11-06 16:20:56 | INFO    | 2010.01.0049499/2025-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:20:56 | INFO    | 2010.01.0049499/2025-66   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:20:57 | DEBUG   | 2010.01.0049499/2025-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (29 passagem(ns) nesta execução)
+2026-11-06 16:20:57 | INFO    | 2010.01.0049499/2025-66   | __main__              | FIM (4.8s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:20:57 | INFO    | 2010.01.0072059/2024-12   | __main__              | INÍCIO [30/431]
+2026-11-06 16:21:02 | INFO    | 2010.01.0072059/2024-12   | __main__              | Árvore: 25 documento(s)
+2026-11-06 16:21:02 | INFO    | 2010.01.0072059/2024-12   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:21:02 | WARNING | 2010.01.0072059/2024-12   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:02 | INFO    | 2010.01.0072059/2024-12   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:02 | INFO    | 2010.01.0072059/2024-12   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:03 | DEBUG   | 2010.01.0072059/2024-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (30 passagem(ns) nesta execução)
+2026-11-06 16:21:03 | INFO    | 2010.01.0072059/2024-12   | __main__              | FIM (6.1s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:03 | INFO    | 2010.01.0071471/2024-77   | __main__              | INÍCIO [31/431]
+2026-11-06 16:21:08 | INFO    | 2010.01.0071471/2024-77   | __main__              | Árvore: 22 documento(s)
+2026-11-06 16:21:08 | INFO    | 2010.01.0071471/2024-77   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:21:08 | WARNING | 2010.01.0071471/2024-77   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:08 | INFO    | 2010.01.0071471/2024-77   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:08 | INFO    | 2010.01.0071471/2024-77   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:09 | DEBUG   | 2010.01.0071471/2024-77   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (31 passagem(ns) nesta execução)
+2026-11-06 16:21:09 | INFO    | 2010.01.0071471/2024-77   | __main__              | FIM (5.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:09 | INFO    | 2010.01.0071350/2024-46   | __main__              | INÍCIO [32/431]
+2026-11-06 16:21:13 | INFO    | 2010.01.0071350/2024-46   | __main__              | Árvore: 28 documento(s)
+2026-11-06 16:21:13 | WARNING | 2010.01.0071350/2024-46   | planilhas_alt_1       | Nenhuma planilha de utilização na árvore
+2026-11-06 16:21:14 | DEBUG   | 2010.01.0071350/2024-46   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (32 passagem(ns) nesta execução)
+2026-11-06 16:21:14 | INFO    | 2010.01.0071350/2024-46   | __main__              | FIM (5.3s) | Próxima ação: ALT 1: nenhuma planilha no processo (verificar)
+2026-11-06 16:21:14 | INFO    | 2010.01.0051398/2025-09   | __main__              | INÍCIO [33/431]
+2026-11-06 16:21:18 | INFO    | 2010.01.0051398/2025-09   | __main__              | Árvore: 20 documento(s)
+2026-11-06 16:21:18 | INFO    | 2010.01.0051398/2025-09   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:21:18 | WARNING | 2010.01.0051398/2025-09   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:18 | INFO    | 2010.01.0051398/2025-09   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:18 | INFO    | 2010.01.0051398/2025-09   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:18 | DEBUG   | 2010.01.0051398/2025-09   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (33 passagem(ns) nesta execução)
+2026-11-06 16:21:18 | INFO    | 2010.01.0051398/2025-09   | __main__              | FIM (4.5s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:18 | INFO    | 2010.01.0080733/2024-69   | __main__              | INÍCIO [34/431]
+2026-11-06 16:21:22 | INFO    | 2010.01.0080733/2024-69   | __main__              | Árvore: 15 documento(s)
+2026-11-06 16:21:22 | INFO    | 2010.01.0080733/2024-69   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:21:22 | WARNING | 2010.01.0080733/2024-69   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:22 | INFO    | 2010.01.0080733/2024-69   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:22 | INFO    | 2010.01.0080733/2024-69   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:23 | DEBUG   | 2010.01.0080733/2024-69   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (34 passagem(ns) nesta execução)
+2026-11-06 16:21:23 | INFO    | 2010.01.0080733/2024-69   | __main__              | FIM (4.5s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:23 | INFO    | 2010.01.0049489/2025-45   | __main__              | INÍCIO [35/431]
+2026-11-06 16:21:26 | INFO    | 2010.01.0049489/2025-45   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:21:26 | INFO    | 2010.01.0049489/2025-45   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3181300', 'Planilha Utilização Dependentes - 3181300']
+2026-11-06 16:21:26 | WARNING | 2010.01.0049489/2025-45   | planilhas_alt_1       | Retomada: PDF da planilha 123727868 já está na árvore (153087486); não será anexado de novo
+2026-11-06 16:21:26 | WARNING | 2010.01.0049489/2025-45   | planilhas_alt_1       | Retomada: PDF da planilha 123727970 já está na árvore (153087605); não será anexado de novo
+2026-11-06 16:21:26 | INFO    | 2010.01.0049489/2025-45   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:26 | INFO    | 2010.01.0049489/2025-45   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:27 | DEBUG   | 2010.01.0049489/2025-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (35 passagem(ns) nesta execução)
+2026-11-06 16:21:27 | INFO    | 2010.01.0049489/2025-45   | __main__              | FIM (4.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:27 | INFO    | 2010.01.0071465/2024-45   | __main__              | INÍCIO [36/431]
+2026-11-06 16:21:32 | INFO    | 2010.01.0071465/2024-45   | __main__              | Árvore: 25 documento(s)
+2026-11-06 16:21:32 | INFO    | 2010.01.0071465/2024-45   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3179820']
+2026-11-06 16:21:32 | WARNING | 2010.01.0071465/2024-45   | planilhas_alt_1       | Retomada: PDF da planilha 123621419 já está na árvore (153087734); não será anexado de novo
+2026-11-06 16:21:32 | INFO    | 2010.01.0071465/2024-45   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:32 | INFO    | 2010.01.0071465/2024-45   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:33 | DEBUG   | 2010.01.0071465/2024-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (36 passagem(ns) nesta execução)
+2026-11-06 16:21:33 | INFO    | 2010.01.0071465/2024-45   | __main__              | FIM (5.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:33 | INFO    | 2010.01.0072056/2024-93   | __main__              | INÍCIO [37/431]
+2026-11-06 16:21:36 | INFO    | 2010.01.0072056/2024-93   | __main__              | Árvore: 17 documento(s)
+2026-11-06 16:21:36 | INFO    | 2010.01.0072056/2024-93   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:21:36 | WARNING | 2010.01.0072056/2024-93   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:36 | INFO    | 2010.01.0072056/2024-93   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:36 | INFO    | 2010.01.0072056/2024-93   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:37 | DEBUG   | 2010.01.0072056/2024-93   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (37 passagem(ns) nesta execução)
+2026-11-06 16:21:37 | INFO    | 2010.01.0072056/2024-93   | __main__              | FIM (4.1s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:37 | INFO    | 2010.01.0076230/2024-12   | __main__              | INÍCIO [38/431]
+2026-11-06 16:21:41 | INFO    | 2010.01.0076230/2024-12   | __main__              | Árvore: 21 documento(s)
+2026-11-06 16:21:41 | INFO    | 2010.01.0076230/2024-12   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:21:41 | WARNING | 2010.01.0076230/2024-12   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:41 | INFO    | 2010.01.0076230/2024-12   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:41 | INFO    | 2010.01.0076230/2024-12   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:42 | DEBUG   | 2010.01.0076230/2024-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (38 passagem(ns) nesta execução)
+2026-11-06 16:21:42 | INFO    | 2010.01.0076230/2024-12   | __main__              | FIM (5.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:42 | INFO    | 2010.01.0080729/2024-80   | __main__              | INÍCIO [39/431]
+2026-11-06 16:21:45 | INFO    | 2010.01.0080729/2024-80   | __main__              | Árvore: 20 documento(s)
+2026-11-06 16:21:45 | INFO    | 2010.01.0080729/2024-80   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:21:45 | WARNING | 2010.01.0080729/2024-80   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:45 | INFO    | 2010.01.0080729/2024-80   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:45 | INFO    | 2010.01.0080729/2024-80   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:46 | DEBUG   | 2010.01.0080729/2024-80   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (39 passagem(ns) nesta execução)
+2026-11-06 16:21:46 | INFO    | 2010.01.0080729/2024-80   | __main__              | FIM (4.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:46 | INFO    | 2010.01.0072588/2024-85   | __main__              | INÍCIO [40/431]
+2026-11-06 16:21:49 | INFO    | 2010.01.0072588/2024-85   | __main__              | Árvore: 16 documento(s)
+2026-11-06 16:21:49 | INFO    | 2010.01.0072588/2024-85   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:21:49 | WARNING | 2010.01.0072588/2024-85   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:49 | INFO    | 2010.01.0072588/2024-85   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:49 | INFO    | 2010.01.0072588/2024-85   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:50 | DEBUG   | 2010.01.0072588/2024-85   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (40 passagem(ns) nesta execução)
+2026-11-06 16:21:50 | INFO    | 2010.01.0072588/2024-85   | __main__              | FIM (4.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:50 | INFO    | 2010.01.0076234/2024-98   | __main__              | INÍCIO [41/431]
+2026-11-06 16:21:54 | INFO    | 2010.01.0076234/2024-98   | __main__              | Árvore: 22 documento(s)
+2026-11-06 16:21:54 | INFO    | 2010.01.0076234/2024-98   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:21:54 | WARNING | 2010.01.0076234/2024-98   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:21:54 | INFO    | 2010.01.0076234/2024-98   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:21:54 | INFO    | 2010.01.0076234/2024-98   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:21:55 | DEBUG   | 2010.01.0076234/2024-98   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (41 passagem(ns) nesta execução)
+2026-11-06 16:21:55 | INFO    | 2010.01.0076234/2024-98   | __main__              | FIM (5.0s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:21:55 | INFO    | 2010.01.0072619/2024-24   | __main__              | INÍCIO [42/431]
+2026-11-06 16:21:59 | INFO    | 2010.01.0072619/2024-24   | __main__              | Árvore: 15 documento(s)
+2026-11-06 16:21:59 | INFO    | 2010.01.0072619/2024-24   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:22:15 | WARNING | 2010.01.0072619/2024-24   | planilhas_alt_1       | Processo sem "Incluir Documento": reabrindo
+2026-11-06 16:22:25 | INFO    | 2010.01.0072619/2024-24   | planilhas_alt_1       | Processo reaberto na unidade
+2026-11-06 16:22:27 | INFO    | 2010.01.0072619/2024-24   | planilhas_alt_1       | Planilha baixada: Anexo RELAÇÃO ATENDIMENTO (SEI 105947424) em 105947424_SIMONE_REBELO_HENRIQUES.xlsx
+2026-11-06 16:22:58 | INFO    | 2010.01.0072619/2024-24   | planilhas_alt_1       | PDF anexado ao processo: Utilização Ben. - 3556433 e mais 3 (153131777)
+2026-11-06 16:23:06 | INFO    | 2010.01.0072619/2024-24   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:23:13 | INFO    | 2010.01.0072619/2024-24   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:23:14 | DEBUG   | 2010.01.0072619/2024-24   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (42 passagem(ns) nesta execução)
+2026-11-06 16:23:14 | INFO    | 2010.01.0072619/2024-24   | __main__              | FIM (0h01m19s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:23:14 | INFO    | 2010.01.0072735/2024-93   | __main__              | INÍCIO [43/431]
+2026-11-06 16:23:18 | INFO    | 2010.01.0072735/2024-93   | __main__              | Árvore: 15 documento(s)
+2026-11-06 16:23:18 | INFO    | 2010.01.0072735/2024-93   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-06 16:23:18 | WARNING | 2010.01.0072735/2024-93   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:23:18 | INFO    | 2010.01.0072735/2024-93   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:23:18 | INFO    | 2010.01.0072735/2024-93   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:23:19 | DEBUG   | 2010.01.0072735/2024-93   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (43 passagem(ns) nesta execução)
+2026-11-06 16:23:19 | INFO    | 2010.01.0072735/2024-93   | __main__              | FIM (4.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:23:19 | INFO    | 2010.01.0072733/2024-50   | __main__              | INÍCIO [44/431]
+2026-11-06 16:23:22 | INFO    | 2010.01.0072733/2024-50   | __main__              | Árvore: 16 documento(s)
+2026-11-06 16:23:22 | INFO    | 2010.01.0072733/2024-50   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 1241095']
+2026-11-06 16:23:22 | WARNING | 2010.01.0072733/2024-50   | planilhas_alt_1       | Retomada: PDF da planilha 123588977 já está na árvore (153088694); não será anexado de novo
+2026-11-06 16:23:22 | INFO    | 2010.01.0072733/2024-50   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:23:22 | INFO    | 2010.01.0072733/2024-50   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:23:23 | DEBUG   | 2010.01.0072733/2024-50   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (44 passagem(ns) nesta execução)
+2026-11-06 16:23:23 | INFO    | 2010.01.0072733/2024-50   | __main__              | FIM (4.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:23:23 | INFO    | 2010.01.0049549/2025-74   | __main__              | INÍCIO [45/431]
+2026-11-06 16:23:28 | INFO    | 2010.01.0049549/2025-74   | __main__              | Árvore: 22 documento(s)
+2026-11-06 16:23:28 | INFO    | 2010.01.0049549/2025-74   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3565452', 'Planilha Utilização Dependentes - 3565452']
+2026-11-06 16:23:28 | WARNING | 2010.01.0049549/2025-74   | planilhas_alt_1       | Retomada: PDF da planilha 123732185 já está na árvore (152999054); não será anexado de novo
+2026-11-06 16:23:28 | WARNING | 2010.01.0049549/2025-74   | planilhas_alt_1       | Retomada: PDF da planilha 123732236 já está na árvore (152999096); não será anexado de novo
+2026-11-06 16:23:28 | INFO    | 2010.01.0049549/2025-74   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:23:28 | INFO    | 2010.01.0049549/2025-74   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:23:28 | DEBUG   | 2010.01.0049549/2025-74   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (45 passagem(ns) nesta execução)
+2026-11-06 16:23:28 | INFO    | 2010.01.0049549/2025-74   | __main__              | FIM (5.2s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:23:28 | INFO    | 2010.01.0049956/2025-46   | __main__              | INÍCIO [46/431]
+2026-11-06 16:23:32 | INFO    | 2010.01.0049956/2025-46   | __main__              | Árvore: 18 documento(s)
+2026-11-06 16:23:32 | INFO    | 2010.01.0049956/2025-46   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3359084']
+2026-11-06 16:23:32 | WARNING | 2010.01.0049956/2025-46   | planilhas_alt_1       | Retomada: PDF da planilha 123687009 já está na árvore (153088885); não será anexado de novo
+2026-11-06 16:23:32 | INFO    | 2010.01.0049956/2025-46   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:23:32 | INFO    | 2010.01.0049956/2025-46   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:23:32 | DEBUG   | 2010.01.0049956/2025-46   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (46 passagem(ns) nesta execução)
+2026-11-06 16:23:32 | INFO    | 2010.01.0049956/2025-46   | __main__              | FIM (4.1s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:23:32 | INFO    | 2010.01.0072597/2024-36   | __main__              | INÍCIO [47/431]
+2026-11-06 16:23:39 | INFO    | 2010.01.0072597/2024-36   | __main__              | Árvore: 23 documento(s)
+2026-11-06 16:23:39 | INFO    | 2010.01.0072597/2024-36   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 3565455']
+2026-11-06 16:23:39 | WARNING | 2010.01.0072597/2024-36   | planilhas_alt_1       | Retomada: PDF da planilha 123615934 já está na árvore (153088996); não será anexado de novo
+2026-11-06 16:23:39 | INFO    | 2010.01.0072597/2024-36   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:23:39 | INFO    | 2010.01.0072597/2024-36   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:23:40 | DEBUG   | 2010.01.0072597/2024-36   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (47 passagem(ns) nesta execução)
+2026-11-06 16:23:40 | INFO    | 2010.01.0072597/2024-36   | __main__              | FIM (7.6s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:23:40 | INFO    | 2010.01.0049567/2025-73   | __main__              | INÍCIO [48/431]
+2026-11-06 16:23:45 | INFO    | 2010.01.0049567/2025-73   | __main__              | Árvore: 24 documento(s)
+2026-11-06 16:23:45 | INFO    | 2010.01.0049567/2025-73   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 3290665', 'Planilha Utilização Dependentes - 3290665']
+2026-11-06 16:23:45 | WARNING | 2010.01.0049567/2025-73   | planilhas_alt_1       | Retomada: PDF da planilha 123491580 já está na árvore (153089053); não será anexado de novo
+2026-11-06 16:23:45 | WARNING | 2010.01.0049567/2025-73   | planilhas_alt_1       | Retomada: PDF da planilha 123491601 já está na árvore (153089165); não será anexado de novo
+2026-11-06 16:23:45 | INFO    | 2010.01.0049567/2025-73   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:23:45 | INFO    | 2010.01.0049567/2025-73   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:23:46 | DEBUG   | 2010.01.0049567/2025-73   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (48 passagem(ns) nesta execução)
+2026-11-06 16:23:46 | INFO    | 2010.01.0049567/2025-73   | __main__              | FIM (5.7s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:23:46 | INFO    | 2010.01.0083386/2024-24   | __main__              | INÍCIO [49/431]
+2026-11-06 16:23:49 | INFO    | 2010.01.0083386/2024-24   | __main__              | Árvore: 20 documento(s)
+2026-11-06 16:23:49 | INFO    | 2010.01.0083386/2024-24   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:23:49 | WARNING | 2010.01.0083386/2024-24   | planilhas_alt_1       | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-06 16:23:49 | INFO    | 2010.01.0083386/2024-24   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1 - Tratado pelo Script"
+2026-11-06 16:23:49 | INFO    | 2010.01.0083386/2024-24   | tags                  | Retomada: o processo já tem o marcador "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-06 16:23:50 | DEBUG   | 2010.01.0083386/2024-24   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (49 passagem(ns) nesta execução)
+2026-11-06 16:23:50 | INFO    | 2010.01.0083386/2024-24   | __main__              | FIM (4.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:23:50 | INFO    | 2010.01.0082988/2024-03   | __main__              | INÍCIO [50/431]
+2026-11-06 16:23:53 | INFO    | 2010.01.0082988/2024-03   | __main__              | Árvore: 11 documento(s)
+2026-11-06 16:23:53 | INFO    | 2010.01.0082988/2024-03   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTOS']
+2026-11-06 16:26:53 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=53741): Failed to establish a new connection: [Errno 111] Connection refused")': /session/f48ce20766df27899f1fd96871127cbf
+2026-11-06 16:26:53 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=53741): Failed to establish a new connection: [Errno 111] Connection refused")': /session/f48ce20766df27899f1fd96871127cbf
+2026-11-06 16:26:53 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=53741): Failed to establish a new connection: [Errno 111] Connection refused")': /session/f48ce20766df27899f1fd96871127cbf
+2026-11-06 16:26:53 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-06 16:26:53 | INFO    | -                         | __main__              | Processos: 49 | Sem erro: 49 | Com erro: 0
+2026-11-06 16:26:53 | INFO    | -                         | __main__              |    47 | ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-06 16:26:53 | INFO    | -                         | __main__              |     2 | ALT 1: nenhuma planilha no processo (verificar)
+2026-11-06 16:26:53 | INFO    | -                         | __main__              | Duração total da execução: 0h09m16s
+2026-11-06 16:26:53 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

@@ -249,7 +249,12 @@ col_main = Coluna(
         F('carregar_bases() · carregar_bases_mantis()', 'Lê processos_nao_processados.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
         F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle e faz login no SEI'),
         S('<b>Para cada processo</b>'),
-        F('_processar_linha()', 'Abre o processo e lê a árvore e os marcadores do SEI', chama='acessar_processo, registrar_arvore, registrar_tags'),
+        F('_processar_linha()', 'Abre o processo e lê os marcadores do SEI', chama='acessar_processo, registrar_tags'),
+        P(
+            'Sem o botão<br>Incluir Documento?',
+            [E('<b>ProcessoFechadoNoSetor</b>: nada é feito no SEI<br>prox_acao = Verificar erro<br>TODO: definir o que fazer nesses casos')],
+        ),
+        F('registrar_arvore()', 'Lê a árvore do processo'),
         IR('_tratar() — coluna 2'),
         F('conferir_marcadores()', 'De novo, no fim da passagem (se não houve erro)'),
         E('<b>Erro levantado em qualquer coluna?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro, erro e prox_acao = Verificar erro (ou a já definida). Inesperado: + traceback'),
@@ -260,7 +265,7 @@ col_main = Coluna(
     ],
 )
 # O erro não encerra a execução: a passagem segue para a planilha
-col_main.itens[9].ligar = lambda prox, no=col_main.itens[9]: _seta(no, prox, '', ABAIXO)
+col_main.itens[11].ligar = lambda prox, no=col_main.itens[11]: _seta(no, prox, '', ABAIXO)
 
 col_tratar = Coluna(
     '2 · _tratar()',

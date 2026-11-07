@@ -26,13 +26,14 @@ from mantis import BasesMantis, carregar_bases_mantis
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from planilha_controle import PlanilhaControleGeral
 from processar_novo import processar_novo
+from processo_fechado import exigir_processo_aberto
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
 from Registro import ProxAcao, RegistroMain, registrar_erro
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
-from sessao_sei import abrir_sei
+from sessao_sei import abrir_sei, sessao_encerrada
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
@@ -174,8 +175,9 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
 
     try:
         acessar_processo(driver, num_processo)
-        registro.registrar_arvore(listar_documentos_arvore(driver))
         registrar_tags(registro, listar_marcadores(driver))
+        exigir_processo_aberto(driver)
+        registro.registrar_arvore(listar_documentos_arvore(driver))
         logger.info(f'Árvore: {len(registro.tds_docs)} documento(s) | GEACS: {registro.qnt_docs_geacs_na_arvore} documento(s), {registro.qnt_memos_geacs_na_arvore} memorando(s)')
         logger.info(f'Marcadores: {registro.marcadores_sei or "nenhum"}')
 
@@ -229,6 +231,10 @@ def main():
                 controle.registrar(registros_processados[-1])
 
                 log_fim_processo(logger, registro, datetime.now() - t_ini)
+
+                if sessao_encerrada(registro):
+                    logger.warning(f'Navegador fechado: execução interrompida em {i} de {total} processo(s)')
+                    break
 
     except Exception:
         logger.exception('Erro crítico na execução do main')

@@ -12,6 +12,7 @@ import docs_processo
 import main
 import memos_sei
 import processar_novo
+import processo_fechado
 import relatorios_mantis
 import tags
 from constantes import UNIDADE_APIS, UNIDADE_GEACS
@@ -80,6 +81,8 @@ def curto(tag: str) -> str:
 
 
 class SEIFalso:
+    processo_fechado = False
+
     def __init__(self):
         self.docs: list[dict] = []
         self.tags: list[str] = []
@@ -175,6 +178,7 @@ class SEIFalso:
         monkeypatch.setattr(tags, 'adicionar_marcador', self._adicionar_marcador)
         monkeypatch.setattr(tags, 'remover_marcador', self._remover_marcador)
         monkeypatch.setattr(main, 'acessar_processo', lambda driver, num: None)
+        monkeypatch.setattr(processo_fechado, 'tem_incluir_documento', lambda driver: not self.processo_fechado)
         monkeypatch.setattr(main, 'listar_documentos_arvore', arvore)
         monkeypatch.setattr(docs_processo, 'listar_documentos_arvore', arvore)
         monkeypatch.setattr(main, 'listar_marcadores', lambda driver: list(self.tags))

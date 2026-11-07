@@ -8,11 +8,14 @@ import main_alt_1
 import pandas as pd
 import planilhas_alt_1
 import pytest
+import relatorios_mantis
 import transformar_xls_em_pdf
 from constantes import UNIDADE_APIS
+from openpyxl import load_workbook
 from planilhas_alt_1 import ANEXO, DEPENDENTES, TITULAR, encontrar_planilhas, ler_planilha, nome_pdf, tipo_da_planilha
 from rede_propria import ErroAvaliacao
-from Registro import ProxAcao, RegistroAlt1
+from Registro import ProxAcao, RegistroAlt1, registrar_erro
+from selenium.common.exceptions import InvalidSessionIdException, StaleElementReferenceException, TimeoutException
 from tags import (
     TAG_AGUARDA_DISA_VALIDAR_CONSTA,
     TAG_AGUARDA_FLUXO_NORMAL,
@@ -73,6 +76,10 @@ class _SwitchFalso:
 class DriverFalso:
     switch_to = _SwitchFalso
 
+    @staticmethod
+    def refresh():
+        return None
+
 
 @pytest.fixture
 def alt(sei, monkeypatch, tmp_path):
@@ -80,9 +87,10 @@ def alt(sei, monkeypatch, tmp_path):
     monkeypatch.setattr(planilhas_alt_1, 'DIR_ALT_1_PLANILHAS', tmp_path)
     monkeypatch.setattr(planilhas_alt_1, 'DIR_ALT_1_PDF', tmp_path / 'pdfs')
     monkeypatch.setattr(planilhas_alt_1, 'TIMEOUT_DOWNLOAD', 0.1)
-    monkeypatch.setattr(planilhas_alt_1, '_ESPERA_PROCESSO', 0)
+    monkeypatch.setattr(planilhas_alt_1, '_ESPERA_NOVA_TENTATIVA', 0)
+    monkeypatch.setattr(planilhas_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
     monkeypatch.setattr(planilhas_alt_1, 'selecionar_doc_arvore', falso.selecionar)
-    monkeypatch.setattr(planilhas_alt_1, 'clicar_num_processo', lambda driver: None)
+    monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: True)
     monkeypatch.setattr(planilhas_alt_1, 'transformar_xls_em_pdf', falso.transformar)
     monkeypatch.setattr(main_alt_1, 'acessar_processo', lambda driver, num: None)
     monkeypatch.setattr(main_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
@@ -167,6 +175,160 @@ def test_erro_em_uma_planilha_retoma_na_passagem_seguinte(sei, alt):
     assert alt.abertas == [tit, ruim, ruim]
 
 
+def test_processo_com_so_um_dos_pdfs_recebe_o_que_falta(sei, alt):
+    tit = planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
+    dep = planilha(sei, alt, f'Planilha Utilização Dependentes - {MATRICULA}', [{**BASE, **DEPENDENTE}])
+    pdf_tit = sei.novo_doc(f'PDF Utilização Tit. - {MATRICULA} - SEI {tit}', UNIDADE_APIS, '')
+
+    registro = passar()
+
+    assert alt.abertas == [dep]
+    assert registro.pdfs_incluidos == [f'Utilização Dep. - {MATRICULA} - SEI {dep}']
+    assert registro.pdfs_na_arvore == [pdf_tit]
+    assert sei.tags == [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
+
+
+def _falhar_ao_anexar(monkeypatch, sei, falhas: list[bool]):
+    """Cada item é uma tentativa com tempo esgotado: True se o documento entra
+    mesmo assim (tempo esgotado depois de salvar)."""
+
+    def incluir(driver, *, tipo_doc, num, **kwargs):
+        if num.startswith('Utilização Dep.') and falhas:
+            if falhas.pop(0):
+                sei.novo_doc(f'{tipo_doc} {num}', UNIDADE_APIS, '')
+            raise TimeoutException
+        sei.novo_doc(f'{tipo_doc} {num}', UNIDADE_APIS, '')
+
+    monkeypatch.setattr(relatorios_mantis, 'incluir_doc_externo', incluir)
+
+
+def _titular_e_dependentes(sei, alt) -> tuple[str, str]:
+    tit = planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
+    dep = planilha(sei, alt, f'Planilha Utilização Dependentes - {MATRICULA}', [{**BASE, **DEPENDENTE}])
+    return tit, dep
+
+
+def test_tempo_esgotado_ao_anexar_tenta_de_novo(sei, alt, monkeypatch):
+    tit, dep = _titular_e_dependentes(sei, alt)
+    _falhar_ao_anexar(monkeypatch, sei, [False, False])
+
+    registro = passar()
+
+    assert registro.erro is None
+    assert sei.nomes[-2:] == [f'PDF Utilização Tit. - {MATRICULA} - SEI {tit}', f'PDF Utilização Dep. - {MATRICULA} - SEI {dep}']
+    assert sei.tags == [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
+
+
+def test_elemento_obsoleto_ao_anexar_tenta_de_novo(sei, alt, monkeypatch):
+    # A tela recarregou entre achar o ícone e clicar
+    tit, dep = _titular_e_dependentes(sei, alt)
+    falhas = [StaleElementReferenceException]
+
+    def incluir(driver, *, tipo_doc, num, **kwargs):
+        if num.startswith('Utilização Dep.') and falhas:
+            raise falhas.pop()
+        sei.novo_doc(f'{tipo_doc} {num}', UNIDADE_APIS, '')
+
+    monkeypatch.setattr(relatorios_mantis, 'incluir_doc_externo', incluir)
+
+    registro = passar()
+
+    assert registro.erro is None
+    assert sei.nomes[-2:] == [f'PDF Utilização Tit. - {MATRICULA} - SEI {tit}', f'PDF Utilização Dep. - {MATRICULA} - SEI {dep}']
+
+
+def _sem_incluir_documento(monkeypatch, *, reabre: bool = True) -> list[str]:
+    """Só depois de reaberto o processo tem "Incluir Documento"."""
+    reaberturas: list[str] = []
+
+    def reabrir(driver):
+        if not reabre:
+            raise ValueError('Não há como concluir nem reabrir o processo')
+        reaberturas.append('reabriu')
+
+    monkeypatch.setattr(planilhas_alt_1, 'reabrir_processo', reabrir)
+    monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: bool(reaberturas))
+    return reaberturas
+
+
+def test_processo_sem_incluir_documento_e_reaberto_e_recebe_os_pdfs(sei, alt, monkeypatch):
+    tit = planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
+    reaberturas = _sem_incluir_documento(monkeypatch)
+
+    registro = passar()
+
+    assert reaberturas == ['reabriu']
+    assert registro.processo_reaberto is True
+    assert registro.to_dict()['processo_reaberto'] is True
+    assert registro.erro is None
+    assert sei.nomes[-1] == f'PDF Utilização Tit. - {MATRICULA} - SEI {tit}'
+
+
+def test_processo_que_nao_reabre_para_antes_de_baixar(sei, alt, monkeypatch):
+    planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
+    _sem_incluir_documento(monkeypatch, reabre=False)
+
+    registro = passar()
+
+    assert registro.tipo_erro == 'ErroAvaliacao'
+    assert 'não foi possível reabrir' in registro.erro
+    assert registro.processo_reaberto is False
+    assert alt.abertas == []
+    assert sei.tags == []
+
+
+def test_processo_que_continua_sem_incluir_documento_e_erro(sei, alt, monkeypatch):
+    planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
+    monkeypatch.setattr(planilhas_alt_1, 'reabrir_processo', lambda driver: None)
+    monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: False)
+
+    registro = passar()
+
+    assert 'depois de reabrir' in registro.erro
+    assert registro.processo_reaberto is False
+    assert alt.abertas == []
+
+
+def test_processo_com_todos_os_pdfs_nao_e_reaberto(sei, alt, monkeypatch):
+    tit = planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
+    sei.novo_doc(f'PDF Utilização Tit. - {MATRICULA} - SEI {tit}', UNIDADE_APIS, '')
+    reaberturas = _sem_incluir_documento(monkeypatch)
+
+    registro = passar()
+
+    assert reaberturas == []
+    assert registro.erro is None
+    assert registro.prox_acao == ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL
+
+
+def test_tempo_esgotado_depois_de_salvar_nao_duplica(sei, alt, monkeypatch):
+    _, dep = _titular_e_dependentes(sei, alt)
+    _falhar_ao_anexar(monkeypatch, sei, [True])
+
+    registro = passar()
+
+    assert registro.erro is None
+    assert sei.nomes.count(f'PDF Utilização Dep. - {MATRICULA} - SEI {dep}') == 1
+
+
+def test_tempo_esgotado_em_todas_as_tentativas_retoma_na_passagem_seguinte(sei, alt, monkeypatch):
+    tit, dep = _titular_e_dependentes(sei, alt)
+    _falhar_ao_anexar(monkeypatch, sei, [False] * 3)
+
+    registro = passar()
+
+    assert registro.tipo_erro == 'TimeoutException'
+    assert sei.tags == []
+    assert registro.pdfs_incluidos == [f'Utilização Tit. - {MATRICULA} - SEI {tit}']
+
+    registro = passar()
+
+    assert registro.erro is None
+    assert alt.abertas == [tit, dep, dep]
+    assert sei.nomes[-1] == f'PDF Utilização Dep. - {MATRICULA} - SEI {dep}'
+    assert sei.tags == [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
+
+
 @pytest.mark.parametrize(
     'marcadores',
     [
@@ -206,16 +368,50 @@ def test_nome_do_pdf_do_anexo_conta_as_matriculas_distintas_e_cabe_no_sei(tmp_pa
     assert len(nome) <= 50
 
 
-def test_anexo_ja_inserido_e_baixado_mas_nao_duplica(sei, alt):
+def test_anexo_ja_inserido_nao_e_baixado_de_novo(sei, alt):
     numero = planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
     passar()
 
     registro = passar()
 
-    assert alt.abertas == [numero, numero]
+    assert alt.abertas == [numero]
     assert sei.nomes.count(f'PDF Utilização Ben. - {MATRICULA}') == 1
     assert registro.pdfs_incluidos == []
     assert registro.pdfs_na_arvore == [sei.numero_sei('PDF Utilização Ben.')]
+
+
+def test_anexo_com_pdf_na_arvore_nao_depende_do_download(sei, alt, monkeypatch):
+    planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
+    sei.novo_doc(f'PDF Utilização Ben. - {MATRICULA} e mais 2', 'IPSEMG/GEACS - Utilização', '')
+    monkeypatch.setattr(planilhas_alt_1, 'selecionar_doc_arvore', lambda driver, numero_sei: None)
+
+    registro = passar()
+
+    assert registro.erro is None
+    assert registro.prox_acao == ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL
+
+
+def test_dois_anexos_ja_inseridos_nao_sao_baixados_de_novo(sei, alt):
+    primeiro = planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
+    segundo = planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTOS', [{**BASE, 'MATRICULA_BENEFICIARIO': 777}])
+    passar()
+
+    registro = passar()
+
+    assert alt.abertas == [primeiro, segundo]
+    assert len(registro.pdfs_na_arvore) == 2
+
+
+def test_anexo_novo_depois_do_pdf_de_outro_e_baixado_e_inserido(sei, alt):
+    primeiro = planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
+    passar()
+    segundo = planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTOS', [{**BASE, 'MATRICULA_BENEFICIARIO': 777}])
+
+    registro = passar()
+
+    assert alt.abertas == [primeiro, primeiro, segundo]
+    assert registro.pdfs_incluidos == ['Utilização Ben. - 777']
+    assert sei.nomes.count(f'PDF Utilização Ben. - {MATRICULA}') == 1
 
 
 def test_anexo_com_matricula_que_comeca_igual_nao_e_o_mesmo_pdf(sei, alt):
@@ -274,6 +470,20 @@ def test_download_que_nao_chega_e_erro(sei, alt, monkeypatch):
 
     assert 'não foi baixada' in registro.erro
     assert sei.pdfs == []
+    assert registro.tipo_erro == 'ErroAvaliacao'
+    assert registro.prox_acao == ProxAcao.VERIFICAR_ERRO
+
+
+def test_download_demorado_e_descartado_e_a_planilha_seguinte_nao_espera(sei, alt, tmp_path, monkeypatch):
+    planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
+    temporario = tmp_path / 'lento.xlsx.crdownload'
+    monkeypatch.setattr(planilhas_alt_1, 'selecionar_doc_arvore', lambda driver, numero_sei: temporario.touch())
+
+    registro = passar()
+
+    assert 'não foi baixada' in registro.erro
+    assert sei.tags == []
+    assert not temporario.exists()
 
 
 def test_controle_nao_apaga_as_colunas_do_fluxo_principal(sei, alt):
@@ -372,6 +582,34 @@ def test_pdf_do_anexo_tem_titulo_e_colunas_de_beneficiario(tmp_path, monkeypatch
     assert not any('Titular' in texto for texto in textos)
 
 
+@pytest.mark.parametrize(
+    ('tipo', 'colunas'),
+    [
+        ('Titular', {'PRESTADOR': 'A', 'DATA DO ATENDIMENTO': pd.Timestamp(2024, 3, 15), 'PROCEDIMENTO': 'B'}),
+        ('Dependente(s)', {'PRESTADOR': 'A', 'MATRICULA DEPENDENTE': 1, 'NOME DEPENDENTE': 'B', 'DATA DO ATENDIMENTO': pd.Timestamp(2024, 3, 15)}),
+        ('Beneficiário(s)', {'PRESTADOR': 'A', 'MATRICULA BENEFICIARIO': 1, 'NOME BENEFICIARIO': 'B', 'DATA DO ATENDIMENTO': pd.Timestamp(2024, 3, 15)}),
+    ],
+)
+def test_pdf_termina_com_a_soma_do_valor_pago(tmp_path, monkeypatch, tipo, colunas):
+    tabelas = []
+    tabela = transformar_xls_em_pdf.Table
+
+    def capturar(dados, *args, **kwargs):
+        tabelas.append(dados)
+        return tabela(dados, *args, **kwargs)
+
+    monkeypatch.setattr(transformar_xls_em_pdf, 'Table', capturar)
+    df = pd.DataFrame([{**colunas, 'VALOR PAGO': valor} for valor in (1000.5, 234.25, 0.0)])
+
+    caminho = transformar_xls_em_pdf.transformar_xls_em_pdf(tit_matricula='123', tit_nome='', tipo=tipo, df=df, path_destino=tmp_path)
+
+    assert caminho.exists()
+    ultima_linha = tabelas[-1][-1]
+    assert len(tabelas[-1]) == len(df) + 2
+    assert ultima_linha[0] == 'TOTAL'
+    assert ultima_linha[-1] == '1.234,75'
+
+
 def test_ler_anexo_remove_total_e_aceita_data_do_excel(tmp_path):
     linhas = [
         {**BASE, 'REFERENCIA': '03/2024', 'DAT_ATENDIMENTO': datetime(2024, 3, 15)},
@@ -387,6 +625,148 @@ def test_ler_anexo_remove_total_e_aceita_data_do_excel(tmp_path):
 def test_ler_dependentes_usa_o_layout_sem_procedimento(tmp_path):
     relatorio = ler_planilha(gravar(tmp_path / 'a.xlsx', [{**BASE, **DEPENDENTE}]), DEPENDENTES)
     assert list(relatorio.df.columns) == ['PRESTADOR', 'MATRICULA DEPENDENTE', 'NOME DEPENDENTE', 'DATA DO ATENDIMENTO', 'VALOR PAGO']
+
+
+def test_nome_do_titular_aceita_variacoes_do_mesmo_nome(tmp_path):
+    linhas = [{**BASE, 'NOME_BENEFICIARIO': nome} for nome in ('FULANO TAL', 'Fulano Tal', 'Fulano de Tál')]
+    relatorio = ler_planilha(gravar(tmp_path / 'p.xlsx', linhas), TITULAR)
+    assert relatorio.nome_titular == 'Fulano de Tál'
+
+
+def test_nome_do_titular_com_outras_palavras_usa_o_mais_frequente(tmp_path):
+    linhas = [{**BASE, 'NOME_BENEFICIARIO': 'Fulano de Souza'}, BASE, BASE]
+    relatorio = ler_planilha(gravar(tmp_path / 'p.xlsx', linhas), TITULAR)
+    assert relatorio.nome_titular == 'Fulano de Tal'
+
+
+def test_rodape_fora_do_padrao_com_a_soma_e_removido(tmp_path):
+    rodape = {**dict.fromkeys(BASE), 'REFERENCIA': 'TEXTO', 'COD_PRESTADOR': 'TOTAL', 'VAL_PAGAR': 21.0}
+    relatorio = ler_planilha(gravar(tmp_path / 'a.xlsx', [BASE, BASE, rodape]), ANEXO)
+    assert len(relatorio.df) == 2
+
+
+def test_linha_sem_data_que_nao_e_a_soma_continua_erro(tmp_path):
+    linha = {**dict.fromkeys(BASE), 'VAL_PAGAR': 99.0}
+    with pytest.raises(ErroAvaliacao, match='sem data válida'):
+        ler_planilha(gravar(tmp_path / 'a.xlsx', [BASE, BASE, linha]), ANEXO)
+
+
+def test_planilha_com_mais_de_uma_aba_e_erro(tmp_path):
+    caminho = tmp_path / 'a.xlsx'
+    with pd.ExcelWriter(caminho) as escritor:
+        pd.DataFrame([BASE]).to_excel(escritor, sheet_name='Planilha1', index=False)
+        pd.DataFrame([BASE]).to_excel(escritor, sheet_name='Planilha2', index=False)
+
+    with pytest.raises(ErroAvaliacao, match='2 abas'):
+        ler_planilha(caminho, ANEXO)
+
+
+def test_aba_oculta_tambem_conta(tmp_path):
+    caminho = gravar(tmp_path / 'a.xlsx', [BASE])
+    livro = load_workbook(caminho)
+    livro.create_sheet('Oculta').sheet_state = 'hidden'
+    livro.save(caminho)
+
+    with pytest.raises(ErroAvaliacao, match='2 abas'):
+        ler_planilha(caminho, ANEXO)
+
+
+def test_anexo_acima_do_limite_de_beneficiarios_e_erro(tmp_path):
+    linhas = [{**BASE, 'MATRICULA_BENEFICIARIO': MATRICULA + i} for i in range(planilhas_alt_1._MAX_BENEFICIARIOS_ANEXO + 1)]
+    with pytest.raises(ErroAvaliacao, match='beneficiários'):
+        ler_planilha(gravar(tmp_path / 'a.xlsx', linhas), ANEXO)
+
+
+def test_anexo_no_limite_de_beneficiarios_e_aceito(tmp_path):
+    limite = planilhas_alt_1._MAX_BENEFICIARIOS_ANEXO
+    linhas = [{**BASE, 'MATRICULA_BENEFICIARIO': MATRICULA + i} for i in range(limite)]
+    assert ler_planilha(gravar(tmp_path / 'a.xlsx', linhas), ANEXO).matricula_titular == f'{MATRICULA} e mais {limite - 1}'
+
+
+def test_download_anterior_que_termina_nao_entra_no_proximo(sei, alt, tmp_path, monkeypatch):
+    numero = planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
+    temporario = tmp_path / 'atrasado.xlsx.crdownload'
+    temporario.touch()
+    dormir = planilhas_alt_1.time.sleep
+
+    def terminar(segundos):
+        # O download atrasado termina durante a espera
+        if temporario.exists():
+            temporario.rename(tmp_path / 'atrasado.xlsx')
+        dormir(segundos)
+
+    monkeypatch.setattr(planilhas_alt_1.time, 'sleep', terminar)
+
+    caminho = planilhas_alt_1.baixar_planilha(DriverFalso(), {'numero_sei': numero, 'nome_arvore': 'Planilha'})
+
+    assert caminho.name == f'{numero}_Utilizacao_3542985 (1).xlsx'
+    assert (tmp_path / 'atrasado.xlsx').exists()
+
+
+def test_download_preso_e_descartado_e_nao_para_o_proximo(sei, alt, tmp_path):
+    numero = planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
+    temporario = tmp_path / 'preso.crdownload'
+    temporario.touch()
+
+    caminho = planilhas_alt_1.baixar_planilha(DriverFalso(), {'numero_sei': numero, 'nome_arvore': 'Planilha'})
+
+    assert not temporario.exists()
+    assert caminho.name.startswith(numero)
+
+
+def test_navegador_fechado_registra_o_erro_do_processo_e_para_o_loop(alt, tmp_path, monkeypatch):
+    # P2 estava em andamento; P3 não é tocado
+    assert _executar_ate_fechar(monkeypatch, tmp_path) == [('P1', None), ('P2', 'InvalidSessionIdException')]
+
+
+def test_navegador_fechado_vira_erro_no_registro(alt, monkeypatch):
+    def fechado(driver, num):
+        raise InvalidSessionIdException('invalid session id')
+
+    monkeypatch.setattr(main_alt_1, 'acessar_processo', fechado)
+
+    registro = passar()
+
+    assert registro.tipo_erro == 'InvalidSessionIdException'
+    assert registro.erro.startswith('invalid session id')
+
+
+def _executar_ate_fechar(monkeypatch, tmp_path) -> list[tuple]:
+    gravados: list[tuple] = []
+
+    class Controle:
+        def __init__(self, *args):
+            pass
+
+        @staticmethod
+        def registrar(linha):
+            gravados.append((linha['num_processo'], linha['tipo_erro']))
+
+    class DriverFechavel(DriverFalso):
+        fechado = False
+
+        def quit(self):
+            self.fechado = True
+
+    def processar(driver, num_processo, *args):
+        registro = RegistroAlt1(num_processo=num_processo, data_execucao='agora', fluxo='F')
+        if num_processo != 'P1':
+            registrar_erro(registro, InvalidSessionIdException('invalid session id'))
+        return registro
+
+    monkeypatch.setattr(main_alt_1, 'configurar_logging', lambda arquivo: None)
+    monkeypatch.setattr(main_alt_1.pd, 'read_excel', lambda **kwargs: pd.DataFrame({'num_sei': ['P1', 'P2', 'P3']}))
+    monkeypatch.setattr(main_alt_1, 'PlanilhaControleGeral', Controle)
+    driver = DriverFechavel()
+    monkeypatch.setattr(main_alt_1, 'abrir_sei', lambda download_dir=None: driver)
+    monkeypatch.setattr(main_alt_1, '_processar_linha', processar)
+    for constante in ('DIR_INPUTS', 'DIR_CONTROLE', 'DIR_LOG'):
+        monkeypatch.setattr(main_alt_1, constante, tmp_path)
+
+    main_alt_1.executar('alt_1', 'F', 'agora', tmp_path / 'x.log', [], lambda driver, registro: None)
+
+    assert driver.fechado
+    return gravados
 
 
 def test_valor_vazio_conta_como_zero(tmp_path):

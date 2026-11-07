@@ -25,7 +25,7 @@ from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
-from sessao_sei import abrir_sei
+from sessao_sei import abrir_sei, sessao_encerrada
 from tags import TAG_AGUARDA_FLUXO_NORMAL, TAG_PROCESSO_NOVO, registrar_tags
 
 AGORA = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -108,6 +108,10 @@ def executar(
                 controle.registrar(registros_processados[-1])
 
                 log_fim_processo(logger, registro, datetime.now() - t_ini)
+
+                if sessao_encerrada(registro):
+                    logger.warning(f'Navegador fechado: execução interrompida em {i} de {total} processo(s)')
+                    break
 
     except Exception:
         logger.exception(f'Erro crítico na execução ({fluxo})')
