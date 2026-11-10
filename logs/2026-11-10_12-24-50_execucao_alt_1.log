@@ -1,0 +1,20 @@
+2026-11-10 12:24:50 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ALT 1 - SOMENTE INSERIR PDF) =================
+2026-11-10 12:24:50 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-10_12-24-50_execucao_alt_1.log
+2026-11-10 12:24:50 | INFO    | -                         | __main__              | 1 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-10 12:24:53 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-10 12:24:53 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-10 12:24:53 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-10 12:24:54 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-10 12:24:54 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\fluxo_alt_1\planilhas_baixadas
+2026-11-10 12:24:57 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-10 12:24:57 | INFO    | 2010.01.0057684/2025-37   | __main__              | INÍCIO [1/1]
+2026-11-10 12:25:01 | INFO    | 2010.01.0057684/2025-37   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-10 12:25:01 | INFO    | 2010.01.0057684/2025-37   | __main__              | Árvore: 19 documento(s)
+2026-11-10 12:25:01 | INFO    | 2010.01.0057684/2025-37   | planilhas_alt_1       | 2 planilha(s) na árvore: ['Planilha Utilização Titular - 2378286 - DESCONSIDERAR', 'Planilha Utilização Titular - 2378286']
+2026-11-10 12:25:13 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None)': /session/1cd5eb9ebf60cea665a651abf7fb1ee1
+2026-11-10 12:25:17 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=52205): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/1cd5eb9ebf60cea665a651abf7fb1ee1
+2026-11-10 12:25:21 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=52205): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/1cd5eb9ebf60cea665a651abf7fb1ee1
+2026-11-10 12:25:25 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-10 12:25:25 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-10 12:25:25 | INFO    | -                         | __main__              | Duração total da execução: 35.8s
+2026-11-10 12:25:25 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

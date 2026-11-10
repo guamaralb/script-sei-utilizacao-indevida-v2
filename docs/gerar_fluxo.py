@@ -246,21 +246,15 @@ col_main = Coluna(
     [
         T('Início'),
         F('configurar_logging()', 'Cria as pastas e o log da execução'),
-        F('carregar_bases() · carregar_bases_mantis()', 'Lê processos_nao_processados.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
-        F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle e faz login no SEI'),
+        F('carregar_bases() · carregar_bases_mantis()', 'Lê a aba geacs de processos_a_processar.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
+        F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle, faz login no SEI e troca para a unidade da GEACS (alterar_unidade_sei: TODO na sei_automacao)'),
         S('<b>Para cada processo</b>'),
         F('_processar_linha()', 'Abre o processo e lê os marcadores do SEI', chama='acessar_processo, registrar_tags'),
-        P(
-            'Sem o botão<br>Incluir Documento?',
-            [
-                F('reabrir_processo_fechado()', 'Reabre o processo na unidade (continua aberto) e segue o fluxo. Coluna processo_reaberto', chama='reabrir_processo'),
-                E('<b>Não reabriu</b> (ou ainda sem o botão): <b>ProcessoFechadoNoSetor</b>, nada mais é feito no SEI<br>prox_acao = Verificar erro'),
-            ],
-        ),
+        F('tem_incluir_documento()', 'Sem o botão Incluir Documento = processo fechado no setor. Só registra: quem decide reabrir é _tratar() (coluna 2)'),
         F('registrar_arvore()', 'Lê a árvore do processo'),
         IR('_tratar() — coluna 2'),
         F('conferir_marcadores()', 'De novo, no fim da passagem (se não houve erro)'),
-        E('<b>Erro levantado em qualquer coluna?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro, erro e prox_acao = Verificar erro (ou a já definida). Inesperado: + traceback'),
+        E('<b>Erro levantado em qualquer coluna?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro, erro e prox_acao = Verificar erro (ou a já definida). Inesperado: + traceback e recarrega a página (tela presa não derruba os próximos processos)'),
         F('controle.registrar()', 'Regrava a planilha de controle (abas processos e historico) depois de cada processo'),
         P('Há mais processos?', [IR('volta a "Para cada processo"')]),
         F('log_resumo()', 'Fecha o navegador e loga o resumo'),
@@ -316,9 +310,19 @@ col_tratar = Coluna(
         ),
         P('Par sem data<br>legível?', [E('<b>ErroAvaliacao</b>: não dá para saber se é VELHO; nada é feito no SEI')]),
         P('<b>VELHO</b> pelos memos<br>da GEACS?', [IR('_separar_velho()<br><span style="font-weight:normal">à direita</span>')]),
+        P(
+            'Processo <b>fechado</b> no setor?',
+            [
+                P(
+                    'Com MANUAL ou ASSINADO, ou sem<br>memo da APIS para a GEACS?',
+                    [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é feito no SEI<br>prox_acao = Verificar erro')],
+                ),
+                F('reabrir_processo_fechado()', 'Reabre o processo na unidade (continua aberto) e relê a árvore. Coluna processo_reaberto. Não reabriu: ProcessoFechadoNoSetor', chama='reabrir_processo, listar_documentos_arvore'),
+            ],
+        ),
         P('Sem o marcador<br><b>1 - Tratado pelo Script</b>?', [M('1 - Tratado pelo Script'), IR('processar_novo() do início — coluna 3')]),
         IR(
-            'processar_novo() — coluna 3<br><span style="font-weight:normal">do início (sem estado ou com 1.0 - Aguarda Script: Fluxo Normal, que o fluxo ALT 1 deixa) '
+            'processar_novo() — coluna 3<br><span style="font-weight:normal">do início (sem estado ou com 1.0 - Aguarda Script: Fluxo Normal, que o fluxo ADC PDF ANT AUT deixa) '
             'ou retomando de 1.6 - Avaliado Uso Rede Própria DISA ou 1.8 - Avaliado Uso Rede Própria MANTIS</span>'
         ),
     ],
@@ -345,7 +349,7 @@ col_processar = Coluna(
             ],
         ),
         P(
-            'Formato inválido?<br>(período por dependente incompleto<br>ou não é novo_novo)',
+            'Formato inválido?<br>(período por dependente incompleto,<br>não é novo_novo ou período<br>do titular inválido)',
             [
                 F('_parar_formato_invalido()', chama='_parar_com_memo'),
                 MEMO('MemoApisFormatoInvalido', 7730341),
@@ -499,6 +503,7 @@ aux = [
         '_separar_velho()',
         '<b>Processo VELHO</b> (enviado à DISA e à DEPROC antes da avaliação): marcado e <b>não processado</b>. TODO: definir o fluxo do VELHO',
         [
+            P('Processo fechado<br>no setor?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é feito no SEI')]),
             P('Tem MANUAL<br>ou ASSINADO?', [R('1.0 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'), T('prox_acao = Fora do escopo (tratado manualmente)')]),
             F('garantir_marcadores_no_sei()'),
             M('0 - Processo VELHO<br><span style="font-weight:normal">se ainda não tiver</span>'),
@@ -529,7 +534,7 @@ aux = [
         'incluir_memo()',
         'Cada 📄 do diagrama. Retomada: procura o memo pelo assunto na rodada',
         [
-            F('encontrar_memo_geacs_por_assunto()'),
+            F('encontrar_memo_por_assunto()'),
             P('Já existe?', [S('Não recria (coluna &lt;memo&gt;_na_arvore)')]),
             F('incluir_doc_sei_memo() · inserir_bloco_ass()', 'Cria o memo e insere no bloco'),
         ],
@@ -569,7 +574,7 @@ marcadores = N(
     '1 - Tratado pelo Script<br>'
     '1.1 - Período Variável p/ Dependentes<br>'
     '1.2.1 - Mat. N Encontradas Base APIS<br>'
-    '★ 1.0 - Aguarda Script: Fluxo Normal (adicionado pelo fluxo ALT 1)<br>'
+    '★ 1.0 - Aguarda Script: Fluxo Normal (adicionado pelo fluxo ADC PDF ANT AUT)<br>'
     '★ 1.5 - Aguarda APIS: Sem Memo p/ GEACS<br>'
     '★ 1.5 - Aguarda APIS: Formato Inválido<br>'
     '★ 1.6 - Avaliado Uso Rede Própria DISA<br>'

@@ -2,6 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 import planilha_controle
+import processos_a_processar
 import pytest
 from openpyxl import load_workbook
 from planilha_controle import PlanilhaControleGeral
@@ -22,7 +23,7 @@ def _ler(arquivo):
 
 
 def test_grava_a_cada_processo(arquivo):
-    controle = PlanilhaControleGeral('main', 'exec1', arquivo)
+    controle = PlanilhaControleGeral('geacs', 'exec1', arquivo)
     controle.registrar(_passagem('P1', 9, prox_acao='A'))
     assert len(_ler(arquivo)['processos']) == 1
 
@@ -35,7 +36,7 @@ def test_grava_a_cada_processo(arquivo):
 
 
 def test_nova_passagem_atualiza_linha_e_mantem_primeira_passagem(arquivo):
-    PlanilhaControleGeral('main', 'exec1', arquivo).registrar(_passagem('P1', 9, prox_acao='A', memo_disa_sei='111'))
+    PlanilhaControleGeral('geacs', 'exec1', arquivo).registrar(_passagem('P1', 9, prox_acao='A', memo_disa_sei='111'))
     PlanilhaControleGeral('correcao_rede_propria', 'exec2', arquivo).registrar(_passagem('P1', 15, prox_acao='B'))
 
     abas = _ler(arquivo)
@@ -51,8 +52,8 @@ def test_nova_passagem_atualiza_linha_e_mantem_primeira_passagem(arquivo):
 
 
 def test_backup_uma_vez_por_execucao(arquivo):
-    PlanilhaControleGeral('main', 'exec1', arquivo).registrar(_passagem('P1', 9))
-    controle = PlanilhaControleGeral('main', 'exec2', arquivo)
+    PlanilhaControleGeral('geacs', 'exec1', arquivo).registrar(_passagem('P1', 9))
+    controle = PlanilhaControleGeral('geacs', 'exec2', arquivo)
     controle.registrar(_passagem('P2', 10))
     controle.registrar(_passagem('P3', 11))
 
@@ -61,7 +62,7 @@ def test_backup_uma_vez_por_execucao(arquivo):
 
 
 def test_falha_ao_gravar_salva_a_parte_e_depois_volta(arquivo, monkeypatch):
-    controle = PlanilhaControleGeral('main', 'exec1', arquivo)
+    controle = PlanilhaControleGeral('geacs', 'exec1', arquivo)
     gravar = planilha_controle._gravar
 
     def gravar_falhando(destino, abas):
@@ -82,7 +83,7 @@ def test_falha_ao_gravar_salva_a_parte_e_depois_volta(arquivo, monkeypatch):
 
 def test_falha_ao_ler_nao_sobrescreve_a_planilha(arquivo):
     arquivo.write_text('não é um xlsx')
-    controle = PlanilhaControleGeral('main', 'exec1', arquivo)
+    controle = PlanilhaControleGeral('geacs', 'exec1', arquivo)
     controle.registrar(_passagem('P1', 9))
 
     assert arquivo.read_text() == 'não é um xlsx'
@@ -90,7 +91,7 @@ def test_falha_ao_ler_nao_sobrescreve_a_planilha(arquivo):
 
 
 def test_mantem_outras_abas_formula_de_busca_e_anotacoes(arquivo):
-    PlanilhaControleGeral('main', 'exec1', arquivo).registrar(_passagem('P1', 9, prox_acao='A'))
+    PlanilhaControleGeral('geacs', 'exec1', arquivo).registrar(_passagem('P1', 9, prox_acao='A'))
 
     # O usuário preenche a aba BUSCA, cria outra aba e anota um erro
     wb = load_workbook(arquivo)
@@ -99,7 +100,7 @@ def test_mantem_outras_abas_formula_de_busca_e_anotacoes(arquivo):
     wb['processos']['C2'] = 'erro visto na execução'
     wb.save(arquivo)
 
-    controle = PlanilhaControleGeral('main', 'exec2', arquivo)
+    controle = PlanilhaControleGeral('geacs', 'exec2', arquivo)
     controle.registrar(_passagem('P1', 10, prox_acao='B'))
     controle.registrar(_passagem('P2', 11, prox_acao='C'))
 
@@ -113,3 +114,45 @@ def test_mantem_outras_abas_formula_de_busca_e_anotacoes(arquivo):
     assert processos['C2'].value == 'erro visto na execução'
     assert processos['C3'].value is None
     assert 'BUSCA' not in [c.value for c in wb['historico'][1]]
+
+
+def test_primeira_aba_e_o_resumo_por_prox_acao(arquivo):
+    controle = PlanilhaControleGeral('geacs', 'exec1', arquivo)
+    controle.registrar(_passagem('P1', 9, prox_acao='A'))
+    controle.registrar(_passagem('P2', 10, prox_acao='B'))
+    controle.registrar(_passagem('P3', 11, prox_acao='A'))
+    controle.registrar(_passagem('P4', 12))
+    # Nova passagem do mesmo processo: conta uma vez, pela última prox_acao
+    controle.registrar(_passagem('P2', 13, prox_acao='A'))
+
+    wb = load_workbook(arquivo)
+    assert wb.sheetnames[0] == 'resumo'
+    assert wb.active.title == 'resumo'
+    linhas = [tuple(c.value for c in linha) for linha in wb['resumo'].iter_rows()]
+    assert linhas == [('prox_acao', 'quantidade'), ('A', 3), ('(sem prox_acao)', 1), ('TOTAL', 4)]
+
+
+def test_resumo_continua_primeiro_com_outras_abas(arquivo):
+    PlanilhaControleGeral('geacs', 'exec1', arquivo).registrar(_passagem('P1', 9, prox_acao='A'))
+    wb = load_workbook(arquivo)
+    wb.create_sheet('ERROS', 0)
+    wb.save(arquivo)
+
+    PlanilhaControleGeral('geacs', 'exec2', arquivo).registrar(_passagem('P2', 10, prox_acao='B'))
+
+    wb = load_workbook(arquivo)
+    assert wb.sheetnames[0] == 'resumo'
+    assert {'processos', 'historico', 'BUSCA', 'ERROS'} <= set(wb.sheetnames)
+
+
+def test_le_a_aba_do_fluxo_em_processos_a_processar(tmp_path, monkeypatch):
+    arquivo = tmp_path / 'processos_a_processar.xlsx'
+    with pd.ExcelWriter(arquivo) as writer:
+        pd.DataFrame({'num_sei': ['P1', None, ' P2 ']}).to_excel(writer, sheet_name='geacs', index=False)
+        pd.DataFrame({'num_sei': []}).to_excel(writer, sheet_name='deproc', index=False)
+    monkeypatch.setattr(processos_a_processar, 'ARQ_PROCESSOS_A_PROCESSAR', arquivo)
+
+    assert processos_a_processar.ler_processos_a_processar('geacs') == ['P1', 'P2']
+    assert processos_a_processar.ler_processos_a_processar('deproc') == []
+    with pytest.raises(ValueError, match='Aba "geacs_adc_pdf_ant_man" não encontrada'):
+        processos_a_processar.ler_processos_a_processar('geacs_adc_pdf_ant_man')

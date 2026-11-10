@@ -52,13 +52,13 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `main.py` | Script principal: separação do VELHO (`_separar_velho`) e roteamento pelos marcadores (`_tratar`) |
+| `main_geacs.py` | Script principal, fluxo normal da GEACS (`poetry run task run_geacs`): separação do VELHO (`_separar_velho`) e roteamento pelos marcadores (`_tratar`) |
 | `processar_novo.py` | Fluxo dos processos não VELHOS (com retomada pelo marcador de estado); `obter_dados_ui()` lê o último memo da APIS destinado à GEACS; `_avaliar_mantis_e_criar_docs()` compara base DISA × MANTIS e escolhe o memo |
 | `relatorios_mantis.py` | `incluir_relatorios()`: gera os PDFs do MANTIS (titular e dependentes) e os anexa como documento externo, com retomada pelo nome na árvore |
 | `transformar_xls_em_pdf.py` | Monta o PDF do relatório de utilização (ReportLab) |
 | `memos_sei.py` | `incluir_memo()` (procura o memo pelo assunto na rodada, ou cria e insere no bloco) e `registrar_numeros_memos()` (número SEI dos memos criados) |
-| `sessao_sei.py` | `abrir_sei()`: navegador e login (credenciais do `.env`); `sessao_encerrada()`: navegador fechado |
-| `processo_fechado.py` | `tem_incluir_documento()`, `reabrir_processo_fechado()` (usado também pelo ALT 1) e `garantir_processo_aberto()`: processo fechado no setor é reaberto (`ProcessoFechadoNoSetor` se não reabrir) |
+| `sessao_sei.py` | `abrir_sei(unidade)`: navegador, login (credenciais do `.env`) e `alterar_unidade_sei()` (**TODO**: implementar na `sei_automacao`; hoje só avisa no log); `restaurar_navegador()`: recarrega a página depois de erro inesperado; `sessao_encerrada()`: navegador fechado |
+| `processo_fechado.py` | `tem_incluir_documento()` e `reabrir_processo_fechado()` (fluxo normal e ADC PDF ANT AUT): processo fechado no setor (`ProcessoFechadoNoSetor`) |
 | `rede_propria.py` | Carga da base DISA e da base APIS, normalização de matrícula, `verificar_base_apis()` (existência), `avaliar_uso_rede_propria_disa()` (uso), `ErroAvaliacao` |
 | `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada, com os atendimentos), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
@@ -68,16 +68,20 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos, data de corte do VELHO |
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
-| `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroAlt1`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
+| `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroAdcPdfAnt`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
-| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; ainda fora do fluxo) |
-| `main_alt_1.py` | Fluxo alternativo ALT 1 (`poetry run task run_alt_1`): loop dos processos e registro na planilha de controle ([seção](#fluxo-alternativo-alt-1)) |
-| `planilhas_alt_1.py` | ALT 1: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`; `inserir_pdfs` e `deixar_aguardando_fluxo_normal` são usados também pelo fluxo PDF) |
-| `main_fluxo_pdf.py` | Fluxo PDF (`poetry run task run_pdf`): usa o loop `executar` do `main_alt_1.py` ([seção](#fluxo-pdf)) |
-| `planilhas_fluxo_pdf.py` | Fluxo PDF: acha os arquivos do processo em `dados/fluxo_pdf/planilhas`, o documento na árvore e insere os PDFs (`inserir_pdfs_da_pasta`) |
+| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; ainda fora do fluxo), `MemoDeprocResultado` (fluxo DEPROC: da DEPROC à GEACS) |
+| `main_geacs_adc_pdf_ant_aut.py` | Fluxo alternativo ADC PDF ANT AUT (`poetry run task run_geacs_adc_pdf_ant_aut`): loop dos processos e registro na planilha de controle ([seção](#fluxo-alternativo-adc-pdf-ant-aut)) |
+| `planilhas_adc_pdf_ant_aut.py` | ADC PDF ANT AUT: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`; `inserir_pdfs` e `deixar_aguardando_fluxo_normal` são usados também pelo fluxo ADC PDF ANT MAN) |
+| `main_geacs_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN (`poetry run task run_geacs_adc_pdf_ant_man`): usa o loop `executar` do `main_geacs_adc_pdf_ant_aut.py` ([seção](#fluxo-adc-pdf-ant-man)) |
+| `planilhas_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN: acha os arquivos do processo em `dados/geacs_adc_pdf_ant_man/planilhas`, o documento na árvore e insere os PDFs (`inserir_pdfs_da_pasta`) |
+| `main_deproc.py` | Fluxo DEPROC (`poetry run task run_deproc`), na unidade da DEPROC: memo DEPROC assinado, coparticipação, relatório e memo de resultado ([seção](#fluxo-deproc)) |
+| `coparticipacao_deproc.py` | Fluxo DEPROC: carga da base DEPROC (aba `Resultado`), conferência das matrículas, filtro pelo período, colunas do relatório e totais (aba `DE-PARA`) |
+| `relatorio_deproc.py` | Fluxo DEPROC: PDF da coparticipação e inclusão no processo, com retomada pelo nome |
+| `processos_a_processar.py` | `ler_processos_a_processar(aba)`: lista de processos de cada fluxo ([Entrada](#entrada)) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
 | `docs/gerar_fluxo.py` | Gera o `docs/fluxo.drawio` (`python docs/gerar_fluxo.py docs/fluxo.drawio`). O conteúdo do diagrama fica no script |
-| `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main.py` em várias passagens |
+| `tests/` | Testes (`poetry run task test`). `sei_falso.py` simula o SEI em memória (árvore, textos, marcadores e PDFs); `test_fluxo_novo.py` roda o `main_geacs.py` em várias passagens |
 
 A biblioteca `sei_automacao` é externa (login, árvore, marcadores,
 memorandos, documento externo, blocos). Não altere a biblioteca; use apenas
@@ -91,7 +95,7 @@ a API dela.
 - Lint com **ruff** (preview ativo, ex.: PLR6301).
 - Testes com **pytest** (`poetry run task test`). **Atenção:** com
   `SEI_TESTE_REAL` e `SEI_TESTE_REAL_<MEMO>` em `'1'` no `.env`, a suíte cria
-  memos no SEI real (`tests/test_memos_sei_real.py`). O main não tem efeito
+  memos no SEI real (`tests/test_memos_sei_real.py`). O main_geacs não tem efeito
   colateral ao importar (logging e pastas são configurados em `main()`).
   Ao mudar o fluxo, ajuste ou acrescente o cenário em
   `tests/test_fluxo_novo.py`.
@@ -146,7 +150,9 @@ a API dela.
   `tipo_erro`, `erro` e, se preciso, `prox_acao = Verificar erro`). A
   coluna `erro` recebe só uma frase; erros do Selenium sem mensagem viram
   "Tempo esgotado esperando elemento do SEI em <função>". O traceback
-  completo fica no log.
+  completo fica no log. Depois de erro inesperado, a página é recarregada
+  (`sessao_sei.restaurar_navegador`, também no fluxo DEPROC), para uma tela presa não derrubar os
+  processos seguintes.
 - Ao mudar o fluxo (pergunta, ação, marcador ou `prox_acao`), atualize a
   seção [Fluxo do processo](#fluxo-do-processo) **e** o conteúdo em
   `docs/gerar_fluxo.py`, e regere o `docs/fluxo.drawio` (não edite o
@@ -171,7 +177,7 @@ a API dela.
   escopo, sem marcador.
 - **TODO**: definir o fluxo do VELHO. Todos os processos com `0` (ou com o
   `1.3`) e os identificados na execução devem passar por ele
-  (`main._separar_velho`).
+  (`main_geacs._separar_velho`).
 - A busca nos memos é feita antes de qualquer ação, em todo processo que
   ainda vai para `processar_novo` (sem estado ou em retomada).
 
@@ -274,8 +280,11 @@ a API dela.
     não está nele usa o do titular). Titular e dependentes são avaliados.
   - Formatos de período aceitos: `01/08/2023 a 12/06/2024`,
     `09/2023 a 06/2024` e `02 a 06/2024`, com vários intervalos (entre
-    parênteses ou não). Qualquer outro número no texto, data inválida ou
-    início depois do fim: `ErroAvaliacao`.
+    parênteses ou não). O `a` pode ser maiúsculo e sem espaço em volta
+    (`01/05/2019 A 12/06/2024`, `01/04/2019 a12/06/2024`). Qualquer outro
+    número no texto (ex.: `01/112019`, `20219`), data inválida ou início
+    depois do fim: `ErroAvaliacao`. O período do titular é conferido já na
+    leitura do memo da APIS: inválido é formato inválido (memo à APIS).
   - Atendimento sem data válida de uma matrícula consultada:
     `ErroAvaliacao`. Sem valor: conta como 0.
 
@@ -315,7 +324,7 @@ período. Cada um tem um par de marcadores (`1.6.2`, `1.8.2` e `1.8.3`,
 - Um PDF para o titular (prestador, data, procedimento, valor) e um para os
   dependentes (prestador, matrícula e nome do dependente, data, valor), só
   de quem tem atendimento. Todos os PDFs de `transformar_xls_em_pdf`,
-  inclusive os do ALT 1 e do fluxo PDF, terminam com a linha `TOTAL`, a soma
+  inclusive os do ADC PDF ANT AUT e do fluxo ADC PDF ANT MAN, terminam com a linha `TOTAL`, a soma
   de `VALOR PAGO`.
 - Documento externo: tipo `PDF`, número `Utilização <Tit.|Dep.> <RP|RC> -
   <matrícula do titular> - <AAAAMMDD_HHMMSS>`, Nato-digital, data de hoje,
@@ -332,15 +341,19 @@ período. Cada um tem um par de marcadores (`1.6.2`, `1.8.2` e `1.8.3`,
 
 ### Marcadores (`tags.py`)
 
-Prefixo de todos os nomes: `Script v2 - `. Exceção: os marcadores velhos `1.2`,
+Prefixo de todos os nomes: `Script v2 - `. Exceções: os marcadores velhos `1.2`,
 `1.2.2`, `1.3` e `1.4` usam `Script v2v - `, de propósito, para sinalizar que
-são velhos.
+são velhos; os da unidade da DEPROC usam `Script v2 DEPROC - ` (os marcadores
+do SEI são de cada unidade: os da DEPROC só existem lá, e os demais, só na
+GEACS). Os da DEPROC têm numeração, grupo de estados (`TAGS_ESTADO_DEPROC`) e
+conferência (`conferir_marcadores_deproc`: no máximo um estado, e estado só
+com o `1`) próprios.
 
 | Marcador | Significado |
 |---|---|
 | `0 - Processo VELHO` | Processo VELHO, não processado (TODO: fluxo próprio). Sem o `1` |
 | `1 - Tratado pelo Script` | Processo tratado pelo script (todos, exceto o VELHO). Adicionado se faltar, e o fluxo começa do início |
-| `1.0 - Aguarda Script: Fluxo Normal` | Estado (entrada): PDFs inseridos pelo [fluxo ALT 1](#fluxo-alternativo-alt-1). O fluxo normal trata o processo do início e o próximo estado o substitui. Sai também se o processo for VELHO |
+| `1.0 - Aguarda Script: Fluxo Normal` | Estado (entrada): PDFs inseridos pelo [fluxo ADC PDF ANT AUT](#fluxo-alternativo-adc-pdf-ant-aut). O fluxo normal trata o processo do início e o próximo estado o substitui. Sai também se o processo for VELHO |
 | `1.1 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes |
 | `1.2.1 - Mat. N Encontradas Base APIS` | Matrícula não encontrada na base APIS (renomeado de `... Base Geral`) |
 | `1.5 - Aguarda APIS: Sem Memo p/ GEACS` | Estado (parada): memo à APIS (sem memorando para a GEACS) no bloco |
@@ -365,6 +378,9 @@ são velhos.
 | `1.10 - Concluído: Memos DISA e DEPROC` | Versão anterior: concluído. Não é mais adicionado |
 | `1.11 - VELHO Concluído: Memo DISA`, `1.11 - VELHO Concluído: Memo DEPROC` | Versão anterior (VELHO). Não são mais adicionados |
 | `2 - Processo VELHO` e `2.x` (antigos) | Ignorados: o processo sem `1` recebe `1` e segue o fluxo do início |
+| `Script v2 DEPROC - 1 - Tratado pelo Script` | **Unidade da DEPROC** ([fluxo DEPROC](#fluxo-deproc)): processo tratado pelo script na DEPROC. Adicionado antes do relatório. **TODO**: cadastrar no SEI (DEPROC) |
+| `Script v2 DEPROC - 1.1 - Relatório Copart. Anexado` | DEPROC. Estado (retomada): relatório de coparticipação anexado; falta o memo. **TODO**: cadastrar no SEI (DEPROC) |
+| `Script v2 DEPROC - 1.2 - Concluído: Memo p/ GEACS` | DEPROC. Estado (conclusão): memo de resultado da DEPROC à GEACS no bloco. **TODO**: cadastrar no SEI (DEPROC) |
 | `PLANILHADO`, `UTILIZAÇÃO INSERIDA` (sem prefixo) | Manuais; não interferem |
 | `MANUAL`, `ASSINADO` (sem prefixo) | Manuais; tiram o processo VELHO do escopo |
 
@@ -394,7 +410,9 @@ são velhos.
     `1.8` (falhou antes do memo) ou `1.6.1`; `1.1` com `1.6` ou `1.7`;
     `1.6.2 Usou` com `1.6`, `1.7`, `1.8`, `1.9 Validar (Consta)` ou `1.9
     Relat. s/ MANTIS`; `1.6.2 Não Usou` com `1.6`, `1.7`, `1.8`, `1.9
-    Validar (N Consta)` ou um dos `1.10`; `1.8.2 Usou` com `1.8` ou os dois
+    Validar (N Consta)` ou um dos `1.10`; os dois `1.6.2` também com `1.5
+    Formato Inválido` (período inválido achado depois da base DISA, nos
+    processos da versão anterior); `1.8.2 Usou` com `1.8` ou os dois
     `1.9 Validar`; `1.8.2 Não Usou` com `1.8`, `1.9 Relat. s/ MANTIS` ou um
     dos `1.10`; `1.8.3 Usou` com `1.8`, qualquer `1.9 - Aguarda DISA` ou
     `1.10 Concluído: Memo DEPROC`; `1.8.3 Não Usou` com `1.8`, qualquer `1.9
@@ -508,30 +526,34 @@ são velhos.
 | DISA sim, RP não | `1` + `1.6.2 Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3` + `1.8` → `1.9 Relat. s/ MANTIS` | `1`, `1.6.2 Usou`, `1.8.2 Não Usou`, `1.8.3`, `1.9 Relat. s/ MANTIS` |
 | DISA não, RP não, RC sim | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3 Usou` + `1.8` → `1.10 Concluído: Memo DEPROC` | `1`, `1.6.2 Não Usou`, `1.8.2 Não Usou`, `1.8.3 Usou`, `1.10 Concluído: Memo DEPROC` |
 | DISA não, RP não, RC não | `1` + `1.6.2 Não Usou` + `1.6` → `1.8.2 Não Usou` + `1.8.3 Não Usou` + `1.8` → `1.10 Aguarda APIS: Sem Uso` | `1`, `1.6.2 Não Usou`, `1.8.2 Não Usou`, `1.8.3 Não Usou`, `1.10 Aguarda APIS: Sem Uso` |
-| Vindo do fluxo ALT 1 | `1` + `1.0` → (um dos caminhos acima ou abaixo, do início) | como no caminho seguido |
+| Vindo do fluxo ADC PDF ANT AUT | `1` + `1.0` → (um dos caminhos acima ou abaixo, do início) | como no caminho seguido |
 | Parado pelo memo da APIS | `1` + `1.5` (um dos dois) | `1`, `1.5` |
 | Parado pela base APIS | `1` + `1.2.1` + `1.6.1` | `1`, `1.2.1`, `1.6.1` |
 | Parado pelo período dos dependentes | `1` + `1.6.2` + `1.6` + `1.1` → `1.7` | `1`, `1.6.2`, `1.1`, `1.7` |
 | VELHO | `0` (+ o que já tinha; o `1.0` sai) | `0`, … |
 
-### 1. Script principal (`main.py`)
+### 1. Script principal (`main_geacs.py`)
+
+`poetry run task run_geacs`. Na planilha de controle, `script` = `geacs`.
 
 **Início**
 
-1. Lê `dados/inputs/processos_nao_processados.xlsx` (aba
-   `fluxo`, coluna `num_sei`).
+1. Lê a aba `geacs` de `dados/inputs/processos_a_processar.xlsx` (coluna
+   `num_sei`; ver [Entrada](#entrada)).
 2. Carrega a base DISA, a base APIS e as bases do MANTIS.
-3. Faz login no SEI.
+3. Faz login no SEI e troca para a unidade da GEACS (`alterar_unidade_sei`,
+   **TODO** na `sei_automacao`; o ADC PDF ANT AUT e o fluxo ADC PDF ANT MAN também trocam para a
+   GEACS, e o fluxo DEPROC, para a DEPROC).
 
 **Para cada processo**
 
 1. Abre o processo e lê os marcadores **do SEI**.
-2. **Sem o botão `Incluir Documento`** (`garantir_processo_aberto`, antes da
-   árvore)? Processo fechado no setor: reabre com `reabrir_processo` da
-   `sei_automacao` (coluna `processo_reaberto`), em qualquer estado, inclusive
-   parado ou concluído, e segue. O processo **continua aberto**. Sem como
-   reabrir, ou ainda sem o botão depois: `ProcessoFechadoNoSetor`, sem outra
-   ação no SEI, `prox_acao` = Verificar erro.
+2. Confere o botão `Incluir Documento` (`tem_incluir_documento`, antes da
+   árvore). Sem ele, o processo está **fechado no setor**
+   (`registro.processo_fechado`, interno). Quem decide reabrir é o
+   roteamento (perguntas 2, 6 e 7): só é reaberto o processo que vai
+   receber documentos do fluxo (ex.: um concluído conforme uma Informação
+   não tem memo da APIS para a GEACS e não é reaberto).
 3. Lista a árvore (fica no registro).
 4. Roteamento (`_tratar`). **Nenhum marcador é adicionado aqui**, exceto o
    `1` e o `0` (em `_separar_velho`):
@@ -539,13 +561,14 @@ são velhos.
 | # | Pergunta | Se sim |
 |---|---|---|
 | 1 | Marcadores inconsistentes (`conferir_marcadores`, [regras](#marcadores-tagspy))? | Erro, antes de qualquer ação. `prox_acao` = Verificar marcadores inconsistentes (corrigir no SEI) |
-| 2 | VELHO pelos marcadores (`0` ou `1.3 Memos DISA e DEPROC`)? | `_separar_velho`: com `MANUAL`/`ASSINADO`, `prox_acao` = Fora do escopo; senão **➕ `0`** (se faltar), `prox_acao` = VELHO: não processado. Nos dois casos, **➖ `1.0`** (se tiver). **TODO**: fluxo do VELHO |
+| 2 | VELHO pelos marcadores (`0` ou `1.3 Memos DISA e DEPROC`)? | `_separar_velho`: fechado no setor, `ProcessoFechadoNoSetor` sem ação (não reabre); com `MANUAL`/`ASSINADO`, `prox_acao` = Fora do escopo; senão **➕ `0`** (se faltar), `prox_acao` = VELHO: não processado. Nos dois casos, **➖ `1.0`** (se tiver). **TODO**: fluxo do VELHO |
 | 3 | Estado de parada (`1.5`, `1.6.1`, `1.7`, `1.9 - Aguarda DISA`, `1.10 - Aguarda APIS: Sem Uso`; versão anterior: `1.8.1`, `1.9 Memo DISA`)? | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. **TODO**: processamento depois da resposta |
 | 4 | Estado de conclusão (`1.10`)? | Concluído. `prox_acao` = assinar os memos correspondentes e encaminhar |
 | 5 | Sem estado com `1.3 Memo DEPROC`? | Concluído na versão anterior. `prox_acao` = Assinar memo DEPROC e encaminhar |
 | 6 | VELHO pelos memos da GEACS (`encontrar_memos_velho`, [regra](#processo-velho))? | `_separar_velho` (como no 2). Par sem data legível: erro, sem ação |
-| 7 | **Não** tem `1`? | **➕ `1`** e [seção 2](#2-fluxo-processar_novo) do início (inclusive com documento da GEACS ou com o antigo `2`) |
-| — | (nenhuma das anteriores) | [Seção 2](#2-fluxo-processar_novo), do início (sem estado ou com `1.0`, vindo do ALT 1) ou retomando (`1.6`, `1.8`) |
+| 7 | Processo fechado no setor (`_reabrir_se_fechado`)? | Com `MANUAL`/`ASSINADO` ou sem memo da APIS destinado à GEACS (lido sem reabrir): `ProcessoFechadoNoSetor`, **não reabre**, sem ação no SEI, `prox_acao` = Verificar erro. Senão, reabre (`reabrir_processo_fechado`: `reabrir_processo` da `sei_automacao`, coluna `processo_reaberto`; o processo **continua aberto**), relê a árvore e segue. Não reabriu: `ProcessoFechadoNoSetor` |
+| 8 | **Não** tem `1`? | **➕ `1`** e [seção 2](#2-fluxo-processar_novo) do início (inclusive com documento da GEACS ou com o antigo `2`) |
+| — | (nenhuma das anteriores) | [Seção 2](#2-fluxo-processar_novo), do início (sem estado ou com `1.0`, vindo do ADC PDF ANT AUT) ou retomando (`1.6`, `1.8`) |
 
 Depois do roteamento (sem erro), os marcadores são conferidos de novo
 (`conferir_marcadores`); se a passagem deixou uma combinação impossível,
@@ -579,8 +602,9 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
    (linha `Período de apuração do dependente:`): se for ele, os períodos
    de cada dependente são extraídos e não há período variável. Senão,
    analisa como novo_novo.
-   - **Formato inválido** (modelo com período por dependente incompleto ou
-     qualquer outro modelo diferente do novo_novo)? Cria
+   - **Formato inválido** (modelo com período por dependente incompleto,
+     qualquer outro modelo diferente do novo_novo, ou período do titular que
+     `interpretar_periodo` recusa, ex.: erro de digitação `01/112019`)? Cria
      `MemoApisFormatoInvalido` (bloco `7730341`), **➕ `1.5 - Aguarda APIS:
      Formato Inválido`**, `prox_acao` = Assinar memo à APIS (formato do
      memorando inválido) e encaminhar. Motivo na coluna
@@ -648,12 +672,14 @@ dois estados (erro da conferência, pergunta 1 da seção 1).
 
 ---
 
-## Fluxo alternativo ALT 1
+## Fluxo alternativo ADC PDF ANT AUT
 
-`poetry run task run_alt_1` (`main_alt_1.py`). Insere nos processos o PDF
+Adiciona o PDF da planilha antiga, **automático** (baixa a planilha do SEI).
+
+`poetry run task run_geacs_adc_pdf_ant_aut` (`main_geacs_adc_pdf_ant_aut.py`). Insere nos processos o PDF
 das planilhas de utilização e os deixa aguardando o fluxo normal: não avalia
-bases e não cria memos. Lê a mesma aba `fluxo` de
-`dados/inputs/processos_nao_processados.xlsx`.
+bases e não cria memos. Lê a aba `geacs_adc_pdf_ant_aut` de
+`dados/inputs/processos_a_processar.xlsx`.
 
 Para cada processo:
 
@@ -667,7 +693,7 @@ Para cada processo:
    `Titular` e `Dependentes`, e cada palavra é comparada com
    similaridade de 80% (`Anexo RELACAO ANTENDIMENTOS` é aceito; `Anexo RELAÇÃO
    PAGAMENTO`, não).
-   - **Nenhuma?** `prox_acao` = ALT 1: nenhuma planilha no processo
+   - **Nenhuma?** `prox_acao` = ADC PDF ANT AUT: nenhuma planilha no processo
      (verificar), sem marcador. Fim.
 3. Se falta algum PDF e o processo não tem o ícone `Incluir Documento` (ex.:
    concluído na unidade), reabre com `reabrir_processo` da `sei_automacao`
@@ -677,7 +703,7 @@ Para cada processo:
    nada. Processo sem PDF faltando não é reaberto.
    Para cada planilha cujo PDF ainda não está na árvore:
    - abre o documento, o que inicia o download, para
-     `dados/fluxo_alt_1/planilhas_baixadas/<nº SEI>_<nome original>`. Passou de
+     `dados/geacs_adc_pdf_ant_aut/planilhas_baixadas/<nº SEI>_<nome original>`. Passou de
      `TIMEOUT_DOWNLOAD` (60s): `ErroAvaliacao`, sem marcador, e a execução
      segue para o próximo processo. O temporário (`.crdownload`, `.tmp`) é
      descartado, para não ser confundido com a próxima planilha. Antes de baixar, espera sumir um temporário que ainda exista
@@ -695,7 +721,7 @@ Para cada processo:
      data válida, com coluna faltando ou sem atendimentos: `ErroAvaliacao`.
      Sem valor: conta como 0. Só `.xlsx`;
    - gera o PDF (`transformar_xls_em_pdf`), em
-     `dados/fluxo_alt_1/pdfs/<nº SEI da planilha>/`, no layout dos relatórios do
+     `dados/geacs_adc_pdf_ant_aut/pdfs/<nº SEI da planilha>/`, no layout dos relatórios do
      MANTIS (o de dependentes não tem `PROCEDIMENTO`). O Anexo tem modelo
      próprio, baseado no de dependentes: título `Relatório de Utilização Por
      Beneficiário(s)`, sem a linha do titular no cabeçalho, com as colunas
@@ -706,15 +732,15 @@ Para cada processo:
      planilha>`, Nato-digital, Restrito, Informação Pessoal.
 4. **Já tem estado** (exceto o `1.0`), é VELHO pelos marcadores ou tem `1.3
    Memo DEPROC`? Continua onde estava, sem marcador novo (adicionar o `1.0`
-   apagaria o estado). `prox_acao` = ALT 1: PDFs inseridos; processo mantido
+   apagaria o estado). `prox_acao` = ADC PDF ANT AUT: PDFs inseridos; processo mantido
    no estado atual.
 5. Senão: **➕ `1`** (se faltar), **➕ `1.0 - Aguarda Script: Fluxo Normal`**
-   (se faltar), `prox_acao` = ALT 1: PDFs inseridos; aguarda o fluxo normal.
+   (se faltar), `prox_acao` = ADC PDF ANT AUT: PDFs inseridos; aguarda o fluxo normal.
 
-Depois, na execução do `main.py`, o processo com `1.0` segue a [seção
+Depois, na execução do `main_geacs.py`, o processo com `1.0` segue a [seção
 2](#2-fluxo-processar_novo) do início, e o próximo estado substitui o `1.0`.
 A separação do VELHO vem antes: se os memos da GEACS identificarem o VELHO,
-ele recebe o `0`, perde o `1.0` e não é processado. Os PDFs do ALT 1 ficam no
+ele recebe o `0`, perde o `1.0` e não é processado. Os PDFs do ADC PDF ANT AUT ficam no
 processo como histórico: o fluxo normal anexa os relatórios do MANTIS e os
 memos citam só estes.
 
@@ -737,24 +763,26 @@ memos citam só estes.
 - Antes de cada inclusão, a página é recarregada (`_recarregar_processo`): sem
   isso, o 2º PDF do processo falhava quase sempre na 1ª tentativa. Tempo
   esgotado ou elemento obsoleto ao anexar: até 3 tentativas
-  (`_anexar_pdf_com_novas_tentativas`, usado também pelo fluxo PDF), com o
+  (`_anexar_pdf_com_novas_tentativas`, usado também pelo fluxo ADC PDF ANT MAN), com o
   traceback em DEBUG. Antes de repetir, relê a árvore: se o PDF entrou, não
   anexa de novo.
-- Planilha de controle: `script` = `alt_1`, `fluxo` = `ALT 1 - SOMENTE
-  INSERIR PDF`, colunas `planilhas_sei`, `pdfs_incluidos`, `pdfs_na_arvore`, `pdfs_antigos_a_excluir` e `processo_reaberto`.
+- Planilha de controle: `script` = `geacs_adc_pdf_ant_aut`, `fluxo` = `ADC PDF ANT AUT - PLANILHA
+  ANTIGA BAIXADA DO SEI`, colunas `planilhas_sei`, `pdfs_incluidos`, `pdfs_na_arvore`, `pdfs_antigos_a_excluir` e `processo_reaberto`.
   Na aba `processos`, a linha do processo fica com a última passagem
-  (`fluxo` e `prox_acao` do ALT 1), mas as colunas de resultado do fluxo
+  (`fluxo` e `prox_acao` do ADC PDF ANT AUT), mas as colunas de resultado do fluxo
   principal não são gravadas (`_CAMPOS_SO_FLUXO_PRINCIPAL`) e continuam lá.
-- Log: `logs/<data>_execucao_alt_1.log`.
+- Log: `logs/<data>_execucao_geacs_adc_pdf_ant_aut.log`.
 
 ---
 
-## Fluxo PDF
+## Fluxo ADC PDF ANT MAN
 
-`poetry run task run_pdf` (`main_fluxo_pdf.py`). É o [ALT 1](#fluxo-alternativo-alt-1)
+Adiciona o PDF da planilha antiga, **manual** (planilhas baixadas à mão).
+
+`poetry run task run_geacs_adc_pdf_ant_man` (`main_geacs_adc_pdf_ant_man.py`). É o [ADC PDF ANT AUT](#fluxo-alternativo-adc-pdf-ant-aut)
 sem o download, para as planilhas que o Chrome não baixa: elas são colocadas à
-mão em `dados/fluxo_pdf/planilhas`. Lê a mesma aba `fluxo` de
-`dados/inputs/processos_nao_processados.xlsx`.
+mão em `dados/geacs_adc_pdf_ant_man/planilhas`. Lê a aba `geacs_adc_pdf_ant_man` de
+`dados/inputs/processos_a_processar.xlsx`.
 
 - Nome do arquivo: número do processo com `_` no lugar da barra, `-` (com ou
   sem espaços em volta) e o nome do documento na árvore
@@ -762,25 +790,167 @@ mão em `dados/fluxo_pdf/planilhas`. Lê a mesma aba `fluxo` de
   processo sai do início do nome; o que vem depois do hífen é o nome na árvore.
   Os `:Zone.Identifier` são ignorados.
 - Para cada processo: lê os marcadores, confere se o `1` e o `1.0` existem no
-  SEI e lista a árvore, como no ALT 1. Depois:
-  1. **Nenhum arquivo do processo na pasta?** `prox_acao` = Fluxo PDF: nenhuma
+  SEI e lista a árvore, como no ADC PDF ANT AUT. Depois:
+  1. **Nenhum arquivo do processo na pasta?** `prox_acao` = ADC PDF ANT MAN: nenhuma
      planilha na pasta (verificar), sem marcador. Fim.
   2. Confere todos os arquivos antes de inserir qualquer PDF. O nome precisa
-     ser dos três padrões do ALT 1 (`Planilha Utilização Titular`, `Planilha
+     ser dos três padrões do ADC PDF ANT AUT (`Planilha Utilização Titular`, `Planilha
      Utilização Dependentes`, `Anexo RELAÇÃO ATENDIMENTO`, sem aceitar a
      falta do `Anexo`) e do documento na árvore (nome inteiro; acento, maiúsculas e
      espaços são ignorados, e `_` vale como `/`, que não existe em nome de
      arquivo). Fora do padrão, sem documento ou com dois
      documentos do mesmo nome: `ErroAvaliacao`, sem inserir nada.
-  3. Insere os PDFs como no ALT 1: mesmo layout, mesmo nome (com o número SEI
-     do documento da árvore), mesma retomada. Um PDF que o ALT 1 já inseriu não
-     é duplicado. Arquivos em `dados/fluxo_pdf/pdf/<nº SEI da planilha>/`.
-  4. Marcadores como nos passos 4 e 5 do ALT 1, com as `prox_acao` `Fluxo PDF:
+  3. Insere os PDFs como no ADC PDF ANT AUT: mesmo layout, mesmo nome (com o número SEI
+     do documento da árvore), mesma retomada. Um PDF que o ADC PDF ANT AUT já inseriu não
+     é duplicado. Arquivos em `dados/geacs_adc_pdf_ant_man/pdf/<nº SEI da planilha>/`.
+  4. Marcadores como nos passos 4 e 5 do ADC PDF ANT AUT, com as `prox_acao` `ADC PDF ANT MAN:
      PDFs inseridos; ...`.
-- Planilha de controle: `script` = `fluxo_pdf`, `fluxo` = `FLUXO PDF -
-  PLANILHAS DA PASTA`, mesmas colunas e regras do ALT 1. Processo sem arquivo
+- Planilha de controle: `script` = `geacs_adc_pdf_ant_man`, `fluxo` = `ADC PDF ANT MAN -
+  PLANILHAS DA PASTA`, mesmas colunas e regras do ADC PDF ANT AUT. Processo sem arquivo
   na pasta também atualiza `fluxo` e `prox_acao` da linha na aba `processos`.
-- Log: `logs/<data>_execucao_fluxo_pdf.log`.
+- Log: `logs/<data>_execucao_geacs_adc_pdf_ant_man.log`.
+
+---
+
+## Fluxo DEPROC
+
+`poetry run task run_deproc` (`main_deproc.py`). Roda **na unidade da DEPROC**
+(`alterar_unidade_sei(UNIDADE_DEPROC)`) e lê a aba `deproc` de
+`dados/inputs/processos_a_processar.xlsx`. Carrega uma vez a base
+`dados/fluxo_deproc/Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx`, aba
+`Resultado` (uma linha por item atendido, matrículas **com DV**).
+
+Usa os marcadores da unidade da DEPROC, como os da GEACS
+([marcadores](#marcadores-tagspy)): `Script v2 DEPROC - 1 - Tratado pelo
+Script`, `1.1 - Relatório Copart. Anexado` (estado de retomada) e `1.2 -
+Concluído: Memo p/ GEACS` (estado de conclusão; o `1.2` remove o `1.1`).
+Dentro de cada etapa, a retomada também é pelo nome do PDF e pelo assunto do
+memo, na rodada.
+
+Sequência: `1` + `1.1` → `1.2` (sem atendimento no período, sem relatório:
+`1` + `1.2`). No SEI ao final: `1`, `1.2`.
+
+Para cada processo (erro: `prox_acao` = Verificar erro, sem ação no SEI):
+
+1. Lê os marcadores da DEPROC e confere (`conferir_marcadores_deproc`, no
+   início e no fim da passagem). Inconsistentes: `prox_acao` = Verificar
+   marcadores inconsistentes. Com o `1.2`: concluído, `prox_acao` = DEPROC:
+   assinar memo de resultado, sem ler mais nada.
+2. Sem `Incluir Documento`: o processo não está aberto na DEPROC.
+   `ProcessoFechadoNoSetor`, **não reabre**. Confere se os três marcadores da
+   DEPROC estão cadastrados na unidade (`garantir_marcadores_no_sei`; faltando,
+   nada é feito).
+3. Lista a árvore e lê o último memo da APIS destinado à GEACS
+   (`obter_dados_ui`, como no fluxo normal; define a rodada). Sem memo ou
+   formato inválido: erro.
+4. Procura o **memo DEPROC da GEACS** na rodada (`PADRAO_ASSUNTO_MEMO_DEPROC`)
+   e confere a assinatura no texto (`PADRAO_ASSINATURA_MEMO_DEPROC`:
+   "assinado eletronicamente por Bruna Miiller Lavarini", com ou sem o "i" a
+   mais). Sem o memo ou sem a assinatura: erro (colunas
+   `memo_deproc_geacs_sei` e `memo_deproc_assinado`).
+5. `apurar_coparticipacao`:
+   - linhas com `SEI` = número do processo; nenhuma: erro (a base pode não
+     cobrir o processo);
+   - **confere as matrículas** com o memo da APIS: `MATRICULA_TITULAR` e o
+     beneficiário das linhas `TITULAR` devem ser o titular do memo; o de cada
+     linha `DEPENDENTE`, um dependente do memo (o memo pode ter ou não o DV).
+     Divergência: `MatriculasDivergentes`, coluna
+     `matriculas_divergentes_deproc`. Dependente do memo sem linha na base não
+     é divergência (só não tem atendimento);
+   - filtra pelo período de apuração do memo da APIS (`DATA_ATENDIMENTO`):
+     o do titular para todos ou, no modelo com período por dependente, o de
+     cada dependente. Período variável sem período por dependente: erro;
+   - todas as linhas do período entram no relatório, inclusive isentas e de
+     cálculo impedido (valor 0).
+6. Antes de qualquer documento, confere bloco (`BLOCO_MEMO_DEPROC_RESULTADO`),
+   signatário (`NOME_SIGNATARIO_DEPROC`) e texto do memo
+   (`MemoDeprocResultado.TEXTO_DEFINIDO`). Faltando algum: erro.
+   **TODO**: criar o bloco no SEI e definir o signatário e o texto final (os
+   três param o fluxo hoje).
+7. **➕ `1`** e relatório em PDF (`relatorio_deproc.py`), só se houver atendimento no
+   período: documento externo `Coparticipação - <matrícula do titular> -
+   <AAAAMMDD_HHMMSS>` (mesmas opções dos relatórios do MANTIS), arquivo em
+   `dados/fluxo_deproc/pdf/`. Retomada: o PDF que começa com `PDF
+   Coparticipação - <matrícula>` na rodada não é anexado de novo. Depois do
+   relatório, **➕ `1.1`**.
+8. `MemoDeprocResultado` (da DEPROC à GEACS; assunto `Coparticipação apurada
+   – utilização indevida da assistência à saúde`): cita o memo DEPROC da
+   GEACS, o memo da APIS e o relatório, com o subtotal por matrícula e os três
+   totais; sem atendimento, informa que não há coparticipação. Retomada pelo
+   assunto entre os memos da DEPROC na rodada. Depois do memo no bloco,
+   **➕ `1.2`** (↻ remove o `1.1`). `prox_acao` = DEPROC: assinar memo de
+   resultado da coparticipação e encaminhar à GEACS.
+
+Colunas do relatório (aba `DE-PARA`, fixadas em `coparticipacao_deproc.py`;
+a aba não é lida):
+
+| Coluna | Base (aba `Resultado`) |
+|---|---|
+| MATRÍCULA | `MATRICULA_BENEFICIARIO` (E) |
+| NOME BENEFICIÁRIO | `NOME_BENEFICIARIO` (F) |
+| CATEGORIA | `TITULAR_DEPENDENTE` (G) |
+| DATA ATENDIMENTO | `DATA_ATENDIMENTO` (I) |
+| PRESTADOR | `COD_PRESTADOR - NOME_PRESTADOR` (J e K) |
+| PROCEDIMENTO | `GRUPO_COPARTICIPACAO` (P) |
+| QTDE | `QUANTIDADE` (O) |
+| VALOR DA COPARTICIPAÇÃO | `VALOR_APURADO_SISTEMA + CALCULO_COPARTICIPACAO` (U + AI) |
+
+O PDF segue o **extrato de utilização do IPSEMG** (título "Extrato de
+Utilização da Assistência à Saúde IPSEMG", número do processo e "PERÍODO
+REFERÊNCIA" com o período do titular), no estilo dos outros relatórios (logo,
+azul-escuro, linhas alternadas): um bloco por beneficiário (titular primeiro),
+com a faixa MATRÍCULA (com DV, `3398372-1`), NOME BENEFICIÁRIO e CATEGORIA
+(e PERÍODO DE APURAÇÃO, no modelo com período por dependente), e a tabela DATA
+ATENDIMENTO, PRESTADOR, PROCEDIMENTO, QTDE e VALOR DA COPARTICIPAÇÃO. Os
+atendimentos com a mesma data, prestador e procedimento viram uma linha, com
+QTDE e valor somados (`resumir_atendimentos`). Depois de cada beneficiário vem
+`SUBTOTAL :`; no fim, os totais:
+
+- VALOR TOTAL DA COPARTICIPAÇÃO: soma de U + AI;
+- VALOR TOTAL DESCONTADO: soma de U, **exceto** nas linhas com `SALDO NAO
+  QUITADO`, + soma de W (`VALOR_DESCONTADO_FOLHA`) das linhas `APURADO,
+  DESCONTADO PARCIALMENTE (RATEIO), SALDO NAO QUITADO`;
+- VALOR TOTAL EM ABERTO: soma de AI + soma de Y (`SALDO_APOS_COMPETENCIA`)
+  das linhas com `SALDO NAO QUITADO` (rateio ou não descontado em folha).
+
+Nas linhas com saldo não quitado, U = W + Y: só a parte descontada (W) entra
+no descontado, e o saldo (Y), no em aberto. Assim, descontado + em aberto =
+total da coparticipação. (A fórmula escrita na DE-PARA soma todo o U e
+contaria o saldo duas vezes: no processo 2010.01.0051486/2025-58, daria
+R$ 94,32 em vez de R$ 30,32.)
+
+- Planilha de controle: `script` = `deproc`, `fluxo` = `DEPROC -
+  COPARTICIPAÇÃO`. Os marcadores da DEPROC vão para colunas próprias,
+  `marcadores_deproc_sei`, `marcadores_deproc_adicionados`,
+  `marcadores_deproc_removidos`, `marcadores_deproc_finais` e uma `tag_deproc_*`
+  por marcador (`tag_deproc_tratado`, `tag_deproc_relatorio_anexado`,
+  `tag_deproc_concluido_memo`); as colunas de marcadores da GEACS
+  (`marcadores_*`, `tag_*`), `processo_reaberto` e os resultados só do fluxo
+  principal não são gravadas e continuam como estão. Outras colunas próprias:
+  `memo_deproc_geacs_sei`, `memo_deproc_assinado`, `linhas_base_deproc`,
+  `linhas_fora_periodo_deproc`, `atendimentos_deproc`,
+  `matriculas_divergentes_deproc`, `valor_total_coparticipacao`,
+  `valor_total_descontado`, `valor_total_em_aberto`, `relatorio_deproc_*` e
+  `memo_deproc_resultado_*`.
+- Log: `logs/<data>_execucao_deproc.log`.
+
+---
+
+## Entrada
+
+`dados/inputs/processos_a_processar.xlsx` (antes `processos_nao_processados.xlsx`):
+**uma aba por fluxo**, com o nome do `script` na planilha de controle, e a
+coluna `num_sei` (um processo por linha; linhas vazias são ignoradas):
+
+| Aba | Fluxo |
+|---|---|
+| `geacs` | `poetry run task run_geacs` (`main_geacs.py`) |
+| `geacs_adc_pdf_ant_aut` | `poetry run task run_geacs_adc_pdf_ant_aut` (`main_geacs_adc_pdf_ant_aut.py`) |
+| `geacs_adc_pdf_ant_man` | `poetry run task run_geacs_adc_pdf_ant_man` (`main_geacs_adc_pdf_ant_man.py`) |
+| `deproc` | `poetry run task run_deproc` (`main_deproc.py`) |
+
+Aba faltando ou sem a coluna `num_sei`: a execução para com erro antes do
+login. Aba vazia: nenhum processo. Outras abas (ex.: `AUX`) são ignoradas.
 
 ---
 
@@ -793,6 +963,10 @@ mão em `dados/fluxo_pdf/planilhas`. Lê a mesma aba `fluxo` de
 **depois de cada processo** (`registrar`), para que uma interrupção não
 perca os processos já tratados.
 
+- Aba `resumo` (a **primeira**, aberta ao abrir o arquivo): quantidade de
+  processos da aba `processos` por `prox_acao` (da maior para a menor; vazio
+  conta como `(sem prox_acao)`), com a linha `TOTAL`. Regravada a cada
+  gravação, a partir dos dados (não é fórmula).
 - Aba `processos`: **uma linha por processo**, com a última passagem pelo
   fluxo. As colunas que o script grava são sobrescritas (o processo é
   reavaliado a cada passagem); as que ele não grava (ex.: colunas antigas
@@ -810,7 +984,7 @@ perca os processos já tratados.
   só mantém). As duas não vão para o `historico`.
 - Primeiras colunas (depois dessas duas, na aba `processos`): `num_processo`, `primeira_passagem`,
   `ultima_passagem` (data e hora em que o processo passou pelo fluxo),
-  `script` (`main`; `correcao_rede_propria` nas passagens antigas),
+  `script` (`geacs`, `geacs_adc_pdf_ant_aut`, `geacs_adc_pdf_ant_man` ou `deproc`; `correcao_rede_propria` nas passagens antigas),
   `data_execucao` (identifica a execução), `fluxo`, `prox_acao`,
   `tipo_erro`, `erro`.
 - Cada linha vem de `RegistroBase.to_dict()`: todos os campos do registro,
@@ -852,11 +1026,30 @@ perca os processos já tratados.
 
 ### Logs
 
-- `logs/<data>_execucao.log`, com resumo final.
+- `logs/<data>_execucao_geacs.log` (fluxo normal), `_execucao_geacs_adc_pdf_ant_aut.log`, `_execucao_geacs_adc_pdf_ant_man.log` e `_execucao_deproc.log`, cada um com resumo final.
 
 ---
 
 ## Pontos a validar no ambiente real
+
+- **TODO**: implementar `alterar_unidade_sei` na `sei_automacao` e chamá-la em
+  `sessao_sei.alterar_unidade_sei` (hoje só avisa no log: entre no SEI já na
+  unidade certa). A `sei_automacao` já tem `ubiquo.trocar_unidade`, que pode
+  servir de base.
+- Fluxo DEPROC: confirmar a grafia de `UNIDADE_DEPROC` (`IPSEMG/DEPROC`) na
+  árvore e na troca de unidade; que `obter_conteudo_doc` traz a linha
+  "Documento assinado eletronicamente por ..." do memo DEPROC; e que, na
+  unidade da DEPROC, o processo recebido mostra `Incluir Documento`.
+- **TODO** (fluxo DEPROC): cadastrar na unidade da DEPROC os marcadores
+  `Script v2 DEPROC - 1 - Tratado pelo Script`, `Script v2 DEPROC - 1.1 -
+  Relatório Copart. Anexado` e `Script v2 DEPROC - 1.2 - Concluído: Memo p/
+  GEACS` (idênticos aos de `tags.py`; sem eles, nada é feito).
+- **TODO** (fluxo DEPROC): criar o bloco do memo de resultado no SEI
+  (`BLOCO_MEMO_DEPROC_RESULTADO`), definir o signatário
+  (`NOME_SIGNATARIO_DEPROC`, `CARGO_SIGNATARIO_DEPROC`) e o texto final do
+  `MemoDeprocResultado` (`TEXTO_DEFINIDO`).
+- Fluxo DEPROC: o processo VELHO (memos DISA e DEPROC antigos) não é
+  separado; não inclua VELHOS na lista.
 
 - Confirmar no SEI real a remoção de marcadores (`remover_marcador` da
   `sei_automacao`): troca de estado e de par e remoção do `1.2.1`.
@@ -883,14 +1076,14 @@ perca os processos já tratados.
   Aguarda APIS: Sem Uso`.
   Todos com o prefixo `Script v2 - `, idênticos aos de `tags.py`.
 - **TODO**: cadastrar no SEI o marcador `Script v2 - 1.0 - Aguarda Script:
-  Fluxo Normal` antes de rodar o ALT 1 (sem ele, nenhum PDF é inserido).
-- ALT 1 e fluxo normal: confirmar no SEI real que `reabrir_processo` funciona nos processos sem
+  Fluxo Normal` antes de rodar o ADC PDF ANT AUT (sem ele, nenhum PDF é inserido).
+- ADC PDF ANT AUT e fluxo normal: confirmar no SEI real que `reabrir_processo` funciona nos processos sem
   `Incluir Documento` (a causa, processo concluído na unidade, ainda é hipótese)
   e se os reabertos (coluna `processo_reaberto`) devem ser concluídos de novo.
   Se o 2º PDF ainda falhar na 1ª tentativa, o traceback está no log (DEBUG).
-- ALT 1: confirmar que apagar um `.crdownload` preso impede o arquivo de
+- ADC PDF ANT AUT: confirmar que apagar um `.crdownload` preso impede o arquivo de
   aparecer depois.
-- ALT 1: confirmar na primeira execução que abrir a planilha na árvore inicia
+- ADC PDF ANT AUT: confirmar na primeira execução que abrir a planilha na árvore inicia
   o download sem pedir permissão do Chrome para vários downloads, que o PDF
   entra no fim da árvore e que o nome real dos documentos bate com o padrão.
 - **TODO**: blocos dos três memos à DISA (`BLOCO_MEMO_DISA_*`) e do memo
@@ -907,10 +1100,15 @@ perca os processos já tratados.
   retorno da DISA e da DEPROC, ainda não implementado. Confirmar no SEI real
   que as tabelas são salvas (a `sei_automacao` não trata tabelas; o memo
   manda o HTML no formato do editor do SEI, fora do `<p>`).
-- **TODO**: fluxo do processo VELHO (`main._separar_velho`).
+- **TODO**: fluxo do processo VELHO (`main_geacs._separar_velho`).
 - Confirmar que todo processo aberto no setor mostra `Incluir Documento`
   (senão o fluxo normal tenta reabrir um processo já aberto e para com
   `ProcessoFechadoNoSetor`).
+- Leitura de documento da árvore (`docs_processo._selecionar_doc`): se a
+  seleção falhar com "Documento não encontrado" (pastas fechadas depois de
+  adicionar marcador ou reabrir) ou clique interceptado (documento no fim da
+  árvore), a árvore é relida, o documento é centralizado no frame e há uma
+  nova tentativa. Confirmar no SEI real que o clique interceptado some.
 - Confirmar com um memorando real que `obter_conteudo_doc` devolve as
   linhas `Matrícula do dependente` e `Período de apuração do dependente`
   separadas (o período é lido até o fim da linha).

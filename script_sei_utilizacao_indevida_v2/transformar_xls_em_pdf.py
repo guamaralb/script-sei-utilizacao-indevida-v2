@@ -42,7 +42,7 @@ COL_WITDHS_TIT_DICT = {
 }
 
 
-def _formatar_valor_monetario(valor: float) -> str:
+def formatar_valor_monetario(valor: float) -> str:
     formatado = f'{valor:,.2f}'
     return formatado.replace(',', 'X').replace('.', ',').replace('X', '.')
 
@@ -52,7 +52,7 @@ def _build_table_row(row, valor_col_index, matricula_dep_index, normal):
 
     for i, cell in enumerate(row):
         if i == valor_col_index and pd.notna(cell):
-            linha.append(_formatar_valor_monetario(float(cell)))
+            linha.append(formatar_valor_monetario(float(cell)))
 
         elif i == matricula_dep_index and pd.notna(cell):
             linha.append(str(int(cell)))
@@ -70,7 +70,7 @@ def _build_table_row(row, valor_col_index, matricula_dep_index, normal):
 def _build_linha_total(df: pd.DataFrame, valor_col_index: int) -> list[str]:
     linha = [''] * len(df.columns)
     linha[0] = 'TOTAL'
-    linha[valor_col_index] = _formatar_valor_monetario(df['VALOR PAGO'].astype(float).sum())
+    linha[valor_col_index] = formatar_valor_monetario(df['VALOR PAGO'].astype(float).sum())
     return linha
 
 

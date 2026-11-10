@@ -1,0 +1,23 @@
+2026-11-10 13:30:49 | INFO    | -                         | main_alt_1            | ================= INÍCIO DA EXECUÇÃO (FLUXO PDF - PLANILHAS DA PASTA) =================
+2026-11-10 13:30:49 | INFO    | -                         | main_alt_1            | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-10_13-30-49_execucao_fluxo_pdf.log
+2026-11-10 13:30:49 | INFO    | -                         | main_alt_1            | 1 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-10 13:30:52 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-10 13:30:52 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-10 13:30:52 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-10 13:30:52 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-10 13:30:53 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-10 13:30:55 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-10 13:30:55 | INFO    | 2010.01.0071350/2024-46   | main_alt_1            | INÍCIO [1/1]
+2026-11-10 13:30:59 | INFO    | 2010.01.0071350/2024-46   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-10 13:31:01 | INFO    | 2010.01.0071350/2024-46   | main_alt_1            | Árvore: 30 documento(s)
+2026-11-10 13:31:01 | INFO    | 2010.01.0071350/2024-46   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0071350_2024-46 - Planilha Utilização Titular - 1186433.xlsx']
+2026-11-10 13:31:17 | INFO    | 2010.01.0071350/2024-46   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 1186433 - SEI 153322704 (153323399)
+2026-11-10 13:31:17 | INFO    | 2010.01.0071350/2024-46   | planilhas_alt_1       | Processo já no fluxo normal ou VELHO: mantido no estado atual
+2026-11-10 13:31:17 | INFO    | 2010.01.0071350/2024-46   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-10_13-30-49.xlsx
+2026-11-10 13:31:22 | DEBUG   | 2010.01.0071350/2024-46   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-10 13:31:22 | INFO    | 2010.01.0071350/2024-46   | main_alt_1            | FIM (27.0s) | Próxima ação: Fluxo PDF: PDFs inseridos; processo mantido no estado atual
+2026-11-10 13:31:25 | INFO    | -                         | main_alt_1            | ------------------------ RESUMO ------------------------
+2026-11-10 13:31:25 | INFO    | -                         | main_alt_1            | Processos: 1 | Sem erro: 1 | Com erro: 0
+2026-11-10 13:31:25 | INFO    | -                         | main_alt_1            |     1 | Fluxo PDF: PDFs inseridos; processo mantido no estado atual
+2026-11-10 13:31:25 | INFO    | -                         | main_alt_1            | Duração total da execução: 36.0s
+2026-11-10 13:31:25 | INFO    | -                         | main_alt_1            | ================== FIM DA EXECUÇÃO ==================

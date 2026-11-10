@@ -1,0 +1,514 @@
+2026-11-10 10:07:25 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-10 10:07:25 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-10_10-07-25_execucao.log
+2026-11-10 10:07:25 | INFO    | -                         | __main__              | 26 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-10 10:07:25 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-10 10:07:25 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-10 10:07:26 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-10 10:07:26 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-10 10:07:26 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-10 10:07:26 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-10 10:07:26 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-10 10:07:27 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-10 10:07:27 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-10 10:07:27 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-10 10:07:56 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-10 10:08:15 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-10 10:08:16 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-10 10:08:16 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-10 10:08:16 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-10 10:08:17 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-10 10:08:17 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-11-10 10:08:19 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-10 10:08:19 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [1/26]
+2026-11-10 10:08:21 | INFO    | 2010.01.0071357/2024-51   | __main__              | Árvore: 18 documento(s) | GEACS: 3 documento(s), 1 memorando(s)
+2026-11-10 10:08:21 | INFO    | 2010.01.0071357/2024-51   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Não Usou RP', 'Script v2 - 1.6 - Avaliado Uso Rede Própria DISA']
+2026-11-10 10:08:21 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 42 (SEI 105641181)
+2026-11-10 10:08:22 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 105641181 lido (1685 caracteres)
+2026-11-10 10:08:22 | INFO    | 2010.01.0071357/2024-51   | __main__              | Fluxo: retomada (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:08:22 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 1798 (SEI 148034263)
+2026-11-10 10:08:22 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 148034263 lido (2678 caracteres)
+2026-11-10 10:08:22 | INFO    | 2010.01.0071357/2024-51   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1798 (SEI 148034263)']
+2026-11-10 10:08:22 | INFO    | 2010.01.0071357/2024-51   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2395781-6 | Período titular: 01/04/2019 a12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-10 10:08:22 | INFO    | 2010.01.0071357/2024-51   | rede_propria          | Uso da rede própria (base DISA) | Titular 23957816: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-11-10 10:08:24 | INFO    | 2010.01.0071357/2024-51   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-10 10:08:24 | INFO    | 2010.01.0071357/2024-51   | processar_novo        | Retomada: etapa "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA" já feita (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:08:24 | INFO    | 2010.01.0071357/2024-51   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-10_10-07-25.xlsx
+2026-11-10 10:08:29 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-10 10:08:29 | WARNING | 2010.01.0071357/2024-51   | __main__              | FIM COM ERRO (10.1s) | ErroAvaliacao: Período de apuração do titular em formato não reconhecido: "01/04/2019 a12/06/2024"
+2026-11-10 10:08:29 | INFO    | 2010.01.0072057/2024-66   | __main__              | INÍCIO [2/26]
+2026-11-10 10:08:32 | INFO    | 2010.01.0072057/2024-66   | __main__              | Árvore: 28 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-10 10:08:32 | INFO    | 2010.01.0072057/2024-66   | __main__              | Marcadores: ['PLANILHADO - DESATIVADO', 'UTILIZAÇÃO INSERIDA - DESATIVADO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.0 - Aguarda Script: Fluxo Normal']
+2026-11-10 10:08:32 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 37 (SEI 99772526)
+2026-11-10 10:08:32 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 99772526 lido (1939 caracteres)
+2026-11-10 10:08:32 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 1235 (SEI 123601668)
+2026-11-10 10:08:33 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 123601668 lido (2105 caracteres)
+2026-11-10 10:08:33 | INFO    | 2010.01.0072057/2024-66   | __main__              | Fluxo: NOVO - do início (veio do fluxo ALT 1)
+2026-11-10 10:08:33 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 45 (SEI 114762240)
+2026-11-10 10:08:33 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 114762240 lido (1543 caracteres)
+2026-11-10 10:08:33 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 45 (SEI 114762240)
+2026-11-10 10:08:33 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 1626 (SEI 147489399)
+2026-11-10 10:08:34 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 147489399 lido (2498 caracteres)
+2026-11-10 10:08:34 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1626 (SEI 147489399)
+2026-11-10 10:08:34 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 2450 (SEI 151127831)
+2026-11-10 10:08:35 | ERROR   | 2010.01.0072057/2024-66   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 184, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 170, in _tratar
+    processar_novo(driver, registro, bases, bases_mantis)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 482, in processar_novo
+    dados_ui = obter_dados_ui(driver, registro)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 105, in obter_dados_ui
+    memos_para_geacs = obter_memos_apis_para_geacs(driver, registro.tds_docs)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 75, in obter_memos_apis_para_geacs
+    texto = ler_texto_doc(driver, memo)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 86, in ler_texto_doc
+    selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 157, in selecionar_doc_arvore
+    doc_element.click()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 114, in click
+    self._execute(Command.CLICK_ELEMENT)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 508, in _execute
+    return self._parent.execute(command, params)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (190, 645)
+  (Session info: chrome=157.0.8103.50); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff7f0349cf5]
+	(No symbol) [0x7ff7f0249540]
+	(No symbol) [0x7ff7f00d2763]
+	(No symbol) [0x7ff7f09344c2]
+	(No symbol) [0x7ff7f0932ae3]
+	(No symbol) [0x7ff7f0930a37]
+	(No symbol) [0x7ff7f09301be]
+	(No symbol) [0x7ff7f0924dea]
+	(No symbol) [0x7ff7f09414ca]
+	(No symbol) [0x7ff7f0924829]
+	(No symbol) [0x7ff7f09247c0]
+	(No symbol) [0x7ff7f0105481]
+	(No symbol) [0x7ff7f00eb389]
+	(No symbol) [0x7ff7f00ec6b3]
+	(No symbol) [0x7ff7f08152e1]
+	(No symbol) [0x7ff7f083c54b]
+	(No symbol) [0x7ff7f0830c00]
+	(No symbol) [0x7ff7f0472f3e]
+	(No symbol) [0x7ff7f0258d85]
+	(No symbol) [0x7ff7f0253424]
+	(No symbol) [0x7ff7f02535b4]
+	(No symbol) [0x7ff7f023c7ec]
+	(No symbol) [0x7fffc03ecd87]
+	(No symbol) [0x7fffc1b0caec]
+
+2026-11-10 10:08:40 | DEBUG   | 2010.01.0072057/2024-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-10 10:08:40 | WARNING | 2010.01.0072057/2024-66   | __main__              | FIM COM ERRO (10.4s) | ElementClickInterceptedException: element click intercepted: Element is not clickable at point (190, 645)
+2026-11-10 10:08:40 | INFO    | 2010.01.0050849/2025-88   | __main__              | INÍCIO [3/26]
+2026-11-10 10:08:41 | INFO    | 2010.01.0050849/2025-88   | __main__              | Árvore: 15 documento(s) | GEACS: 5 documento(s), 1 memorando(s)
+2026-11-10 10:08:41 | INFO    | 2010.01.0050849/2025-88   | __main__              | Marcadores: ['PLANILHADO - DESATIVADO', 'UTILIZAÇÃO INSERIDA - DESATIVADO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Usou RP', 'Script v2 - 1.6 - Avaliado Uso Rede Própria DISA']
+2026-11-10 10:08:41 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 1059 (SEI 123495705)
+2026-11-10 10:08:42 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 123495705 lido (2131 caracteres)
+2026-11-10 10:08:42 | INFO    | 2010.01.0050849/2025-88   | __main__              | Fluxo: retomada (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:08:42 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 64 (SEI 114891636)
+2026-11-10 10:08:42 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 114891636 lido (1583 caracteres)
+2026-11-10 10:08:42 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 64 (SEI 114891636)
+2026-11-10 10:08:42 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 2459 (SEI 151287959)
+2026-11-10 10:08:42 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 151287959 lido (2714 caracteres)
+2026-11-10 10:08:42 | INFO    | 2010.01.0050849/2025-88   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2459 (SEI 151287959)']
+2026-11-10 10:08:42 | INFO    | 2010.01.0050849/2025-88   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3551518-0 | Período titular: 01/05/2019 A 12/06/2024 | Dependentes: 3559378; 3872905 | Período variável p/ dependentes: não
+2026-11-10 10:08:42 | INFO    | 2010.01.0050849/2025-88   | rede_propria          | Uso da rede própria (base DISA) | Titular 35515180: NÃO USOU | Dependentes que usaram: ['3559378'] | Dependentes que não usaram: ['3872905']
+2026-11-10 10:08:42 | INFO    | 2010.01.0050849/2025-88   | processar_novo        | Retomada: etapa "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA" já feita (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:08:48 | DEBUG   | 2010.01.0050849/2025-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-10 10:08:48 | WARNING | 2010.01.0050849/2025-88   | __main__              | FIM COM ERRO (7.7s) | ErroAvaliacao: Período de apuração do titular em formato não reconhecido: "01/05/2019 A 12/06/2024"
+2026-11-10 10:08:48 | INFO    | 2010.01.0053646/2025-35   | __main__              | INÍCIO [4/26]
+2026-11-10 10:08:49 | INFO    | 2010.01.0053646/2025-35   | __main__              | Árvore: 11 documento(s) | GEACS: 3 documento(s), 1 memorando(s)
+2026-11-10 10:08:49 | INFO    | 2010.01.0053646/2025-35   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Usou RP', 'Script v2 - 1.6 - Avaliado Uso Rede Própria DISA']
+2026-11-10 10:08:49 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Lendo documento Memorando 1554 (SEI 123720546)
+2026-11-10 10:08:49 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Documento 123720546 lido (2103 caracteres)
+2026-11-10 10:08:49 | INFO    | 2010.01.0053646/2025-35   | __main__              | Fluxo: retomada (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:08:49 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Lendo documento Memorando 200 (SEI 115330661)
+2026-11-10 10:08:50 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Documento 115330661 lido (1323 caracteres)
+2026-11-10 10:08:50 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 200 (SEI 115330661)
+2026-11-10 10:08:50 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Lendo documento Memorando 256 (SEI 133222246)
+2026-11-10 10:08:50 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Documento 133222246 lido (2101 caracteres)
+2026-11-10 10:08:50 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 256 (SEI 133222246)
+2026-11-10 10:08:50 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Lendo documento Memorando 2742 (SEI 152754654)
+2026-11-10 10:08:51 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Documento 152754654 lido (2884 caracteres)
+2026-11-10 10:08:51 | INFO    | 2010.01.0053646/2025-35   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2742 (SEI 152754654)']
+2026-11-10 10:08:51 | INFO    | 2010.01.0053646/2025-35   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3700367 / 4 | Período titular: 01/112019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-10 10:08:51 | INFO    | 2010.01.0053646/2025-35   | rede_propria          | Uso da rede própria (base DISA) | Titular 37003674: USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-11-10 10:08:51 | INFO    | 2010.01.0053646/2025-35   | processar_novo        | Retomada: etapa "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA" já feita (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:08:56 | DEBUG   | 2010.01.0053646/2025-35   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-10 10:08:56 | WARNING | 2010.01.0053646/2025-35   | __main__              | FIM COM ERRO (8.0s) | ErroAvaliacao: Período de apuração do titular em formato não reconhecido: "01/112019 a 12/06/2024"
+2026-11-10 10:08:56 | INFO    | 2010.01.0071353/2024-62   | __main__              | INÍCIO [5/26]
+2026-11-10 10:08:58 | INFO    | 2010.01.0071353/2024-62   | __main__              | Árvore: 36 documento(s) | GEACS: 10 documento(s), 2 memorando(s)
+2026-11-10 10:08:58 | INFO    | 2010.01.0071353/2024-62   | __main__              | Marcadores: ['PLANILHADO - DESATIVADO', 'UTILIZAÇÃO INSERIDA - DESATIVADO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.0 - Aguarda Script: Fluxo Normal']
+2026-11-10 10:08:58 | DEBUG   | 2010.01.0071353/2024-62   | docs_processo         | Lendo documento Memorando 45 (SEI 101481161)
+2026-11-10 10:08:58 | DEBUG   | 2010.01.0071353/2024-62   | docs_processo         | Documento 101481161 lido (2110 caracteres)
+2026-11-10 10:08:58 | DEBUG   | 2010.01.0071353/2024-62   | docs_processo         | Lendo documento Memorando 1204 (SEI 123590569)
+2026-11-10 10:08:59 | DEBUG   | 2010.01.0071353/2024-62   | docs_processo         | Documento 123590569 lido (2133 caracteres)
+2026-11-10 10:08:59 | INFO    | 2010.01.0071353/2024-62   | __main__              | Fluxo: NOVO - do início (veio do fluxo ALT 1)
+2026-11-10 10:08:59 | DEBUG   | 2010.01.0071353/2024-62   | docs_processo         | Lendo documento Memorando 52 (SEI 114822867)
+2026-11-10 10:08:59 | DEBUG   | 2010.01.0071353/2024-62   | docs_processo         | Documento 114822867 lido (1911 caracteres)
+2026-11-10 10:08:59 | DEBUG   | 2010.01.0071353/2024-62   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 52 (SEI 114822867)
+2026-11-10 10:08:59 | DEBUG   | 2010.01.0071353/2024-62   | docs_processo         | Lendo documento Memorando 645 (SEI 143330027)
+2026-11-10 10:09:00 | ERROR   | 2010.01.0071353/2024-62   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 184, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 170, in _tratar
+    processar_novo(driver, registro, bases, bases_mantis)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 482, in processar_novo
+    dados_ui = obter_dados_ui(driver, registro)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 105, in obter_dados_ui
+    memos_para_geacs = obter_memos_apis_para_geacs(driver, registro.tds_docs)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 75, in obter_memos_apis_para_geacs
+    texto = ler_texto_doc(driver, memo)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 86, in ler_texto_doc
+    selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 157, in selecionar_doc_arvore
+    doc_element.click()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 114, in click
+    self._execute(Command.CLICK_ELEMENT)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 508, in _execute
+    return self._parent.execute(command, params)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (186, 697)
+  (Session info: chrome=157.0.8103.50); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff7f0349cf5]
+	(No symbol) [0x7ff7f0249540]
+	(No symbol) [0x7ff7f00d2763]
+	(No symbol) [0x7ff7f09344c2]
+	(No symbol) [0x7ff7f0932ae3]
+	(No symbol) [0x7ff7f0930a37]
+	(No symbol) [0x7ff7f09301be]
+	(No symbol) [0x7ff7f0924dea]
+	(No symbol) [0x7ff7f09414ca]
+	(No symbol) [0x7ff7f0924829]
+	(No symbol) [0x7ff7f09247c0]
+	(No symbol) [0x7ff7f0105481]
+	(No symbol) [0x7ff7f00eb389]
+	(No symbol) [0x7ff7f00ec6b3]
+	(No symbol) [0x7ff7f08152e1]
+	(No symbol) [0x7ff7f083c54b]
+	(No symbol) [0x7ff7f0830c00]
+	(No symbol) [0x7ff7f0472f3e]
+	(No symbol) [0x7ff7f0258d85]
+	(No symbol) [0x7ff7f0253424]
+	(No symbol) [0x7ff7f02535b4]
+	(No symbol) [0x7ff7f023c7ec]
+	(No symbol) [0x7fffc03ecd87]
+	(No symbol) [0x7fffc1b0caec]
+
+2026-11-10 10:09:06 | DEBUG   | 2010.01.0071353/2024-62   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-10 10:09:06 | WARNING | 2010.01.0071353/2024-62   | __main__              | FIM COM ERRO (10.1s) | ElementClickInterceptedException: element click intercepted: Element is not clickable at point (186, 697)
+2026-11-10 10:09:06 | INFO    | 2010.01.0049339/2025-21   | __main__              | INÍCIO [6/26]
+2026-11-10 10:09:08 | INFO    | 2010.01.0049339/2025-21   | __main__              | Árvore: 27 documento(s) | GEACS: 5 documento(s), 1 memorando(s)
+2026-11-10 10:09:08 | INFO    | 2010.01.0049339/2025-21   | __main__              | Marcadores: ['PLANILHADO - DESATIVADO', 'UTILIZAÇÃO INSERIDA - DESATIVADO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.0 - Aguarda Script: Fluxo Normal']
+2026-11-10 10:09:08 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Lendo documento Memorando 577 (SEI 123273965)
+2026-11-10 10:09:09 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Documento 123273965 lido (2136 caracteres)
+2026-11-10 10:09:09 | INFO    | 2010.01.0049339/2025-21   | __main__              | Fluxo: NOVO - do início (veio do fluxo ALT 1)
+2026-11-10 10:09:09 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Lendo documento Memorando 24 (SEI 114680933)
+2026-11-10 10:09:09 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Documento 114680933 lido (1586 caracteres)
+2026-11-10 10:09:09 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 24 (SEI 114680933)
+2026-11-10 10:09:09 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Lendo documento Memorando 285 (SEI 134409610)
+2026-11-10 10:09:09 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Documento 134409610 lido (2367 caracteres)
+2026-11-10 10:09:09 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 285 (SEI 134409610)
+2026-11-10 10:09:09 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Lendo documento Memorando 595 (SEI 143295974)
+2026-11-10 10:09:10 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Documento 143295974 lido (2808 caracteres)
+2026-11-10 10:09:10 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 595 (SEI 143295974)
+2026-11-10 10:09:10 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Lendo documento Memorando 1093 (SEI 145091673)
+2026-11-10 10:09:10 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Documento 145091673 lido (1879 caracteres)
+2026-11-10 10:09:10 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1093 (SEI 145091673)
+2026-11-10 10:09:10 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Lendo documento Memorando 2705 (SEI 152709542)
+2026-11-10 10:09:11 | ERROR   | 2010.01.0049339/2025-21   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 184, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 170, in _tratar
+    processar_novo(driver, registro, bases, bases_mantis)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 482, in processar_novo
+    dados_ui = obter_dados_ui(driver, registro)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 105, in obter_dados_ui
+    memos_para_geacs = obter_memos_apis_para_geacs(driver, registro.tds_docs)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 75, in obter_memos_apis_para_geacs
+    texto = ler_texto_doc(driver, memo)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 86, in ler_texto_doc
+    selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 157, in selecionar_doc_arvore
+    doc_element.click()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 114, in click
+    self._execute(Command.CLICK_ELEMENT)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 508, in _execute
+    return self._parent.execute(command, params)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (190, 697)
+  (Session info: chrome=157.0.8103.50); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff7f0349cf5]
+	(No symbol) [0x7ff7f0249540]
+	(No symbol) [0x7ff7f00d2763]
+	(No symbol) [0x7ff7f09344c2]
+	(No symbol) [0x7ff7f0932ae3]
+	(No symbol) [0x7ff7f0930a37]
+	(No symbol) [0x7ff7f09301be]
+	(No symbol) [0x7ff7f0924dea]
+	(No symbol) [0x7ff7f09414ca]
+	(No symbol) [0x7ff7f0924829]
+	(No symbol) [0x7ff7f09247c0]
+	(No symbol) [0x7ff7f0105481]
+	(No symbol) [0x7ff7f00eb389]
+	(No symbol) [0x7ff7f00ec6b3]
+	(No symbol) [0x7ff7f08152e1]
+	(No symbol) [0x7ff7f083c54b]
+	(No symbol) [0x7ff7f0830c00]
+	(No symbol) [0x7ff7f0472f3e]
+	(No symbol) [0x7ff7f0258d85]
+	(No symbol) [0x7ff7f0253424]
+	(No symbol) [0x7ff7f02535b4]
+	(No symbol) [0x7ff7f023c7ec]
+	(No symbol) [0x7fffc03ecd87]
+	(No symbol) [0x7fffc1b0caec]
+
+2026-11-10 10:09:16 | DEBUG   | 2010.01.0049339/2025-21   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-10 10:09:16 | WARNING | 2010.01.0049339/2025-21   | __main__              | FIM COM ERRO (10.7s) | ElementClickInterceptedException: element click intercepted: Element is not clickable at point (190, 697)
+2026-11-10 10:09:16 | INFO    | 2010.01.0072778/2024-96   | __main__              | INÍCIO [7/26]
+2026-11-10 10:09:19 | INFO    | 2010.01.0072778/2024-96   | __main__              | Árvore: 27 documento(s) | GEACS: 10 documento(s), 2 memorando(s)
+2026-11-10 10:09:19 | INFO    | 2010.01.0072778/2024-96   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.0 - Aguarda Script: Fluxo Normal']
+2026-11-10 10:09:19 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Lendo documento Memorando 26 (SEI 99576040)
+2026-11-10 10:09:19 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Documento 99576040 lido (2441 caracteres)
+2026-11-10 10:09:19 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Lendo documento Memorando 1859 (SEI 123730904)
+2026-11-10 10:09:19 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Documento 123730904 lido (2132 caracteres)
+2026-11-10 10:09:19 | INFO    | 2010.01.0072778/2024-96   | __main__              | Fluxo: NOVO - do início (veio do fluxo ALT 1)
+2026-11-10 10:09:19 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Lendo documento Memorando 48 (SEI 114773106)
+2026-11-10 10:09:20 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Documento 114773106 lido (1654 caracteres)
+2026-11-10 10:09:20 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 48 (SEI 114773106)
+2026-11-10 10:09:20 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Lendo documento Memorando 1684 (SEI 147645183)
+2026-11-10 10:09:21 | ERROR   | 2010.01.0072778/2024-96   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 184, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 170, in _tratar
+    processar_novo(driver, registro, bases, bases_mantis)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 482, in processar_novo
+    dados_ui = obter_dados_ui(driver, registro)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 105, in obter_dados_ui
+    memos_para_geacs = obter_memos_apis_para_geacs(driver, registro.tds_docs)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 75, in obter_memos_apis_para_geacs
+    texto = ler_texto_doc(driver, memo)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 86, in ler_texto_doc
+    selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 157, in selecionar_doc_arvore
+    doc_element.click()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 114, in click
+    self._execute(Command.CLICK_ELEMENT)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 508, in _execute
+    return self._parent.execute(command, params)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (190, 645)
+  (Session info: chrome=157.0.8103.50); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff7f0349cf5]
+	(No symbol) [0x7ff7f0249540]
+	(No symbol) [0x7ff7f00d2763]
+	(No symbol) [0x7ff7f09344c2]
+	(No symbol) [0x7ff7f0932ae3]
+	(No symbol) [0x7ff7f0930a37]
+	(No symbol) [0x7ff7f09301be]
+	(No symbol) [0x7ff7f0924dea]
+	(No symbol) [0x7ff7f09414ca]
+	(No symbol) [0x7ff7f0924829]
+	(No symbol) [0x7ff7f09247c0]
+	(No symbol) [0x7ff7f0105481]
+	(No symbol) [0x7ff7f00eb389]
+	(No symbol) [0x7ff7f00ec6b3]
+	(No symbol) [0x7ff7f08152e1]
+	(No symbol) [0x7ff7f083c54b]
+	(No symbol) [0x7ff7f0830c00]
+	(No symbol) [0x7ff7f0472f3e]
+	(No symbol) [0x7ff7f0258d85]
+	(No symbol) [0x7ff7f0253424]
+	(No symbol) [0x7ff7f02535b4]
+	(No symbol) [0x7ff7f023c7ec]
+	(No symbol) [0x7fffc03ecd87]
+	(No symbol) [0x7fffc1b0caec]
+
+2026-11-10 10:09:26 | DEBUG   | 2010.01.0072778/2024-96   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-10 10:09:26 | WARNING | 2010.01.0072778/2024-96   | __main__              | FIM COM ERRO (9.4s) | ElementClickInterceptedException: element click intercepted: Element is not clickable at point (190, 645)
+2026-11-10 10:09:26 | INFO    | 2010.01.0072059/2024-12   | __main__              | INÍCIO [8/26]
+2026-11-10 10:09:28 | INFO    | 2010.01.0072059/2024-12   | __main__              | Árvore: 25 documento(s) | GEACS: 8 documento(s), 2 memorando(s)
+2026-11-10 10:09:28 | INFO    | 2010.01.0072059/2024-12   | __main__              | Marcadores: ['Feito - DESATIVADO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.0 - Aguarda Script: Fluxo Normal']
+2026-11-10 10:09:28 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Lendo documento Memorando 5 (SEI 98132247)
+2026-11-10 10:09:29 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Documento 98132247 lido (1974 caracteres)
+2026-11-10 10:09:29 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Lendo documento Memorando 169 (SEI 121847578)
+2026-11-10 10:09:30 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Documento 121847578 lido (2369 caracteres)
+2026-11-10 10:09:30 | INFO    | 2010.01.0072059/2024-12   | __main__              | Fluxo: NOVO - do início (veio do fluxo ALT 1)
+2026-11-10 10:09:30 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Lendo documento Memorando 55 (SEI 114838575)
+2026-11-10 10:09:30 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Documento 114838575 lido (1652 caracteres)
+2026-11-10 10:09:30 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 55 (SEI 114838575)
+2026-11-10 10:09:30 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Lendo documento Memorando 2682 (SEI 152222696)
+2026-11-10 10:09:31 | ERROR   | 2010.01.0072059/2024-12   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 184, in _processar_linha
+    _tratar(driver, registro, bases, bases_mantis)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main.py", line 170, in _tratar
+    processar_novo(driver, registro, bases, bases_mantis)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 482, in processar_novo
+    dados_ui = obter_dados_ui(driver, registro)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processar_novo.py", line 105, in obter_dados_ui
+    memos_para_geacs = obter_memos_apis_para_geacs(driver, registro.tds_docs)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 75, in obter_memos_apis_para_geacs
+    texto = ler_texto_doc(driver, memo)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\docs_processo.py", line 86, in ler_texto_doc
+    selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\sei-automacao\sei_automacao\processo\arvore.py", line 157, in selecionar_doc_arvore
+    doc_element.click()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 114, in click
+    self._execute(Command.CLICK_ELEMENT)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 508, in _execute
+    return self._parent.execute(command, params)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (190, 645)
+  (Session info: chrome=157.0.8103.50); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff7f0349cf5]
+	(No symbol) [0x7ff7f0249540]
+	(No symbol) [0x7ff7f00d2763]
+	(No symbol) [0x7ff7f09344c2]
+	(No symbol) [0x7ff7f0932ae3]
+	(No symbol) [0x7ff7f0930a37]
+	(No symbol) [0x7ff7f09301be]
+	(No symbol) [0x7ff7f0924dea]
+	(No symbol) [0x7ff7f09414ca]
+	(No symbol) [0x7ff7f0924829]
+	(No symbol) [0x7ff7f09247c0]
+	(No symbol) [0x7ff7f0105481]
+	(No symbol) [0x7ff7f00eb389]
+	(No symbol) [0x7ff7f00ec6b3]
+	(No symbol) [0x7ff7f08152e1]
+	(No symbol) [0x7ff7f083c54b]
+	(No symbol) [0x7ff7f0830c00]
+	(No symbol) [0x7ff7f0472f3e]
+	(No symbol) [0x7ff7f0258d85]
+	(No symbol) [0x7ff7f0253424]
+	(No symbol) [0x7ff7f02535b4]
+	(No symbol) [0x7ff7f023c7ec]
+	(No symbol) [0x7fffc03ecd87]
+	(No symbol) [0x7fffc1b0caec]
+
+2026-11-10 10:09:36 | DEBUG   | 2010.01.0072059/2024-12   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-10 10:09:36 | WARNING | 2010.01.0072059/2024-12   | __main__              | FIM COM ERRO (10.6s) | ElementClickInterceptedException: element click intercepted: Element is not clickable at point (190, 645)
+2026-11-10 10:09:36 | INFO    | 2010.01.0051657/2025-97   | __main__              | INÍCIO [9/26]
+2026-11-10 10:09:38 | INFO    | 2010.01.0051657/2025-97   | __main__              | Árvore: 13 documento(s) | GEACS: 3 documento(s), 1 memorando(s)
+2026-11-10 10:09:38 | INFO    | 2010.01.0051657/2025-97   | __main__              | Marcadores: ['PLANILHADO - DESATIVADO', 'UTILIZAÇÃO INSERIDA - DESATIVADO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Usou RP', 'Script v2 - 1.6 - Avaliado Uso Rede Própria DISA']
+2026-11-10 10:09:38 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Lendo documento Memorando 693 (SEI 123366109)
+2026-11-10 10:09:38 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Documento 123366109 lido (2103 caracteres)
+2026-11-10 10:09:38 | INFO    | 2010.01.0051657/2025-97   | __main__              | Fluxo: retomada (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:09:38 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Lendo documento Memorando 90 (SEI 115022141)
+2026-11-10 10:09:39 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Documento 115022141 lido (1313 caracteres)
+2026-11-10 10:09:39 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 90 (SEI 115022141)
+2026-11-10 10:09:39 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Lendo documento Memorando 2697 (SEI 152594962)
+2026-11-10 10:09:39 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Documento 152594962 lido (2943 caracteres)
+2026-11-10 10:09:39 | INFO    | 2010.01.0051657/2025-97   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2697 (SEI 152594962)']
+2026-11-10 10:09:39 | INFO    | 2010.01.0051657/2025-97   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3845132 / 8 | Período titular: 01/08/2019 a 12/06/2019 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-10 10:09:39 | INFO    | 2010.01.0051657/2025-97   | rede_propria          | Uso da rede própria (base DISA) | Titular 38451328: USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-11-10 10:09:39 | INFO    | 2010.01.0051657/2025-97   | processar_novo        | Retomada: etapa "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA" já feita (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:09:44 | DEBUG   | 2010.01.0051657/2025-97   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-10 10:09:44 | WARNING | 2010.01.0051657/2025-97   | __main__              | FIM COM ERRO (7.7s) | ErroAvaliacao: Período de apuração do titular com início depois do fim: "01/08/2019 a 12/06/2019"
+2026-11-10 10:09:44 | INFO    | 2010.01.0051842/2025-49   | __main__              | INÍCIO [10/26]
+2026-11-10 10:09:46 | INFO    | 2010.01.0051842/2025-49   | __main__              | Árvore: 13 documento(s) | GEACS: 3 documento(s), 1 memorando(s)
+2026-11-10 10:09:46 | INFO    | 2010.01.0051842/2025-49   | __main__              | Marcadores: ['PLANILHADO - DESATIVADO', 'UTILIZAÇÃO INSERIDA - DESATIVADO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Não Usou RP', 'Script v2 - 1.6 - Avaliado Uso Rede Própria DISA']
+2026-11-10 10:09:46 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Lendo documento Memorando 681 (SEI 123363882)
+2026-11-10 10:09:46 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Documento 123363882 lido (2095 caracteres)
+2026-11-10 10:09:46 | INFO    | 2010.01.0051842/2025-49   | __main__              | Fluxo: retomada (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:09:46 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Lendo documento Memorando 94 (SEI 115054454)
+2026-11-10 10:09:46 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Documento 115054454 lido (1359 caracteres)
+2026-11-10 10:09:46 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 94 (SEI 115054454)
+2026-11-10 10:09:46 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Lendo documento Memorando 2699 (SEI 152597594)
+2026-11-10 10:09:47 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Documento 152597594 lido (2946 caracteres)
+2026-11-10 10:09:47 | INFO    | 2010.01.0051842/2025-49   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2699 (SEI 152597594)']
+2026-11-10 10:09:47 | INFO    | 2010.01.0051842/2025-49   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3706009 / 1 | Período titular: 01/08/2026 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-10 10:09:47 | INFO    | 2010.01.0051842/2025-49   | rede_propria          | Uso da rede própria (base DISA) | Titular 37060091: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-11-10 10:09:47 | INFO    | 2010.01.0051842/2025-49   | processar_novo        | Retomada: etapa "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA" já feita (estado "Script v2 - 1.6 - Avaliado Uso Rede Própria DISA")
+2026-11-10 10:09:52 | DEBUG   | 2010.01.0051842/2025-49   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-10 10:09:52 | WARNING | 2010.01.0051842/2025-49   | __main__              | FIM COM ERRO (7.8s) | ErroAvaliacao: Período de apuração do titular com início depois do fim: "01/08/2026 a 12/06/2024"
+2026-11-10 10:09:52 | INFO    | 2010.01.0083232/2024-11   | __main__              | INÍCIO [11/26]
+2026-11-10 10:09:54 | INFO    | 2010.01.0083232/2024-11   | __main__              | Árvore: 22 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-10 10:09:54 | INFO    | 2010.01.0083232/2024-11   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Usou RP', 'Script v2 - 1.8.2 - MANTIS: Usou RP', 'Script v2 - 1.8.3 - MANTIS: Não Usou RC', 'Script v2 - 1.9 - Aguarda DISA: Validar (Consta)']
+2026-11-10 10:09:59 | DEBUG   | 2010.01.0083232/2024-11   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-10 10:09:59 | WARNING | 2010.01.0083232/2024-11   | __main__              | FIM COM ERRO (7.2s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (Script v2 - 1.9 - Aguarda DISA: Validar (Consta))
+2026-11-10 10:09:59 | INFO    | 2010.01.0083370/2024-68   | __main__              | INÍCIO [12/26]
+2026-11-10 10:10:01 | INFO    | 2010.01.0083370/2024-68   | __main__              | Árvore: 13 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-10 10:10:01 | INFO    | 2010.01.0083370/2024-68   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Não Usou RP', 'Script v2 - 1.8.2 - MANTIS: Não Usou RP', 'Script v2 - 1.8.3 - MANTIS: Usou RC', 'Script v2 - 1.10 - Concluído: Memo DEPROC']
+2026-11-10 10:10:01 | INFO    | 2010.01.0083370/2024-68   | __main__              | Fluxo: concluído ("Script v2 - 1.10 - Concluído: Memo DEPROC")
+2026-11-10 10:10:06 | DEBUG   | 2010.01.0083370/2024-68   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-10 10:10:06 | INFO    | 2010.01.0083370/2024-68   | __main__              | FIM (6.5s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-10 10:10:06 | INFO    | 2010.01.0052971/2025-24   | __main__              | INÍCIO [13/26]
+2026-11-10 10:10:08 | INFO    | 2010.01.0052971/2025-24   | __main__              | Árvore: 23 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-10 10:10:08 | INFO    | 2010.01.0052971/2025-24   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.2 - Base DISA: Não Usou RP', 'Script v2 - 1.8.2 - MANTIS: Não Usou RP', 'Script v2 - 1.8.3 - MANTIS: Usou RC', 'Script v2 - 1.10 - Concluído: Memo DEPROC']
+2026-11-10 10:10:08 | INFO    | 2010.01.0052971/2025-24   | __main__              | Fluxo: concluído ("Script v2 - 1.10 - Concluído: Memo DEPROC")
+2026-11-10 10:10:13 | DEBUG   | 2010.01.0052971/2025-24   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-10 10:10:13 | INFO    | 2010.01.0052971/2025-24   | __main__              | FIM (7.1s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-10 10:10:13 | INFO    | 2010.01.0053003/2025-33   | __main__              | INÍCIO [14/26]
+2026-11-10 10:10:15 | INFO    | 2010.01.0053003/2025-33   | __main__              | Árvore: 21 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-10 10:10:15 | INFO    | 2010.01.0053003/2025-33   | __main__              | Marcadores: ['Script v2 - 2 - Processo VELHO', 'Script v2 - 1.2.1 - Mat. N Encontradas Base APIS', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.1 - Aguarda APIS: Matrículas']
+2026-11-10 10:10:20 | DEBUG   | 2010.01.0053003/2025-33   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-10 10:10:20 | WARNING | 2010.01.0053003/2025-33   | __main__              | FIM COM ERRO (7.7s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (Script v2 - 1.6.1 - Aguarda APIS: Matrículas)
+2026-11-10 10:10:20 | INFO    | 2010.01.0082937/2024-22   | __main__              | INÍCIO [15/26]
+2026-11-10 10:10:22 | INFO    | 2010.01.0082937/2024-22   | __main__              | Árvore: 13 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-10 10:10:22 | INFO    | 2010.01.0082937/2024-22   | __main__              | Marcadores: ['Feito - DESATIVADO', 'Script v2 - 1.2.1 - Mat. N Encontradas Base APIS', 'Script v2 - 1 - Tratado pelo Script', 'Script v2 - 1.6.1 - Aguarda APIS: Matrículas']
+2026-11-10 10:10:23 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None)': /session/f34a48c53cac7bc68079ae7357f6ada1

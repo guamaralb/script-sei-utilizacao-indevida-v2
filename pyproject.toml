@@ -40,17 +40,24 @@ pre_format = {cmd = 'poetry run ruff check --fix'}
 format = {cmd = 'poetry run ruff format'}
 
 # FLUXO NORMAL
-run = 'python script_sei_utilizacao_indevida_v2/main.py'
-pre_run = {cmd = "poetry run task format"}
+run_geacs = 'python script_sei_utilizacao_indevida_v2/main_geacs.py'
+pre_run_geacs = {cmd = "poetry run task format"}
 
-# BAIXA A PLANILHA ANTIGA DO SEI E ADD PDF NO PROCESSO
-run_alt_1 = 'python script_sei_utilizacao_indevida_v2/main_alt_1.py'
-pre_run_alt_1 = {cmd = "poetry run task format"}
+# ADICIONA PDF DA PLANILHA ANTIGA - AUTOMÁTICO: BAIXA A PLANILHA DO SEI E ADD
+# PDF NO PROCESSO
+run_geacs_adc_pdf_ant_aut = 'python script_sei_utilizacao_indevida_v2/main_geacs_adc_pdf_ant_aut.py'
+pre_run_geacs_adc_pdf_ant_aut = {cmd = "poetry run task format"}
 
-# PEGA PLANILHAS BAIXADAS MANUALMENTE E ADD PDF NO PROCESSO
+# ADICIONA PDF DA PLANILHA ANTIGA - MANUAL: PEGA PLANILHAS BAIXADAS
+# MANUALMENTE E ADD PDF NO PROCESSO
 # - Planilhas devem seguir o padrão
-run_pdf = 'python script_sei_utilizacao_indevida_v2/main_fluxo_pdf.py'
-pre_run_pdf = {cmd = "poetry run task format"}
+run_geacs_adc_pdf_ant_man = 'python script_sei_utilizacao_indevida_v2/main_geacs_adc_pdf_ant_man.py'
+pre_run_geacs_adc_pdf_ant_man = {cmd = "poetry run task format"}
+
+# NA UNIDADE DA DEPROC: CONFERE O MEMO DEPROC ASSINADO, APURA A COPARTICIPAÇÃO
+# NA BASE DO MANTIS, ANEXA O RELATÓRIO EM PDF E CRIA O MEMO DE RESULTADO
+run_deproc = 'python script_sei_utilizacao_indevida_v2/main_deproc.py'
+pre_run_deproc = {cmd = "poetry run task format"}
 test = 'pytest'
 
 [tool.pytest.ini_options]

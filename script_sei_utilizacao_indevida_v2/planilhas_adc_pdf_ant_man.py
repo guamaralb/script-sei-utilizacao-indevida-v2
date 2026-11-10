@@ -1,9 +1,9 @@
-"""Fluxo PDF: PDF das planilhas colocadas à mão em dados/fluxo_pdf/planilhas.
+"""Fluxo ADC PDF ANT MAN: PDF das planilhas colocadas à mão em dados/geacs_adc_pdf_ant_man/planilhas.
 
-Para quando o download do ALT 1 não funciona. A planilha é a mesma da árvore:
+Para quando o download do ADC PDF ANT AUT não funciona. A planilha é a mesma da árvore:
 o arquivo se chama <número do processo com _ no lugar da barra>-<nome na
 árvore>.xlsx (o hífen pode ter espaços em volta). O documento da árvore dá o número SEI, então o PDF, a retomada e
-os marcadores são os do ALT 1 (planilhas_alt_1.py), e um PDF que ele já tenha
+os marcadores são os do ADC PDF ANT AUT (planilhas_adc_pdf_ant_aut.py), e um PDF que ele já tenha
 inserido não é duplicado.
 """
 
@@ -12,8 +12,8 @@ import re
 import unicodedata
 from pathlib import Path
 
-from constantes import DIR_FLUXO_PDF_PDF, DIR_FLUXO_PDF_PLANILHAS
-from planilhas_alt_1 import deixar_aguardando_fluxo_normal, inserir_pdfs, tipo_da_planilha
+from constantes import DIR_ADC_PDF_ANT_MAN_PDF, DIR_ADC_PDF_ANT_MAN_PLANILHAS
+from planilhas_adc_pdf_ant_aut import deixar_aguardando_fluxo_normal, inserir_pdfs, tipo_da_planilha
 from rede_propria import ErroAvaliacao
 from Registro import ProxAcao
 from selenium import webdriver
@@ -31,7 +31,7 @@ def arquivos_do_processo(num_processo: str) -> dict[str, Path]:
     """Arquivos do processo na pasta: nome na árvore -> caminho."""
     processo = num_processo.replace('/', '_')
     arquivos = {}
-    for caminho in sorted(DIR_FLUXO_PDF_PLANILHAS.iterdir()):
+    for caminho in sorted(DIR_ADC_PDF_ANT_MAN_PLANILHAS.iterdir()):
         if not caminho.is_file() or caminho.name.endswith(_SUFIXO_ZONE_IDENTIFIER):
             continue
         partes = _NOME_ARQUIVO.fullmatch(caminho.stem)
@@ -65,7 +65,7 @@ def inserir_pdfs_da_pasta(driver: webdriver.Remote, registro) -> None:
     arquivos = arquivos_do_processo(registro.num_processo)
     if not arquivos:
         logger.warning('Nenhuma planilha do processo na pasta')
-        registro.prox_acao = ProxAcao.FLUXO_PDF_SEM_PLANILHAS
+        registro.prox_acao = ProxAcao.ADC_PDF_ANT_MAN_SEM_PLANILHAS
         return
 
     # Antes de inserir: um arquivo com problema para o processo sem PDF parcial
@@ -78,5 +78,5 @@ def inserir_pdfs_da_pasta(driver: webdriver.Remote, registro) -> None:
 
     registro.planilhas_sei = list(arquivo_por_numero)
     logger.info(f'{len(planilhas)} planilha(s) na pasta: {[caminho.name for caminho in arquivos.values()]}')
-    inserir_pdfs(driver, registro, planilhas, lambda doc: arquivo_por_numero[doc['numero_sei']], DIR_FLUXO_PDF_PDF)
-    registro.prox_acao = ProxAcao.FLUXO_PDF_AGUARDA_FLUXO_NORMAL if deixar_aguardando_fluxo_normal(driver, registro) else ProxAcao.FLUXO_PDF_ESTADO_MANTIDO
+    inserir_pdfs(driver, registro, planilhas, lambda doc: arquivo_por_numero[doc['numero_sei']], DIR_ADC_PDF_ANT_MAN_PDF)
+    registro.prox_acao = ProxAcao.ADC_PDF_ANT_MAN_AGUARDA_FLUXO_NORMAL if deixar_aguardando_fluxo_normal(driver, registro) else ProxAcao.ADC_PDF_ANT_MAN_ESTADO_MANTIDO

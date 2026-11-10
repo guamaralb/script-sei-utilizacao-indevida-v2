@@ -27,7 +27,7 @@ Para rodar: poetry run pytest tests/test_memos_sei_real.py
 import os
 
 import pytest
-from constantes import CARGO_SIGNATARIO, NOME_SIGNATARIO
+from constantes import CARGO_SIGNATARIO, NOME_SIGNATARIO, UNIDADE_GEACS
 from sei_automacao.processo import incluir_doc_sei_memo
 from sei_automacao.ubiquo.busca import acessar_processo
 from sessao_sei import abrir_sei
@@ -121,7 +121,7 @@ def _param(tipo: str):
 
 @pytest.fixture(scope='module')
 def driver():
-    driver = abrir_sei()
+    driver = abrir_sei(UNIDADE_GEACS)
     yield driver
     driver.quit()
 

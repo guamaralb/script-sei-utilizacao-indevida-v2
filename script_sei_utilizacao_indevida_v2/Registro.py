@@ -3,7 +3,7 @@ from dataclasses import dataclass, field, fields
 from datetime import datetime
 
 from docs_processo import filtrar_docs_geacs, filtrar_memos_geacs
-from tags import colunas_tags
+from tags import colunas_tags, colunas_tags_deproc
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
@@ -36,15 +36,18 @@ class ProxAcao:
     VERIFICAR_MARCADORES = 'Verificar marcadores inconsistentes (corrigir no SEI)'
     VERIFICAR_ERRO = 'Verificar erro'
 
-    # Fluxo alternativo ALT 1
-    ALT_1_AGUARDA_FLUXO_NORMAL = 'ALT 1: PDFs inseridos; aguarda o fluxo normal'
-    ALT_1_ESTADO_MANTIDO = 'ALT 1: PDFs inseridos; processo mantido no estado atual'
-    ALT_1_SEM_PLANILHAS = 'ALT 1: nenhuma planilha no processo (verificar)'
+    # Fluxo alternativo ADC PDF ANT AUT
+    ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL = 'ADC PDF ANT AUT: PDFs inseridos; aguarda o fluxo normal'
+    ADC_PDF_ANT_AUT_ESTADO_MANTIDO = 'ADC PDF ANT AUT: PDFs inseridos; processo mantido no estado atual'
+    ADC_PDF_ANT_AUT_SEM_PLANILHAS = 'ADC PDF ANT AUT: nenhuma planilha no processo (verificar)'
 
-    # Fluxo PDF (planilhas da pasta)
-    FLUXO_PDF_AGUARDA_FLUXO_NORMAL = 'Fluxo PDF: PDFs inseridos; aguarda o fluxo normal'
-    FLUXO_PDF_ESTADO_MANTIDO = 'Fluxo PDF: PDFs inseridos; processo mantido no estado atual'
-    FLUXO_PDF_SEM_PLANILHAS = 'Fluxo PDF: nenhuma planilha na pasta (verificar)'
+    # Fluxo ADC PDF ANT MAN (planilhas da pasta)
+    ADC_PDF_ANT_MAN_AGUARDA_FLUXO_NORMAL = 'ADC PDF ANT MAN: PDFs inseridos; aguarda o fluxo normal'
+    ADC_PDF_ANT_MAN_ESTADO_MANTIDO = 'ADC PDF ANT MAN: PDFs inseridos; processo mantido no estado atual'
+    ADC_PDF_ANT_MAN_SEM_PLANILHAS = 'ADC PDF ANT MAN: nenhuma planilha na pasta (verificar)'
+
+    # Fluxo DEPROC (coparticipação)
+    DEPROC_ASSINAR_MEMO_RESULTADO = 'DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS'
 
 
 # Próximas ações definidas antes do erro que devem ser mantidas
@@ -89,9 +92,9 @@ def _agora() -> datetime:
 
 
 # Dados de trabalho da passagem, fora da planilha de controle
-_CAMPOS_INTERNOS = frozenset({'marcadores_atuais', 'tds_docs', 'docs_geacs', 'memos_geacs', 'docs_rodada', 'memos_criados', 'dados_ui', 'memo_apis'})
+_CAMPOS_INTERNOS = frozenset({'marcadores_atuais', 'tds_docs', 'docs_geacs', 'memos_geacs', 'docs_rodada', 'memos_criados', 'dados_ui', 'memo_apis', 'processo_fechado'})
 
-# Resultados do fluxo principal: o ALT 1 não os avalia e não pode apagá-los da
+# Resultados do fluxo principal: o ADC PDF ANT AUT não os avalia e não pode apagá-los da
 # linha do processo na planilha de controle
 _CAMPOS_SO_FLUXO_PRINCIPAL = frozenset({
     'tit_usou',
@@ -147,6 +150,8 @@ class RegistroBase:
     memo_apis_mat_nao_encontradas_sei: str | None = None
 
     # Internos (ver _CAMPOS_INTERNOS)
+    # Sem "Incluir Documento" ao abrir o processo (fluxo normal)
+    processo_fechado: bool = False
     marcadores_atuais: list[str] = field(default_factory=list)
     tds_docs: list[dict] = field(default_factory=list)
     docs_geacs: list[dict] = field(default_factory=list)
@@ -266,9 +271,9 @@ class RegistroMain(RegistroBase):
 
 
 @dataclass
-class RegistroAlt1(RegistroBase):
-    """Uma passagem pelo fluxo alternativo ALT 1 (main_alt_1.py) ou pelo fluxo
-    PDF (main_fluxo_pdf.py)."""
+class RegistroAdcPdfAnt(RegistroBase):
+    """Uma passagem pelo fluxo alternativo ADC PDF ANT AUT (main_geacs_adc_pdf_ant_aut.py) ou pelo fluxo
+    PDF (main_geacs_adc_pdf_ant_man.py)."""
 
     # Planilhas na árvore (número SEI), PDFs anexados na passagem (nome na
     # árvore) e PDFs que já estavam na árvore (número SEI, retomada)
@@ -280,3 +285,63 @@ class RegistroAlt1(RegistroBase):
 
     def to_dict(self) -> dict:
         return {coluna: valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_SO_FLUXO_PRINCIPAL}
+
+
+# Colunas que o fluxo DEPROC não grava na linha do processo: os resultados
+# dos outros fluxos ficam como estão
+_CAMPOS_FORA_DEPROC = _CAMPOS_SO_FLUXO_PRINCIPAL | {'processo_reaberto'}
+# Os marcadores lidos na unidade da DEPROC não são os da GEACS: vão para
+# colunas próprias (marcadores_deproc_* e tag_deproc_*), sem apagar as da GEACS
+_COLUNAS_MARCADORES_DEPROC = {
+    'marcadores_sei': 'marcadores_deproc_sei',
+    'marcadores_adicionados': 'marcadores_deproc_adicionados',
+    'marcadores_removidos': 'marcadores_deproc_removidos',
+    'marcadores_finais': 'marcadores_deproc_finais',
+}
+
+
+@dataclass
+class RegistroDeproc(RegistroBase):
+    """Uma passagem pelo fluxo DEPROC (main_deproc.py), na unidade da DEPROC."""
+
+    # Instruções da APIS (mesmas colunas do fluxo normal)
+    ult_memo_obtido: bool = False
+    conteudo_ult_memo_obtido: bool = False
+    memo_apis_sei: str | None = None
+    memos_apis_geacs_sei: list[str] = field(default_factory=list)
+    modelo_memo_apis: str | None = None
+
+    # Memo DEPROC da GEACS na rodada e assinatura
+    memo_deproc_geacs_sei: str | None = None
+    memo_deproc_assinado: bool | None = None
+
+    # Base DEPROC (aba Resultado): linhas do processo (coluna SEI), linhas
+    # fora do período de apuração e atendimentos no relatório
+    linhas_base_deproc: int | None = None
+    linhas_fora_periodo_deproc: int | None = None
+    atendimentos_deproc: int | None = None
+    # Matrículas da base DEPROC que não estão no memo da APIS
+    matriculas_divergentes_deproc: list[str] = field(default_factory=list)
+    valor_total_coparticipacao: float | None = None
+    valor_total_descontado: float | None = None
+    valor_total_em_aberto: float | None = None
+
+    # Relatório em PDF: anexado na passagem (nome na árvore) ou já na árvore
+    relatorio_deproc_incluido: str | None = None
+    relatorio_deproc_na_arvore: bool = False
+    relatorio_deproc_sei: str | None = None
+
+    # Memo de resultado da DEPROC à GEACS
+    memo_deproc_resultado_criado: bool = False
+    memo_deproc_resultado_inserido_bloco: bool = False
+    memo_deproc_resultado_na_arvore: bool = False
+    memo_deproc_resultado_sei: str | None = None
+
+    # Internos (ver _CAMPOS_INTERNOS)
+    memo_apis: DocArvore | None = None
+    dados_ui: DadosUI | None = None
+
+    def to_dict(self) -> dict:
+        dados = {_COLUNAS_MARCADORES_DEPROC.get(coluna, coluna): valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_FORA_DEPROC and not coluna.startswith('tag_')}
+        dados.update(colunas_tags_deproc(self.marcadores_atuais))
+        return dados

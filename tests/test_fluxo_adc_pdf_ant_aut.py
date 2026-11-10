@@ -1,21 +1,21 @@
-"""Fluxo alternativo ALT 1 (main_alt_1.py e planilhas_alt_1.py), com o SEI
+"""Fluxo alternativo ADC PDF ANT AUT (main_geacs_adc_pdf_ant_aut.py e planilhas_adc_pdf_ant_aut.py), com o SEI
 simulado e planilhas geradas nos testes."""
 
 from datetime import datetime
 from pathlib import Path
 
-import main_alt_1
+import main_geacs_adc_pdf_ant_aut
 import pandas as pd
-import planilhas_alt_1
+import planilhas_adc_pdf_ant_aut
 import processo_fechado
 import pytest
 import relatorios_mantis
 import transformar_xls_em_pdf
 from constantes import UNIDADE_APIS
 from openpyxl import load_workbook
-from planilhas_alt_1 import ANEXO, DEPENDENTES, TITULAR, encontrar_planilhas, ler_planilha, nome_pdf, tipo_da_planilha
+from planilhas_adc_pdf_ant_aut import ANEXO, DEPENDENTES, TITULAR, encontrar_planilhas, ler_planilha, nome_pdf, tipo_da_planilha
 from rede_propria import ErroAvaliacao
-from Registro import ProxAcao, RegistroAlt1, registrar_erro
+from Registro import ProxAcao, RegistroAdcPdfAnt, registrar_erro
 from selenium.common.exceptions import InvalidSessionIdException, StaleElementReferenceException, TimeoutException
 from tags import (
     TAG_AGUARDA_DISA_VALIDAR_CONSTA,
@@ -85,19 +85,19 @@ class DriverFalso:
 @pytest.fixture
 def alt(sei, monkeypatch, tmp_path):
     falso = DownloadFalso(tmp_path)
-    monkeypatch.setattr(planilhas_alt_1, 'DIR_ALT_1_PLANILHAS', tmp_path)
-    monkeypatch.setattr(planilhas_alt_1, 'DIR_ALT_1_PDF', tmp_path / 'pdfs')
-    monkeypatch.setattr(planilhas_alt_1, 'TIMEOUT_DOWNLOAD', 0.1)
-    monkeypatch.setattr(planilhas_alt_1, '_ESPERA_NOVA_TENTATIVA', 0)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'DIR_ADC_PDF_ANT_AUT_PLANILHAS', tmp_path)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'DIR_ADC_PDF_ANT_AUT_PDF', tmp_path / 'pdfs')
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'TIMEOUT_DOWNLOAD', 0.1)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, '_ESPERA_NOVA_TENTATIVA', 0)
     monkeypatch.setattr(processo_fechado, '_ESPERA_REABERTURA', 0)
-    monkeypatch.setattr(planilhas_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
-    monkeypatch.setattr(planilhas_alt_1, 'selecionar_doc_arvore', falso.selecionar)
-    monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: True)
-    monkeypatch.setattr(planilhas_alt_1, 'transformar_xls_em_pdf', falso.transformar)
-    monkeypatch.setattr(main_alt_1, 'acessar_processo', lambda driver, num: None)
-    monkeypatch.setattr(main_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
-    monkeypatch.setattr(main_alt_1, 'listar_marcadores', lambda driver: list(sei.tags))
-    monkeypatch.setattr(main_alt_1, 'garantir_marcadores_no_sei', lambda driver, lista: None)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'selecionar_doc_arvore', falso.selecionar)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'tem_incluir_documento', lambda driver: True)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'transformar_xls_em_pdf', falso.transformar)
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'acessar_processo', lambda driver, num: None)
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'listar_marcadores', lambda driver: list(sei.tags))
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'garantir_marcadores_no_sei', lambda driver, lista: None)
     return falso
 
 
@@ -107,8 +107,8 @@ def planilha(sei, alt, nome: str, linhas: list[dict]) -> str:
     return numero
 
 
-def passar() -> RegistroAlt1:
-    return main_alt_1._processar_linha(DriverFalso(), 'PROC')
+def passar() -> RegistroAdcPdfAnt:
+    return main_geacs_adc_pdf_ant_aut._processar_linha(DriverFalso(), 'PROC')
 
 
 # --- Fluxo --------------------------------------------------------------------
@@ -132,8 +132,8 @@ def test_insere_um_pdf_por_planilha_e_o_marcador(sei, alt):
     assert alt.pdfs[0]['tit_nome'] == 'FULANO DE TAL'
     assert alt.pdfs[0]['tit_matricula'] == str(MATRICULA)
     assert sei.tags == [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
-    assert registro.prox_acao == ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL
-    assert registro.fluxo == 'ALT 1 - SOMENTE INSERIR PDF'
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL
+    assert registro.fluxo == 'ADC PDF ANT AUT - PLANILHA ANTIGA BAIXADA DO SEI'
     assert registro.erro is None
     assert registro.planilhas_sei == [tit, dep, anexo]
     assert len(registro.pdfs_incluidos) == 3
@@ -155,7 +155,7 @@ def test_segunda_passagem_nao_duplica(sei, alt):
     assert alt.abertas == [numero]
     assert sei.nomes.count(f'PDF Utilização Tit. - {MATRICULA} - SEI {numero}') == 1
     assert registro.pdfs_na_arvore == [pdf]
-    assert registro.prox_acao == ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL
 
 
 def test_erro_em_uma_planilha_retoma_na_passagem_seguinte(sei, alt):
@@ -249,7 +249,7 @@ def _sem_incluir_documento(monkeypatch, *, reabre: bool = True) -> list[str]:
         reaberturas.append('reabriu')
 
     monkeypatch.setattr(processo_fechado, 'reabrir_processo', reabrir)
-    monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: bool(reaberturas))
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'tem_incluir_documento', lambda driver: bool(reaberturas))
     monkeypatch.setattr(processo_fechado, 'tem_incluir_documento', lambda driver: bool(reaberturas))
     return reaberturas
 
@@ -283,7 +283,7 @@ def test_processo_que_nao_reabre_para_antes_de_baixar(sei, alt, monkeypatch):
 def test_processo_que_continua_sem_incluir_documento_e_erro(sei, alt, monkeypatch):
     planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
     monkeypatch.setattr(processo_fechado, 'reabrir_processo', lambda driver: None)
-    monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: False)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'tem_incluir_documento', lambda driver: False)
     monkeypatch.setattr(processo_fechado, 'tem_incluir_documento', lambda driver: False)
 
     registro = passar()
@@ -302,7 +302,7 @@ def test_processo_com_todos_os_pdfs_nao_e_reaberto(sei, alt, monkeypatch):
 
     assert reaberturas == []
     assert registro.erro is None
-    assert registro.prox_acao == ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL
 
 
 def test_tempo_esgotado_depois_de_salvar_nao_duplica(sei, alt, monkeypatch):
@@ -349,7 +349,7 @@ def test_ja_no_fluxo_normal_ou_velho_recebe_pdf_e_fica_onde_esta(sei, alt, marca
 
     assert sei.pdfs
     assert sei.tags == list(marcadores)
-    assert registro.prox_acao == ProxAcao.ALT_1_ESTADO_MANTIDO
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_AUT_ESTADO_MANTIDO
 
 
 def test_anexo_com_varios_beneficiarios(sei, alt):
@@ -387,12 +387,12 @@ def test_anexo_ja_inserido_nao_e_baixado_de_novo(sei, alt):
 def test_anexo_com_pdf_na_arvore_nao_depende_do_download(sei, alt, monkeypatch):
     planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
     sei.novo_doc(f'PDF Utilização Ben. - {MATRICULA} e mais 2', 'IPSEMG/GEACS - Utilização', '')
-    monkeypatch.setattr(planilhas_alt_1, 'selecionar_doc_arvore', lambda driver, numero_sei: None)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'selecionar_doc_arvore', lambda driver, numero_sei: None)
 
     registro = passar()
 
     assert registro.erro is None
-    assert registro.prox_acao == ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL
 
 
 def test_dois_anexos_ja_inseridos_nao_sao_baixados_de_novo(sei, alt):
@@ -461,14 +461,14 @@ def test_processo_sem_planilha_nao_recebe_marcador(sei, alt):
 
     registro = passar()
 
-    assert registro.prox_acao == ProxAcao.ALT_1_SEM_PLANILHAS
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_AUT_SEM_PLANILHAS
     assert registro.erro is None
     assert sei.tags == []
 
 
 def test_download_que_nao_chega_e_erro(sei, alt, monkeypatch):
     planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
-    monkeypatch.setattr(planilhas_alt_1, 'selecionar_doc_arvore', lambda driver, numero_sei: None)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'selecionar_doc_arvore', lambda driver, numero_sei: None)
 
     registro = passar()
 
@@ -481,7 +481,7 @@ def test_download_que_nao_chega_e_erro(sei, alt, monkeypatch):
 def test_download_demorado_e_descartado_e_a_planilha_seguinte_nao_espera(sei, alt, tmp_path, monkeypatch):
     planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
     temporario = tmp_path / 'lento.xlsx.crdownload'
-    monkeypatch.setattr(planilhas_alt_1, 'selecionar_doc_arvore', lambda driver, numero_sei: temporario.touch())
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'selecionar_doc_arvore', lambda driver, numero_sei: temporario.touch())
 
     registro = passar()
 
@@ -494,7 +494,7 @@ def test_controle_nao_apaga_as_colunas_do_fluxo_principal(sei, alt):
     planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
     colunas = passar().to_dict()
 
-    assert colunas['fluxo'] == 'ALT 1 - SOMENTE INSERIR PDF'
+    assert colunas['fluxo'] == 'ADC PDF ANT AUT - PLANILHA ANTIGA BAIXADA DO SEI'
     assert colunas['tag_aguarda_fluxo_normal'] is True
     assert 'tit_usou' not in colunas
     assert 'memo_apis_mat_nao_encontradas_criado' not in colunas
@@ -676,13 +676,13 @@ def test_aba_oculta_tambem_conta(tmp_path):
 
 
 def test_anexo_acima_do_limite_de_beneficiarios_e_erro(tmp_path):
-    linhas = [{**BASE, 'MATRICULA_BENEFICIARIO': MATRICULA + i} for i in range(planilhas_alt_1._MAX_BENEFICIARIOS_ANEXO + 1)]
+    linhas = [{**BASE, 'MATRICULA_BENEFICIARIO': MATRICULA + i} for i in range(planilhas_adc_pdf_ant_aut._MAX_BENEFICIARIOS_ANEXO + 1)]
     with pytest.raises(ErroAvaliacao, match='beneficiários'):
         ler_planilha(gravar(tmp_path / 'a.xlsx', linhas), ANEXO)
 
 
 def test_anexo_no_limite_de_beneficiarios_e_aceito(tmp_path):
-    limite = planilhas_alt_1._MAX_BENEFICIARIOS_ANEXO
+    limite = planilhas_adc_pdf_ant_aut._MAX_BENEFICIARIOS_ANEXO
     linhas = [{**BASE, 'MATRICULA_BENEFICIARIO': MATRICULA + i} for i in range(limite)]
     assert ler_planilha(gravar(tmp_path / 'a.xlsx', linhas), ANEXO).matricula_titular == f'{MATRICULA} e mais {limite - 1}'
 
@@ -691,7 +691,7 @@ def test_download_anterior_que_termina_nao_entra_no_proximo(sei, alt, tmp_path, 
     numero = planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
     temporario = tmp_path / 'atrasado.xlsx.crdownload'
     temporario.touch()
-    dormir = planilhas_alt_1.time.sleep
+    dormir = planilhas_adc_pdf_ant_aut.time.sleep
 
     def terminar(segundos):
         # O download atrasado termina durante a espera
@@ -699,9 +699,9 @@ def test_download_anterior_que_termina_nao_entra_no_proximo(sei, alt, tmp_path, 
             temporario.rename(tmp_path / 'atrasado.xlsx')
         dormir(segundos)
 
-    monkeypatch.setattr(planilhas_alt_1.time, 'sleep', terminar)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut.time, 'sleep', terminar)
 
-    caminho = planilhas_alt_1.baixar_planilha(DriverFalso(), {'numero_sei': numero, 'nome_arvore': 'Planilha'})
+    caminho = planilhas_adc_pdf_ant_aut.baixar_planilha(DriverFalso(), {'numero_sei': numero, 'nome_arvore': 'Planilha'})
 
     assert caminho.name == f'{numero}_Utilizacao_3542985 (1).xlsx'
     assert (tmp_path / 'atrasado.xlsx').exists()
@@ -712,7 +712,7 @@ def test_download_preso_e_descartado_e_nao_para_o_proximo(sei, alt, tmp_path):
     temporario = tmp_path / 'preso.crdownload'
     temporario.touch()
 
-    caminho = planilhas_alt_1.baixar_planilha(DriverFalso(), {'numero_sei': numero, 'nome_arvore': 'Planilha'})
+    caminho = planilhas_adc_pdf_ant_aut.baixar_planilha(DriverFalso(), {'numero_sei': numero, 'nome_arvore': 'Planilha'})
 
     assert not temporario.exists()
     assert caminho.name.startswith(numero)
@@ -727,7 +727,7 @@ def test_navegador_fechado_vira_erro_no_registro(alt, monkeypatch):
     def fechado(driver, num):
         raise InvalidSessionIdException('invalid session id')
 
-    monkeypatch.setattr(main_alt_1, 'acessar_processo', fechado)
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'acessar_processo', fechado)
 
     registro = passar()
 
@@ -753,23 +753,25 @@ def _executar_ate_fechar(monkeypatch, tmp_path) -> list[tuple]:
             self.fechado = True
 
     def processar(driver, num_processo, *args):
-        registro = RegistroAlt1(num_processo=num_processo, data_execucao='agora', fluxo='F')
+        registro = RegistroAdcPdfAnt(num_processo=num_processo, data_execucao='agora', fluxo='F')
         if num_processo != 'P1':
             registrar_erro(registro, InvalidSessionIdException('invalid session id'))
         return registro
 
-    monkeypatch.setattr(main_alt_1, 'configurar_logging', lambda arquivo: None)
-    monkeypatch.setattr(main_alt_1.pd, 'read_excel', lambda **kwargs: pd.DataFrame({'num_sei': ['P1', 'P2', 'P3']}))
-    monkeypatch.setattr(main_alt_1, 'PlanilhaControleGeral', Controle)
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'configurar_logging', lambda arquivo: None)
+    abas = []
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'ler_processos_a_processar', lambda aba: abas.append(aba) or ['P1', 'P2', 'P3'])
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'PlanilhaControleGeral', Controle)
     driver = DriverFechavel()
-    monkeypatch.setattr(main_alt_1, 'abrir_sei', lambda download_dir=None: driver)
-    monkeypatch.setattr(main_alt_1, '_processar_linha', processar)
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'abrir_sei', lambda unidade, download_dir=None: driver)
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, '_processar_linha', processar)
     for constante in ('DIR_INPUTS', 'DIR_CONTROLE', 'DIR_LOG'):
-        monkeypatch.setattr(main_alt_1, constante, tmp_path)
+        monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, constante, tmp_path)
 
-    main_alt_1.executar('alt_1', 'F', 'agora', tmp_path / 'x.log', [], lambda driver, registro: None)
+    main_geacs_adc_pdf_ant_aut.executar('geacs_adc_pdf_ant_aut', 'F', 'agora', tmp_path / 'x.log', [], lambda driver, registro: None)
 
     assert driver.fechado
+    assert abas == ['geacs_adc_pdf_ant_aut']
     return gravados
 
 

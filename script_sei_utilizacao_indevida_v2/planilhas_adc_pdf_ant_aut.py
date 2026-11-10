@@ -1,4 +1,4 @@
-"""Fluxo alternativo ALT 1: planilhas de utilização do processo em PDF.
+"""Fluxo alternativo ADC PDF ANT AUT: planilhas de utilização do processo em PDF.
 
 Procura na árvore as planilhas de utilização (Titular, Dependentes e Anexo
 RELAÇÃO ATENDIMENTO), baixa cada uma, gera o PDF e o insere no processo.
@@ -9,7 +9,7 @@ modelo próprio, por beneficiário, e o nome do PDF traz só a matrícula: se ca
 Anexo tem um PDF depois dele na árvore, nada é baixado; senão, os Anexos são
 baixados para saber o nome e só então procurados na árvore.
 
-No fim, o processo fica aguardando o fluxo normal (main.py). O que já está no
+No fim, o processo fica aguardando o fluxo normal (main_geacs.py). O que já está no
 fluxo normal ou é VELHO recebe os PDFs e continua onde estava: adicionar o
 marcador apagaria o estado atual.
 """
@@ -26,7 +26,7 @@ from difflib import SequenceMatcher
 from pathlib import Path
 
 import pandas as pd
-from constantes import DIR_ALT_1_PDF, DIR_ALT_1_PLANILHAS
+from constantes import DIR_ADC_PDF_ANT_AUT_PDF, DIR_ADC_PDF_ANT_AUT_PLANILHAS
 from docs_processo import numero_sei_por_nome
 from processo_fechado import reabrir_processo_fechado, tem_incluir_documento
 from rede_propria import ErroAvaliacao
@@ -285,7 +285,7 @@ def ler_planilha(arquivo: Path, tipo: TipoPlanilha) -> RelatorioPlanilha:
 
 
 def _arquivos_baixados() -> set[Path]:
-    return {caminho for caminho in DIR_ALT_1_PLANILHAS.iterdir() if caminho.is_file()}
+    return {caminho for caminho in DIR_ADC_PDF_ANT_AUT_PLANILHAS.iterdir() if caminho.is_file()}
 
 
 def _downloads_em_andamento() -> set[Path]:
@@ -340,7 +340,7 @@ def baixar_planilha(driver: webdriver.Remote, doc: dict) -> Path:
         # O erro para o processo, e a execução segue sem esperar esta planilha
         _descartar_downloads_em_andamento()
         raise
-    destino = DIR_ALT_1_PLANILHAS / f'{doc["numero_sei"]}_{baixado.name}'
+    destino = DIR_ADC_PDF_ANT_AUT_PLANILHAS / f'{doc["numero_sei"]}_{baixado.name}'
     baixado.replace(destino)
     logger.info(f'Planilha baixada: {doc["nome_arvore"]} (SEI {doc["numero_sei"]}) em {destino.name}')
     return destino
@@ -470,7 +470,7 @@ def _tratar_anexos(driver: webdriver.Remote, registro, anexos: list[dict], obter
 
 def _fica_no_estado_atual(registro) -> bool:
     """Já está no fluxo normal (com estado ou concluído na versão anterior)
-    ou é VELHO pelos marcadores. O VELHO pelos memos é separado pelo main."""
+    ou é VELHO pelos marcadores. O VELHO pelos memos é separado pelo main_geacs."""
     return eh_velho_pelos_marcadores(registro) or tem_tag(registro, TAG_MEMO_DEPROC_NO_BLOCO) or estado_atual(registro) not in {None, TAG_AGUARDA_FLUXO_NORMAL}
 
 
@@ -485,7 +485,7 @@ def _falta_pdf(tds_docs: list[dict], planilhas: list[dict]) -> bool:
 
 def inserir_pdfs(driver: webdriver.Remote, registro, planilhas: list[dict], obter_arquivo: Callable[[dict], Path], dir_pdf: Path) -> None:
     """Insere o PDF das planilhas da árvore que ainda não têm. obter_arquivo
-    devolve o arquivo .xlsx de cada uma (usado também pelo fluxo PDF)."""
+    devolve o arquivo .xlsx de cada uma (usado também pelo fluxo ADC PDF ANT MAN)."""
     if _falta_pdf(registro.tds_docs, planilhas):
         _garantir_processo_aberto(driver, registro)
 
@@ -520,9 +520,9 @@ def inserir_pdfs_das_planilhas(driver: webdriver.Remote, registro) -> None:
     registro.planilhas_sei = [doc['numero_sei'] for doc in planilhas]
     if not planilhas:
         logger.warning('Nenhuma planilha de utilização na árvore')
-        registro.prox_acao = ProxAcao.ALT_1_SEM_PLANILHAS
+        registro.prox_acao = ProxAcao.ADC_PDF_ANT_AUT_SEM_PLANILHAS
         return
 
     logger.info(f'{len(planilhas)} planilha(s) na árvore: {[doc["nome_arvore"] for doc in planilhas]}')
-    inserir_pdfs(driver, registro, planilhas, lambda doc: baixar_planilha(driver, doc), DIR_ALT_1_PDF)
-    registro.prox_acao = ProxAcao.ALT_1_AGUARDA_FLUXO_NORMAL if deixar_aguardando_fluxo_normal(driver, registro) else ProxAcao.ALT_1_ESTADO_MANTIDO
+    inserir_pdfs(driver, registro, planilhas, lambda doc: baixar_planilha(driver, doc), DIR_ADC_PDF_ANT_AUT_PDF)
+    registro.prox_acao = ProxAcao.ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL if deixar_aguardando_fluxo_normal(driver, registro) else ProxAcao.ADC_PDF_ANT_AUT_ESTADO_MANTIDO

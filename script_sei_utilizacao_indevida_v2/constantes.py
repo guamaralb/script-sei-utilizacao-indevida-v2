@@ -20,15 +20,21 @@ DIR_UTILIZACOES_OUTRAS_PDF = DIR_UTILIZACOES_OUTRAS / 'pdf'
 # Relatórios em PDF dos atendimentos do MANTIS, anexados aos processos
 DIR_UTILIZACOES_MANTIS_PDF = DIR_UTILIZACOES / 'mantis' / 'pdf'
 
-# Fluxo alternativo ALT 1: planilhas baixadas do SEI e PDFs gerados
-DIR_ALT_1 = DIR_DADOS / 'fluxo_alt_1'
-DIR_ALT_1_PLANILHAS = DIR_ALT_1 / 'planilhas_baixadas'
-DIR_ALT_1_PDF = DIR_ALT_1 / 'pdfs'
+# Fluxo alternativo ADC PDF ANT AUT: planilhas baixadas do SEI e PDFs gerados
+DIR_ADC_PDF_ANT_AUT = DIR_DADOS / 'geacs_adc_pdf_ant_aut'
+DIR_ADC_PDF_ANT_AUT_PLANILHAS = DIR_ADC_PDF_ANT_AUT / 'planilhas_baixadas'
+DIR_ADC_PDF_ANT_AUT_PDF = DIR_ADC_PDF_ANT_AUT / 'pdfs'
 
-# Fluxo PDF: planilhas colocadas à mão na pasta e PDFs gerados
-DIR_FLUXO_PDF = DIR_DADOS / 'fluxo_pdf'
-DIR_FLUXO_PDF_PLANILHAS = DIR_FLUXO_PDF / 'planilhas'
-DIR_FLUXO_PDF_PDF = DIR_FLUXO_PDF / 'pdf'
+# Fluxo ADC PDF ANT MAN: planilhas colocadas à mão na pasta e PDFs gerados
+DIR_ADC_PDF_ANT_MAN = DIR_DADOS / 'geacs_adc_pdf_ant_man'
+DIR_ADC_PDF_ANT_MAN_PLANILHAS = DIR_ADC_PDF_ANT_MAN / 'planilhas'
+DIR_ADC_PDF_ANT_MAN_PDF = DIR_ADC_PDF_ANT_MAN / 'pdf'
+
+# Fluxo DEPROC: base de coparticipação do MANTIS (aba "Resultado") e PDFs
+# gerados
+DIR_FLUXO_DEPROC = DIR_DADOS / 'fluxo_deproc'
+DIR_FLUXO_DEPROC_PDF = DIR_FLUXO_DEPROC / 'pdf'
+ARQ_BASE_DEPROC = DIR_FLUXO_DEPROC / 'Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx'
 
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'
 # Base APIS: listagem de todos os beneficiários da demanda (a base DISA é
@@ -41,6 +47,8 @@ ARQ_MANTIS_REDE_CREDENCIADA = DIR_INPUTS / 'utilizacao_MANTIS-rede_credenciada.x
 # Grafias exatas retornadas pela árvore do SEI (são diferentes entre si)
 UNIDADE_GEACS = 'IPSEMG/GEACS - Utilização'
 UNIDADE_APIS = 'IPSEMG/APIS-Utilização'
+# TODO: confirmar a grafia da unidade da DEPROC na árvore e na troca de unidade
+UNIDADE_DEPROC = 'IPSEMG/DEPROC'
 
 BLOCO_MEMO_DEPROC = 7697744
 
@@ -56,8 +64,20 @@ BLOCO_MEMO_APIS_FORMATO_INVALIDO = 7730341
 BLOCO_MEMO_APIS_PERIODO_DEPENDENTES = 7730905
 BLOCO_MEMO_APIS_SEM_USO = 7744349
 
+# Memo da DEPROC à GEACS com o resultado da coparticipação (fluxo DEPROC).
+# TODO: criar o bloco no SEI (unidade da DEPROC) e informar o número. Com
+# None, o processo para com erro antes de criar qualquer documento
+BLOCO_MEMO_DEPROC_RESULTADO = None
+
 NOME_SIGNATARIO = 'Bruna Miiller Lavarini'
 CARGO_SIGNATARIO = 'Gerência de Auditoria e Contas da Saúde'
+# Quem assina o memo DEPROC (fluxo DEPROC): procurado no texto da assinatura
+# eletrônica, com e sem o "i" a mais
+PADRAO_ASSINATURA_MEMO_DEPROC = r'assinado\s+eletronicamente\s+por\s+Bruna\s+Mii?ller\s+Lavarini'
+# TODO: definir quem assina o memo da DEPROC (fluxo DEPROC). Com None, o
+# processo para com erro antes de criar qualquer documento
+NOME_SIGNATARIO_DEPROC = None
+CARGO_SIGNATARIO_DEPROC = 'Departamento de Processamento de Contas e Coparticipação - DEPROC'
 
 # Processo VELHO: memos da GEACS à DISA e à DEPROC (seguidos) datados antes
 # desta data

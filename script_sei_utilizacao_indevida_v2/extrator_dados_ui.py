@@ -192,6 +192,18 @@ def _validar_periodo_dependente(matricula: str, periodo: str) -> None:
         raise FormatoMemorandoInvalido(str(e)) from e
 
 
+def _extrair_periodo_titular(doc_text: str) -> str:
+    """Período do titular que o MANTIS consiga interpretar. Erro de digitação
+    no memo (ex.: "01/112019") é formato inválido: volta à APIS antes de
+    consultar as bases."""
+    periodo = _extrair_campo(_PADRAO_PERIODO_TITULAR_NOVO, doc_text, 'Período de apuração do titular')
+    try:
+        interpretar_periodo(periodo)
+    except ErroAvaliacao as e:
+        raise FormatoMemorandoInvalido(str(e)) from e
+    return periodo
+
+
 def _extrair_dados_ui_periodo_por_dependente(doc_text: str) -> DadosUI:
     """Os períodos dos dependentes vêm definidos no memo: o fluxo não para
     pelo período variável (periodo_dependentes = False) e o MANTIS usa o
@@ -200,7 +212,7 @@ def _extrair_dados_ui_periodo_por_dependente(doc_text: str) -> DadosUI:
     return DadosUI(
         nome_titular=_extrair_campo(_PADRAO_NOME_TITULAR_NOVO, doc_text, 'Nome completo'),
         matricula_titular=_extrair_campo(_PADRAO_MATRICULA_TITULAR_NOVO, doc_text, 'Matrícula'),
-        periodo_titular=_extrair_campo(_PADRAO_PERIODO_TITULAR_NOVO, doc_text, 'Período de apuração do titular'),
+        periodo_titular=_extrair_periodo_titular(doc_text),
         matriculas_dependentes='; '.join(periodos),
         periodo_dependentes=False,
         periodos_por_dependente=periodos,
@@ -214,7 +226,7 @@ def extrair_dados_ui(doc_text: str) -> DadosUI:
     return DadosUI(
         nome_titular=_extrair_campo(_PADRAO_NOME_TITULAR_NOVO, doc_text, 'Nome completo'),
         matricula_titular=_extrair_campo(_PADRAO_MATRICULA_TITULAR_NOVO, doc_text, 'Matrícula'),
-        periodo_titular=_extrair_campo(_PADRAO_PERIODO_TITULAR_NOVO, doc_text, 'Período de apuração do titular'),
+        periodo_titular=_extrair_periodo_titular(doc_text),
         matriculas_dependentes=_extrair_matriculas_dependentes(doc_text),
         periodo_dependentes=_detectar_periodo_dependentes(doc_text),
     )

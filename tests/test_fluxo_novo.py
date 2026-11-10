@@ -1,23 +1,28 @@
-"""Fluxo dos processos (main.py e processar_novo.py) em várias passagens,
+"""Fluxo dos processos (main_geacs.py e processar_novo.py) em várias passagens,
 com o SEI simulado."""
 
 from dataclasses import replace
 
-import main
-import pandas as pd
+import main_geacs
 import processar_novo
+import pytest
 from Registro import ProxAcao, RegistroMain, registrar_erro
 from relatorios_mantis import REDE_CREDENCIADA, inicio_nome_relatorio
 from selenium.common.exceptions import InvalidSessionIdException
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
+    TAG_ASSINADO,
+    TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
+    TAG_DISA_USOU_RP,
     TAG_MANUAL,
     TAG_MAT_NAO_ENCONTRADAS_APIS,
+    TAG_MEMO_APIS_SEM_MEMO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_MEMO_DISA_USO_REDE_PROPRIA,
     TAG_MEMOS_DISA_DEPROC_NO_BLOCO,
     TAG_PROCESSO_NOVO,
+    TAG_PROCESSO_VELHO,
 )
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisMatNaoEncontradas import ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS
@@ -32,6 +37,7 @@ from tests.sei_falso import (
     MANTIS_CREDENCIADA_TITULAR_USOU,
     MANTIS_DEPENDENTE_USOU,
     MANTIS_DUAS_REDES,
+    MEMO_APIS,
     MEMO_APIS_NOVO_VELHO,
     MEMO_APIS_PERIODO_POR_DEPENDENTE,
     TITULAR,
@@ -445,7 +451,7 @@ def test_memo_a_apis_sem_marcador_e_reaproveitado(sei):
     assert sei.tags_curtas[-1] == '1.6.1 - Aguarda APIS: Matrículas'
 
 
-# --- Vindo do fluxo ALT 1 ------------------------------------------------------
+# --- Vindo do fluxo ADC PDF ANT AUT ------------------------------------------------------
 
 
 def test_aguardando_fluxo_normal_e_tratado_do_inicio(sei):
@@ -459,7 +465,7 @@ def test_aguardando_fluxo_normal_e_tratado_do_inicio(sei):
     assert TAG_AGUARDA_FLUXO_NORMAL in registro.marcadores_removidos
     assert registro.prox_acao == ProxAcao.ASSINAR_DEPROC
     assert registro.erro is None
-    # O PDF do ALT 1 fica no processo, e o relatório do MANTIS entra também
+    # O PDF do ADC PDF ANT AUT fica no processo, e o relatório do MANTIS entra também
     assert PDF_TIT_RC in sei.pdfs
 
 
@@ -586,7 +592,7 @@ def test_nome_do_relatorio_cabe_no_sei():
     assert len(f'{inicio_nome_relatorio(REDE_CREDENCIADA, "Dep.", "123456789")} - 20261022_103324') <= 50
 
 
-def test_processo_fechado_no_setor_e_reaberto_e_segue_o_fluxo(sei):
+def test_processo_fechado_com_memo_da_apis_e_reaberto_e_segue_o_fluxo(sei):
     sei.novo_processo()
     sei.processo_fechado = True
 
@@ -595,6 +601,7 @@ def test_processo_fechado_no_setor_e_reaberto_e_segue_o_fluxo(sei):
     assert sei.reaberturas == 1
     assert registro.processo_reaberto is True
     assert registro.to_dict()['processo_reaberto'] is True
+    assert 'processo_fechado' not in registro.to_dict()
     assert registro.erro is None
     assert TAG_PROCESSO_NOVO in sei.tags
 
@@ -607,20 +614,101 @@ def test_processo_aberto_nao_e_reaberto(sei):
     assert registro.processo_reaberto is False
 
 
-def test_processo_fechado_que_nao_reabre_e_erro_sem_acao_no_sei(sei):
+def _passar_fechado_sem_reabrir(sei, mensagem: str) -> RegistroMain:
     sei.processo_fechado = True
-    sei.processo_reabrivel = False
-    sei.tags.append(TAG_AGUARDA_FLUXO_NORMAL)
+    tags_antes = list(sei.tags)
     docs_antes = list(sei.nomes)
 
     registro = sei.passar(bases(tit_usou=False))
 
     assert registro.tipo_erro == 'ProcessoFechadoNoSetor'
-    assert 'não foi possível reabrir' in registro.erro
+    assert mensagem in registro.erro
     assert registro.prox_acao == ProxAcao.VERIFICAR_ERRO
+    assert sei.reaberturas == 0
     assert registro.processo_reaberto is False
-    assert sei.tags == [TAG_AGUARDA_FLUXO_NORMAL]
+    assert sei.tags == tags_antes
     assert sei.nomes == docs_antes
+    return registro
+
+
+def test_processo_fechado_sem_memo_da_apis_nao_e_reaberto(sei):
+    # Ex.: concluído conforme uma Informação: não recebe memo à APIS (sem memo)
+    sei.novo_processo(com_memo_apis=False)
+    _passar_fechado_sem_reabrir(sei, 'sem memorando da APIS para a GEACS')
+
+
+def test_processo_fechado_assinado_nao_e_reaberto(sei):
+    sei.novo_processo()
+    sei.tags = [TAG_ASSINADO]
+    _passar_fechado_sem_reabrir(sei, 'com ASSINADO')
+
+
+def test_processo_fechado_velho_nao_e_reaberto(sei):
+    sei.novo_processo()
+    sei.tags = [TAG_PROCESSO_VELHO]
+    registro = _passar_fechado_sem_reabrir(sei, 'VELHO fechado')
+    assert registro.velho is True
+
+
+def test_processo_fechado_parado_so_registra_a_parada(sei):
+    sei.novo_processo()
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_MEMO_APIS_SEM_MEMO]
+    sei.processo_fechado = True
+
+    registro = sei.passar(bases())
+
+    assert registro.prox_acao == ProxAcao.AGUARDAR_RESPOSTA_MEMO
+    assert sei.reaberturas == 0
+
+
+def test_processo_fechado_que_nao_reabre_e_erro_sem_acao_no_sei(sei):
+    sei.novo_processo()
+    sei.processo_reabrivel = False
+    docs_antes = list(sei.nomes)
+    sei.processo_fechado = True
+
+    registro = sei.passar(bases(tit_usou=False))
+
+    assert registro.tipo_erro == 'ProcessoFechadoNoSetor'
+    assert 'não foi possível reabrir' in registro.erro
+    assert registro.processo_reaberto is False
+    assert sei.tags == []
+    assert sei.nomes == docs_antes
+
+
+@pytest.mark.parametrize('periodo', ['01/112019 a 12/06/2024', '01/12/20219 a 12/06/2024', '01/07/2019 a 12/06/202024', '01/08/2019 a 12/06/2019'])
+def test_periodo_do_titular_invalido_e_formato_invalido_antes_das_bases(sei, periodo):
+    sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
+    sei.memo_apis(MEMO_APIS.replace('(01/2024 a 06/2024)', periodo))
+
+    registro = sei.passar(bases())
+
+    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Formato Inválido']
+    assert 'Período de apuração do titular' in registro.motivo_formato_invalido
+    assert registro.erro is None
+
+
+def test_periodo_invalido_em_processo_ja_avaliado_na_base_disa(sei):
+    """Processos da versão anterior pararam com erro no MANTIS, depois da base DISA."""
+    sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
+    sei.memo_apis(MEMO_APIS.replace('(01/2024 a 06/2024)', '01/112019 a 12/06/2024'))
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_DISA_USOU_RP, TAG_AVALIADO_USO_REDE_PROPRIA_DISA]
+
+    registro = sei.passar(bases())
+
+    assert registro.erro is None
+    assert sei.tags_curtas == [NOVO, curto(TAG_DISA_USOU_RP), '1.5 - Aguarda APIS: Formato Inválido']
+
+
+@pytest.mark.parametrize('periodo', ['01/04/2019 a12/06/2024', '01/05/2019 A 12/06/2024', '11/2019 A 06/2024'])
+def test_periodo_com_a_maiusculo_ou_sem_espaco_segue_o_fluxo(sei, periodo):
+    sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
+    sei.memo_apis(MEMO_APIS.replace('(01/2024 a 06/2024)', periodo))
+
+    registro = sei.passar(bases(tit_usou=False))
+
+    assert registro.erro is None
+    assert registro.prox_acao != ProxAcao.VERIFICAR_FORMATO_MEMO
 
 
 def test_navegador_fechado_registra_o_erro_do_processo_e_para_o_loop(monkeypatch, tmp_path):
@@ -645,16 +733,44 @@ def test_navegador_fechado_registra_o_erro_do_processo_e_para_o_loop(monkeypatch
             registrar_erro(registro, InvalidSessionIdException('invalid session id'))
         return registro
 
-    monkeypatch.setattr(main, 'configurar_logging', lambda arquivo: None)
-    monkeypatch.setattr(main.pd, 'read_excel', lambda **kwargs: pd.DataFrame({'num_sei': ['P1', 'P2', 'P3']}))
-    monkeypatch.setattr(main, 'carregar_bases', lambda *args: None)
-    monkeypatch.setattr(main, 'carregar_bases_mantis', lambda *args: None)
-    monkeypatch.setattr(main, 'PlanilhaControleGeral', Controle)
-    monkeypatch.setattr(main, 'abrir_sei', lambda download_dir=None: Driver())
-    monkeypatch.setattr(main, '_processar_linha', processar)
+    monkeypatch.setattr(main_geacs, 'configurar_logging', lambda arquivo: None)
+    abas = []
+    monkeypatch.setattr(main_geacs, 'ler_processos_a_processar', lambda aba: abas.append(aba) or ['P1', 'P2', 'P3'])
+    monkeypatch.setattr(main_geacs, 'carregar_bases', lambda *args: None)
+    monkeypatch.setattr(main_geacs, 'carregar_bases_mantis', lambda *args: None)
+    monkeypatch.setattr(main_geacs, 'PlanilhaControleGeral', Controle)
+    monkeypatch.setattr(main_geacs, 'abrir_sei', lambda unidade, download_dir=None: Driver())
+    monkeypatch.setattr(main_geacs, '_processar_linha', processar)
     for constante in ('DIR_DADOS', 'DIR_INPUTS', 'DIR_CONTROLE', 'DIR_LOG', 'DIR_UI_ANTIGAS_XLS', 'DIR_UTILIZACOES_MANTIS_PDF'):
-        monkeypatch.setattr(main, constante, tmp_path)
+        monkeypatch.setattr(main_geacs, constante, tmp_path)
 
-    main.main()
+    main_geacs.main()
 
     assert gravados == [('P1', None), ('P2', 'InvalidSessionIdException')]
+    # Lê a aba do fluxo em processos_a_processar.xlsx
+    assert abas == ['geacs']
+
+
+def test_erro_inesperado_recarrega_a_pagina(sei, monkeypatch):
+    """Tela presa depois de uma falha não pode derrubar os processos seguintes."""
+
+    class Driver:
+        recargas = 0
+
+        class switch_to:  # noqa: N801
+            @staticmethod
+            def default_content():
+                return None
+
+        def refresh(self):
+            self.recargas += 1
+
+    def falhar(driver, num):
+        raise RuntimeError('tela presa')
+
+    monkeypatch.setattr(main_geacs, 'acessar_processo', falhar)
+    driver = Driver()
+    registro = main_geacs._processar_linha(driver, 'PROC', bases(), None)
+
+    assert registro.tipo_erro == 'RuntimeError'
+    assert driver.recargas == 1

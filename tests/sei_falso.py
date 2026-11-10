@@ -9,7 +9,7 @@ from datetime import date
 from pathlib import Path
 
 import docs_processo
-import main
+import main_geacs
 import memos_sei
 import processar_novo
 import processo_fechado
@@ -80,7 +80,15 @@ def curto(tag: str) -> str:
     return tag.removeprefix('Script v2 - ')
 
 
+class _SwitchFalso:
+    @staticmethod
+    def default_content():
+        return None
+
+
 class DriverFalso:
+    switch_to = _SwitchFalso
+
     @staticmethod
     def refresh():
         return None
@@ -191,18 +199,19 @@ class SEIFalso:
 
         monkeypatch.setattr(tags, 'adicionar_marcador', self._adicionar_marcador)
         monkeypatch.setattr(tags, 'remover_marcador', self._remover_marcador)
-        monkeypatch.setattr(main, 'acessar_processo', lambda driver, num: None)
+        monkeypatch.setattr(main_geacs, 'acessar_processo', lambda driver, num: None)
         monkeypatch.setattr(processo_fechado, 'tem_incluir_documento', lambda driver: not self.processo_fechado)
+        monkeypatch.setattr(main_geacs, 'tem_incluir_documento', lambda driver: not self.processo_fechado)
         monkeypatch.setattr(processo_fechado, 'reabrir_processo', self._reabrir_processo)
         monkeypatch.setattr(processo_fechado, '_ESPERA_REABERTURA', 0)
-        monkeypatch.setattr(main, 'listar_documentos_arvore', arvore)
+        monkeypatch.setattr(main_geacs, 'listar_documentos_arvore', arvore)
         monkeypatch.setattr(docs_processo, 'listar_documentos_arvore', arvore)
-        monkeypatch.setattr(main, 'listar_marcadores', lambda driver: list(self.tags))
+        monkeypatch.setattr(main_geacs, 'listar_marcadores', lambda driver: list(self.tags))
         monkeypatch.setattr(memos_sei, 'incluir_doc_sei_memo', self._incluir_memo)
         monkeypatch.setattr(memos_sei, 'inserir_bloco_ass', lambda driver, bloco: None)
         monkeypatch.setattr(docs_processo, 'ler_texto_doc', lambda driver, doc: self.textos[doc['numero_sei']])
         monkeypatch.setattr(processar_novo, 'garantir_marcadores_no_sei', lambda driver, lista: None)
-        monkeypatch.setattr(main, 'garantir_marcadores_no_sei', lambda driver, lista: None)
+        monkeypatch.setattr(main_geacs, 'garantir_marcadores_no_sei', lambda driver, lista: None)
         # Blocos dos memos à DISA e à APIS (sem uso) ainda não configurados (None)
         for nome, bloco in (('_DISA_VALIDAR_CONSTA', 1), ('_DISA_VALIDAR_NAO_CONSTA', 2), ('_DISA_SEM_MANTIS_RELATORIO', 3), ('_APIS_SEM_USO', 4)):
             monkeypatch.setattr(processar_novo, nome, replace(getattr(processar_novo, nome), bloco=bloco))
@@ -213,6 +222,6 @@ class SEIFalso:
             monkeypatch.setattr(memo, 'TEXTO_DEFINIDO', True)
 
     def passar(self, bases_uso: BasesUso, bases_mantis: BasesMantis = MANTIS_SEM_USO):
-        """Uma passagem do processo pelo main.py."""
+        """Uma passagem do processo pelo main_geacs.py."""
         self.memos_passagem = 0
-        return main._processar_linha(DriverFalso(), 'PROC', bases_uso, bases_mantis)
+        return main_geacs._processar_linha(DriverFalso(), 'PROC', bases_uso, bases_mantis)

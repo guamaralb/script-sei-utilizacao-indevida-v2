@@ -95,10 +95,13 @@ def _registro_com(*marcadores) -> RegistroMain:
         # Sem estado: versão anterior ou falha antes do memo à APIS
         (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS),
         (tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO,),
-        # 1.0 (veio do ALT 1): informativo antigo equivale a sem estado
+        # 1.0 (veio do ADC PDF ANT AUT): informativo antigo equivale a sem estado
         (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_FLUXO_NORMAL),
         (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_AGUARDA_FLUXO_NORMAL),
         (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_AGUARDA_FLUXO_NORMAL),
+        # Período inválido achado depois da base DISA (processos da versão anterior)
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_MEMO_APIS_FORMATO_INVALIDO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_NAO_USOU_RP, tags.TAG_MEMO_APIS_FORMATO_INVALIDO),
     ],
 )
 def test_marcadores_consistentes(marcadores):
@@ -134,3 +137,19 @@ def test_marcadores_consistentes(marcadores):
 def test_marcadores_inconsistentes(marcadores, trecho):
     with pytest.raises(tags.MarcadoresInconsistentes, match=re.escape(trecho)):
         tags.conferir_marcadores(_registro_com(*marcadores))
+
+
+@pytest.mark.parametrize(
+    ('marcadores', 'problema'),
+    [
+        ([tags.TAG_DEPROC_TRATADO, tags.TAG_DEPROC_RELATORIO_ANEXADO, tags.TAG_DEPROC_CONCLUIDO_MEMO], 'mais de um marcador de estado'),
+        ([tags.TAG_DEPROC_CONCLUIDO_MEMO], 'sem o marcador "DEPROC - 1 - Tratado pelo Script"'),
+    ],
+)
+def test_marcadores_da_deproc_inconsistentes(marcadores, problema):
+    with pytest.raises(tags.MarcadoresInconsistentes, match=problema):
+        tags.conferir_marcadores_deproc(_registro_com(*marcadores))
+
+
+def test_marcadores_da_deproc_consistentes():
+    tags.conferir_marcadores_deproc(_registro_com(tags.TAG_DEPROC_TRATADO, tags.TAG_DEPROC_CONCLUIDO_MEMO))

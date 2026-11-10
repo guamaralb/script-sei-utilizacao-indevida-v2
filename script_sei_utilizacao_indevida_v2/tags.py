@@ -1,5 +1,8 @@
 """Marcadores do SEI usados pelo script v2.
 
+Os marcadores "Script v2 DEPROC - ..." são da unidade da DEPROC (fluxo
+DEPROC); os demais, da GEACS.
+
 Marcadores de estado: o processo tem no máximo um. Ao adicionar um marcador
 de estado, o estado anterior é removido (o SEI mostra só onde o processo
 está). O mesmo vale para cada par base DISA/MANTIS (usou ou não a rede
@@ -82,8 +85,8 @@ TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO = 'Script v2 - 1.10 - Concluído: Memos DIS
 TAG_VELHO_MEMO_DISA = 'Script v2 - 1.11 - VELHO Concluído: Memo DISA'
 TAG_VELHO_MEMO_DEPROC = 'Script v2 - 1.11 - VELHO Concluído: Memo DEPROC'
 
-# Estado de entrada: PDF das planilhas inserido pelo fluxo ALT 1
-# (main_alt_1.py). O fluxo normal trata o processo do início e troca este
+# Estado de entrada: PDF das planilhas inserido pelo fluxo ADC PDF ANT AUT
+# (main_geacs_adc_pdf_ant_aut.py). O fluxo normal trata o processo do início e troca este
 # estado pelo seguinte
 TAG_AGUARDA_FLUXO_NORMAL = 'Script v2 - 1.0 - Aguarda Script: Fluxo Normal'
 
@@ -125,8 +128,25 @@ TAGS_DUPLA_DISA = (TAG_DISA_USOU_RP, TAG_DISA_NAO_USOU_RP)
 TAGS_DUPLA_MANTIS = (TAG_MANTIS_USOU_RP, TAG_MANTIS_NAO_USOU_RP)
 TAGS_DUPLA_MANTIS_RC = (TAG_MANTIS_USOU_RC, TAG_MANTIS_NAO_USOU_RC)
 _DUPLAS = (TAGS_DUPLA_DISA, TAGS_DUPLA_MANTIS, TAGS_DUPLA_MANTIS_RC)
+# Marcadores da unidade da DEPROC (fluxo DEPROC). Os marcadores do SEI são de
+# cada unidade: estes só existem na DEPROC, e os acima, só na GEACS. Mesma
+# numeração (ordem de inserção) e mesmas regras de estado.
+# TODO: cadastrar os três no SEI (Gerenciar Marcador, na unidade da DEPROC),
+# com os nomes idênticos aos daqui, antes de rodar o fluxo DEPROC. Sem eles,
+# garantir_marcadores_no_sei para o processo antes de qualquer ação
+# TODO: cadastrar no SEI (DEPROC)
+TAG_DEPROC_TRATADO = 'Script v2 DEPROC - 1 - Tratado pelo Script'
+# Estado (retomada): relatório de coparticipação anexado; falta o memo
+# TODO: cadastrar no SEI (DEPROC)
+TAG_DEPROC_RELATORIO_ANEXADO = 'Script v2 DEPROC - 1.1 - Relatório Copart. Anexado'
+# Estado (conclusão): memo de resultado da DEPROC à GEACS no bloco
+# TODO: cadastrar no SEI (DEPROC)
+TAG_DEPROC_CONCLUIDO_MEMO = 'Script v2 DEPROC - 1.2 - Concluído: Memo p/ GEACS'
+TAGS_ESTADO_DEPROC = (TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_CONCLUIDO_MEMO)
+TAGS_DEPROC = (TAG_DEPROC_TRATADO, *TAGS_ESTADO_DEPROC)
+
 # Grupos de alternativos: adicionar um remove os outros do mesmo grupo
-_GRUPOS_ALTERNATIVOS = (TAGS_ESTADO_NOVO, *_DUPLAS)
+_GRUPOS_ALTERNATIVOS = (TAGS_ESTADO_NOVO, *_DUPLAS, TAGS_ESTADO_DEPROC)
 
 # Coluna da planilha de controle de cada marcador (indica se o processo
 # terminou a passagem com o marcador)
@@ -167,7 +187,14 @@ _COLUNA_POR_TAG = {
     TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO: 'tag_memo_nao_usou_rede_propria_no_bloco',
 }
 
-TAGS_SCRIPT = frozenset(tag for tag in _COLUNA_POR_TAG if tag.startswith('Script v2'))
+# Colunas dos marcadores da DEPROC (só o fluxo DEPROC as grava)
+_COLUNA_POR_TAG_DEPROC = {
+    TAG_DEPROC_TRATADO: 'tag_deproc_tratado',
+    TAG_DEPROC_RELATORIO_ANEXADO: 'tag_deproc_relatorio_anexado',
+    TAG_DEPROC_CONCLUIDO_MEMO: 'tag_deproc_concluido_memo',
+}
+
+TAGS_SCRIPT = frozenset(tag for tag in (*_COLUNA_POR_TAG, *_COLUNA_POR_TAG_DEPROC) if tag.startswith('Script v2'))
 
 
 def normalizar_tags(tags: list) -> list[str]:
@@ -182,6 +209,10 @@ def registrar_tags(registro, tags: list[str]) -> None:
 
 def colunas_tags(marcadores: list[str]) -> dict[str, bool]:
     return {coluna: tag in marcadores for tag, coluna in _COLUNA_POR_TAG.items()}
+
+
+def colunas_tags_deproc(marcadores: list[str]) -> dict[str, bool]:
+    return {coluna: tag in marcadores for tag, coluna in _COLUNA_POR_TAG_DEPROC.items()}
 
 
 def tem_tag(registro, tag: str) -> bool:
@@ -205,7 +236,7 @@ class MarcadoresInconsistentes(ErroAvaliacao):
 
 
 def _curto(tag: str) -> str:
-    return tag.removeprefix('Script v2 - ').removeprefix('Script v2v - ')
+    return tag.removeprefix('Script v2 - ').removeprefix('Script v2v - ').removeprefix('Script v2 ')
 
 
 _ESTADOS_DISA = (TAG_AGUARDA_DISA_VALIDAR_CONSTA, TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA, TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO)
@@ -220,6 +251,9 @@ _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {
     TAG_PERIODO_VAR_DEP: (TAG_AVALIADO_USO_REDE_PROPRIA_DISA, TAG_MEMO_APIS_PERIODO_DEPENDENTES),
     TAG_DISA_USOU_RP: (
         TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
+        # Período inválido no memo achado depois da base DISA (a versão
+        # anterior só validava o período no MANTIS)
+        TAG_MEMO_APIS_FORMATO_INVALIDO,
         TAG_MEMO_APIS_PERIODO_DEPENDENTES,
         TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
         TAG_AGUARDA_DISA_VALIDAR_CONSTA,
@@ -227,6 +261,9 @@ _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {
     ),
     TAG_DISA_NAO_USOU_RP: (
         TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
+        # Período inválido no memo achado depois da base DISA (a versão
+        # anterior só validava o período no MANTIS)
+        TAG_MEMO_APIS_FORMATO_INVALIDO,
         TAG_MEMO_APIS_PERIODO_DEPENDENTES,
         TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
         TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
@@ -301,6 +338,20 @@ def conferir_marcadores(registro) -> None:
     if eh_velho_pelos_marcadores(registro):
         problemas += [f'{_curto(tag)} em processo VELHO' for tag in _SO_FLUXO_NORMAL if tag in atuais]
 
+    if problemas:
+        raise MarcadoresInconsistentes(f'Marcadores inconsistentes: {"; ".join(problemas)}. Corrigir manualmente no SEI')
+
+
+def conferir_marcadores_deproc(registro) -> None:
+    """Conferência dos marcadores da DEPROC (no início e no fim de cada
+    passagem do fluxo DEPROC): no máximo um estado, e estado só com o 1."""
+    atuais = set(registro.marcadores_atuais)
+    estados = [tag for tag in TAGS_ESTADO_DEPROC if tag in atuais]
+    problemas = []
+    if len(estados) > 1:
+        problemas.append(f'mais de um marcador de estado ({", ".join(map(_curto, estados))}); remover o(s) anterior(es)')
+    if estados and TAG_DEPROC_TRATADO not in atuais:
+        problemas.append(f'{", ".join(map(_curto, estados))} sem o marcador "{_curto(TAG_DEPROC_TRATADO)}"')
     if problemas:
         raise MarcadoresInconsistentes(f'Marcadores inconsistentes: {"; ".join(problemas)}. Corrigir manualmente no SEI')
 

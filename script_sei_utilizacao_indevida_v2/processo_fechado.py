@@ -1,7 +1,9 @@
 """Processo fechado no setor: sem o botão "Incluir Documento" na tela do
 processo. É ele que indica se a unidade pode agir no processo (concluído ou
-enviado sem manter aberto, por exemplo). O processo é reaberto na unidade
-(`reabrir_processo` da sei_automacao) e continua aberto depois."""
+enviado sem manter aberto, por exemplo). Quando precisa receber documentos,
+o processo é reaberto na unidade (`reabrir_processo` da sei_automacao) e
+continua aberto depois. Quem decide reabrir é o fluxo (main_geacs._tratar no fluxo
+normal; planilhas_adc_pdf_ant_aut no ADC PDF ANT AUT)."""
 
 import logging
 import time
@@ -47,11 +49,3 @@ def reabrir_processo_fechado(driver: webdriver.Remote, registro) -> None:
         raise ProcessoFechadoNoSetor('Processo sem "Incluir Documento" depois de reabrir')
     registro.processo_reaberto = True
     logger.info('Processo reaberto na unidade')
-
-
-def garantir_processo_aberto(driver: webdriver.Remote, registro) -> None:
-    """Fluxo normal: chamada logo depois de abrir o processo, antes de ler a
-    árvore (abrir as pastas pode trocar a tela, e o botão sumiria sem o
-    processo estar fechado). Sem "Incluir Documento", reabre o processo."""
-    if not tem_incluir_documento(driver):
-        reabrir_processo_fechado(driver, registro)

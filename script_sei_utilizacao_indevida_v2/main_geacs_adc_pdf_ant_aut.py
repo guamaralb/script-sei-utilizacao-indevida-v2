@@ -1,14 +1,13 @@
-"""Fluxo alternativo ALT 1 (task run_alt_1): insere nos processos o PDF das
-planilhas de utilização e os deixa aguardando o fluxo normal (main.py). Ver
-planilhas_alt_1.py. O loop (executar) também é usado pelo fluxo PDF."""
+"""Fluxo alternativo ADC PDF ANT AUT (task run_geacs_adc_pdf_ant_aut): insere nos processos o PDF das
+planilhas de utilização e os deixa aguardando o fluxo normal (main_geacs.py). Ver
+planilhas_adc_pdf_ant_aut.py. O loop (executar) também é usado pelo fluxo ADC PDF ANT MAN."""
 
 import logging
 from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
 
-import pandas as pd
-from constantes import DIR_ALT_1_PDF, DIR_ALT_1_PLANILHAS, DIR_CONTROLE, DIR_INPUTS, DIR_LOG
+from constantes import DIR_ADC_PDF_ANT_AUT_PDF, DIR_ADC_PDF_ANT_AUT_PLANILHAS, DIR_CONTROLE, DIR_INPUTS, DIR_LOG, UNIDADE_GEACS
 from log_config import (
     configurar_logging,
     contexto_processo,
@@ -18,9 +17,10 @@ from log_config import (
 )
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from planilha_controle import PlanilhaControleGeral
-from planilhas_alt_1 import inserir_pdfs_das_planilhas
+from planilhas_adc_pdf_ant_aut import inserir_pdfs_das_planilhas
+from processos_a_processar import ler_processos_a_processar
 from rede_propria import ErroAvaliacao
-from Registro import RegistroAlt1, registrar_erro
+from Registro import RegistroAdcPdfAnt, registrar_erro
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
@@ -29,11 +29,10 @@ from sessao_sei import abrir_sei, sessao_encerrada
 from tags import TAG_AGUARDA_FLUXO_NORMAL, TAG_PROCESSO_NOVO, registrar_tags
 
 AGORA = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-SCRIPT = 'alt_1'
-FLUXO = 'ALT 1 - SOMENTE INSERIR PDF'
+SCRIPT = 'geacs_adc_pdf_ant_aut'
+FLUXO = 'ADC PDF ANT AUT - PLANILHA ANTIGA BAIXADA DO SEI'
 
-ARQ_PROCESSOS_NAO_PROCESSADOS = DIR_INPUTS / 'processos_nao_processados.xlsx'
-ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_alt_1.log'
+ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_geacs_adc_pdf_ant_aut.log'
 
 logger = logging.getLogger(__name__)
 
@@ -43,9 +42,9 @@ def _processar_linha(
     num_processo,
     fluxo: str = FLUXO,
     data_execucao: str = AGORA,
-    inserir: Callable[[webdriver.Remote, RegistroAlt1], None] = inserir_pdfs_das_planilhas,
-) -> RegistroAlt1:
-    registro = RegistroAlt1(num_processo=num_processo, data_execucao=data_execucao, fluxo=fluxo)
+    inserir: Callable[[webdriver.Remote, RegistroAdcPdfAnt], None] = inserir_pdfs_das_planilhas,
+) -> RegistroAdcPdfAnt:
+    registro = RegistroAdcPdfAnt(num_processo=num_processo, data_execucao=data_execucao, fluxo=fluxo)
 
     try:
         acessar_processo(driver, num_processo)
@@ -75,10 +74,11 @@ def executar(
     data_execucao: str,
     arq_log: Path,
     diretorios: list[Path],
-    inserir: Callable[[webdriver.Remote, RegistroAlt1], None],
+    inserir: Callable[[webdriver.Remote, RegistroAdcPdfAnt], None],
     download_dir: Path | None = None,
 ) -> None:
-    """Loop dos processos da aba fluxo, com o registro na planilha de controle."""
+    """Loop dos processos da aba do script em processos_a_processar.xlsx, com o
+    registro na planilha de controle."""
     for diretorio in [DIR_INPUTS, DIR_CONTROLE, DIR_LOG, *diretorios]:
         diretorio.mkdir(parents=True, exist_ok=True)
     configurar_logging(arq_log)
@@ -91,14 +91,13 @@ def executar(
         logger.info(f'================= INÍCIO DA EXECUÇÃO ({fluxo}) =================')
         logger.info(f'Log: {arq_log}')
 
-        df_processos = pd.read_excel(io=ARQ_PROCESSOS_NAO_PROCESSADOS, sheet_name='fluxo')
-        total = len(df_processos)
-        logger.info(f'{total} processo(s) lido(s) de {ARQ_PROCESSOS_NAO_PROCESSADOS.name}')
+        processos = ler_processos_a_processar(script)
+        total = len(processos)
 
         controle = PlanilhaControleGeral(script, data_execucao)
-        driver = abrir_sei(download_dir=download_dir)
+        driver = abrir_sei(UNIDADE_GEACS, download_dir=download_dir)
 
-        for i, num_processo in enumerate(df_processos['num_sei'], start=1):
+        for i, num_processo in enumerate(processos, start=1):
             with contexto_processo(num_processo):
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
@@ -126,7 +125,7 @@ def executar(
 
 
 def main():
-    executar(SCRIPT, FLUXO, AGORA, ARQ_LOG, [DIR_ALT_1_PLANILHAS, DIR_ALT_1_PDF], inserir_pdfs_das_planilhas, download_dir=DIR_ALT_1_PLANILHAS)
+    executar(SCRIPT, FLUXO, AGORA, ARQ_LOG, [DIR_ADC_PDF_ANT_AUT_PLANILHAS, DIR_ADC_PDF_ANT_AUT_PDF], inserir_pdfs_das_planilhas, download_dir=DIR_ADC_PDF_ANT_AUT_PLANILHAS)
 
 
 if __name__ == '__main__':

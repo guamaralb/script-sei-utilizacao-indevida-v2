@@ -1,6 +1,6 @@
 """Planilha de controle geral (dados/controle/controle_geral_de_processos.xlsx).
 
-Gravada por main.py depois de cada processo (PlanilhaControleGeral). A
+Gravada por main_geacs.py depois de cada processo (PlanilhaControleGeral). A
 coluna "script" distingue as passagens antigas do script de correção
 (correcao_rede_propria), que foi removido:
     - aba "processos": uma linha por processo, com a última passagem pelo
@@ -8,6 +8,9 @@ coluna "script" distingue as passagens antigas do script de correção
       reavaliado a cada passagem); as demais e primeira_passagem são
       mantidas;
     - aba "historico": uma linha por passagem (acrescentada).
+
+A primeira aba, "resumo", traz a quantidade de processos (aba "processos")
+por prox_acao, regravada a cada gravação.
 
 As outras abas (ex.: "BUSCA", preenchida à mão) são mantidas. Na aba
 "processos", as colunas BUSCA (fórmula que procura o processo na aba BUSCA;
@@ -40,6 +43,8 @@ logger = logging.getLogger(__name__)
 
 _ABA_PROCESSOS = 'processos'
 _ABA_HISTORICO = 'historico'
+_ABA_RESUMO = 'resumo'
+_SEM_PROX_ACAO = '(sem prox_acao)'
 _COLUNAS_INICIAIS = ('num_processo', 'primeira_passagem', 'ultima_passagem', 'script')
 # Mantida pelo usuário: os processos a procurar na aba "processos" (coluna A)
 _ABA_BUSCA = 'BUSCA'
@@ -131,6 +136,35 @@ def _dataframe_processos(linhas: list[dict]) -> pd.DataFrame:
     return df
 
 
+def _dataframe_resumo(processos: list[dict]) -> pd.DataFrame:
+    """Quantidade de processos por prox_acao, da maior para a menor, com o
+    total na última linha."""
+    contagem = pd.Series([linha.get('prox_acao') or _SEM_PROX_ACAO for linha in processos], dtype=object).value_counts()
+    resumo = pd.DataFrame({'prox_acao': contagem.index, 'quantidade': contagem.to_numpy()})
+    total = pd.DataFrame({'prox_acao': ['TOTAL'], 'quantidade': [len(processos)]})
+    return pd.concat([resumo, total], ignore_index=True)
+
+
+def _gravar_resumo(writer: pd.ExcelWriter, processos: list[dict]) -> None:
+    """Aba resumo, a primeira da planilha (é a que abre no Excel)."""
+    df = _dataframe_resumo(processos)
+    df.to_excel(writer, sheet_name=_ABA_RESUMO, index=False)
+    book = writer.book
+    book.move_sheet(_ABA_RESUMO, offset=-book.sheetnames.index(_ABA_RESUMO))
+    for aba in book.worksheets:
+        aba.sheet_view.tabSelected = False
+    book.active = 0
+    book.active.sheet_view.tabSelected = True
+    try:
+        planilha = writer.sheets[_ABA_RESUMO]
+        for celula in (*planilha[1], *planilha[planilha.max_row]):
+            celula.font = Font(bold=True)
+        planilha.column_dimensions['A'].width = min(max(len(str(v)) for v in df['prox_acao']) + 2, _LARGURA_MAXIMA * 2)
+        planilha.column_dimensions['B'].width = 12
+    except Exception:
+        logger.exception('Falha ao formatar a aba "resumo" da planilha de controle')
+
+
 def _gravar(arquivo: Path, abas: dict[str, list[dict]]) -> None:
     # Com o arquivo existente, só as abas do script são substituídas: as
     # demais (ex.: BUSCA) são mantidas
@@ -147,6 +181,8 @@ def _gravar(arquivo: Path, abas: dict[str, list[dict]]) -> None:
         # Sem a aba, a fórmula da coluna BUSCA daria erro de referência
         if _ABA_BUSCA not in writer.book.sheetnames:
             writer.book.create_sheet(_ABA_BUSCA)
+        if _ABA_PROCESSOS in abas:
+            _gravar_resumo(writer, abas[_ABA_PROCESSOS])
 
 
 def _fazer_backup(arquivo: Path, execucao: str) -> None:

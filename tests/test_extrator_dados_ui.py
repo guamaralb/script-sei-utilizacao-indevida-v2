@@ -106,3 +106,16 @@ def test_campo_do_titular_ausente_e_formato_invalido():
     texto = MEMO_POR_DEPENDENTE.replace('Nome completo: FULANO\n', '')
     with pytest.raises(FormatoMemorandoInvalido, match='período por dependente'):
         validar_template(texto)
+
+
+@pytest.mark.parametrize('memo', [MEMO_APIS, MEMO_APIS_PERIODO_POR_DEPENDENTE])
+@pytest.mark.parametrize('periodo', ['01/112019 a 12/06/2024', '01/08/2019 a 12/06/2019'])
+def test_periodo_do_titular_invalido_e_formato_invalido(memo, periodo):
+    texto = memo.format(extra='').replace('(01/2024 a 06/2024)', periodo)
+    with pytest.raises(FormatoMemorandoInvalido, match='Período de apuração do titular'):
+        extrair_dados_ui(texto)
+
+
+def test_periodo_do_titular_com_a_maiusculo_e_aceito():
+    texto = MEMO_APIS.format(extra='').replace('(01/2024 a 06/2024)', '01/05/2019 A 12/06/2024')
+    assert extrair_dados_ui(texto).periodo_titular == '01/05/2019 A 12/06/2024'

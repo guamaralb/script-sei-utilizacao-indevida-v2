@@ -1,20 +1,20 @@
-"""Fluxo PDF (main_fluxo_pdf.py e planilhas_fluxo_pdf.py), com o SEI simulado e
+"""Fluxo ADC PDF ANT MAN (main_geacs_adc_pdf_ant_man.py e planilhas_adc_pdf_ant_man.py), com o SEI simulado e
 planilhas geradas nos testes."""
 
 import unicodedata
 
-import main_alt_1
-import planilhas_alt_1
-import planilhas_fluxo_pdf
+import main_geacs_adc_pdf_ant_aut
+import planilhas_adc_pdf_ant_aut
+import planilhas_adc_pdf_ant_man
 import pytest
 from constantes import UNIDADE_APIS
-from planilhas_alt_1 import TIPO_DOC
-from planilhas_fluxo_pdf import arquivos_do_processo, documento_da_arvore
+from planilhas_adc_pdf_ant_aut import TIPO_DOC
+from planilhas_adc_pdf_ant_man import arquivos_do_processo, documento_da_arvore
 from rede_propria import ErroAvaliacao
-from Registro import ProxAcao, RegistroAlt1
+from Registro import ProxAcao, RegistroAdcPdfAnt
 from tags import TAG_AGUARDA_DISA_VALIDAR_CONSTA, TAG_AGUARDA_FLUXO_NORMAL, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RC, TAG_MANTIS_USOU_RP, TAG_PROCESSO_NOVO
 
-from tests.test_fluxo_alt_1 import BASE, DEPENDENTE, MATRICULA, DriverFalso, gravar
+from tests.test_fluxo_adc_pdf_ant_aut import BASE, DEPENDENTE, MATRICULA, DriverFalso, gravar
 
 PROCESSO = '2010.01.0082953/2024-75'
 ANEXO = 'Anexo RELAÇÃO ATENDIMENTOS'
@@ -41,23 +41,23 @@ class Pasta:
 @pytest.fixture
 def pasta(sei, monkeypatch, tmp_path):
     falsa = Pasta(tmp_path)
-    monkeypatch.setattr(planilhas_fluxo_pdf, 'DIR_FLUXO_PDF_PLANILHAS', tmp_path)
-    monkeypatch.setattr(planilhas_fluxo_pdf, 'DIR_FLUXO_PDF_PDF', tmp_path / 'pdf')
-    monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: True)
-    monkeypatch.setattr(planilhas_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
-    monkeypatch.setattr(planilhas_alt_1, 'transformar_xls_em_pdf', falsa.transformar)
-    monkeypatch.setattr(main_alt_1, 'acessar_processo', lambda driver, num: None)
-    monkeypatch.setattr(main_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
-    monkeypatch.setattr(main_alt_1, 'listar_marcadores', lambda driver: list(sei.tags))
-    monkeypatch.setattr(main_alt_1, 'garantir_marcadores_no_sei', lambda driver, lista: None)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_man, 'DIR_ADC_PDF_ANT_MAN_PLANILHAS', tmp_path)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_man, 'DIR_ADC_PDF_ANT_MAN_PDF', tmp_path / 'pdf')
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'tem_incluir_documento', lambda driver: True)
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
+    monkeypatch.setattr(planilhas_adc_pdf_ant_aut, 'transformar_xls_em_pdf', falsa.transformar)
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'acessar_processo', lambda driver, num: None)
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'listar_marcadores', lambda driver: list(sei.tags))
+    monkeypatch.setattr(main_geacs_adc_pdf_ant_aut, 'garantir_marcadores_no_sei', lambda driver, lista: None)
     return falsa
 
 
-def passar() -> RegistroAlt1:
-    return main_alt_1._processar_linha(DriverFalso(), PROCESSO, 'FLUXO PDF', 'agora', planilhas_fluxo_pdf.inserir_pdfs_da_pasta)
+def passar() -> RegistroAdcPdfAnt:
+    return main_geacs_adc_pdf_ant_aut._processar_linha(DriverFalso(), PROCESSO, 'ADC PDF ANT MAN', 'agora', planilhas_adc_pdf_ant_man.inserir_pdfs_da_pasta)
 
 
-def test_insere_o_pdf_de_cada_arquivo_com_o_nome_do_alt_1_e_os_marcadores(sei, pasta):
+def test_insere_o_pdf_de_cada_arquivo_com_o_nome_do_adc_pdf_ant_aut_e_os_marcadores(sei, pasta):
     tit = sei.novo_doc(TITULAR, UNIDADE_APIS, '')
     anexo = sei.novo_doc(ANEXO, UNIDADE_APIS, '')
     pasta.planilha(ANEXO)
@@ -67,13 +67,13 @@ def test_insere_o_pdf_de_cada_arquivo_com_o_nome_do_alt_1_e_os_marcadores(sei, p
 
     assert sei.nomes[-2:] == [f'{TIPO_DOC} Utilização Tit. - {MATRICULA} - SEI {tit}', f'{TIPO_DOC} Utilização Ben. - {MATRICULA}']
     assert sei.tags == [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
-    assert registro.prox_acao == ProxAcao.FLUXO_PDF_AGUARDA_FLUXO_NORMAL
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_MAN_AGUARDA_FLUXO_NORMAL
     assert registro.erro is None
     assert sorted(registro.planilhas_sei) == sorted([tit, anexo])
     assert pasta.pdfs[0]['path_destino'] == pasta.caminho / 'pdf' / tit
 
 
-def test_pdf_ja_inserido_pelo_alt_1_nao_duplica(sei, pasta):
+def test_pdf_ja_inserido_pelo_adc_pdf_ant_aut_nao_duplica(sei, pasta):
     tit = sei.novo_doc(TITULAR, UNIDADE_APIS, '')
     sei.novo_doc(f'{TIPO_DOC} Utilização Tit. - {MATRICULA} - SEI {tit}', UNIDADE_APIS, '')
     pasta.planilha(TITULAR)
@@ -103,7 +103,7 @@ def test_ja_no_fluxo_normal_recebe_pdf_e_fica_onde_esta(sei, pasta):
     registro = passar()
 
     assert sei.tags == antes
-    assert registro.prox_acao == ProxAcao.FLUXO_PDF_ESTADO_MANTIDO
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_MAN_ESTADO_MANTIDO
 
 
 def test_planilha_de_dependentes_usa_o_layout_dele(sei, pasta):
@@ -120,7 +120,7 @@ def test_sem_arquivo_na_pasta_nao_recebe_marcador(sei, pasta):
 
     registro = passar()
 
-    assert registro.prox_acao == ProxAcao.FLUXO_PDF_SEM_PLANILHAS
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_MAN_SEM_PLANILHAS
     assert registro.erro is None
     assert not sei.tags
     assert not sei.pdfs

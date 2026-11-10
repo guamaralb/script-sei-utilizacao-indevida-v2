@@ -9,6 +9,8 @@ from rede_propria import ErroAvaliacao
 from sei_automacao.documento import obter_conteudo_doc
 from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
+from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException
+from selenium.webdriver.common.by import By
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +57,11 @@ def filtrar_docs_geacs(tds_docs: list[dict]) -> list[dict]:
 
 
 def filtrar_memos_geacs(tds_docs: list[dict]) -> list[dict]:
-    return [doc for doc in filtrar_docs_geacs(tds_docs) if _eh_memorando(doc)]
+    return filtrar_memos_unidade(tds_docs, UNIDADE_GEACS)
+
+
+def filtrar_memos_unidade(tds_docs: list[dict], unidade: str) -> list[dict]:
+    return [doc for doc in tds_docs if _eh_memorando(doc) and unidade in doc['unidade']]
 
 
 def filtrar_memos_apis(tds_docs: list[dict]) -> list[dict]:
@@ -81,22 +87,60 @@ def obter_memos_apis_para_geacs(driver: webdriver.Remote, tds_docs: list[dict]) 
     return para_geacs
 
 
+def _doc_nao_encontrado(erro: Exception) -> bool:
+    """selecionar_doc_arvore levanta Exception("Documento não encontrado")
+    (a mensagem vem com o acento trocado)."""
+    return type(erro) is Exception and 'encontrado' in str(erro)
+
+
+def _rolar_ate_doc(driver: webdriver.Remote, numero_sei: str) -> None:
+    """Centraliza o documento no frame da árvore: no fim da árvore, o clique
+    caía em outro elemento."""
+    driver.switch_to.default_content()
+    driver.switch_to.frame('ifrArvore')
+    try:
+        elemento = driver.find_element(By.XPATH, f'//a[span[contains(text(), "{numero_sei}")]]')
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", elemento)
+    except NoSuchElementException:
+        pass
+    finally:
+        driver.switch_to.default_content()
+
+
+def _selecionar_doc(driver: webdriver.Remote, doc: dict) -> None:
+    """Depois de adicionar um marcador ou reabrir o processo, as pastas da
+    árvore fecham e o documento some; no fim da árvore, o clique pode ser
+    interceptado. Nos dois casos, relê a árvore (reabre as pastas), centraliza
+    o documento e tenta mais uma vez."""
+    try:
+        selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    except Exception as e:
+        if not (isinstance(e, ElementClickInterceptedException) or _doc_nao_encontrado(e)):
+            raise
+        logger.warning(f'Documento {_descrever(doc)} não selecionado na árvore ({type(e).__name__}): relendo a árvore e tentando de novo')
+        listar_documentos_arvore(driver)
+        _rolar_ate_doc(driver, doc['numero_sei'])
+        selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+
+
 def ler_texto_doc(driver: webdriver.Remote, doc: dict) -> str:
     logger.debug(f'Lendo documento {_descrever(doc)}')
-    selecionar_doc_arvore(driver, numero_sei=doc['numero_sei'])
+    _selecionar_doc(driver, doc)
     texto = obter_conteudo_doc(driver, formato='texto')
     logger.debug(f'Documento {doc["numero_sei"]} lido ({len(texto)} caracteres)')
     return texto
 
 
-def encontrar_memo_geacs_por_assunto(driver: webdriver.Remote, tds_docs: list[dict], padrao: re.Pattern, descricao: str) -> dict | None:
-    """O memo da GEACS mais recente cujo texto casa com o padrão do assunto."""
-    memos_geacs = filtrar_memos_geacs(tds_docs)
-    logger.debug(f'Procurando memo {descricao} em {len(memos_geacs)} memorando(s) da GEACS')
-    for memo in reversed(memos_geacs):
-        if padrao.search(ler_texto_doc(driver, memo)):
+def encontrar_memo_por_assunto(driver: webdriver.Remote, tds_docs: list[dict], padrao: re.Pattern, descricao: str, unidade: str) -> tuple[dict, str] | None:
+    """O memo mais recente da unidade cujo texto casa com o padrão do
+    assunto, com o texto lido."""
+    memos = filtrar_memos_unidade(tds_docs, unidade)
+    logger.debug(f'Procurando memo {descricao} em {len(memos)} memorando(s) da unidade {unidade}')
+    for memo in reversed(memos):
+        texto = ler_texto_doc(driver, memo)
+        if padrao.search(texto):
             logger.info(f'Memo {descricao} encontrado: {_descrever(memo)}')
-            return memo
+            return memo, texto
 
     logger.info(f'Memo {descricao} não encontrado na árvore')
     return None
@@ -114,11 +158,12 @@ def numero_sei_por_nome(driver: webdriver.Remote, nome: str) -> str | None:
     return doc['numero_sei'] if doc is not None else None
 
 
-def memos_geacs_novos(driver: webdriver.Remote, tds_docs_antes: list[dict]) -> list[dict]:
-    """Relê a árvore e devolve, na ordem da árvore, os memos da GEACS que
-    não estavam em tds_docs_antes (memos criados na execução)."""
+def memos_geacs_novos(driver: webdriver.Remote, tds_docs_antes: list[dict], unidade: str = UNIDADE_GEACS) -> list[dict]:
+    """Relê a árvore e devolve, na ordem da árvore, os memos da unidade
+    (GEACS, por padrão) que não estavam em tds_docs_antes (memos criados na
+    execução)."""
     antes = {doc['numero_sei'] for doc in tds_docs_antes}
-    novos = [doc for doc in filtrar_memos_geacs(listar_documentos_arvore(driver)) if doc['numero_sei'] not in antes]
+    novos = [doc for doc in filtrar_memos_unidade(listar_documentos_arvore(driver), unidade) if doc['numero_sei'] not in antes]
     logger.info(f'Memo(s) criado(s) na árvore: {[_descrever(doc) for doc in novos] or "nenhum"}')
     return novos
 

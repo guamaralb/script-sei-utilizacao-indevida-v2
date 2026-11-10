@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime
 
-import pandas as pd
 from constantes import (
     ARQ_BASE_APIS,
     ARQ_MANTIS_REDE_CREDENCIADA,
@@ -12,8 +11,9 @@ from constantes import (
     DIR_INPUTS,
     DIR_LOG,
     DIR_UTILIZACOES_MANTIS_PDF,
+    UNIDADE_GEACS,
 )
-from docs_processo import encontrar_memos_velho
+from docs_processo import encontrar_memos_velho, obter_memos_apis_para_geacs
 from extrator_dados_ui import FormatoMemorandoInvalido
 from log_config import (
     configurar_logging,
@@ -26,14 +26,15 @@ from mantis import BasesMantis, carregar_bases_mantis
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from planilha_controle import PlanilhaControleGeral
 from processar_novo import processar_novo
-from processo_fechado import garantir_processo_aberto
+from processo_fechado import ProcessoFechadoNoSetor, reabrir_processo_fechado, tem_incluir_documento
+from processos_a_processar import ler_processos_a_processar
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
 from Registro import ProxAcao, RegistroMain, registrar_erro
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
-from sessao_sei import abrir_sei, sessao_encerrada
+from sessao_sei import abrir_sei, restaurar_navegador, sessao_encerrada
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
@@ -57,12 +58,11 @@ from tags import (
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import TextoMemoPendente
 
 AGORA = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-SCRIPT = 'main'
+SCRIPT = 'geacs'
 
 DIR_UI_ANTIGAS_XLS = DIR_DADOS / 'utilizacoes' / 'antigas' / 'xlsx'
 
-ARQ_PROCESSOS_NAO_PROCESSADOS = DIR_INPUTS / 'processos_nao_processados.xlsx'
-ARQ_LOG = DIR_LOG / f'{AGORA}_execucao.log'
+ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_geacs.log'
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +95,9 @@ def _separar_velho(driver: webdriver.Remote, registro: RegistroMain) -> None:
     marcador VELHO (0) ou com o 1.3 da versão anterior, e os identificados
     na execução, devem passar por ele."""
     registro.velho = True
+    if registro.processo_fechado:
+        # O VELHO não é processado: não há por que reabrir
+        raise ProcessoFechadoNoSetor('Processo VELHO fechado no setor: não reaberto')
     manuais = TAGS_TRATAMENTO_MANUAL.intersection(registro.marcadores_atuais)
     if manuais:
         logger.info(f'VELHO tratado manualmente ({sorted(manuais)}): fora do escopo')
@@ -118,6 +121,24 @@ def _eh_velho_pelo_texto(driver: webdriver.Remote, registro: RegistroMain) -> bo
         return False
     registro.memos_velho_sei = [memo['numero_sei'] for memo in memos]
     return True
+
+
+def _reabrir_se_fechado(driver: webdriver.Remote, registro: RegistroMain) -> None:
+    """Processo fechado no setor só é reaberto se vai receber documentos do
+    fluxo: tem memorando da APIS destinado à GEACS e não está com MANUAL ou
+    ASSINADO. Senão (ex.: concluído conforme uma Informação), fica fechado,
+    sem nenhuma ação no SEI."""
+    if not registro.processo_fechado:
+        return
+    manuais = TAGS_TRATAMENTO_MANUAL.intersection(registro.marcadores_atuais)
+    if manuais:
+        raise ProcessoFechadoNoSetor(f'Processo fechado no setor com {", ".join(sorted(manuais))}: não reaberto')
+    # Só leitura: não precisa do processo aberto
+    if not obter_memos_apis_para_geacs(driver, registro.tds_docs):
+        raise ProcessoFechadoNoSetor('Processo fechado no setor sem memorando da APIS para a GEACS: não reaberto')
+    reabrir_processo_fechado(driver, registro)
+    # A reabertura recarrega a tela e fecha as pastas da árvore
+    registro.registrar_arvore(listar_documentos_arvore(driver))
 
 
 def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, bases_mantis: BasesMantis) -> None:
@@ -154,6 +175,7 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         _separar_velho(driver, registro)
         return
 
+    _reabrir_se_fechado(driver, registro)
     if not tem_tag(registro, TAG_PROCESSO_NOVO):
         # Inclusive os que já têm documento da GEACS ou o antigo
         # "2 - Processo VELHO": a APIS pede para refazer a consulta
@@ -164,7 +186,7 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         logger.info('Fluxo: NOVO - do início')
     elif estado == TAG_AGUARDA_FLUXO_NORMAL:
         # O próximo estado do fluxo substitui este
-        logger.info('Fluxo: NOVO - do início (veio do fluxo ALT 1)')
+        logger.info('Fluxo: NOVO - do início (veio do fluxo ADC PDF ANT AUT)')
     else:
         logger.info(f'Fluxo: retomada (estado "{estado}")')
     processar_novo(driver, registro, bases, bases_mantis)
@@ -176,7 +198,11 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
     try:
         acessar_processo(driver, num_processo)
         registrar_tags(registro, listar_marcadores(driver))
-        garantir_processo_aberto(driver, registro)
+        # Antes da árvore: abrir as pastas pode trocar a tela, e o botão
+        # sumiria sem o processo estar fechado
+        registro.processo_fechado = not tem_incluir_documento(driver)
+        if registro.processo_fechado:
+            logger.warning('Processo fechado no setor (sem "Incluir Documento")')
         registro.registrar_arvore(listar_documentos_arvore(driver))
         logger.info(f'Árvore: {len(registro.tds_docs)} documento(s) | GEACS: {registro.qnt_docs_geacs_na_arvore} documento(s), {registro.qnt_memos_geacs_na_arvore} memorando(s)')
         logger.info(f'Marcadores: {registro.marcadores_sei or "nenhum"}')
@@ -191,6 +217,7 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
     except Exception as e:
         registrar_erro(registro, e)
         logger.exception('Erro inesperado durante o processamento')
+        restaurar_navegador(driver)
 
     return registro
 
@@ -208,20 +235,16 @@ def main():
         logger.info('================= INÍCIO DA EXECUÇÃO =================')
         logger.info(f'Log: {ARQ_LOG}')
 
-        df_processos = pd.read_excel(
-            io=ARQ_PROCESSOS_NAO_PROCESSADOS,
-            sheet_name='fluxo',
-        )
-        total = len(df_processos)
-        logger.info(f'{total} processo(s) lido(s) de {ARQ_PROCESSOS_NAO_PROCESSADOS.name}')
+        processos = ler_processos_a_processar(SCRIPT)
+        total = len(processos)
 
         bases = carregar_bases(ARQ_USO_REDE_PROPRIA, ARQ_BASE_APIS)
         bases_mantis = carregar_bases_mantis(ARQ_MANTIS_REDE_PROPRIA, ARQ_MANTIS_REDE_CREDENCIADA)
 
         controle = PlanilhaControleGeral(SCRIPT, AGORA)
-        driver = abrir_sei(download_dir=DIR_UI_ANTIGAS_XLS)
+        driver = abrir_sei(UNIDADE_GEACS, download_dir=DIR_UI_ANTIGAS_XLS)
 
-        for i, num_processo in enumerate(df_processos['num_sei'], start=1):
+        for i, num_processo in enumerate(processos, start=1):
             with contexto_processo(num_processo):
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
@@ -237,7 +260,7 @@ def main():
                     break
 
     except Exception:
-        logger.exception('Erro crítico na execução do main')
+        logger.exception('Erro crítico na execução do main_geacs')
         raise
 
     finally:

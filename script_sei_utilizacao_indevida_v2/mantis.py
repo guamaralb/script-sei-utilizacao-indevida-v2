@@ -165,7 +165,9 @@ def carregar_bases_mantis(arquivo_rede_propria: Path, arquivo_rede_credenciada: 
 # por vírgula, ponto e vírgula ou ", de".
 _DATA_INICIO = r'\d{1,2}/\d{1,2}/\d{4}|\d{1,2}/\d{4}|\d{1,2}'
 _DATA_FIM = r'\d{1,2}/\d{1,2}/\d{4}|\d{1,2}/\d{4}'
-_PADRAO_INTERVALO = re.compile(rf'\b({_DATA_INICIO})\s+a\s+({_DATA_FIM})\b')
+# "a" maiúsculo e sem espaço em volta ("01/04/2019 A 12/06/2024",
+# "01/04/2019 a12/06/2024") também aparecem nos memos
+_PADRAO_INTERVALO = re.compile(rf'\b({_DATA_INICIO})\s*a\s*({_DATA_FIM})\b', re.IGNORECASE)
 
 
 @dataclass(frozen=True)

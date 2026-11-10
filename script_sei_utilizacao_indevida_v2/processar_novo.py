@@ -1,10 +1,10 @@
 """Fluxo dos processos (colunas 3 e 4 do docs/fluxo.drawio). O processo
-VELHO é separado antes, em main._tratar, e não passa por aqui.
+VELHO é separado antes, em main_geacs._tratar, e não passa por aqui.
 
 Cada memo criado recebe o seu marcador logo depois de entrar no bloco.
 Os marcadores são a memória entre execuções: o marcador de estado diz até
 onde o processo chegou e, ao retomar, as etapas já feitas são puladas (ver
-main._tratar). Cada novo estado substitui o anterior no SEI.
+main_geacs._tratar). Cada novo estado substitui o anterior no SEI.
 """
 
 import logging

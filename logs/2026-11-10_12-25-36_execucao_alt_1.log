@@ -1,0 +1,25 @@
+2026-11-10 12:25:36 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ALT 1 - SOMENTE INSERIR PDF) =================
+2026-11-10 12:25:36 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-10_12-25-36_execucao_alt_1.log
+2026-11-10 12:25:36 | INFO    | -                         | __main__              | 1 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-10 12:25:37 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-10 12:25:37 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-10 12:25:37 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-10 12:25:38 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-10 12:25:38 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\fluxo_alt_1\planilhas_baixadas
+2026-11-10 12:25:40 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-10 12:25:40 | INFO    | 2010.01.0057684/2025-37   | __main__              | INÍCIO [1/1]
+2026-11-10 12:25:44 | INFO    | 2010.01.0057684/2025-37   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-10 12:25:45 | INFO    | 2010.01.0057684/2025-37   | __main__              | Árvore: 19 documento(s)
+2026-11-10 12:25:45 | INFO    | 2010.01.0057684/2025-37   | planilhas_alt_1       | 1 planilha(s) na árvore: ['Planilha Utilização Titular - 2378286']
+2026-11-10 12:25:47 | INFO    | 2010.01.0057684/2025-37   | planilhas_alt_1       | Planilha baixada: Planilha Utilização Titular - 2378286 (SEI 153226069) em 153226069_Utilizacao_Titular_2378386_ERRATA.xlsx
+2026-11-10 12:26:01 | INFO    | 2010.01.0057684/2025-37   | planilhas_alt_1       | PDF anexado ao processo: Utilização Tit. - 2378286 - SEI 153226069 (153315484)
+2026-11-10 12:26:04 | INFO    | 2010.01.0057684/2025-37   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-10 12:26:07 | INFO    | 2010.01.0057684/2025-37   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-10 12:26:07 | INFO    | 2010.01.0057684/2025-37   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-10_12-25-36.xlsx
+2026-11-10 12:26:14 | DEBUG   | 2010.01.0057684/2025-37   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-10 12:26:14 | INFO    | 2010.01.0057684/2025-37   | __main__              | FIM (33.4s) | Próxima ação: ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-10 12:26:16 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-10 12:26:16 | INFO    | -                         | __main__              | Processos: 1 | Sem erro: 1 | Com erro: 0
+2026-11-10 12:26:16 | INFO    | -                         | __main__              |     1 | ALT 1: PDFs inseridos; aguarda o fluxo normal
+2026-11-10 12:26:16 | INFO    | -                         | __main__              | Duração total da execução: 39.8s
+2026-11-10 12:26:16 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================
