@@ -345,3 +345,45 @@ class RegistroDeproc(RegistroBase):
         dados = {_COLUNAS_MARCADORES_DEPROC.get(coluna, coluna): valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_FORA_DEPROC and not coluna.startswith('tag_')}
         dados.update(colunas_tags_deproc(self.marcadores_atuais))
         return dados
+
+
+# Colunas que o fluxo de cancelar o memo DEPROC antigo não grava na linha do
+# processo: a prox_acao, o fluxo e os marcadores são dos outros fluxos
+_CAMPOS_FORA_CANC_MEMO_DEPROC_ANT = _CAMPOS_SO_FLUXO_PRINCIPAL | {
+    'prox_acao',
+    'fluxo',
+    'processo_reaberto',
+    'marcadores_sei',
+    'marcadores_adicionados',
+    'marcadores_removidos',
+    'marcadores_finais',
+}
+# O erro deste fluxo vai para colunas próprias, sem apagar o dos outros
+_COLUNAS_ERRO_CANC_MEMO_DEPROC_ANT = {'tipo_erro': 'canc_memo_deproc_ant_tipo_erro', 'erro': 'canc_memo_deproc_ant_erro'}
+
+
+@dataclass
+class RegistroCancMemoDeprocAnt(RegistroBase):
+    """Uma passagem pelo fluxo de cancelar o memo DEPROC antigo
+    (main_geacs_canc_memo_deproc_ant.py). Não altera a prox_acao."""
+
+    # Sinalizador: o processo passou pelo fluxo (data e hora da passagem)
+    canc_memo_deproc_ant_em: datetime | None = None
+    canc_memo_deproc_ant_cancelado: bool = False
+    # Memo cancelado: número SEI e nome na árvore
+    canc_memo_deproc_ant_sei: str | None = None
+    canc_memo_deproc_ant_nome: str | None = None
+
+    def __post_init__(self):
+        self.canc_memo_deproc_ant_em = self.ultima_passagem
+
+    def to_dict(self) -> dict:
+        return {
+            _COLUNAS_ERRO_CANC_MEMO_DEPROC_ANT.get(coluna, coluna): valor
+            for coluna, valor in super().to_dict().items()
+            if coluna not in _CAMPOS_FORA_CANC_MEMO_DEPROC_ANT and not coluna.startswith('tag_')
+        }
+
+    def para_log(self) -> dict:
+        """Linha do resumo do log (com erro e próxima ação)."""
+        return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': 'Memo DEPROC antigo cancelado' if self.canc_memo_deproc_ant_cancelado else None}

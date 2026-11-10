@@ -54,6 +54,11 @@ pre_run_geacs_adc_pdf_ant_aut = {cmd = "poetry run task format"}
 run_geacs_adc_pdf_ant_man = 'python script_sei_utilizacao_indevida_v2/main_geacs_adc_pdf_ant_man.py'
 pre_run_geacs_adc_pdf_ant_man = {cmd = "poetry run task format"}
 
+# CANCELAR MEMORANDO DEPROC ANTIGO: CANCELA O MEMO DEPROC ANTIGO DA GEACS
+# (SUBSTITUÍDO POR UMA NOVA VERSÃO), SEM ALTERAR A PROX_ACAO
+run_geacs_canc_memo_deproc_ant = 'python script_sei_utilizacao_indevida_v2/main_geacs_canc_memo_deproc_ant.py'
+pre_run_geacs_canc_memo_deproc_ant = {cmd = "poetry run task format"}
+
 # NA UNIDADE DA DEPROC: CONFERE O MEMO DEPROC ASSINADO, APURA A COPARTICIPAÇÃO
 # NA BASE DO MANTIS, ANEXA O RELATÓRIO EM PDF E CRIA O MEMO DE RESULTADO
 run_deproc = 'python script_sei_utilizacao_indevida_v2/main_deproc.py'

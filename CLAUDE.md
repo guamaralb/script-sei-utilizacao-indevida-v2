@@ -75,6 +75,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `planilhas_adc_pdf_ant_aut.py` | ADC PDF ANT AUT: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`; `inserir_pdfs` e `deixar_aguardando_fluxo_normal` são usados também pelo fluxo ADC PDF ANT MAN) |
 | `main_geacs_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN (`poetry run task run_geacs_adc_pdf_ant_man`): usa o loop `executar` do `main_geacs_adc_pdf_ant_aut.py` ([seção](#fluxo-adc-pdf-ant-man)) |
 | `planilhas_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN: acha os arquivos do processo em `dados/geacs_adc_pdf_ant_man/planilhas`, o documento na árvore e insere os PDFs (`inserir_pdfs_da_pasta`) |
+| `main_geacs_canc_memo_deproc_ant.py` | Fluxo GEACS CANC MEMO DEPROC ANT (`poetry run task run_geacs_canc_memo_deproc_ant`): cancela o memo DEPROC antigo da GEACS, sem alterar a `prox_acao` ([seção](#fluxo-geacs-canc-memo-deproc-ant)) |
 | `main_deproc.py` | Fluxo DEPROC (`poetry run task run_deproc`), na unidade da DEPROC: memo DEPROC assinado, coparticipação, relatório e memo de resultado ([seção](#fluxo-deproc)) |
 | `coparticipacao_deproc.py` | Fluxo DEPROC: carga da base DEPROC (aba `Resultado`), conferência das matrículas, filtro pelo período, colunas do relatório e totais (aba `DE-PARA`) |
 | `relatorio_deproc.py` | Fluxo DEPROC: PDF da coparticipação e inclusão no processo, com retomada pelo nome |
@@ -812,6 +813,43 @@ mão em `dados/geacs_adc_pdf_ant_man/planilhas`. Lê a aba `geacs_adc_pdf_ant_ma
 
 ---
 
+## Fluxo GEACS CANC MEMO DEPROC ANT
+
+Cancela o **memorando DEPROC antigo** da GEACS - Utilização, que será ou já
+foi substituído por uma nova versão. `poetry run task run_geacs_canc_memo_deproc_ant`
+(`main_geacs_canc_memo_deproc_ant.py`), na unidade da GEACS, com os processos
+da aba `geacs_canc_memo_deproc_ant` de `dados/inputs/processos_a_processar.xlsx`.
+
+Para cada processo (erro: nada é cancelado):
+
+1. Abre o processo. Sem `Incluir Documento` (fechado no setor):
+   `ProcessoFechadoNoSetor`, **não reabre**.
+2. Lista a árvore e lê **todos os memorandos da GEACS** (toda a árvore, não
+   só a rodada). Procura o que casa com `PADRAO_MEMO_DEPROC_ANTIGO`.
+   **TODO**: definir o padrão (hoje `None`: todo processo para com erro, sem
+   cancelar nada). Nenhum memo, ou mais de um: erro.
+3. Seleciona o memo na árvore e o cancela com `cancelar_doc` da
+   `sei_automacao`, motivo "Documento será ou já foi substituído por uma nova
+   versão". Sem a opção "Cancelar Documento" (já cancelado, assinado ou sem
+   permissão): erro.
+
+Não lê nem adiciona marcadores. Na planilha de controle, **não altera a
+`prox_acao`** (nem `fluxo`, marcadores e o erro dos outros fluxos): na aba
+`processos`, só `script`, `ultima_passagem`, `data_execucao`, as contagens da
+árvore e as colunas próprias:
+
+- `canc_memo_deproc_ant_em`: sinalizador de que o processo passou pelo fluxo
+  (data e hora da passagem);
+- `canc_memo_deproc_ant_cancelado`, `canc_memo_deproc_ant_sei` e
+  `canc_memo_deproc_ant_nome`: o memo cancelado;
+- `canc_memo_deproc_ant_tipo_erro` e `canc_memo_deproc_ant_erro`: o erro desta
+  passagem (as colunas `tipo_erro` e `erro` ficam com as dos outros fluxos).
+
+Log: `logs/<data>_execucao_geacs_canc_memo_deproc_ant.log` (o resumo conta os
+cancelados como "Memo DEPROC antigo cancelado").
+
+---
+
 ## Fluxo DEPROC
 
 `poetry run task run_deproc` (`main_deproc.py`). Roda **na unidade da DEPROC**
@@ -947,6 +985,7 @@ coluna `num_sei` (um processo por linha; linhas vazias são ignoradas):
 | `geacs` | `poetry run task run_geacs` (`main_geacs.py`) |
 | `geacs_adc_pdf_ant_aut` | `poetry run task run_geacs_adc_pdf_ant_aut` (`main_geacs_adc_pdf_ant_aut.py`) |
 | `geacs_adc_pdf_ant_man` | `poetry run task run_geacs_adc_pdf_ant_man` (`main_geacs_adc_pdf_ant_man.py`) |
+| `geacs_canc_memo_deproc_ant` | `poetry run task run_geacs_canc_memo_deproc_ant` (`main_geacs_canc_memo_deproc_ant.py`) |
 | `deproc` | `poetry run task run_deproc` (`main_deproc.py`) |
 
 Aba faltando ou sem a coluna `num_sei`: a execução para com erro antes do
@@ -1032,6 +1071,12 @@ perca os processos já tratados.
 
 ## Pontos a validar no ambiente real
 
+- **TODO** (fluxo GEACS CANC MEMO DEPROC ANT): definir
+  `PADRAO_MEMO_DEPROC_ANTIGO`. Confirmar no SEI real que `cancelar_doc` funciona
+  com o memo selecionado na árvore e se o memo cancelado continua na árvore com
+  o mesmo texto (numa nova passagem, ele seria encontrado de novo e daria erro
+  por não ter mais a opção de cancelar).
+
 - **TODO**: implementar `alterar_unidade_sei` na `sei_automacao` e chamá-la em
   `sessao_sei.alterar_unidade_sei` (hoje só avisa no log: entre no SEI já na
   unidade certa). A `sei_automacao` já tem `ubiquo.trocar_unidade`, que pode
@@ -1104,7 +1149,7 @@ perca os processos já tratados.
 - Confirmar que todo processo aberto no setor mostra `Incluir Documento`
   (senão o fluxo normal tenta reabrir um processo já aberto e para com
   `ProcessoFechadoNoSetor`).
-- Leitura de documento da árvore (`docs_processo._selecionar_doc`): se a
+- Leitura de documento da árvore (`docs_processo.selecionar_doc`): se a
   seleção falhar com "Documento não encontrado" (pastas fechadas depois de
   adicionar marcador ou reabrir) ou clique interceptado (documento no fim da
   árvore), a árvore é relida, o documento é centralizado no frame e há uma

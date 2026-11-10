@@ -107,7 +107,7 @@ def _rolar_ate_doc(driver: webdriver.Remote, numero_sei: str) -> None:
         driver.switch_to.default_content()
 
 
-def _selecionar_doc(driver: webdriver.Remote, doc: dict) -> None:
+def selecionar_doc(driver: webdriver.Remote, doc: dict) -> None:
     """Depois de adicionar um marcador ou reabrir o processo, as pastas da
     árvore fecham e o documento some; no fim da árvore, o clique pode ser
     interceptado. Nos dois casos, relê a árvore (reabre as pastas), centraliza
@@ -125,7 +125,7 @@ def _selecionar_doc(driver: webdriver.Remote, doc: dict) -> None:
 
 def ler_texto_doc(driver: webdriver.Remote, doc: dict) -> str:
     logger.debug(f'Lendo documento {_descrever(doc)}')
-    _selecionar_doc(driver, doc)
+    selecionar_doc(driver, doc)
     texto = obter_conteudo_doc(driver, formato='texto')
     logger.debug(f'Documento {doc["numero_sei"]} lido ({len(texto)} caracteres)')
     return texto
