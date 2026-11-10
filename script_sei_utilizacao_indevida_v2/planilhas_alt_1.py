@@ -28,11 +28,10 @@ from pathlib import Path
 import pandas as pd
 from constantes import DIR_ALT_1_PDF, DIR_ALT_1_PLANILHAS
 from docs_processo import numero_sei_por_nome
-from processo_fechado import tem_incluir_documento
+from processo_fechado import reabrir_processo_fechado, tem_incluir_documento
 from rede_propria import ErroAvaliacao
 from Registro import ProxAcao
 from relatorios_mantis import TIPO_DOC, anexar_pdf
-from sei_automacao.processo import reabrir_processo
 from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
@@ -352,21 +351,6 @@ def baixar_planilha(driver: webdriver.Remote, doc: dict) -> Path:
 # ---------------------------------------------------------------------------
 
 
-def _reabrir_processo(driver: webdriver.Remote, registro) -> None:
-    logger.warning('Processo sem "Incluir Documento": reabrindo')
-    try:
-        reabrir_processo(driver)
-    except ValueError as e:
-        raise ErroAvaliacao(f'Processo sem "Incluir Documento" e não foi possível reabrir: {e}') from e
-
-    time.sleep(_ESPERA_NOVA_TENTATIVA)
-    driver.refresh()
-    if not tem_incluir_documento(driver):
-        raise ErroAvaliacao('Processo sem "Incluir Documento" depois de reabrir')
-    registro.processo_reaberto = True
-    logger.info('Processo reaberto na unidade')
-
-
 def _garantir_processo_aberto(driver: webdriver.Remote, registro) -> None:
     """Processo sem "Incluir Documento" (ex.: concluído na unidade) é reaberto
     e continua aberto depois de receber os PDFs. Chamada antes de baixar as
@@ -375,7 +359,7 @@ def _garantir_processo_aberto(driver: webdriver.Remote, registro) -> None:
     # processo estar fechado
     driver.refresh()
     if not tem_incluir_documento(driver):
-        _reabrir_processo(driver, registro)
+        reabrir_processo_fechado(driver, registro)
     # O refresh fecha as pastas da árvore, onde estão as planilhas
     listar_documentos_arvore(driver)
 

@@ -1,0 +1,62 @@
+2026-11-09 13:00:56 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-09 13:00:56 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-09_13-00-56_execucao.log
+2026-11-09 13:00:56 | INFO    | -                         | __main__              | 1 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-09 13:00:56 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-09 13:00:56 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-09 13:00:56 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-09 13:00:56 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-09 13:00:56 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-09 13:00:56 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-09 13:00:56 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-09 13:00:57 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-09 13:00:58 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-09 13:00:58 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-09 13:01:29 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-09 13:01:49 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-09 13:01:50 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-09 13:01:50 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-09 13:01:50 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-09 13:01:50 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-09 13:01:51 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-11-09 13:01:53 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-09 13:01:53 | INFO    | 2010.01.0053707/2025-37   | __main__              | INÍCIO [1/1]
+2026-11-09 13:02:09 | WARNING | 2010.01.0053707/2025-37   | processo_fechado      | Processo sem "Incluir Documento": reabrindo
+2026-11-09 13:02:15 | INFO    | 2010.01.0053707/2025-37   | processo_fechado      | Processo reaberto na unidade
+2026-11-09 13:02:15 | INFO    | 2010.01.0053707/2025-37   | __main__              | Árvore: 11 documento(s) | GEACS: 3 documento(s), 2 memorando(s)
+2026-11-09 13:02:15 | INFO    | 2010.01.0053707/2025-37   | __main__              | Marcadores: ['ASSINADO']
+2026-11-09 13:02:15 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Lendo documento Memorando 152 (SEI 121435666)
+2026-11-09 13:02:16 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Documento 121435666 lido (1371 caracteres)
+2026-11-09 13:02:16 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Lendo documento Memorando 2684 (SEI 128696598)
+2026-11-09 13:02:17 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Documento 128696598 lido (2224 caracteres)
+2026-11-09 13:02:17 | INFO    | 2010.01.0053707/2025-37   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-09 13:02:19 | INFO    | 2010.01.0053707/2025-37   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-09 13:02:19 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Lendo documento Memorando 212 (SEI 115337883)
+2026-11-09 13:02:20 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Documento 115337883 lido (1663 caracteres)
+2026-11-09 13:02:20 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 212 (SEI 115337883)
+2026-11-09 13:02:20 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Lendo documento Memorando 2468 (SEI 126114612)
+2026-11-09 13:02:21 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Documento 126114612 lido (1660 caracteres)
+2026-11-09 13:02:21 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 2468 (SEI 126114612)
+2026-11-09 13:02:21 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Lendo documento Memorando 2623 (SEI 152028008)
+2026-11-09 13:02:22 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Documento 152028008 lido (2564 caracteres)
+2026-11-09 13:02:22 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 2623 (SEI 152028008)
+2026-11-09 13:02:22 | INFO    | 2010.01.0053707/2025-37   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: nenhum
+2026-11-09 13:02:22 | WARNING | 2010.01.0053707/2025-37   | processar_novo        | Nenhum memorando da APIS destinado à GEACS: memo à APIS (sem memorando)
+2026-11-09 13:02:24 | INFO    | 2010.01.0053707/2025-37   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-09 13:02:24 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Procurando memo à APIS (sem memorando) em 2 memorando(s) da GEACS
+2026-11-09 13:02:24 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Lendo documento Memorando 2684 (SEI 128696598)
+2026-11-09 13:02:25 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Documento 128696598 lido (2224 caracteres)
+2026-11-09 13:02:25 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Lendo documento Memorando 152 (SEI 121435666)
+2026-11-09 13:02:25 | DEBUG   | 2010.01.0053707/2025-37   | docs_processo         | Documento 121435666 lido (1371 caracteres)
+2026-11-09 13:02:25 | INFO    | 2010.01.0053707/2025-37   | docs_processo         | Memo à APIS (sem memorando) não encontrado na árvore
+2026-11-09 13:02:43 | INFO    | 2010.01.0053707/2025-37   | memos_sei             | Memo à APIS (sem memorando) criado
+2026-11-09 13:02:46 | INFO    | 2010.01.0053707/2025-37   | memos_sei             | Memo à APIS (sem memorando) inserido no bloco 7730344
+2026-11-09 13:02:49 | INFO    | 2010.01.0053707/2025-37   | tags                  | Marcador adicionado: "Script v2 - 1.5 - Aguarda APIS: Sem Memo p/ GEACS"
+2026-11-09 13:02:49 | INFO    | 2010.01.0053707/2025-37   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2078 (SEI 153201954)']
+2026-11-09 13:02:49 | INFO    | 2010.01.0053707/2025-37   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-09_13-00-56.xlsx
+2026-11-09 13:02:58 | DEBUG   | 2010.01.0053707/2025-37   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-09 13:02:58 | INFO    | 2010.01.0053707/2025-37   | __main__              | FIM (0h01m05s) | Próxima ação: Assinar memo à APIS (sem memorando para a GEACS) e encaminhar
+2026-11-09 13:03:01 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-09 13:03:01 | INFO    | -                         | __main__              | Processos: 1 | Sem erro: 1 | Com erro: 0
+2026-11-09 13:03:01 | INFO    | -                         | __main__              |     1 | Assinar memo à APIS (sem memorando para a GEACS) e encaminhar
+2026-11-09 13:03:01 | INFO    | -                         | __main__              | Duração total da execução: 0h02m05s
+2026-11-09 13:03:01 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

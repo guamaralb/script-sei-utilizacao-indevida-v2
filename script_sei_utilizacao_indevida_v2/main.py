@@ -26,7 +26,7 @@ from mantis import BasesMantis, carregar_bases_mantis
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from planilha_controle import PlanilhaControleGeral
 from processar_novo import processar_novo
-from processo_fechado import exigir_processo_aberto
+from processo_fechado import garantir_processo_aberto
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
 from Registro import ProxAcao, RegistroMain, registrar_erro
 from sei_automacao.processo.arvore import listar_documentos_arvore
@@ -176,7 +176,7 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
     try:
         acessar_processo(driver, num_processo)
         registrar_tags(registro, listar_marcadores(driver))
-        exigir_processo_aberto(driver)
+        garantir_processo_aberto(driver, registro)
         registro.registrar_arvore(listar_documentos_arvore(driver))
         logger.info(f'Árvore: {len(registro.tds_docs)} documento(s) | GEACS: {registro.qnt_docs_geacs_na_arvore} documento(s), {registro.qnt_memos_geacs_na_arvore} memorando(s)')
         logger.info(f'Marcadores: {registro.marcadores_sei or "nenhum"}')

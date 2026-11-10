@@ -9,6 +9,11 @@ coluna "script" distingue as passagens antigas do script de correção
       mantidas;
     - aba "historico": uma linha por passagem (acrescentada).
 
+As outras abas (ex.: "BUSCA", preenchida à mão) são mantidas. Na aba
+"processos", as colunas BUSCA (fórmula que procura o processo na aba BUSCA;
+#N/D se não estiver lá) e ERROS VERIFICADOS MANUALMENTE (anotações) vêm
+logo depois de num_processo. A fórmula é regravada a cada gravação.
+
 Antes da primeira gravação da execução, a planilha anterior é copiada para
 dados/controle/backup.
 Se não for possível ler ou gravar a planilha (ex.: aberta no Excel), a
@@ -36,6 +41,11 @@ logger = logging.getLogger(__name__)
 _ABA_PROCESSOS = 'processos'
 _ABA_HISTORICO = 'historico'
 _COLUNAS_INICIAIS = ('num_processo', 'primeira_passagem', 'ultima_passagem', 'script')
+# Mantida pelo usuário: os processos a procurar na aba "processos" (coluna A)
+_ABA_BUSCA = 'BUSCA'
+_COLUNA_BUSCA = 'BUSCA'
+_COLUNA_ERROS_MANUAIS = 'ERROS VERIFICADOS MANUALMENTE'
+_COLUNAS_INICIAIS_PROCESSOS = ('num_processo', _COLUNA_BUSCA, _COLUNA_ERROS_MANUAIS, 'primeira_passagem', 'ultima_passagem', 'script')
 _BACKUPS_MANTIDOS = 30
 
 _LARGURA_MAXIMA = 60
@@ -106,23 +116,37 @@ def _formatar(planilha, colunas: list[str]) -> None:
                 linha[idx].fill = _PREENCHIMENTO_NAO_ENCONTRADA
 
 
-def _dataframe(linhas: list[dict]) -> pd.DataFrame:
-    colunas = list(_COLUNAS_INICIAIS)
+def _dataframe(linhas: list[dict], colunas_iniciais: tuple[str, ...] = _COLUNAS_INICIAIS) -> pd.DataFrame:
+    colunas = list(colunas_iniciais)
     for linha in linhas:
         colunas += [c for c in linha if c not in colunas]
     return pd.DataFrame(linhas, columns=colunas)
 
 
+def _dataframe_processos(linhas: list[dict]) -> pd.DataFrame:
+    df = _dataframe(linhas, _COLUNAS_INICIAIS_PROCESSOS)
+    # O pandas lê o valor calculado, não a fórmula: ela é regravada.
+    # num_processo é a coluna A; a linha 1 é o cabeçalho
+    df[_COLUNA_BUSCA] = [f'=MATCH(A{linha},{_ABA_BUSCA}!$A:$A,0)' for linha in range(2, len(df) + 2)]
+    return df
+
+
 def _gravar(arquivo: Path, abas: dict[str, list[dict]]) -> None:
-    with pd.ExcelWriter(arquivo, engine='openpyxl') as writer:
+    # Com o arquivo existente, só as abas do script são substituídas: as
+    # demais (ex.: BUSCA) são mantidas
+    modo = {'mode': 'a', 'if_sheet_exists': 'replace'} if arquivo.exists() else {'mode': 'w'}
+    with pd.ExcelWriter(arquivo, engine='openpyxl', **modo) as writer:
         for aba, linhas in abas.items():
-            df = _dataframe(linhas)
+            df = _dataframe_processos(linhas) if aba == _ABA_PROCESSOS else _dataframe(linhas)
             df.to_excel(writer, sheet_name=aba, index=False)
             # A formatação é opcional: se falhar, a aba fica sem ela
             try:
                 _formatar(writer.sheets[aba], list(df.columns))
             except Exception:
                 logger.exception(f'Falha ao formatar a aba "{aba}" da planilha de controle')
+        # Sem a aba, a fórmula da coluna BUSCA daria erro de referência
+        if _ABA_BUSCA not in writer.book.sheetnames:
+            writer.book.create_sheet(_ABA_BUSCA)
 
 
 def _fazer_backup(arquivo: Path, execucao: str) -> None:

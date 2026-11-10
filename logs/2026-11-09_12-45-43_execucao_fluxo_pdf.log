@@ -1,0 +1,32 @@
+2026-11-09 12:45:43 | INFO    | -                         | main_alt_1            | ================= INÍCIO DA EXECUÇÃO (FLUXO PDF - PLANILHAS DA PASTA) =================
+2026-11-09 12:45:43 | INFO    | -                         | main_alt_1            | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-09_12-45-43_execucao_fluxo_pdf.log
+2026-11-09 12:45:43 | INFO    | -                         | main_alt_1            | 2 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-09 12:45:44 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-09 12:45:44 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-09 12:45:44 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-09 12:45:44 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-09 12:45:45 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-09 12:45:47 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-09 12:45:47 | INFO    | 2010.01.0082988/2024-03   | main_alt_1            | INÍCIO [1/2]
+2026-11-09 12:45:50 | INFO    | 2010.01.0082988/2024-03   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-09 12:45:51 | INFO    | 2010.01.0082988/2024-03   | main_alt_1            | Árvore: 11 documento(s)
+2026-11-09 12:45:51 | INFO    | 2010.01.0082988/2024-03   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0082988_2024-03 - Anexo RELAÇÃO ATENDIMENTOS.xlsx']
+2026-11-09 12:46:06 | INFO    | 2010.01.0082988/2024-03   | planilhas_alt_1       | PDF anexado ao processo: Utilização Ben. - 2282660 (153200090)
+2026-11-09 12:46:08 | INFO    | 2010.01.0082988/2024-03   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-09 12:46:11 | INFO    | 2010.01.0082988/2024-03   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-09 12:46:11 | INFO    | 2010.01.0082988/2024-03   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-09_12-45-43.xlsx
+2026-11-09 12:46:16 | DEBUG   | 2010.01.0082988/2024-03   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-09 12:46:16 | INFO    | 2010.01.0082988/2024-03   | main_alt_1            | FIM (28.6s) | Próxima ação: Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-09 12:46:16 | INFO    | 2010.01.0097844/2024-83   | main_alt_1            | INÍCIO [2/2]
+2026-11-09 12:46:17 | INFO    | 2010.01.0097844/2024-83   | main_alt_1            | Árvore: 27 documento(s)
+2026-11-09 12:46:17 | INFO    | 2010.01.0097844/2024-83   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0097844_2024-83 - Anexo RELAÇÃO ATENDIMENTOS.xlsx']
+2026-11-09 12:46:31 | INFO    | 2010.01.0097844/2024-83   | planilhas_alt_1       | PDF anexado ao processo: Utilização Ben. - 1292264 e mais 3 (153200125)
+2026-11-09 12:46:34 | INFO    | 2010.01.0097844/2024-83   | tags                  | Marcador adicionado: "Script v2 - 1 - Tratado pelo Script"
+2026-11-09 12:46:36 | INFO    | 2010.01.0097844/2024-83   | tags                  | Marcador adicionado: "Script v2 - 1.0 - Aguarda Script: Fluxo Normal"
+2026-11-09 12:46:41 | DEBUG   | 2010.01.0097844/2024-83   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-09 12:46:41 | INFO    | 2010.01.0097844/2024-83   | main_alt_1            | FIM (25.2s) | Próxima ação: Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-09 12:46:43 | INFO    | -                         | main_alt_1            | ------------------------ RESUMO ------------------------
+2026-11-09 12:46:43 | INFO    | -                         | main_alt_1            | Processos: 2 | Sem erro: 2 | Com erro: 0
+2026-11-09 12:46:43 | INFO    | -                         | main_alt_1            |     2 | Fluxo PDF: PDFs inseridos; aguarda o fluxo normal
+2026-11-09 12:46:43 | INFO    | -                         | main_alt_1            | Duração total da execução: 0h01m00s
+2026-11-09 12:46:43 | INFO    | -                         | main_alt_1            | ================== FIM DA EXECUÇÃO ==================

@@ -1,0 +1,26 @@
+2026-11-09 12:43:10 | INFO    | -                         | main_alt_1            | ================= INÍCIO DA EXECUÇÃO (FLUXO PDF - PLANILHAS DA PASTA) =================
+2026-11-09 12:43:10 | INFO    | -                         | main_alt_1            | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-09_12-43-10_execucao_fluxo_pdf.log
+2026-11-09 12:43:10 | INFO    | -                         | main_alt_1            | 2 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-09 12:43:11 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-09 12:43:11 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-09 12:43:11 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-09 12:43:11 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-09 12:43:12 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-09 12:43:13 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-09 12:43:13 | INFO    | 2010.01.0082988/2024-03   | main_alt_1            | INÍCIO [1/2]
+2026-11-09 12:43:17 | INFO    | 2010.01.0082988/2024-03   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-09 12:43:17 | INFO    | 2010.01.0082988/2024-03   | main_alt_1            | Árvore: 11 documento(s)
+2026-11-09 12:43:17 | INFO    | 2010.01.0082988/2024-03   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0082988_2024-03 - Anexo RELAÇÃO ATENDIMENTOS.xlsx']
+2026-11-09 12:43:18 | INFO    | 2010.01.0082988/2024-03   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-09_12-43-10.xlsx
+2026-11-09 12:43:22 | DEBUG   | 2010.01.0082988/2024-03   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-09 12:43:22 | WARNING | 2010.01.0082988/2024-03   | main_alt_1            | FIM COM ERRO (8.5s) | ErroAvaliacao: Planilha 2010.01.0082988_2024-03 - Anexo RELAÇÃO ATENDIMENTOS.xlsx: 2 abas (Planilha1, Planilha2): conferir manualmente qual é a do processo
+2026-11-09 12:43:22 | INFO    | 2010.01.0097844/2024-83   | main_alt_1            | INÍCIO [2/2]
+2026-11-09 12:43:23 | INFO    | 2010.01.0097844/2024-83   | main_alt_1            | Árvore: 27 documento(s)
+2026-11-09 12:43:28 | DEBUG   | 2010.01.0097844/2024-83   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-09 12:43:28 | WARNING | 2010.01.0097844/2024-83   | main_alt_1            | FIM COM ERRO (5.7s) | ErroAvaliacao: Arquivo "Anexo RELAÇÃO ATENDIMENTOS": mais de um documento na árvore com esse nome (107251599, 122550116): tratar manualmente
+2026-11-09 12:43:30 | INFO    | -                         | main_alt_1            | ------------------------ RESUMO ------------------------
+2026-11-09 12:43:30 | INFO    | -                         | main_alt_1            | Processos: 2 | Sem erro: 0 | Com erro: 2
+2026-11-09 12:43:30 | INFO    | -                         | main_alt_1            | ERRO  | 2010.01.0082988/2024-03 | ErroAvaliacao: Planilha 2010.01.0082988_2024-03 - Anexo RELAÇÃO ATENDIMENTOS.xlsx: 2 abas (Planilha1, Planilha2): conferir manualmente qual é a do processo
+2026-11-09 12:43:30 | INFO    | -                         | main_alt_1            | ERRO  | 2010.01.0097844/2024-83 | ErroAvaliacao: Arquivo "Anexo RELAÇÃO ATENDIMENTOS": mais de um documento na árvore com esse nome (107251599, 122550116): tratar manualmente
+2026-11-09 12:43:30 | INFO    | -                         | main_alt_1            | Duração total da execução: 19.6s
+2026-11-09 12:43:30 | INFO    | -                         | main_alt_1            | ================== FIM DA EXECUÇÃO ==================

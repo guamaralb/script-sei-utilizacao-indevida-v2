@@ -19,10 +19,10 @@ reportlab = "^4.4.10"
 ##### PATH do sei-automacao: Alterar para seu PC #####
 
 # CAMG
-# sei-automacao = { path = "../../../sei-automacao", develop = true }
+sei-automacao = { path = "../../../sei-automacao", develop = true }
 
 # CASA
-sei-automacao = { path = "../sei-automacao", develop = true }
+# sei-automacao = { path = "../sei-automacao", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 taskipy = "^1.14.1"

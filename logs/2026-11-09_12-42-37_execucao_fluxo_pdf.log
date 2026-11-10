@@ -1,0 +1,74 @@
+2026-11-09 12:42:37 | INFO    | -                         | main_alt_1            | ================= INÍCIO DA EXECUÇÃO (FLUXO PDF - PLANILHAS DA PASTA) =================
+2026-11-09 12:42:37 | INFO    | -                         | main_alt_1            | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-09_12-42-37_execucao_fluxo_pdf.log
+2026-11-09 12:42:37 | INFO    | -                         | main_alt_1            | 2 processo(s) lido(s) de processos_nao_processados.xlsx
+2026-11-09 12:42:38 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-09 12:42:38 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-09 12:42:38 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-09 12:42:39 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-09 12:42:39 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-09 12:42:41 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-09 12:42:41 | INFO    | 2010.01.0082988/2024-03   | main_alt_1            | INÍCIO [1/2]
+2026-11-09 12:42:44 | INFO    | 2010.01.0082988/2024-03   | marcadores_disponiveis | Marcadores cadastrados na unidade: 52
+2026-11-09 12:42:44 | INFO    | 2010.01.0082988/2024-03   | main_alt_1            | Árvore: 11 documento(s)
+2026-11-09 12:42:44 | INFO    | 2010.01.0082988/2024-03   | planilhas_fluxo_pdf   | 1 planilha(s) na pasta: ['2010.01.0082988_2024-03 - Anexo RELAÇÃO ATENDIMENTOS.xlsx']
+2026-11-09 12:42:46 | INFO    | 2010.01.0082988/2024-03   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-09_12-42-37.xlsx
+2026-11-09 12:42:46 | ERROR   | 2010.01.0082988/2024-03   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 211, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 138, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl', **modo) as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'
+2026-11-09 12:42:49 | ERROR   | 2010.01.0082988/2024-03   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-09_12-42-37_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-09 12:42:49 | WARNING | 2010.01.0082988/2024-03   | main_alt_1            | FIM COM ERRO (7.8s) | ErroAvaliacao: Planilha 2010.01.0082988_2024-03 - Anexo RELAÇÃO ATENDIMENTOS.xlsx: 2 abas (Planilha1, Planilha2): conferir manualmente qual é a do processo
+2026-11-09 12:42:49 | INFO    | 2010.01.0097844/2024-83   | main_alt_1            | INÍCIO [2/2]
+2026-11-09 12:42:50 | INFO    | 2010.01.0097844/2024-83   | main_alt_1            | Árvore: 27 documento(s)
+2026-11-09 12:42:50 | ERROR   | 2010.01.0097844/2024-83   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 211, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 138, in _gravar
+    with pd.ExcelWriter(arquivo, engine='openpyxl', **modo) as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        path,
+        ^^^^^
+    ...<3 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1246, in __init__
+    self._handles = get_handle(
+                    ~~~~~~~~~~^
+        path, mode, storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\controle_geral_de_processos.xlsx'

@@ -80,6 +80,12 @@ def curto(tag: str) -> str:
     return tag.removeprefix('Script v2 - ')
 
 
+class DriverFalso:
+    @staticmethod
+    def refresh():
+        return None
+
+
 class SEIFalso:
     processo_fechado = False
 
@@ -92,6 +98,8 @@ class SEIFalso:
         # Falha ao criar o n-ésimo memo da passagem
         self.falhar_memo_n: int | None = None
         self.falhar_remocao = False
+        self.processo_reabrivel = True
+        self.reaberturas = 0
 
     # --- árvore -------------------------------------------------------------
 
@@ -162,6 +170,12 @@ class SEIFalso:
         for tag in marcadores:
             self.tags.remove(tag)
 
+    def _reabrir_processo(self, driver):
+        if not self.processo_reabrivel:
+            raise ValueError('Não há como concluir nem reabrir o processo')
+        self.reaberturas += 1
+        self.processo_fechado = False
+
     def _incluir_memo(self, driver, **kwargs):
         self.memos_passagem += 1
         if self.falhar_memo_n == self.memos_passagem:
@@ -179,6 +193,8 @@ class SEIFalso:
         monkeypatch.setattr(tags, 'remover_marcador', self._remover_marcador)
         monkeypatch.setattr(main, 'acessar_processo', lambda driver, num: None)
         monkeypatch.setattr(processo_fechado, 'tem_incluir_documento', lambda driver: not self.processo_fechado)
+        monkeypatch.setattr(processo_fechado, 'reabrir_processo', self._reabrir_processo)
+        monkeypatch.setattr(processo_fechado, '_ESPERA_REABERTURA', 0)
         monkeypatch.setattr(main, 'listar_documentos_arvore', arvore)
         monkeypatch.setattr(docs_processo, 'listar_documentos_arvore', arvore)
         monkeypatch.setattr(main, 'listar_marcadores', lambda driver: list(self.tags))
@@ -199,4 +215,4 @@ class SEIFalso:
     def passar(self, bases_uso: BasesUso, bases_mantis: BasesMantis = MANTIS_SEM_USO):
         """Uma passagem do processo pelo main.py."""
         self.memos_passagem = 0
-        return main._processar_linha(None, 'PROC', bases_uso, bases_mantis)
+        return main._processar_linha(DriverFalso(), 'PROC', bases_uso, bases_mantis)

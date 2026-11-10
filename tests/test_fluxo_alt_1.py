@@ -7,6 +7,7 @@ from pathlib import Path
 import main_alt_1
 import pandas as pd
 import planilhas_alt_1
+import processo_fechado
 import pytest
 import relatorios_mantis
 import transformar_xls_em_pdf
@@ -88,6 +89,7 @@ def alt(sei, monkeypatch, tmp_path):
     monkeypatch.setattr(planilhas_alt_1, 'DIR_ALT_1_PDF', tmp_path / 'pdfs')
     monkeypatch.setattr(planilhas_alt_1, 'TIMEOUT_DOWNLOAD', 0.1)
     monkeypatch.setattr(planilhas_alt_1, '_ESPERA_NOVA_TENTATIVA', 0)
+    monkeypatch.setattr(processo_fechado, '_ESPERA_REABERTURA', 0)
     monkeypatch.setattr(planilhas_alt_1, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in sei.docs])
     monkeypatch.setattr(planilhas_alt_1, 'selecionar_doc_arvore', falso.selecionar)
     monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: True)
@@ -246,8 +248,9 @@ def _sem_incluir_documento(monkeypatch, *, reabre: bool = True) -> list[str]:
             raise ValueError('Não há como concluir nem reabrir o processo')
         reaberturas.append('reabriu')
 
-    monkeypatch.setattr(planilhas_alt_1, 'reabrir_processo', reabrir)
+    monkeypatch.setattr(processo_fechado, 'reabrir_processo', reabrir)
     monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: bool(reaberturas))
+    monkeypatch.setattr(processo_fechado, 'tem_incluir_documento', lambda driver: bool(reaberturas))
     return reaberturas
 
 
@@ -270,7 +273,7 @@ def test_processo_que_nao_reabre_para_antes_de_baixar(sei, alt, monkeypatch):
 
     registro = passar()
 
-    assert registro.tipo_erro == 'ErroAvaliacao'
+    assert registro.tipo_erro == 'ProcessoFechadoNoSetor'
     assert 'não foi possível reabrir' in registro.erro
     assert registro.processo_reaberto is False
     assert alt.abertas == []
@@ -279,8 +282,9 @@ def test_processo_que_nao_reabre_para_antes_de_baixar(sei, alt, monkeypatch):
 
 def test_processo_que_continua_sem_incluir_documento_e_erro(sei, alt, monkeypatch):
     planilha(sei, alt, f'Planilha Utilização Titular - {MATRICULA}', [BASE])
-    monkeypatch.setattr(planilhas_alt_1, 'reabrir_processo', lambda driver: None)
+    monkeypatch.setattr(processo_fechado, 'reabrir_processo', lambda driver: None)
     monkeypatch.setattr(planilhas_alt_1, 'tem_incluir_documento', lambda driver: False)
+    monkeypatch.setattr(processo_fechado, 'tem_incluir_documento', lambda driver: False)
 
     registro = passar()
 

@@ -586,17 +586,39 @@ def test_nome_do_relatorio_cabe_no_sei():
     assert len(f'{inicio_nome_relatorio(REDE_CREDENCIADA, "Dep.", "123456789")} - 20261022_103324') <= 50
 
 
-def test_processo_fechado_no_setor_e_erro_sem_acao_no_sei(sei):
+def test_processo_fechado_no_setor_e_reaberto_e_segue_o_fluxo(sei):
+    sei.novo_processo()
     sei.processo_fechado = True
+
+    registro = sei.passar(bases(tit_usou=False))
+
+    assert sei.reaberturas == 1
+    assert registro.processo_reaberto is True
+    assert registro.to_dict()['processo_reaberto'] is True
+    assert registro.erro is None
+    assert TAG_PROCESSO_NOVO in sei.tags
+
+
+def test_processo_aberto_nao_e_reaberto(sei):
+    sei.novo_processo()
+    registro = sei.passar(bases(tit_usou=False))
+
+    assert sei.reaberturas == 0
+    assert registro.processo_reaberto is False
+
+
+def test_processo_fechado_que_nao_reabre_e_erro_sem_acao_no_sei(sei):
+    sei.processo_fechado = True
+    sei.processo_reabrivel = False
     sei.tags.append(TAG_AGUARDA_FLUXO_NORMAL)
     docs_antes = list(sei.nomes)
 
     registro = sei.passar(bases(tit_usou=False))
 
     assert registro.tipo_erro == 'ProcessoFechadoNoSetor'
-    assert registro.erro == 'Processo fechado no setor: sem o botão Incluir Documento'
+    assert 'não foi possível reabrir' in registro.erro
     assert registro.prox_acao == ProxAcao.VERIFICAR_ERRO
-    assert registro.marcadores_sei == [TAG_AGUARDA_FLUXO_NORMAL]
+    assert registro.processo_reaberto is False
     assert sei.tags == [TAG_AGUARDA_FLUXO_NORMAL]
     assert sei.nomes == docs_antes
 

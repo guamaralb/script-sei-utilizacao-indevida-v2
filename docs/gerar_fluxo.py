@@ -252,7 +252,10 @@ col_main = Coluna(
         F('_processar_linha()', 'Abre o processo e lê os marcadores do SEI', chama='acessar_processo, registrar_tags'),
         P(
             'Sem o botão<br>Incluir Documento?',
-            [E('<b>ProcessoFechadoNoSetor</b>: nada é feito no SEI<br>prox_acao = Verificar erro<br>TODO: definir o que fazer nesses casos')],
+            [
+                F('reabrir_processo_fechado()', 'Reabre o processo na unidade (continua aberto) e segue o fluxo. Coluna processo_reaberto', chama='reabrir_processo'),
+                E('<b>Não reabriu</b> (ou ainda sem o botão): <b>ProcessoFechadoNoSetor</b>, nada mais é feito no SEI<br>prox_acao = Verificar erro'),
+            ],
         ),
         F('registrar_arvore()', 'Lê a árvore do processo'),
         IR('_tratar() — coluna 2'),

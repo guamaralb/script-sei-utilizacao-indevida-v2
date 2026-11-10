@@ -58,7 +58,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba, gerada por
 | `transformar_xls_em_pdf.py` | Monta o PDF do relatório de utilização (ReportLab) |
 | `memos_sei.py` | `incluir_memo()` (procura o memo pelo assunto na rodada, ou cria e insere no bloco) e `registrar_numeros_memos()` (número SEI dos memos criados) |
 | `sessao_sei.py` | `abrir_sei()`: navegador e login (credenciais do `.env`); `sessao_encerrada()`: navegador fechado |
-| `processo_fechado.py` | `tem_incluir_documento()` e `exigir_processo_aberto()`: processo fechado no setor (`ProcessoFechadoNoSetor`) |
+| `processo_fechado.py` | `tem_incluir_documento()`, `reabrir_processo_fechado()` (usado também pelo ALT 1) e `garantir_processo_aberto()`: processo fechado no setor é reaberto (`ProcessoFechadoNoSetor` se não reabrir) |
 | `rede_propria.py` | Carga da base DISA e da base APIS, normalização de matrícula, `verificar_base_apis()` (existência), `avaliar_uso_rede_propria_disa()` (uso), `ErroAvaliacao` |
 | `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada, com os atendimentos), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
@@ -526,10 +526,12 @@ são velhos.
 **Para cada processo**
 
 1. Abre o processo e lê os marcadores **do SEI**.
-2. **Sem o botão `Incluir Documento`** (`exigir_processo_aberto`, antes da
-   árvore)? Processo fechado no setor: `ProcessoFechadoNoSetor`, sem nenhuma
-   ação no SEI, em qualquer estado, inclusive parado ou concluído.
-   `prox_acao` = Verificar erro. **TODO**: definir o que fazer nesses casos.
+2. **Sem o botão `Incluir Documento`** (`garantir_processo_aberto`, antes da
+   árvore)? Processo fechado no setor: reabre com `reabrir_processo` da
+   `sei_automacao` (coluna `processo_reaberto`), em qualquer estado, inclusive
+   parado ou concluído, e segue. O processo **continua aberto**. Sem como
+   reabrir, ou ainda sem o botão depois: `ProcessoFechadoNoSetor`, sem outra
+   ação no SEI, `prox_acao` = Verificar erro.
 3. Lista a árvore (fica no registro).
 4. Roteamento (`_tratar`). **Nenhum marcador é adicionado aqui**, exceto o
    `1` e o `0` (em `_separar_velho`):
@@ -669,8 +671,9 @@ Para cada processo:
      (verificar), sem marcador. Fim.
 3. Se falta algum PDF e o processo não tem o ícone `Incluir Documento` (ex.:
    concluído na unidade), reabre com `reabrir_processo` da `sei_automacao`
-   (coluna `processo_reaberto`), antes de baixar. O processo **continua aberto**
-   depois de receber os PDFs. Sem como reabrir: `ErroAvaliacao`, sem baixar
+   (`reabrir_processo_fechado`, o mesmo do fluxo normal; coluna
+   `processo_reaberto`), antes de baixar. O processo **continua aberto**
+   depois de receber os PDFs. Sem como reabrir: `ProcessoFechadoNoSetor`, sem baixar
    nada. Processo sem PDF faltando não é reaberto.
    Para cada planilha cujo PDF ainda não está na árvore:
    - abre o documento, o que inicia o download, para
@@ -797,7 +800,15 @@ perca os processos já tratados.
   e `memo_deproc_credenciada_*`) e `primeira_passagem` são mantidas.
 - Aba `historico`: **uma linha por passagem**, acrescentada a cada
   execução.
-- Primeiras colunas: `num_processo`, `primeira_passagem`,
+- Outras abas (ex.: `BUSCA`, `ERROS`, mantidas à mão) são preservadas: só
+  `processos` e `historico` são substituídas. Sem a aba `BUSCA`, ela é
+  criada vazia.
+- Aba `processos`: a 2ª coluna é `BUSCA`, com a fórmula
+  `=MATCH(A<linha>,BUSCA!$A:$A,0)` (procura o processo na coluna A da aba
+  `BUSCA`; `#N/D` se não estiver lá), regravada a cada gravação; a 3ª é
+  `ERROS VERIFICADOS MANUALMENTE` (anotações do usuário; o script não grava,
+  só mantém). As duas não vão para o `historico`.
+- Primeiras colunas (depois dessas duas, na aba `processos`): `num_processo`, `primeira_passagem`,
   `ultima_passagem` (data e hora em que o processo passou pelo fluxo),
   `script` (`main`; `correcao_rede_propria` nas passagens antigas),
   `data_execucao` (identifica a execução), `fluxo`, `prox_acao`,
@@ -807,7 +818,7 @@ perca os processos já tratados.
   `tag_*` por marcador (o processo terminou a passagem com ele).
   **Não renomeie as colunas existentes** (por isso as da base APIS
   continuam com `base_geral`).
-- Rastreabilidade: `velho`, `memos_velho_sei`, `memo_apis_sei`,
+- Rastreabilidade: `processo_reaberto`, `velho`, `memos_velho_sei`, `memo_apis_sei`,
   `memos_apis_geacs_sei`, `modelo_memo_apis` (`periodo_por_dependente` ou
   `novo_novo`), `motivo_formato_invalido`,
   `memo_apis_sem_memo_sei`, `memo_apis_formato_invalido_sei`,
@@ -873,7 +884,7 @@ perca os processos já tratados.
   Todos com o prefixo `Script v2 - `, idênticos aos de `tags.py`.
 - **TODO**: cadastrar no SEI o marcador `Script v2 - 1.0 - Aguarda Script:
   Fluxo Normal` antes de rodar o ALT 1 (sem ele, nenhum PDF é inserido).
-- ALT 1: confirmar no SEI real que `reabrir_processo` funciona nos processos sem
+- ALT 1 e fluxo normal: confirmar no SEI real que `reabrir_processo` funciona nos processos sem
   `Incluir Documento` (a causa, processo concluído na unidade, ainda é hipótese)
   e se os reabertos (coluna `processo_reaberto`) devem ser concluídos de novo.
   Se o 2º PDF ainda falhar na 1ª tentativa, o traceback está no log (DEBUG).
@@ -897,9 +908,9 @@ perca os processos já tratados.
   que as tabelas são salvas (a `sei_automacao` não trata tabelas; o memo
   manda o HTML no formato do editor do SEI, fora do `<p>`).
 - **TODO**: fluxo do processo VELHO (`main._separar_velho`).
-- **TODO**: definir o que fazer com o processo fechado no setor no fluxo normal
-  (`processo_fechado.exigir_processo_aberto`). Hoje é só erro; o ALT 1 reabre.
-  Confirmar também que todo processo aberto no setor mostra `Incluir Documento`.
+- Confirmar que todo processo aberto no setor mostra `Incluir Documento`
+  (senão o fluxo normal tenta reabrir um processo já aberto e para com
+  `ProcessoFechadoNoSetor`).
 - Confirmar com um memorando real que `obter_conteudo_doc` devolve as
   linhas `Matrícula do dependente` e `Período de apuração do dependente`
   separadas (o período é lido até o fim da linha).

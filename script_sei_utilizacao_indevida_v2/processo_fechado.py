@@ -1,14 +1,23 @@
 """Processo fechado no setor: sem o botão "Incluir Documento" na tela do
 processo. É ele que indica se a unidade pode agir no processo (concluído ou
-enviado sem manter aberto, por exemplo)."""
+enviado sem manter aberto, por exemplo). O processo é reaberto na unidade
+(`reabrir_processo` da sei_automacao) e continua aberto depois."""
+
+import logging
+import time
 
 from rede_propria import ErroAvaliacao
 from sei_automacao.core.iframes import trocar_iframe
+from sei_automacao.processo import reabrir_processo
 from sei_automacao.utils.encontrar_elemento import encontrar_elemento
 from selenium import webdriver
 
+logger = logging.getLogger(__name__)
+
 _TIMEOUT_TELA_PROCESSO = 15
 _XPATH_INCLUIR_DOCUMENTO = "//img[@alt='Incluir Documento']"
+# Espera depois de reabrir, antes de recarregar a tela do processo
+_ESPERA_REABERTURA = 5
 
 
 class ProcessoFechadoNoSetor(ErroAvaliacao):
@@ -23,11 +32,26 @@ def tem_incluir_documento(driver: webdriver.Remote) -> bool:
     return encontrado
 
 
-def exigir_processo_aberto(driver: webdriver.Remote) -> None:
-    """Chamada logo depois de abrir o processo, antes de ler a árvore: abrir as
-    pastas pode trocar a tela, e o botão sumiria sem o processo estar fechado.
+def reabrir_processo_fechado(driver: webdriver.Remote, registro) -> None:
+    """Reabre o processo na unidade e confere o "Incluir Documento". Sem como
+    reabrir, ou ainda sem o botão depois: `ProcessoFechadoNoSetor`."""
+    logger.warning('Processo sem "Incluir Documento": reabrindo')
+    try:
+        reabrir_processo(driver)
+    except ValueError as e:
+        raise ProcessoFechadoNoSetor(f'Processo sem "Incluir Documento" e não foi possível reabrir: {e}') from e
 
-    TODO: definir o que fazer com o processo fechado no setor (reabrir, como no
-    ALT 1, ou tratar manualmente). Hoje ele só fica registrado como erro."""
+    time.sleep(_ESPERA_REABERTURA)
+    driver.refresh()
     if not tem_incluir_documento(driver):
-        raise ProcessoFechadoNoSetor('Processo fechado no setor: sem o botão Incluir Documento')
+        raise ProcessoFechadoNoSetor('Processo sem "Incluir Documento" depois de reabrir')
+    registro.processo_reaberto = True
+    logger.info('Processo reaberto na unidade')
+
+
+def garantir_processo_aberto(driver: webdriver.Remote, registro) -> None:
+    """Fluxo normal: chamada logo depois de abrir o processo, antes de ler a
+    árvore (abrir as pastas pode trocar a tela, e o botão sumiria sem o
+    processo estar fechado). Sem "Incluir Documento", reabre o processo."""
+    if not tem_incluir_documento(driver):
+        reabrir_processo_fechado(driver, registro)
