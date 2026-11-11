@@ -1,3 +1,4 @@
+import logging
 import traceback
 from dataclasses import dataclass, field, fields
 from datetime import datetime
@@ -7,6 +8,8 @@ from tags import colunas_tags, colunas_tags_deproc
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
+
+logger = logging.getLogger(__name__)
 
 
 class ProxAcao:
@@ -35,6 +38,7 @@ class ProxAcao:
     AGUARDAR_RESPOSTA_MEMO = 'Aguardar resposta ao memo enviado (processo parado)'
     VERIFICAR_MARCADORES = 'Verificar marcadores inconsistentes (corrigir no SEI)'
     VERIFICAR_ERRO = 'Verificar erro'
+    VERIFICAR_ACESSO_UNIDADE = 'Verificar acesso da unidade ao processo'
 
     # Fluxo alternativo ADC PDF ANT AUT
     ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL = 'ADC PDF ANT AUT: PDFs inseridos; aguarda o fluxo normal'
@@ -81,6 +85,15 @@ def registrar_erro(registro, erro: Exception) -> None:
     registro.erro = _mensagem_erro(erro)
     if registro.prox_acao not in _PROX_ACOES_DE_ERRO:
         registro.prox_acao = ProxAcao.VERIFICAR_ERRO
+
+
+def registrar_sem_acesso(registro, erro: Exception) -> None:
+    """A unidade não tem acesso ao processo (UnidadeSemAcessoException da
+    sei_automacao, levantada por acessar_processo): erro, sem nenhuma ação
+    no SEI."""
+    registrar_erro(registro, erro)
+    registro.prox_acao = ProxAcao.VERIFICAR_ACESSO_UNIDADE
+    logger.warning('Unidade sem acesso ao processo')
 
 
 def _juntar(valores: list[str]) -> str:

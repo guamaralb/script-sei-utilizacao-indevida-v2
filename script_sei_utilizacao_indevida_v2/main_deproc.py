@@ -3,9 +3,9 @@ DEPROC da GEACS está assinado, apura a coparticipação na base do MANTIS
 (coparticipacao_deproc.py), anexa o relatório em PDF (relatorio_deproc.py) e
 cria o memo de resultado da DEPROC à GEACS, no bloco próprio.
 
-Usa os marcadores da unidade da DEPROC ("Script v2 DEPROC - ...", em
-tags.py), como os da GEACS: 1 (tratado), 1.1 (relatório anexado, estado de
-retomada) e 1.2 (memo no bloco, estado de conclusão). Dentro de cada etapa,
+Usa os marcadores da unidade da DEPROC (TAG_DEPROC_*, em tags.py, com o
+mesmo prefixo "v2: " dos da GEACS): 01 (tratado), 01.01 (relatório anexado,
+estado de retomada) e 01.02 (memo no bloco, estado de conclusão). Dentro de cada etapa,
 a retomada é pelo nome do PDF e pelo assunto do memo, na rodada (depois do
 último memo da APIS destinado à GEACS).
 """
@@ -46,8 +46,9 @@ from processar_novo import obter_dados_ui
 from processo_fechado import ProcessoFechadoNoSetor, tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
 from rede_propria import ErroAvaliacao
-from Registro import ProxAcao, RegistroDeproc, registrar_erro
+from Registro import ProxAcao, RegistroDeproc, registrar_erro, registrar_sem_acesso
 from relatorio_deproc import incluir_relatorio_deproc
+from sei_automacao.exceptions import UnidadeSemAcessoException
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
@@ -205,6 +206,10 @@ def _processar_linha(driver: webdriver.Remote, num_processo, base: pd.DataFrame)
         acessar_processo(driver, num_processo)
         processar_deproc(driver, registro, base)
         _conferir_marcadores(registro, 'no fim da passagem')
+
+    except UnidadeSemAcessoException as e:
+        # Unidade sem acesso ao processo: nenhuma ação no SEI
+        registrar_sem_acesso(registro, e)
 
     except (ErroAvaliacao, FormatoMemorandoInvalido, TextoMemoPendente) as e:
         # Problema esperado nos dados: sem traceback

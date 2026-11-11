@@ -77,7 +77,7 @@ def bases(*, tit_usou=True, tit_na_disa=True, tit_na_apis=True) -> BasesUso:
 
 
 def curto(tag: str) -> str:
-    return tag.removeprefix('Script v2 - ')
+    return tag.removeprefix('v2: ')
 
 
 class _SwitchFalso:

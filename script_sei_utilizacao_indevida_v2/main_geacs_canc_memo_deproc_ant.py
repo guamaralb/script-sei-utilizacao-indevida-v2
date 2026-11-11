@@ -26,8 +26,9 @@ from planilha_controle import PlanilhaControleGeral
 from processo_fechado import ProcessoFechadoNoSetor, tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
 from rede_propria import ErroAvaliacao
-from Registro import RegistroCancMemoDeprocAnt, registrar_erro
+from Registro import RegistroCancMemoDeprocAnt, registrar_erro, registrar_sem_acesso
 from sei_automacao.documento import cancelar_doc
+from sei_automacao.exceptions import UnidadeSemAcessoException
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.ubiquo.busca import acessar_processo
 from selenium import webdriver
@@ -97,6 +98,10 @@ def _processar_linha(driver: webdriver.Remote, num_processo) -> RegistroCancMemo
     try:
         acessar_processo(driver, num_processo)
         cancelar_memo_deproc_antigo(driver, registro)
+
+    except UnidadeSemAcessoException as e:
+        # Unidade sem acesso ao processo: nenhuma ação no SEI
+        registrar_sem_acesso(registro, e)
 
     except ErroAvaliacao as e:
         # Problema esperado nos dados: sem traceback

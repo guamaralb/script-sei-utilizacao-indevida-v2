@@ -29,7 +29,8 @@ from processar_novo import processar_novo
 from processo_fechado import ProcessoFechadoNoSetor, reabrir_processo_fechado, tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
-from Registro import ProxAcao, RegistroMain, registrar_erro
+from Registro import ProxAcao, RegistroMain, registrar_erro, registrar_sem_acesso
+from sei_automacao.exceptions import UnidadeSemAcessoException
 from sei_automacao.processo.arvore import listar_documentos_arvore
 from sei_automacao.processo.marcadores import listar_marcadores
 from sei_automacao.ubiquo.busca import acessar_processo
@@ -37,9 +38,17 @@ from selenium import webdriver
 from sessao_sei import abrir_sei, restaurar_navegador, sessao_encerrada
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
+    TAG_MEMO_APIS_FORMATO_INVALIDO,
+    TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
+    TAG_MEMO_APIS_PERIODO_DEPENDENTES,
+    TAG_MEMO_APIS_SEM_MEMO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
+    TAG_NO_BLOCO_APIS_SEM_USO,
+    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
+    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
+    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
     TAGS_PARADA_NOVO,
@@ -68,8 +77,20 @@ logger = logging.getLogger(__name__)
 
 # Os 1.11 (VELHO, versão anterior) não chegam aqui: o VELHO é separado antes
 _PROX_ACAO_POR_CONCLUSAO = {
-    TAG_MEMO_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DEPROC,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DISA_DEPROC,
+}
+# Memo no bloco, ainda sem o marcador manual "Aguarda" (colocado depois da
+# assinatura): falta assinar e encaminhar
+_PROX_ACAO_POR_NO_BLOCO = {
+    TAG_MEMO_APIS_SEM_MEMO: ProxAcao.ASSINAR_MEMO_APIS_SEM_MEMO,
+    TAG_MEMO_APIS_FORMATO_INVALIDO: ProxAcao.ASSINAR_MEMO_APIS_FORMATO_INVALIDO,
+    TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS: ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
+    TAG_MEMO_APIS_PERIODO_DEPENDENTES: ProxAcao.ASSINAR_MEMO_APIS_PERIODO_DEPS,
+    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA,
+    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA: ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA,
+    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: ProxAcao.ASSINAR_MEMO_DISA_SEM_MANTIS_RELATORIO,
+    TAG_MEMO_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DEPROC,
+    TAG_NO_BLOCO_APIS_SEM_USO: ProxAcao.ASSINAR_MEMO_APIS_SEM_USO,
 }
 
 
@@ -92,7 +113,7 @@ def _separar_velho(driver: webdriver.Remote, registro: RegistroMain) -> None:
     """Processo VELHO: marcado e não processado.
 
     TODO: definir o fluxo dos processos VELHOS. Todos os processos com o
-    marcador VELHO (0) ou com o 1.3 da versão anterior, e os identificados
+    marcador VELHO (00) ou com o 01.03 da versão anterior, e os identificados
     na execução, devem passar por ele."""
     registro.velho = True
     if registro.processo_fechado:
@@ -151,6 +172,13 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         return
 
     estado = estado_atual(registro)
+    if estado in _PROX_ACAO_POR_NO_BLOCO:
+        # Quem assina coloca o marcador "Aguarda" e remove o "No Bloco"
+        logger.info(f'Fluxo: memo no bloco, aguardando assinatura ("{estado}")')
+        registro.fluxo = 'memo no bloco (aguardando assinatura)'
+        registro.prox_acao = _PROX_ACAO_POR_NO_BLOCO[estado]
+        return
+
     if estado in TAGS_PARADA_NOVO:
         # TODO: definir o processamento na próxima execução (depois da
         # resposta da APIS ou da DISA ao memo enviado)
@@ -209,6 +237,10 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
 
         _tratar(driver, registro, bases, bases_mantis)
         _conferir_marcadores(registro, 'no fim da passagem')
+
+    except UnidadeSemAcessoException as e:
+        # Unidade sem acesso ao processo: nenhuma ação no SEI
+        registrar_sem_acesso(registro, e)
 
     except (ErroAvaliacao, FormatoMemorandoInvalido, TextoMemoPendente) as e:
         # Problema esperado nos dados: sem traceback

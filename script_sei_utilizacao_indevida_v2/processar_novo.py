@@ -43,10 +43,6 @@ from relatorios_mantis import REDE_CREDENCIADA, REDE_PROPRIA, incluir_relatorios
 from sei_automacao.classes.Memorando import Memorando
 from selenium import webdriver
 from tags import (
-    TAG_AGUARDA_APIS_SEM_USO,
-    TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO,
-    TAG_AGUARDA_DISA_VALIDAR_CONSTA,
-    TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
     TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
     TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
     TAG_DISA_NAO_USOU_RP,
@@ -61,6 +57,10 @@ from tags import (
     TAG_MEMO_APIS_PERIODO_DEPENDENTES,
     TAG_MEMO_APIS_SEM_MEMO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
+    TAG_NO_BLOCO_APIS_SEM_USO,
+    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
+    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
+    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
     TAG_PERIODO_VAR_DEP,
     TAGS_RETOMADA_NOVO,
     adicionar_tag,
@@ -204,7 +204,7 @@ _DISA_VALIDAR_CONSTA = _Parada(
     descricao='à DISA (validar e complementar)',
     prefixo_registro='memo_disa',
     bloco=BLOCO_MEMO_DISA_VALIDAR_CONSTA,
-    tag=TAG_AGUARDA_DISA_VALIDAR_CONSTA,
+    tag=TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
     prox_acao=ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA,
     padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
 )
@@ -213,7 +213,7 @@ _DISA_VALIDAR_NAO_CONSTA = _Parada(
     descricao='à DISA (validar, não consta na base DISA)',
     prefixo_registro='memo_disa',
     bloco=BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA,
-    tag=TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
+    tag=TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
     prox_acao=ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA,
     padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
 )
@@ -222,7 +222,7 @@ _DISA_SEM_MANTIS_RELATORIO = _Parada(
     descricao='à DISA (sem MANTIS, solicita relatório)',
     prefixo_registro='memo_disa',
     bloco=BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO,
-    tag=TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO,
+    tag=TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
     prox_acao=ProxAcao.ASSINAR_MEMO_DISA_SEM_MANTIS_RELATORIO,
     padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO,
 )
@@ -232,7 +232,7 @@ _APIS_SEM_USO = _Parada(
     descricao='à APIS (nenhum uso nas bases)',
     prefixo_registro='memo_apis_sem_uso',
     bloco=BLOCO_MEMO_APIS_SEM_USO,
-    tag=TAG_AGUARDA_APIS_SEM_USO,
+    tag=TAG_NO_BLOCO_APIS_SEM_USO,
     prox_acao=ProxAcao.ASSINAR_MEMO_APIS_SEM_USO,
     padrao_assunto=PADRAO_ASSUNTO_MEMO_APIS_SEM_USO,
 )
@@ -300,13 +300,13 @@ def _parar_nao_encontradas_base_apis(driver: webdriver.Remote, registro: Registr
 
 def _verificar_base_apis(driver: webdriver.Remote, registro: RegistroMain, dados_ui: DadosUI, bases: BasesUso) -> MatriculasProcesso:
     """A existência das matrículas é conferida só na base APIS. Se todas
-    estão na base e o processo tem o 1.2.1 (base corrigida depois), o
+    estão na base e o processo tem o 01.02.1 (base corrigida depois), o
     marcador é removido e o fluxo segue."""
     matriculas = verificar_base_apis(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
     registro.titular_nao_encontrado_base_geral = matriculas.nao_encontradas_apis.titular
     registro.deps_nao_encontrados_base_geral = list(matriculas.nao_encontradas_apis.dependentes)
     if not matriculas.nao_encontradas_apis and tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_APIS):
-        logger.info('Matrículas agora encontradas na base APIS (base corrigida): o marcador 1.2.1 é removido e o fluxo segue')
+        logger.info('Matrículas agora encontradas na base APIS (base corrigida): o marcador 01.02.1 é removido e o fluxo segue')
         remover_tag(driver, registro, TAG_MAT_NAO_ENCONTRADAS_APIS)
     return matriculas
 
@@ -462,13 +462,13 @@ def processar_novo(
     bases_mantis: BasesMantis,
 ) -> None:
     """Fluxo dos processos (não VELHOS), do início ou retomando pelo
-    marcador de estado (1.6 ou 1.8).
+    marcador de estado (01.06 ou 01.08).
 
     Termina em um destes pontos:
     - sem memo da APIS para a GEACS: memo à APIS (sem memorando);
     - memo da APIS em formato inválido: memo à APIS (formato inválido);
-    - matrícula fora da base APIS: 1.2.1 e memo à APIS;
-    - período variável para dependentes: 1.1 e memo à APIS;
+    - matrícula fora da base APIS: 01.02.1 e memo à APIS;
+    - período variável para dependentes: 01.01 e memo à APIS;
     - uso da rede própria na base DISA e/ou no MANTIS: memo à DISA (um dos
       três casos);
     - sem uso da rede própria, com uso da rede credenciada: memo DEPROC;

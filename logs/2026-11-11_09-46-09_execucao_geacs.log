@@ -1,0 +1,42 @@
+2026-11-11 09:46:09 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-11 09:46:09 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-11_09-46-09_execucao_geacs.log
+2026-11-11 09:46:09 | INFO    | -                         | processos_a_processar | 1 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs
+2026-11-11 09:46:09 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-11 09:46:10 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-11 09:46:10 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-11 09:46:10 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-11 09:46:10 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-11 09:46:10 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-11 09:46:10 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-11 09:46:11 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-11 09:46:12 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-11 09:46:12 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-11 09:46:44 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-11 09:47:03 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-11 09:47:03 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-11 09:47:03 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-11 09:47:03 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-11 09:47:07 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-11 09:47:07 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/utilizacoes/antigas/xlsx
+2026-11-11 09:47:23 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-11 09:47:23 | WARNING | -                         | sessao_sei            | TODO alterar_unidade_sei: troca de unidade ainda não implementada; confira se o SEI está na unidade IPSEMG/GEACS - Utilização
+2026-11-11 09:47:23 | INFO    | 2010.01.0095722/2026-44   | __main__              | INÍCIO [1/1]
+2026-11-11 09:47:50 | ERROR   | 2010.01.0095722/2026-44   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_geacs.py", line 200, in _processar_linha
+    registrar_tags(registro, listar_marcadores(driver))
+                             ~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/processo/marcadores.py", line 25, in listar_marcadores
+    trocar_iframe(driver, 'ifrArvore')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/core/iframes.py", line 100, in trocar_iframe
+    raise ValueError(f'iFrame "{iframe}" não encontrado por: {tentativas}')
+ValueError: iFrame "ifrArvore" não encontrado por: id, name, xpath
+2026-11-11 09:47:51 | INFO    | 2010.01.0095722/2026-44   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-11_09-46-09.xlsx
+2026-11-11 09:47:56 | DEBUG   | 2010.01.0095722/2026-44   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-11 09:47:56 | WARNING | 2010.01.0095722/2026-44   | __main__              | FIM COM ERRO (32.9s) | ValueError: iFrame "ifrArvore" não encontrado por: id, name, xpath
+2026-11-11 09:47:56 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-11 09:47:56 | INFO    | -                         | __main__              | Processos: 1 | Sem erro: 0 | Com erro: 1
+2026-11-11 09:47:56 | INFO    | -                         | __main__              | ERRO  | 2010.01.0095722/2026-44 | ValueError: iFrame "ifrArvore" não encontrado por: id, name, xpath
+2026-11-11 09:47:56 | INFO    | -                         | __main__              | Duração total da execução: 0h01m46s
+2026-11-11 09:47:56 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

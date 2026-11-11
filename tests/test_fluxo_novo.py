@@ -10,17 +10,20 @@ from Registro import ProxAcao, RegistroMain, registrar_erro
 from relatorios_mantis import REDE_CREDENCIADA, inicio_nome_relatorio
 from selenium.common.exceptions import InvalidSessionIdException
 from tags import (
+    AGUARDA_POR_NO_BLOCO,
+    TAG_AGUARDA_APIS_SEM_MEMO,
+    TAG_AGUARDA_APIS_SEM_USO,
     TAG_AGUARDA_FLUXO_NORMAL,
     TAG_ASSINADO,
     TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
     TAG_DISA_USOU_RP,
     TAG_MANUAL,
     TAG_MAT_NAO_ENCONTRADAS_APIS,
-    TAG_MEMO_APIS_SEM_MEMO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_MEMO_DISA_USO_REDE_PROPRIA,
     TAG_MEMOS_DISA_DEPROC_NO_BLOCO,
+    TAG_NO_BLOCO_APIS_SEM_USO,
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
 )
@@ -45,21 +48,21 @@ from tests.sei_falso import (
     curto,
 )
 
-VELHO = '0 - Processo VELHO'
-NOVO = '1 - Tratado pelo Script'
-DISA = '1.6 - Avaliado Uso Rede Própria DISA'
-MANTIS = '1.8 - Avaliado Uso Rede Própria MANTIS'
-DISA_SIM = '1.6.2 - Base DISA: Usou RP'
-DISA_NAO = '1.6.2 - Base DISA: Não Usou RP'
-MANTIS_SIM = '1.8.2 - MANTIS: Usou RP'
-MANTIS_NAO = '1.8.2 - MANTIS: Não Usou RP'
-RC_SIM = '1.8.3 - MANTIS: Usou RC'
-RC_NAO = '1.8.3 - MANTIS: Não Usou RC'
-AGUARDA_CONSTA = '1.9 - Aguarda DISA: Validar (Consta)'
-AGUARDA_N_CONSTA = '1.9 - Aguarda DISA: Validar (N Consta)'
-AGUARDA_RELATORIO = '1.9 - Aguarda DISA: Relat. s/ MANTIS'
-CONCLUIDO_DEPROC = '1.10 - Concluído: Memo DEPROC'
-AGUARDA_SEM_USO = '1.10 - Aguarda APIS: Sem Uso'
+VELHO = '00 - Processo VELHO'
+NOVO = '01 - Tratado pelo Script'
+DISA = '01.06 - Avaliado Uso Rede Própria DISA'
+MANTIS = '01.08 - Avaliado Uso Rede Própria MANTIS'
+DISA_SIM = '01.06.2 - Base DISA: Usou RP'
+DISA_NAO = '01.06.2 - Base DISA: Não Usou RP'
+MANTIS_SIM = '01.08.2 - MANTIS: Usou RP'
+MANTIS_NAO = '01.08.2 - MANTIS: Não Usou RP'
+RC_SIM = '01.08.3 - MANTIS: Usou RC'
+RC_NAO = '01.08.3 - MANTIS: Não Usou RC'
+AGUARDA_CONSTA = '01.09 - No Bloco DISA: Validar (Consta)'
+AGUARDA_N_CONSTA = '01.09 - No Bloco DISA: Validar (N Consta)'
+AGUARDA_RELATORIO = '01.09 - No Bloco DISA: Relat. s/ MANTIS'
+CONCLUIDO_DEPROC = '01.10 - No Bloco DEPROC: Coparticipação'
+AGUARDA_SEM_USO = '01.10 - No Bloco APIS: Sem Uso'
 
 PDF_DEP_RP = f'PDF Utilização Dep. RP - {TITULAR}'
 PDF_TIT_RC = f'PDF Utilização Tit. RC - {TITULAR}'
@@ -107,6 +110,13 @@ def test_nenhum_uso_memo_a_apis_sem_deproc(sei):
     assert registro.memo_apis_sem_uso_sei
     assert not registro.memo_deproc_criado
 
+    # Memo ainda no bloco: falta assinar
+    registro = sei.passar(bases(tit_usou=False))
+    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_SEM_USO
+    assert registro.memos_criados == []
+
+    # Assinado: quem assina troca o "No Bloco" pelo "Aguarda"
+    sei.tags = [TAG_AGUARDA_APIS_SEM_USO if t == TAG_NO_BLOCO_APIS_SEM_USO else t for t in sei.tags]
     registro = sei.passar(bases(tit_usou=False))
     assert registro.prox_acao == ProxAcao.AGUARDAR_RESPOSTA_MEMO
 
@@ -153,11 +163,19 @@ def test_disa_sim_mantis_nao_solicita_relatorio_com_rc(sei):
 
 def test_memo_a_disa_para_o_processo(sei):
     sei.novo_processo()
-    sei.passar(bases(tit_usou=True))
+    primeira = sei.passar(bases(tit_usou=True))
     registro = sei.passar(bases(tit_usou=True))
 
-    assert registro.prox_acao == ProxAcao.AGUARDAR_RESPOSTA_MEMO
+    # Memo no bloco: a prox_acao continua sendo assinar
+    assert registro.prox_acao == primeira.prox_acao
     assert registro.memos_criados == []
+    assert sei.qnt_memos_geacs == 1
+
+    no_bloco = next(t for t in sei.tags if t in AGUARDA_POR_NO_BLOCO)
+    sei.tags = [AGUARDA_POR_NO_BLOCO.get(t, t) for t in sei.tags]
+    registro = sei.passar(bases(tit_usou=True))
+    assert registro.prox_acao == ProxAcao.AGUARDAR_RESPOSTA_MEMO
+    assert AGUARDA_POR_NO_BLOCO[no_bloco] in sei.tags
     assert sei.qnt_memos_geacs == 1
 
 
@@ -242,12 +260,18 @@ def test_falha_depois_do_relatorio_nao_duplica_o_pdf(sei):
 def test_base_apis_para_com_memo_a_apis(sei):
     sei.novo_processo()
     registro = sei.passar(bases(tit_na_apis=False))
-    assert sei.tags_curtas == [NOVO, '1.2.1 - Mat. N Encontradas Base APIS', '1.6.1 - Aguarda APIS: Matrículas']
+    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', '01.06.1 - No Bloco APIS: Matrículas']
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS
     assert registro.titular_nao_encontrado_base_geral == TITULAR
 
     registro = sei.passar(bases(tit_na_apis=False))
+    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS
+    assert sei.qnt_memos_geacs == 1
+
+    sei.tags = [AGUARDA_POR_NO_BLOCO.get(t, t) for t in sei.tags]
+    registro = sei.passar(bases(tit_na_apis=False))
     assert registro.prox_acao == ProxAcao.AGUARDAR_RESPOSTA_MEMO
+    assert sei.tags_curtas[-1] == '01.06.1.1 - Aguarda APIS: Matrículas'
     assert sei.qnt_memos_geacs == 1
 
 
@@ -265,7 +289,7 @@ def test_sem_memo_da_apis(sei):
     sei.novo_processo(com_memo_apis=False)
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Sem Memo p/ GEACS']
+    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Sem Memo p/ GEACS']
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_SEM_MEMO
 
 
@@ -274,7 +298,7 @@ def test_modelo_novo_velho_e_formato_invalido(sei):
     sei.memo_apis(MEMO_APIS_NOVO_VELHO)
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Formato Inválido']
+    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Formato Inválido']
     assert 'novo_velho' in registro.motivo_formato_invalido
 
 
@@ -299,7 +323,7 @@ def test_periodo_variavel_para_dependentes(sei):
     sei.novo_processo(extra='Dependente 555: 01/02/2024 a 01/03/2024')
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, DISA_SIM, '1.1 - Período Variável p/ Dependentes', '1.7 - Aguarda APIS: Período Deps']
+    assert sei.tags_curtas == [NOVO, DISA_SIM, '01.01 - Período Variável p/ Dependentes', '01.07 - No Bloco APIS: Período Deps']
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_PERIODO_DEPS
 
 
@@ -345,7 +369,7 @@ def test_dependente_sem_periodo_no_modelo_por_dependente_para_com_memo_a_apis(se
     sei.memo_apis(MEMO_APIS_PERIODO_POR_DEPENDENTE, extra='Matrícula do dependente: 666')
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Formato Inválido']
+    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Formato Inválido']
     assert 'fora de dupla' in registro.motivo_formato_invalido
 
 
@@ -381,7 +405,7 @@ def test_processo_com_documentos_antigos_da_geacs_e_tratado_como_novo(sei):
     # APIS. Não é reaproveitado (é de outra rodada)
     sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
     sei.memo_geacs(ASSUNTO_MEMO_DEPROC)
-    sei.tags = ['Script v2 - 2 - Processo VELHO']
+    sei.tags = ['v2: 02 - Processo VELHO']
     sei.memo_apis()
 
     registro = sei.passar(bases(tit_usou=False), SO_RC)
@@ -405,7 +429,7 @@ def test_memo_disa_da_versao_anterior_e_parada(sei):
 
 def test_memo_deproc_sem_marcador_e_reaproveitado(sei):
     sei.novo_processo()
-    sei.tags = ['Script v2 - ' + t for t in (NOVO, DISA_NAO, MANTIS_NAO, RC_SIM, MANTIS)]
+    sei.tags = ['v2: ' + t for t in (NOVO, DISA_NAO, MANTIS_NAO, RC_SIM, MANTIS)]
     numero_deproc = sei.memo_geacs(ASSUNTO_MEMO_DEPROC)
 
     registro = sei.passar(bases(tit_usou=False), SO_RC)
@@ -418,7 +442,7 @@ def test_memo_deproc_sem_marcador_e_reaproveitado(sei):
 
 def test_memo_deproc_com_assunto_anterior_e_reaproveitado(sei):
     sei.novo_processo()
-    sei.tags = ['Script v2 - ' + t for t in (NOVO, DISA_NAO, MANTIS_NAO, RC_SIM, MANTIS)]
+    sei.tags = ['v2: ' + t for t in (NOVO, DISA_NAO, MANTIS_NAO, RC_SIM, MANTIS)]
     sei.memo_geacs('Levantamento de coparticipação - utilização indevida da assistência à saúde')
 
     registro = sei.passar(bases(tit_usou=False), SO_RC)
@@ -428,7 +452,7 @@ def test_memo_deproc_com_assunto_anterior_e_reaproveitado(sei):
 
 def test_memo_disa_sem_marcador_e_reaproveitado(sei):
     sei.novo_processo()
-    sei.tags = ['Script v2 - ' + NOVO, 'Script v2 - ' + MANTIS]
+    sei.tags = ['v2: ' + NOVO, 'v2: ' + MANTIS]
     sei.memo_geacs(ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA)
 
     registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
@@ -448,7 +472,7 @@ def test_memo_a_apis_sem_marcador_e_reaproveitado(sei):
     assert registro.erro is None
     assert registro.memo_apis_mat_nao_encontradas_na_arvore
     assert sei.qnt_memos_geacs == 1
-    assert sei.tags_curtas[-1] == '1.6.1 - Aguarda APIS: Matrículas'
+    assert sei.tags_curtas[-1] == '01.06.1 - No Bloco APIS: Matrículas'
 
 
 # --- Vindo do fluxo ADC PDF ANT AUT ------------------------------------------------------
@@ -475,7 +499,7 @@ def test_aguardando_fluxo_normal_parado_troca_o_estado(sei):
 
     sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Sem Memo p/ GEACS']
+    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Sem Memo p/ GEACS']
 
 
 # --- VELHO (enviado à DISA e à DEPROC antes de 01/10/2026) ---------------------
@@ -652,7 +676,7 @@ def test_processo_fechado_velho_nao_e_reaberto(sei):
 
 def test_processo_fechado_parado_so_registra_a_parada(sei):
     sei.novo_processo()
-    sei.tags = [TAG_PROCESSO_NOVO, TAG_MEMO_APIS_SEM_MEMO]
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_AGUARDA_APIS_SEM_MEMO]
     sei.processo_fechado = True
 
     registro = sei.passar(bases())
@@ -683,7 +707,7 @@ def test_periodo_do_titular_invalido_e_formato_invalido_antes_das_bases(sei, per
 
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '1.5 - Aguarda APIS: Formato Inválido']
+    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Formato Inválido']
     assert 'Período de apuração do titular' in registro.motivo_formato_invalido
     assert registro.erro is None
 
@@ -697,7 +721,7 @@ def test_periodo_invalido_em_processo_ja_avaliado_na_base_disa(sei):
     registro = sei.passar(bases())
 
     assert registro.erro is None
-    assert sei.tags_curtas == [NOVO, curto(TAG_DISA_USOU_RP), '1.5 - Aguarda APIS: Formato Inválido']
+    assert sei.tags_curtas == [NOVO, curto(TAG_DISA_USOU_RP), '01.05 - No Bloco APIS: Formato Inválido']
 
 
 @pytest.mark.parametrize('periodo', ['01/04/2019 a12/06/2024', '01/05/2019 A 12/06/2024', '11/2019 A 06/2024'])

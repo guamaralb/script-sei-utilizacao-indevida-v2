@@ -249,7 +249,10 @@ col_main = Coluna(
         F('carregar_bases() · carregar_bases_mantis()', 'Lê a aba geacs de processos_a_processar.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
         F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle, faz login no SEI e troca para a unidade da GEACS (alterar_unidade_sei: TODO na sei_automacao)'),
         S('<b>Para cada processo</b>'),
-        F('_processar_linha()', 'Abre o processo e lê os marcadores do SEI', chama='acessar_processo, registrar_tags'),
+        F('_processar_linha()', (
+            'Abre o processo e lê os marcadores do SEI. Unidade sem acesso (UnidadeSemAcessoException): '
+            'registrar_sem_acesso(), prox_acao = Verificar acesso da unidade ao processo, sem ação no SEI'
+        ), chama='acessar_processo, registrar_tags'),
         F('tem_incluir_documento()', 'Sem o botão Incluir Documento = processo fechado no setor. Só registra: quem decide reabrir é _tratar() (coluna 2)'),
         F('registrar_arvore()', 'Lê a árvore do processo'),
         IR('_tratar() — coluna 2'),
@@ -266,43 +269,53 @@ col_main.itens[11].ligar = lambda prox, no=col_main.itens[11]: _seta(no, prox, '
 
 col_tratar = Coluna(
     '2 · _tratar()',
-    'Separa o processo VELHO e roteia pelos marcadores lidos do SEI. Só adiciona o marcador 1 (e o 0, em _separar_velho); o resto é decidido em processar_novo()',
+    'Separa o processo VELHO e roteia pelos marcadores lidos do SEI. Só adiciona o marcador 01 (e o 00, em _separar_velho); o resto é decidido em processar_novo()',
     [
         F(
             'conferir_marcadores()',
             'A combinação de marcadores é possível no fluxo?<br>'
             '• no máximo um marcador de estado (★)<br>'
-            '• no máximo um de cada par: 1.6.2 - Base DISA: Usou RP / 1.6.2 - Base DISA: Não Usou RP, 1.8.2 - MANTIS: Usou RP / 1.8.2 - MANTIS: Não Usou RP e '
-            '1.8.3 - MANTIS: Usou RC / 1.8.3 - MANTIS: Não Usou RC<br>'
+            '• no máximo um de cada par: 01.06.2 - Base DISA: Usou RP / 01.06.2 - Base DISA: Não Usou RP, 01.08.2 - MANTIS: Usou RP / 01.08.2 - MANTIS: Não Usou RP e '
+            '01.08.3 - MANTIS: Usou RC / 01.08.3 - MANTIS: Não Usou RC<br>'
             '• informativo só com estado compatível<br>'
-            '• 1.6.1 - Aguarda APIS: Matrículas exige 1.2.1 - Mat. N Encontradas Base APIS<br>'
-            '• 1.7 - Aguarda APIS: Período Deps exige 1.1 - Período Variável p/ Dependentes<br>'
-            '• cada 1.9 - Aguarda DISA exige o seu par: Validar (Consta) = DISA e MANTIS Usou RP; Validar (N Consta) = DISA Não Usou e MANTIS Usou RP; '
+            '• 01.06.1 - No Bloco APIS: Matrículas exige 01.02.1 - Mat. N Encontradas Base APIS<br>'
+            '• 01.07 - No Bloco APIS: Período Deps exige 01.01 - Período Variável p/ Dependentes<br>'
+            '• cada 01.09 - No Bloco DISA exige o seu par: Validar (Consta) = DISA e MANTIS Usou RP; Validar (N Consta) = DISA Não Usou e MANTIS Usou RP; '
             'Relat. s/ MANTIS = DISA Usou e MANTIS Não Usou RP<br>'
-            '• 1.10 - Aguarda APIS: Sem Uso exige 1.6.2 - Base DISA: Não Usou RP, 1.8.2 - MANTIS: Não Usou RP e 1.8.3 - MANTIS: Não Usou RC<br>'
-            '• VELHO (0 - Processo VELHO ou 1.3 - Memos DISA e DEPROC no Bloco) sem memos à DISA ou à DEPROC do fluxo atual (1.9, 1.10)…',
+            '• 01.10 - No Bloco APIS: Sem Uso exige 01.06.2 - Base DISA: Não Usou RP, 01.08.2 - MANTIS: Não Usou RP e 01.08.3 - MANTIS: Não Usou RC<br>'
+            '• cada "Aguarda" manual (.1) segue a mesma regra do seu "No Bloco"<br>'
+            '• VELHO (00 - Processo VELHO ou 01.03 - Memos DISA e DEPROC no Bloco) sem memos à DISA ou à DEPROC do fluxo atual (01.09, 01.10)…',
         ),
         P('Marcadores<br>inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: nada é feito no SEI<br>prox_acao = Verificar marcadores (corrigir no SEI)')]),
         P(
-            '<b>VELHO</b> pelos marcadores?<br>0 - Processo VELHO ou<br>1.3 - Memos DISA e DEPROC no Bloco',
+            '<b>VELHO</b> pelos marcadores?<br>00 - Processo VELHO ou<br>01.03 - Memos DISA e DEPROC no Bloco',
             [IR('_separar_velho()<br><span style="font-weight:normal">à direita</span>')],
             largura=LARGURA_PRINCIPAL,
         ),
         S('<font face="Courier New">estado_atual()</font>: marcador de estado do processo'),
         P(
-            'Estado de parada?<br>1.5 - Aguarda APIS: Sem Memo p/ GEACS<br>1.5 - Aguarda APIS: Formato Inválido<br>'
-            '1.6.1 - Aguarda APIS: Matrículas<br>1.7 - Aguarda APIS: Período Deps<br>1.9 - Aguarda DISA: Validar (Consta)<br>'
-            '1.9 - Aguarda DISA: Validar (N Consta)<br>1.9 - Aguarda DISA: Relat. s/ MANTIS<br>1.10 - Aguarda APIS: Sem Uso<br>'
-            'versão anterior: 1.8.1 - Memo DISA Validar Usos MANTIS, 1.9 - Memo DISA Uso Rede Própria',
+            'Memo no bloco (aguarda assinatura)?<br>01.05 - No Bloco APIS: Sem Memo p/ GEACS<br>01.05 - No Bloco APIS: Formato Inválido<br>'
+            '01.06.1 - No Bloco APIS: Matrículas<br>01.07 - No Bloco APIS: Período Deps<br>01.09 - No Bloco DISA: Validar (Consta)<br>'
+            '01.09 - No Bloco DISA: Validar (N Consta)<br>01.09 - No Bloco DISA: Relat. s/ MANTIS<br>01.10 - No Bloco DEPROC: Coparticipação<br>'
+            '01.10 - No Bloco APIS: Sem Uso',
+            [T('prox_acao = Assinar o memo correspondente e encaminhar<br><span style="font-weight:normal">quem assina coloca o "Aguarda" (.1) e remove o "No Bloco"</span>')],
+            largura=LARGURA_PRINCIPAL,
+        ),
+        P(
+            'Estado de parada (memo assinado)?<br>01.05.1 - Aguarda APIS: Sem Memo p/ GEACS<br>01.05.1 - Aguarda APIS: Formato Inválido<br>'
+            '01.06.1.1 - Aguarda APIS: Matrículas<br>01.07.1 - Aguarda APIS: Período Deps<br>01.09.1 - Aguarda DISA: Validar (Consta)<br>'
+            '01.09.1 - Aguarda DISA: Validar (N Consta)<br>01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br>01.10.1 - Aguarda DEPROC: Coparticipação<br>'
+            '01.10.1 - Aguarda APIS: Sem Uso (todos manuais)<br>'
+            'versão anterior: 01.08.1 - Memo DISA Validar Usos MANTIS, 01.09 - Memo DISA Uso Rede Própria',
             [E('<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado')],
             largura=LARGURA_PRINCIPAL,
         ),
         P(
-            'Estado de conclusão?<br>1.10 - Concluído: Memo DEPROC<br>versão anterior: 1.10 - Concluído: Memos DISA e DEPROC',
-            [T('<b>Concluído</b>, prox_acao:<br>1.10 - Concluído: Memo DEPROC → assinar DEPROC<br>1.10 - Concluído: Memos DISA e DEPROC → assinar os dois')],
+            'Estado de conclusão?<br>versão anterior: 01.10 - Concluído: Memos DISA e DEPROC',
+            [T('<b>Concluído</b>, prox_acao = assinar os memos DISA e DEPROC')],
             largura=LARGURA_PRINCIPAL,
         ),
-        P('NOVO sem estado com<br>1.3 - Memo DEPROC no Bloco?', [T('Concluído na versão anterior<br>prox_acao = Assinar memo DEPROC')]),
+        P('NOVO sem estado com<br>01.03 - Memo DEPROC no Bloco?', [T('Concluído na versão anterior<br>prox_acao = Assinar memo DEPROC')]),
         F(
             'encontrar_memos_velho()',
             'Lê <b>todos os memorandos da GEACS</b> e procura dois seguidos: "Para: IPSEMG/DISA-UTI-INDEV" e depois "Para: IPSEMG/DEPROC", '
@@ -320,10 +333,10 @@ col_tratar = Coluna(
                 F('reabrir_processo_fechado()', 'Reabre o processo na unidade (continua aberto) e relê a árvore. Coluna processo_reaberto. Não reabriu: ProcessoFechadoNoSetor', chama='reabrir_processo, listar_documentos_arvore'),
             ],
         ),
-        P('Sem o marcador<br><b>1 - Tratado pelo Script</b>?', [M('1 - Tratado pelo Script'), IR('processar_novo() do início — coluna 3')]),
+        P('Sem o marcador<br><b>01 - Tratado pelo Script</b>?', [M('01 - Tratado pelo Script'), IR('processar_novo() do início — coluna 3')]),
         IR(
-            'processar_novo() — coluna 3<br><span style="font-weight:normal">do início (sem estado ou com 1.0 - Aguarda Script: Fluxo Normal, que o fluxo ADC PDF ANT AUT deixa) '
-            'ou retomando de 1.6 - Avaliado Uso Rede Própria DISA ou 1.8 - Avaliado Uso Rede Própria MANTIS</span>'
+            'processar_novo() — coluna 3<br><span style="font-weight:normal">do início (sem estado ou com 01.00 - Aguarda Script: Fluxo Normal, que o fluxo ADC PDF ANT AUT deixa) '
+            'ou retomando de 01.06 - Avaliado Uso Rede Própria DISA ou 01.08 - Avaliado Uso Rede Própria MANTIS</span>'
         ),
     ],
 )
@@ -343,7 +356,7 @@ col_processar = Coluna(
             [
                 F('_parar_sem_memo_apis()', chama='_parar_com_memo'),
                 MEMO('MemoApisSemMemo', 7730344),
-                M('1.5 - Aguarda APIS: Sem Memo p/ GEACS'),
+                M('01.05 - No Bloco APIS: Sem Memo p/ GEACS'),
                 R('estado anterior (se houver)'),
                 T('prox_acao = Assinar memo à APIS (sem memorando)'),
             ],
@@ -353,7 +366,7 @@ col_processar = Coluna(
             [
                 F('_parar_formato_invalido()', chama='_parar_com_memo'),
                 MEMO('MemoApisFormatoInvalido', 7730341),
-                M('1.5 - Aguarda APIS: Formato Inválido'),
+                M('01.05 - No Bloco APIS: Formato Inválido'),
                 R('estado anterior (se houver)'),
                 T('prox_acao = Assinar memo à APIS (formato inválido)'),
             ],
@@ -364,16 +377,16 @@ col_processar = Coluna(
             'Faltou matrícula<br>na base APIS?',
             [
                 F('_parar_nao_encontradas_base_apis()', chama='garantir_marcadores_no_sei, incluir_memo_apis_mat_nao_encontradas'),
-                M('1.2.1 - Mat. N Encontradas Base APIS'),
+                M('01.02.1 - Mat. N Encontradas Base APIS'),
                 MEMO('MemoApisMatNaoEncontradas', 7711907),
-                M('1.6.1 - Aguarda APIS: Matrículas'),
+                M('01.06.1 - No Bloco APIS: Matrículas'),
                 R('estado anterior (se houver)'),
                 T('prox_acao = Assinar memo à APIS (matrículas não encontradas)'),
             ],
         ),
         P(
-            'Tem 1.2.1 - Mat. N Encontradas Base APIS?<br>(base corrigida)',
-            [R('1.2.1 - Mat. N Encontradas Base APIS<br><span style="font-weight:normal">remove e segue o fluxo (abaixo)</span>')],
+            'Tem 01.02.1 - Mat. N Encontradas Base APIS?<br>(base corrigida)',
+            [R('01.02.1 - Mat. N Encontradas Base APIS<br><span style="font-weight:normal">remove e segue o fluxo (abaixo)</span>')],
             largura=LARGURA_PRINCIPAL,
         ),
         F('_avaliar_disa()', 'Uso da rede própria na base DISA. Fora da base DISA = não usou', chama='avaliar_uso_rede_propria_disa, registrar_uso, garantir_marcadores_no_sei'),
@@ -381,19 +394,19 @@ col_processar = Coluna(
         Casos(
             'Alguém usou a rede própria<br>segundo a <b>base DISA</b>?',
             [
-                ('Sim', [M('1.6.2 - Base DISA: Usou RP')]),
-                ('Não', [M('1.6.2 - Base DISA: Não Usou RP')]),
+                ('Sim', [M('01.06.2 - Base DISA: Usou RP')]),
+                ('Não', [M('01.06.2 - Base DISA: Não Usou RP')]),
             ],
-            M('1.6 - Avaliado Uso Rede Própria DISA<br><span style="font-weight:normal">pulado na retomada; remove o estado anterior</span>'),
+            M('01.06 - Avaliado Uso Rede Própria DISA<br><span style="font-weight:normal">pulado na retomada; remove o estado anterior</span>'),
         ),
         P(
             'Período variável<br>para dependentes?<br><span style="font-weight:normal">(nunca no modelo com período por dependente)</span>',
             [
                 F('_parar_periodo_variavel()', chama='_parar_com_memo'),
-                M('1.1 - Período Variável p/ Dependentes'),
+                M('01.01 - Período Variável p/ Dependentes'),
                 MEMO('MemoApisPeriodoDependentes', 7730905),
-                M('1.7 - Aguarda APIS: Período Deps'),
-                R('1.6 - Avaliado Uso Rede Própria DISA'),
+                M('01.07 - No Bloco APIS: Período Deps'),
+                R('01.06 - Avaliado Uso Rede Própria DISA'),
                 T('prox_acao = Assinar memo à APIS (período dos dependentes)'),
             ],
         ),
@@ -417,18 +430,18 @@ col_mantis = Coluna(
         Casos(
             'Alguém usou a <b>rede própria</b><br>segundo o <b>MANTIS</b>?',
             [
-                ('Sim', [M('1.8.2 - MANTIS: Usou RP')]),
-                ('Não', [M('1.8.2 - MANTIS: Não Usou RP')]),
+                ('Sim', [M('01.08.2 - MANTIS: Usou RP')]),
+                ('Não', [M('01.08.2 - MANTIS: Não Usou RP')]),
             ],
             S('Mesma pergunta para a rede credenciada'),
         ),
         Casos(
             'Alguém usou a <b>rede credenciada</b><br>segundo o <b>MANTIS</b>?',
             [
-                ('Sim', [M('1.8.3 - MANTIS: Usou RC')]),
-                ('Não', [M('1.8.3 - MANTIS: Não Usou RC')]),
+                ('Sim', [M('01.08.3 - MANTIS: Usou RC')]),
+                ('Não', [M('01.08.3 - MANTIS: Não Usou RC')]),
             ],
-            M('1.8 - Avaliado Uso Rede Própria MANTIS<br><span style="font-weight:normal">pulado na retomada; remove 1.6 - Avaliado Uso Rede Própria DISA</span>'),
+            M('01.08 - Avaliado Uso Rede Própria MANTIS<br><span style="font-weight:normal">pulado na retomada; remove 01.06 - Avaliado Uso Rede Própria DISA</span>'),
         ),
         Casos(
             '<b>Base DISA × MANTIS</b><br>(rede própria; rede credenciada<br>quando ninguém usou a própria)',
@@ -440,8 +453,8 @@ col_mantis = Coluna(
                         PDF('PDF Utilização Tit./Dep. <b>RP</b>'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDisaValidarConsta', 'BLOCO_MEMO_DISA_VALIDAR_CONSTA (TODO)'),
-                        M('1.9 - Aguarda DISA: Validar (Consta)'),
-                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
+                        M('01.09 - No Bloco DISA: Validar (Consta)'),
+                        R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo à DISA (validar e complementar)<br><b>sem DEPROC</b>'),
                     ],
                 ),
@@ -452,8 +465,8 @@ col_mantis = Coluna(
                         PDF('PDF Utilização Tit./Dep. <b>RP</b>'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDisaValidarNaoConsta', 'BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA (TODO)'),
-                        M('1.9 - Aguarda DISA: Validar (N Consta)'),
-                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
+                        M('01.09 - No Bloco DISA: Validar (N Consta)'),
+                        R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo à DISA (validar; não consta)<br><b>sem DEPROC</b>'),
                     ],
                 ),
@@ -463,8 +476,8 @@ col_mantis = Coluna(
                         CASO('DISA sim × MANTIS RP não', 'sem MANTIS: solicita relatório à DISA'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDisaSemMantisSolicitaRelatorio', 'BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO (TODO)'),
-                        M('1.9 - Aguarda DISA: Relat. s/ MANTIS'),
-                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
+                        M('01.09 - No Bloco DISA: Relat. s/ MANTIS'),
+                        R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo à DISA (sem MANTIS: solicita relatório)<br><b>sem DEPROC</b>'),
                     ],
                 ),
@@ -474,8 +487,8 @@ col_mantis = Coluna(
                         CASO('DISA não × MANTIS RP não × MANTIS RC sim', 'só DEPROC'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDeproc', 7697744),
-                        M('1.10 - Concluído: Memo DEPROC'),
-                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
+                        M('01.10 - No Bloco DEPROC: Coparticipação'),
+                        R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo DEPROC'),
                     ],
                 ),
@@ -485,8 +498,8 @@ col_mantis = Coluna(
                         CASO('DISA não × MANTIS RP não × MANTIS RC não', 'nenhum uso: avisa a APIS'),
                         S('Sem relatório para anexar'),
                         MEMO('MemoApisSemUso</b> (TODO: texto)<b>', 'BLOCO_MEMO_APIS_SEM_USO (TODO)'),
-                        M('1.10 - Aguarda APIS: Sem Uso'),
-                        R('1.8 - Avaliado Uso Rede Própria MANTIS'),
+                        M('01.10 - No Bloco APIS: Sem Uso'),
+                        R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo à APIS (nenhum uso nas bases)<br><b>sem DEPROC</b>'),
                     ],
                 ),
@@ -504,10 +517,10 @@ aux = [
         '<b>Processo VELHO</b> (enviado à DISA e à DEPROC antes da avaliação): marcado e <b>não processado</b>. TODO: definir o fluxo do VELHO',
         [
             P('Processo fechado<br>no setor?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é feito no SEI')]),
-            P('Tem MANUAL<br>ou ASSINADO?', [R('1.0 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'), T('prox_acao = Fora do escopo (tratado manualmente)')]),
+            P('Tem MANUAL<br>ou ASSINADO?', [R('01.00 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'), T('prox_acao = Fora do escopo (tratado manualmente)')]),
             F('garantir_marcadores_no_sei()'),
-            M('0 - Processo VELHO<br><span style="font-weight:normal">se ainda não tiver</span>'),
-            R('1.0 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'),
+            M('00 - Processo VELHO<br><span style="font-weight:normal">se ainda não tiver</span>'),
+            R('01.00 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'),
             T('prox_acao = VELHO: não processado (fluxo ainda não definido)'),
         ],
         cor='aux',
@@ -518,7 +531,7 @@ aux = [
         [
             F('adicionar_marcador()', 'sei_automacao'),
             P(
-                'É de um grupo de<br>alternativos? (estado ★<br>ou par 1.6.2 / 1.8.2 / 1.8.3)',
+                'É de um grupo de<br>alternativos? (estado ★<br>ou par 01.06.2 / 01.08.2 / 01.08.3)',
                 [F('remover_tag()', 'Remove o outro do grupo (cada ➖ do diagrama)', chama='remover_marcador')],
             ),
         ],
@@ -526,7 +539,7 @@ aux = [
     ),
     Coluna(
         'adicionar_tag_se_ausente()',
-        'Retomada: 0 - Processo VELHO, 1.1 - Período Variável p/ Dependentes e 1.2.1 - Mat. N Encontradas Base APIS não são adicionados de novo',
+        'Retomada: 00 - Processo VELHO, 01.01 - Período Variável p/ Dependentes e 01.02.1 - Mat. N Encontradas Base APIS não são adicionados de novo',
         [P('Já tem o marcador?', [S('Não faz nada')]), F('adicionar_tag()')],
         cor='aux',
     ),
@@ -569,40 +582,50 @@ aux = [
 ]
 
 marcadores = N(
-    '<b>Marcadores</b> (prefixo "Script v2 - "; ★ = estado: no máximo um; ◆ = par: no máximo um de cada)<br>'
-    '0 - Processo VELHO<br>'
-    '1 - Tratado pelo Script<br>'
-    '1.1 - Período Variável p/ Dependentes<br>'
-    '1.2.1 - Mat. N Encontradas Base APIS<br>'
-    '★ 1.0 - Aguarda Script: Fluxo Normal (adicionado pelo fluxo ADC PDF ANT AUT)<br>'
-    '★ 1.5 - Aguarda APIS: Sem Memo p/ GEACS<br>'
-    '★ 1.5 - Aguarda APIS: Formato Inválido<br>'
-    '★ 1.6 - Avaliado Uso Rede Própria DISA<br>'
-    '★ 1.6.1 - Aguarda APIS: Matrículas<br>'
-    '◆ 1.6.2 - Base DISA: Usou RP<br>'
-    '◆ 1.6.2 - Base DISA: Não Usou RP<br>'
-    '★ 1.7 - Aguarda APIS: Período Deps<br>'
-    '★ 1.8 - Avaliado Uso Rede Própria MANTIS<br>'
-    '◆ 1.8.2 - MANTIS: Usou RP<br>'
-    '◆ 1.8.2 - MANTIS: Não Usou RP<br>'
-    '◆ 1.8.3 - MANTIS: Usou RC<br>'
-    '◆ 1.8.3 - MANTIS: Não Usou RC<br>'
-    '★ 1.9 - Aguarda DISA: Validar (Consta)<br>'
-    '★ 1.9 - Aguarda DISA: Validar (N Consta)<br>'
-    '★ 1.9 - Aguarda DISA: Relat. s/ MANTIS<br>'
-    '★ 1.10 - Concluído: Memo DEPROC<br>'
-    '★ 1.10 - Aguarda APIS: Sem Uso<br>'
+    '<b>Marcadores</b> (prefixo "v2: "; os da versão anterior, "v2v: "; ★ = estado: no máximo um; ◆ = par: no máximo um de cada)<br>'
+    '00 - Processo VELHO<br>'
+    '01 - Tratado pelo Script<br>'
+    '01.01 - Período Variável p/ Dependentes<br>'
+    '01.02.1 - Mat. N Encontradas Base APIS<br>'
+    '★ 01.00 - Aguarda Script: Fluxo Normal (adicionado pelo fluxo ADC PDF ANT AUT)<br>'
+    '★ 01.05 - No Bloco APIS: Sem Memo p/ GEACS<br>'
+    '★ 01.05 - No Bloco APIS: Formato Inválido<br>'
+    '★ 01.06 - Avaliado Uso Rede Própria DISA<br>'
+    '★ 01.06.1 - No Bloco APIS: Matrículas<br>'
+    '◆ 01.06.2 - Base DISA: Usou RP<br>'
+    '◆ 01.06.2 - Base DISA: Não Usou RP<br>'
+    '★ 01.07 - No Bloco APIS: Período Deps<br>'
+    '★ 01.08 - Avaliado Uso Rede Própria MANTIS<br>'
+    '◆ 01.08.2 - MANTIS: Usou RP<br>'
+    '◆ 01.08.2 - MANTIS: Não Usou RP<br>'
+    '◆ 01.08.3 - MANTIS: Usou RC<br>'
+    '◆ 01.08.3 - MANTIS: Não Usou RC<br>'
+    '★ 01.09 - No Bloco DISA: Validar (Consta)<br>'
+    '★ 01.09 - No Bloco DISA: Validar (N Consta)<br>'
+    '★ 01.09 - No Bloco DISA: Relat. s/ MANTIS<br>'
+    '★ 01.10 - No Bloco DEPROC: Coparticipação<br>'
+    '★ 01.10 - No Bloco APIS: Sem Uso<br>'
+    '<i>Manuais, depois da assinatura (quem coloca remove o "No Bloco"):</i><br>'
+    '★ 01.05.1 - Aguarda APIS: Sem Memo p/ GEACS<br>'
+    '★ 01.05.1 - Aguarda APIS: Formato Inválido<br>'
+    '★ 01.06.1.1 - Aguarda APIS: Matrículas<br>'
+    '★ 01.07.1 - Aguarda APIS: Período Deps<br>'
+    '★ 01.09.1 - Aguarda DISA: Validar (Consta)<br>'
+    '★ 01.09.1 - Aguarda DISA: Validar (N Consta)<br>'
+    '★ 01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br>'
+    '★ 01.10.1 - Aguarda DEPROC: Coparticipação<br>'
+    '★ 01.10.1 - Aguarda APIS: Sem Uso<br>'
     '<i>Versão anterior:<br>'
-    '1.2 - Avaliado Se Usou Rede Própria<br>'
-    '1.2.2 - Mat. N Encontradas Base DISA<br>'
-    '1.3 - Memos DISA e DEPROC no Bloco (= VELHO)<br>'
-    '1.3 - Memo DEPROC no Bloco<br>'
-    '1.4 - Memo Não Usou Rede no Bloco<br>'
-    '★ 1.8.1 - Memo DISA Validar Usos MANTIS<br>'
-    '★ 1.9 - Memo DISA Uso Rede Própria<br>'
-    '★ 1.10 - Concluído: Memos DISA e DEPROC<br>'
-    '★ 1.11 - VELHO Concluído: Memo DISA<br>'
-    '★ 1.11 - VELHO Concluído: Memo DEPROC</i>',
+    '01.02 - Avaliado Se Usou Rede Própria<br>'
+    '01.02.2 - Mat. N Encontradas Base DISA<br>'
+    '01.03 - Memos DISA e DEPROC no Bloco (= VELHO)<br>'
+    '01.03 - Memo DEPROC no Bloco<br>'
+    '01.04 - Memo Não Usou Rede no Bloco<br>'
+    '★ 01.08.1 - Memo DISA Validar Usos MANTIS<br>'
+    '★ 01.09 - Memo DISA Uso Rede Própria<br>'
+    '★ 01.10 - Concluído: Memos DISA e DEPROC<br>'
+    '★ 01.11 - VELHO Concluído: Memo DISA<br>'
+    '★ 01.11 - VELHO Concluído: Memo DEPROC</i>',
     largura=LARGURA_PRINCIPAL + 2 * PAD + GAP + LARGURA_LADO,
 )
 
@@ -621,9 +644,7 @@ legenda = [
 
 pendencias = N(
     '<b>Pendências (TODO)</b><br>'
-    '• no SEI: editar os marcadores renomeados (1 - Tratado pelo Script, 1.5 - Aguarda APIS: Sem Memo p/ GEACS, 1.5 - Aguarda APIS: Formato Inválido, '
-    '1.6.1 - Aguarda APIS: Matrículas, 1.7 - Aguarda APIS: Período Deps, 1.10 - Concluído: Memo DEPROC, 1.2.1 - Mat. N Encontradas Base APIS) '
-    'e cadastrar 0 - Processo VELHO, 1.0 - Aguarda Script: Fluxo Normal, os seis 1.6.2 / 1.8.2 / 1.8.3, os três 1.9 - Aguarda DISA e 1.10 - Aguarda APIS: Sem Uso<br>'
+    '• no SEI: renomear 01.10 - Aguarda APIS: Sem Uso para 01.10 - No Bloco APIS: Sem Uso<br>'
     '• blocos dos três memos à DISA e do memo à APIS sem uso (constantes = None)<br>'
     '• revisar os textos e assuntos dos memos com TEXTO_DEFINIDO = False<br>'
     '• fluxo do processo VELHO<br>'

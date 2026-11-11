@@ -1,0 +1,9 @@
+2026-11-11 09:45:46 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-11 09:45:46 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-11_09-45-46_execucao_geacs.log
+2026-11-11 09:45:46 | INFO    | -                         | processos_a_processar | 1 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs
+2026-11-11 09:45:46 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-11 09:45:46 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-11 09:45:46 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-11 09:45:46 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-11 09:45:46 | INFO    | -                         | __main__              | Duração total da execução: 0.3s
+2026-11-11 09:45:46 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

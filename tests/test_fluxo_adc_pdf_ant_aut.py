@@ -18,12 +18,12 @@ from rede_propria import ErroAvaliacao
 from Registro import ProxAcao, RegistroAdcPdfAnt, registrar_erro
 from selenium.common.exceptions import InvalidSessionIdException, StaleElementReferenceException, TimeoutException
 from tags import (
-    TAG_AGUARDA_DISA_VALIDAR_CONSTA,
     TAG_AGUARDA_FLUXO_NORMAL,
     TAG_DISA_USOU_RP,
     TAG_MANTIS_USOU_RC,
     TAG_MANTIS_USOU_RP,
     TAG_MEMO_DEPROC_NO_BLOCO,
+    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
 )
@@ -336,7 +336,7 @@ def test_tempo_esgotado_em_todas_as_tentativas_retoma_na_passagem_seguinte(sei, 
 @pytest.mark.parametrize(
     'marcadores',
     [
-        (TAG_PROCESSO_NOVO, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RP, TAG_MANTIS_USOU_RC, TAG_AGUARDA_DISA_VALIDAR_CONSTA),
+        (TAG_PROCESSO_NOVO, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RP, TAG_MANTIS_USOU_RC, TAG_NO_BLOCO_DISA_VALIDAR_CONSTA),
         (TAG_PROCESSO_VELHO,),
         (TAG_MEMO_DEPROC_NO_BLOCO,),
     ],
