@@ -19,7 +19,7 @@ from constantes import DIR_UTILIZACOES_MANTIS_PDF
 from docs_processo import encontrar_doc_por_nome, numero_sei_por_nome
 from mantis import UsoMantis
 from rede_propria import ErroAvaliacao
-from sei_automacao.processo import incluir_doc_externo
+from sei_automacao.documento import incluir_doc_externo
 from selenium import webdriver
 from transformar_xls_em_pdf import transformar_xls_em_pdf
 

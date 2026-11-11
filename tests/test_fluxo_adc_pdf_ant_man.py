@@ -12,8 +12,9 @@ from planilhas_adc_pdf_ant_aut import TIPO_DOC
 from planilhas_adc_pdf_ant_man import arquivos_do_processo, documento_da_arvore
 from rede_propria import ErroAvaliacao
 from Registro import ProxAcao, RegistroAdcPdfAnt
-from tags import TAG_AGUARDA_FLUXO_NORMAL, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RC, TAG_MANTIS_USOU_RP, TAG_NO_BLOCO_DISA_VALIDAR_CONSTA, TAG_PROCESSO_NOVO
+from tags import TAG_AGUARDA_FLUXO_NORMAL, TAG_NO_BLOCO_DISA_VALIDAR_CONSTA, TAG_PROCESSO_NOVO
 
+from tests.sei_falso import DISA_USOU_RP_ANTIGO, MANTIS_USOU_RC_ANTIGO, MANTIS_USOU_RP_ANTIGO
 from tests.test_fluxo_adc_pdf_ant_aut import BASE, DEPENDENTE, MATRICULA, DriverFalso, gravar
 
 PROCESSO = '2010.01.0082953/2024-75'
@@ -95,7 +96,7 @@ def test_segunda_passagem_nao_duplica(sei, pasta):
 
 
 def test_ja_no_fluxo_normal_recebe_pdf_e_fica_onde_esta(sei, pasta):
-    sei.tags.extend([TAG_PROCESSO_NOVO, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RP, TAG_MANTIS_USOU_RC, TAG_NO_BLOCO_DISA_VALIDAR_CONSTA])
+    sei.tags.extend([TAG_PROCESSO_NOVO, DISA_USOU_RP_ANTIGO, MANTIS_USOU_RP_ANTIGO, MANTIS_USOU_RC_ANTIGO, TAG_NO_BLOCO_DISA_VALIDAR_CONSTA])
     antes = list(sei.tags)
     sei.novo_doc(ANEXO, UNIDADE_APIS, '')
     pasta.planilha(ANEXO)

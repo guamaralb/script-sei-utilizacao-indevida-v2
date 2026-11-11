@@ -7,7 +7,8 @@ from datetime import date
 from constantes import DATA_CORTE_PROCESSO_VELHO, UNIDADE_APIS, UNIDADE_GEACS
 from rede_propria import ErroAvaliacao
 from sei_automacao.documento import obter_conteudo_doc
-from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
+from sei_automacao.exceptions import DocumentoNaoEncontrado
+from sei_automacao.processo import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -29,10 +30,11 @@ def _regex_trecho(trecho: str) -> str:
 
 _PADRAO_DESTINO_GEACS = re.compile('|'.join(_regex_trecho(trecho) for trecho in TRECHOS_DESTINO_GEACS), re.IGNORECASE)
 
-# Processo VELHO: memo da GEACS à DISA seguido de memo à DEPROC, os dois
-# datados antes de DATA_CORTE_PROCESSO_VELHO
-_PADRAO_PARA_DISA = re.compile(_regex_trecho('Para: IPSEMG/DISA-UTI-INDEV'), re.IGNORECASE)
-_PADRAO_PARA_DEPROC = re.compile(_regex_trecho('Para: IPSEMG/DEPROC') + r'\b', re.IGNORECASE)
+# Processo VELHO: memorando da GEACS à DISA e/ou à DEPROC datado antes de
+# DATA_CORTE_PROCESSO_VELHO. Vale qualquer grafia da unidade depois da sigla
+# (IPSEMG/DISA-UTI-INDEV, IPSEMG/DEPROC, IPSEMG/DEPROC-Utilização)
+_PADRAO_PARA_DISA = re.compile(r'Para:\s*IPSEMG/DISA', re.IGNORECASE)
+_PADRAO_PARA_DEPROC = re.compile(r'Para:\s*IPSEMG/DEPROC', re.IGNORECASE)
 # "Belo Horizonte, 18 de setembro de 2026."
 _PADRAO_DATA_MEMO = re.compile(r'Belo\s+Horizonte\s*,\s*(\d{1,2})\s*[º°]?\s+de\s+([a-zç]+)\s+de\s+(\d{4})', re.IGNORECASE)
 _MESES = {
@@ -88,9 +90,7 @@ def obter_memos_apis_para_geacs(driver: webdriver.Remote, tds_docs: list[dict]) 
 
 
 def _doc_nao_encontrado(erro: Exception) -> bool:
-    """selecionar_doc_arvore levanta Exception("Documento não encontrado")
-    (a mensagem vem com o acento trocado)."""
-    return type(erro) is Exception and 'encontrado' in str(erro)
+    return isinstance(erro, DocumentoNaoEncontrado)
 
 
 def _rolar_ate_doc(driver: webdriver.Remote, numero_sei: str) -> None:
@@ -191,26 +191,29 @@ def _destino_memo(texto: str) -> str | None:
     return None
 
 
-def encontrar_memos_velho(driver: webdriver.Remote, tds_docs: list[dict]) -> tuple[dict, dict] | None:
-    """Lê todos os memorandos da GEACS da árvore e devolve o primeiro par de
-    memos seguidos (entre os memorandos da GEACS) à DISA e à DEPROC, nessa
-    ordem, os dois datados antes de DATA_CORTE_PROCESSO_VELHO. Sem par, None.
+def encontrar_memos_velho(driver: webdriver.Remote, tds_docs: list[dict]) -> list[dict]:
+    """Lê todos os memorandos da GEACS da árvore e devolve, na ordem da
+    árvore, os destinados à DISA ou à DEPROC datados antes de
+    DATA_CORTE_PROCESSO_VELHO. Basta um para o processo ser VELHO; nenhum:
+    lista vazia.
 
-    Levanta ErroAvaliacao se um par não tiver a data legível: sem ela não
-    dá para saber se o processo é VELHO."""
-    anterior: tuple[dict, str, str | None] | None = None
+    Sem nenhum antes da data, mas com memo à DISA ou à DEPROC sem data
+    legível: ErroAvaliacao (não dá para saber se o processo é VELHO)."""
+    velhos, sem_data = [], []
     for memo in filtrar_memos_geacs(tds_docs):
         texto = ler_texto_doc(driver, memo)
         destino = _destino_memo(texto)
-        if destino == 'DEPROC' and anterior is not None and anterior[2] == 'DISA':
-            datas = (data_memo(anterior[1]), data_memo(texto))
-            if None in datas:
-                raise ErroAvaliacao(
-                    f'Memos à DISA e à DEPROC seguidos ({anterior[0]["numero_sei"]} e {memo["numero_sei"]}) sem a data no formato '
-                    '"Belo Horizonte, <dia> de <mês> de <ano>": não foi possível conferir se o processo é VELHO'
-                )
-            if all(d < DATA_CORTE_PROCESSO_VELHO for d in datas):
-                logger.info(f'Memos à DISA e à DEPROC anteriores a {DATA_CORTE_PROCESSO_VELHO:%d/%m/%Y}: {_descrever(anterior[0])} e {_descrever(memo)}')
-                return anterior[0], memo
-        anterior = (memo, texto, destino)
-    return None
+        if destino is None:
+            continue
+        data = data_memo(texto)
+        if data is None:
+            sem_data.append(memo)
+        elif data < DATA_CORTE_PROCESSO_VELHO:
+            logger.info(f'Memo à {destino} de {data:%d/%m/%Y} (antes de {DATA_CORTE_PROCESSO_VELHO:%d/%m/%Y}): {_descrever(memo)}')
+            velhos.append(memo)
+    if not velhos and sem_data:
+        raise ErroAvaliacao(
+            f'Memo(s) à DISA ou à DEPROC ({", ".join(m["numero_sei"] for m in sem_data)}) sem a data no formato '
+            '"Belo Horizonte, <dia> de <mês> de <ano>": não foi possível conferir se o processo é VELHO'
+        )
+    return velhos

@@ -1,0 +1,41 @@
+2026-11-11 15:30:30 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (CANC MEMO DEPROC ANT - CANCELAR MEMO DEPROC ANTIGO) =================
+2026-11-11 15:30:30 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-11_15-30-30_execucao_geacs_canc_memo_deproc_ant.log
+2026-11-11 15:30:30 | INFO    | -                         | processos_a_processar | 96 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_canc_memo_deproc_ant
+2026-11-11 15:30:32 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-11 15:30:32 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-11 15:30:32 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-11 15:30:32 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-11 15:30:32 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-11 15:30:43 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-11 15:30:43 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-11 15:31:10 | ERROR   | -                         | __main__              | Erro crítico na execução (CANC MEMO DEPROC ANT - CANCELAR MEMO DEPROC ANTIGO)
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_geacs_canc_memo_deproc_ant.py", line 163, in main
+    driver = abrir_sei(UNIDADE_GEACS)
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/sessao_sei.py", line 61, in abrir_sei
+    alterar_unidade_sei(driver, unidade)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/sessao_sei.py", line 43, in alterar_unidade_sei
+    trocar_unidade(driver, unidade)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/ubiquo/__init__.py", line 42, in trocar_unidade
+    acessar_processo(driver, '2010.01.0100691/2026-32')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/ubiquo/busca.py", line 36, in acessar_processo
+    ).until(
+      ~~~~~^
+        EC.any_of(
+        ^^^^^^^^^^
+    ...<10 lines>...
+        )
+        ^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+2026-11-11 15:31:10 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-11 15:31:10 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-11 15:31:10 | INFO    | -                         | __main__              | Duração total da execução: 40.0s
+2026-11-11 15:31:10 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

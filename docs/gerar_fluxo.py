@@ -1,7 +1,13 @@
-"""Gera docs/fluxo.drawio: uma aba com o fluxo completo.
+"""Gera docs/fluxo.drawio: uma aba por fluxo (task do pyproject.toml).
 
-Uma coluna por função, lidas da esquerda para a direita (1 → 4); a coluna
-da direita detalha as funções chamadas em vários pontos. Em cada coluna o
+- geacs_inicial (run_geacs_inicial): o fluxo completo, uma coluna por função,
+  lidas da esquerda para a direita (1 → 4); a coluna da direita detalha as
+  funções chamadas em vários pontos;
+- geacs_resp_* (run_geacs_resp_apis / _disa / _deproc, TODO: não montados);
+- geacs_adc_pdf_ant_aut, geacs_adc_pdf_ant_man, geacs_canc_memo_deproc_ant,
+  geacs_verificar_marcadores;
+- deproc_calcula_copa e deproc_excluir_docs (na unidade da DEPROC).
+ Em cada coluna o
 caminho principal desce reto; os desvios saem para a direita e terminam ali
 (não voltam). Caixas laranja (▶) indicam a chamada de outra coluna.
 """
@@ -246,8 +252,8 @@ col_main = Coluna(
     [
         T('Início'),
         F('configurar_logging()', 'Cria as pastas e o log da execução'),
-        F('carregar_bases() · carregar_bases_mantis()', 'Lê a aba geacs de processos_a_processar.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
-        F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle, faz login no SEI e troca para a unidade da GEACS (alterar_unidade_sei: TODO na sei_automacao)'),
+        F('carregar_bases() · carregar_bases_mantis()', 'Lê a aba geacs_inicial de processos_a_processar.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
+        F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle, faz login no SEI e troca para a unidade da GEACS (alterar_unidade_sei: trocar_unidade da sei_automacao)'),
         S('<b>Para cada processo</b>'),
         F('_processar_linha()', (
             'Abre o processo e lê os marcadores do SEI. Unidade sem acesso (UnidadeSemAcessoException): '
@@ -275,20 +281,16 @@ col_tratar = Coluna(
             'conferir_marcadores()',
             'A combinação de marcadores é possível no fluxo?<br>'
             '• no máximo um marcador de estado (★)<br>'
-            '• no máximo um de cada par: 01.06.2 - Base DISA: Usou RP / 01.06.2 - Base DISA: Não Usou RP, 01.08.2 - MANTIS: Usou RP / 01.08.2 - MANTIS: Não Usou RP e '
-            '01.08.3 - MANTIS: Usou RC / 01.08.3 - MANTIS: Não Usou RC<br>'
             '• informativo só com estado compatível<br>'
             '• 01.06.1 - No Bloco APIS: Matrículas exige 01.02.1 - Mat. N Encontradas Base APIS<br>'
             '• 01.07 - No Bloco APIS: Período Deps exige 01.01 - Período Variável p/ Dependentes<br>'
-            '• cada 01.09 - No Bloco DISA exige o seu par: Validar (Consta) = DISA e MANTIS Usou RP; Validar (N Consta) = DISA Não Usou e MANTIS Usou RP; '
-            'Relat. s/ MANTIS = DISA Usou e MANTIS Não Usou RP<br>'
-            '• 01.10 - No Bloco APIS: Sem Uso exige 01.06.2 - Base DISA: Não Usou RP, 01.08.2 - MANTIS: Não Usou RP e 01.08.3 - MANTIS: Não Usou RC<br>'
+            '• os de uso da RP / RC (01.06.2, 01.08.2, 01.08.3, versão anterior) não são conferidos<br>'
             '• cada "Aguarda" manual (.1) segue a mesma regra do seu "No Bloco"<br>'
-            '• VELHO (00 - Processo VELHO ou 01.03 - Memos DISA e DEPROC no Bloco) sem memos à DISA ou à DEPROC do fluxo atual (01.09, 01.10)…',
+            '• VELHO (00 - Processo VELHO) sem memos à DISA ou à DEPROC do fluxo atual (01.09, 01.10)…',
         ),
         P('Marcadores<br>inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: nada é feito no SEI<br>prox_acao = Verificar marcadores (corrigir no SEI)')]),
         P(
-            '<b>VELHO</b> pelos marcadores?<br>00 - Processo VELHO ou<br>01.03 - Memos DISA e DEPROC no Bloco',
+            '<b>VELHO</b> pelo marcador?<br>00 - Processo VELHO',
             [IR('_separar_velho()<br><span style="font-weight:normal">à direita</span>')],
             largura=LARGURA_PRINCIPAL,
         ),
@@ -307,7 +309,7 @@ col_tratar = Coluna(
             '01.09.1 - Aguarda DISA: Validar (N Consta)<br>01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br>01.10.1 - Aguarda DEPROC: Coparticipação<br>'
             '01.10.1 - Aguarda APIS: Sem Uso (todos manuais)<br>'
             'versão anterior: 01.08.1 - Memo DISA Validar Usos MANTIS, 01.09 - Memo DISA Uso Rede Própria',
-            [E('<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado')],
+            [E('<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado<br><span style="font-weight:normal">resposta: run_geacs_resp_apis / _disa / _deproc (TODO)</span>')],
             largura=LARGURA_PRINCIPAL,
         ),
         P(
@@ -315,19 +317,23 @@ col_tratar = Coluna(
             [T('<b>Concluído</b>, prox_acao = assinar os memos DISA e DEPROC')],
             largura=LARGURA_PRINCIPAL,
         ),
-        P('NOVO sem estado com<br>01.03 - Memo DEPROC no Bloco?', [T('Concluído na versão anterior<br>prox_acao = Assinar memo DEPROC')]),
+        P(
+            'Já tem 01 - Tratado pelo Script<br>(e não está no 01.00)?',
+            [S('Não analisa os memos: não é VELHO')],
+            rotulo='Sim (pula a análise)',
+        ),
         F(
             'encontrar_memos_velho()',
-            'Lê <b>todos os memorandos da GEACS</b> e procura dois seguidos: "Para: IPSEMG/DISA-UTI-INDEV" e depois "Para: IPSEMG/DEPROC", '
-            'os dois datados ("Belo Horizonte, 18 de setembro de 2026.") antes de 01/10/2026',
+            'Lê <b>todos os memorandos da GEACS</b> e procura algum com "Para: IPSEMG/DISA" e/ou "Para: IPSEMG/DEPROC" (qualquer grafia depois da sigla) '
+            'datado ("Belo Horizonte, 18 de setembro de 2026.") antes de 15/10/2026',
         ),
-        P('Par sem data<br>legível?', [E('<b>ErroAvaliacao</b>: não dá para saber se é VELHO; nada é feito no SEI')]),
+        P('Nenhum antes da data e<br>algum sem data legível?', [E('<b>ErroAvaliacao</b>: não dá para saber se é VELHO; nada é feito no SEI')]),
         P('<b>VELHO</b> pelos memos<br>da GEACS?', [IR('_separar_velho()<br><span style="font-weight:normal">à direita</span>')]),
         P(
             'Processo <b>fechado</b> no setor?',
             [
                 P(
-                    'Com MANUAL ou ASSINADO, ou sem<br>memo da APIS para a GEACS?',
+                    'Com MANUAL ou sem<br>memo da APIS para a GEACS?',
                     [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é feito no SEI<br>prox_acao = Verificar erro')],
                 ),
                 F('reabrir_processo_fechado()', 'Reabre o processo na unidade (continua aberto) e relê a árvore. Coluna processo_reaberto. Não reabriu: ProcessoFechadoNoSetor', chama='reabrir_processo, listar_documentos_arvore'),
@@ -391,14 +397,8 @@ col_processar = Coluna(
         ),
         F('_avaliar_disa()', 'Uso da rede própria na base DISA. Fora da base DISA = não usou', chama='avaliar_uso_rede_propria_disa, registrar_uso, garantir_marcadores_no_sei'),
         P('Resposta inválida<br>na base DISA?', [E('<b>ErroAvaliacao</b>')]),
-        Casos(
-            'Alguém usou a rede própria<br>segundo a <b>base DISA</b>?',
-            [
-                ('Sim', [M('01.06.2 - Base DISA: Usou RP')]),
-                ('Não', [M('01.06.2 - Base DISA: Não Usou RP')]),
-            ],
-            M('01.06 - Avaliado Uso Rede Própria DISA<br><span style="font-weight:normal">pulado na retomada; remove o estado anterior</span>'),
-        ),
+        S('Resultado da base DISA (alguém usou a rede própria?) só na planilha de controle: sem marcador'),
+        M('01.06 - Avaliado Uso Rede Própria DISA<br><span style="font-weight:normal">pulado na retomada; remove o estado anterior</span>'),
         P(
             'Período variável<br>para dependentes?<br><span style="font-weight:normal">(nunca no modelo com período por dependente)</span>',
             [
@@ -427,22 +427,8 @@ col_mantis = Coluna(
         P('Texto do memo<br>pendente?', [E('<b>TextoMemoPendente</b><br>nada é criado no SEI')]),
         P('Bloco do memo (DISA ou<br>APIS sem uso) não<br>configurado (None)?', [E('<b>ErroAvaliacao</b><br>nada é criado no SEI')]),
         F('garantir_marcadores_no_sei()', 'Os marcadores que serão adicionados existem no SEI?'),
-        Casos(
-            'Alguém usou a <b>rede própria</b><br>segundo o <b>MANTIS</b>?',
-            [
-                ('Sim', [M('01.08.2 - MANTIS: Usou RP')]),
-                ('Não', [M('01.08.2 - MANTIS: Não Usou RP')]),
-            ],
-            S('Mesma pergunta para a rede credenciada'),
-        ),
-        Casos(
-            'Alguém usou a <b>rede credenciada</b><br>segundo o <b>MANTIS</b>?',
-            [
-                ('Sim', [M('01.08.3 - MANTIS: Usou RC')]),
-                ('Não', [M('01.08.3 - MANTIS: Não Usou RC')]),
-            ],
-            M('01.08 - Avaliado Uso Rede Própria MANTIS<br><span style="font-weight:normal">pulado na retomada; remove 01.06 - Avaliado Uso Rede Própria DISA</span>'),
-        ),
+        S('Uso da rede própria e da credenciada no MANTIS só na planilha de controle: sem marcador'),
+        M('01.08 - Avaliado Uso Rede Própria MANTIS<br><span style="font-weight:normal">pulado na retomada; remove 01.06 - Avaliado Uso Rede Própria DISA</span>'),
         Casos(
             '<b>Base DISA × MANTIS</b><br>(rede própria; rede credenciada<br>quando ninguém usou a própria)',
             [
@@ -517,7 +503,7 @@ aux = [
         '<b>Processo VELHO</b> (enviado à DISA e à DEPROC antes da avaliação): marcado e <b>não processado</b>. TODO: definir o fluxo do VELHO',
         [
             P('Processo fechado<br>no setor?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é feito no SEI')]),
-            P('Tem MANUAL<br>ou ASSINADO?', [R('01.00 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'), T('prox_acao = Fora do escopo (tratado manualmente)')]),
+            P('Tem MANUAL?', [R('01.00 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'), T('prox_acao = Fora do escopo (tratado manualmente)')]),
             F('garantir_marcadores_no_sei()'),
             M('00 - Processo VELHO<br><span style="font-weight:normal">se ainda não tiver</span>'),
             R('01.00 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se tiver</span>'),
@@ -531,7 +517,7 @@ aux = [
         [
             F('adicionar_marcador()', 'sei_automacao'),
             P(
-                'É de um grupo de<br>alternativos? (estado ★<br>ou par 01.06.2 / 01.08.2 / 01.08.3)',
+                'É de um grupo de<br>alternativos? (estado ★)',
                 [F('remover_tag()', 'Remove o outro do grupo (cada ➖ do diagrama)', chama='remover_marcador')],
             ),
         ],
@@ -582,7 +568,7 @@ aux = [
 ]
 
 marcadores = N(
-    '<b>Marcadores</b> (prefixo "v2: "; os da versão anterior, "v2v: "; ★ = estado: no máximo um; ◆ = par: no máximo um de cada)<br>'
+    '<b>Marcadores</b> (prefixo "v2: "; os da versão anterior, "v2v: "; ★ = estado: no máximo um)<br>'
     '00 - Processo VELHO<br>'
     '01 - Tratado pelo Script<br>'
     '01.01 - Período Variável p/ Dependentes<br>'
@@ -592,14 +578,8 @@ marcadores = N(
     '★ 01.05 - No Bloco APIS: Formato Inválido<br>'
     '★ 01.06 - Avaliado Uso Rede Própria DISA<br>'
     '★ 01.06.1 - No Bloco APIS: Matrículas<br>'
-    '◆ 01.06.2 - Base DISA: Usou RP<br>'
-    '◆ 01.06.2 - Base DISA: Não Usou RP<br>'
     '★ 01.07 - No Bloco APIS: Período Deps<br>'
     '★ 01.08 - Avaliado Uso Rede Própria MANTIS<br>'
-    '◆ 01.08.2 - MANTIS: Usou RP<br>'
-    '◆ 01.08.2 - MANTIS: Não Usou RP<br>'
-    '◆ 01.08.3 - MANTIS: Usou RC<br>'
-    '◆ 01.08.3 - MANTIS: Não Usou RC<br>'
     '★ 01.09 - No Bloco DISA: Validar (Consta)<br>'
     '★ 01.09 - No Bloco DISA: Validar (N Consta)<br>'
     '★ 01.09 - No Bloco DISA: Relat. s/ MANTIS<br>'
@@ -616,10 +596,10 @@ marcadores = N(
     '★ 01.10.1 - Aguarda DEPROC: Coparticipação<br>'
     '★ 01.10.1 - Aguarda APIS: Sem Uso<br>'
     '<i>Versão anterior:<br>'
+    '01.06.2 / 01.08.2 / 01.08.3 - Usou / Não Usou RP e RC (não são mais adicionados)<br>'
     '01.02 - Avaliado Se Usou Rede Própria<br>'
-    '01.02.2 - Mat. N Encontradas Base DISA<br>'
-    '01.03 - Memos DISA e DEPROC no Bloco (= VELHO)<br>'
-    '01.03 - Memo DEPROC no Bloco<br>'
+    '01.02.2 - Mat. N Encontradas Base DISA (não é mais conferido)<br>'
+    '01.03 - Memos DISA e DEPROC no Bloco, 01.03 - Memo DEPROC no Bloco (não são mais lidos)<br>'
     '01.04 - Memo Não Usou Rede no Bloco<br>'
     '★ 01.08.1 - Memo DISA Validar Usos MANTIS<br>'
     '★ 01.09 - Memo DISA Uso Rede Própria<br>'
@@ -644,60 +624,446 @@ legenda = [
 
 pendencias = N(
     '<b>Pendências (TODO)</b><br>'
-    '• no SEI: renomear 01.10 - Aguarda APIS: Sem Uso para 01.10 - No Bloco APIS: Sem Uso<br>'
     '• blocos dos três memos à DISA e do memo à APIS sem uso (constantes = None)<br>'
     '• revisar os textos e assuntos dos memos com TEXTO_DEFINIDO = False<br>'
     '• fluxo do processo VELHO<br>'
-    '• tratar a resposta dos processos parados (APIS e DISA)',
+    '• montar os fluxos de resposta (abas geacs_resp_*)',
     largura=460,
+)
+
+# --- outros fluxos --------------------------------------------------------------
+
+
+def col_loop(task, aba, unidade, carga, ir_texto, planilha):
+    """Coluna 1 dos fluxos simples: main() e _processar_linha()."""
+    return Coluna(
+        '1 · main() e _processar_linha()',
+        f'poetry run task {task}. Um erro nunca interrompe os demais processos',
+        [
+            T('Início'),
+            F('configurar_logging() · ler_processos_a_processar()', f'Cria o log e lê a aba {aba} de processos_a_processar.xlsx{carga}'),
+            F('PlanilhaControleGeral() · abrir_sei()', f'Lê a planilha de controle, faz login no SEI e troca para a unidade {unidade} (trocar_unidade)'),
+            S('<b>Para cada processo</b>'),
+            P(
+                'acessar_processo():<br>unidade sem acesso?',
+                [E('registrar_sem_acesso(): prox_acao = Verificar acesso da unidade ao processo, sem ação no SEI')],
+            ),
+            IR(ir_texto),
+            E('<b>Erro levantado?</b><br><font face="Courier New">registrar_erro()</font>. Inesperado: + traceback e recarrega a página'),
+            F('controle.registrar()', planilha),
+            P('Navegador fechado?', [T('Para o loop (resumo e driver.quit() continuam)')]),
+            P('Há mais processos?', [IR('volta a "Para cada processo"')]),
+            F('log_resumo()', 'Fecha o navegador e loga o resumo'),
+            T('Fim'),
+        ],
+    )
+
+
+def _erro_segue(coluna, indice):
+    """O erro não encerra a execução: a passagem segue para a planilha."""
+    no = coluna.itens[indice]
+    no.ligar = lambda prox, no=no: _seta(no, prox, '', ABAIXO)
+
+
+def col_aguardando_fluxo_normal(nome):
+    return Coluna(
+        '3 · deixar_aguardando_fluxo_normal()',
+        'Depois dos PDFs: o processo fica aguardando o fluxo inicial (run_geacs_inicial)',
+        [
+            P(
+                'Já tem estado (exceto 01.00)<br>ou é VELHO pelo marcador (00)?',
+                [T(f'Continua onde estava, sem marcador novo<br>prox_acao = {nome}: PDFs inseridos; processo mantido no estado atual')],
+            ),
+            M('01 - Tratado pelo Script<br><span style="font-weight:normal">se faltar</span>'),
+            M('01.00 - Aguarda Script: Fluxo Normal<br><span style="font-weight:normal">se faltar</span>'),
+            T(f'prox_acao = {nome}: PDFs inseridos; aguarda o fluxo normal'),
+        ],
+    )
+
+
+def col_inserir_pdfs(titulo, descricao, antes):
+    """Inserção dos PDFs, comum ao ADC PDF ANT AUT e ao ADC PDF ANT MAN."""
+    return Coluna(
+        titulo,
+        descricao,
+        [
+            *antes,
+            F('transformar_xls_em_pdf()', 'PDF no layout dos relatórios do MANTIS, com a linha TOTAL. Anexo: modelo próprio, vários beneficiários'),
+            F(
+                '_recarregar_processo() · _anexar_pdf_com_novas_tentativas()',
+                'Documento externo PDF "Utilização Tit.|Dep. - &lt;matrícula&gt; - SEI &lt;nº da planilha&gt;" (Anexo: "Utilização Ben. - ..."), Nato-digital, Restrito. Até 3 tentativas; relê a árvore antes de repetir',
+            ),
+            IR('deixar_aguardando_fluxo_normal() — coluna 3'),
+        ],
+    )
+
+
+# ADC PDF ANT AUT
+col_adc_aut_loop = col_loop(
+    'run_geacs_adc_pdf_ant_aut',
+    'geacs_adc_pdf_ant_aut',
+    'da GEACS',
+    '',
+    'inserir_pdfs_das_planilhas() — coluna 2',
+    'Linha do processo: script, fluxo e prox_acao do ADC PDF ANT AUT; planilhas_sei, pdfs_incluidos, pdfs_na_arvore, pdfs_antigos_a_excluir, processo_reaberto. Os resultados do fluxo inicial ficam como estão',
+)
+_erro_segue(col_adc_aut_loop, 6)
+col_adc_aut = col_inserir_pdfs(
+    '2 · inserir_pdfs_das_planilhas()',
+    'Baixa as planilhas antigas do SEI e insere o PDF de cada uma. Retomada pelo nº SEI da planilha no nome do PDF (toda a árvore)',
+    [
+        F('registrar_tags() · garantir_marcadores_no_sei()', 'Confere se o 01 e o 01.00 existem no SEI (faltando, nada é inserido) e lista a árvore'),
+        F(
+            'encontrar planilhas',
+            'Três primeiras palavras do nome: Planilha Utilização Titular, Planilha Utilização Dependentes, Anexo RELAÇÃO ATENDIMENTO (sem acento, maiúsculas e preposições; Tit./Dep.; similaridade de 80%)',
+        ),
+        P('Nenhuma planilha?', [T('prox_acao = ADC PDF ANT AUT: nenhuma planilha no processo (verificar), sem marcador')]),
+        P('Todos os PDFs já<br>estão na árvore?', [IR('deixar_aguardando_fluxo_normal() — coluna 3')]),
+        P(
+            'Sem Incluir Documento<br>(fechado no setor)?',
+            [F('reabrir_processo_fechado()', 'reabrir_processo da sei_automacao (coluna processo_reaberto); o processo continua aberto. Não reabriu: ProcessoFechadoNoSetor')],
+            rotulo='Sim (e segue)',
+        ),
+        S('<b>Para cada planilha sem PDF na árvore</b>'),
+        F('baixar planilha', 'Abre o documento (inicia o download) para dados/geacs_adc_pdf_ant_aut/planilhas_baixadas/. Mais de 60 s (TIMEOUT_DOWNLOAD): erro; o temporário é descartado'),
+        F(
+            'ler_planilha()',
+            'Uma aba só (contando as ocultas); Anexo com até 20 beneficiários; linha TOTAL removida; DAT_ATENDIMENTO válida. Senão: ErroAvaliacao, sem PDF',
+        ),
+    ],
+)
+col_adc_aut_fim = col_aguardando_fluxo_normal('ADC PDF ANT AUT')
+
+# ADC PDF ANT MAN
+col_adc_man_loop = col_loop(
+    'run_geacs_adc_pdf_ant_man',
+    'geacs_adc_pdf_ant_man',
+    'da GEACS',
+    '',
+    'inserir_pdfs_da_pasta() — coluna 2',
+    'Linha do processo: script, fluxo e prox_acao do ADC PDF ANT MAN; mesmas colunas do ADC PDF ANT AUT',
+)
+_erro_segue(col_adc_man_loop, 6)
+col_adc_man = col_inserir_pdfs(
+    '2 · inserir_pdfs_da_pasta()',
+    'O ADC PDF ANT AUT sem o download: planilhas colocadas à mão em dados/geacs_adc_pdf_ant_man/planilhas',
+    [
+        F('registrar_tags() · garantir_marcadores_no_sei()', 'Confere se o 01 e o 01.00 existem no SEI e lista a árvore'),
+        F('arquivos do processo na pasta', 'Nome: &lt;nº do processo com _ no lugar da barra&gt;-&lt;nome do documento na árvore&gt;.xlsx'),
+        P('Nenhum arquivo<br>do processo?', [T('prox_acao = ADC PDF ANT MAN: nenhuma planilha na pasta (verificar), sem marcador')]),
+        P(
+            'Algum arquivo fora dos três padrões,<br>sem documento na árvore<br>ou com dois do mesmo nome?',
+            [E('<b>ErroAvaliacao</b>: nenhum PDF inserido')],
+        ),
+        S('<b>Para cada arquivo sem PDF na árvore</b> (o que o ADC PDF ANT AUT já inseriu não é duplicado)'),
+        F('ler_planilha()', 'Mesmas regras do ADC PDF ANT AUT'),
+    ],
+)
+col_adc_man_fim = col_aguardando_fluxo_normal('ADC PDF ANT MAN')
+
+# CANC MEMO DEPROC ANT
+col_canc_loop = col_loop(
+    'run_geacs_canc_memo_deproc_ant',
+    'geacs_canc_memo_deproc_ant',
+    'da GEACS',
+    '',
+    'cancelar_memos_deproc_antigos() — coluna 2',
+    'Não altera a prox_acao: só script, ultima_passagem, data_execucao e as colunas canc_memo_deproc_ant_* (o erro vai para canc_memo_deproc_ant_tipo_erro / _erro)',
+)
+_erro_segue(col_canc_loop, 6)
+col_canc = Coluna(
+    '2 · cancelar_memos_deproc_antigos()',
+    'Cancela todos os memos DEPROC antigos da GEACS, que serão ou já foram substituídos por uma nova versão. Não lê nem adiciona marcadores',
+    [
+        P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é cancelado')]),
+        F('listar_documentos_arvore()', 'Todos os memorandos da GEACS - Utilização (toda a árvore, não só a rodada)'),
+        S('<b>Para cada memorando da GEACS</b>: lê o texto (encontrar_memos_deproc_antigos)'),
+        P(
+            'Falta algum dos três trechos?<br>"Para: IPSEMG/DEPROC"<br>"Assunto: Levantamento de coparticipação - utilização indevida da assistência à saúde"<br>"levantamento dos valores de coparticipação referentes aos atendimentos efetivamente realizados"',
+            [S('Não é o memo DEPROC antigo: ignorado')],
+            rotulo='Sim (próximo memo)',
+            largura=300,
+        ),
+        P('Sem data legível<br>("Belo Horizonte, 18 de<br>setembro de 2026.")?', [S('Não cancela: vai para canc_memo_deproc_ant_nao_cancelados (erro no fim)')], rotulo='Sim (próximo memo)'),
+        P('Datado a partir de<br>15/10/2026?', [S('Não é antigo: ignorado')], rotulo='Sim (próximo memo)'),
+        F('selecionar_doc() · cancelar_doc()', 'Motivo: "Documento será ou já foi substituído por uma nova versão"'),
+        P(
+            'Sem a opção<br>Cancelar Documento?',
+            [S('Já cancelado, assinado ou sem permissão: vai para canc_memo_deproc_ant_nao_cancelados e segue para os outros')],
+            rotulo='Sim (e segue)',
+        ),
+        P('Algum memo antigo<br>não cancelado?', [E('<b>ErroAvaliacao</b> (colunas canc_memo_deproc_ant_tipo_erro / _erro); os cancelados ficam registrados')]),
+        T('canc_memo_deproc_ant_cancelado = sim se algum foi cancelado<br>canc_memo_deproc_ant_sei / _nome: os cancelados (nenhum memo antigo: não é erro)'),
+    ],
+)
+
+# Fluxos de resposta
+col_resp_loop = col_loop(
+    'run_geacs_resp_apis / _disa / _deproc',
+    'geacs_resp_apis / geacs_resp_disa / geacs_resp_deproc',
+    'da GEACS',
+    '',
+    'processar_linha() — coluna 2',
+    'Linha do processo: script (nome da aba), fluxo (RESP &lt;unidade&gt; - RESPOSTA DA &lt;unidade&gt;), prox_acao, erro e marcador_aguarda. Os resultados do fluxo inicial ficam como estão',
+)
+_erro_segue(col_resp_loop, 6)
+col_resp = Coluna(
+    '2 · processar_linha() (fluxo_resposta.py)',
+    '<b>TODO: fluxos ainda não montados.</b> Base comum dos três; cada main_geacs_resp_*.py define os marcadores "Aguarda" e a função tratar_resposta()',
+    [
+        F('listar_marcadores() · registrar_tags()', 'Lê os marcadores do processo'),
+        F('conferir_marcador_aguarda()', 'O estado atual precisa ser um dos "Aguarda" (manuais) do fluxo'),
+        P(
+            'Estado não é um "Aguarda"<br>do fluxo?',
+            [E('<b>SemMarcadorAguarda</b>: não aguarda resposta desta unidade (ou o memo ainda não foi assinado). prox_acao = Verificar erro')],
+        ),
+        S('prox_acao = Aguardar resposta ao memo enviado (coluna marcador_aguarda)'),
+        F('tratar_resposta()', '<b>TODO</b>: o que fazer com a resposta, por marcador (comentário em cada main_geacs_resp_*.py)'),
+        E('<b>FluxoNaoMontado</b>: "Fluxo ... ainda não montado", sem nenhuma ação no SEI. A prox_acao continua Aguardar resposta ao memo enviado'),
+    ],
+)
+nota_resp = N(
+    '<b>Marcadores "Aguarda" de cada fluxo</b> (manuais: quem assina o memo coloca o "Aguarda" e remove o "No Bloco")<br><br>'
+    '<b>run_geacs_resp_apis</b> (TAGS_AGUARDA_RESPOSTA_APIS)<br>'
+    '01.05.1 - Aguarda APIS: Sem Memo p/ GEACS<br>'
+    '01.05.1 - Aguarda APIS: Formato Inválido<br>'
+    '01.06.1.1 - Aguarda APIS: Matrículas<br>'
+    '01.07.1 - Aguarda APIS: Período Deps<br>'
+    '01.10.1 - Aguarda APIS: Sem Uso<br><br>'
+    '<b>run_geacs_resp_disa</b> (TAGS_AGUARDA_RESPOSTA_DISA)<br>'
+    '01.09.1 - Aguarda DISA: Validar (Consta)<br>'
+    '01.09.1 - Aguarda DISA: Validar (N Consta)<br>'
+    '01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br><br>'
+    '<b>run_geacs_resp_deproc</b> (TAGS_AGUARDA_RESPOSTA_DEPROC)<br>'
+    '01.10.1 - Aguarda DEPROC: Coparticipação',
+    largura=420,
+)
+
+# DEPROC CALCULA COPA
+col_copa_loop = col_loop(
+    'run_deproc_calcula_copa',
+    'deproc_calcula_copa',
+    'da DEPROC',
+    ' e a base DEPROC (Relatório Base 2 - MANTIS, aba Resultado, matrículas com DV)',
+    'processar_deproc() — coluna 2',
+    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, marcadores_deproc_* e tag_deproc_*. Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',
+)
+_erro_segue(col_copa_loop, 6)
+col_copa = Coluna(
+    '2 · processar_deproc()',
+    'Na unidade da DEPROC: apura a coparticipação, anexa o relatório e cria o MemoGeacsCalculoCopa (da DEPROC à GEACS). Marcadores da DEPROC (mesmo prefixo "v2: ")',
+    [
+        F('registrar_tags() · conferir_marcadores_deproc()', 'No máximo um estado, e estado só com o 01. De novo no fim da passagem'),
+        P('Marcadores<br>inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: prox_acao = Verificar marcadores inconsistentes')]),
+        P('Tem 01.02 - No Bloco GEACS:<br>Memo Cálculo COPA?', [T('Sem ler mais nada<br>prox_acao = DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS')]),
+        P(
+            'Tem 01.02.1 - Encaminhado GEACS:<br>Memo Cálculo COPA (manual)?',
+            [T('Concluído, sem ler mais nada<br>prox_acao = DEPROC: memo de resultado da coparticipação encaminhado à GEACS (concluído)')],
+        ),
+        P('Sem Incluir Documento?', [E('<b>ProcessoFechadoNoSetor</b>: não está aberto na DEPROC (não reabre)')]),
+        F('garantir_marcadores_no_sei()', 'Os três que o script adiciona (TAGS_DEPROC): 01, 01.01 e 01.02'),
+        F('listar_documentos_arvore() · obter_dados_ui()', 'Último memo da APIS destinado à GEACS (define a rodada). Sem memo ou formato inválido: erro'),
+        F('_memo_deproc_assinado()', 'Memo DEPROC da GEACS na rodada (PADRAO_ASSUNTO_MEMO_DEPROC), assinado por Bruna Miiller Lavarini. Sem o memo ou sem a assinatura: erro'),
+        F(
+            'apurar_coparticipacao()',
+            'Linhas com SEI = processo; confere as matrículas com o memo da APIS (MatriculasDivergentes); filtra pelo período de apuração. Nenhuma linha: erro',
+        ),
+        F(
+            '_conferir_configuracao()',
+            'Antes de qualquer documento: bloco BLOCO_MEMO_GEACS_CALCULO_COPA (7765003), signatário (Danúbia Lacerda Gomes de Oliveira) e texto do memo (TEXTO_DEFINIDO: TODO). Faltando: erro',
+        ),
+        M('01 - Tratado pelo Script<br><span style="font-weight:normal">se faltar</span>'),
+        P(
+            'Há atendimento<br>no período?',
+            [
+                PDF('PDF Coparticipação - &lt;matrícula&gt; - &lt;data&gt;<br><span style="font-weight:normal">extrato de utilização; retomada pelo nome na rodada</span>'),
+                M('01.01 - Relatório Copart. Anexado'),
+            ],
+            rotulo='Sim (e segue)',
+        ),
+        MEMO('MemoGeacsCalculoCopa', '7765003 (BLOCO_MEMO_GEACS_CALCULO_COPA)'),
+        M('01.02 - No Bloco GEACS: Memo Cálculo COPA<br><span style="font-weight:normal">↻ remove o 01.01</span>'),
+        T('prox_acao = DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS<br>Depois de assinar (manual): ➕ 01.02.1, ➖ 01.02'),
+    ],
+)
+
+# DEPROC EXCLUIR DOCS
+col_excluir_loop = col_loop(
+    'run_deproc_excluir_docs',
+    'deproc_excluir_docs',
+    'da DEPROC',
+    '',
+    'excluir_docs_deproc() — coluna 2',
+    'Não altera a prox_acao (nem fluxo, marcadores e erro dos outros fluxos): só script, ultima_passagem, data_execucao e a coluna deproc_excluir_docs (resultado em uma frase)',
+)
+_erro_segue(col_excluir_loop, 6)
+col_excluir = Coluna(
+    '2 · excluir_docs_deproc()',
+    'Exclui todos os documentos da IPSEMG/DEPROC-Utilização do processo. Não lê nem adiciona marcadores',
+    [
+        P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é excluído')]),
+        F('listar_documentos_arvore() · filtrar_docs_deproc()', 'Documentos da DEPROC (todos os tipos, não só memorandos)'),
+        P('Nenhum documento<br>da DEPROC?', [T('deproc_excluir_docs = "nenhum documento da DEPROC"')]),
+        S('<b>Para cada documento, do último para o primeiro</b> (um documento posterior pode citar o anterior)'),
+        F('selecionar_doc() · excluir_doc()', 'sei_automacao.documento'),
+        P(
+            'Falhou?<br>(ex.: assinado)',
+            [S('Anota como não excluído, recarrega a página e segue para o próximo. Navegador fechado: para o processo')],
+            rotulo='Sim (e segue)',
+        ),
+        F(
+            '_docs_deproc_restantes()',
+            'A árvore demora a refletir a exclusão: reabre o processo e relê a árvore até os excluídos sumirem, por até 15 s (TEMPO_CONFERENCIA)',
+        ),
+        P('Algum documento da DEPROC<br>ainda na árvore?', [E('<b>ErroAvaliacao</b>: "Documento(s) da DEPROC não excluído(s): ..." (sai dos excluídos)')]),
+        T('deproc_excluir_docs = "&lt;data&gt; | N excluído(s): &lt;nºs SEI&gt;"'),
+    ],
+)
+
+# GEACS VERIFICAR MARCADORES
+col_verif_loop = col_loop(
+    'run_geacs_verificar_marcadores',
+    'geacs_verificar_marcadores',
+    'da GEACS',
+    '',
+    'verificar_marcadores() — coluna 2',
+    'Não altera a prox_acao (nem fluxo e erro dos outros fluxos): só script, ultima_passagem, data_execucao e as colunas de marcadores',
+)
+_erro_segue(col_verif_loop, 6)
+col_verif = Coluna(
+    '2 · verificar_marcadores()',
+    'Lê os marcadores do processo, sem nenhuma ação no SEI',
+    [
+        F('listar_marcadores() · registrar_tags()', 'Marcadores do processo no SEI'),
+        F('colunas_tags() · demais_marcadores()', 'Uma coluna tag_* por marcador válido na GEACS (TAGS_VALIDOS_GEACS, 30). Os outros (v2v:, 01.06.2 / 01.08.2 / 01.08.3, manuais, antigos) vão juntos para demais_marcadores'),
+        T('Planilha: tag_*, demais_marcadores e marcadores_finais (erro: verificar_marcadores_erro, e as colunas de marcadores ficam como estavam)'),
+    ],
 )
 
 # --- montagem -----------------------------------------------------------------
 
-celulas = [
-    f'<mxCell id="{_novo_id()}" value="{escape("Fluxo do script SEI - Utilização Indevida (v2)")}" '
-    'style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;" vertex="1" parent="1">'
-    '<mxGeometry x="40" y="20" width="900" height="44" as="geometry"/></mxCell>',
-    f'<mxCell id="{_novo_id()}" value="{escape("Leia as colunas da esquerda para a direita. Em cada coluna o caminho principal desce reto; os desvios saem para a direita.")}" '
-    'style="text;html=1;align=left;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">'
-    '<mxGeometry x="40" y="68" width="1200" height="28" as="geometry"/></mxCell>',
+
+def _texto(valor, x, y, largura, altura, tamanho, negrito=False):
+    estilo = f'text;html=1;align=left;verticalAlign=middle;fontSize={tamanho};' + ('fontStyle=1;' if negrito else '')
+    return (
+        f'<mxCell id="{_novo_id()}" value="{escape(valor)}" style="{estilo}" vertex="1" parent="1">'
+        f'<mxGeometry x="{x}" y="{y}" width="{largura}" height="{altura}" as="geometry"/></mxCell>'
+    )
+
+
+def _cabecalho(celulas, titulo, subtitulo, nota=None):
+    """Título, subtítulo, legenda em uma linha e a nota à direita. Devolve o y das colunas."""
+    celulas.append(_texto(titulo, 40, 20, 1400, 44, 26, negrito=True))
+    celulas.append(_texto(subtitulo, 40, 68, 1600, 28, 14))
+    x, y_legenda = 40, 110
+    for modelo in legenda:
+        item = No(modelo.tipo, modelo.texto, 180)
+        item.emitir(celulas, '1', x, y_legenda + (90 - item.h) / 2)
+        x += item.w + 30
+    altura_nota = 0
+    if nota is not None:
+        nota.emitir(celulas, '1', x + 30, y_legenda - 10)
+        altura_nota = nota.h
+    return y_legenda + max(160, altura_nota + 40)
+
+
+def pagina(id_aba, nome, titulo, subtitulo, colunas, nota=None, laterais=(), titulo_laterais=''):
+    """Uma aba do drawio: as colunas lado a lado e, à direita, as laterais
+    (notas e colunas auxiliares) empilhadas."""
+    _setas.clear()
+    celulas: list[str] = []
+    y_colunas = _cabecalho(celulas, titulo, subtitulo, nota)
+    x = 40
+    for coluna in colunas:
+        coluna.emitir(celulas, x, y_colunas)
+        x += coluna.w + 60
+    y = y_colunas
+    largura_total = x
+    if laterais:
+        x_lado = x + 40
+        if titulo_laterais:
+            celulas.append(_texto(titulo_laterais, x_lado, y - 40, 500, 34, 18, negrito=True))
+        for item in laterais:
+            if isinstance(item, Coluna):
+                item.emitir(celulas, x_lado, y)
+            else:
+                item.emitir(celulas, '1', x_lado, y)
+            y += item.h + 40
+        largura_total = x_lado + max(item.w for item in laterais) + 40
+    altura_total = max(y, *(y_colunas + c.h for c in colunas)) + 40
+    return (
+        f'<diagram id="{id_aba}" name="{escape(nome)}">'
+        '<mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" '
+        f'pageWidth="{largura_total:.0f}" pageHeight="{altura_total:.0f}" math="0" shadow="0">'
+        '<root><mxCell id="0"/><mxCell id="1" parent="0"/>' + ''.join(celulas) + ''.join(_setas) + '</root></mxGraphModel></diagram>'
+    )
+
+
+LEIA = 'Leia as colunas da esquerda para a direita. Em cada coluna o caminho principal desce reto; os desvios saem para a direita.'
+
+abas = [
+    pagina(
+        'geacs-inicial',
+        'geacs_inicial',
+        'run_geacs_inicial · Fluxo inicial da GEACS (main_geacs_inicial.py)',
+        f'Do memo da APIS aos memos à APIS, à DISA ou à DEPROC. Aba de entrada geacs_inicial. {LEIA}',
+        [col_main, col_tratar, col_processar, col_mantis],
+        nota=pendencias,
+        laterais=[marcadores, *aux],
+        titulo_laterais='Funções usadas em vários pontos',
+    ),
+    pagina(
+        'geacs-resp',
+        'geacs_resp_*',
+        'run_geacs_resp_apis / _disa / _deproc · Respostas (TODO: não montados)',
+        f'Processo parado com um "Aguarda" manual (memo assinado e encaminhado) depois da resposta da APIS, da DISA ou da DEPROC. {LEIA}',
+        [col_resp_loop, col_resp],
+        laterais=[nota_resp],
+    ),
+    pagina(
+        'geacs-adc-pdf-ant-aut',
+        'geacs_adc_pdf_ant_aut',
+        'run_geacs_adc_pdf_ant_aut · PDF das planilhas antigas, automático (main_geacs_adc_pdf_ant_aut.py)',
+        f'Baixa as planilhas de utilização do SEI, insere o PDF de cada uma e deixa o processo aguardando o fluxo inicial. Não avalia bases nem cria memos. {LEIA}',
+        [col_adc_aut_loop, col_adc_aut, col_adc_aut_fim],
+    ),
+    pagina(
+        'geacs-adc-pdf-ant-man',
+        'geacs_adc_pdf_ant_man',
+        'run_geacs_adc_pdf_ant_man · PDF das planilhas antigas, manual (main_geacs_adc_pdf_ant_man.py)',
+        f'As planilhas que o Chrome não baixa, colocadas à mão em dados/geacs_adc_pdf_ant_man/planilhas. {LEIA}',
+        [col_adc_man_loop, col_adc_man, col_adc_man_fim],
+    ),
+    pagina(
+        'geacs-canc-memo-deproc-ant',
+        'geacs_canc_memo_deproc_ant',
+        'run_geacs_canc_memo_deproc_ant · Cancelar o memo DEPROC antigo (main_geacs_canc_memo_deproc_ant.py)',
+        f'Na unidade da GEACS. Não altera a prox_acao. {LEIA}',
+        [col_canc_loop, col_canc],
+    ),
+    pagina(
+        'geacs-verificar-marcadores',
+        'geacs_verificar_marcadores',
+        'run_geacs_verificar_marcadores · Verificar os marcadores (main_geacs_verificar_marcadores.py)',
+        f'Na unidade da GEACS. Não altera a prox_acao: atualiza só as colunas de marcadores (tag_* e demais_marcadores). {LEIA}',
+        [col_verif_loop, col_verif],
+    ),
+    pagina(
+        'deproc-calcula-copa',
+        'deproc_calcula_copa',
+        'run_deproc_calcula_copa · Cálculo da coparticipação na DEPROC (main_deproc_calcula_copa.py)',
+        f'Na unidade da DEPROC, com os marcadores da DEPROC. {LEIA}',
+        [col_copa_loop, col_copa],
+    ),
+    pagina(
+        'deproc-excluir-docs',
+        'deproc_excluir_docs',
+        'run_deproc_excluir_docs · Excluir os documentos da DEPROC (main_deproc_excluir_docs.py)',
+        f'Na unidade da DEPROC. Não altera a prox_acao (coluna própria deproc_excluir_docs). {LEIA}',
+        [col_excluir_loop, col_excluir],
+    ),
 ]
 
-# Legenda em uma linha
-x, y_legenda = 40, 110
-for item in legenda:
-    _ajustar(item, 180)
-    item.emitir(celulas, '1', x, y_legenda + (90 - item.h) / 2)
-    x += item.w + 30
-pendencias.emitir(celulas, '1', x + 30, y_legenda - 10)
-
-y_colunas = y_legenda + 160
-x = 40
-for coluna in [col_main, col_tratar, col_processar, col_mantis]:
-    coluna.emitir(celulas, x, y_colunas)
-    x += coluna.w + 60
-
-x_aux, y = x + 40, y_colunas
-celulas.append(
-    f'<mxCell id="{_novo_id()}" value="Funções usadas em vários pontos" style="text;html=1;align=left;verticalAlign=middle;fontSize=18;fontStyle=1;" vertex="1" parent="1">'
-    f'<mxGeometry x="{x_aux}" y="{y - 40}" width="500" height="34" as="geometry"/></mxCell>'
-)
-marcadores.emitir(celulas, '1', x_aux, y)
-y += marcadores.h + 40
-for coluna in aux:
-    coluna.emitir(celulas, x_aux, y)
-    y += coluna.h + 40
-
-colunas = [col_main, col_tratar, col_processar, col_mantis, *aux]
-largura_total = x_aux + max(c.w for c in aux) + 40
-altura_total = max(y, *(y_colunas + c.h for c in colunas)) + 40
-xml = (
-    '<mxfile host="app.diagrams.net" type="device">'
-    '<diagram id="fluxo-completo" name="Fluxo completo">'
-    '<mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" '
-    f'pageWidth="{largura_total:.0f}" pageHeight="{altura_total:.0f}" math="0" shadow="0">'
-    '<root><mxCell id="0"/><mxCell id="1" parent="0"/>' + ''.join(celulas) + ''.join(_setas) + '</root></mxGraphModel></diagram></mxfile>\n'
-)
 with open(SAIDA, 'w', encoding='utf-8') as f:
-    f.write(xml)
-print(f'{len(celulas)} células, {len(_setas)} setas, página {largura_total:.0f} x {altura_total:.0f}')
+    f.write('<mxfile host="app.diagrams.net" type="device">' + ''.join(abas) + '</mxfile>\n')
+print(f'{len(abas)} abas')

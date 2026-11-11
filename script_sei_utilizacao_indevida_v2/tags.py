@@ -6,8 +6,7 @@ nome (ex.: "v2: 01 - Tratado pelo Script").
 
 Marcadores de estado: o processo tem no máximo um. Ao adicionar um marcador
 de estado, o estado anterior é removido (o SEI mostra só onde o processo
-está). O mesmo vale para cada par base DISA/MANTIS (usou ou não a rede
-própria). Os demais marcadores (VELHO, NOVO, informativos e os da versão
+está). Os demais marcadores (VELHO, NOVO, informativos e os da versão
 anterior do fluxo) se acumulam.
 """
 
@@ -42,23 +41,9 @@ TAG_PERIODO_VAR_DEP = 'v2: 01.01 - Período Variável p/ Dependentes'
 # beneficiários)
 TAG_MAT_NAO_ENCONTRADAS_APIS = 'v2: 01.02.1 - Mat. N Encontradas Base APIS'
 
-# Versão anterior do fluxo e rotina de correção (não são mais adicionados).
-# Com "Memos DISA e DEPROC no Bloco", o processo é VELHO: foi enviado à DISA
-# e à DEPROC antes da avaliação da rede própria.
-TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO = 'v2v: 01.02.2 - Mat. N Encontradas Base DISA'
-TAG_AVALIADO_USO_REDE_PROPRIA = 'v2v: 01.02 - Avaliado Se Usou Rede Própria'
-TAG_MEMOS_DISA_DEPROC_NO_BLOCO = 'v2v: 01.03 - Memos DISA e DEPROC no Bloco'
-TAG_MEMO_DEPROC_NO_BLOCO = 'v2v: 01.03 - Memo DEPROC no Bloco'
-TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO = 'v2v: 01.04 - Memo Não Usou Rede no Bloco'
-
-# Informativos da comparação base DISA x MANTIS, um par por base (e por
-# rede, no MANTIS). Os do mesmo par são alternativos
-TAG_DISA_USOU_RP = 'v2: 01.06.2 - Base DISA: Usou RP'
-TAG_DISA_NAO_USOU_RP = 'v2: 01.06.2 - Base DISA: Não Usou RP'
-TAG_MANTIS_USOU_RP = 'v2: 01.08.2 - MANTIS: Usou RP'
-TAG_MANTIS_NAO_USOU_RP = 'v2: 01.08.2 - MANTIS: Não Usou RP'
-TAG_MANTIS_USOU_RC = 'v2: 01.08.3 - MANTIS: Usou RC'
-TAG_MANTIS_NAO_USOU_RC = 'v2: 01.08.3 - MANTIS: Não Usou RC'
+# Os marcadores da versão anterior ("v2v: ") não são mais lidos: vão para
+# demais_marcadores. O VELHO é identificado pelo 00 ou pelos memos
+# (docs_processo.encontrar_memos_velho)
 
 # Marcadores de estado. Os "No Bloco" indicam que o memo foi criado e
 # inserido no bloco (aguarda assinatura); cada um tem um "Aguarda", colocado
@@ -112,10 +97,10 @@ TAG_AGUARDA_FLUXO_NORMAL = 'v2: 01.00 - Aguarda Script: Fluxo Normal'
 TAG_PLANILHADO = 'PLANILHADO'
 TAG_UI_INSERIDA = 'UTILIZAÇÃO INSERIDA'
 TAG_MANUAL = 'MANUAL'
-TAG_ASSINADO = 'ASSINADO'
 
-# Processos VELHOS tratados manualmente: fora do escopo
-TAGS_TRATAMENTO_MANUAL = frozenset({TAG_MANUAL, TAG_ASSINADO})
+# Processo tratado manualmente: o VELHO fica fora do escopo, e o fechado no
+# setor não é reaberto. Os outros manuais (ex.: ASSINADO) não interferem
+TAGS_TRATAMENTO_MANUAL = frozenset({TAG_MANUAL})
 
 # Memo no bloco -> marcador manual depois da assinatura
 AGUARDA_POR_NO_BLOCO = {
@@ -138,6 +123,21 @@ TAGS_PARADA_NOVO = (
     TAG_MEMO_DISA_VALIDAR_USOS_MANTIS,
     TAG_MEMO_DISA_USO_REDE_PROPRIA,
 )
+# Marcadores manuais "Aguarda" de cada fluxo de resposta (main_geacs_resp_*):
+# o processo só entra no fluxo da unidade que ele aguarda
+TAGS_AGUARDA_RESPOSTA_APIS = (
+    TAG_AGUARDA_APIS_SEM_MEMO,
+    TAG_AGUARDA_APIS_FORMATO_INVALIDO,
+    TAG_AGUARDA_APIS_MATRICULAS,
+    TAG_AGUARDA_APIS_PERIODO_DEPS,
+    TAG_AGUARDA_APIS_SEM_USO,
+)
+TAGS_AGUARDA_RESPOSTA_DISA = (
+    TAG_AGUARDA_DISA_VALIDAR_CONSTA,
+    TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
+    TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO,
+)
+TAGS_AGUARDA_RESPOSTA_DEPROC = (TAG_AGUARDA_DEPROC_COPARTICIPACAO,)
 TAGS_CONCLUSAO_NOVO = (
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
     TAG_VELHO_MEMO_DISA,
@@ -149,48 +149,41 @@ TAGS_RETOMADA_NOVO = (
     TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
 )
 TAGS_ESTADO_NOVO = (TAG_AGUARDA_FLUXO_NORMAL, *TAGS_NO_BLOCO_NOVO, *TAGS_PARADA_NOVO, *TAGS_RETOMADA_NOVO, *TAGS_CONCLUSAO_NOVO)
-TAGS_DUPLA_DISA = (TAG_DISA_USOU_RP, TAG_DISA_NAO_USOU_RP)
-TAGS_DUPLA_MANTIS = (TAG_MANTIS_USOU_RP, TAG_MANTIS_NAO_USOU_RP)
-TAGS_DUPLA_MANTIS_RC = (TAG_MANTIS_USOU_RC, TAG_MANTIS_NAO_USOU_RC)
-_DUPLAS = (TAGS_DUPLA_DISA, TAGS_DUPLA_MANTIS, TAGS_DUPLA_MANTIS_RC)
 # Marcadores da unidade da DEPROC (fluxo DEPROC). Os marcadores do SEI são de
 # cada unidade: estes só existem na DEPROC, e os acima, só na GEACS. Mesmo
 # prefixo, mesma numeração (ordem de inserção) e mesmas regras de estado.
 TAG_DEPROC_TRATADO = 'v2: 01 - Tratado pelo Script'
 # Estado (retomada): relatório de coparticipação anexado; falta o memo
 TAG_DEPROC_RELATORIO_ANEXADO = 'v2: 01.01 - Relatório Copart. Anexado'
-# Estado (conclusão): memo de resultado da DEPROC à GEACS no bloco
-TAG_DEPROC_CONCLUIDO_MEMO = 'v2: 01.02 - Concluído: Memo p/ GEACS'
-TAGS_ESTADO_DEPROC = (TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_CONCLUIDO_MEMO)
-TAGS_DEPROC = (TAG_DEPROC_TRATADO, *TAGS_ESTADO_DEPROC)
+# Estado: memo da DEPROC à GEACS com o cálculo da coparticipação no bloco
+# (aguarda assinatura)
+TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA = 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA'
+# Estado (conclusão), manual: memo assinado e encaminhado à GEACS. Quem
+# coloca remove o 01.02
+TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA = 'v2: 01.02.1 - Encaminhado GEACS: Memo Cálculo COPA'
+TAGS_ESTADO_DEPROC = (TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA, TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA)
+# Os que o script adiciona (conferidos no SEI antes de qualquer ação)
+TAGS_DEPROC = (TAG_DEPROC_TRATADO, TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)
 
 # Grupos de alternativos: adicionar um remove os outros do mesmo grupo
-_GRUPOS_ALTERNATIVOS = (TAGS_ESTADO_NOVO, *_DUPLAS, TAGS_ESTADO_DEPROC)
+_GRUPOS_ALTERNATIVOS = (TAGS_ESTADO_NOVO, TAGS_ESTADO_DEPROC)
 
-# Coluna da planilha de controle de cada marcador (indica se o processo
-# terminou a passagem com o marcador)
+# Coluna da planilha de controle de cada marcador válido na GEACS (indica se o
+# processo terminou a passagem com o marcador). Os demais (versão anterior,
+# manuais, antigos) vão juntos para a coluna demais_marcadores. Os nomes das
+# colunas não mudam (por isso alguns não batem com o nome atual do marcador)
 _COLUNA_POR_TAG = {
     TAG_PROCESSO_VELHO: 'tag_processo_velho',
     TAG_PROCESSO_NOVO: 'tag_processo_novo',
     TAG_AGUARDA_FLUXO_NORMAL: 'tag_aguarda_fluxo_normal',
-    TAG_PLANILHADO: 'tag_planilhado',
-    TAG_UI_INSERIDA: 'tag_ui_inserida',
     TAG_PERIODO_VAR_DEP: 'tag_periodo_variavel_deps',
-    TAG_AVALIADO_USO_REDE_PROPRIA: 'tag_avaliado_se_usou_rede_propria',
     TAG_MAT_NAO_ENCONTRADAS_APIS: 'tag_mat_nao_encontradas_base_geral_novo',
-    TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO: 'tag_mat_nao_encontradas_novo',
     TAG_MEMO_APIS_SEM_MEMO: 'tag_memo_apis_sem_memo',
     TAG_MEMO_APIS_FORMATO_INVALIDO: 'tag_memo_apis_formato_invalido',
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS: 'tag_memo_apis_mat_nao_encontradas',
     TAG_MEMO_APIS_PERIODO_DEPENDENTES: 'tag_memo_apis_periodo_deps',
     TAG_AVALIADO_USO_REDE_PROPRIA_DISA: 'tag_avaliado_uso_rede_propria_disa',
-    TAG_DISA_USOU_RP: 'tag_base_disa_usou_rp',
-    TAG_DISA_NAO_USOU_RP: 'tag_base_disa_nao_usou_rp',
     TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS: 'tag_avaliado_uso_rede_propria_mantis',
-    TAG_MANTIS_USOU_RP: 'tag_mantis_usou_rp',
-    TAG_MANTIS_NAO_USOU_RP: 'tag_mantis_nao_usou_rp',
-    TAG_MANTIS_USOU_RC: 'tag_mantis_usou_rc',
-    TAG_MANTIS_NAO_USOU_RC: 'tag_mantis_nao_usou_rc',
     TAG_MEMO_DISA_VALIDAR_USOS_MANTIS: 'tag_memo_disa_validar_usos_mantis',
     TAG_MEMO_DISA_USO_REDE_PROPRIA: 'tag_memo_disa_uso_rede_propria',
     TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: 'tag_aguarda_disa_validar_consta',
@@ -211,19 +204,24 @@ _COLUNA_POR_TAG = {
     TAG_AGUARDA_APIS_SEM_USO: 'tag_aguarda_resposta_apis_sem_uso',
     TAG_VELHO_MEMO_DISA: 'tag_velho_memo_disa',
     TAG_VELHO_MEMO_DEPROC: 'tag_velho_memo_deproc',
-    TAG_MEMOS_DISA_DEPROC_NO_BLOCO: 'tag_memos_no_bloco',
-    TAG_MEMO_DEPROC_NO_BLOCO: 'tag_memo_deproc_no_bloco',
-    TAG_MEMO_NAO_USOU_REDE_PROPRIA_NO_BLOCO: 'tag_memo_nao_usou_rede_propria_no_bloco',
 }
 
 # Colunas dos marcadores da DEPROC (só o fluxo DEPROC as grava)
 _COLUNA_POR_TAG_DEPROC = {
     TAG_DEPROC_TRATADO: 'tag_deproc_tratado',
     TAG_DEPROC_RELATORIO_ANEXADO: 'tag_deproc_relatorio_anexado',
-    TAG_DEPROC_CONCLUIDO_MEMO: 'tag_deproc_concluido_memo',
+    TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA: 'tag_deproc_concluido_memo',
+    TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA: 'tag_deproc_encaminhado_memo_copa',
 }
 
-TAGS_SCRIPT = frozenset(tag for tag in (*_COLUNA_POR_TAG, *_COLUNA_POR_TAG_DEPROC) if tag.startswith((PREFIXO, PREFIXO_VELHO)))
+# Marcadores válidos na unidade da GEACS (cadastrados no SEI, um por coluna
+# da planilha de controle)
+TAGS_VALIDOS_GEACS = frozenset(_COLUNA_POR_TAG)
+COLUNAS_TAGS_VALIDOS = frozenset((*_COLUNA_POR_TAG.values(), *_COLUNA_POR_TAG_DEPROC.values()))
+# Coluna com os marcadores do processo fora de TAGS_VALIDOS_GEACS
+COLUNA_DEMAIS_MARCADORES = 'demais_marcadores'
+
+TAGS_SCRIPT = frozenset((*_COLUNA_POR_TAG, *_COLUNA_POR_TAG_DEPROC))
 
 
 def normalizar_tags(tags: list) -> list[str]:
@@ -238,6 +236,12 @@ def registrar_tags(registro, tags: list[str]) -> None:
 
 def colunas_tags(marcadores: list[str]) -> dict[str, bool]:
     return {coluna: tag in marcadores for tag, coluna in _COLUNA_POR_TAG.items()}
+
+
+def demais_marcadores(marcadores: list[str]) -> str:
+    """Os marcadores fora dos válidos na GEACS, em ordem, separados por "; "
+    (coluna demais_marcadores)."""
+    return '; '.join(sorted(tag for tag in marcadores if tag not in TAGS_VALIDOS_GEACS))
 
 
 def colunas_tags_deproc(marcadores: list[str]) -> dict[str, bool]:
@@ -280,49 +284,16 @@ def _com_aguarda(estados: tuple[str, ...]) -> tuple[str, ...]:
 # Informativos: estados com que podem conviver (os que vêm depois deles no
 # fluxo). Sem estado, não há regra (versão anterior ou falha antes do estado)
 _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {
-    TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO: tuple(t for t in TAGS_ESTADO_NOVO if t not in _com_aguarda((TAG_MEMO_APIS_SEM_MEMO, TAG_MEMO_APIS_FORMATO_INVALIDO))),
     # Depois do 01.02.1 o processo para (01.06.1); com 01.06 ou 01.08 (retomada),
     # falhou antes do memo
     TAG_MAT_NAO_ENCONTRADAS_APIS: (TAG_AVALIADO_USO_REDE_PROPRIA_DISA, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS),
     TAG_PERIODO_VAR_DEP: (TAG_AVALIADO_USO_REDE_PROPRIA_DISA, TAG_MEMO_APIS_PERIODO_DEPENDENTES),
-    TAG_DISA_USOU_RP: (
-        TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
-        # Período inválido no memo achado depois da base DISA (a versão
-        # anterior só validava o período no MANTIS)
-        TAG_MEMO_APIS_FORMATO_INVALIDO,
-        TAG_MEMO_APIS_PERIODO_DEPENDENTES,
-        TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
-        TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
-        TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
-    ),
-    TAG_DISA_NAO_USOU_RP: (
-        TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
-        # Período inválido no memo achado depois da base DISA (a versão
-        # anterior só validava o período no MANTIS)
-        TAG_MEMO_APIS_FORMATO_INVALIDO,
-        TAG_MEMO_APIS_PERIODO_DEPENDENTES,
-        TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
-        TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
-        TAG_MEMO_DEPROC_COPARTICIPACAO,
-        TAG_NO_BLOCO_APIS_SEM_USO,
-    ),
-    TAG_MANTIS_USOU_RP: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, TAG_NO_BLOCO_DISA_VALIDAR_CONSTA, TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA),
-    TAG_MANTIS_NAO_USOU_RP: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO, TAG_MEMO_DEPROC_COPARTICIPACAO, TAG_NO_BLOCO_APIS_SEM_USO),
-    # A rede credenciada não decide o memo à DISA: qualquer um dos 01.09
-    TAG_MANTIS_USOU_RC: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, *_ESTADOS_DISA, TAG_MEMO_DEPROC_COPARTICIPACAO),
-    TAG_MANTIS_NAO_USOU_RC: (TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, *_ESTADOS_DISA, TAG_NO_BLOCO_APIS_SEM_USO),
 }
 _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {tag: _com_aguarda(estados) for tag, estados in _ESTADOS_POSSIVEIS_POR_INFORMATIVO.items()}
 # Marcador que exige outros
 _EXIGIDOS = {
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS: (TAG_MAT_NAO_ENCONTRADAS_APIS,),
     TAG_MEMO_APIS_PERIODO_DEPENDENTES: (TAG_PERIODO_VAR_DEP,),
-    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: (TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RP),
-    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA: (TAG_DISA_NAO_USOU_RP, TAG_MANTIS_USOU_RP),
-    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: (TAG_DISA_USOU_RP, TAG_MANTIS_NAO_USOU_RP),
-    TAG_NO_BLOCO_APIS_SEM_USO: (TAG_DISA_NAO_USOU_RP, TAG_MANTIS_NAO_USOU_RP, TAG_MANTIS_NAO_USOU_RC),
-    TAG_VELHO_MEMO_DISA: (TAG_MEMOS_DISA_DEPROC_NO_BLOCO,),
-    TAG_VELHO_MEMO_DEPROC: (TAG_MEMOS_DISA_DEPROC_NO_BLOCO,),
 }
 # O marcador manual exige o mesmo que o do memo no bloco
 _EXIGIDOS.update({AGUARDA_POR_NO_BLOCO[tag]: exigidos for tag, exigidos in _EXIGIDOS.items() if tag in AGUARDA_POR_NO_BLOCO})
@@ -341,8 +312,8 @@ _INFORMATIVOS = tuple(_ESTADOS_POSSIVEIS_POR_INFORMATIVO)
 
 
 def eh_velho_pelos_marcadores(registro) -> bool:
-    """Marcado como VELHO (00) ou com o 01.03 da versão anterior."""
-    return tem_tag(registro, TAG_PROCESSO_VELHO) or tem_tag(registro, TAG_MEMOS_DISA_DEPROC_NO_BLOCO)
+    """Marcado como VELHO (00)."""
+    return tem_tag(registro, TAG_PROCESSO_VELHO)
 
 
 def conferir_marcadores(registro) -> None:
@@ -356,16 +327,9 @@ def conferir_marcadores(registro) -> None:
 
     if len(estados) > 1:
         problemas.append(f'mais de um marcador de estado ({", ".join(map(_curto, estados))}); remover o(s) anterior(es)')
-    for dupla in _DUPLAS:
-        if all(tag in atuais for tag in dupla):
-            problemas.append(f'{" e ".join(map(_curto, dupla))} (são alternativos)')
     do_fluxo = [tag for tag in (*estados, *_INFORMATIVOS) if tag in atuais]
     if do_fluxo and TAG_PROCESSO_NOVO not in atuais:
         problemas.append(f'{", ".join(map(_curto, do_fluxo))} sem o marcador "{_curto(TAG_PROCESSO_NOVO)}"')
-    if TAG_MEMOS_DISA_DEPROC_NO_BLOCO in atuais and TAG_MEMO_DEPROC_NO_BLOCO in atuais:
-        problemas.append('os dois marcadores 01.03 (são alternativos)')
-    if TAG_MEMO_DEPROC_NO_BLOCO in atuais and estados:
-        problemas.append(f'concluído na versão anterior ({_curto(TAG_MEMO_DEPROC_NO_BLOCO)}) com estado do fluxo atual')
     for tag, possiveis in _ESTADOS_POSSIVEIS_POR_INFORMATIVO.items():
         # O 1.0 vem antes de todos: equivale a sem estado (informativo antigo)
         if tag in atuais and estado not in {None, TAG_AGUARDA_FLUXO_NORMAL} and estado not in possiveis:
@@ -404,8 +368,8 @@ def remover_tag(driver: webdriver.Remote, registro, tag: str) -> None:
 
 def adicionar_tag(driver: webdriver.Remote, registro, tag: str) -> None:
     """Adiciona o marcador no SEI e o registra (coluna
-    marcadores_adicionados). Se for de um grupo de alternativos (estado ou
-    par base DISA/MANTIS), remove depois o anterior do grupo. Use sempre
+    marcadores_adicionados). Se for de um grupo de alternativos (estado),
+    remove depois o anterior do grupo. Use sempre
     esta função para adicionar marcadores."""
     adicionar_marcador(driver, tag)
     if tag not in registro.marcadores_atuais:

@@ -1,10 +1,10 @@
-"""Fluxo DEPROC (main_deproc.py, coparticipacao_deproc.py e
+"""Fluxo DEPROC (main_deproc_calcula_copa.py, coparticipacao_deproc.py e
 relatorio_deproc.py), com o SEI simulado e uma base DEPROC gerada no teste."""
 
 from datetime import datetime
 from pathlib import Path
 
-import main_deproc
+import main_deproc_calcula_copa
 import pandas as pd
 import pytest
 import relatorio_deproc
@@ -19,12 +19,12 @@ from coparticipacao_deproc import (
 )
 from rede_propria import ErroAvaliacao
 from Registro import ProxAcao
-from tags import TAG_DEPROC_CONCLUIDO_MEMO, TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_TRATADO, TAGS_DEPROC
+from tags import TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA, TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_TRATADO, TAGS_DEPROC
 
-from script_sei_utilizacao_indevida_v2.memorandos import MemoDeprocResultado
+from script_sei_utilizacao_indevida_v2.memorandos import MemoGeacsCalculoCopa
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO_DEPROC
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDeprocResultado import ASSUNTO_MEMO_DEPROC_RESULTADO
+from script_sei_utilizacao_indevida_v2.memorandos.MemoGeacsCalculoCopa import ASSUNTO_MEMO_GEACS_CALCULO_COPA
 from tests.sei_falso import DriverFalso, SEIFalso
 
 PROCESSO = 'PROC'
@@ -160,7 +160,7 @@ def test_nome_do_relatorio_cabe_no_sei():
 
 class SEIDeproc(SEIFalso):
     def memo_deproc_geacs(self, *, assinado: bool = True) -> str:
-        return self.novo_doc('Memorando 2', UNIDADE_GEACS, f'Assunto: {ASSUNTO_MEMO_DEPROC}\nPara: IPSEMG/DEPROC\n{ASSINATURA if assinado else ""}')
+        return self.novo_doc('Memorando 2', UNIDADE_GEACS, f'Assunto: {ASSUNTO_MEMO_DEPROC}\nPara: IPSEMG/DEPROC-Utilização\n{ASSINATURA if assinado else ""}')
 
     def _incluir_memo_deproc(self, driver, **kwargs):
         self.memos_passagem += 1
@@ -177,23 +177,23 @@ class SEIDeproc(SEIFalso):
 
     def instalar(self, monkeypatch) -> None:
         super().instalar(monkeypatch)
-        monkeypatch.setattr(main_deproc, 'acessar_processo', lambda driver, num: None)
-        monkeypatch.setattr(main_deproc, 'listar_marcadores', lambda driver: list(self.tags))
-        monkeypatch.setattr(main_deproc, 'garantir_marcadores_no_sei', self._garantir)
-        monkeypatch.setattr(main_deproc, 'tem_incluir_documento', lambda driver: not self.processo_fechado)
-        monkeypatch.setattr(main_deproc, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in self.docs])
-        monkeypatch.setattr(main_deproc, 'BLOCO_MEMO_DEPROC_RESULTADO', 1)
-        monkeypatch.setattr(main_deproc, 'NOME_SIGNATARIO_DEPROC', 'Signatário DEPROC')
-        monkeypatch.setattr(MemoDeprocResultado, 'TEXTO_DEFINIDO', True)
+        monkeypatch.setattr(main_deproc_calcula_copa, 'acessar_processo', lambda driver, num: None)
+        monkeypatch.setattr(main_deproc_calcula_copa, 'listar_marcadores', lambda driver: list(self.tags))
+        monkeypatch.setattr(main_deproc_calcula_copa, 'garantir_marcadores_no_sei', self._garantir)
+        monkeypatch.setattr(main_deproc_calcula_copa, 'tem_incluir_documento', lambda driver: not self.processo_fechado)
+        monkeypatch.setattr(main_deproc_calcula_copa, 'listar_documentos_arvore', lambda driver: [dict(doc) for doc in self.docs])
+        monkeypatch.setattr(main_deproc_calcula_copa, 'BLOCO_MEMO_GEACS_CALCULO_COPA', 1)
+        monkeypatch.setattr(main_deproc_calcula_copa, 'NOME_SIGNATARIO_DEPROC', 'Signatário DEPROC')
+        monkeypatch.setattr(MemoGeacsCalculoCopa, 'TEXTO_DEFINIDO', True)
         monkeypatch.setattr('memos_sei.incluir_doc_sei_memo', self._incluir_memo_deproc)
         monkeypatch.setattr(relatorio_deproc, 'anexar_pdf', lambda driver, num, caminho, data: self.novo_doc(f'PDF {num}', UNIDADE_DEPROC, ''))
         monkeypatch.setattr(relatorio_deproc, 'gerar_pdf_deproc', lambda *args: Path('relatorio.pdf'))
 
 
 def _passar(sei, base):
-    """Uma passagem do processo pelo main_deproc.py."""
+    """Uma passagem do processo pelo main_deproc_calcula_copa.py."""
     sei.memos_passagem = 0
-    return main_deproc._processar_linha(DriverFalso(), PROCESSO, base)
+    return main_deproc_calcula_copa._processar_linha(DriverFalso(), PROCESSO, base)
 
 
 @pytest.fixture
@@ -212,22 +212,30 @@ def test_cria_relatorio_e_memo_de_resultado(sei, tmp_path):
     assert registro.prox_acao == ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO
     assert registro.memo_deproc_assinado is True
     assert [nome.rsplit(' - ', 1)[0] for nome in sei.nomes if nome.startswith('PDF ')] == ['PDF Coparticipação - 12345678']
-    assert sei.assuntos_memos_deproc == [ASSUNTO_MEMO_DEPROC_RESULTADO]
+    assert sei.assuntos_memos_deproc == [ASSUNTO_MEMO_GEACS_CALCULO_COPA]
     texto = sei.textos[registro.memo_deproc_resultado_sei]
     assert f'documento {registro.relatorio_deproc_sei}' in texto
     assert 'R$ 22,00' in texto
     assert registro.atendimentos_deproc == 4
     # 1.1 entra depois do relatório e sai quando o 1.2 entra (depois do memo)
-    assert registro.marcadores_adicionados == [TAG_DEPROC_TRATADO, TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_CONCLUIDO_MEMO]
+    assert registro.marcadores_adicionados == [TAG_DEPROC_TRATADO, TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
     assert registro.marcadores_removidos == [TAG_DEPROC_RELATORIO_ANEXADO]
-    assert sei.tags == [TAG_DEPROC_TRATADO, TAG_DEPROC_CONCLUIDO_MEMO]
+    assert sei.tags == [TAG_DEPROC_TRATADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
     assert sei.garantidos == list(TAGS_DEPROC)
 
-    # Nova passagem: concluído pelo 1.2, nada é lido nem recriado
+    # Nova passagem: memo no bloco (01.02), nada é lido nem recriado
     registro = _passar(sei, _base(tmp_path))
     assert registro.erro is None
     assert registro.prox_acao == ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO
     assert registro.memo_apis_sei is None
+    assert len(sei.assuntos_memos_deproc) == 1
+
+    # Assinado: quem assina troca o 01.02 pelo 01.02.1 (manual)
+    sei.tags = [TAG_DEPROC_TRATADO, TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA]
+    registro = _passar(sei, _base(tmp_path))
+    assert registro.erro is None
+    assert registro.prox_acao == ProxAcao.DEPROC_MEMO_ENCAMINHADO
+    assert registro.marcadores_adicionados == []
     assert len(sei.assuntos_memos_deproc) == 1
 
 
@@ -243,7 +251,7 @@ def test_retomada_pelo_relatorio_anexado(sei, tmp_path):
     assert registro.erro is None
     assert registro.relatorio_deproc_na_arvore
     assert len([nome for nome in sei.nomes if nome.startswith('PDF ')]) == 1
-    assert sei.tags == [TAG_DEPROC_TRATADO, TAG_DEPROC_CONCLUIDO_MEMO]
+    assert sei.tags == [TAG_DEPROC_TRATADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
 
 
 def test_marcadores_da_deproc_inconsistentes_param_sem_acao(sei, tmp_path):
@@ -264,7 +272,7 @@ def test_sem_atendimento_no_periodo_memo_sem_relatorio(sei, tmp_path):
     assert not any(nome.startswith('PDF ') for nome in sei.nomes)
     assert 'Não foram identificados atendimentos' in sei.textos[registro.memo_deproc_resultado_sei]
     # Sem relatório, sem o 1.1
-    assert sei.tags == [TAG_DEPROC_TRATADO, TAG_DEPROC_CONCLUIDO_MEMO]
+    assert sei.tags == [TAG_DEPROC_TRATADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
 
 
 @pytest.mark.parametrize(
@@ -296,12 +304,12 @@ def test_matricula_divergente_registrada_sem_acao(sei, tmp_path):
 
 def test_texto_pendente_ou_bloco_ausente_param_antes_do_relatorio(sei, tmp_path, monkeypatch):
     sei.memo_deproc_geacs()
-    monkeypatch.setattr(MemoDeprocResultado, 'TEXTO_DEFINIDO', False)
+    monkeypatch.setattr(MemoGeacsCalculoCopa, 'TEXTO_DEFINIDO', False)
     registro = _passar(sei, _base(tmp_path))
     assert registro.tipo_erro == 'TextoMemoPendente'
 
-    monkeypatch.setattr(MemoDeprocResultado, 'TEXTO_DEFINIDO', True)
-    monkeypatch.setattr(main_deproc, 'BLOCO_MEMO_DEPROC_RESULTADO', None)
+    monkeypatch.setattr(MemoGeacsCalculoCopa, 'TEXTO_DEFINIDO', True)
+    monkeypatch.setattr(main_deproc_calcula_copa, 'BLOCO_MEMO_GEACS_CALCULO_COPA', None)
     registro = _passar(sei, _base(tmp_path))
     assert 'Bloco do memo de resultado' in registro.erro
     assert not any(nome.startswith('PDF ') for nome in sei.nomes)
@@ -329,10 +337,11 @@ def test_planilha_de_controle_com_colunas_dos_marcadores_da_deproc(sei, tmp_path
         'tag_deproc_tratado',
         'tag_deproc_relatorio_anexado',
         'tag_deproc_concluido_memo',
+        'tag_deproc_encaminhado_memo_copa',
     ]
     assert colunas['tag_deproc_concluido_memo'] is True
     assert colunas['tag_deproc_relatorio_anexado'] is False
-    assert colunas['marcadores_deproc_finais'] == f'{TAG_DEPROC_TRATADO}; {TAG_DEPROC_CONCLUIDO_MEMO}'
+    assert colunas['marcadores_deproc_finais'] == f'{TAG_DEPROC_TRATADO}; {TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}'
     assert 'processo_reaberto' not in colunas
     assert colunas['memo_apis_sei'] is not None
     assert colunas['valor_total_coparticipacao'] == 22.0

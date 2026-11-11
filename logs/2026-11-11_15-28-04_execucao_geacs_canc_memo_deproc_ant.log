@@ -1,0 +1,33 @@
+2026-11-11 15:28:04 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (CANC MEMO DEPROC ANT - CANCELAR MEMO DEPROC ANTIGO) =================
+2026-11-11 15:28:04 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-11_15-28-04_execucao_geacs_canc_memo_deproc_ant.log
+2026-11-11 15:28:04 | INFO    | -                         | processos_a_processar | 96 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_canc_memo_deproc_ant
+2026-11-11 15:28:05 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-11 15:28:05 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-11 15:28:05 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-11 15:28:05 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-11 15:28:06 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-11 15:28:18 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-11 15:28:18 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-11 15:28:36 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-11 15:28:36 | INFO    | 2010.01.0053866/2025-12   | __main__              | INÍCIO [1/96]
+2026-11-11 15:28:42 | INFO    | 2010.01.0053866/2025-12   | __main__              | Árvore: 24 documento(s) | GEACS: 2 memorando(s)
+2026-11-11 15:28:42 | DEBUG   | 2010.01.0053866/2025-12   | docs_processo         | Lendo documento Memorando 593 (SEI 123326167)
+2026-11-11 15:28:44 | DEBUG   | 2010.01.0053866/2025-12   | docs_processo         | Documento 123326167 lido (2143 caracteres)
+2026-11-11 15:28:44 | DEBUG   | 2010.01.0053866/2025-12   | docs_processo         | Lendo documento Memorando 2073 (SEI 153170494)
+2026-11-11 15:28:46 | DEBUG   | 2010.01.0053866/2025-12   | docs_processo         | Documento 153170494 lido (2127 caracteres)
+2026-11-11 15:28:46 | INFO    | 2010.01.0053866/2025-12   | __main__              | Memo DEPROC de 09/11/2026 (a partir de 15/10/2026): não é cancelado: Memorando 2073 (SEI 153170494)
+2026-11-11 15:28:46 | INFO    | 2010.01.0053866/2025-12   | __main__              | 2 memorando(s) da GEACS; memos DEPROC antigos a cancelar: nenhum
+2026-11-11 15:28:46 | INFO    | 2010.01.0053866/2025-12   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-11_15-28-04.xlsx
+2026-11-11 15:28:53 | DEBUG   | 2010.01.0053866/2025-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-11 15:28:53 | INFO    | 2010.01.0053866/2025-12   | __main__              | FIM (17.1s) | Próxima ação: -
+2026-11-11 15:28:53 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [2/96]
+2026-11-11 15:28:57 | INFO    | 2010.01.0082932/2024-60   | __main__              | Árvore: 18 documento(s) | GEACS: 2 memorando(s)
+2026-11-11 15:28:57 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 16 (SEI 105206044)
+2026-11-11 15:28:58 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(104, 'Connection reset by peer')': /session/f390638ab54f06e0aefe9ab435f37824
+2026-11-11 15:28:58 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=51235): Failed to establish a new connection: [Errno 111] Connection refused")': /session/f390638ab54f06e0aefe9ab435f37824
+2026-11-11 15:28:58 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=51235): Failed to establish a new connection: [Errno 111] Connection refused")': /session/f390638ab54f06e0aefe9ab435f37824
+2026-11-11 15:28:58 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-11 15:28:58 | INFO    | -                         | __main__              | Processos: 1 | Sem erro: 1 | Com erro: 0
+2026-11-11 15:28:58 | INFO    | -                         | __main__              |     1 | Nenhum memo DEPROC antigo cancelado
+2026-11-11 15:28:58 | INFO    | -                         | __main__              | Duração total da execução: 54.1s
+2026-11-11 15:28:58 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

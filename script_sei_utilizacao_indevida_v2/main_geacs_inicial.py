@@ -31,9 +31,7 @@ from processos_a_processar import ler_processos_a_processar
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
 from Registro import ProxAcao, RegistroMain, registrar_erro, registrar_sem_acesso
 from sei_automacao.exceptions import UnidadeSemAcessoException
-from sei_automacao.processo.arvore import listar_documentos_arvore
-from sei_automacao.processo.marcadores import listar_marcadores
-from sei_automacao.ubiquo.busca import acessar_processo
+from sei_automacao.processo import acessar_processo, listar_documentos_arvore, listar_marcadores
 from selenium import webdriver
 from sessao_sei import abrir_sei, restaurar_navegador, sessao_encerrada
 from tags import (
@@ -43,7 +41,6 @@ from tags import (
     TAG_MEMO_APIS_PERIODO_DEPENDENTES,
     TAG_MEMO_APIS_SEM_MEMO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
-    TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
     TAG_NO_BLOCO_APIS_SEM_USO,
     TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
@@ -67,11 +64,11 @@ from tags import (
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import TextoMemoPendente
 
 AGORA = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-SCRIPT = 'geacs'
+SCRIPT = 'geacs_inicial'
 
 DIR_UI_ANTIGAS_XLS = DIR_DADOS / 'utilizacoes' / 'antigas' / 'xlsx'
 
-ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_geacs.log'
+ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_geacs_inicial.log'
 
 logger = logging.getLogger(__name__)
 
@@ -113,8 +110,7 @@ def _separar_velho(driver: webdriver.Remote, registro: RegistroMain) -> None:
     """Processo VELHO: marcado e não processado.
 
     TODO: definir o fluxo dos processos VELHOS. Todos os processos com o
-    marcador VELHO (00) ou com o 01.03 da versão anterior, e os identificados
-    na execução, devem passar por ele."""
+    marcador VELHO (00) e os identificados pelos memos devem passar por ele."""
     registro.velho = True
     if registro.processo_fechado:
         # O VELHO não é processado: não há por que reabrir
@@ -135,10 +131,15 @@ def _separar_velho(driver: webdriver.Remote, registro: RegistroMain) -> None:
     registro.prox_acao = ProxAcao.VELHO_AGUARDAR_DEFINICAO
 
 
-def _eh_velho_pelo_texto(driver: webdriver.Remote, registro: RegistroMain) -> bool:
-    """Memos da GEACS à DISA e à DEPROC (seguidos) antes da data de corte."""
+def _eh_velho_pelo_texto(driver: webdriver.Remote, registro: RegistroMain, estado: str | None) -> bool:
+    """Memo da GEACS à DISA e/ou à DEPROC antes da data de corte. Processo
+    já tratado pelo script (01) não é analisado, exceto o que só aguarda o
+    fluxo normal (01.00: o ADC PDF ANT AUT/MAN põe o 01 sem fazer a análise)."""
+    if tem_tag(registro, TAG_PROCESSO_NOVO) and estado != TAG_AGUARDA_FLUXO_NORMAL:
+        logger.debug('Processo já tratado pelo script: memos não analisados para o VELHO')
+        return False
     memos = encontrar_memos_velho(driver, registro.tds_docs)
-    if memos is None:
+    if not memos:
         return False
     registro.memos_velho_sei = [memo['numero_sei'] for memo in memos]
     return True
@@ -146,8 +147,8 @@ def _eh_velho_pelo_texto(driver: webdriver.Remote, registro: RegistroMain) -> bo
 
 def _reabrir_se_fechado(driver: webdriver.Remote, registro: RegistroMain) -> None:
     """Processo fechado no setor só é reaberto se vai receber documentos do
-    fluxo: tem memorando da APIS destinado à GEACS e não está com MANUAL ou
-    ASSINADO. Senão (ex.: concluído conforme uma Informação), fica fechado,
+    fluxo: tem memorando da APIS destinado à GEACS e não está com MANUAL.
+    Senão (ex.: concluído conforme uma Informação), fica fechado,
     sem nenhuma ação no SEI."""
     if not registro.processo_fechado:
         return
@@ -192,14 +193,8 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         registro.prox_acao = _PROX_ACAO_POR_CONCLUSAO[estado]
         return
 
-    if estado is None and tem_tag(registro, TAG_MEMO_DEPROC_NO_BLOCO):
-        logger.info('Fluxo: concluído na versão anterior (só memo DEPROC)')
-        registro.fluxo = 'concluído (versão anterior)'
-        registro.prox_acao = ProxAcao.ASSINAR_DEPROC
-        return
-
     # Antes de qualquer memo: o VELHO não pode receber memos do fluxo atual
-    if _eh_velho_pelo_texto(driver, registro):
+    if _eh_velho_pelo_texto(driver, registro, estado):
         _separar_velho(driver, registro)
         return
 
@@ -292,7 +287,7 @@ def main():
                     break
 
     except Exception:
-        logger.exception('Erro crítico na execução do main_geacs')
+        logger.exception('Erro crítico na execução do main_geacs_inicial')
         raise
 
     finally:

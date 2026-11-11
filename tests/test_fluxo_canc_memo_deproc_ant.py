@@ -1,20 +1,23 @@
-"""Fluxo de cancelar o memo DEPROC antigo (main_geacs_canc_memo_deproc_ant.py),
+"""Fluxo de cancelar os memos DEPROC antigos (main_geacs_canc_memo_deproc_ant.py),
 com o SEI simulado."""
 
-import re
 from datetime import datetime
 
 import main_geacs_canc_memo_deproc_ant as fluxo
 import planilha_controle
 import pytest
-from constantes import UNIDADE_GEACS
+from constantes import UNIDADE_APIS, UNIDADE_GEACS
 from openpyxl import load_workbook
 from planilha_controle import PlanilhaControleGeral
 from selenium.common.exceptions import TimeoutException
 
 from tests.sei_falso import DriverFalso, SEIFalso
 
-ASSUNTO_ANTIGO = 'Assunto: Levantamento ANTIGO'
+
+def texto_memo(data='18 de setembro de 2026', para='IPSEMG/DEPROC', assunto='Levantamento de coparticipação - utilização indevida da assistência à saúde', corpo=None):
+    corpo = corpo or 'Solicitamos o levantamento dos valores de coparticipação referentes aos atendimentos efetivamente realizados.'
+    linha_data = f'Belo Horizonte, {data}.' if data else ''
+    return f'Memorando nº 1/2026\n{linha_data}\nPara: {para}\nAssunto: {assunto}\n{corpo}'
 
 
 class SEICancelamento(SEIFalso):
@@ -22,12 +25,15 @@ class SEICancelamento(SEIFalso):
         super().__init__()
         self.selecionados: list[str] = []
         self.cancelados: list[tuple[str, str]] = []
-        self.cancelamento_disponivel = True
+        self.sem_opcao: set[str] = set()
 
     def _cancelar(self, driver, motivo):
-        if not self.cancelamento_disponivel:
+        if self.selecionados[-1] in self.sem_opcao:
             raise TimeoutException()
         self.cancelados.append((self.selecionados[-1], motivo))
+
+    def memo_antigo(self, **kwargs) -> str:
+        return self.novo_doc('Memorando 9', UNIDADE_GEACS, texto_memo(**kwargs))
 
     def instalar(self, monkeypatch) -> None:
         super().instalar(monkeypatch)
@@ -37,7 +43,6 @@ class SEICancelamento(SEIFalso):
         monkeypatch.setattr(fluxo, 'ler_texto_doc', lambda driver, doc: self.textos[doc['numero_sei']])
         monkeypatch.setattr(fluxo, 'selecionar_doc', lambda driver, doc: self.selecionados.append(doc['numero_sei']))
         monkeypatch.setattr(fluxo, 'cancelar_doc', self._cancelar)
-        monkeypatch.setattr(fluxo, 'PADRAO_MEMO_DEPROC_ANTIGO', re.compile('Levantamento ANTIGO'))
 
 
 @pytest.fixture
@@ -52,64 +57,94 @@ def _passar():
     return fluxo._processar_linha(DriverFalso(), 'PROC')
 
 
-def test_cancela_o_memo_que_casa_com_o_padrao(sei):
-    sei.memo_geacs('Levantamento NOVO')
-    antigo = sei.novo_doc('Memorando 9', UNIDADE_GEACS, ASSUNTO_ANTIGO)
+def _cancelados(sei):
+    return [numero for numero, _ in sei.cancelados]
+
+
+def test_cancela_todos_os_memos_deproc_antigos(sei):
+    primeiro = sei.memo_antigo()
+    segundo = sei.memo_antigo(data='14 de outubro de 2026', para='IPSEMG/DEPROC-Utilização', assunto='Levantamento de coparticipação – utilização indevida da assistência à saúde')
 
     registro = _passar()
 
     assert registro.erro is None
-    assert sei.cancelados == [(antigo, 'Documento será ou já foi substituído por uma nova versão')]
+    assert _cancelados(sei) == [primeiro, segundo]
+    assert {motivo for _, motivo in sei.cancelados} == {'Documento será ou já foi substituído por uma nova versão'}
     assert registro.canc_memo_deproc_ant_cancelado
-    assert registro.canc_memo_deproc_ant_sei == antigo
+    assert registro.canc_memo_deproc_ant_sei == [primeiro, segundo]
+    assert registro.to_dict()['canc_memo_deproc_ant_sei'] == f'{primeiro}; {segundo}'
     assert registro.canc_memo_deproc_ant_em == registro.ultima_passagem
 
 
 @pytest.mark.parametrize(
-    ('preparar', 'mensagem'),
+    'kwargs',
     [
-        (lambda sei: sei.memo_geacs('Levantamento NOVO'), 'não encontrado'),
-        (lambda sei: [sei.novo_doc('Memorando 8', UNIDADE_GEACS, ASSUNTO_ANTIGO) for _ in range(2)], 'Mais de um'),
+        pytest.param({'data': '15 de outubro de 2026'}, id='no dia do corte'),
+        pytest.param({'data': '3 de novembro de 2026'}, id='depois do corte'),
+        pytest.param({'para': 'IPSEMG/DISA-UTI-INDEV'}, id='outro destinatario'),
+        pytest.param({'assunto': 'Coparticipação apurada – utilização indevida da assistência à saúde'}, id='outro assunto'),
+        pytest.param({'corpo': 'Encaminhamos os relatórios da rede credenciada.'}, id='sem o trecho do levantamento'),
     ],
 )
-def test_nenhum_ou_mais_de_um_memo_nao_cancela(sei, preparar, mensagem):
-    preparar(sei)
+def test_memo_que_nao_e_o_antigo_nao_e_cancelado(sei, kwargs):
+    sei.memo_antigo(**kwargs)
     registro = _passar()
 
-    assert mensagem in registro.erro
+    assert registro.erro is None
     assert sei.cancelados == []
+    assert not registro.canc_memo_deproc_ant_cancelado
+    assert _passar().para_log()['prox_acao'] == 'Nenhum memo DEPROC antigo cancelado'
 
 
-def test_sem_padrao_definido_nao_cancela(sei, monkeypatch):
-    sei.novo_doc('Memorando 9', UNIDADE_GEACS, ASSUNTO_ANTIGO)
-    monkeypatch.setattr(fluxo, 'PADRAO_MEMO_DEPROC_ANTIGO', None)
+def test_espacos_e_maiusculas_sao_ignorados(sei):
+    numero = sei.novo_doc(
+        'Memorando 9',
+        UNIDADE_GEACS,
+        'BELO HORIZONTE, 2 de Outubro de 2026.\nPara:  IPSEMG/DEPROC\n'
+        'ASSUNTO: Levantamento de\ncoparticipação -  utilização indevida da assistência à saúde\n'
+        'levantamento dos valores\nde coparticipação referentes aos atendimentos efetivamente realizados',
+    )
+    _passar()
+
+    assert _cancelados(sei) == [numero]
+
+
+def test_so_memorandos_da_geacs(sei):
+    sei.novo_doc('Memorando 9', UNIDADE_APIS, texto_memo())
+    sei.novo_doc('Despacho 9', UNIDADE_GEACS, texto_memo())
     registro = _passar()
 
-    assert 'Padrão do memo DEPROC antigo não definido' in registro.erro
     assert sei.cancelados == []
+    assert registro.erro is None
 
 
-def test_memo_da_apis_com_o_padrao_nao_e_cancelado(sei):
-    # Só os memorandos da GEACS: o da APIS (sei_falso.MEMO_APIS) não entra
-    sei.textos[sei.docs[-1]['numero_sei']] += f'\n{ASSUNTO_ANTIGO}'
+def test_sem_data_legivel_nao_cancela_e_vira_erro(sei):
+    sem_data = sei.memo_antigo(data=None)
+    antigo = sei.memo_antigo()
     registro = _passar()
 
-    assert 'não encontrado' in registro.erro
-    assert sei.cancelados == []
+    assert _cancelados(sei) == [antigo]
+    assert registro.canc_memo_deproc_ant_nao_cancelados == [sem_data]
+    assert registro.tipo_erro == 'ErroAvaliacao'
+    assert 'sem data legível' in registro.erro
 
 
-def test_cancelamento_indisponivel_vira_erro_sem_traceback(sei):
-    sei.novo_doc('Memorando 9', UNIDADE_GEACS, ASSUNTO_ANTIGO)
-    sei.cancelamento_disponivel = False
+def test_cancelamento_indisponivel_nao_impede_os_outros(sei):
+    sem_opcao = sei.memo_antigo()
+    antigo = sei.memo_antigo()
+    sei.sem_opcao = {sem_opcao}
     registro = _passar()
 
+    assert _cancelados(sei) == [antigo]
+    assert registro.canc_memo_deproc_ant_sei == [antigo]
+    assert registro.canc_memo_deproc_ant_nao_cancelados == [sem_opcao]
     assert registro.tipo_erro == 'ErroAvaliacao'
     assert 'Cancelar Documento' in registro.erro
-    assert not registro.canc_memo_deproc_ant_cancelado
+    assert registro.para_log()['prox_acao'] == '1 memo(s) DEPROC antigo(s) cancelado(s)'
 
 
 def test_processo_fechado_nao_e_reaberto(sei):
-    sei.novo_doc('Memorando 9', UNIDADE_GEACS, ASSUNTO_ANTIGO)
+    sei.memo_antigo()
     sei.processo_fechado = True
     registro = _passar()
 
@@ -131,9 +166,9 @@ def test_planilha_de_controle_mantem_prox_acao_fluxo_e_erro_dos_outros_fluxos(se
         'erro': None,
         'tag_processo_novo': True,
     }
-    PlanilhaControleGeral('geacs', 'exec1', arquivo).registrar(anterior)
+    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(anterior)
 
-    sei.novo_doc('Memorando 9', UNIDADE_GEACS, ASSUNTO_ANTIGO)
+    sei.memo_antigo()
     PlanilhaControleGeral(fluxo.SCRIPT, 'exec2', arquivo).registrar(_passar().to_dict())
 
     processos = load_workbook(arquivo)['processos']
@@ -149,8 +184,9 @@ def test_planilha_de_controle_mantem_prox_acao_fluxo_e_erro_dos_outros_fluxos(se
 
 
 def test_erro_vai_para_colunas_proprias(sei):
+    sei.memo_antigo(data=None)
     dados = _passar().to_dict()
 
     assert 'erro' not in dados
     assert 'prox_acao' not in dados
-    assert 'não encontrado' in dados['canc_memo_deproc_ant_erro']
+    assert 'sem data legível' in dados['canc_memo_deproc_ant_erro']

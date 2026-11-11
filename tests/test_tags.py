@@ -1,10 +1,12 @@
 import re
 
-import main_geacs
+import main_geacs_inicial
 import pytest
 import tags
 from rede_propria import ErroAvaliacao
 from Registro import RegistroMain
+
+from tests.sei_falso import DISA_NAO_USOU_RP_ANTIGO, DISA_USOU_RP_ANTIGO, MANTIS_USOU_RC_ANTIGO
 
 
 @pytest.fixture
@@ -30,7 +32,7 @@ def test_novo_estado_remove_o_anterior(registro):
 
 
 def test_marcador_informativo_se_acumula(registro):
-    tags.adicionar_tag(None, registro, tags.TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO)
+    tags.adicionar_tag(None, registro, tags.TAG_PERIODO_VAR_DEP)
 
     assert registro.marcadores_removidos == []
     assert tags.tem_tag(registro, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA)
@@ -40,14 +42,6 @@ def test_adicionar_se_ausente_nao_repete(registro):
     tags.adicionar_tag_se_ausente(None, registro, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA)
 
     assert registro.marcadores_adicionados == []
-
-
-def test_par_base_disa_troca_o_anterior(registro):
-    tags.adicionar_tag(None, registro, tags.TAG_DISA_USOU_RP)
-    tags.adicionar_tag(None, registro, tags.TAG_DISA_NAO_USOU_RP)
-
-    assert registro.marcadores_removidos == [tags.TAG_DISA_USOU_RP]
-    assert tags.tem_tag(registro, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA)
 
 
 def test_mais_de_um_estado_e_erro(registro):
@@ -83,36 +77,40 @@ def _registro_com(*marcadores) -> RegistroMain:
     [
         (),
         (tags.TAG_PROCESSO_VELHO,),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO, tags.TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO),
+        # 01.02.2 (versão anterior): não é conferido
+        (tags.TAG_PROCESSO_NOVO, 'v2v: 01.02.2 - Mat. N Encontradas Base DISA', tags.TAG_MEMO_APIS_SEM_MEMO),
+        ('v2v: 01.02.2 - Mat. N Encontradas Base DISA',),
         (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_PERIODO_VAR_DEP, tags.TAG_DISA_USOU_RP, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO, tags.TAG_VELHO_MEMO_DEPROC, tags.TAG_PROCESSO_VELHO),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_MANTIS_USOU_RP, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_NAO_USOU_RP, tags.TAG_MANTIS_USOU_RP, tags.TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RP, tags.TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_NAO_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RP, tags.TAG_MANTIS_USOU_RC, tags.TAG_MEMO_DEPROC_COPARTICIPACAO),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_NAO_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RC, tags.TAG_NO_BLOCO_APIS_SEM_USO),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_MANTIS_USOU_RP, tags.TAG_MANTIS_USOU_RC, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_PERIODO_VAR_DEP, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_VELHO_MEMO_DEPROC, tags.TAG_PROCESSO_VELHO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_DEPROC_COPARTICIPACAO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_APIS_SEM_USO),
         # Sem estado: versão anterior ou falha antes do memo à APIS
         (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS),
-        (tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO,),
+        # Marcadores 01.03 da versão anterior: não são mais lidos
+        ('v2v: 01.03 - Memos DISA e DEPROC no Bloco', 'v2v: 01.03 - Memo DEPROC no Bloco', tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_VELHO_MEMO_DISA),
         # 1.0 (veio do ADC PDF ANT AUT): informativo antigo equivale a sem estado
         (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_FLUXO_NORMAL),
         (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_AGUARDA_FLUXO_NORMAL),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_AGUARDA_FLUXO_NORMAL),
         # Período inválido achado depois da base DISA (processos da versão anterior)
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_MEMO_APIS_FORMATO_INVALIDO),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_NAO_USOU_RP, tags.TAG_MEMO_APIS_FORMATO_INVALIDO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_APIS_FORMATO_INVALIDO),
         # Marcador manual "Aguarda" (memo assinado), no lugar do "No Bloco"
         (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_APIS_SEM_MEMO),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_AGUARDA_APIS_FORMATO_INVALIDO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_APIS_FORMATO_INVALIDO),
         (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_AGUARDA_APIS_MATRICULAS),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_PERIODO_VAR_DEP, tags.TAG_DISA_USOU_RP, tags.TAG_AGUARDA_APIS_PERIODO_DEPS),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_MANTIS_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RC, tags.TAG_AGUARDA_DISA_VALIDAR_CONSTA),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_NAO_USOU_RP, tags.TAG_MANTIS_USOU_RP, tags.TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RP, tags.TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_NAO_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RP, tags.TAG_MANTIS_USOU_RC, tags.TAG_AGUARDA_DEPROC_COPARTICIPACAO),
-        (tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_NAO_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RP, tags.TAG_MANTIS_NAO_USOU_RC, tags.TAG_AGUARDA_APIS_SEM_USO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_PERIODO_VAR_DEP, tags.TAG_AGUARDA_APIS_PERIODO_DEPS),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DISA_VALIDAR_CONSTA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DEPROC_COPARTICIPACAO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_APIS_SEM_USO),
+        # Marcadores de uso da RP / RC (versão anterior): não são conferidos
+        (tags.TAG_PROCESSO_NOVO, DISA_USOU_RP_ANTIGO, DISA_NAO_USOU_RP_ANTIGO, MANTIS_USOU_RC_ANTIGO, tags.TAG_NO_BLOCO_APIS_SEM_USO),
+        (DISA_USOU_RP_ANTIGO,),
     ],
 )
 def test_marcadores_consistentes(marcadores):
@@ -125,31 +123,16 @@ def test_marcadores_consistentes(marcadores):
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA, tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS), 'mais de um marcador de estado'),
         ((tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA,), 'sem o marcador'),
         ((tags.TAG_AGUARDA_FLUXO_NORMAL,), 'sem o marcador'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO, tags.TAG_MEMO_DEPROC_NO_BLOCO), 'os dois marcadores 01.03'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_DEPROC_NO_BLOCO, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA), 'concluído na versão anterior'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), '01.02.1 - Mat. N Encontradas Base APIS com o estado 01.10'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_DISA_NAO_USOU_RP), 'são alternativos'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MANTIS_USOU_RC, tags.TAG_MANTIS_NAO_USOU_RC), 'são alternativos'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MANTIS_NAO_USOU_RC, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), '01.08.3 - MANTIS: Não Usou RC com o estado 01.10 - No Bloco DEPROC: Coparticipação'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MANTIS_USOU_RC, tags.TAG_NO_BLOCO_APIS_SEM_USO), '01.08.3 - MANTIS: Usou RC com o estado 01.10 - No Bloco APIS: Sem Uso'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_APIS_SEM_USO), '01.10 - No Bloco APIS: Sem Uso sem 01.06.2 - Base DISA: Não Usou RP e'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_DISA_USOU_RP, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), '01.06.2 - Base DISA: Usou RP com o estado 01.10'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MANTIS_USOU_RP, tags.TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO), 'MANTIS: Usou RP com o estado 01.09 - No Bloco DISA: Relat. s/ MANTIS'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA), 'sem 01.06.2 - Base DISA: Usou RP e 01.08.2 - MANTIS: Usou RP'),
         ((tags.TAG_PROCESSO_VELHO, tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), 'em processo VELHO'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_PERIODO_VAR_DEP, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), '01.01 - Período Variável p/ Dependentes com o estado'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO, tags.TAG_MEMO_APIS_SEM_MEMO), '01.02.2 - Mat. N Encontradas Base DISA com o estado'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS), '01.06.1 - No Bloco APIS: Matrículas sem 01.02.1'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_APIS_PERIODO_DEPENDENTES), 'sem 01.01'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_VELHO_MEMO_DISA), 'sem 01.03'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMOS_DISA_DEPROC_NO_BLOCO, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA), 'em processo VELHO'),
+        ((tags.TAG_PROCESSO_VELHO, tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA), 'em processo VELHO'),
         # "No Bloco" e "Aguarda" juntos: quem colocou o "Aguarda" não removeu o "No Bloco"
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_APIS_SEM_MEMO, tags.TAG_AGUARDA_APIS_SEM_MEMO), 'mais de um marcador de estado'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DISA_VALIDAR_CONSTA), '01.09.1 - Aguarda DISA: Validar (Consta) sem 01.06.2 - Base DISA: Usou RP'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_APIS_MATRICULAS), 'sem 01.02.1'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MANTIS_USOU_RC, tags.TAG_AGUARDA_APIS_SEM_USO), 'com o estado 01.10.1 - Aguarda APIS: Sem Uso'),
         ((tags.TAG_PROCESSO_VELHO, tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DEPROC_COPARTICIPACAO), 'em processo VELHO'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_DISA_NOVO, tags.TAG_AGUARDA_APIS_SEM_MEMO), '01.02.2 - Mat. N Encontradas Base DISA com o estado'),
     ],
 )
 def test_marcadores_inconsistentes(marcadores, trecho):
@@ -160,8 +143,10 @@ def test_marcadores_inconsistentes(marcadores, trecho):
 @pytest.mark.parametrize(
     ('marcadores', 'problema'),
     [
-        ([tags.TAG_DEPROC_TRATADO, tags.TAG_DEPROC_RELATORIO_ANEXADO, tags.TAG_DEPROC_CONCLUIDO_MEMO], 'mais de um marcador de estado'),
-        ([tags.TAG_DEPROC_CONCLUIDO_MEMO], 'sem o marcador "01 - Tratado pelo Script"'),
+        ([tags.TAG_DEPROC_TRATADO, tags.TAG_DEPROC_RELATORIO_ANEXADO, tags.TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA], 'mais de um marcador de estado'),
+        ([tags.TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA], 'sem o marcador "01 - Tratado pelo Script"'),
+        ([tags.TAG_DEPROC_TRATADO, tags.TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA, tags.TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA], 'mais de um marcador de estado'),
+        ([tags.TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA], 'sem o marcador "01 - Tratado pelo Script"'),
     ],
 )
 def test_marcadores_da_deproc_inconsistentes(marcadores, problema):
@@ -170,7 +155,7 @@ def test_marcadores_da_deproc_inconsistentes(marcadores, problema):
 
 
 def test_marcadores_da_deproc_consistentes():
-    tags.conferir_marcadores_deproc(_registro_com(tags.TAG_DEPROC_TRATADO, tags.TAG_DEPROC_CONCLUIDO_MEMO))
+    tags.conferir_marcadores_deproc(_registro_com(tags.TAG_DEPROC_TRATADO, tags.TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA))
 
 
 def test_todo_memo_no_bloco_tem_o_seu_aguarda():
@@ -184,4 +169,4 @@ def test_todo_memo_no_bloco_tem_o_seu_aguarda():
 
 
 def test_prox_acao_de_todo_memo_no_bloco():
-    assert set(main_geacs._PROX_ACAO_POR_NO_BLOCO) == set(tags.TAGS_NO_BLOCO_NOVO)
+    assert set(main_geacs_inicial._PROX_ACAO_POR_NO_BLOCO) == set(tags.TAGS_NO_BLOCO_NOVO)

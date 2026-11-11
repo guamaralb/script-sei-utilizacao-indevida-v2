@@ -39,9 +39,18 @@ lint = {cmd = 'poetry run ruff check'}
 pre_format = {cmd = 'poetry run ruff check --fix'}
 format = {cmd = 'poetry run ruff format'}
 
-# FLUXO NORMAL
-run_geacs = 'python script_sei_utilizacao_indevida_v2/main_geacs.py'
-pre_run_geacs = {cmd = "poetry run task format"}
+# FLUXO INICIAL (NORMAL): DO MEMO DA APIS AOS MEMOS À APIS, À DISA OU À DEPROC
+run_geacs_inicial = 'python script_sei_utilizacao_indevida_v2/main_geacs_inicial.py'
+pre_run_geacs_inicial = {cmd = "poetry run task format"}
+
+# RESPOSTAS (TODO: FLUXOS AINDA NÃO MONTADOS): CONFEREM O MARCADOR "AGUARDA"
+# E TERMINAM COM ERRO, SEM AÇÃO NO SEI
+run_geacs_resp_apis = 'python script_sei_utilizacao_indevida_v2/main_geacs_resp_apis.py'
+pre_run_geacs_resp_apis = {cmd = "poetry run task format"}
+run_geacs_resp_disa = 'python script_sei_utilizacao_indevida_v2/main_geacs_resp_disa.py'
+pre_run_geacs_resp_disa = {cmd = "poetry run task format"}
+run_geacs_resp_deproc = 'python script_sei_utilizacao_indevida_v2/main_geacs_resp_deproc.py'
+pre_run_geacs_resp_deproc = {cmd = "poetry run task format"}
 
 # ADICIONA PDF DA PLANILHA ANTIGA - AUTOMÁTICO: BAIXA A PLANILHA DO SEI E ADD
 # PDF NO PROCESSO
@@ -54,6 +63,12 @@ pre_run_geacs_adc_pdf_ant_aut = {cmd = "poetry run task format"}
 run_geacs_adc_pdf_ant_man = 'python script_sei_utilizacao_indevida_v2/main_geacs_adc_pdf_ant_man.py'
 pre_run_geacs_adc_pdf_ant_man = {cmd = "poetry run task format"}
 
+# VERIFICAR MARCADORES: LÊ OS MARCADORES E ATUALIZA AS COLUNAS TAG_* (UMA POR
+# MARCADOR VÁLIDO) E DEMAIS_MARCADORES DA PLANILHA DE CONTROLE, SEM ALTERAR A
+# PROX_ACAO E SEM AÇÃO NO SEI
+run_geacs_verificar_marcadores = 'python script_sei_utilizacao_indevida_v2/main_geacs_verificar_marcadores.py'
+pre_run_geacs_verificar_marcadores = {cmd = "poetry run task format"}
+
 # CANCELAR MEMORANDO DEPROC ANTIGO: CANCELA O MEMO DEPROC ANTIGO DA GEACS
 # (SUBSTITUÍDO POR UMA NOVA VERSÃO), SEM ALTERAR A PROX_ACAO
 run_geacs_canc_memo_deproc_ant = 'python script_sei_utilizacao_indevida_v2/main_geacs_canc_memo_deproc_ant.py'
@@ -61,8 +76,13 @@ pre_run_geacs_canc_memo_deproc_ant = {cmd = "poetry run task format"}
 
 # NA UNIDADE DA DEPROC: CONFERE O MEMO DEPROC ASSINADO, APURA A COPARTICIPAÇÃO
 # NA BASE DO MANTIS, ANEXA O RELATÓRIO EM PDF E CRIA O MEMO DE RESULTADO
-run_deproc = 'python script_sei_utilizacao_indevida_v2/main_deproc.py'
-pre_run_deproc = {cmd = "poetry run task format"}
+run_deproc_calcula_copa = 'python script_sei_utilizacao_indevida_v2/main_deproc_calcula_copa.py'
+pre_run_deproc_calcula_copa = {cmd = "poetry run task format"}
+
+# NA UNIDADE DA DEPROC: EXCLUI TODOS OS DOCUMENTOS DA DEPROC DO PROCESSO, SEM
+# ALTERAR A PROX_ACAO (COLUNA PRÓPRIA DEPROC_EXCLUIR_DOCS)
+run_deproc_excluir_docs = 'python script_sei_utilizacao_indevida_v2/main_deproc_excluir_docs.py'
+pre_run_deproc_excluir_docs = {cmd = "poetry run task format"}
 test = 'pytest'
 
 [tool.pytest.ini_options]

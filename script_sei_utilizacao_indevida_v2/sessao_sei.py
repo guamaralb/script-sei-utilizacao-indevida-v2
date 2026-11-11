@@ -9,12 +9,13 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from sei_automacao.auth.login import efetuar_login
-from sei_automacao.driver import iniciar_driver
+from sei_automacao import efetuar_login, iniciar_sei, trocar_unidade
 from selenium import webdriver
 from selenium.common.exceptions import InvalidSessionIdException, NoSuchWindowException
 
 logger = logging.getLogger(__name__)
+
+URL_SEI = 'https://www.sei.mg.gov.br'
 
 _SESSAO_ENCERRADA = (InvalidSessionIdException, NoSuchWindowException)
 
@@ -36,23 +37,21 @@ def restaurar_navegador(driver: webdriver.Remote) -> None:
 
 
 def alterar_unidade_sei(driver: webdriver.Remote, unidade: str) -> None:
-    """Troca a unidade em que o script trabalha no SEI (GEACS nos fluxos
-    normal, ADC PDF ANT AUT e PDF; DEPROC no fluxo DEPROC).
-
-    TODO: implementar na sei_automacao (alterar_unidade_sei) e chamar aqui.
-    Até lá, não faz nada: o usuário precisa entrar no SEI já na unidade
-    certa."""
-    logger.warning(f'TODO alterar_unidade_sei: troca de unidade ainda não implementada; confira se o SEI está na unidade {unidade}')
+    """Troca a unidade em que o script trabalha no SEI (GEACS nos fluxos da
+    GEACS; DEPROC no fluxo DEPROC), com trocar_unidade da sei_automacao."""
+    logger.info(f'Trocando para a unidade {unidade}')
+    trocar_unidade(driver, unidade)
+    logger.info(f'Unidade do SEI: {unidade}')
 
 
 def abrir_sei(unidade: str, download_dir: Path | None = None) -> webdriver.Remote:
     load_dotenv()
     logger.info('Iniciando navegador e login no SEI')
     opcoes = {'download_dir': download_dir} if download_dir else {}
-    driver = iniciar_driver(driver_type='chrome', **opcoes)
+    # iniciar_sei já abre a página do SEI (e fecha o navegador se falhar)
+    driver = iniciar_sei(URL_SEI, driver_type='chrome', **opcoes)
     try:
         driver.maximize_window()
-        driver.get('https://www.sei.mg.gov.br')
         efetuar_login(driver, os.getenv('SEI_LOGIN'), os.getenv('SEI_SENHA'), os.getenv('SEI_ORGAO'))
     except Exception:
         driver.quit()

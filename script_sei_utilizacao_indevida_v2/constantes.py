@@ -47,8 +47,7 @@ ARQ_MANTIS_REDE_CREDENCIADA = DIR_INPUTS / 'utilizacao_MANTIS-rede_credenciada.x
 # Grafias exatas retornadas pela árvore do SEI (são diferentes entre si)
 UNIDADE_GEACS = 'IPSEMG/GEACS - Utilização'
 UNIDADE_APIS = 'IPSEMG/APIS-Utilização'
-# TODO: confirmar a grafia da unidade da DEPROC na árvore e na troca de unidade
-UNIDADE_DEPROC = 'IPSEMG/DEPROC'
+UNIDADE_DEPROC = 'IPSEMG/DEPROC-Utilização'
 
 BLOCO_MEMO_DEPROC = 7697744
 
@@ -64,21 +63,26 @@ BLOCO_MEMO_APIS_FORMATO_INVALIDO = 7730341
 BLOCO_MEMO_APIS_PERIODO_DEPENDENTES = 7730905
 BLOCO_MEMO_APIS_SEM_USO = 7744349
 
-# Memo da DEPROC à GEACS com o resultado da coparticipação (fluxo DEPROC).
-# TODO: criar o bloco no SEI (unidade da DEPROC) e informar o número. Com
-# None, o processo para com erro antes de criar qualquer documento
-BLOCO_MEMO_DEPROC_RESULTADO = None
+# Memo da DEPROC à GEACS com o cálculo da coparticipação (fluxo DEPROC), na
+# unidade da DEPROC. Com None, o processo para com erro antes de criar
+# qualquer documento
+BLOCO_MEMO_GEACS_CALCULO_COPA = 7765003
 
 NOME_SIGNATARIO = 'Bruna Miiller Lavarini'
 CARGO_SIGNATARIO = 'Gerência de Auditoria e Contas da Saúde'
 # Quem assina o memo DEPROC (fluxo DEPROC): procurado no texto da assinatura
 # eletrônica, com e sem o "i" a mais
 PADRAO_ASSINATURA_MEMO_DEPROC = r'assinado\s+eletronicamente\s+por\s+Bruna\s+Mii?ller\s+Lavarini'
-# TODO: definir quem assina o memo da DEPROC (fluxo DEPROC). Com None, o
-# processo para com erro antes de criar qualquer documento
-NOME_SIGNATARIO_DEPROC = None
+# Quem assina o memo da DEPROC à GEACS com o cálculo da coparticipação
+# (MemoGeacsCalculoCopa, fluxo DEPROC). Com None, o processo para com erro
+# antes de criar qualquer documento
+NOME_SIGNATARIO_DEPROC = 'Danúbia Lacerda Gomes de Oliveira'
 CARGO_SIGNATARIO_DEPROC = 'Departamento de Processamento de Contas e Coparticipação - DEPROC'
 
-# Processo VELHO: memos da GEACS à DISA e à DEPROC (seguidos) datados antes
-# desta data
-DATA_CORTE_PROCESSO_VELHO = date(2026, 10, 1)
+# Processo VELHO: memorando da GEACS à DISA e/ou à DEPROC datado antes desta
+# data ("Belo Horizonte, <dia> de <mês> de <ano>." no texto)
+DATA_CORTE_PROCESSO_VELHO = date(2026, 10, 15)
+
+# Fluxo GEACS CANC MEMO DEPROC ANT: só são cancelados os memos DEPROC antigos
+# datados antes deste dia ("Belo Horizonte, <dia> de <mês> de <ano>.")
+DATA_CORTE_MEMO_DEPROC_ANTIGO = date(2026, 10, 15)

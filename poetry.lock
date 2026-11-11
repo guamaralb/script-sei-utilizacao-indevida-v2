@@ -966,17 +966,17 @@ files = [
 [[package]]
 name = "sei-automacao"
 version = "0.1.0"
-description = ""
+description = "Automação do SEI (Sistema Eletrônico de Informações) com Selenium: login, unidade, processos, documentos e marcadores."
 optional = false
-python-versions = ">=3.13,<4.0"
+python-versions = ">=3.10,<4.0"
 groups = ["main"]
 files = []
 develop = true
 
 [package.dependencies]
 num2words = ">=0.5.14,<0.6.0"
-selenium = "^4.39.0"
-webdriver-manager = "^4.0.2"
+selenium = ">=4.39.0,<5"
+webdriver-manager = ">=4.0.2,<5"
 
 [package.source]
 type = "directory"

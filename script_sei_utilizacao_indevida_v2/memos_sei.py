@@ -12,9 +12,8 @@ import re
 
 from constantes import UNIDADE_GEACS
 from docs_processo import encontrar_memo_por_assunto, filtrar_memos_unidade, memos_geacs_novos
-from sei_automacao.classes.Memorando import Memorando
-from sei_automacao.documento import inserir_bloco_ass
-from sei_automacao.processo import incluir_doc_sei_memo
+from sei_automacao.documento import incluir_doc_sei_memo, inserir_bloco_ass
+from sei_automacao.modelos import Memorando
 from selenium import webdriver
 
 logger = logging.getLogger(__name__)

@@ -1,6 +1,6 @@
 """Planilha de controle geral (dados/controle/controle_geral_de_processos.xlsx).
 
-Gravada por main_geacs.py depois de cada processo (PlanilhaControleGeral). A
+Gravada por main_geacs_inicial.py depois de cada processo (PlanilhaControleGeral). A
 coluna "script" distingue as passagens antigas do script de correção
 (correcao_rede_propria), que foi removido:
     - aba "processos": uma linha por processo, com a última passagem pelo
@@ -38,6 +38,7 @@ import pandas as pd
 from constantes import ARQ_CONTROLE_GERAL, DIR_BACKUP_CONTROLE
 from openpyxl.styles import Font, PatternFill
 from openpyxl.utils import get_column_letter
+from tags import COLUNA_DEMAIS_MARCADORES, COLUNAS_TAGS_VALIDOS, demais_marcadores
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,10 @@ _LARGURA_MAXIMA = 60
 _PREENCHIMENTO_ERRO = PatternFill(fill_type='solid', start_color='FFF4CCCC', end_color='FFF4CCCC')
 _PREENCHIMENTO_NAO_ENCONTRADA = PatternFill(fill_type='solid', start_color='FFFFE599', end_color='FFFFE599')
 
+# Coluna de marcadores que não existe mais: os marcadores do processo ficam em
+# tag_* (um por marcador válido) e demais_marcadores
+_COLUNAS_MARCADORES_OBSOLETAS = frozenset({'verificar_marcadores'})
+
 _COLUNAS_NAO_ENCONTRADAS = (
     'titular_nao_encontrado_base_geral',
     'deps_nao_encontrados_base_geral',
@@ -75,12 +80,34 @@ def _ler_aba(planilhas: dict[str, pd.DataFrame], aba: str) -> list[dict]:
     return df.to_dict('records')
 
 
+def _coluna_marcador_obsoleta(coluna) -> bool:
+    """Coluna tag_* de marcador que não é mais válido (o marcador vai para
+    demais_marcadores) ou coluna de marcadores que não existe mais."""
+    coluna = str(coluna)
+    return (coluna.startswith('tag_') and coluna not in COLUNAS_TAGS_VALIDOS) or coluna in _COLUNAS_MARCADORES_OBSOLETAS
+
+
+def migrar_colunas_marcadores(linhas: list[dict]) -> list[dict]:
+    """Remove as colunas de marcadores obsoletas. Os marcadores delas não se
+    perdem: sem demais_marcadores, ela é calculada a partir de
+    marcadores_finais (todos os marcadores do processo no fim da passagem). As
+    outras colunas ficam como estão."""
+    migradas = []
+    for linha in linhas:
+        nova = {coluna: valor for coluna, valor in linha.items() if not _coluna_marcador_obsoleta(coluna)}
+        finais = linha.get('marcadores_finais')
+        if nova.get(COLUNA_DEMAIS_MARCADORES) is None and isinstance(finais, str) and finais.strip():
+            nova[COLUNA_DEMAIS_MARCADORES] = demais_marcadores([tag.strip() for tag in finais.split(';')]) or None
+        migradas.append(nova)
+    return migradas
+
+
 def _ler(arquivo: Path) -> tuple[list[dict], list[dict]]:
     if not arquivo.exists():
         logger.info(f'Planilha de controle geral ainda não existe; será criada: {arquivo}')
         return [], []
     planilhas = pd.read_excel(arquivo, sheet_name=None, dtype=object)
-    return _ler_aba(planilhas, _ABA_PROCESSOS), _ler_aba(planilhas, _ABA_HISTORICO)
+    return migrar_colunas_marcadores(_ler_aba(planilhas, _ABA_PROCESSOS)), migrar_colunas_marcadores(_ler_aba(planilhas, _ABA_HISTORICO))
 
 
 def _atualizar_processos(processos: list[dict], passagens: list[dict]) -> list[dict]:

@@ -28,8 +28,8 @@ import os
 
 import pytest
 from constantes import CARGO_SIGNATARIO, NOME_SIGNATARIO, UNIDADE_GEACS
-from sei_automacao.processo import incluir_doc_sei_memo
-from sei_automacao.ubiquo.busca import acessar_processo
+from sei_automacao.documento import incluir_doc_sei_memo
+from sei_automacao.processo import acessar_processo
 from sessao_sei import abrir_sei
 
 from script_sei_utilizacao_indevida_v2.memorandos import MemoApisPeriodoDependentes, MemoApisSemUso

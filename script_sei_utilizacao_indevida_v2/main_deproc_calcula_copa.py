@@ -1,11 +1,12 @@
-"""Fluxo DEPROC (task run_deproc), na unidade da DEPROC: confere que o memo
+"""Fluxo DEPROC (task run_deproc_calcula_copa), na unidade da DEPROC: confere que o memo
 DEPROC da GEACS está assinado, apura a coparticipação na base do MANTIS
 (coparticipacao_deproc.py), anexa o relatório em PDF (relatorio_deproc.py) e
 cria o memo de resultado da DEPROC à GEACS, no bloco próprio.
 
 Usa os marcadores da unidade da DEPROC (TAG_DEPROC_*, em tags.py, com o
 mesmo prefixo "v2: " dos da GEACS): 01 (tratado), 01.01 (relatório anexado,
-estado de retomada) e 01.02 (memo no bloco, estado de conclusão). Dentro de cada etapa,
+estado de retomada), 01.02 (memo no bloco, aguarda assinatura) e 01.02.1
+(manual: memo encaminhado à GEACS, conclusão). Dentro de cada etapa,
 a retomada é pelo nome do PDF e pelo assunto do memo, na rodada (depois do
 último memo da APIS destinado à GEACS).
 """
@@ -17,7 +18,7 @@ from datetime import datetime
 import pandas as pd
 from constantes import (
     ARQ_BASE_DEPROC,
-    BLOCO_MEMO_DEPROC_RESULTADO,
+    BLOCO_MEMO_GEACS_CALCULO_COPA,
     CARGO_SIGNATARIO_DEPROC,
     DIR_CONTROLE,
     DIR_FLUXO_DEPROC_PDF,
@@ -49,13 +50,12 @@ from rede_propria import ErroAvaliacao
 from Registro import ProxAcao, RegistroDeproc, registrar_erro, registrar_sem_acesso
 from relatorio_deproc import incluir_relatorio_deproc
 from sei_automacao.exceptions import UnidadeSemAcessoException
-from sei_automacao.processo.arvore import listar_documentos_arvore
-from sei_automacao.processo.marcadores import listar_marcadores
-from sei_automacao.ubiquo.busca import acessar_processo
+from sei_automacao.processo import acessar_processo, listar_documentos_arvore, listar_marcadores
 from selenium import webdriver
 from sessao_sei import abrir_sei, restaurar_navegador, sessao_encerrada
 from tags import (
-    TAG_DEPROC_CONCLUIDO_MEMO,
+    TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA,
+    TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA,
     TAG_DEPROC_RELATORIO_ANEXADO,
     TAG_DEPROC_TRATADO,
     TAGS_DEPROC,
@@ -71,14 +71,14 @@ from tags import (
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import PADRAO_ASSUNTO_MEMO_DEPROC
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDeprocResultado import PADRAO_ASSUNTO_MEMO_DEPROC_RESULTADO, MemoDeprocResultado
+from script_sei_utilizacao_indevida_v2.memorandos.MemoGeacsCalculoCopa import PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA, MemoGeacsCalculoCopa
 from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import TextoMemoPendente
 
 AGORA = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-SCRIPT = 'deproc'
+SCRIPT = 'deproc_calcula_copa'
 FLUXO = 'DEPROC - COPARTICIPAÇÃO'
 
-ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_deproc.log'
+ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_deproc_calcula_copa.log'
 
 _PADRAO_ASSINATURA = re.compile(PADRAO_ASSINATURA_MEMO_DEPROC, re.IGNORECASE)
 
@@ -110,8 +110,8 @@ def _registrar_resultado(registro: RegistroDeproc, resultado: ResultadoDeproc) -
     registro.valor_total_em_aberto = resultado.totais.em_aberto
 
 
-def _montar_memo(registro: RegistroDeproc, dados: DadosUI, resultado: ResultadoDeproc, memo_deproc_geacs: DocArvore, doc_relatorio: str | None) -> MemoDeprocResultado:
-    return MemoDeprocResultado(
+def _montar_memo(registro: RegistroDeproc, dados: DadosUI, resultado: ResultadoDeproc, memo_deproc_geacs: DocArvore, doc_relatorio: str | None) -> MemoGeacsCalculoCopa:
+    return MemoGeacsCalculoCopa(
         dados=dados,
         resultado=resultado,
         doc_relatorio=doc_relatorio,
@@ -125,8 +125,8 @@ def _montar_memo(registro: RegistroDeproc, dados: DadosUI, resultado: ResultadoD
 def _conferir_configuracao() -> None:
     """Antes de qualquer documento: sem bloco ou signatário, o memo não pode
     ser criado, e o relatório ficaria sem memo."""
-    if BLOCO_MEMO_DEPROC_RESULTADO is None:
-        raise ErroAvaliacao('Bloco do memo de resultado da DEPROC não configurado (BLOCO_MEMO_DEPROC_RESULTADO)')
+    if BLOCO_MEMO_GEACS_CALCULO_COPA is None:
+        raise ErroAvaliacao('Bloco do memo de resultado da DEPROC não configurado (BLOCO_MEMO_GEACS_CALCULO_COPA)')
     if NOME_SIGNATARIO_DEPROC is None:
         raise ErroAvaliacao('Signatário do memo de resultado da DEPROC não configurado (NOME_SIGNATARIO_DEPROC)')
 
@@ -146,9 +146,14 @@ def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: p
     _conferir_marcadores(registro, 'no início da passagem')
 
     estado = estado_atual(registro, TAGS_ESTADO_DEPROC)
-    if estado == TAG_DEPROC_CONCLUIDO_MEMO:
-        logger.info('Concluído: memo de resultado da DEPROC já no bloco')
+    if estado == TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA:
+        # Quem assina coloca o 01.02.1 e remove o 01.02
+        logger.info('Memo de resultado da DEPROC no bloco: aguarda assinatura')
         registro.prox_acao = ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO
+        return
+    if estado == TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA:
+        logger.info('Concluído: memo de resultado da DEPROC encaminhado à GEACS')
+        registro.prox_acao = ProxAcao.DEPROC_MEMO_ENCAMINHADO
         return
 
     # Na DEPROC, o processo precisa estar aberto na unidade (enviado pela
@@ -188,13 +193,13 @@ def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: p
         driver,
         registro,
         memo,
-        BLOCO_MEMO_DEPROC_RESULTADO,
+        BLOCO_MEMO_GEACS_CALCULO_COPA,
         'memo_deproc_resultado',
         'de resultado da DEPROC',
-        PADRAO_ASSUNTO_MEMO_DEPROC_RESULTADO,
+        PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA,
         unidade=UNIDADE_DEPROC,
     )
-    adicionar_tag(driver, registro, TAG_DEPROC_CONCLUIDO_MEMO)
+    adicionar_tag(driver, registro, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)
     registrar_numeros_memos(driver, registro, UNIDADE_DEPROC)
     registro.prox_acao = ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO
 

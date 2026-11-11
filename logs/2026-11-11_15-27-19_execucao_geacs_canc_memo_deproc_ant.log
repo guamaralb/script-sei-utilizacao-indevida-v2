@@ -1,0 +1,12 @@
+2026-11-11 15:27:19 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (CANC MEMO DEPROC ANT - CANCELAR MEMO DEPROC ANTIGO) =================
+2026-11-11 15:27:19 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-11_15-27-19_execucao_geacs_canc_memo_deproc_ant.log
+2026-11-11 15:27:19 | INFO    | -                         | processos_a_processar | 96 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_canc_memo_deproc_ant
+2026-11-11 15:27:20 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-11 15:27:20 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-11 15:27:20 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-11 15:27:20 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-11 15:27:21 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-11 15:27:33 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-11 15:27:33 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-11 15:27:33 | INFO    | -                         | __main__              | Duração total da execução: 13.5s
+2026-11-11 15:27:33 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

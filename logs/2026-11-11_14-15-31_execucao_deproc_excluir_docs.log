@@ -1,0 +1,979 @@
+2026-11-11 14:15:31 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC EXCLUIR DOCS - EXCLUIR DOCUMENTOS DA DEPROC) =================
+2026-11-11 14:15:31 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-11_14-15-31_execucao_deproc_excluir_docs.log
+2026-11-11 14:15:31 | INFO    | -                         | processos_a_processar | 434 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_excluir_docs
+2026-11-11 14:15:32 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-11 14:15:32 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-11 14:15:32 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-11 14:15:32 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-11 14:15:33 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-11 14:15:48 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-11 14:15:48 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/DEPROC-Utilização
+2026-11-11 14:16:05 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/DEPROC-Utilização
+2026-11-11 14:16:05 | INFO    | 2010.01.0013878/2026-75   | __main__              | INÍCIO [1/434]
+2026-11-11 14:16:17 | ERROR   | 2010.01.0013878/2026-75   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_deproc_excluir_docs.py", line 119, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/ubiquo/busca.py", line 35, in acessar_processo
+    iframe_opcoes_processo = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'ifrConteudoVisualizacao'))
+    )
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x5b49bc7059fa <unknown>
+#1 0x5b49bc03b5b9 <unknown>
+#2 0x5b49bc091dfc <unknown>
+#3 0x5b49bc092071 <unknown>
+#4 0x5b49bc0de664 <unknown>
+#5 0x5b49bc0db8de <unknown>
+#6 0x5b49bc084b8b <unknown>
+#7 0x5b49bc085971 <unknown>
+#8 0x5b49bc6c8667 <unknown>
+#9 0x5b49bc6c6e95 <unknown>
+#10 0x5b49bc6b1f55 <unknown>
+#11 0x5b49bc6c7aea <unknown>
+#12 0x5b49bc69a6c9 <unknown>
+#13 0x5b49bc6ef9a8 <unknown>
+#14 0x5b49bc6efb45 <unknown>
+#15 0x5b49bc704353 <unknown>
+#16 0x7a6f18ca3dfa <unknown>
+#17 0x7a6f18d375cc <unknown>
+
+2026-11-11 14:16:17 | INFO    | 2010.01.0013878/2026-75   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-11_14-15-31.xlsx
+2026-11-11 14:16:24 | DEBUG   | 2010.01.0013878/2026-75   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-11 14:16:24 | WARNING | 2010.01.0013878/2026-75   | __main__              | FIM COM ERRO (18.8s) | TimeoutException: Tempo esgotado esperando elemento do SEI em acessar_processo (detalhes no log)
+2026-11-11 14:16:24 | INFO    | 2010.01.0029283/2026-76   | __main__              | INÍCIO [2/434]
+2026-11-11 14:16:28 | INFO    | 2010.01.0029283/2026-76   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:16:35 | DEBUG   | 2010.01.0029283/2026-76   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-11 14:16:35 | INFO    | 2010.01.0029283/2026-76   | __main__              | FIM (10.9s) | Próxima ação: -
+2026-11-11 14:16:35 | INFO    | 2010.01.0028535/2026-96   | __main__              | INÍCIO [3/434]
+2026-11-11 14:16:39 | INFO    | 2010.01.0028535/2026-96   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:16:45 | DEBUG   | 2010.01.0028535/2026-96   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-11 14:16:45 | INFO    | 2010.01.0028535/2026-96   | __main__              | FIM (10.7s) | Próxima ação: -
+2026-11-11 14:16:45 | INFO    | 2010.01.0036613/2026-46   | __main__              | INÍCIO [4/434]
+2026-11-11 14:16:49 | INFO    | 2010.01.0036613/2026-46   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:16:55 | DEBUG   | 2010.01.0036613/2026-46   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-11 14:16:55 | INFO    | 2010.01.0036613/2026-46   | __main__              | FIM (9.7s) | Próxima ação: -
+2026-11-11 14:16:55 | INFO    | 2010.01.0036622/2026-94   | __main__              | INÍCIO [5/434]
+2026-11-11 14:16:58 | INFO    | 2010.01.0036622/2026-94   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:17:04 | DEBUG   | 2010.01.0036622/2026-94   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-11 14:17:04 | INFO    | 2010.01.0036622/2026-94   | __main__              | FIM (9.4s) | Próxima ação: -
+2026-11-11 14:17:04 | INFO    | 2010.01.0026147/2026-67   | __main__              | INÍCIO [6/434]
+2026-11-11 14:17:08 | INFO    | 2010.01.0026147/2026-67   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:17:14 | DEBUG   | 2010.01.0026147/2026-67   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-11 14:17:14 | INFO    | 2010.01.0026147/2026-67   | __main__              | FIM (10.2s) | Próxima ação: -
+2026-11-11 14:17:14 | INFO    | 2010.01.0029284/2026-49   | __main__              | INÍCIO [7/434]
+2026-11-11 14:17:18 | INFO    | 2010.01.0029284/2026-49   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:17:24 | DEBUG   | 2010.01.0029284/2026-49   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-11 14:17:24 | INFO    | 2010.01.0029284/2026-49   | __main__              | FIM (10.0s) | Próxima ação: -
+2026-11-11 14:17:24 | INFO    | 2010.01.0026123/2026-36   | __main__              | INÍCIO [8/434]
+2026-11-11 14:17:28 | INFO    | 2010.01.0026123/2026-36   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:17:34 | DEBUG   | 2010.01.0026123/2026-36   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-11 14:17:34 | INFO    | 2010.01.0026123/2026-36   | __main__              | FIM (9.7s) | Próxima ação: -
+2026-11-11 14:17:34 | INFO    | 2010.01.0036618/2026-08   | __main__              | INÍCIO [9/434]
+2026-11-11 14:17:38 | INFO    | 2010.01.0036618/2026-08   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:17:44 | DEBUG   | 2010.01.0036618/2026-08   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-11 14:17:44 | INFO    | 2010.01.0036618/2026-08   | __main__              | FIM (10.0s) | Próxima ação: -
+2026-11-11 14:17:44 | INFO    | 2010.01.0028566/2026-35   | __main__              | INÍCIO [10/434]
+2026-11-11 14:17:50 | INFO    | 2010.01.0028566/2026-35   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:17:56 | DEBUG   | 2010.01.0028566/2026-35   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-11 14:17:56 | INFO    | 2010.01.0028566/2026-35   | __main__              | FIM (12.2s) | Próxima ação: -
+2026-11-11 14:17:56 | INFO    | 2010.01.0026156/2026-18   | __main__              | INÍCIO [11/434]
+2026-11-11 14:18:00 | INFO    | 2010.01.0026156/2026-18   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:18:07 | DEBUG   | 2010.01.0026156/2026-18   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-11 14:18:07 | INFO    | 2010.01.0026156/2026-18   | __main__              | FIM (10.5s) | Próxima ação: -
+2026-11-11 14:18:07 | INFO    | 2010.01.0028574/2026-13   | __main__              | INÍCIO [12/434]
+2026-11-11 14:18:11 | INFO    | 2010.01.0028574/2026-13   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:18:17 | DEBUG   | 2010.01.0028574/2026-13   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-11 14:18:17 | INFO    | 2010.01.0028574/2026-13   | __main__              | FIM (10.4s) | Próxima ação: -
+2026-11-11 14:18:17 | INFO    | 2010.01.0036681/2026-53   | __main__              | INÍCIO [13/434]
+2026-11-11 14:18:21 | INFO    | 2010.01.0036681/2026-53   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:18:28 | DEBUG   | 2010.01.0036681/2026-53   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-11 14:18:28 | INFO    | 2010.01.0036681/2026-53   | __main__              | FIM (10.7s) | Próxima ação: -
+2026-11-11 14:18:28 | INFO    | 2010.01.0029294/2026-70   | __main__              | INÍCIO [14/434]
+2026-11-11 14:18:31 | INFO    | 2010.01.0029294/2026-70   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:18:38 | DEBUG   | 2010.01.0029294/2026-70   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-11 14:18:38 | INFO    | 2010.01.0029294/2026-70   | __main__              | FIM (9.8s) | Próxima ação: -
+2026-11-11 14:18:38 | INFO    | 2010.01.0036716/2026-78   | __main__              | INÍCIO [15/434]
+2026-11-11 14:18:41 | INFO    | 2010.01.0036716/2026-78   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:18:48 | DEBUG   | 2010.01.0036716/2026-78   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-11 14:18:48 | INFO    | 2010.01.0036716/2026-78   | __main__              | FIM (10.0s) | Próxima ação: -
+2026-11-11 14:18:48 | INFO    | 2010.01.0036731/2026-61   | __main__              | INÍCIO [16/434]
+2026-11-11 14:18:51 | INFO    | 2010.01.0036731/2026-61   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:18:58 | DEBUG   | 2010.01.0036731/2026-61   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-11 14:18:58 | INFO    | 2010.01.0036731/2026-61   | __main__              | FIM (9.9s) | Próxima ação: -
+2026-11-11 14:18:58 | INFO    | 2010.01.0029297/2026-86   | __main__              | INÍCIO [17/434]
+2026-11-11 14:19:01 | INFO    | 2010.01.0029297/2026-86   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:19:07 | DEBUG   | 2010.01.0029297/2026-86   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-11 14:19:07 | INFO    | 2010.01.0029297/2026-86   | __main__              | FIM (9.9s) | Próxima ação: -
+2026-11-11 14:19:07 | INFO    | 2010.01.0029300/2026-05   | __main__              | INÍCIO [18/434]
+2026-11-11 14:19:11 | INFO    | 2010.01.0029300/2026-05   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:19:17 | DEBUG   | 2010.01.0029300/2026-05   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-11 14:19:17 | INFO    | 2010.01.0029300/2026-05   | __main__              | FIM (9.8s) | Próxima ação: -
+2026-11-11 14:19:17 | INFO    | 2010.01.0029295/2026-43   | __main__              | INÍCIO [19/434]
+2026-11-11 14:19:21 | INFO    | 2010.01.0029295/2026-43   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:19:27 | DEBUG   | 2010.01.0029295/2026-43   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-11 14:19:27 | INFO    | 2010.01.0029295/2026-43   | __main__              | FIM (10.0s) | Próxima ação: -
+2026-11-11 14:19:27 | INFO    | 2010.01.0026274/2026-33   | __main__              | INÍCIO [20/434]
+2026-11-11 14:19:31 | INFO    | 2010.01.0026274/2026-33   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:19:38 | DEBUG   | 2010.01.0026274/2026-33   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-11 14:19:38 | INFO    | 2010.01.0026274/2026-33   | __main__              | FIM (10.3s) | Próxima ação: -
+2026-11-11 14:19:38 | INFO    | 2010.01.0029307/2026-10   | __main__              | INÍCIO [21/434]
+2026-11-11 14:19:41 | INFO    | 2010.01.0029307/2026-10   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:19:48 | DEBUG   | 2010.01.0029307/2026-10   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-11 14:19:48 | INFO    | 2010.01.0029307/2026-10   | __main__              | FIM (10.1s) | Próxima ação: -
+2026-11-11 14:19:48 | INFO    | 2010.01.0013888/2026-96   | __main__              | INÍCIO [22/434]
+2026-11-11 14:19:51 | INFO    | 2010.01.0013888/2026-96   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:19:57 | DEBUG   | 2010.01.0013888/2026-96   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-11 14:19:57 | INFO    | 2010.01.0013888/2026-96   | __main__              | FIM (9.7s) | Próxima ação: -
+2026-11-11 14:19:57 | INFO    | 2010.01.0013896/2026-74   | __main__              | INÍCIO [23/434]
+2026-11-11 14:20:01 | INFO    | 2010.01.0013896/2026-74   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:20:07 | DEBUG   | 2010.01.0013896/2026-74   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-11 14:20:07 | INFO    | 2010.01.0013896/2026-74   | __main__              | FIM (9.9s) | Próxima ação: -
+2026-11-11 14:20:07 | INFO    | 2010.01.0013898/2026-20   | __main__              | INÍCIO [24/434]
+2026-11-11 14:20:11 | INFO    | 2010.01.0013898/2026-20   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:20:17 | DEBUG   | 2010.01.0013898/2026-20   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-11 14:20:17 | INFO    | 2010.01.0013898/2026-20   | __main__              | FIM (9.9s) | Próxima ação: -
+2026-11-11 14:20:17 | INFO    | 2010.01.0097572/2025-52   | __main__              | INÍCIO [25/434]
+2026-11-11 14:20:21 | INFO    | 2010.01.0097572/2025-52   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:20:27 | DEBUG   | 2010.01.0097572/2025-52   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-11 14:20:27 | INFO    | 2010.01.0097572/2025-52   | __main__              | FIM (10.2s) | Próxima ação: -
+2026-11-11 14:20:27 | INFO    | 2010.01.0025730/2026-74   | __main__              | INÍCIO [26/434]
+2026-11-11 14:20:31 | INFO    | 2010.01.0025730/2026-74   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:20:37 | DEBUG   | 2010.01.0025730/2026-74   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (26 passagem(ns) nesta execução)
+2026-11-11 14:20:37 | INFO    | 2010.01.0025730/2026-74   | __main__              | FIM (9.9s) | Próxima ação: -
+2026-11-11 14:20:37 | INFO    | 2010.01.0013893/2026-58   | __main__              | INÍCIO [27/434]
+2026-11-11 14:20:41 | INFO    | 2010.01.0013893/2026-58   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:20:46 | DEBUG   | 2010.01.0013893/2026-58   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (27 passagem(ns) nesta execução)
+2026-11-11 14:20:46 | INFO    | 2010.01.0013893/2026-58   | __main__              | FIM (9.2s) | Próxima ação: -
+2026-11-11 14:20:46 | INFO    | 2010.01.0025735/2026-36   | __main__              | INÍCIO [28/434]
+2026-11-11 14:20:50 | INFO    | 2010.01.0025735/2026-36   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:20:56 | DEBUG   | 2010.01.0025735/2026-36   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (28 passagem(ns) nesta execução)
+2026-11-11 14:20:56 | INFO    | 2010.01.0025735/2026-36   | __main__              | FIM (10.0s) | Próxima ação: -
+2026-11-11 14:20:56 | INFO    | 2010.01.0033780/2026-04   | __main__              | INÍCIO [29/434]
+2026-11-11 14:21:00 | INFO    | 2010.01.0033780/2026-04   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:21:05 | DEBUG   | 2010.01.0033780/2026-04   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (29 passagem(ns) nesta execução)
+2026-11-11 14:21:05 | INFO    | 2010.01.0033780/2026-04   | __main__              | FIM (9.1s) | Próxima ação: -
+2026-11-11 14:21:05 | INFO    | 2010.01.0033774/2026-69   | __main__              | INÍCIO [30/434]
+2026-11-11 14:21:09 | INFO    | 2010.01.0033774/2026-69   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:21:15 | DEBUG   | 2010.01.0033774/2026-69   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (30 passagem(ns) nesta execução)
+2026-11-11 14:21:15 | INFO    | 2010.01.0033774/2026-69   | __main__              | FIM (9.4s) | Próxima ação: -
+2026-11-11 14:21:15 | INFO    | 2010.01.0013909/2026-14   | __main__              | INÍCIO [31/434]
+2026-11-11 14:21:18 | INFO    | 2010.01.0013909/2026-14   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:21:25 | DEBUG   | 2010.01.0013909/2026-14   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (31 passagem(ns) nesta execução)
+2026-11-11 14:21:25 | INFO    | 2010.01.0013909/2026-14   | __main__              | FIM (9.9s) | Próxima ação: -
+2026-11-11 14:21:25 | INFO    | 2010.01.0025750/2026-19   | __main__              | INÍCIO [32/434]
+2026-11-11 14:21:28 | INFO    | 2010.01.0025750/2026-19   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:21:35 | DEBUG   | 2010.01.0025750/2026-19   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (32 passagem(ns) nesta execução)
+2026-11-11 14:21:35 | INFO    | 2010.01.0025750/2026-19   | __main__              | FIM (10.1s) | Próxima ação: -
+2026-11-11 14:21:35 | INFO    | 2010.01.0013911/2026-57   | __main__              | INÍCIO [33/434]
+2026-11-11 14:21:38 | INFO    | 2010.01.0013911/2026-57   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:21:44 | DEBUG   | 2010.01.0013911/2026-57   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (33 passagem(ns) nesta execução)
+2026-11-11 14:21:44 | INFO    | 2010.01.0013911/2026-57   | __main__              | FIM (9.2s) | Próxima ação: -
+2026-11-11 14:21:44 | INFO    | 2010.01.0013922/2026-51   | __main__              | INÍCIO [34/434]
+2026-11-11 14:21:48 | INFO    | 2010.01.0013922/2026-51   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:21:54 | DEBUG   | 2010.01.0013922/2026-51   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (34 passagem(ns) nesta execução)
+2026-11-11 14:21:54 | INFO    | 2010.01.0013922/2026-51   | __main__              | FIM (9.6s) | Próxima ação: -
+2026-11-11 14:21:54 | INFO    | 2010.01.0013926/2026-40   | __main__              | INÍCIO [35/434]
+2026-11-11 14:21:58 | INFO    | 2010.01.0013926/2026-40   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:22:03 | DEBUG   | 2010.01.0013926/2026-40   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (35 passagem(ns) nesta execução)
+2026-11-11 14:22:03 | INFO    | 2010.01.0013926/2026-40   | __main__              | FIM (9.8s) | Próxima ação: -
+2026-11-11 14:22:03 | INFO    | 2010.01.0033814/2026-56   | __main__              | INÍCIO [36/434]
+2026-11-11 14:22:07 | INFO    | 2010.01.0033814/2026-56   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:22:13 | DEBUG   | 2010.01.0033814/2026-56   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (36 passagem(ns) nesta execução)
+2026-11-11 14:22:13 | INFO    | 2010.01.0033814/2026-56   | __main__              | FIM (9.8s) | Próxima ação: -
+2026-11-11 14:22:13 | INFO    | 2010.01.0013932/2026-72   | __main__              | INÍCIO [37/434]
+2026-11-11 14:22:17 | INFO    | 2010.01.0013932/2026-72   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:22:23 | DEBUG   | 2010.01.0013932/2026-72   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (37 passagem(ns) nesta execução)
+2026-11-11 14:22:23 | INFO    | 2010.01.0013932/2026-72   | __main__              | FIM (9.8s) | Próxima ação: -
+2026-11-11 14:22:23 | INFO    | 2010.01.0013936/2026-61   | __main__              | INÍCIO [38/434]
+2026-11-11 14:22:27 | INFO    | 2010.01.0013936/2026-61   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:22:34 | DEBUG   | 2010.01.0013936/2026-61   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (38 passagem(ns) nesta execução)
+2026-11-11 14:22:34 | INFO    | 2010.01.0013936/2026-61   | __main__              | FIM (11.1s) | Próxima ação: -
+2026-11-11 14:22:34 | INFO    | 2010.01.0013939/2026-77   | __main__              | INÍCIO [39/434]
+2026-11-11 14:22:38 | INFO    | 2010.01.0013939/2026-77   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:22:44 | DEBUG   | 2010.01.0013939/2026-77   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (39 passagem(ns) nesta execução)
+2026-11-11 14:22:44 | INFO    | 2010.01.0013939/2026-77   | __main__              | FIM (9.8s) | Próxima ação: -
+2026-11-11 14:22:44 | INFO    | 2010.01.0015017/2026-71   | __main__              | INÍCIO [40/434]
+2026-11-11 14:22:48 | INFO    | 2010.01.0015017/2026-71   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:22:54 | DEBUG   | 2010.01.0015017/2026-71   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (40 passagem(ns) nesta execução)
+2026-11-11 14:22:54 | INFO    | 2010.01.0015017/2026-71   | __main__              | FIM (10.3s) | Próxima ação: -
+2026-11-11 14:22:54 | INFO    | 2010.01.0015024/2026-76   | __main__              | INÍCIO [41/434]
+2026-11-11 14:22:58 | INFO    | 2010.01.0015024/2026-76   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:23:04 | DEBUG   | 2010.01.0015024/2026-76   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (41 passagem(ns) nesta execução)
+2026-11-11 14:23:04 | INFO    | 2010.01.0015024/2026-76   | __main__              | FIM (10.2s) | Próxima ação: -
+2026-11-11 14:23:04 | INFO    | 2010.01.0033876/2026-31   | __main__              | INÍCIO [42/434]
+2026-11-11 14:23:08 | INFO    | 2010.01.0033876/2026-31   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:23:15 | DEBUG   | 2010.01.0033876/2026-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (42 passagem(ns) nesta execução)
+2026-11-11 14:23:15 | INFO    | 2010.01.0033876/2026-31   | __main__              | FIM (10.2s) | Próxima ação: -
+2026-11-11 14:23:15 | INFO    | 2010.01.0033878/2026-74   | __main__              | INÍCIO [43/434]
+2026-11-11 14:23:18 | INFO    | 2010.01.0033878/2026-74   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:23:24 | DEBUG   | 2010.01.0033878/2026-74   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (43 passagem(ns) nesta execução)
+2026-11-11 14:23:24 | INFO    | 2010.01.0033878/2026-74   | __main__              | FIM (9.9s) | Próxima ação: -
+2026-11-11 14:23:24 | INFO    | 2010.01.0033882/2026-63   | __main__              | INÍCIO [44/434]
+2026-11-11 14:23:28 | INFO    | 2010.01.0033882/2026-63   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:23:35 | DEBUG   | 2010.01.0033882/2026-63   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (44 passagem(ns) nesta execução)
+2026-11-11 14:23:35 | INFO    | 2010.01.0033882/2026-63   | __main__              | FIM (10.3s) | Próxima ação: -
+2026-11-11 14:23:35 | INFO    | 2010.01.0033886/2026-52   | __main__              | INÍCIO [45/434]
+2026-11-11 14:23:39 | INFO    | 2010.01.0033886/2026-52   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:23:45 | DEBUG   | 2010.01.0033886/2026-52   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (45 passagem(ns) nesta execução)
+2026-11-11 14:23:45 | INFO    | 2010.01.0033886/2026-52   | __main__              | FIM (10.1s) | Próxima ação: -
+2026-11-11 14:23:45 | INFO    | 2010.01.0033887/2026-25   | __main__              | INÍCIO [46/434]
+2026-11-11 14:23:48 | INFO    | 2010.01.0033887/2026-25   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:23:54 | DEBUG   | 2010.01.0033887/2026-25   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (46 passagem(ns) nesta execução)
+2026-11-11 14:23:54 | INFO    | 2010.01.0033887/2026-25   | __main__              | FIM (9.5s) | Próxima ação: -
+2026-11-11 14:23:54 | INFO    | 2010.01.0015031/2026-81   | __main__              | INÍCIO [47/434]
+2026-11-11 14:23:58 | INFO    | 2010.01.0015031/2026-81   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:24:04 | DEBUG   | 2010.01.0015031/2026-81   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (47 passagem(ns) nesta execução)
+2026-11-11 14:24:04 | INFO    | 2010.01.0015031/2026-81   | __main__              | FIM (9.8s) | Próxima ação: -
+2026-11-11 14:24:04 | INFO    | 2010.01.0015036/2026-43   | __main__              | INÍCIO [48/434]
+2026-11-11 14:24:08 | INFO    | 2010.01.0015036/2026-43   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:24:14 | DEBUG   | 2010.01.0015036/2026-43   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (48 passagem(ns) nesta execução)
+2026-11-11 14:24:14 | INFO    | 2010.01.0015036/2026-43   | __main__              | FIM (9.8s) | Próxima ação: -
+2026-11-11 14:24:14 | INFO    | 2010.01.0015040/2026-32   | __main__              | INÍCIO [49/434]
+2026-11-11 14:24:18 | INFO    | 2010.01.0015040/2026-32   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:24:24 | DEBUG   | 2010.01.0015040/2026-32   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (49 passagem(ns) nesta execução)
+2026-11-11 14:24:24 | INFO    | 2010.01.0015040/2026-32   | __main__              | FIM (9.9s) | Próxima ação: -
+2026-11-11 14:24:24 | INFO    | 2010.01.0033894/2026-30   | __main__              | INÍCIO [50/434]
+2026-11-11 14:24:27 | INFO    | 2010.01.0033894/2026-30   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:24:34 | DEBUG   | 2010.01.0033894/2026-30   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (50 passagem(ns) nesta execução)
+2026-11-11 14:24:34 | INFO    | 2010.01.0033894/2026-30   | __main__              | FIM (10.0s) | Próxima ação: -
+2026-11-11 14:24:34 | INFO    | 2010.01.0036830/2026-07   | __main__              | INÍCIO [51/434]
+2026-11-11 14:24:37 | INFO    | 2010.01.0036830/2026-07   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:24:44 | DEBUG   | 2010.01.0036830/2026-07   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (51 passagem(ns) nesta execução)
+2026-11-11 14:24:44 | INFO    | 2010.01.0036830/2026-07   | __main__              | FIM (10.0s) | Próxima ação: -
+2026-11-11 14:24:44 | INFO    | 2010.01.0029341/2026-62   | __main__              | INÍCIO [52/434]
+2026-11-11 14:24:47 | INFO    | 2010.01.0029341/2026-62   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:24:54 | DEBUG   | 2010.01.0029341/2026-62   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (52 passagem(ns) nesta execução)
+2026-11-11 14:24:54 | INFO    | 2010.01.0029341/2026-62   | __main__              | FIM (10.1s) | Próxima ação: -
+2026-11-11 14:24:54 | INFO    | 2010.01.0036859/2026-97   | __main__              | INÍCIO [53/434]
+2026-11-11 14:24:57 | INFO    | 2010.01.0036859/2026-97   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:25:03 | DEBUG   | 2010.01.0036859/2026-97   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (53 passagem(ns) nesta execução)
+2026-11-11 14:25:03 | INFO    | 2010.01.0036859/2026-97   | __main__              | FIM (9.7s) | Próxima ação: -
+2026-11-11 14:25:03 | INFO    | 2010.01.0029344/2026-78   | __main__              | INÍCIO [54/434]
+2026-11-11 14:25:07 | INFO    | 2010.01.0029344/2026-78   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:25:14 | DEBUG   | 2010.01.0029344/2026-78   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (54 passagem(ns) nesta execução)
+2026-11-11 14:25:14 | INFO    | 2010.01.0029344/2026-78   | __main__              | FIM (10.1s) | Próxima ação: -
+2026-11-11 14:25:14 | INFO    | 2010.01.0029346/2026-24   | __main__              | INÍCIO [55/434]
+2026-11-11 14:25:17 | INFO    | 2010.01.0029346/2026-24   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:25:23 | DEBUG   | 2010.01.0029346/2026-24   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (55 passagem(ns) nesta execução)
+2026-11-11 14:25:23 | INFO    | 2010.01.0029346/2026-24   | __main__              | FIM (9.7s) | Próxima ação: -
+2026-11-11 14:25:23 | INFO    | 2010.01.0029354/2026-02   | __main__              | INÍCIO [56/434]
+2026-11-11 14:25:28 | INFO    | 2010.01.0029354/2026-02   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:25:34 | DEBUG   | 2010.01.0029354/2026-02   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (56 passagem(ns) nesta execução)
+2026-11-11 14:25:34 | INFO    | 2010.01.0029354/2026-02   | __main__              | FIM (10.9s) | Próxima ação: -
+2026-11-11 14:25:34 | INFO    | 2010.01.0030239/2026-66   | __main__              | INÍCIO [57/434]
+2026-11-11 14:25:38 | INFO    | 2010.01.0030239/2026-66   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:25:45 | DEBUG   | 2010.01.0030239/2026-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (57 passagem(ns) nesta execução)
+2026-11-11 14:25:45 | INFO    | 2010.01.0030239/2026-66   | __main__              | FIM (10.7s) | Próxima ação: -
+2026-11-11 14:25:45 | INFO    | 2010.01.0029279/2026-87   | __main__              | INÍCIO [58/434]
+2026-11-11 14:25:50 | INFO    | 2010.01.0029279/2026-87   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:25:56 | DEBUG   | 2010.01.0029279/2026-87   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (58 passagem(ns) nesta execução)
+2026-11-11 14:25:56 | INFO    | 2010.01.0029279/2026-87   | __main__              | FIM (11.2s) | Próxima ação: -
+2026-11-11 14:25:56 | INFO    | 2010.01.0011759/2026-58   | __main__              | INÍCIO [59/434]
+2026-11-11 14:26:00 | INFO    | 2010.01.0011759/2026-58   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:26:06 | DEBUG   | 2010.01.0011759/2026-58   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (59 passagem(ns) nesta execução)
+2026-11-11 14:26:06 | INFO    | 2010.01.0011759/2026-58   | __main__              | FIM (10.3s) | Próxima ação: -
+2026-11-11 14:26:06 | INFO    | 2010.01.0033764/2026-48   | __main__              | INÍCIO [60/434]
+2026-11-11 14:26:10 | INFO    | 2010.01.0033764/2026-48   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:26:17 | DEBUG   | 2010.01.0033764/2026-48   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (60 passagem(ns) nesta execução)
+2026-11-11 14:26:17 | INFO    | 2010.01.0033764/2026-48   | __main__              | FIM (10.4s) | Próxima ação: -
+2026-11-11 14:26:17 | INFO    | 2010.01.0011781/2026-46   | __main__              | INÍCIO [61/434]
+2026-11-11 14:26:21 | INFO    | 2010.01.0011781/2026-46   | __main__              | Documentos da DEPROC na árvore: ['Extrato (SEI 152469254)', 'Relatório (SEI 152469332)']
+2026-11-11 14:26:32 | WARNING | 2010.01.0011781/2026-46   | __main__              | Documento não excluído: Relatório (SEI 152469332) (assinado, já enviado ou sem permissão?)
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_deproc_excluir_docs.py", line 92, in excluir_docs_deproc
+    excluir_doc(driver)
+    ~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/documento/__init__.py", line 40, in excluir_doc
+    selecionar_excluir_doc(driver)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/documento/gestao.py", line 29, in selecionar_excluir_doc
+    img_excluir_doc: WebElement = WebDriverWait(driver, 10).until(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((By.XPATH, "//img[@alt='Excluir']"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x5b49bc7059fa <unknown>
+#1 0x5b49bc03b5b9 <unknown>
+#2 0x5b49bc091dfc <unknown>
+#3 0x5b49bc092071 <unknown>
+#4 0x5b49bc0de664 <unknown>
+#5 0x5b49bc0db8de <unknown>
+#6 0x5b49bc084b8b <unknown>
+#7 0x5b49bc085971 <unknown>
+#8 0x5b49bc6c8667 <unknown>
+#9 0x5b49bc6c6e95 <unknown>
+#10 0x5b49bc6b1f55 <unknown>
+#11 0x5b49bc6c7aea <unknown>
+#12 0x5b49bc69a6c9 <unknown>
+#13 0x5b49bc6ef9a8 <unknown>
+#14 0x5b49bc6efb45 <unknown>
+#15 0x5b49bc704353 <unknown>
+#16 0x7a6f18ca3dfa <unknown>
+#17 0x7a6f18d375cc <unknown>
+
+2026-11-11 14:26:47 | WARNING | 2010.01.0011781/2026-46   | __main__              | Documento não excluído: Extrato (SEI 152469254) (assinado, já enviado ou sem permissão?)
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_deproc_excluir_docs.py", line 92, in excluir_docs_deproc
+    excluir_doc(driver)
+    ~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/documento/__init__.py", line 40, in excluir_doc
+    selecionar_excluir_doc(driver)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/documento/gestao.py", line 29, in selecionar_excluir_doc
+    img_excluir_doc: WebElement = WebDriverWait(driver, 10).until(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((By.XPATH, "//img[@alt='Excluir']"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x5b49bc7059fa <unknown>
+#1 0x5b49bc03b5b9 <unknown>
+#2 0x5b49bc091dfc <unknown>
+#3 0x5b49bc092071 <unknown>
+#4 0x5b49bc0de664 <unknown>
+#5 0x5b49bc0db8de <unknown>
+#6 0x5b49bc084b8b <unknown>
+#7 0x5b49bc085971 <unknown>
+#8 0x5b49bc6c8667 <unknown>
+#9 0x5b49bc6c6e95 <unknown>
+#10 0x5b49bc6b1f55 <unknown>
+#11 0x5b49bc6c7aea <unknown>
+#12 0x5b49bc69a6c9 <unknown>
+#13 0x5b49bc6ef9a8 <unknown>
+#14 0x5b49bc6efb45 <unknown>
+#15 0x5b49bc704353 <unknown>
+#16 0x7a6f18ca3dfa <unknown>
+#17 0x7a6f18d375cc <unknown>
+
+2026-11-11 14:26:58 | DEBUG   | 2010.01.0011781/2026-46   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (61 passagem(ns) nesta execução)
+2026-11-11 14:26:58 | WARNING | 2010.01.0011781/2026-46   | __main__              | FIM COM ERRO (41.2s) | ErroAvaliacao: Documento(s) da DEPROC não excluído(s): 152469332, 152469254
+2026-11-11 14:26:58 | INFO    | 2010.01.0011765/2026-90   | __main__              | INÍCIO [62/434]
+2026-11-11 14:27:02 | INFO    | 2010.01.0011765/2026-90   | __main__              | Documentos da DEPROC na árvore: ['Extrato (SEI 152467272)', 'Relatório (SEI 152467362)']
+2026-11-11 14:27:04 | INFO    | 2010.01.0011765/2026-90   | __main__              | Documento excluído: Relatório (SEI 152467362)
+2026-11-11 14:27:05 | INFO    | 2010.01.0011765/2026-90   | __main__              | Documento excluído: Extrato (SEI 152467272)
+2026-11-11 14:27:14 | DEBUG   | 2010.01.0011765/2026-90   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (62 passagem(ns) nesta execução)
+2026-11-11 14:27:14 | INFO    | 2010.01.0011765/2026-90   | __main__              | FIM (15.6s) | Próxima ação: -
+2026-11-11 14:27:14 | INFO    | 2010.01.0011721/2026-17   | __main__              | INÍCIO [63/434]
+2026-11-11 14:27:17 | INFO    | 2010.01.0011721/2026-17   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152459300)', 'Relatório (SEI 152459370)']
+2026-11-11 14:27:19 | INFO    | 2010.01.0011721/2026-17   | __main__              | Documento excluído: Relatório (SEI 152459370)
+2026-11-11 14:27:30 | INFO    | 2010.01.0011721/2026-17   | __main__              | Documento excluído: Relatório (SEI 152459300)
+2026-11-11 14:27:40 | DEBUG   | 2010.01.0011721/2026-17   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (63 passagem(ns) nesta execução)
+2026-11-11 14:27:40 | INFO    | 2010.01.0011721/2026-17   | __main__              | FIM (26.2s) | Próxima ação: -
+2026-11-11 14:27:40 | INFO    | 2010.01.0011705/2026-61   | __main__              | INÍCIO [64/434]
+2026-11-11 14:27:44 | INFO    | 2010.01.0011705/2026-61   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152442752)', 'Relatório (SEI 152442886)']
+2026-11-11 14:27:46 | INFO    | 2010.01.0011705/2026-61   | __main__              | Documento excluído: Relatório (SEI 152442886)
+2026-11-11 14:27:52 | INFO    | 2010.01.0011705/2026-61   | __main__              | Documento excluído: Relatório (SEI 152442752)
+2026-11-11 14:28:00 | DEBUG   | 2010.01.0011705/2026-61   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (64 passagem(ns) nesta execução)
+2026-11-11 14:28:00 | INFO    | 2010.01.0011705/2026-61   | __main__              | FIM (19.6s) | Próxima ação: -
+2026-11-11 14:28:00 | INFO    | 2010.01.0123670/2025-14   | __main__              | INÍCIO [65/434]
+2026-11-11 14:28:03 | INFO    | 2010.01.0123670/2025-14   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152441921)', 'Relatório (SEI 152441949)']
+2026-11-11 14:28:05 | INFO    | 2010.01.0123670/2025-14   | __main__              | Documento excluído: Relatório (SEI 152441949)
+2026-11-11 14:28:06 | INFO    | 2010.01.0123670/2025-14   | __main__              | Documento excluído: Relatório (SEI 152441921)
+2026-11-11 14:28:15 | DEBUG   | 2010.01.0123670/2025-14   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (65 passagem(ns) nesta execução)
+2026-11-11 14:28:15 | INFO    | 2010.01.0123670/2025-14   | __main__              | FIM (15.4s) | Próxima ação: -
+2026-11-11 14:28:15 | INFO    | 2010.01.0120891/2025-66   | __main__              | INÍCIO [66/434]
+2026-11-11 14:28:19 | INFO    | 2010.01.0120891/2025-66   | __main__              | Documentos da DEPROC na árvore: ['Extrato (SEI 152441424)', 'Relatório (SEI 152441530)']
+2026-11-11 14:28:21 | INFO    | 2010.01.0120891/2025-66   | __main__              | Documento excluído: Relatório (SEI 152441530)
+2026-11-11 14:28:26 | INFO    | 2010.01.0120891/2025-66   | __main__              | Documento excluído: Extrato (SEI 152441424)
+2026-11-11 14:28:35 | DEBUG   | 2010.01.0120891/2025-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (66 passagem(ns) nesta execução)
+2026-11-11 14:28:35 | INFO    | 2010.01.0120891/2025-66   | __main__              | FIM (20.5s) | Próxima ação: -
+2026-11-11 14:28:35 | INFO    | 2010.01.0120887/2025-77   | __main__              | INÍCIO [67/434]
+2026-11-11 14:28:39 | INFO    | 2010.01.0120887/2025-77   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152440953)', 'Relatório (SEI 152441085)']
+2026-11-11 14:28:42 | INFO    | 2010.01.0120887/2025-77   | __main__              | Documento excluído: Relatório (SEI 152441085)
+2026-11-11 14:28:50 | INFO    | 2010.01.0120887/2025-77   | __main__              | Documento excluído: Relatório (SEI 152440953)
+2026-11-11 14:29:00 | DEBUG   | 2010.01.0120887/2025-77   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (67 passagem(ns) nesta execução)
+2026-11-11 14:29:00 | INFO    | 2010.01.0120887/2025-77   | __main__              | FIM (24.3s) | Próxima ação: -
+2026-11-11 14:29:00 | INFO    | 2010.01.0113758/2025-15   | __main__              | INÍCIO [68/434]
+2026-11-11 14:29:04 | INFO    | 2010.01.0113758/2025-15   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152422001)', 'Relatório (SEI 152422047)']
+2026-11-11 14:29:05 | INFO    | 2010.01.0113758/2025-15   | __main__              | Documento excluído: Relatório (SEI 152422047)
+2026-11-11 14:29:07 | INFO    | 2010.01.0113758/2025-15   | __main__              | Documento excluído: Relatório (SEI 152422001)
+2026-11-11 14:29:16 | DEBUG   | 2010.01.0113758/2025-15   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (68 passagem(ns) nesta execução)
+2026-11-11 14:29:16 | INFO    | 2010.01.0113758/2025-15   | __main__              | FIM (16.5s) | Próxima ação: -
+2026-11-11 14:29:16 | INFO    | 2010.01.0113735/2025-54   | __main__              | INÍCIO [69/434]
+2026-11-11 14:29:20 | INFO    | 2010.01.0113735/2025-54   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152420247)', 'Relatório (SEI 152420326)']
+2026-11-11 14:29:22 | INFO    | 2010.01.0113735/2025-54   | __main__              | Documento excluído: Relatório (SEI 152420326)
+2026-11-11 14:29:24 | INFO    | 2010.01.0113735/2025-54   | __main__              | Documento excluído: Relatório (SEI 152420247)
+2026-11-11 14:29:33 | DEBUG   | 2010.01.0113735/2025-54   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (69 passagem(ns) nesta execução)
+2026-11-11 14:29:33 | INFO    | 2010.01.0113735/2025-54   | __main__              | FIM (16.7s) | Próxima ação: -
+2026-11-11 14:29:33 | INFO    | 2010.01.0113717/2025-55   | __main__              | INÍCIO [70/434]
+2026-11-11 14:29:37 | INFO    | 2010.01.0113717/2025-55   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152419235)', 'Relatório (SEI 152419274)']
+2026-11-11 14:29:38 | INFO    | 2010.01.0113717/2025-55   | __main__              | Documento excluído: Relatório (SEI 152419274)
+2026-11-11 14:29:46 | INFO    | 2010.01.0113717/2025-55   | __main__              | Documento excluído: Relatório (SEI 152419235)
+2026-11-11 14:29:54 | DEBUG   | 2010.01.0113717/2025-55   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (70 passagem(ns) nesta execução)
+2026-11-11 14:29:54 | INFO    | 2010.01.0113717/2025-55   | __main__              | FIM (21.4s) | Próxima ação: -
+2026-11-11 14:29:54 | INFO    | 2010.01.0089127/2025-20   | __main__              | INÍCIO [71/434]
+2026-11-11 14:29:58 | INFO    | 2010.01.0089127/2025-20   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152418959)', 'Relatório (SEI 152418938)']
+2026-11-11 14:29:59 | INFO    | 2010.01.0089127/2025-20   | __main__              | Documento excluído: Relatório (SEI 152418938)
+2026-11-11 14:30:02 | INFO    | 2010.01.0089127/2025-20   | __main__              | Documento excluído: Relatório (SEI 152418959)
+2026-11-11 14:30:11 | DEBUG   | 2010.01.0089127/2025-20   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (71 passagem(ns) nesta execução)
+2026-11-11 14:30:11 | INFO    | 2010.01.0089127/2025-20   | __main__              | FIM (16.2s) | Próxima ação: -
+2026-11-11 14:30:11 | INFO    | 2010.01.0011662/2026-58   | __main__              | INÍCIO [72/434]
+2026-11-11 14:30:14 | INFO    | 2010.01.0011662/2026-58   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152385813)', 'Relatório (SEI 152385856)']
+2026-11-11 14:30:16 | INFO    | 2010.01.0011662/2026-58   | __main__              | Documento excluído: Relatório (SEI 152385856)
+2026-11-11 14:30:22 | INFO    | 2010.01.0011662/2026-58   | __main__              | Documento excluído: Relatório (SEI 152385813)
+2026-11-11 14:30:31 | DEBUG   | 2010.01.0011662/2026-58   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (72 passagem(ns) nesta execução)
+2026-11-11 14:30:31 | INFO    | 2010.01.0011662/2026-58   | __main__              | FIM (20.7s) | Próxima ação: -
+2026-11-11 14:30:31 | INFO    | 2010.01.0013872/2026-43   | __main__              | INÍCIO [73/434]
+2026-11-11 14:30:35 | INFO    | 2010.01.0013872/2026-43   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152384706)', 'Relatório (SEI 152384743)']
+2026-11-11 14:30:37 | INFO    | 2010.01.0013872/2026-43   | __main__              | Documento excluído: Relatório (SEI 152384743)
+2026-11-11 14:30:38 | INFO    | 2010.01.0013872/2026-43   | __main__              | Documento excluído: Relatório (SEI 152384706)
+2026-11-11 14:30:46 | DEBUG   | 2010.01.0013872/2026-43   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (73 passagem(ns) nesta execução)
+2026-11-11 14:30:46 | INFO    | 2010.01.0013872/2026-43   | __main__              | FIM (14.9s) | Próxima ação: -
+2026-11-11 14:30:46 | INFO    | 2010.01.0033312/2026-30   | __main__              | INÍCIO [74/434]
+2026-11-11 14:30:50 | INFO    | 2010.01.0033312/2026-30   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152384203)', 'Relatório (SEI 152384238)']
+2026-11-11 14:30:51 | INFO    | 2010.01.0033312/2026-30   | __main__              | Documento excluído: Relatório (SEI 152384238)
+2026-11-11 14:30:54 | INFO    | 2010.01.0033312/2026-30   | __main__              | Documento excluído: Relatório (SEI 152384203)
+2026-11-11 14:31:03 | DEBUG   | 2010.01.0033312/2026-30   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (74 passagem(ns) nesta execução)
+2026-11-11 14:31:03 | INFO    | 2010.01.0033312/2026-30   | __main__              | FIM (16.6s) | Próxima ação: -
+2026-11-11 14:31:03 | INFO    | 2010.01.0011644/2026-59   | __main__              | INÍCIO [75/434]
+2026-11-11 14:31:07 | INFO    | 2010.01.0011644/2026-59   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152383473)', 'Relatório (SEI 152383563)']
+2026-11-11 14:31:08 | INFO    | 2010.01.0011644/2026-59   | __main__              | Documento excluído: Relatório (SEI 152383563)
+2026-11-11 14:31:11 | INFO    | 2010.01.0011644/2026-59   | __main__              | Documento excluído: Relatório (SEI 152383473)
+2026-11-11 14:31:20 | DEBUG   | 2010.01.0011644/2026-59   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (75 passagem(ns) nesta execução)
+2026-11-11 14:31:20 | INFO    | 2010.01.0011644/2026-59   | __main__              | FIM (17.2s) | Próxima ação: -
+2026-11-11 14:31:20 | INFO    | 2010.01.0123669/2025-41   | __main__              | INÍCIO [76/434]
+2026-11-11 14:31:24 | INFO    | 2010.01.0123669/2025-41   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152382724)', 'Relatório (SEI 152382821)']
+2026-11-11 14:31:25 | INFO    | 2010.01.0123669/2025-41   | __main__              | Documento excluído: Relatório (SEI 152382821)
+2026-11-11 14:31:31 | INFO    | 2010.01.0123669/2025-41   | __main__              | Documento excluído: Relatório (SEI 152382724)
+2026-11-11 14:31:40 | DEBUG   | 2010.01.0123669/2025-41   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (76 passagem(ns) nesta execução)
+2026-11-11 14:31:40 | INFO    | 2010.01.0123669/2025-41   | __main__              | FIM (20.5s) | Próxima ação: -
+2026-11-11 14:31:40 | INFO    | 2010.01.0011639/2026-97   | __main__              | INÍCIO [77/434]
+2026-11-11 14:31:44 | INFO    | 2010.01.0011639/2026-97   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152382310)', 'Relatório (SEI 152382345)']
+2026-11-11 14:31:46 | INFO    | 2010.01.0011639/2026-97   | __main__              | Documento excluído: Relatório (SEI 152382345)
+2026-11-11 14:31:57 | INFO    | 2010.01.0011639/2026-97   | __main__              | Documento excluído: Relatório (SEI 152382310)
+2026-11-11 14:32:05 | DEBUG   | 2010.01.0011639/2026-97   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (77 passagem(ns) nesta execução)
+2026-11-11 14:32:05 | INFO    | 2010.01.0011639/2026-97   | __main__              | FIM (25.0s) | Próxima ação: -
+2026-11-11 14:32:05 | INFO    | 2010.01.0032721/2026-79   | __main__              | INÍCIO [78/434]
+2026-11-11 14:32:09 | INFO    | 2010.01.0032721/2026-79   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152381747)', 'Relatório (SEI 152381802)']
+2026-11-11 14:32:10 | INFO    | 2010.01.0032721/2026-79   | __main__              | Documento excluído: Relatório (SEI 152381802)
+2026-11-11 14:32:17 | INFO    | 2010.01.0032721/2026-79   | __main__              | Documento excluído: Relatório (SEI 152381747)
+2026-11-11 14:32:26 | DEBUG   | 2010.01.0032721/2026-79   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (78 passagem(ns) nesta execução)
+2026-11-11 14:32:26 | INFO    | 2010.01.0032721/2026-79   | __main__              | FIM (20.3s) | Próxima ação: -
+2026-11-11 14:32:26 | INFO    | 2010.01.0011598/2026-40   | __main__              | INÍCIO [79/434]
+2026-11-11 14:32:29 | INFO    | 2010.01.0011598/2026-40   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152380990)', 'Relatório (SEI 152381048)']
+2026-11-11 14:32:31 | INFO    | 2010.01.0011598/2026-40   | __main__              | Documento excluído: Relatório (SEI 152381048)
+2026-11-11 14:32:37 | INFO    | 2010.01.0011598/2026-40   | __main__              | Documento excluído: Relatório (SEI 152380990)
+2026-11-11 14:32:45 | DEBUG   | 2010.01.0011598/2026-40   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (79 passagem(ns) nesta execução)
+2026-11-11 14:32:45 | INFO    | 2010.01.0011598/2026-40   | __main__              | FIM (19.6s) | Próxima ação: -
+2026-11-11 14:32:45 | INFO    | 2010.01.0011585/2026-03   | __main__              | INÍCIO [80/434]
+2026-11-11 14:32:49 | INFO    | 2010.01.0011585/2026-03   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152352413)', 'Relatório (SEI 152352545)']
+2026-11-11 14:32:50 | INFO    | 2010.01.0011585/2026-03   | __main__              | Documento excluído: Relatório (SEI 152352545)
+2026-11-11 14:32:52 | INFO    | 2010.01.0011585/2026-03   | __main__              | Documento excluído: Relatório (SEI 152352413)
+2026-11-11 14:33:03 | DEBUG   | 2010.01.0011585/2026-03   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (80 passagem(ns) nesta execução)
+2026-11-11 14:33:03 | INFO    | 2010.01.0011585/2026-03   | __main__              | FIM (18.2s) | Próxima ação: -
+2026-11-11 14:33:03 | INFO    | 2010.01.0123664/2025-79   | __main__              | INÍCIO [81/434]
+2026-11-11 14:33:09 | INFO    | 2010.01.0123664/2025-79   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152322452)', 'Relatório (SEI 152322651)']
+2026-11-11 14:33:10 | INFO    | 2010.01.0123664/2025-79   | __main__              | Documento excluído: Relatório (SEI 152322651)
+2026-11-11 14:33:16 | INFO    | 2010.01.0123664/2025-79   | __main__              | Documento excluído: Relatório (SEI 152322452)
+2026-11-11 14:33:25 | DEBUG   | 2010.01.0123664/2025-79   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (81 passagem(ns) nesta execução)
+2026-11-11 14:33:25 | INFO    | 2010.01.0123664/2025-79   | __main__              | FIM (21.3s) | Próxima ação: -
+2026-11-11 14:33:25 | INFO    | 2010.01.0011565/2026-58   | __main__              | INÍCIO [82/434]
+2026-11-11 14:33:28 | INFO    | 2010.01.0011565/2026-58   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152316057)', 'Relatório (SEI 152316218)']
+2026-11-11 14:33:30 | INFO    | 2010.01.0011565/2026-58   | __main__              | Documento excluído: Relatório (SEI 152316218)
+2026-11-11 14:33:31 | INFO    | 2010.01.0011565/2026-58   | __main__              | Documento excluído: Relatório (SEI 152316057)
+2026-11-11 14:33:40 | DEBUG   | 2010.01.0011565/2026-58   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (82 passagem(ns) nesta execução)
+2026-11-11 14:33:40 | INFO    | 2010.01.0011565/2026-58   | __main__              | FIM (15.3s) | Próxima ação: -
+2026-11-11 14:33:40 | INFO    | 2010.01.0123663/2025-09   | __main__              | INÍCIO [83/434]
+2026-11-11 14:33:44 | INFO    | 2010.01.0123663/2025-09   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152312091)', 'Relatório (SEI 152312281)']
+2026-11-11 14:33:45 | INFO    | 2010.01.0123663/2025-09   | __main__              | Documento excluído: Relatório (SEI 152312281)
+2026-11-11 14:33:47 | INFO    | 2010.01.0123663/2025-09   | __main__              | Documento excluído: Relatório (SEI 152312091)
+2026-11-11 14:34:00 | DEBUG   | 2010.01.0123663/2025-09   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (83 passagem(ns) nesta execução)
+2026-11-11 14:34:00 | INFO    | 2010.01.0123663/2025-09   | __main__              | FIM (20.0s) | Próxima ação: -
+2026-11-11 14:34:00 | INFO    | 2010.01.0061016/2026-86   | __main__              | INÍCIO [84/434]
+2026-11-11 14:34:04 | INFO    | 2010.01.0061016/2026-86   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152273966)', 'Relatório (SEI 152273994)']
+2026-11-11 14:34:05 | INFO    | 2010.01.0061016/2026-86   | __main__              | Documento excluído: Relatório (SEI 152273994)
+2026-11-11 14:34:11 | INFO    | 2010.01.0061016/2026-86   | __main__              | Documento excluído: Relatório (SEI 152273966)
+2026-11-11 14:34:24 | DEBUG   | 2010.01.0061016/2026-86   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (84 passagem(ns) nesta execução)
+2026-11-11 14:34:24 | INFO    | 2010.01.0061016/2026-86   | __main__              | FIM (23.4s) | Próxima ação: -
+2026-11-11 14:34:24 | INFO    | 2010.01.0123656/2025-04   | __main__              | INÍCIO [85/434]
+2026-11-11 14:34:27 | INFO    | 2010.01.0123656/2025-04   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152273140)', 'Relatório (SEI 152273229)']
+2026-11-11 14:34:29 | INFO    | 2010.01.0123656/2025-04   | __main__              | Documento excluído: Relatório (SEI 152273229)
+2026-11-11 14:34:40 | INFO    | 2010.01.0123656/2025-04   | __main__              | Documento excluído: Relatório (SEI 152273140)
+2026-11-11 14:34:49 | DEBUG   | 2010.01.0123656/2025-04   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (85 passagem(ns) nesta execução)
+2026-11-11 14:34:49 | INFO    | 2010.01.0123656/2025-04   | __main__              | FIM (25.7s) | Próxima ação: -
+2026-11-11 14:34:49 | INFO    | 2010.01.0123655/2025-31   | __main__              | INÍCIO [86/434]
+2026-11-11 14:34:53 | INFO    | 2010.01.0123655/2025-31   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152251491)', 'Relatório (SEI 152251566)']
+2026-11-11 14:34:54 | INFO    | 2010.01.0123655/2025-31   | __main__              | Documento excluído: Relatório (SEI 152251566)
+2026-11-11 14:34:57 | INFO    | 2010.01.0123655/2025-31   | __main__              | Documento excluído: Relatório (SEI 152251491)
+2026-11-11 14:35:05 | DEBUG   | 2010.01.0123655/2025-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (86 passagem(ns) nesta execução)
+2026-11-11 14:35:05 | INFO    | 2010.01.0123655/2025-31   | __main__              | FIM (16.1s) | Próxima ação: -
+2026-11-11 14:35:05 | INFO    | 2010.01.0030571/2026-26   | __main__              | INÍCIO [87/434]
+2026-11-11 14:35:09 | INFO    | 2010.01.0030571/2026-26   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151824110)', 'Relatório (SEI 151824271)', 'Extrato (SEI 152250228)']
+2026-11-11 14:35:11 | INFO    | 2010.01.0030571/2026-26   | __main__              | Documento excluído: Extrato (SEI 152250228)
+2026-11-11 14:35:18 | INFO    | 2010.01.0030571/2026-26   | __main__              | Documento excluído: Relatório (SEI 151824271)
+2026-11-11 14:35:22 | INFO    | 2010.01.0030571/2026-26   | __main__              | Documento excluído: Relatório (SEI 151824110)
+2026-11-11 14:35:31 | DEBUG   | 2010.01.0030571/2026-26   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (87 passagem(ns) nesta execução)
+2026-11-11 14:35:31 | INFO    | 2010.01.0030571/2026-26   | __main__              | FIM (26.1s) | Próxima ação: -
+2026-11-11 14:35:31 | INFO    | 2010.01.0026082/2026-76   | __main__              | INÍCIO [88/434]
+2026-11-11 14:35:35 | INFO    | 2010.01.0026082/2026-76   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152246755)', 'Relatório (SEI 152246774)']
+2026-11-11 14:35:36 | INFO    | 2010.01.0026082/2026-76   | __main__              | Documento excluído: Relatório (SEI 152246774)
+2026-11-11 14:35:42 | INFO    | 2010.01.0026082/2026-76   | __main__              | Documento excluído: Relatório (SEI 152246755)
+2026-11-11 14:35:51 | DEBUG   | 2010.01.0026082/2026-76   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (88 passagem(ns) nesta execução)
+2026-11-11 14:35:51 | INFO    | 2010.01.0026082/2026-76   | __main__              | FIM (19.7s) | Próxima ação: -
+2026-11-11 14:35:51 | INFO    | 2010.01.0036075/2026-22   | __main__              | INÍCIO [89/434]
+2026-11-11 14:35:55 | INFO    | 2010.01.0036075/2026-22   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152246502)', 'Relatório (SEI 152246555)']
+2026-11-11 14:35:56 | INFO    | 2010.01.0036075/2026-22   | __main__              | Documento excluído: Relatório (SEI 152246555)
+2026-11-11 14:36:02 | INFO    | 2010.01.0036075/2026-22   | __main__              | Documento excluído: Relatório (SEI 152246502)
+2026-11-11 14:36:11 | DEBUG   | 2010.01.0036075/2026-22   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (89 passagem(ns) nesta execução)
+2026-11-11 14:36:11 | INFO    | 2010.01.0036075/2026-22   | __main__              | FIM (20.2s) | Próxima ação: -
+2026-11-11 14:36:11 | INFO    | 2010.01.0034911/2026-22   | __main__              | INÍCIO [90/434]
+2026-11-11 14:36:15 | INFO    | 2010.01.0034911/2026-22   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152246177)', 'Relatório (SEI 152246248)']
+2026-11-11 14:36:17 | INFO    | 2010.01.0034911/2026-22   | __main__              | Documento excluído: Relatório (SEI 152246248)
+2026-11-11 14:36:22 | INFO    | 2010.01.0034911/2026-22   | __main__              | Documento excluído: Relatório (SEI 152246177)
+2026-11-11 14:36:32 | DEBUG   | 2010.01.0034911/2026-22   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (90 passagem(ns) nesta execução)
+2026-11-11 14:36:32 | INFO    | 2010.01.0034911/2026-22   | __main__              | FIM (20.7s) | Próxima ação: -
+2026-11-11 14:36:32 | INFO    | 2010.01.0028429/2026-48   | __main__              | INÍCIO [91/434]
+2026-11-11 14:36:36 | INFO    | 2010.01.0028429/2026-48   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152245378)', 'Relatório (SEI 152245502)']
+2026-11-11 14:36:42 | INFO    | 2010.01.0028429/2026-48   | __main__              | Documento excluído: Relatório (SEI 152245502)
+2026-11-11 14:36:52 | INFO    | 2010.01.0028429/2026-48   | __main__              | Documento excluído: Relatório (SEI 152245378)
+2026-11-11 14:37:02 | DEBUG   | 2010.01.0028429/2026-48   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (91 passagem(ns) nesta execução)
+2026-11-11 14:37:02 | INFO    | 2010.01.0028429/2026-48   | __main__              | FIM (30.0s) | Próxima ação: -
+2026-11-11 14:37:02 | INFO    | 2010.01.0034901/2026-98   | __main__              | INÍCIO [92/434]
+2026-11-11 14:37:06 | INFO    | 2010.01.0034901/2026-98   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152244186)', 'Relatório (SEI 152244298)']
+2026-11-11 14:37:07 | INFO    | 2010.01.0034901/2026-98   | __main__              | Documento excluído: Relatório (SEI 152244298)
+2026-11-11 14:37:09 | INFO    | 2010.01.0034901/2026-98   | __main__              | Documento excluído: Relatório (SEI 152244186)
+2026-11-11 14:37:17 | DEBUG   | 2010.01.0034901/2026-98   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (92 passagem(ns) nesta execução)
+2026-11-11 14:37:17 | INFO    | 2010.01.0034901/2026-98   | __main__              | FIM (15.2s) | Próxima ação: -
+2026-11-11 14:37:17 | INFO    | 2010.01.0026066/2026-23   | __main__              | INÍCIO [93/434]
+2026-11-11 14:37:21 | INFO    | 2010.01.0026066/2026-23   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152244018)', 'Relatório (SEI 152243990)']
+2026-11-11 14:37:22 | INFO    | 2010.01.0026066/2026-23   | __main__              | Documento excluído: Relatório (SEI 152243990)
+2026-11-11 14:37:30 | INFO    | 2010.01.0026066/2026-23   | __main__              | Documento excluído: Relatório (SEI 152244018)
+2026-11-11 14:37:39 | DEBUG   | 2010.01.0026066/2026-23   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (93 passagem(ns) nesta execução)
+2026-11-11 14:37:39 | INFO    | 2010.01.0026066/2026-23   | __main__              | FIM (21.8s) | Próxima ação: -
+2026-11-11 14:37:39 | INFO    | 2010.01.0028418/2026-54   | __main__              | INÍCIO [94/434]
+2026-11-11 14:37:43 | INFO    | 2010.01.0028418/2026-54   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152229935)', 'Relatório (SEI 152230004)']
+2026-11-11 14:37:44 | INFO    | 2010.01.0028418/2026-54   | __main__              | Documento excluído: Relatório (SEI 152230004)
+2026-11-11 14:37:47 | INFO    | 2010.01.0028418/2026-54   | __main__              | Documento excluído: Relatório (SEI 152229935)
+2026-11-11 14:37:55 | DEBUG   | 2010.01.0028418/2026-54   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (94 passagem(ns) nesta execução)
+2026-11-11 14:37:55 | INFO    | 2010.01.0028418/2026-54   | __main__              | FIM (16.2s) | Próxima ação: -
+2026-11-11 14:37:55 | INFO    | 2010.01.0034350/2026-37   | __main__              | INÍCIO [95/434]
+2026-11-11 14:37:59 | INFO    | 2010.01.0034350/2026-37   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152229554)', 'Relatório (SEI 152229571)']
+2026-11-11 14:38:00 | INFO    | 2010.01.0034350/2026-37   | __main__              | Documento excluído: Relatório (SEI 152229571)
+2026-11-11 14:38:06 | INFO    | 2010.01.0034350/2026-37   | __main__              | Documento excluído: Relatório (SEI 152229554)
+2026-11-11 14:38:15 | DEBUG   | 2010.01.0034350/2026-37   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (95 passagem(ns) nesta execução)
+2026-11-11 14:38:15 | INFO    | 2010.01.0034350/2026-37   | __main__              | FIM (19.6s) | Próxima ação: -
+2026-11-11 14:38:15 | INFO    | 2010.01.0034311/2026-23   | __main__              | INÍCIO [96/434]
+2026-11-11 14:38:19 | INFO    | 2010.01.0034311/2026-23   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152229182)', 'Relatório (SEI 152229234)']
+2026-11-11 14:38:20 | INFO    | 2010.01.0034311/2026-23   | __main__              | Documento excluído: Relatório (SEI 152229234)
+2026-11-11 14:38:22 | INFO    | 2010.01.0034311/2026-23   | __main__              | Documento excluído: Relatório (SEI 152229182)
+2026-11-11 14:38:31 | DEBUG   | 2010.01.0034311/2026-23   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (96 passagem(ns) nesta execução)
+2026-11-11 14:38:31 | INFO    | 2010.01.0034311/2026-23   | __main__              | FIM (15.9s) | Próxima ação: -
+2026-11-11 14:38:31 | INFO    | 2010.01.0028404/2026-44   | __main__              | INÍCIO [97/434]
+2026-11-11 14:38:34 | INFO    | 2010.01.0028404/2026-44   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152228206)', 'Relatório (SEI 152228226)']
+2026-11-11 14:38:36 | INFO    | 2010.01.0028404/2026-44   | __main__              | Documento excluído: Relatório (SEI 152228226)
+2026-11-11 14:38:53 | INFO    | 2010.01.0028404/2026-44   | __main__              | Documento excluído: Relatório (SEI 152228206)
+2026-11-11 14:39:03 | DEBUG   | 2010.01.0028404/2026-44   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (97 passagem(ns) nesta execução)
+2026-11-11 14:39:03 | INFO    | 2010.01.0028404/2026-44   | __main__              | FIM (32.2s) | Próxima ação: -
+2026-11-11 14:39:03 | INFO    | 2010.01.0034295/2026-67   | __main__              | INÍCIO [98/434]
+2026-11-11 14:39:07 | INFO    | 2010.01.0034295/2026-67   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152225390)']
+2026-11-11 14:39:08 | INFO    | 2010.01.0034295/2026-67   | __main__              | Documento excluído: Relatório (SEI 152225390)
+2026-11-11 14:39:22 | DEBUG   | 2010.01.0034295/2026-67   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (98 passagem(ns) nesta execução)
+2026-11-11 14:39:22 | INFO    | 2010.01.0034295/2026-67   | __main__              | FIM (18.8s) | Próxima ação: -
+2026-11-11 14:39:22 | INFO    | 2010.01.0028393/2026-50   | __main__              | INÍCIO [99/434]
+2026-11-11 14:39:25 | INFO    | 2010.01.0028393/2026-50   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152224453)', 'Relatório (SEI 152224507)']
+2026-11-11 14:39:27 | INFO    | 2010.01.0028393/2026-50   | __main__              | Documento excluído: Relatório (SEI 152224507)
+2026-11-11 14:39:34 | INFO    | 2010.01.0028393/2026-50   | __main__              | Documento excluído: Relatório (SEI 152224453)
+2026-11-11 14:39:43 | DEBUG   | 2010.01.0028393/2026-50   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (99 passagem(ns) nesta execução)
+2026-11-11 14:39:43 | INFO    | 2010.01.0028393/2026-50   | __main__              | FIM (21.6s) | Próxima ação: -
+2026-11-11 14:39:43 | INFO    | 2010.01.0028385/2026-72   | __main__              | INÍCIO [100/434]
+2026-11-11 14:39:47 | INFO    | 2010.01.0028385/2026-72   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152221538)', 'Relatório (SEI 152221619)']
+2026-11-11 14:39:48 | INFO    | 2010.01.0028385/2026-72   | __main__              | Documento excluído: Relatório (SEI 152221619)
+2026-11-11 14:39:50 | INFO    | 2010.01.0028385/2026-72   | __main__              | Documento excluído: Relatório (SEI 152221538)
+2026-11-11 14:40:02 | DEBUG   | 2010.01.0028385/2026-72   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (100 passagem(ns) nesta execução)
+2026-11-11 14:40:02 | INFO    | 2010.01.0028385/2026-72   | __main__              | FIM (19.2s) | Próxima ação: -
+2026-11-11 14:40:02 | INFO    | 2010.01.0034257/2026-26   | __main__              | INÍCIO [101/434]
+2026-11-11 14:40:06 | INFO    | 2010.01.0034257/2026-26   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152220780)', 'Relatório (SEI 152220851)']
+2026-11-11 14:40:08 | INFO    | 2010.01.0034257/2026-26   | __main__              | Documento excluído: Relatório (SEI 152220851)
+2026-11-11 14:40:09 | INFO    | 2010.01.0034257/2026-26   | __main__              | Documento excluído: Relatório (SEI 152220780)
+2026-11-11 14:40:23 | DEBUG   | 2010.01.0034257/2026-26   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (101 passagem(ns) nesta execução)
+2026-11-11 14:40:23 | INFO    | 2010.01.0034257/2026-26   | __main__              | FIM (20.1s) | Próxima ação: -
+2026-11-11 14:40:23 | INFO    | 2010.01.0028378/2026-67   | __main__              | INÍCIO [102/434]
+2026-11-11 14:40:26 | INFO    | 2010.01.0028378/2026-67   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152219916)', 'Relatório (SEI 152219944)']
+2026-11-11 14:40:28 | INFO    | 2010.01.0028378/2026-67   | __main__              | Documento excluído: Relatório (SEI 152219944)
+2026-11-11 14:40:30 | INFO    | 2010.01.0028378/2026-67   | __main__              | Documento excluído: Relatório (SEI 152219916)
+2026-11-11 14:40:39 | DEBUG   | 2010.01.0028378/2026-67   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (102 passagem(ns) nesta execução)
+2026-11-11 14:40:39 | INFO    | 2010.01.0028378/2026-67   | __main__              | FIM (16.3s) | Próxima ação: -
+2026-11-11 14:40:39 | INFO    | 2010.01.0028374/2026-78   | __main__              | INÍCIO [103/434]
+2026-11-11 14:40:43 | INFO    | 2010.01.0028374/2026-78   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152217566)', 'Relatório (SEI 152217532)']
+2026-11-11 14:40:44 | INFO    | 2010.01.0028374/2026-78   | __main__              | Documento excluído: Relatório (SEI 152217532)
+2026-11-11 14:40:55 | INFO    | 2010.01.0028374/2026-78   | __main__              | Documento excluído: Relatório (SEI 152217566)
+2026-11-11 14:41:03 | DEBUG   | 2010.01.0028374/2026-78   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (103 passagem(ns) nesta execução)
+2026-11-11 14:41:03 | INFO    | 2010.01.0028374/2026-78   | __main__              | FIM (24.6s) | Próxima ação: -
+2026-11-11 14:41:03 | INFO    | 2010.01.0015045/2026-91   | __main__              | INÍCIO [104/434]
+2026-11-11 14:41:07 | INFO    | 2010.01.0015045/2026-91   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152184508)', 'Relatório (SEI 152184533)']
+2026-11-11 14:41:19 | WARNING | 2010.01.0015045/2026-91   | __main__              | Documento não excluído: Relatório (SEI 152184533) (assinado, já enviado ou sem permissão?)
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_deproc_excluir_docs.py", line 92, in excluir_docs_deproc
+    excluir_doc(driver)
+    ~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/documento/__init__.py", line 40, in excluir_doc
+    selecionar_excluir_doc(driver)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/sei_automacao/documento/gestao.py", line 29, in selecionar_excluir_doc
+    img_excluir_doc: WebElement = WebDriverWait(driver, 10).until(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((By.XPATH, "//img[@alt='Excluir']"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+#0 0x5b49bc7059fa <unknown>
+#1 0x5b49bc03b5b9 <unknown>
+#2 0x5b49bc091dfc <unknown>
+#3 0x5b49bc092071 <unknown>
+#4 0x5b49bc0de664 <unknown>
+#5 0x5b49bc0db8de <unknown>
+#6 0x5b49bc084b8b <unknown>
+#7 0x5b49bc085971 <unknown>
+#8 0x5b49bc6c8667 <unknown>
+#9 0x5b49bc6c6e95 <unknown>
+#10 0x5b49bc6b1f55 <unknown>
+#11 0x5b49bc6c7aea <unknown>
+#12 0x5b49bc69a6c9 <unknown>
+#13 0x5b49bc6ef9a8 <unknown>
+#14 0x5b49bc6efb45 <unknown>
+#15 0x5b49bc704353 <unknown>
+#16 0x7a6f18ca3dfa <unknown>
+#17 0x7a6f18d375cc <unknown>
+
+2026-11-11 14:41:22 | INFO    | 2010.01.0015045/2026-91   | __main__              | Documento excluído: Relatório (SEI 152184508)
+2026-11-11 14:41:31 | DEBUG   | 2010.01.0015045/2026-91   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (104 passagem(ns) nesta execução)
+2026-11-11 14:41:31 | WARNING | 2010.01.0015045/2026-91   | __main__              | FIM COM ERRO (27.9s) | ErroAvaliacao: Documento(s) da DEPROC não excluído(s): 152184533
+2026-11-11 14:41:31 | INFO    | 2010.01.0026012/2026-26   | __main__              | INÍCIO [105/434]
+2026-11-11 14:41:35 | INFO    | 2010.01.0026012/2026-26   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152183635)', 'Relatório (SEI 152183704)']
+2026-11-11 14:41:36 | INFO    | 2010.01.0026012/2026-26   | __main__              | Documento excluído: Relatório (SEI 152183704)
+2026-11-11 14:41:38 | INFO    | 2010.01.0026012/2026-26   | __main__              | Documento excluído: Relatório (SEI 152183635)
+2026-11-11 14:41:46 | DEBUG   | 2010.01.0026012/2026-26   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (105 passagem(ns) nesta execução)
+2026-11-11 14:41:46 | INFO    | 2010.01.0026012/2026-26   | __main__              | FIM (14.3s) | Próxima ação: -
+2026-11-11 14:41:46 | INFO    | 2010.01.0033303/2026-79   | __main__              | INÍCIO [106/434]
+2026-11-11 14:41:49 | INFO    | 2010.01.0033303/2026-79   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152183060)', 'REMUNERAÇÃO CESSÃO ESPECIAL ÔNUS CEDENTE (SEI 152183160)']
+2026-11-11 14:41:51 | INFO    | 2010.01.0033303/2026-79   | __main__              | Documento excluído: REMUNERAÇÃO CESSÃO ESPECIAL ÔNUS CEDENTE (SEI 152183160)
+2026-11-11 14:42:02 | INFO    | 2010.01.0033303/2026-79   | __main__              | Documento excluído: Relatório (SEI 152183060)
+2026-11-11 14:42:11 | DEBUG   | 2010.01.0033303/2026-79   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (106 passagem(ns) nesta execução)
+2026-11-11 14:42:11 | INFO    | 2010.01.0033303/2026-79   | __main__              | FIM (25.1s) | Próxima ação: -
+2026-11-11 14:42:11 | INFO    | 2010.01.0034262/2026-85   | __main__              | INÍCIO [107/434]
+2026-11-11 14:42:14 | INFO    | 2010.01.0034262/2026-85   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152182173)', 'Relatório (SEI 152182218)']
+2026-11-11 14:42:16 | INFO    | 2010.01.0034262/2026-85   | __main__              | Documento excluído: Relatório (SEI 152182218)
+2026-11-11 14:42:17 | INFO    | 2010.01.0034262/2026-85   | __main__              | Documento excluído: Relatório (SEI 152182173)
+2026-11-11 14:42:30 | DEBUG   | 2010.01.0034262/2026-85   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (107 passagem(ns) nesta execução)
+2026-11-11 14:42:30 | INFO    | 2010.01.0034262/2026-85   | __main__              | FIM (19.4s) | Próxima ação: -
+2026-11-11 14:42:30 | INFO    | 2010.01.0034253/2026-37   | __main__              | INÍCIO [108/434]
+2026-11-11 14:42:34 | INFO    | 2010.01.0034253/2026-37   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152181575)', 'Relatório (SEI 152181539)']
+2026-11-11 14:42:36 | INFO    | 2010.01.0034253/2026-37   | __main__              | Documento excluído: Relatório (SEI 152181539)
+2026-11-11 14:42:37 | INFO    | 2010.01.0034253/2026-37   | __main__              | Documento excluído: Relatório (SEI 152181575)
+2026-11-11 14:42:50 | DEBUG   | 2010.01.0034253/2026-37   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (108 passagem(ns) nesta execução)
+2026-11-11 14:42:50 | INFO    | 2010.01.0034253/2026-37   | __main__              | FIM (19.9s) | Próxima ação: -
+2026-11-11 14:42:50 | INFO    | 2010.01.0025713/2026-48   | __main__              | INÍCIO [109/434]
+2026-11-11 14:42:53 | INFO    | 2010.01.0025713/2026-48   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152130988)', 'Relatório (SEI 152131076)']
+2026-11-11 14:42:55 | INFO    | 2010.01.0025713/2026-48   | __main__              | Documento excluído: Relatório (SEI 152131076)
+2026-11-11 14:43:02 | INFO    | 2010.01.0025713/2026-48   | __main__              | Documento excluído: Relatório (SEI 152130988)
+2026-11-11 14:43:11 | DEBUG   | 2010.01.0025713/2026-48   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (109 passagem(ns) nesta execução)
+2026-11-11 14:43:11 | INFO    | 2010.01.0025713/2026-48   | __main__              | FIM (20.7s) | Próxima ação: -
+2026-11-11 14:43:11 | INFO    | 2010.01.0011785/2026-35   | __main__              | INÍCIO [110/434]
+2026-11-11 14:43:14 | INFO    | 2010.01.0011785/2026-35   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152130196)', 'Relatório (SEI 152130238)']
+2026-11-11 14:43:16 | INFO    | 2010.01.0011785/2026-35   | __main__              | Documento excluído: Relatório (SEI 152130238)
+2026-11-11 14:43:23 | INFO    | 2010.01.0011785/2026-35   | __main__              | Documento excluído: Relatório (SEI 152130196)
+2026-11-11 14:43:32 | DEBUG   | 2010.01.0011785/2026-35   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (110 passagem(ns) nesta execução)
+2026-11-11 14:43:32 | INFO    | 2010.01.0011785/2026-35   | __main__              | FIM (21.8s) | Próxima ação: -
+2026-11-11 14:43:32 | INFO    | 2010.01.0030576/2026-85   | __main__              | INÍCIO [111/434]
+2026-11-11 14:43:36 | INFO    | 2010.01.0030576/2026-85   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152129548)', 'Relatório (SEI 152129652)']
+2026-11-11 14:43:37 | INFO    | 2010.01.0030576/2026-85   | __main__              | Documento excluído: Relatório (SEI 152129652)
+2026-11-11 14:43:44 | INFO    | 2010.01.0030576/2026-85   | __main__              | Documento excluído: Relatório (SEI 152129548)
+2026-11-11 14:43:54 | DEBUG   | 2010.01.0030576/2026-85   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (111 passagem(ns) nesta execução)
+2026-11-11 14:43:54 | INFO    | 2010.01.0030576/2026-85   | __main__              | FIM (21.7s) | Próxima ação: -
+2026-11-11 14:43:54 | INFO    | 2010.01.0030365/2026-59   | __main__              | INÍCIO [112/434]
+2026-11-11 14:44:00 | INFO    | 2010.01.0030365/2026-59   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152112921)', 'Relatório (SEI 152113043)']
+2026-11-11 14:44:02 | INFO    | 2010.01.0030365/2026-59   | __main__              | Documento excluído: Relatório (SEI 152113043)
+2026-11-11 14:44:08 | INFO    | 2010.01.0030365/2026-59   | __main__              | Documento excluído: Relatório (SEI 152112921)
+2026-11-11 14:44:17 | DEBUG   | 2010.01.0030365/2026-59   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (112 passagem(ns) nesta execução)
+2026-11-11 14:44:17 | INFO    | 2010.01.0030365/2026-59   | __main__              | FIM (22.9s) | Próxima ação: -
+2026-11-11 14:44:17 | INFO    | 2010.01.0030219/2026-24   | __main__              | INÍCIO [113/434]
+2026-11-11 14:44:21 | INFO    | 2010.01.0030219/2026-24   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152041161)', 'Relatório (SEI 152041236)']
+2026-11-11 14:44:23 | INFO    | 2010.01.0030219/2026-24   | __main__              | Documento excluído: Relatório (SEI 152041236)
+2026-11-11 14:44:26 | INFO    | 2010.01.0030219/2026-24   | __main__              | Documento excluído: Relatório (SEI 152041161)
+2026-11-11 14:44:35 | DEBUG   | 2010.01.0030219/2026-24   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (113 passagem(ns) nesta execução)
+2026-11-11 14:44:35 | INFO    | 2010.01.0030219/2026-24   | __main__              | FIM (18.3s) | Próxima ação: -
+2026-11-11 14:44:35 | INFO    | 2010.01.0113710/2025-50   | __main__              | INÍCIO [114/434]
+2026-11-11 14:44:39 | INFO    | 2010.01.0113710/2025-50   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152040744)', 'Relatório (SEI 152040762)', 'Relatório (SEI 152040823)']
+2026-11-11 14:44:41 | INFO    | 2010.01.0113710/2025-50   | __main__              | Documento excluído: Relatório (SEI 152040823)
+2026-11-11 14:44:46 | INFO    | 2010.01.0113710/2025-50   | __main__              | Documento excluído: Relatório (SEI 152040762)
+2026-11-11 14:44:49 | INFO    | 2010.01.0113710/2025-50   | __main__              | Documento excluído: Relatório (SEI 152040744)
+2026-11-11 14:45:03 | DEBUG   | 2010.01.0113710/2025-50   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (114 passagem(ns) nesta execução)
+2026-11-11 14:45:03 | INFO    | 2010.01.0113710/2025-50   | __main__              | FIM (27.3s) | Próxima ação: -
+2026-11-11 14:45:03 | INFO    | 2010.01.0113779/2025-30   | __main__              | INÍCIO [115/434]
+2026-11-11 14:45:06 | INFO    | 2010.01.0113779/2025-30   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152038070)', 'Relatório (SEI 152038088)', 'Relatório (SEI 152038208)']
+2026-11-11 14:45:09 | INFO    | 2010.01.0113779/2025-30   | __main__              | Documento excluído: Relatório (SEI 152038208)
+2026-11-11 14:45:15 | INFO    | 2010.01.0113779/2025-30   | __main__              | Documento excluído: Relatório (SEI 152038088)
+2026-11-11 14:45:21 | INFO    | 2010.01.0113779/2025-30   | __main__              | Documento excluído: Relatório (SEI 152038070)
+2026-11-11 14:45:30 | DEBUG   | 2010.01.0113779/2025-30   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (115 passagem(ns) nesta execução)
+2026-11-11 14:45:30 | INFO    | 2010.01.0113779/2025-30   | __main__              | FIM (27.8s) | Próxima ação: -
+2026-11-11 14:45:30 | INFO    | 2010.01.0059160/2026-49   | __main__              | INÍCIO [116/434]
+2026-11-11 14:45:36 | INFO    | 2010.01.0059160/2026-49   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152034870)', 'Relatório (SEI 152034933)', 'Relatório (SEI 152034997)']
+2026-11-11 14:45:38 | INFO    | 2010.01.0059160/2026-49   | __main__              | Documento excluído: Relatório (SEI 152034997)
+2026-11-11 14:45:40 | INFO    | 2010.01.0059160/2026-49   | __main__              | Documento excluído: Relatório (SEI 152034933)
+2026-11-11 14:45:43 | INFO    | 2010.01.0059160/2026-49   | __main__              | Documento excluído: Relatório (SEI 152034870)
+2026-11-11 14:45:57 | DEBUG   | 2010.01.0059160/2026-49   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (116 passagem(ns) nesta execução)
+2026-11-11 14:45:57 | INFO    | 2010.01.0059160/2026-49   | __main__              | FIM (26.8s) | Próxima ação: -
+2026-11-11 14:45:57 | INFO    | 2010.01.0043063/2026-11   | __main__              | INÍCIO [117/434]
+2026-11-11 14:46:01 | INFO    | 2010.01.0043063/2026-11   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152033573)', 'Relatório (SEI 152033629)']
+2026-11-11 14:46:03 | INFO    | 2010.01.0043063/2026-11   | __main__              | Documento excluído: Relatório (SEI 152033629)
+2026-11-11 14:46:04 | INFO    | 2010.01.0043063/2026-11   | __main__              | Documento excluído: Relatório (SEI 152033573)
+2026-11-11 14:46:14 | DEBUG   | 2010.01.0043063/2026-11   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (117 passagem(ns) nesta execução)
+2026-11-11 14:46:14 | INFO    | 2010.01.0043063/2026-11   | __main__              | FIM (16.6s) | Próxima ação: -
+2026-11-11 14:46:14 | INFO    | 2010.01.0030354/2026-65   | __main__              | INÍCIO [118/434]
+2026-11-11 14:46:17 | INFO    | 2010.01.0030354/2026-65   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152030925)', 'Relatório (SEI 152030943)']
+2026-11-11 14:46:19 | INFO    | 2010.01.0030354/2026-65   | __main__              | Documento excluído: Relatório (SEI 152030943)
+2026-11-11 14:46:25 | INFO    | 2010.01.0030354/2026-65   | __main__              | Documento excluído: Relatório (SEI 152030925)
+2026-11-11 14:46:38 | DEBUG   | 2010.01.0030354/2026-65   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (118 passagem(ns) nesta execução)
+2026-11-11 14:46:38 | INFO    | 2010.01.0030354/2026-65   | __main__              | FIM (23.9s) | Próxima ação: -
+2026-11-11 14:46:38 | INFO    | 2010.01.0043558/2026-32   | __main__              | INÍCIO [119/434]
+2026-11-11 14:46:41 | INFO    | 2010.01.0043558/2026-32   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152028727)', 'Relatório (SEI 152029278)']
+2026-11-11 14:46:43 | INFO    | 2010.01.0043558/2026-32   | __main__              | Documento excluído: Relatório (SEI 152029278)
+2026-11-11 14:46:49 | INFO    | 2010.01.0043558/2026-32   | __main__              | Documento excluído: Relatório (SEI 152028727)
+2026-11-11 14:47:04 | DEBUG   | 2010.01.0043558/2026-32   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (119 passagem(ns) nesta execução)
+2026-11-11 14:47:04 | INFO    | 2010.01.0043558/2026-32   | __main__              | FIM (26.5s) | Próxima ação: -
+2026-11-11 14:47:04 | INFO    | 2010.01.0043568/2026-53   | __main__              | INÍCIO [120/434]
+2026-11-11 14:47:08 | INFO    | 2010.01.0043568/2026-53   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152026766)', 'Relatório (SEI 152026887)']
+2026-11-11 14:47:09 | INFO    | 2010.01.0043568/2026-53   | __main__              | Documento excluído: Relatório (SEI 152026887)
+2026-11-11 14:47:11 | INFO    | 2010.01.0043568/2026-53   | __main__              | Documento excluído: Relatório (SEI 152026766)
+2026-11-11 14:47:19 | DEBUG   | 2010.01.0043568/2026-53   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (120 passagem(ns) nesta execução)
+2026-11-11 14:47:19 | INFO    | 2010.01.0043568/2026-53   | __main__              | FIM (14.8s) | Próxima ação: -
+2026-11-11 14:47:19 | INFO    | 2010.01.0029654/2026-50   | __main__              | INÍCIO [121/434]
+2026-11-11 14:47:24 | INFO    | 2010.01.0029654/2026-50   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152025266)', 'Relatório (SEI 152025443)']
+2026-11-11 14:47:25 | INFO    | 2010.01.0029654/2026-50   | __main__              | Documento excluído: Relatório (SEI 152025443)
+2026-11-11 14:47:27 | INFO    | 2010.01.0029654/2026-50   | __main__              | Documento excluído: Relatório (SEI 152025266)
+2026-11-11 14:47:36 | DEBUG   | 2010.01.0029654/2026-50   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (121 passagem(ns) nesta execução)
+2026-11-11 14:47:36 | INFO    | 2010.01.0029654/2026-50   | __main__              | FIM (16.7s) | Próxima ação: -
+2026-11-11 14:47:36 | INFO    | 2010.01.0029660/2026-82   | __main__              | INÍCIO [122/434]
+2026-11-11 14:47:40 | INFO    | 2010.01.0029660/2026-82   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152003582)', 'Relatório (SEI 152003660)']
+2026-11-11 14:47:41 | INFO    | 2010.01.0029660/2026-82   | __main__              | Documento excluído: Relatório (SEI 152003660)
+2026-11-11 14:47:48 | INFO    | 2010.01.0029660/2026-82   | __main__              | Documento excluído: Relatório (SEI 152003582)
+2026-11-11 14:47:56 | DEBUG   | 2010.01.0029660/2026-82   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (122 passagem(ns) nesta execução)
+2026-11-11 14:47:56 | INFO    | 2010.01.0029660/2026-82   | __main__              | FIM (20.7s) | Próxima ação: -
+2026-11-11 14:47:56 | INFO    | 2010.01.0092957/2025-12   | __main__              | INÍCIO [123/434]
+2026-11-11 14:48:01 | INFO    | 2010.01.0092957/2025-12   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 152001424)', 'Relatório (SEI 152001442)', 'Relatório (SEI 152001502)', 'Relatório (SEI 152001759)']
+2026-11-11 14:48:02 | INFO    | 2010.01.0092957/2025-12   | __main__              | Documento excluído: Relatório (SEI 152001759)
+2026-11-11 14:48:08 | INFO    | 2010.01.0092957/2025-12   | __main__              | Documento excluído: Relatório (SEI 152001502)
+2026-11-11 14:48:09 | INFO    | 2010.01.0092957/2025-12   | __main__              | Documento excluído: Relatório (SEI 152001442)
+2026-11-11 14:48:15 | INFO    | 2010.01.0092957/2025-12   | __main__              | Documento excluído: Relatório (SEI 152001424)
+2026-11-11 14:48:25 | DEBUG   | 2010.01.0092957/2025-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (123 passagem(ns) nesta execução)
+2026-11-11 14:48:25 | INFO    | 2010.01.0092957/2025-12   | __main__              | FIM (28.3s) | Próxima ação: -
+2026-11-11 14:48:25 | INFO    | 2010.01.0113760/2025-58   | __main__              | INÍCIO [124/434]
+2026-11-11 14:48:29 | INFO    | 2010.01.0113760/2025-58   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151986120)', 'Relatório (SEI 151986182)', 'Relatório (SEI 151986173)']
+2026-11-11 14:48:30 | INFO    | 2010.01.0113760/2025-58   | __main__              | Documento excluído: Relatório (SEI 151986173)
+2026-11-11 14:48:31 | INFO    | 2010.01.0113760/2025-58   | __main__              | Documento excluído: Relatório (SEI 151986182)
+2026-11-11 14:48:33 | INFO    | 2010.01.0113760/2025-58   | __main__              | Documento excluído: Relatório (SEI 151986120)
+2026-11-11 14:48:42 | DEBUG   | 2010.01.0113760/2025-58   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (124 passagem(ns) nesta execução)
+2026-11-11 14:48:42 | INFO    | 2010.01.0113760/2025-58   | __main__              | FIM (16.8s) | Próxima ação: -
+2026-11-11 14:48:42 | INFO    | 2010.01.0004645/2026-76   | __main__              | INÍCIO [125/434]
+2026-11-11 14:48:46 | INFO    | 2010.01.0004645/2026-76   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151982599)', 'Relatório (SEI 151982659)', 'Relatório (SEI 151982707)']
+2026-11-11 14:48:48 | INFO    | 2010.01.0004645/2026-76   | __main__              | Documento excluído: Relatório (SEI 151982707)
+2026-11-11 14:48:54 | INFO    | 2010.01.0004645/2026-76   | __main__              | Documento excluído: Relatório (SEI 151982659)
+2026-11-11 14:49:05 | INFO    | 2010.01.0004645/2026-76   | __main__              | Documento excluído: Relatório (SEI 151982599)
+2026-11-11 14:49:14 | DEBUG   | 2010.01.0004645/2026-76   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (125 passagem(ns) nesta execução)
+2026-11-11 14:49:14 | INFO    | 2010.01.0004645/2026-76   | __main__              | FIM (32.6s) | Próxima ação: -
+2026-11-11 14:49:14 | INFO    | 2010.01.0004654/2026-27   | __main__              | INÍCIO [126/434]
+2026-11-11 14:49:18 | INFO    | 2010.01.0004654/2026-27   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151977797)', 'Relatório (SEI 151977850)', 'Relatório (SEI 151977872)']
+2026-11-11 14:49:20 | INFO    | 2010.01.0004654/2026-27   | __main__              | Documento excluído: Relatório (SEI 151977872)
+2026-11-11 14:49:26 | INFO    | 2010.01.0004654/2026-27   | __main__              | Documento excluído: Relatório (SEI 151977850)
+2026-11-11 14:49:28 | INFO    | 2010.01.0004654/2026-27   | __main__              | Documento excluído: Relatório (SEI 151977797)
+2026-11-11 14:49:41 | DEBUG   | 2010.01.0004654/2026-27   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (126 passagem(ns) nesta execução)
+2026-11-11 14:49:41 | INFO    | 2010.01.0004654/2026-27   | __main__              | FIM (27.4s) | Próxima ação: -
+2026-11-11 14:49:41 | INFO    | 2010.01.0029835/2026-13   | __main__              | INÍCIO [127/434]
+2026-11-11 14:49:46 | INFO    | 2010.01.0029835/2026-13   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151952665)', 'Relatório (SEI 151952723)']
+2026-11-11 14:49:53 | INFO    | 2010.01.0029835/2026-13   | __main__              | Documento excluído: Relatório (SEI 151952723)
+2026-11-11 14:49:56 | INFO    | 2010.01.0029835/2026-13   | __main__              | Documento excluído: Relatório (SEI 151952665)
+2026-11-11 14:50:04 | DEBUG   | 2010.01.0029835/2026-13   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (127 passagem(ns) nesta execução)
+2026-11-11 14:50:04 | INFO    | 2010.01.0029835/2026-13   | __main__              | FIM (22.7s) | Próxima ação: -
+2026-11-11 14:50:04 | INFO    | 2010.01.0030492/2026-25   | __main__              | INÍCIO [128/434]
+2026-11-11 14:50:08 | INFO    | 2010.01.0030492/2026-25   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151952270)', 'Relatório (SEI 151952304)']
+2026-11-11 14:50:09 | INFO    | 2010.01.0030492/2026-25   | __main__              | Documento excluído: Relatório (SEI 151952304)
+2026-11-11 14:50:11 | INFO    | 2010.01.0030492/2026-25   | __main__              | Documento excluído: Relatório (SEI 151952270)
+2026-11-11 14:50:19 | DEBUG   | 2010.01.0030492/2026-25   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (128 passagem(ns) nesta execução)
+2026-11-11 14:50:19 | INFO    | 2010.01.0030492/2026-25   | __main__              | FIM (14.6s) | Próxima ação: -
+2026-11-11 14:50:19 | INFO    | 2010.01.0043050/2026-71   | __main__              | INÍCIO [129/434]
+2026-11-11 14:50:22 | INFO    | 2010.01.0043050/2026-71   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151949719)', 'Relatório (SEI 151949749)']
+2026-11-11 14:50:24 | INFO    | 2010.01.0043050/2026-71   | __main__              | Documento excluído: Relatório (SEI 151949749)
+2026-11-11 14:50:25 | INFO    | 2010.01.0043050/2026-71   | __main__              | Documento excluído: Relatório (SEI 151949719)
+2026-11-11 14:50:34 | DEBUG   | 2010.01.0043050/2026-71   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (129 passagem(ns) nesta execução)
+2026-11-11 14:50:34 | INFO    | 2010.01.0043050/2026-71   | __main__              | FIM (15.6s) | Próxima ação: -
+2026-11-11 14:50:34 | INFO    | 2010.01.0042460/2026-93   | __main__              | INÍCIO [130/434]
+2026-11-11 14:50:38 | INFO    | 2010.01.0042460/2026-93   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151948644)', 'Relatório (SEI 151948685)']
+2026-11-11 14:50:40 | INFO    | 2010.01.0042460/2026-93   | __main__              | Documento excluído: Relatório (SEI 151948685)
+2026-11-11 14:50:41 | INFO    | 2010.01.0042460/2026-93   | __main__              | Documento excluído: Relatório (SEI 151948644)
+2026-11-11 14:50:55 | DEBUG   | 2010.01.0042460/2026-93   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (130 passagem(ns) nesta execução)
+2026-11-11 14:50:55 | INFO    | 2010.01.0042460/2026-93   | __main__              | FIM (20.7s) | Próxima ação: -
+2026-11-11 14:50:55 | INFO    | 2010.01.0030342/2026-98   | __main__              | INÍCIO [131/434]
+2026-11-11 14:50:59 | INFO    | 2010.01.0030342/2026-98   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151947062)', 'Relatório (SEI 151947173)']
+2026-11-11 14:51:00 | INFO    | 2010.01.0030342/2026-98   | __main__              | Documento excluído: Relatório (SEI 151947173)
+2026-11-11 14:51:12 | INFO    | 2010.01.0030342/2026-98   | __main__              | Documento excluído: Relatório (SEI 151947062)
+2026-11-11 14:51:20 | DEBUG   | 2010.01.0030342/2026-98   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (131 passagem(ns) nesta execução)
+2026-11-11 14:51:20 | INFO    | 2010.01.0030342/2026-98   | __main__              | FIM (25.2s) | Próxima ação: -
+2026-11-11 14:51:20 | INFO    | 2010.01.0030345/2026-17   | __main__              | INÍCIO [132/434]
+2026-11-11 14:51:24 | INFO    | 2010.01.0030345/2026-17   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151946662)', 'Relatório (SEI 151946743)']
+2026-11-11 14:51:26 | INFO    | 2010.01.0030345/2026-17   | __main__              | Documento excluído: Relatório (SEI 151946743)
+2026-11-11 14:51:33 | INFO    | 2010.01.0030345/2026-17   | __main__              | Documento excluído: Relatório (SEI 151946662)
+2026-11-11 14:51:41 | DEBUG   | 2010.01.0030345/2026-17   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (132 passagem(ns) nesta execução)
+2026-11-11 14:51:41 | INFO    | 2010.01.0030345/2026-17   | __main__              | FIM (21.0s) | Próxima ação: -
+2026-11-11 14:51:41 | INFO    | 2010.01.0030338/2026-12   | __main__              | INÍCIO [133/434]
+2026-11-11 14:51:45 | INFO    | 2010.01.0030338/2026-12   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:51:51 | DEBUG   | 2010.01.0030338/2026-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (133 passagem(ns) nesta execução)
+2026-11-11 14:51:51 | INFO    | 2010.01.0030338/2026-12   | __main__              | FIM (10.0s) | Próxima ação: -
+2026-11-11 14:51:51 | INFO    | 2010.01.0030458/2026-70   | __main__              | INÍCIO [134/434]
+2026-11-11 14:51:55 | INFO    | 2010.01.0030458/2026-70   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151945468)', 'Relatório (SEI 151945503)']
+2026-11-11 14:51:56 | INFO    | 2010.01.0030458/2026-70   | __main__              | Documento excluído: Relatório (SEI 151945503)
+2026-11-11 14:52:03 | INFO    | 2010.01.0030458/2026-70   | __main__              | Documento excluído: Relatório (SEI 151945468)
+2026-11-11 14:52:16 | DEBUG   | 2010.01.0030458/2026-70   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (134 passagem(ns) nesta execução)
+2026-11-11 14:52:16 | INFO    | 2010.01.0030458/2026-70   | __main__              | FIM (24.6s) | Próxima ação: -
+2026-11-11 14:52:16 | INFO    | 2010.01.0030337/2026-39   | __main__              | INÍCIO [135/434]
+2026-11-11 14:52:19 | INFO    | 2010.01.0030337/2026-39   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151944421)', 'Relatório (SEI 151944518)']
+2026-11-11 14:52:21 | INFO    | 2010.01.0030337/2026-39   | __main__              | Documento excluído: Relatório (SEI 151944518)
+2026-11-11 14:52:27 | INFO    | 2010.01.0030337/2026-39   | __main__              | Documento excluído: Relatório (SEI 151944421)
+2026-11-11 14:52:35 | DEBUG   | 2010.01.0030337/2026-39   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (135 passagem(ns) nesta execução)
+2026-11-11 14:52:35 | INFO    | 2010.01.0030337/2026-39   | __main__              | FIM (19.1s) | Próxima ação: -
+2026-11-11 14:52:35 | INFO    | 2010.01.0030336/2026-66   | __main__              | INÍCIO [136/434]
+2026-11-11 14:52:38 | INFO    | 2010.01.0030336/2026-66   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-11 14:52:45 | DEBUG   | 2010.01.0030336/2026-66   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (136 passagem(ns) nesta execução)
+2026-11-11 14:52:45 | INFO    | 2010.01.0030336/2026-66   | __main__              | FIM (10.3s) | Próxima ação: -
+2026-11-11 14:52:45 | INFO    | 2010.01.0030332/2026-77   | __main__              | INÍCIO [137/434]
+2026-11-11 14:52:49 | INFO    | 2010.01.0030332/2026-77   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151912089)', 'Relatório (SEI 151912134)']
+2026-11-11 14:52:51 | INFO    | 2010.01.0030332/2026-77   | __main__              | Documento excluído: Relatório (SEI 151912134)
+2026-11-11 14:52:57 | INFO    | 2010.01.0030332/2026-77   | __main__              | Documento excluído: Relatório (SEI 151912089)
+2026-11-11 14:53:09 | DEBUG   | 2010.01.0030332/2026-77   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (137 passagem(ns) nesta execução)
+2026-11-11 14:53:09 | INFO    | 2010.01.0030332/2026-77   | __main__              | FIM (24.2s) | Próxima ação: -
+2026-11-11 14:53:09 | INFO    | 2010.01.0092038/2025-90   | __main__              | INÍCIO [138/434]
+2026-11-11 14:53:13 | INFO    | 2010.01.0092038/2025-90   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151909220)', 'Relatório (SEI 151909247)', 'Relatório (SEI 151909266)']
+2026-11-11 14:53:15 | INFO    | 2010.01.0092038/2025-90   | __main__              | Documento excluído: Relatório (SEI 151909266)
+2026-11-11 14:53:21 | INFO    | 2010.01.0092038/2025-90   | __main__              | Documento excluído: Relatório (SEI 151909247)
+2026-11-11 14:53:22 | INFO    | 2010.01.0092038/2025-90   | __main__              | Documento excluído: Relatório (SEI 151909220)
+2026-11-11 14:53:35 | DEBUG   | 2010.01.0092038/2025-90   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (138 passagem(ns) nesta execução)
+2026-11-11 14:53:35 | INFO    | 2010.01.0092038/2025-90   | __main__              | FIM (26.0s) | Próxima ação: -
+2026-11-11 14:53:35 | INFO    | 2010.01.0043046/2026-82   | __main__              | INÍCIO [139/434]
+2026-11-11 14:53:39 | INFO    | 2010.01.0043046/2026-82   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151908087)', 'Relatório (SEI 151908139)']
+2026-11-11 14:53:40 | INFO    | 2010.01.0043046/2026-82   | __main__              | Documento excluído: Relatório (SEI 151908139)
+2026-11-11 14:53:46 | INFO    | 2010.01.0043046/2026-82   | __main__              | Documento excluído: Relatório (SEI 151908087)
+2026-11-11 14:53:59 | DEBUG   | 2010.01.0043046/2026-82   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (139 passagem(ns) nesta execução)
+2026-11-11 14:53:59 | INFO    | 2010.01.0043046/2026-82   | __main__              | FIM (23.6s) | Próxima ação: -
+2026-11-11 14:53:59 | INFO    | 2010.01.0030330/2026-34   | __main__              | INÍCIO [140/434]
+2026-11-11 14:54:03 | INFO    | 2010.01.0030330/2026-34   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151846017)', 'Relatório (SEI 151846030)']
+2026-11-11 14:54:04 | INFO    | 2010.01.0030330/2026-34   | __main__              | Documento excluído: Relatório (SEI 151846030)
+2026-11-11 14:54:06 | INFO    | 2010.01.0030330/2026-34   | __main__              | Documento excluído: Relatório (SEI 151846017)
+2026-11-11 14:54:14 | DEBUG   | 2010.01.0030330/2026-34   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (140 passagem(ns) nesta execução)
+2026-11-11 14:54:14 | INFO    | 2010.01.0030330/2026-34   | __main__              | FIM (15.1s) | Próxima ação: -
+2026-11-11 14:54:14 | INFO    | 2010.01.0043023/2026-24   | __main__              | INÍCIO [141/434]
+2026-11-11 14:54:18 | INFO    | 2010.01.0043023/2026-24   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151845455)', 'Relatório (SEI 151845477)']
+2026-11-11 14:54:20 | INFO    | 2010.01.0043023/2026-24   | __main__              | Documento excluído: Relatório (SEI 151845477)
+2026-11-11 14:54:24 | INFO    | 2010.01.0043023/2026-24   | __main__              | Documento excluído: Relatório (SEI 151845455)
+2026-11-11 14:54:32 | DEBUG   | 2010.01.0043023/2026-24   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (141 passagem(ns) nesta execução)
+2026-11-11 14:54:32 | INFO    | 2010.01.0043023/2026-24   | __main__              | FIM (18.2s) | Próxima ação: -
+2026-11-11 14:54:32 | INFO    | 2010.01.0030326/2026-45   | __main__              | INÍCIO [142/434]
+2026-11-11 14:54:36 | INFO    | 2010.01.0030326/2026-45   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151845165)', 'Relatório (SEI 151845190)']
+2026-11-11 14:54:37 | INFO    | 2010.01.0030326/2026-45   | __main__              | Documento excluído: Relatório (SEI 151845190)
+2026-11-11 14:54:48 | INFO    | 2010.01.0030326/2026-45   | __main__              | Documento excluído: Relatório (SEI 151845165)
+2026-11-11 14:54:56 | DEBUG   | 2010.01.0030326/2026-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (142 passagem(ns) nesta execução)
+2026-11-11 14:54:56 | INFO    | 2010.01.0030326/2026-45   | __main__              | FIM (24.0s) | Próxima ação: -
+2026-11-11 14:54:56 | INFO    | 2010.01.0029832/2026-94   | __main__              | INÍCIO [143/434]
+2026-11-11 14:55:00 | INFO    | 2010.01.0029832/2026-94   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151839039)', 'Relatório (SEI 151839093)']
+2026-11-11 14:55:01 | INFO    | 2010.01.0029832/2026-94   | __main__              | Documento excluído: Relatório (SEI 151839093)
+2026-11-11 14:55:03 | INFO    | 2010.01.0029832/2026-94   | __main__              | Documento excluído: Relatório (SEI 151839039)
+2026-11-11 14:55:11 | DEBUG   | 2010.01.0029832/2026-94   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (143 passagem(ns) nesta execução)
+2026-11-11 14:55:11 | INFO    | 2010.01.0029832/2026-94   | __main__              | FIM (14.9s) | Próxima ação: -
+2026-11-11 14:55:11 | INFO    | 2010.01.0040115/2026-67   | __main__              | INÍCIO [144/434]
+2026-11-11 14:55:15 | INFO    | 2010.01.0040115/2026-67   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151829383)', 'Relatório (SEI 151829476)']
+2026-11-11 14:55:16 | INFO    | 2010.01.0040115/2026-67   | __main__              | Documento excluído: Relatório (SEI 151829476)
+2026-11-11 14:55:18 | INFO    | 2010.01.0040115/2026-67   | __main__              | Documento excluído: Relatório (SEI 151829383)
+2026-11-11 14:55:26 | DEBUG   | 2010.01.0040115/2026-67   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (144 passagem(ns) nesta execução)
+2026-11-11 14:55:26 | INFO    | 2010.01.0040115/2026-67   | __main__              | FIM (15.1s) | Próxima ação: -
+2026-11-11 14:55:26 | INFO    | 2010.01.0029662/2026-28   | __main__              | INÍCIO [145/434]
+2026-11-11 14:55:32 | INFO    | 2010.01.0029662/2026-28   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151828772)', 'Relatório (SEI 151828804)']
+2026-11-11 14:55:34 | INFO    | 2010.01.0029662/2026-28   | __main__              | Documento excluído: Relatório (SEI 151828804)
+2026-11-11 14:55:40 | INFO    | 2010.01.0029662/2026-28   | __main__              | Documento excluído: Relatório (SEI 151828772)
+2026-11-11 14:55:49 | DEBUG   | 2010.01.0029662/2026-28   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (145 passagem(ns) nesta execução)
+2026-11-11 14:55:49 | INFO    | 2010.01.0029662/2026-28   | __main__              | FIM (22.2s) | Próxima ação: -
+2026-11-11 14:55:49 | INFO    | 2010.01.0030217/2026-78   | __main__              | INÍCIO [146/434]
+2026-11-11 14:55:52 | INFO    | 2010.01.0030217/2026-78   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151828042)', 'Relatório (SEI 151828169)']
+2026-11-11 14:55:54 | INFO    | 2010.01.0030217/2026-78   | __main__              | Documento excluído: Relatório (SEI 151828169)
+2026-11-11 14:56:00 | INFO    | 2010.01.0030217/2026-78   | __main__              | Documento excluído: Relatório (SEI 151828042)
+2026-11-11 14:56:08 | DEBUG   | 2010.01.0030217/2026-78   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (146 passagem(ns) nesta execução)
+2026-11-11 14:56:08 | INFO    | 2010.01.0030217/2026-78   | __main__              | FIM (19.0s) | Próxima ação: -
+2026-11-11 14:56:08 | INFO    | 2010.01.0030240/2026-39   | __main__              | INÍCIO [147/434]
+2026-11-11 14:56:11 | INFO    | 2010.01.0030240/2026-39   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151822105)', 'Relatório (SEI 151822206)']
+2026-11-11 14:56:12 | INFO    | 2010.01.0030240/2026-39   | __main__              | Documento excluído: Relatório (SEI 151822206)
+2026-11-11 14:56:20 | INFO    | 2010.01.0030240/2026-39   | __main__              | Documento excluído: Relatório (SEI 151822105)
+2026-11-11 14:56:28 | DEBUG   | 2010.01.0030240/2026-39   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (147 passagem(ns) nesta execução)
+2026-11-11 14:56:28 | INFO    | 2010.01.0030240/2026-39   | __main__              | FIM (19.9s) | Próxima ação: -
+2026-11-11 14:56:28 | INFO    | 2010.01.0029242/2026-19   | __main__              | INÍCIO [148/434]
+2026-11-11 14:56:31 | INFO    | 2010.01.0029242/2026-19   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151820485)', 'Relatório (SEI 151820463)']
+2026-11-11 14:56:38 | INFO    | 2010.01.0029242/2026-19   | __main__              | Documento excluído: Relatório (SEI 151820463)
+2026-11-11 14:56:41 | INFO    | 2010.01.0029242/2026-19   | __main__              | Documento excluído: Relatório (SEI 151820485)
+2026-11-11 14:56:49 | DEBUG   | 2010.01.0029242/2026-19   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (148 passagem(ns) nesta execução)
+2026-11-11 14:56:49 | INFO    | 2010.01.0029242/2026-19   | __main__              | FIM (21.6s) | Próxima ação: -
+2026-11-11 14:56:49 | INFO    | 2010.01.0030243/2026-55   | __main__              | INÍCIO [149/434]
+2026-11-11 14:56:53 | INFO    | 2010.01.0030243/2026-55   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151819283)', 'Relatório (SEI 151819385)']
+2026-11-11 14:56:54 | INFO    | 2010.01.0030243/2026-55   | __main__              | Documento excluído: Relatório (SEI 151819385)
+2026-11-11 14:57:05 | INFO    | 2010.01.0030243/2026-55   | __main__              | Documento excluído: Relatório (SEI 151819283)
+2026-11-11 14:57:13 | DEBUG   | 2010.01.0030243/2026-55   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (149 passagem(ns) nesta execução)
+2026-11-11 14:57:13 | INFO    | 2010.01.0030243/2026-55   | __main__              | FIM (23.5s) | Próxima ação: -
+2026-11-11 14:57:13 | INFO    | 2010.01.0030315/2026-51   | __main__              | INÍCIO [150/434]
+2026-11-11 14:57:16 | INFO    | 2010.01.0030315/2026-51   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151818302)', 'Relatório (SEI 151818415)']
+2026-11-11 14:57:18 | INFO    | 2010.01.0030315/2026-51   | __main__              | Documento excluído: Relatório (SEI 151818415)
+2026-11-11 14:57:20 | INFO    | 2010.01.0030315/2026-51   | __main__              | Documento excluído: Relatório (SEI 151818302)
+2026-11-11 14:57:28 | DEBUG   | 2010.01.0030315/2026-51   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (150 passagem(ns) nesta execução)
+2026-11-11 14:57:28 | INFO    | 2010.01.0030315/2026-51   | __main__              | FIM (15.3s) | Próxima ação: -
+2026-11-11 14:57:28 | INFO    | 2010.01.0030317/2026-94   | __main__              | INÍCIO [151/434]
+2026-11-11 14:57:32 | INFO    | 2010.01.0030317/2026-94   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151804318)', 'Relatório (SEI 151804361)']
+2026-11-11 14:57:33 | INFO    | 2010.01.0030317/2026-94   | __main__              | Documento excluído: Relatório (SEI 151804361)
+2026-11-11 14:57:36 | INFO    | 2010.01.0030317/2026-94   | __main__              | Documento excluído: Relatório (SEI 151804318)
+2026-11-11 14:57:44 | DEBUG   | 2010.01.0030317/2026-94   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (151 passagem(ns) nesta execução)
+2026-11-11 14:57:44 | INFO    | 2010.01.0030317/2026-94   | __main__              | FIM (16.1s) | Próxima ação: -
+2026-11-11 14:57:44 | INFO    | 2010.01.0030362/2026-43   | __main__              | INÍCIO [152/434]
+2026-11-11 14:57:48 | INFO    | 2010.01.0030362/2026-43   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151803764)', 'Relatório (SEI 151803857)']
+2026-11-11 14:57:50 | INFO    | 2010.01.0030362/2026-43   | __main__              | Documento excluído: Relatório (SEI 151803857)
+2026-11-11 14:57:52 | INFO    | 2010.01.0030362/2026-43   | __main__              | Documento excluído: Relatório (SEI 151803764)
+2026-11-11 14:58:01 | DEBUG   | 2010.01.0030362/2026-43   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (152 passagem(ns) nesta execução)
+2026-11-11 14:58:01 | INFO    | 2010.01.0030362/2026-43   | __main__              | FIM (16.5s) | Próxima ação: -
+2026-11-11 14:58:01 | INFO    | 2010.01.0030323/2026-29   | __main__              | INÍCIO [153/434]
+2026-11-11 14:58:04 | INFO    | 2010.01.0030323/2026-29   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151802628)', 'Relatório (SEI 151802609)']
+2026-11-11 14:58:06 | INFO    | 2010.01.0030323/2026-29   | __main__              | Documento excluído: Relatório (SEI 151802609)
+2026-11-11 14:58:12 | INFO    | 2010.01.0030323/2026-29   | __main__              | Documento excluído: Relatório (SEI 151802628)
+2026-11-11 14:58:26 | DEBUG   | 2010.01.0030323/2026-29   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (153 passagem(ns) nesta execução)
+2026-11-11 14:58:26 | INFO    | 2010.01.0030323/2026-29   | __main__              | FIM (25.5s) | Próxima ação: -
+2026-11-11 14:58:26 | INFO    | 2010.01.0029804/2026-74   | __main__              | INÍCIO [154/434]
+2026-11-11 14:58:30 | INFO    | 2010.01.0029804/2026-74   | __main__              | Documentos da DEPROC na árvore: ['Relatório (SEI 151778107)', 'Relatório (SEI 151778242)']
+2026-11-11 14:58:31 | INFO    | 2010.01.0029804/2026-74   | __main__              | Documento excluído: Relatório (SEI 151778242)
+2026-11-11 14:58:32 | INFO    | 2010.01.0029804/2026-74   | __main__              | Documento excluído: Relatório (SEI 151778107)
+2026-11-11 14:58:46 | DEBUG   | 2010.01.0029804/2026-74   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (154 passagem(ns) nesta execução)
+2026-11-11 14:58:46 | INFO    | 2010.01.0029804/2026-74   | __main__              | FIM (19.6s) | Próxima ação: -
+2026-11-11 14:58:46 | INFO    | 2010.01.0113653/2025-37   | __main__              | INÍCIO [155/434]
+2026-11-11 14:58:47 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=51643): Failed to establish a new connection: [Errno 111] Connection refused")': /session/e290fc2093f8664a277a45b75a7282f9
+2026-11-11 14:58:47 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=51643): Failed to establish a new connection: [Errno 111] Connection refused")': /session/e290fc2093f8664a277a45b75a7282f9
+2026-11-11 14:58:47 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=51643): Failed to establish a new connection: [Errno 111] Connection refused")': /session/e290fc2093f8664a277a45b75a7282f9
+2026-11-11 14:58:47 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-11 14:58:47 | INFO    | -                         | __main__              | Processos: 154 | Sem erro: 151 | Com erro: 3
+2026-11-11 14:58:47 | INFO    | -                         | __main__              |    80 | DEPROC: 2 documento(s) excluído(s)
+2026-11-11 14:58:47 | INFO    | -                         | __main__              |    61 | DEPROC: nenhum documento excluído
+2026-11-11 14:58:47 | INFO    | -                         | __main__              |     8 | DEPROC: 3 documento(s) excluído(s)
+2026-11-11 14:58:47 | INFO    | -                         | __main__              |     1 | DEPROC: 1 documento(s) excluído(s)
+2026-11-11 14:58:47 | INFO    | -                         | __main__              |     1 | DEPROC: 4 documento(s) excluído(s)
+2026-11-11 14:58:47 | INFO    | -                         | __main__              | ERRO  | 2010.01.0013878/2026-75 | TimeoutException: Tempo esgotado esperando elemento do SEI em acessar_processo (detalhes no log)
+2026-11-11 14:58:47 | INFO    | -                         | __main__              | ERRO  | 2010.01.0011781/2026-46 | ErroAvaliacao: Documento(s) da DEPROC não excluído(s): 152469332, 152469254
+2026-11-11 14:58:47 | INFO    | -                         | __main__              | ERRO  | 2010.01.0015045/2026-91 | ErroAvaliacao: Documento(s) da DEPROC não excluído(s): 152184533
+2026-11-11 14:58:47 | INFO    | -                         | __main__              | Duração total da execução: 0h43m15s
+2026-11-11 14:58:47 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

@@ -1,0 +1,35 @@
+2026-11-11 15:07:13 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC EXCLUIR DOCS - EXCLUIR DOCUMENTOS DA DEPROC) =================
+2026-11-11 15:07:13 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-11_15-07-13_execucao_deproc_excluir_docs.log
+2026-11-11 15:07:13 | INFO    | -                         | processos_a_processar | 96 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_excluir_docs
+2026-11-11 15:07:14 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-11 15:07:14 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-11 15:07:14 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-11 15:07:14 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-11 15:07:15 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-11 15:07:26 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-11 15:07:26 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/DEPROC-Utilização
+2026-11-11 15:07:43 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/DEPROC-Utilização
+2026-11-11 15:07:43 | INFO    | 2010.01.0053866/2025-12   | __main__              | INÍCIO [1/96]
+2026-11-11 15:07:54 | WARNING | 2010.01.0053866/2025-12   | Registro              | Unidade sem acesso ao processo
+2026-11-11 15:07:54 | INFO    | 2010.01.0053866/2025-12   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-11_15-07-13.xlsx
+2026-11-11 15:08:00 | DEBUG   | 2010.01.0053866/2025-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-11 15:08:00 | WARNING | 2010.01.0053866/2025-12   | __main__              | FIM COM ERRO (17.3s) | UnidadeSemAcessoException: Unidade atual não possui acesso ao processo 2010.01.0053866/2025-12
+2026-11-11 15:08:00 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [2/96]
+2026-11-11 15:08:11 | WARNING | 2010.01.0082932/2024-60   | Registro              | Unidade sem acesso ao processo
+2026-11-11 15:08:18 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-11 15:08:18 | WARNING | 2010.01.0082932/2024-60   | __main__              | FIM COM ERRO (17.6s) | UnidadeSemAcessoException: Unidade atual não possui acesso ao processo 2010.01.0082932/2024-60
+2026-11-11 15:08:18 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [3/96]
+2026-11-11 15:08:29 | WARNING | 2010.01.0072062/2024-28   | Registro              | Unidade sem acesso ao processo
+2026-11-11 15:08:36 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-11 15:08:36 | WARNING | 2010.01.0072062/2024-28   | __main__              | FIM COM ERRO (18.4s) | UnidadeSemAcessoException: Unidade atual não possui acesso ao processo 2010.01.0072062/2024-28
+2026-11-11 15:08:36 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [4/96]
+2026-11-11 15:08:37 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57801): Failed to establish a new connection: [Errno 111] Connection refused")': /session/ea00d45a9a061e50ae421c09d96339e1
+2026-11-11 15:08:37 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57801): Failed to establish a new connection: [Errno 111] Connection refused")': /session/ea00d45a9a061e50ae421c09d96339e1
+2026-11-11 15:08:37 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57801): Failed to establish a new connection: [Errno 111] Connection refused")': /session/ea00d45a9a061e50ae421c09d96339e1
+2026-11-11 15:08:37 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-11 15:08:37 | INFO    | -                         | __main__              | Processos: 3 | Sem erro: 0 | Com erro: 3
+2026-11-11 15:08:37 | INFO    | -                         | __main__              | ERRO  | 2010.01.0053866/2025-12 | UnidadeSemAcessoException: Unidade atual não possui acesso ao processo 2010.01.0053866/2025-12
+2026-11-11 15:08:37 | INFO    | -                         | __main__              | ERRO  | 2010.01.0082932/2024-60 | UnidadeSemAcessoException: Unidade atual não possui acesso ao processo 2010.01.0082932/2024-60
+2026-11-11 15:08:37 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072062/2024-28 | UnidadeSemAcessoException: Unidade atual não possui acesso ao processo 2010.01.0072062/2024-28
+2026-11-11 15:08:37 | INFO    | -                         | __main__              | Duração total da execução: 0h01m24s
+2026-11-11 15:08:37 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

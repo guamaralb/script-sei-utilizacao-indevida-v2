@@ -9,7 +9,7 @@ modelo próprio, por beneficiário, e o nome do PDF traz só a matrícula: se ca
 Anexo tem um PDF depois dele na árvore, nada é baixado; senão, os Anexos são
 baixados para saber o nome e só então procurados na árvore.
 
-No fim, o processo fica aguardando o fluxo normal (main_geacs.py). O que já está no
+No fim, o processo fica aguardando o fluxo normal (main_geacs_inicial.py). O que já está no
 fluxo normal ou é VELHO recebe os PDFs e continua onde estava: adicionar o
 marcador apagaria o estado atual.
 """
@@ -32,17 +32,15 @@ from processo_fechado import reabrir_processo_fechado, tem_incluir_documento
 from rede_propria import ErroAvaliacao
 from Registro import ProxAcao
 from relatorios_mantis import TIPO_DOC, anexar_pdf
-from sei_automacao.processo.arvore import listar_documentos_arvore, selecionar_doc_arvore
+from sei_automacao.processo import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
-    TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_PROCESSO_NOVO,
     adicionar_tag_se_ausente,
     eh_velho_pelos_marcadores,
     estado_atual,
-    tem_tag,
 )
 from transformar_xls_em_pdf import transformar_xls_em_pdf
 
@@ -469,9 +467,9 @@ def _tratar_anexos(driver: webdriver.Remote, registro, anexos: list[dict], obter
 
 
 def _fica_no_estado_atual(registro) -> bool:
-    """Já está no fluxo normal (com estado ou concluído na versão anterior)
-    ou é VELHO pelos marcadores. O VELHO pelos memos é separado pelo main_geacs."""
-    return eh_velho_pelos_marcadores(registro) or tem_tag(registro, TAG_MEMO_DEPROC_NO_BLOCO) or estado_atual(registro) not in {None, TAG_AGUARDA_FLUXO_NORMAL}
+    """Já está no fluxo normal (com estado) ou é VELHO pelos marcadores. O
+    VELHO pelos memos é separado pelo main_geacs_inicial."""
+    return eh_velho_pelos_marcadores(registro) or estado_atual(registro) not in {None, TAG_AGUARDA_FLUXO_NORMAL}
 
 
 def _falta_pdf(tds_docs: list[dict], planilhas: list[dict]) -> bool:

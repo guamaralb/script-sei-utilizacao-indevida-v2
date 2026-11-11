@@ -1,6 +1,6 @@
 import re
 
-from sei_automacao.classes.Memorando import Memorando
+from sei_automacao.modelos import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore, identificar_doc
@@ -15,9 +15,9 @@ TEXTO_DEFINIDO = False
 # Não altere o assunto depois de criar memos: é por ele que o script os
 # encontra na árvore. É diferente do assunto do memo da GEACS à DEPROC
 # ("Levantamento de coparticipação - ...")
-ASSUNTO_MEMO_DEPROC_RESULTADO = 'Coparticipação apurada – utilização indevida da assistência à saúde'
+ASSUNTO_MEMO_GEACS_CALCULO_COPA = 'Coparticipação apurada – utilização indevida da assistência à saúde'
 
-PADRAO_ASSUNTO_MEMO_DEPROC_RESULTADO = re.compile(r'Coparticipação apurada\s*[-–]\s*utilização indevida da assistência à saúde', flags=re.IGNORECASE)
+PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA = re.compile(r'Coparticipação apurada\s*[-–]\s*utilização indevida da assistência à saúde', flags=re.IGNORECASE)
 
 _CSS = 'Texto_Justificado_Recuo_Primeira_Linha'
 _CATEGORIAS = {'TITULAR': 'titular', 'DEPENDENTE': 'dependente'}
@@ -39,7 +39,7 @@ def _totais_html(totais) -> str:
     )
 
 
-class MemoDeprocResultado(Memorando):
+class MemoGeacsCalculoCopa(Memorando):
     """Memo da DEPROC à GEACS com o resultado do levantamento da
     coparticipação (fluxo DEPROC): resumo por beneficiário, totais e o
     relatório em PDF anexado antes, citado pelo número SEI.
@@ -76,7 +76,7 @@ class MemoDeprocResultado(Memorando):
 
         super().__init__(
             destinatario_nome='Bruna Miiller Lavarini<br>Gerência de Auditoria e Contas da Saúde - GEACS',
-            assunto=ASSUNTO_MEMO_DEPROC_RESULTADO,
+            assunto=ASSUNTO_MEMO_GEACS_CALCULO_COPA,
             vocativo='Prezada',
             nome_signatario=nome_signatario,
             cargo_signatario=cargo_signatario,

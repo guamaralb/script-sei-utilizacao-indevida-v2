@@ -1,5 +1,5 @@
 """Fluxo alternativo ADC PDF ANT AUT (task run_geacs_adc_pdf_ant_aut): insere nos processos o PDF das
-planilhas de utilização e os deixa aguardando o fluxo normal (main_geacs.py). Ver
+planilhas de utilização e os deixa aguardando o fluxo normal (main_geacs_inicial.py). Ver
 planilhas_adc_pdf_ant_aut.py. O loop (executar) também é usado pelo fluxo ADC PDF ANT MAN."""
 
 import logging
@@ -22,9 +22,7 @@ from processos_a_processar import ler_processos_a_processar
 from rede_propria import ErroAvaliacao
 from Registro import RegistroAdcPdfAnt, registrar_erro, registrar_sem_acesso
 from sei_automacao.exceptions import UnidadeSemAcessoException
-from sei_automacao.processo.arvore import listar_documentos_arvore
-from sei_automacao.processo.marcadores import listar_marcadores
-from sei_automacao.ubiquo.busca import acessar_processo
+from sei_automacao.processo import acessar_processo, listar_documentos_arvore, listar_marcadores
 from selenium import webdriver
 from sessao_sei import abrir_sei, sessao_encerrada
 from tags import TAG_AGUARDA_FLUXO_NORMAL, TAG_PROCESSO_NOVO, registrar_tags

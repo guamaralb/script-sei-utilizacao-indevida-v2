@@ -1,0 +1,19 @@
+2026-11-11 13:55:04 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC EXCLUIR DOCS - EXCLUIR DOCUMENTOS DA DEPROC) =================
+2026-11-11 13:55:04 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-11_13-55-04_execucao_deproc_excluir_docs.log
+2026-11-11 13:55:04 | INFO    | -                         | processos_a_processar | 434 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_excluir_docs
+2026-11-11 13:55:05 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-11 13:55:05 | INFO    | -                         | sei_automacao.driver  | Iniciando Google Chrome...
+2026-11-11 13:55:05 | INFO    | -                         | sei_automacao.driver  | Obtendo ChromeDriver...
+2026-11-11 13:55:05 | INFO    | -                         | sei_automacao.driver  | Inicializando WebDriver do Chrome...
+2026-11-11 13:55:05 | INFO    | -                         | sei_automacao.driver  | Google Chrome iniciado com sucesso. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-11 13:55:24 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-11 13:55:24 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/DEPROC-Utilização
+2026-11-11 13:55:39 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/DEPROC-Utilização
+2026-11-11 13:55:39 | INFO    | 2010.01.0013878/2026-75   | __main__              | INÍCIO [1/434]
+2026-11-11 13:55:52 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(104, 'Connection reset by peer')': /session/c64e28856bbcd1159dc889a95b7a2958
+2026-11-11 13:55:52 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=42373): Failed to establish a new connection: [Errno 111] Connection refused")': /session/c64e28856bbcd1159dc889a95b7a2958
+2026-11-11 13:55:52 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=42373): Failed to establish a new connection: [Errno 111] Connection refused")': /session/c64e28856bbcd1159dc889a95b7a2958
+2026-11-11 13:55:52 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-11 13:55:52 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-11 13:55:52 | INFO    | -                         | __main__              | Duração total da execução: 48.1s
+2026-11-11 13:55:52 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

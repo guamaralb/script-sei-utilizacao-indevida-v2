@@ -1,11 +1,12 @@
 """Fluxo GEACS CANC MEMO DEPROC ANT (task run_geacs_canc_memo_deproc_ant):
-cancela o memo DEPROC antigo da GEACS - Utilização, que será ou já foi
-substituído por uma nova versão.
+cancela os memos DEPROC antigos da GEACS - Utilização, que serão ou já foram
+substituídos por uma nova versão.
 
 Para cada processo da aba geacs_canc_memo_deproc_ant de
-processos_a_processar.xlsx: abre o processo, procura entre os memorandos da
-GEACS (toda a árvore) o que casa com PADRAO_MEMO_DEPROC_ANTIGO e o cancela
-(cancelar_doc da sei_automacao). Não lê nem adiciona marcadores e não altera
+processos_a_processar.xlsx: abre o processo, lê todos os memorandos da GEACS
+(toda a árvore) e cancela (cancelar_doc da sei_automacao) todos os que têm os
+três trechos de TRECHOS_MEMO_DEPROC_ANTIGO e são datados antes de
+DATA_CORTE_MEMO_DEPROC_ANTIGO (15/10/2026). Não lê nem adiciona marcadores e não altera
 a prox_acao: na planilha de controle, só as colunas canc_memo_deproc_ant_*.
 """
 
@@ -13,8 +14,8 @@ import logging
 import re
 from datetime import datetime
 
-from constantes import DIR_CONTROLE, DIR_INPUTS, DIR_LOG, UNIDADE_GEACS
-from docs_processo import filtrar_memos_geacs, ler_texto_doc, selecionar_doc
+from constantes import DATA_CORTE_MEMO_DEPROC_ANTIGO, DIR_CONTROLE, DIR_INPUTS, DIR_LOG, UNIDADE_GEACS
+from docs_processo import data_memo, filtrar_memos_geacs, ler_texto_doc, selecionar_doc
 from log_config import (
     configurar_logging,
     contexto_processo,
@@ -29,8 +30,7 @@ from rede_propria import ErroAvaliacao
 from Registro import RegistroCancMemoDeprocAnt, registrar_erro, registrar_sem_acesso
 from sei_automacao.documento import cancelar_doc
 from sei_automacao.exceptions import UnidadeSemAcessoException
-from sei_automacao.processo.arvore import listar_documentos_arvore
-from sei_automacao.ubiquo.busca import acessar_processo
+from sei_automacao.processo import acessar_processo, listar_documentos_arvore
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from sessao_sei import abrir_sei, restaurar_navegador, sessao_encerrada
@@ -43,11 +43,14 @@ ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_geacs_canc_memo_deproc_ant.log'
 
 MOTIVO_CANCELAMENTO = 'Documento será ou já foi substituído por uma nova versão'
 
-# TODO: definir o padrão que identifica o memo DEPROC antigo no texto do
-# memorando da GEACS (ex.: o assunto antigo e a data, como
-# re.compile(r'Levantamento de coparticipação - utilização indevida', re.IGNORECASE)).
-# Com None, nenhum documento é cancelado: cada processo para com erro
-PADRAO_MEMO_DEPROC_ANTIGO: re.Pattern | None = None
+# Trechos que o memo DEPROC antigo tem (todos). Espaços, quebras de linha e
+# maiúsculas são ignorados; o hífen do assunto pode ser "-" ou "–". "Para:
+# IPSEMG/DEPROC" vale também para "IPSEMG/DEPROC-Utilização"
+TRECHOS_MEMO_DEPROC_ANTIGO = (
+    re.compile(r'Para:\s*IPSEMG/DEPROC', re.IGNORECASE),
+    re.compile(r'Assunto:\s*Levantamento\s+de\s+coparticipação\s*[-–]\s*utilização\s+indevida\s+da\s+assistência\s+à\s+saúde', re.IGNORECASE),
+    re.compile(r'levantamento\s+dos\s+valores\s+de\s+coparticipação\s+referentes\s+aos\s+atendimentos\s+efetivamente\s+realizados', re.IGNORECASE),
+)
 
 logger = logging.getLogger(__name__)
 
@@ -56,40 +59,64 @@ def _descrever(doc: dict) -> str:
     return f'{doc["nome_arvore"]} (SEI {doc["numero_sei"]})'
 
 
-def encontrar_memo_deproc_antigo(driver: webdriver.Remote, tds_docs: list[dict]) -> dict:
-    """O memorando da GEACS (toda a árvore) que casa com o padrão. Nenhum ou
-    mais de um: ErroAvaliacao, sem cancelar nada."""
-    if PADRAO_MEMO_DEPROC_ANTIGO is None:
-        raise ErroAvaliacao('Padrão do memo DEPROC antigo não definido (PADRAO_MEMO_DEPROC_ANTIGO): nenhum documento cancelado')
+def eh_memo_deproc_antigo(texto: str) -> bool:
+    return all(padrao.search(texto) for padrao in TRECHOS_MEMO_DEPROC_ANTIGO)
 
+
+def encontrar_memos_deproc_antigos(driver: webdriver.Remote, tds_docs: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Os memorandos da GEACS (toda a árvore) com os três trechos: os datados
+    antes de DATA_CORTE_MEMO_DEPROC_ANTIGO (a cancelar) e os sem data legível
+    (não dá para saber se são antigos)."""
     memos = filtrar_memos_geacs(tds_docs)
-    encontrados = [memo for memo in memos if PADRAO_MEMO_DEPROC_ANTIGO.search(ler_texto_doc(driver, memo))]
-    logger.info(f'{len(memos)} memorando(s) da GEACS; memo DEPROC antigo: {[_descrever(m) for m in encontrados] or "nenhum"}')
-    if not encontrados:
-        raise ErroAvaliacao('Memo DEPROC antigo não encontrado entre os memorandos da GEACS')
-    if len(encontrados) > 1:
-        raise ErroAvaliacao(f'Mais de um memo DEPROC antigo ({", ".join(m["numero_sei"] for m in encontrados)}): nenhum cancelado; conferir manualmente')
-    return encontrados[0]
+    a_cancelar, sem_data = [], []
+    for memo in memos:
+        texto = ler_texto_doc(driver, memo)
+        if not eh_memo_deproc_antigo(texto):
+            continue
+        data = data_memo(texto)
+        if data is None:
+            logger.warning(f'Memo DEPROC antigo sem data legível: {_descrever(memo)}')
+            sem_data.append(memo)
+        elif data < DATA_CORTE_MEMO_DEPROC_ANTIGO:
+            a_cancelar.append(memo)
+        else:
+            logger.info(f'Memo DEPROC de {data:%d/%m/%Y} (a partir de {DATA_CORTE_MEMO_DEPROC_ANTIGO:%d/%m/%Y}): não é cancelado: {_descrever(memo)}')
+    logger.info(f'{len(memos)} memorando(s) da GEACS; memos DEPROC antigos a cancelar: {[_descrever(m) for m in a_cancelar] or "nenhum"}')
+    return a_cancelar, sem_data
 
 
-def cancelar_memo_deproc_antigo(driver: webdriver.Remote, registro: RegistroCancMemoDeprocAnt) -> None:
+def cancelar_memos_deproc_antigos(driver: webdriver.Remote, registro: RegistroCancMemoDeprocAnt) -> None:
     # O cancelamento exige o processo aberto na unidade; não é reaberto
     if not tem_incluir_documento(driver):
-        raise ProcessoFechadoNoSetor('Processo sem "Incluir Documento" (fechado no setor): memo não cancelado (não reaberto)')
+        raise ProcessoFechadoNoSetor('Processo sem "Incluir Documento" (fechado no setor): nenhum memo cancelado (não reaberto)')
     registro.registrar_arvore(listar_documentos_arvore(driver))
     logger.info(f'Árvore: {len(registro.tds_docs)} documento(s) | GEACS: {registro.qnt_memos_geacs_na_arvore} memorando(s)')
 
-    memo = encontrar_memo_deproc_antigo(driver, registro.tds_docs)
-    registro.canc_memo_deproc_ant_sei = memo['numero_sei']
-    registro.canc_memo_deproc_ant_nome = memo['nome_arvore']
+    a_cancelar, sem_data = encontrar_memos_deproc_antigos(driver, registro.tds_docs)
+    registro.canc_memo_deproc_ant_nao_cancelados = [memo['numero_sei'] for memo in sem_data]
+    sem_opcao = []
+    for memo in a_cancelar:
+        selecionar_doc(driver, memo)
+        try:
+            cancelar_doc(driver, MOTIVO_CANCELAMENTO)
+        except TimeoutException:
+            # Já cancelado, assinado ou sem permissão: segue para os outros
+            logger.warning(f'Opção "Cancelar Documento" indisponível: {_descrever(memo)}')
+            sem_opcao.append(memo['numero_sei'])
+            continue
+        registro.canc_memo_deproc_ant_sei.append(memo['numero_sei'])
+        registro.canc_memo_deproc_ant_nome.append(memo['nome_arvore'])
+        registro.canc_memo_deproc_ant_cancelado = True
+        logger.info(f'Memo DEPROC antigo cancelado: {_descrever(memo)} | Motivo: "{MOTIVO_CANCELAMENTO}"')
+    registro.canc_memo_deproc_ant_nao_cancelados += sem_opcao
 
-    selecionar_doc(driver, memo)
-    try:
-        cancelar_doc(driver, MOTIVO_CANCELAMENTO)
-    except TimeoutException as e:
-        raise ErroAvaliacao(f'Opção "Cancelar Documento" indisponível para {_descrever(memo)} (já cancelado, assinado ou sem permissão)') from e
-    registro.canc_memo_deproc_ant_cancelado = True
-    logger.info(f'Memo DEPROC antigo cancelado: {_descrever(memo)} | Motivo: "{MOTIVO_CANCELAMENTO}"')
+    problemas = []
+    if sem_opcao:
+        problemas.append(f'opção "Cancelar Documento" indisponível (já cancelado, assinado ou sem permissão): {", ".join(sem_opcao)}')
+    if sem_data:
+        problemas.append(f'memo DEPROC antigo sem data legível (não cancelado; conferir manualmente): {", ".join(m["numero_sei"] for m in sem_data)}')
+    if problemas:
+        raise ErroAvaliacao(f'Memo(s) DEPROC antigo(s) não cancelado(s): {"; ".join(problemas)}')
 
 
 def _processar_linha(driver: webdriver.Remote, num_processo) -> RegistroCancMemoDeprocAnt:
@@ -97,7 +124,7 @@ def _processar_linha(driver: webdriver.Remote, num_processo) -> RegistroCancMemo
 
     try:
         acessar_processo(driver, num_processo)
-        cancelar_memo_deproc_antigo(driver, registro)
+        cancelar_memos_deproc_antigos(driver, registro)
 
     except UnidadeSemAcessoException as e:
         # Unidade sem acesso ao processo: nenhuma ação no SEI

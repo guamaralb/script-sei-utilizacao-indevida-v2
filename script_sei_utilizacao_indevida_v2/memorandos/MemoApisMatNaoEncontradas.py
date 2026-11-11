@@ -1,6 +1,6 @@
 import re
 
-from sei_automacao.classes.Memorando import Memorando
+from sei_automacao.modelos import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 

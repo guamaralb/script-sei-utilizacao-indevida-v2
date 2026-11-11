@@ -1,6 +1,6 @@
 import re
 
-from sei_automacao.classes.Memorando import Memorando
+from sei_automacao.modelos import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore, citar_documentos
@@ -51,7 +51,7 @@ class MemoDeproc(Memorando):
         atendimentos = 'nas redes credenciada e própria' if duas_redes else 'na rede credenciada'
         contemplar = 'de ambas as redes' if duas_redes else 'da rede credenciada'
         super().__init__(
-            destinatario_nome='IPSEMG/DEPROC',
+            destinatario_nome='IPSEMG/DEPROC-Utilização',
             assunto=ASSUNTO_MEMO_DEPROC_DUAS_REDES if duas_redes else ASSUNTO_MEMO_DEPROC,
             vocativo='Prezados',
             nome_signatario=nome_signatario,

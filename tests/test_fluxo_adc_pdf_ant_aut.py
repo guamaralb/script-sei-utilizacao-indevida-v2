@@ -19,14 +19,12 @@ from Registro import ProxAcao, RegistroAdcPdfAnt, registrar_erro
 from selenium.common.exceptions import InvalidSessionIdException, StaleElementReferenceException, TimeoutException
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
-    TAG_DISA_USOU_RP,
-    TAG_MANTIS_USOU_RC,
-    TAG_MANTIS_USOU_RP,
-    TAG_MEMO_DEPROC_NO_BLOCO,
     TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
 )
+
+from tests.sei_falso import DISA_USOU_RP_ANTIGO, MANTIS_USOU_RC_ANTIGO, MANTIS_USOU_RP_ANTIGO
 
 MATRICULA = 3542985
 BASE = {
@@ -333,12 +331,22 @@ def test_tempo_esgotado_em_todas_as_tentativas_retoma_na_passagem_seguinte(sei, 
     assert sei.tags == [TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
 
 
+def test_memo_deproc_no_bloco_da_versao_anterior_aguarda_o_fluxo_normal(sei, alt):
+    # O 01.03 da versão anterior não é mais lido: o processo segue o fluxo inicial
+    sei.tags = ['v2v: 01.03 - Memo DEPROC no Bloco']
+    planilha(sei, alt, 'Anexo RELAÇÃO ATENDIMENTO', [BASE])
+
+    registro = passar()
+
+    assert sei.tags == ['v2v: 01.03 - Memo DEPROC no Bloco', TAG_PROCESSO_NOVO, TAG_AGUARDA_FLUXO_NORMAL]
+    assert registro.prox_acao == ProxAcao.ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL
+
+
 @pytest.mark.parametrize(
     'marcadores',
     [
-        (TAG_PROCESSO_NOVO, TAG_DISA_USOU_RP, TAG_MANTIS_USOU_RP, TAG_MANTIS_USOU_RC, TAG_NO_BLOCO_DISA_VALIDAR_CONSTA),
+        (TAG_PROCESSO_NOVO, DISA_USOU_RP_ANTIGO, MANTIS_USOU_RP_ANTIGO, MANTIS_USOU_RC_ANTIGO, TAG_NO_BLOCO_DISA_VALIDAR_CONSTA),
         (TAG_PROCESSO_VELHO,),
-        (TAG_MEMO_DEPROC_NO_BLOCO,),
     ],
 )
 def test_ja_no_fluxo_normal_ou_velho_recebe_pdf_e_fica_onde_esta(sei, alt, marcadores):

@@ -1,5 +1,6 @@
 import docs_processo
 import pytest
+from sei_automacao.exceptions import DocumentoNaoEncontrado
 from selenium.common.exceptions import ElementClickInterceptedException
 
 DOC = {'nome_arvore': 'Memorando 7', 'unidade': 'IPSEMG/APIS-Utilização', 'numero_sei': '123'}
@@ -52,7 +53,7 @@ def _seleciona_na_tentativa(monkeypatch, erro: Exception | None, tentativas_com_
     'erro',
     [
         # Pastas da árvore fechadas depois de adicionar marcador
-        Exception('Documento n�o encontrado'),
+        DocumentoNaoEncontrado('Documento não encontrado'),
         # Documento no fim da árvore
         ElementClickInterceptedException('element click intercepted'),
     ],

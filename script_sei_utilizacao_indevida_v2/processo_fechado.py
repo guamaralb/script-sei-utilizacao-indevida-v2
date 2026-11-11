@@ -2,22 +2,19 @@
 processo. É ele que indica se a unidade pode agir no processo (concluído ou
 enviado sem manter aberto, por exemplo). Quando precisa receber documentos,
 o processo é reaberto na unidade (`reabrir_processo` da sei_automacao) e
-continua aberto depois. Quem decide reabrir é o fluxo (main_geacs._tratar no fluxo
+continua aberto depois. Quem decide reabrir é o fluxo (main_geacs_inicial._tratar no fluxo
 normal; planilhas_adc_pdf_ant_aut no ADC PDF ANT AUT)."""
 
 import logging
 import time
 
 from rede_propria import ErroAvaliacao
-from sei_automacao.core.iframes import trocar_iframe
-from sei_automacao.processo import reabrir_processo
-from sei_automacao.utils.encontrar_elemento import encontrar_elemento
+from sei_automacao.processo import pode_incluir_documento, reabrir_processo
 from selenium import webdriver
 
 logger = logging.getLogger(__name__)
 
 _TIMEOUT_TELA_PROCESSO = 15
-_XPATH_INCLUIR_DOCUMENTO = "//img[@alt='Incluir Documento']"
 # Espera depois de reabrir, antes de recarregar a tela do processo
 _ESPERA_REABERTURA = 5
 
@@ -27,11 +24,7 @@ class ProcessoFechadoNoSetor(ErroAvaliacao):
 
 
 def tem_incluir_documento(driver: webdriver.Remote) -> bool:
-    driver.switch_to.default_content()
-    trocar_iframe(driver, 'ifrConteudoVisualizacao', timeout=_TIMEOUT_TELA_PROCESSO)
-    encontrado = encontrar_elemento(driver, 'XPATH', _XPATH_INCLUIR_DOCUMENTO, timeout=_TIMEOUT_TELA_PROCESSO) is not None
-    driver.switch_to.default_content()
-    return encontrado
+    return pode_incluir_documento(driver, timeout=_TIMEOUT_TELA_PROCESSO)
 
 
 def reabrir_processo_fechado(driver: webdriver.Remote, registro) -> None:

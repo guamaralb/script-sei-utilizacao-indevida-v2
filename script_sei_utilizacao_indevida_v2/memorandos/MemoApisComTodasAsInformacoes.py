@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass
 
-from sei_automacao.classes.Memorando import Memorando
+from sei_automacao.modelos import Memorando
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore, identificar_doc

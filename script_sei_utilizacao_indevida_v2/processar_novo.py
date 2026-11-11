@@ -1,10 +1,10 @@
 """Fluxo dos processos (colunas 3 e 4 do docs/fluxo.drawio). O processo
-VELHO é separado antes, em main_geacs._tratar, e não passa por aqui.
+VELHO é separado antes, em main_geacs_inicial._tratar, e não passa por aqui.
 
 Cada memo criado recebe o seu marcador logo depois de entrar no bloco.
 Os marcadores são a memória entre execuções: o marcador de estado diz até
 onde o processo chegou e, ao retomar, as etapas já feitas são puladas (ver
-main_geacs._tratar). Cada novo estado substitui o anterior no SEI.
+main_geacs_inicial._tratar). Cada novo estado substitui o anterior no SEI.
 """
 
 import logging
@@ -40,17 +40,11 @@ from rede_propria import (
 )
 from Registro import ProxAcao, RegistroMain
 from relatorios_mantis import REDE_CREDENCIADA, REDE_PROPRIA, incluir_relatorios
-from sei_automacao.classes.Memorando import Memorando
+from sei_automacao.modelos import Memorando
 from selenium import webdriver
 from tags import (
     TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
     TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
-    TAG_DISA_NAO_USOU_RP,
-    TAG_DISA_USOU_RP,
-    TAG_MANTIS_NAO_USOU_RC,
-    TAG_MANTIS_NAO_USOU_RP,
-    TAG_MANTIS_USOU_RC,
-    TAG_MANTIS_USOU_RP,
     TAG_MAT_NAO_ENCONTRADAS_APIS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
@@ -311,22 +305,13 @@ def _verificar_base_apis(driver: webdriver.Remote, registro: RegistroMain, dados
     return matriculas
 
 
-def _registrar_par(driver: webdriver.Remote, registro: RegistroMain, tag: str) -> None:
-    """Marcador de um par base DISA/MANTIS: adicionar_tag remove o outro do
-    par, se a base mudou desde a última passagem."""
-    if not tem_tag(registro, tag):
-        adicionar_tag(driver, registro, tag)
-
-
 def _avaliar_disa(driver: webdriver.Remote, registro: RegistroMain, matriculas: MatriculasProcesso, bases: BasesUso) -> UsoRedeBeneficiarios:
-    """Avalia o uso da rede própria na base DISA e adiciona o par base DISA
-    e o marcador de avaliado (DISA)."""
+    """Avalia o uso da rede própria na base DISA e adiciona o marcador de
+    avaliado (DISA)."""
     uso = avaliar_uso_rede_propria_disa(matriculas, bases)
     registrar_uso(registro, uso)
 
-    tag_par = TAG_DISA_USOU_RP if uso.alguem_usou else TAG_DISA_NAO_USOU_RP
-    garantir_marcadores_no_sei(driver, [tag_par, TAG_AVALIADO_USO_REDE_PROPRIA_DISA])
-    _registrar_par(driver, registro, tag_par)
+    garantir_marcadores_no_sei(driver, [TAG_AVALIADO_USO_REDE_PROPRIA_DISA])
     if not _etapa_feita(registro, TAG_AVALIADO_USO_REDE_PROPRIA_DISA):
         adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA_DISA)
     return uso
@@ -427,11 +412,7 @@ def _avaliar_mantis_e_criar_docs(
         _conferir_bloco(parada)
     tag_final = parada.tag if parada is not None else TAG_MEMO_DEPROC_COPARTICIPACAO
 
-    tag_rp = TAG_MANTIS_USOU_RP if usou_rp else TAG_MANTIS_NAO_USOU_RP
-    tag_rc = TAG_MANTIS_USOU_RC if usou_rc else TAG_MANTIS_NAO_USOU_RC
-    garantir_marcadores_no_sei(driver, [tag_rp, tag_rc, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, tag_final])
-    _registrar_par(driver, registro, tag_rp)
-    _registrar_par(driver, registro, tag_rc)
+    garantir_marcadores_no_sei(driver, [TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, tag_final])
     if not _etapa_feita(registro, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS):
         adicionar_tag(driver, registro, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS)
 

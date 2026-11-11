@@ -4,7 +4,7 @@ from dataclasses import dataclass, field, fields
 from datetime import datetime
 
 from docs_processo import filtrar_docs_geacs, filtrar_memos_geacs
-from tags import colunas_tags, colunas_tags_deproc
+from tags import COLUNA_DEMAIS_MARCADORES, colunas_tags, colunas_tags_deproc, demais_marcadores
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
@@ -52,6 +52,7 @@ class ProxAcao:
 
     # Fluxo DEPROC (coparticipação)
     DEPROC_ASSINAR_MEMO_RESULTADO = 'DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS'
+    DEPROC_MEMO_ENCAMINHADO = 'DEPROC: memo de resultado da coparticipação encaminhado à GEACS (concluído)'
 
 
 # Próximas ações definidas antes do erro que devem ser mantidas
@@ -194,6 +195,7 @@ class RegistroBase:
             dados[campo.name] = _juntar(valor) if isinstance(valor, list) else valor
         dados['marcadores_finais'] = _juntar(self.marcadores_atuais)
         dados.update(colunas_tags(self.marcadores_atuais))
+        dados[COLUNA_DEMAIS_MARCADORES] = demais_marcadores(self.marcadores_atuais) or None
         return dados
 
 
@@ -315,7 +317,7 @@ _COLUNAS_MARCADORES_DEPROC = {
 
 @dataclass
 class RegistroDeproc(RegistroBase):
-    """Uma passagem pelo fluxo DEPROC (main_deproc.py), na unidade da DEPROC."""
+    """Uma passagem pelo fluxo DEPROC (main_deproc_calcula_copa.py), na unidade da DEPROC."""
 
     # Instruções da APIS (mesmas colunas do fluxo normal)
     ult_memo_obtido: bool = False
@@ -355,7 +357,12 @@ class RegistroDeproc(RegistroBase):
     dados_ui: DadosUI | None = None
 
     def to_dict(self) -> dict:
-        dados = {_COLUNAS_MARCADORES_DEPROC.get(coluna, coluna): valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_FORA_DEPROC and not coluna.startswith('tag_')}
+        # Os marcadores da GEACS (tag_* e demais_marcadores) são de outra unidade
+        dados = {
+            _COLUNAS_MARCADORES_DEPROC.get(coluna, coluna): valor
+            for coluna, valor in super().to_dict().items()
+            if coluna not in _CAMPOS_FORA_DEPROC and not coluna.startswith('tag_') and coluna != COLUNA_DEMAIS_MARCADORES
+        }
         dados.update(colunas_tags_deproc(self.marcadores_atuais))
         return dados
 
@@ -383,9 +390,12 @@ class RegistroCancMemoDeprocAnt(RegistroBase):
     # Sinalizador: o processo passou pelo fluxo (data e hora da passagem)
     canc_memo_deproc_ant_em: datetime | None = None
     canc_memo_deproc_ant_cancelado: bool = False
-    # Memo cancelado: número SEI e nome na árvore
-    canc_memo_deproc_ant_sei: str | None = None
-    canc_memo_deproc_ant_nome: str | None = None
+    # Memos cancelados: número SEI e nome na árvore
+    canc_memo_deproc_ant_sei: list[str] = field(default_factory=list)
+    canc_memo_deproc_ant_nome: list[str] = field(default_factory=list)
+    # Memos DEPROC antigos não cancelados (número SEI): sem a opção de cancelar
+    # ou sem data legível
+    canc_memo_deproc_ant_nao_cancelados: list[str] = field(default_factory=list)
 
     def __post_init__(self):
         self.canc_memo_deproc_ant_em = self.ultima_passagem
@@ -399,4 +409,81 @@ class RegistroCancMemoDeprocAnt(RegistroBase):
 
     def para_log(self) -> dict:
         """Linha do resumo do log (com erro e próxima ação)."""
-        return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': 'Memo DEPROC antigo cancelado' if self.canc_memo_deproc_ant_cancelado else None}
+        acao = f'{len(self.canc_memo_deproc_ant_sei)} memo(s) DEPROC antigo(s) cancelado(s)' if self.canc_memo_deproc_ant_cancelado else 'Nenhum memo DEPROC antigo cancelado'
+        return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': acao}
+
+
+@dataclass
+class RegistroResposta(RegistroBase):
+    """Uma passagem por um fluxo de resposta (main_geacs_resp_apis.py,
+    main_geacs_resp_disa.py e main_geacs_resp_deproc.py)."""
+
+    # Marcador "Aguarda" com que o processo entrou no fluxo
+    marcador_aguarda: str | None = None
+
+    def to_dict(self) -> dict:
+        return {coluna: valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_SO_FLUXO_PRINCIPAL | {'processo_reaberto'}}
+
+
+@dataclass
+class RegistroDeprocExcluirDocs(RegistroBase):
+    """Uma passagem pelo fluxo de excluir os documentos da DEPROC
+    (main_deproc_excluir_docs.py). Na planilha de controle, grava só a coluna
+    própria deproc_excluir_docs (sem prox_acao, fluxo, erro e marcadores)."""
+
+    # Documentos da DEPROC na árvore, excluídos e não excluídos (número SEI)
+    docs_deproc: list[str] = field(default_factory=list)
+    docs_excluidos: list[str] = field(default_factory=list)
+    docs_nao_excluidos: list[str] = field(default_factory=list)
+
+    def resumo_exclusao(self) -> str:
+        partes = [self.ultima_passagem.strftime('%d/%m/%Y %H:%M')]
+        if self.erro is None and not self.docs_deproc:
+            partes.append('nenhum documento da DEPROC')
+        if self.docs_excluidos:
+            partes.append(f'{len(self.docs_excluidos)} excluído(s): {_juntar(self.docs_excluidos)}')
+        if self.docs_nao_excluidos:
+            partes.append(f'não excluído(s): {_juntar(self.docs_nao_excluidos)}')
+        if self.erro is not None:
+            partes.append(f'ERRO ({self.tipo_erro}): {self.erro}')
+        return ' | '.join(partes)
+
+    def to_dict(self) -> dict:
+        return {
+            'num_processo': self.num_processo,
+            'ultima_passagem': self.ultima_passagem,
+            'data_execucao': self.data_execucao,
+            'deproc_excluir_docs': self.resumo_exclusao(),
+        }
+
+    def para_log(self) -> dict:
+        """Linha do resumo do log (com erro e próxima ação)."""
+        acao = f'DEPROC: {len(self.docs_excluidos)} documento(s) excluído(s)' if self.docs_excluidos else 'DEPROC: nenhum documento excluído'
+        return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': acao}
+
+
+@dataclass
+class RegistroVerificarMarcadores(RegistroBase):
+    """Uma passagem pelo fluxo de verificar os marcadores
+    (main_geacs_verificar_marcadores.py). Na planilha de controle, grava só os
+    marcadores: uma coluna tag_* por marcador válido na GEACS,
+    demais_marcadores (os outros) e marcadores_finais; o erro vai para
+    verificar_marcadores_erro. Não grava prox_acao, fluxo, tipo_erro e erro."""
+
+    def to_dict(self) -> dict:
+        dados = {
+            'num_processo': self.num_processo,
+            'ultima_passagem': self.ultima_passagem,
+            'data_execucao': self.data_execucao,
+            'verificar_marcadores_erro': f'{self.tipo_erro}: {self.erro}' if self.erro is not None else None,
+        }
+        # Sem conseguir ler os marcadores, as colunas deles ficam como estão
+        if self.erro is None:
+            dados['marcadores_finais'] = _juntar(self.marcadores_atuais)
+            dados.update(colunas_tags(self.marcadores_atuais))
+            dados[COLUNA_DEMAIS_MARCADORES] = demais_marcadores(self.marcadores_atuais) or None
+        return dados
+
+    def para_log(self) -> dict:
+        """Linha do resumo do log (com erro e próxima ação)."""
+        return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': 'Marcadores verificados'}
