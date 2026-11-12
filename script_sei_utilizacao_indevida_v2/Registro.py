@@ -163,6 +163,7 @@ _CAMPOS_SO_FLUXO_PRINCIPAL = frozenset({
     'deps_que_nao_usaram',
     'titular_nao_encontrado_base_geral',
     'deps_nao_encontrados_base_geral',
+    'deps_nao_encontrados_ignorados',
     'memo_apis_mat_nao_encontradas_criado',
     'memo_apis_mat_nao_encontradas_inserido_bloco',
     'memo_apis_mat_nao_encontradas_na_arvore',
@@ -205,6 +206,9 @@ class RegistroBase:
     # antigo, "base_geral")
     titular_nao_encontrado_base_geral: str | None = None
     deps_nao_encontrados_base_geral: list[str] = field(default_factory=list)
+    # Dependentes fora da base APIS e do MANTIS dos dependentes não
+    # encontrados: ignorados no restante do fluxo
+    deps_nao_encontrados_ignorados: list[str] = field(default_factory=list)
     memo_apis_mat_nao_encontradas_criado: bool = False
     memo_apis_mat_nao_encontradas_inserido_bloco: bool = False
     memo_apis_mat_nao_encontradas_na_arvore: bool = False
@@ -376,6 +380,9 @@ class RegistroDeproc(RegistroBase):
     # Memo DEPROC da GEACS na rodada e assinatura
     memo_deproc_geacs_sei: str | None = None
     memo_deproc_assinado: bool | None = None
+
+    # Data de geração da base DEPROC informada na execução (-d), citada no memo
+    data_geracao_base_deproc: str | None = None
 
     # Base DEPROC (aba Resultado): linhas do processo (coluna SEI), linhas
     # fora do período de apuração e atendimentos no relatório

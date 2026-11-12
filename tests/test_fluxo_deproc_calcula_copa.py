@@ -23,8 +23,8 @@ from tags import TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA, TAG_DEPROC_NO_BLOCO_M
 
 from script_sei_utilizacao_indevida_v2.memorandos import MemoGeacsCalculoCopa
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO_DEPROC
-from script_sei_utilizacao_indevida_v2.memorandos.MemoGeacsCalculoCopa import ASSUNTO_MEMO_GEACS_CALCULO_COPA
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO_DEPROC, PADRAO_ASSUNTO_MEMO_DEPROC
+from script_sei_utilizacao_indevida_v2.memorandos.MemoGeacsCalculoCopa import ASSUNTO_MEMO_GEACS_CALCULO_COPA, PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA
 from tests.sei_falso import DriverFalso, SEIFalso
 
 PROCESSO = 'PROC'
@@ -104,6 +104,40 @@ def test_apura_linhas_do_processo_no_periodo(tmp_path):
     assert list(atendimentos[COL_VALOR]) == [8.5, 10.0, 3.5, 0.0]
     assert atendimentos['PRESTADOR'].iloc[0] == '123 - HOSPITAL & CIA'
     assert [(s.matricula, s.atendimentos, s.valor) for s in resultado.subtotais] == [('12345678', 2, 18.5), ('5559', 2, 3.5)]
+
+
+def test_beneficiarios_do_memo_so_com_linhas_na_base(tmp_path):
+    # Dependente 555 só com linha fora do período: entra com R$ 0,00. Outro
+    # dependente do memo (666) sem linha na base: fica de fora
+    linhas = [LINHAS[0], _linha(DEPENDENTE, 'DEPENDENTE', '2023-01-01', calculado=5.0)]
+    resultado = apurar_coparticipacao(_base(tmp_path, linhas), PROCESSO, _dados(matriculas_dependentes='555; 666'))
+    assert [(b.categoria, b.nome, b.matricula, b.valor) for b in resultado.beneficiarios] == [
+        ('TITULAR', 'FULANO', '1234567-8', 8.5),
+        ('DEPENDENTE', 'BELTRANO', '555-9', 0.0),
+    ]
+
+    # Titular sem linha na base: matrícula e nome do memo da APIS
+    resultado = apurar_coparticipacao(_base(tmp_path, [LINHAS[3]]), PROCESSO, _dados())
+    assert [(b.categoria, b.nome, b.matricula) for b in resultado.beneficiarios] == [('TITULAR', 'FULANO', '1234567 / 8'), ('DEPENDENTE', 'BELTRANO', '555-9')]
+
+
+def test_tabela_do_memo_ignora_beneficiario_com_valor_zero(sei, tmp_path):
+    # Dependente 555 só com linha fora do período (R$ 0,00 apurado): fora da tabela
+    sei.memo_deproc_geacs()
+    linhas = [LINHAS[0], _linha(DEPENDENTE, 'DEPENDENTE', '2023-01-01', calculado=5.0)]
+    registro = _passar(sei, _base(tmp_path, linhas))
+
+    texto = sei.textos[registro.memo_deproc_resultado_sei]
+    assert '<td>F.</td><td>1234567-8</td><td>Titular</td><td>R$ 8,50</td>' in texto
+    assert '555-9' not in texto
+    assert '<td>Dependente</td>' not in texto
+
+
+def test_assuntos_do_memo_deproc_e_do_resultado_nao_se_confundem():
+    assert PADRAO_ASSUNTO_MEMO_DEPROC.search(f'Assunto: {ASSUNTO_MEMO_GEACS_CALCULO_COPA}') is None
+    assert PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA.search(f'Assunto: {ASSUNTO_MEMO_DEPROC}') is None
+    assert PADRAO_ASSUNTO_MEMO_DEPROC.search(f'Assunto: {ASSUNTO_MEMO_DEPROC}') is not None
+    assert PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA.search(f'Assunto: {ASSUNTO_MEMO_GEACS_CALCULO_COPA}') is not None
 
 
 def test_totais_seguem_a_formula_da_de_para(tmp_path):
@@ -190,10 +224,10 @@ class SEIDeproc(SEIFalso):
         monkeypatch.setattr(relatorio_deproc, 'gerar_pdf_deproc', lambda *args: Path('relatorio.pdf'))
 
 
-def _passar(sei, base):
+def _passar(sei, base, data_geracao_base='06/11/2026'):
     """Uma passagem do processo pelo main_deproc_calcula_copa.py."""
     sei.memos_passagem = 0
-    return main_deproc_calcula_copa._processar_linha(DriverFalso(), PROCESSO, base)
+    return main_deproc_calcula_copa._processar_linha(DriverFalso(), PROCESSO, base, data_geracao_base)
 
 
 @pytest.fixture
@@ -214,8 +248,17 @@ def test_cria_relatorio_e_memo_de_resultado(sei, tmp_path):
     assert [nome.rsplit(' - ', 1)[0] for nome in sei.nomes if nome.startswith('PDF ')] == ['PDF Coparticipação - 12345678']
     assert sei.assuntos_memos_deproc == [ASSUNTO_MEMO_GEACS_CALCULO_COPA]
     texto = sei.textos[registro.memo_deproc_resultado_sei]
-    assert f'documento {registro.relatorio_deproc_sei}' in texto
-    assert 'R$ 22,00' in texto
+    # Tabela por matrícula (iniciais do nome da base) e tabela dos totais
+    assert texto.count('<table') == 2
+    assert '<td><strong>Beneficiário</strong></td><td><strong>Matrícula</strong></td><td><strong>Vínculo</strong></td>' in texto
+    assert '<td>F.</td><td>1234567-8</td><td>Titular</td><td>R$ 18,50</td>' in texto
+    assert '<td>B.</td><td>555-9</td><td>Dependente</td><td>R$ 3,50</td>' in texto
+    assert '<td><strong>Total consolidado</strong></td><td><strong></strong></td><td><strong></strong></td><td><strong>R$ 22,00</strong></td>' in texto
+    assert '<td>Valor efetivamente descontado</td><td>R$ 4,00</td>' in texto
+    assert '<td>Valor total em aberto</td><td>R$ 18,00</td>' in texto
+    assert 'geradas em 06/11/2026' in texto
+    assert f'Memorando IPSEMG/GEACS - UTILIZAÇÃO nº 2 ({registro.memo_deproc_geacs_sei})' in texto
+    assert 'FULANO' not in texto
     assert registro.atendimentos_deproc == 4
     # 1.1 entra depois do relatório e sai quando o 1.2 entra (depois do memo)
     assert registro.marcadores_adicionados == [TAG_DEPROC_TRATADO, TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
@@ -264,13 +307,23 @@ def test_marcadores_da_deproc_inconsistentes_param_sem_acao(sei, tmp_path):
     assert sei.assuntos_memos_deproc == []
 
 
-def test_sem_atendimento_no_periodo_memo_sem_relatorio(sei, tmp_path):
+@pytest.mark.parametrize(
+    'linhas',
+    [
+        pytest.param([LINHAS[2]], id='sem_atendimento_no_periodo'),
+        # Atendimento no período, mas todos de valor 0 (isento): sem coparticipação
+        pytest.param([LINHAS[2], LINHAS[4]], id='so_atendimentos_de_valor_zero'),
+    ],
+)
+def test_sem_coparticipacao_no_periodo_memo_sem_relatorio(sei, tmp_path, linhas):
     sei.memo_deproc_geacs()
-    registro = _passar(sei, _base(tmp_path, [LINHAS[2]]))
+    registro = _passar(sei, _base(tmp_path, linhas))
 
     assert registro.erro is None
     assert not any(nome.startswith('PDF ') for nome in sei.nomes)
-    assert 'Não foram identificados atendimentos' in sei.textos[registro.memo_deproc_resultado_sei]
+    texto = sei.textos[registro.memo_deproc_resultado_sei]
+    assert 'Não foram identificados atendimentos com coparticipação' in texto
+    assert '<table' not in texto
     # Sem relatório, sem o 1.1
     assert sei.tags == [TAG_DEPROC_TRATADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
 
@@ -313,6 +366,37 @@ def test_texto_pendente_ou_bloco_ausente_param_antes_do_relatorio(sei, tmp_path,
     registro = _passar(sei, _base(tmp_path))
     assert 'Bloco do memo de resultado' in registro.erro
     assert not any(nome.startswith('PDF ') for nome in sei.nomes)
+
+    # Sem a data de geração da base, nada é criado
+    monkeypatch.setattr(main_deproc_calcula_copa, 'BLOCO_MEMO_GEACS_CALCULO_COPA', 1)
+    registro = _passar(sei, _base(tmp_path), None)
+    assert 'Data de geração da base DEPROC não informada' in registro.erro
+    assert not any(nome.startswith('PDF ') for nome in sei.nomes)
+    assert sei.assuntos_memos_deproc == []
+
+
+def test_data_geracao_base_obrigatoria_na_execucao(capsys):
+    assert main_deproc_calcula_copa.ler_argumentos(['-d', '6/11/2026']).data_geracao_base == '06/11/2026'
+    assert main_deproc_calcula_copa.ler_argumentos(['--data-geracao-base', '06/11/2026']).data_geracao_base == '06/11/2026'
+
+    for argv in ([], ['-d', '2026-11-06'], ['-d', '31/02/2026'], ['-d', '06/11/2999']):
+        with pytest.raises(SystemExit) as erro:
+            main_deproc_calcula_copa.ler_argumentos(argv)
+        assert erro.value.code == 2
+    assert '-d' in capsys.readouterr().err
+
+
+def test_sem_data_a_execucao_para_antes_do_login(monkeypatch):
+    monkeypatch.setattr(main_deproc_calcula_copa, 'abrir_sei', lambda unidade: pytest.fail('não deve fazer login'))
+    monkeypatch.setattr(main_deproc_calcula_copa, 'configurar_logging', lambda arq: pytest.fail('não deve criar o log'))
+    with pytest.raises(SystemExit):
+        main_deproc_calcula_copa.main([])
+
+
+def test_data_geracao_base_na_planilha(sei, tmp_path):
+    sei.memo_deproc_geacs()
+    registro = _passar(sei, _base(tmp_path))
+    assert registro.to_dict()['data_geracao_base_deproc'] == '06/11/2026'
 
 
 def test_processo_fechado_na_deproc_nao_e_reaberto(sei, tmp_path):
@@ -357,6 +441,34 @@ def test_extrato_agrupa_por_data_prestador_e_procedimento(tmp_path):
     assert list(resumo['DATA ATENDIMENTO'].dt.strftime('%d/%m')) == ['01/03', '10/04']
     assert list(resumo['QTDE']) == [2, 1]
     assert list(resumo[COL_VALOR]) == [17.0, 10.0]
+
+
+def test_extrato_sem_linhas_de_valor_zero(tmp_path):
+    atendimentos = apurar_coparticipacao(_base(tmp_path), PROCESSO, _dados()).atendimentos
+    do_dependente = atendimentos[atendimentos['MATRÍCULA'] == '5559']
+    assert len(do_dependente) == 2
+
+    # O isento de 02/02 (valor 0) sai; o de 01/02 (R$ 3,50) fica
+    resumo = relatorio_deproc.resumir_atendimentos(do_dependente)
+    assert list(resumo['DATA ATENDIMENTO'].dt.strftime('%d/%m')) == ['01/02']
+    assert list(resumo[COL_VALOR]) == [3.5]
+
+
+def test_beneficiario_so_com_valor_zero_fora_do_relatorio(tmp_path, monkeypatch):
+    # Dependente só com o isento no período: sem bloco no PDF
+    linhas = [LINHAS[0], LINHAS[4]]
+    dados = _dados()
+    resultado = apurar_coparticipacao(_base(tmp_path, linhas), PROCESSO, dados)
+    faixas = []
+    original = relatorio_deproc._faixa_beneficiario
+
+    def registrar(subtotal, *args):
+        faixas.append(subtotal.categoria)
+        return original(subtotal, *args)
+
+    monkeypatch.setattr(relatorio_deproc, '_faixa_beneficiario', registrar)
+    relatorio_deproc.gerar_pdf_deproc(resultado, dados, PROCESSO, tmp_path / 'pdf')
+    assert faixas == ['TITULAR']
 
 
 def test_matricula_com_dv_no_extrato():

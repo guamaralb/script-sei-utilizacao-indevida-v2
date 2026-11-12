@@ -1,0 +1,350 @@
+2026-11-12 10:19:49 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ADC PDF ANT AUT - PLANILHA ANTIGA BAIXADA DO SEI) =================
+2026-11-12 10:19:49 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-12_10-19-49_execucao_geacs_adc_pdf_ant_aut.log
+2026-11-12 10:19:49 | INFO    | -                         | processos_a_processar | 3 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_adc_pdf_ant_aut
+2026-11-12 10:19:51 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-12 10:19:51 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-12 10:19:52 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\geacs_adc_pdf_ant_aut\planilhas_baixadas
+2026-11-12 10:19:57 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-12 10:19:57 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-12 10:19:57 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-12 10:19:57 | INFO    | 2010.01.0080733/2024-69   | __main__              | INÍCIO [1/3]
+2026-11-12 10:20:01 | INFO    | 2010.01.0080733/2024-69   | marcadores_disponiveis | Marcadores cadastrados na unidade: 31
+2026-11-12 10:20:01 | INFO    | 2010.01.0080733/2024-69   | __main__              | Árvore: 15 documento(s)
+2026-11-12 10:20:01 | INFO    | 2010.01.0080733/2024-69   | planilhas_adc_pdf_ant_aut | 1 planilha(s) na árvore: ['Anexo RELAÇÃO ATENDIMENTO']
+2026-11-12 10:20:01 | WARNING | 2010.01.0080733/2024-69   | planilhas_adc_pdf_ant_aut | Retomada: PDF dos 1 Anexo(s) já está na árvore; a planilha não será baixada
+2026-11-12 10:20:01 | INFO    | 2010.01.0080733/2024-69   | tags                  | Retomada: o processo já tem o marcador "v2: 01 - Tratado pelo Script"
+2026-11-12 10:20:01 | INFO    | 2010.01.0080733/2024-69   | tags                  | Retomada: o processo já tem o marcador "v2: 01.00 - Aguarda Script: Fluxo Normal"
+2026-11-12 10:20:01 | INFO    | 2010.01.0080733/2024-69   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-12_10-19-49.xlsx
+2026-11-12 10:20:01 | ERROR   | 2010.01.0080733/2024-69   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 239, in _gravar
+    _gravar_arquivo(temporario, abas)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 253, in _gravar_arquivo
+    with pd.ExcelWriter(arquivo, engine='openpyxl', **modo) as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 75, in __init__
+    self._book = load_workbook(self._handles.handle, **engine_kwargs)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\reader\excel.py", line 348, in load_workbook
+    reader.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\reader\excel.py", line 301, in read
+    apply_stylesheet(self.archive, self.wb)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\styles\stylesheet.py", line 209, in apply_stylesheet
+    stylesheet = Stylesheet.from_tree(node)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\styles\stylesheet.py", line 105, in from_tree
+    return super().from_tree(node)
+           ~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\descriptors\serialisable.py", line 103, in from_tree
+    return cls(**attrib)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\styles\stylesheet.py", line 96, in __init__
+    self.named_styles = self._merge_named_styles()
+                        ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\styles\stylesheet.py", line 114, in _merge_named_styles
+    from_ref = [self._expand_named_style(style_ref) for style_ref in style_refs]
+                ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\styles\stylesheet.py", line 126, in _expand_named_style
+    named_style = NamedStyle(
+        name=style_ref.name,
+        hidden=style_ref.hidden,
+        builtinId=style_ref.builtinId,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\styles\named_styles.py", line 50, in __init__
+    def __init__(self,
+    
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 341, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 246, in _gravar
+    temporario.unlink(missing_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 746, in unlink
+    os.unlink(self)
+    ~~~~~~~~~^^^^^^
+PermissionError: [WinError 32] O arquivo já está sendo usado por outro processo: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\~gravando_controle_geral_de_processos.xlsx'
+2026-11-12 10:20:08 | ERROR   | 2010.01.0080733/2024-69   | planilha_controle     | Execução salva à parte: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-12_10-19-49_NAO_INCORPORADO.xlsx. Ela NÃO foi incorporada à planilha de controle geral; confira e incorpore manualmente
+2026-11-12 10:20:08 | INFO    | 2010.01.0080733/2024-69   | __main__              | FIM (10.5s) | Próxima ação: ADC PDF ANT AUT: PDFs inseridos; aguarda o fluxo normal
+2026-11-12 10:20:08 | INFO    | 2010.01.0080733/2024-69   | __main__              | INÍCIO [2/3]
+2026-11-12 10:20:12 | WARNING | 2010.01.0080733/2024-69   | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame
+2026-11-12 10:20:16 | WARNING | 2010.01.0080733/2024-69   | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame
+2026-11-12 10:20:20 | WARNING | 2010.01.0080733/2024-69   | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame
+2026-11-12 10:20:24 | ERROR   | 2010.01.0080733/2024-69   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_adc_pdf_ant_aut.py", line 49, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 63, in acessar_processo
+    _busca.pesquisar_processo(driver, num_processo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\busca.py", line 29, in pesquisar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=54744): Max retries exceeded with url: /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-12 10:20:33 | DEBUG   | 2010.01.0080733/2024-69   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-12 10:20:33 | INFO    | 2010.01.0080733/2024-69   | planilha_controle     | Planilha de controle geral voltou a ser gravada com todas as passagens; C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-12_10-19-49_NAO_INCORPORADO.xlsx pode ser apagado
+2026-11-12 10:20:33 | WARNING | 2010.01.0080733/2024-69   | __main__              | FIM COM ERRO (25.3s) | MaxRetryError: HTTPConnectionPool(host='localhost', port=54744): Max retries exceeded with url: /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-12 10:20:33 | INFO    | 2010.01.0053541/2025-57   | __main__              | INÍCIO [3/3]
+2026-11-12 10:20:37 | WARNING | 2010.01.0053541/2025-57   | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame
+2026-11-12 10:20:41 | WARNING | 2010.01.0053541/2025-57   | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame
+2026-11-12 10:20:45 | WARNING | 2010.01.0053541/2025-57   | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame
+2026-11-12 10:20:49 | ERROR   | 2010.01.0053541/2025-57   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_adc_pdf_ant_aut.py", line 49, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 63, in acessar_processo
+    _busca.pesquisar_processo(driver, num_processo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\busca.py", line 29, in pesquisar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=54744): Max retries exceeded with url: /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-12 10:20:59 | DEBUG   | 2010.01.0053541/2025-57   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-12 10:20:59 | WARNING | 2010.01.0053541/2025-57   | __main__              | FIM COM ERRO (25.5s) | MaxRetryError: HTTPConnectionPool(host='localhost', port=54744): Max retries exceeded with url: /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-12 10:21:03 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e
+2026-11-12 10:21:07 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e
+2026-11-12 10:21:11 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/be8d0d11124ce9aeb409c1d3e402ae8e
+2026-11-12 10:21:15 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-12 10:21:15 | INFO    | -                         | __main__              | Processos: 3 | Sem erro: 1 | Com erro: 2
+2026-11-12 10:21:15 | INFO    | -                         | __main__              |     1 | ADC PDF ANT AUT: PDFs inseridos; aguarda o fluxo normal
+2026-11-12 10:21:15 | INFO    | -                         | __main__              | ERRO  | 2010.01.0080733/2024-69 | MaxRetryError: HTTPConnectionPool(host='localhost', port=54744): Max retries exceeded with url: /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-12 10:21:15 | INFO    | -                         | __main__              | ERRO  | 2010.01.0053541/2025-57 | MaxRetryError: HTTPConnectionPool(host='localhost', port=54744): Max retries exceeded with url: /session/be8d0d11124ce9aeb409c1d3e402ae8e/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=54744): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-12 10:21:15 | INFO    | -                         | __main__              | Duração total da execução: 0h01m26s
+2026-11-12 10:21:15 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

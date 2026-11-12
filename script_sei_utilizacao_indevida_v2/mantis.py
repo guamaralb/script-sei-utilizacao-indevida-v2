@@ -7,6 +7,10 @@ apuração do titular, que vale também para os dependentes (o fluxo para
 antes do MANTIS quando há período variável para dependentes). Exceção: no
 modelo de memo com período por dependente, cada dependente tem o seu.
 
+Os dependentes que não estão na base APIS são procurados em arquivos à
+parte (um por rede, só com a aba DEPENDENTES e as colunas antigas do
+MANTIS), pela matrícula como veio no memo.
+
 Os atendimentos de quem usou vão para os relatórios em PDF
 (relatorios_mantis): os da rede própria, para a DISA validar; os da rede
 credenciada, para a DEPROC.
@@ -16,7 +20,7 @@ import calendar
 import logging
 import re
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -31,6 +35,9 @@ _ABA_TITULARES = ('TITULARES', 'MATRICULA_TITULAR')
 _ABA_DEPENDENTES = ('DEPENDENTES', 'MATRICULA_DEPENDENTE')
 _COLUNA_DATA = 'DATA_DO_ATENDIMENTO'
 _COLUNA_VALOR = 'VALOR_A_PAGAR'
+# Arquivos dos dependentes não encontrados na base APIS: colunas antigas
+_ABA_DEPS_NAO_ENCONTRADOS = 'DEPENDENTES'
+_COLUNAS_DEPS_NAO_ENCONTRADOS = {'coluna_data': 'DAT_ATENDIMENTO', 'coluna_valor': 'VAL_PAGAR'}
 # Colunas dos relatórios em PDF (NOME_DEPENDENTE só existe na aba DEPENDENTES)
 _COLUNA_PRESTADOR = 'NOME_PRESTADOR'
 _COLUNA_PROCEDIMENTO = 'PROCEDIMENTO'
@@ -56,12 +63,21 @@ class BaseMantis:
     nome: str
     titulares: dict[str, tuple[Atendimento, ...]]
     dependentes: dict[str, tuple[Atendimento, ...]]
+    # Dependentes que não estão na base APIS, pela matrícula como no memo
+    # (normalizada; não se sabe se tem DV)
+    dependentes_nao_encontrados: dict[str, tuple[Atendimento, ...]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
 class BasesMantis:
     rede_propria: BaseMantis
     rede_credenciada: BaseMantis
+
+    def tem_dependente_nao_encontrado(self, matricula: str) -> bool:
+        """A matrícula (como no memo, normalizada) está em algum dos arquivos
+        dos dependentes não encontrados na base APIS (RP ou RC), com
+        atendimento em qualquer data."""
+        return matricula in self.rede_propria.dependentes_nao_encontrados or matricula in self.rede_credenciada.dependentes_nao_encontrados
 
 
 def _converter_data(valor) -> date | None:
@@ -92,7 +108,15 @@ def _texto(valor) -> str:
     return '' if valor is None or pd.isna(valor) else str(valor).strip()
 
 
-def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str) -> dict[str, tuple[Atendimento, ...]]:
+def _carregar_aba(
+    arquivo: Path,
+    aba: str,
+    coluna_matricula: str,
+    *,
+    coluna_data: str = _COLUNA_DATA,
+    coluna_valor: str = _COLUNA_VALOR,
+    descricao: str = 'MANTIS',
+) -> dict[str, tuple[Atendimento, ...]]:
     df = pd.read_excel(io=arquivo, sheet_name=aba, dtype={coluna_matricula: str})
     df.columns = df.columns.str.strip()
     if _COLUNA_NOME_DEPENDENTE not in df.columns:
@@ -104,8 +128,8 @@ def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str) -> dict[str, t
     sem_valor = 0
     linhas = zip(
         df[coluna_matricula],
-        df[_COLUNA_DATA],
-        df[_COLUNA_VALOR],
+        df[coluna_data],
+        df[coluna_valor],
         df[_COLUNA_PRESTADOR],
         df[_COLUNA_PROCEDIMENTO],
         df[_COLUNA_NOME_DEPENDENTE],
@@ -130,29 +154,44 @@ def _carregar_aba(arquivo: Path, aba: str, coluna_matricula: str) -> dict[str, t
             )
         )
 
-    logger.info(f'MANTIS, aba "{aba}" carregada | {len(df)} linha(s) | {len(atendimentos)} matrícula(s) única(s)')
+    logger.info(f'{descricao}, aba "{aba}" carregada | {len(df)} linha(s) | {len(atendimentos)} matrícula(s) única(s)')
     if sem_matricula:
-        logger.warning(f'MANTIS, aba "{aba}": {sem_matricula} linha(s) sem matrícula ignorada(s)')
+        logger.warning(f'{descricao}, aba "{aba}": {sem_matricula} linha(s) sem matrícula ignorada(s)')
     if sem_data:
-        logger.warning(f'MANTIS, aba "{aba}": {sem_data} linha(s) com data inválida (geram erro se a matrícula for consultada)')
+        logger.warning(f'{descricao}, aba "{aba}": {sem_data} linha(s) com data inválida (geram erro se a matrícula for consultada)')
     if sem_valor:
-        logger.warning(f'MANTIS, aba "{aba}": {sem_valor} linha(s) sem valor (consideradas com valor 0)')
+        logger.warning(f'{descricao}, aba "{aba}": {sem_valor} linha(s) sem valor (consideradas com valor 0)')
     return {mat: tuple(lista) for mat, lista in atendimentos.items()}
 
 
-def _carregar_base(arquivo: Path, nome: str) -> BaseMantis:
+def _carregar_base(arquivo: Path, nome: str, arquivo_deps_nao_encontrados: Path | None) -> BaseMantis:
     logger.info(f'Carregando base do MANTIS ({nome}): {arquivo.name}')
-    return BaseMantis(
-        nome=nome,
-        titulares=_carregar_aba(arquivo, *_ABA_TITULARES),
-        dependentes=_carregar_aba(arquivo, *_ABA_DEPENDENTES),
-    )
+    titulares = _carregar_aba(arquivo, *_ABA_TITULARES)
+    dependentes = _carregar_aba(arquivo, *_ABA_DEPENDENTES)
+    deps_nao_encontrados = {}
+    if arquivo_deps_nao_encontrados is not None:
+        logger.info(f'Carregando base do MANTIS ({nome}) dos dependentes não encontrados na base APIS: {arquivo_deps_nao_encontrados.name}')
+        deps_nao_encontrados = _carregar_aba(
+            arquivo_deps_nao_encontrados,
+            _ABA_DEPS_NAO_ENCONTRADOS,
+            _ABA_DEPENDENTES[1],
+            **_COLUNAS_DEPS_NAO_ENCONTRADOS,
+            descricao='MANTIS (dependentes não encontrados)',
+        )
+    return BaseMantis(nome=nome, titulares=titulares, dependentes=dependentes, dependentes_nao_encontrados=deps_nao_encontrados)
 
 
-def carregar_bases_mantis(arquivo_rede_propria: Path, arquivo_rede_credenciada: Path) -> BasesMantis:
+def carregar_bases_mantis(
+    arquivo_rede_propria: Path,
+    arquivo_rede_credenciada: Path,
+    arquivo_rede_propria_deps_nao_encontrados: Path | None = None,
+    arquivo_rede_credenciada_deps_nao_encontrados: Path | None = None,
+) -> BasesMantis:
+    """Os arquivos dos dependentes não encontrados na base APIS são
+    opcionais (sem eles, esses dependentes não têm atendimento)."""
     return BasesMantis(
-        rede_propria=_carregar_base(arquivo_rede_propria, 'rede própria'),
-        rede_credenciada=_carregar_base(arquivo_rede_credenciada, 'rede credenciada'),
+        rede_propria=_carregar_base(arquivo_rede_propria, 'rede própria', arquivo_rede_propria_deps_nao_encontrados),
+        rede_credenciada=_carregar_base(arquivo_rede_credenciada, 'rede credenciada', arquivo_rede_credenciada_deps_nao_encontrados),
     )
 
 
@@ -261,14 +300,23 @@ def _no_periodo(atendimentos: tuple[Atendimento, ...], intervalos: tuple[Interva
     return [a for a in atendimentos if any(i.contem(a.data) for i in intervalos)]
 
 
-def _consultar(base: BaseMantis, titular: str, intervalos_titular: tuple[Intervalo, ...], intervalos_dependentes: dict[str, tuple[Intervalo, ...]]) -> UsoMantis:
+def _consultar(
+    base: BaseMantis,
+    titular: str,
+    intervalos_titular: tuple[Intervalo, ...],
+    intervalos_dependentes: dict[str, tuple[Intervalo, ...]],
+    deps_nao_encontrados: frozenset[str] = frozenset(),
+) -> UsoMantis:
+    """Os dependentes de deps_nao_encontrados (fora da base APIS) são
+    procurados só no arquivo deles, pela matrícula como no memo."""
     chave_titular = sem_dv(titular)
     tit_atendimentos = _no_periodo(base.titulares.get(chave_titular, ()), intervalos_titular, f'o titular {titular} ({base.nome})')
 
     deps_que_usaram = []
     deps_atendimentos = []
     for dependente, intervalos in intervalos_dependentes.items():
-        atendimentos = _no_periodo(base.dependentes.get(dependente, ()), intervalos, f'o dependente {dependente} ({base.nome})')
+        origem = base.dependentes_nao_encontrados if dependente in deps_nao_encontrados else base.dependentes
+        atendimentos = _no_periodo(origem.get(dependente, ()), intervalos, f'o dependente {dependente} ({base.nome})')
         if atendimentos:
             deps_que_usaram.append(dependente)
             deps_atendimentos += [(dependente, a) for a in atendimentos]
@@ -289,19 +337,24 @@ def avaliar_uso_rede_propria_mantis(
     periodo_titular: str,
     bases: BasesMantis,
     periodos_por_dependente: dict[str, str] | None = None,
+    deps_nao_encontrados: tuple[str, ...] = (),
 ) -> AvaliacaoMantis:
     """titular (com DV) e dependentes (sem DV) como em MatriculasProcesso;
     as bases do MANTIS são sem DV.
 
     periodos_por_dependente (modelo com período por dependente): matrícula
     do dependente -> período de apuração. O dependente que não está nele
-    usa o período do titular."""
+    usa o período do titular.
+
+    deps_nao_encontrados: dependentes fora da base APIS (como no memo),
+    procurados nos arquivos dos dependentes não encontrados."""
     intervalos = interpretar_periodo(periodo_titular)
     periodos = {normalizar_matricula(m): p for m, p in (periodos_por_dependente or {}).items()}
     intervalos_dependentes = {d: interpretar_periodo(periodos[d], f'do dependente {d}') if d in periodos else intervalos for d in dependentes}
+    nao_encontrados = frozenset(deps_nao_encontrados)
     avaliacao = AvaliacaoMantis(
-        rede_propria=_consultar(bases.rede_propria, titular, intervalos, intervalos_dependentes),
-        rede_credenciada=_consultar(bases.rede_credenciada, titular, intervalos, intervalos_dependentes),
+        rede_propria=_consultar(bases.rede_propria, titular, intervalos, intervalos_dependentes, nao_encontrados),
+        rede_credenciada=_consultar(bases.rede_credenciada, titular, intervalos, intervalos_dependentes, nao_encontrados),
     )
     for nome, uso in (('rede própria', avaliacao.rede_propria), ('rede credenciada', avaliacao.rede_credenciada)):
         logger.info(

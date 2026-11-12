@@ -72,6 +72,7 @@ _COLUNAS_MARCADORES_OBSOLETAS = frozenset({'verificar_marcadores'})
 _COLUNAS_NAO_ENCONTRADAS = (
     'titular_nao_encontrado_base_geral',
     'deps_nao_encontrados_base_geral',
+    'deps_nao_encontrados_ignorados',
 )
 
 # Fluxo GEACS VERIFICAR MARCADORES: inconsistência encontrada (prox_acao,
@@ -237,7 +238,9 @@ def _gravar(arquivo: Path, abas: dict[str, list[dict]]) -> None:
         else:
             temporario.unlink(missing_ok=True)
         _gravar_arquivo(temporario, abas)
-        with temporario.open('rb') as gravado:
+        # No Windows, o fsync exige o arquivo aberto para escrita ('rb' dá
+        # EBADF)
+        with temporario.open('r+b') as gravado:
             os.fsync(gravado.fileno())
         os.replace(temporario, arquivo)
     finally:

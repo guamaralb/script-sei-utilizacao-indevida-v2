@@ -61,7 +61,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `sessao_sei.py` | `abrir_sei(unidade)`: navegador, login (credenciais do `.env`) e `alterar_unidade_sei()` (`trocar_unidade` da `sei_automacao.unidade`); `restaurar_navegador()`: recarrega a página depois de erro inesperado; `sessao_encerrada()`: navegador fechado |
 | `processo_fechado.py` | `tem_incluir_documento()` e `reabrir_processo_fechado()` (fluxo normal e ADC PDF ANT AUT): processo fechado no setor (`ProcessoFechadoNoSetor`) |
 | `rede_propria.py` | Carga da base DISA e da base APIS, normalização de matrícula, `verificar_base_apis()` (existência), `avaliar_uso_rede_propria_disa()` (uso), `ErroAvaliacao` |
-| `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada, com os atendimentos), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
+| `mantis.py` | Carga das bases do MANTIS (rede própria e credenciada, com os atendimentos, e os arquivos dos dependentes não encontrados na base APIS), interpretação do período de apuração, `avaliar_uso_rede_propria_mantis()` e `usos_mantis_alem_disa()` |
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
 | `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS: o modelo com período por dependente (procurado primeiro, pela linha do período do dependente; duplas matrícula + período) e o "novo_novo"; os outros são formato inválido |
 | `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base APIS (`incluir_memo_apis_mat_nao_encontradas`) |
@@ -81,7 +81,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `conferencia_prox_acao.py` | Fluxo GEACS VERIFICAR MARCADORES: `conferir_processo()` confere a `prox_acao` da planilha com os marcadores (`conferir_prox_acao`), o caso base DISA × MANTIS, os memos e relatórios dos marcadores na árvore (`conferir_memo_do_marcador`) e a retomada (`conferir_retomada`) |
 | `fluxo_resposta.py` | Base dos fluxos de resposta (**TODO**: não montados): `conferir_marcador_aguarda()`, `processar_linha()`, `executar()`, `FluxoNaoMontado` ([seção](#fluxos-de-resposta-todo)) |
 | `main_geacs_resp_apis.py`, `main_geacs_resp_disa.py`, `main_geacs_resp_deproc.py` | Fluxos de resposta da APIS, da DISA e da DEPROC (`poetry run task run_geacs_resp_apis`, `..._disa`, `..._deproc`): modelos com TODO em `tratar_resposta` |
-| `main_deproc_calcula_copa.py` | Fluxo DEPROC (`poetry run task run_deproc_calcula_copa`), na unidade da DEPROC: memo DEPROC assinado, coparticipação, relatório e memo de resultado ([seção](#fluxo-deproc)) |
+| `main_deproc_calcula_copa.py` | Fluxo DEPROC (`poetry run task run_deproc_calcula_copa -d DD/MM/AAAA`), na unidade da DEPROC: memo DEPROC assinado, coparticipação, relatório e memo de resultado ([seção](#fluxo-deproc)) |
 | `main_deproc_excluir_docs.py` | Fluxo DEPROC EXCLUIR DOCS (`poetry run task run_deproc_excluir_docs`), na unidade da DEPROC: exclui todos os documentos da DEPROC do processo, sem alterar a `prox_acao` ([seção](#fluxo-deproc-excluir-docs)) |
 | `coparticipacao_deproc.py` | Fluxo DEPROC: carga da base DEPROC (aba `Resultado`), conferência das matrículas, filtro pelo período, colunas do relatório e totais (aba `DE-PARA`) |
 | `relatorio_deproc.py` | Fluxo DEPROC: PDF da coparticipação e inclusão no processo, com retomada pelo nome |
@@ -258,8 +258,18 @@ a API dela.
   `UI 2025 EX-TITULARES` (coluna `MATRICULAS TITULARES`, cabeçalho com
   espaço sobrando) e `UI 2025 EX-DEPENDENTES` (coluna
   `MATRICULAS DEPENDENTES`). **Todas as matrículas têm DV.** A existência
-  das matrículas é conferida **só nela**: faltou alguma, o processo para com
-  `01.02.1` e memo à APIS.
+  das matrículas é conferida **só nela**. Faltou o **titular**: o processo
+  para com `01.02.1` e memo à APIS, **só com o titular** (os dependentes que
+  faltam não entram). Faltou **só dependente**: `01.02.1` e o fluxo segue,
+  sem memo à APIS de matrículas:
+  - está nos arquivos do MANTIS dos dependentes não encontrados
+    ([MANTIS](#bases-de-matrículas)): a utilização dele é procurada neles; na
+    base DISA, conta como não usou;
+  - não está neles: **ignorado**. Sai dos dados do memo da APIS usados no
+    resto do fluxo (base DISA, MANTIS, relatórios, períodos e o texto dos
+    memos; `processar_novo._sem_dependentes`) e vai para a coluna
+    `deps_nao_encontrados_ignorados`. A coluna `matriculas_dependentes`
+    continua como no memo.
 - **Base DISA (rede própria)**, feita a partir da base APIS:
   `beneficiarios_atendidos_rede_propria-2026_09_23.xlsx`, abas
   `UI 2025 EX-TITULARES` (coluna `MATRICULAS TITULARES`) e
@@ -275,6 +285,7 @@ a API dela.
   - achou uma: dali em diante o titular fica **com DV** (base DISA) e o
     dependente **sem DV** (base DISA e MANTIS);
   - não achou: matrícula não encontrada, inclusive com DV errado (`01.02.1`);
+    o dependente fica como veio no memo (normalizado);
   - achou mais de uma: `ErroAvaliacao`, sem ação no SEI (hoje não acontece
     na base APIS).
   Os períodos por dependente passam pela mesma conversão
@@ -307,6 +318,21 @@ a API dela.
     leitura do memo da APIS: inválido é formato inválido (memo à APIS).
   - Atendimento sem data válida de uma matrícula consultada:
     `ErroAvaliacao`. Sem valor: conta como 0.
+- **Dependentes não encontrados na base APIS**:
+  `utilizacao_MANTIS-rede_propria-dependentes_nao_encontrados.xlsx` e
+  `utilizacao_MANTIS-rede_credenciada-dependentes_nao_encontrados.xlsx`
+  (`ARQ_MANTIS_REDE_*_DEPS_NAO_ENCONTRADOS`), carregados junto com as bases do
+  MANTIS (`BaseMantis.dependentes_nao_encontrados`). Só a aba `DEPENDENTES`,
+  com as colunas antigas do MANTIS: matrícula em `MATRICULA_DEPENDENTE`,
+  `NOME_DEPENDENTE`, `DAT_ATENDIMENTO` (número de série do Excel),
+  `VAL_PAGAR`, `NOME_PRESTADOR` e `PROCEDIMENTO`. O dependente fora da base
+  APIS é procurado **só** nesses arquivos (não nas bases principais; se a
+  matrícula não aparece em nenhum dos dois, em qualquer data, o dependente é
+  ignorado), pela
+  matrícula **como veio no memo** (normalizada; conferido em 12/11/2026: as
+  matrículas dos memos batem assim, sem tirar o DV). Mesmo período, mesmas
+  regras de data e valor, e os atendimentos entram nos relatórios em PDF e na
+  comparação base DISA × MANTIS como os dos outros dependentes.
 
 ### Decisão base DISA × MANTIS
 
@@ -394,7 +420,7 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 | `01 - Tratado pelo Script` | Processo tratado pelo script (todos, exceto o VELHO). Adicionado se faltar, e o fluxo começa do início |
 | `01.00 - Aguarda Script: Fluxo Normal` | Estado (entrada): PDFs inseridos pelo [fluxo ADC PDF ANT AUT](#fluxo-alternativo-adc-pdf-ant-aut). O fluxo normal trata o processo do início e o próximo estado o substitui. Sai também se o processo for VELHO |
 | `01.01 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes |
-| `01.02.1 - Mat. N Encontradas Base APIS` | Matrícula não encontrada na base APIS (renomeado de `... Base Geral`) |
+| `01.02.1 - Mat. N Encontradas Base APIS` | Matrícula não encontrada na base APIS (renomeado de `... Base Geral`). Titular: o processo para (`01.06.1`). Só dependente: o fluxo segue até o estado final |
 | `01.05 - No Bloco APIS: Sem Memo p/ GEACS` | Estado (no bloco): memo à APIS (sem memorando para a GEACS) no bloco |
 | `01.05.1 - Aguarda APIS: Sem Memo p/ GEACS` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.05` |
 | `01.05 - No Bloco APIS: Formato Inválido` | Estado (no bloco): memo à APIS (formato inválido) no bloco |
@@ -453,8 +479,10 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
   - no máximo um marcador de estado;
   - estado ou informativo (`01.01`, `01.02.1`) exige o `01`;
   - informativo só com os estados que vêm depois dele (sem estado ou com
-    `01.00`, não há regra): `01.02.1` com `01.06`,
-    `01.08` (falhou antes do memo) ou `01.06.1`; `01.01` com `01.06` ou `01.07`;
+    `01.00`, não há regra): `01.02.1` com `01.06`, `01.08` (falhou antes do
+    memo), `01.06.1` (titular fora da base APIS) ou, só dependente fora dela,
+    `01.07`, `01.09` e `01.10` (e os `Aguarda` deles); `01.01` com `01.06` ou
+    `01.07`;
   - `01.06.1` exige `01.02.1`; `01.07` exige `01.01`;
   - os marcadores de uso da RP / RC (`01.06.2`, `01.08.2`, `01.08.3`, versão
     anterior) não são conferidos;
@@ -498,8 +526,9 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 - Os relatórios RP e RC de quem usou entram em **todos** os casos, antes do
   memo. O memo à APIS (nenhum uso) só existe sem uso na base DISA, no MANTIS
   RP e no MANTIS RC.
-- O memo à APIS de matrículas só existe se alguma matrícula **não foi
-  encontrada na base APIS**.
+- O memo à APIS de matrículas só existe se o **titular não foi encontrado
+  na base APIS**, e cita só o titular. Dependente fora dela não para o
+  processo (e, fora também do MANTIS dos não encontrados, é ignorado).
 - Todos os memos são identificados **pelo assunto** (`PADRAO_ASSUNTO_*` em
   cada memorando; **não altere os assuntos** depois de criar memos), só na
   rodada. `incluir_memo(..., padrao_assunto=)` procura o memo antes de
@@ -564,7 +593,8 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 | DISA não, RP não, RC não | `01` + `01.06` → `01.08` → `01.10 No Bloco APIS: Sem Uso` | `01`, `01.10 No Bloco APIS: Sem Uso` |
 | Vindo do fluxo ADC PDF ANT AUT | `01` + `01.00` → (um dos caminhos acima ou abaixo, do início) | como no caminho seguido |
 | Parado pelo memo da APIS | `01` + `01.05` (um dos dois) | `01`, `01.05` |
-| Parado pela base APIS | `01` + `01.02.1` + `01.06.1` | `01`, `01.02.1`, `01.06.1` |
+| Parado pela base APIS (titular) | `01` + `01.02.1` + `01.06.1` | `01`, `01.02.1`, `01.06.1` |
+| Dependente fora da base APIS | `01` + `01.02.1` + (um dos caminhos DISA × MANTIS ou o do período) | `01`, `01.02.1` e o estado final do caminho |
 | Parado pelo período dos dependentes | `01` + `01.06` + `01.01` → `01.07` | `01`, `01.01`, `01.07` |
 | VELHO | `00` (+ o que já tinha; o `01.00` sai) | `00`, … |
 | Depois da assinatura (manual) | `No Bloco` → `Aguarda` do mesmo número + `.1` (ex.: `01.09` → `01.09.1`) | o `Aguarda` no lugar do `No Bloco` |
@@ -651,10 +681,16 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
      `motivo_formato_invalido`. Fim.
 3. `verificar_base_apis`: procura titular e dependentes **só na base
    APIS**, com ou sem DV (matrícula em formato inválido ou ambígua: erro).
-   - **Faltou matrícula?** **➕ `01.02.1 - Mat. N Encontradas Base APIS`**,
+   - **Faltou o titular?** **➕ `01.02.1 - Mat. N Encontradas Base APIS`**,
      memo à APIS (`incluir_memo_apis_mat_nao_encontradas`; bloco
-     `7711907`), **➕ `01.06.1 - No Bloco APIS: Matrículas`**, `prox_acao` =
-     Assinar memo à APIS (matrículas não encontradas) e encaminhar. Fim.
+     `7711907`; só com o titular), **➕ `01.06.1 - No
+     Bloco APIS: Matrículas`**, `prox_acao` = Assinar memo à APIS (matrículas
+     não encontradas) e encaminhar. Fim.
+   - **Faltou só dependente?** **➕ `01.02.1`** (se faltar) e o fluxo segue,
+     sem memo à APIS de matrículas. O dependente que está nos arquivos do
+     MANTIS dos dependentes não encontrados é procurado neles no passo 6; o
+     que não está é ignorado no restante do fluxo
+     (`deps_nao_encontrados_ignorados`).
    - **Encontrou todas, mas o processo tem `01.02.1`** (base corrigida)?
      **➖ `01.02.1`** (`remover_tag`) e o fluxo segue.
 4. `avaliar_uso_rede_propria_disa`: uso da rede própria na base DISA (fora
@@ -667,7 +703,8 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
    Período Deps`**, `prox_acao` = Assinar memo à APIS (período dos
    dependentes) e encaminhar. Fim.
 6. `avaliar_uso_rede_propria_mantis` (período do titular ou, no modelo com
-   período por dependente, o de cada dependente; rede própria e
+   período por dependente, o de cada dependente; dependente fora da base
+   APIS, nos arquivos dos dependentes não encontrados; rede própria e
    rede credenciada, registradas na planilha de controle; colunas
    `caso_disa_mantis` e `mats_uso_mantis_alem_disa`). O memo do caso
    ([tabela](#decisão-base-disa--mantis)) é montado (texto pendente ou
@@ -920,7 +957,8 @@ unidade da GEACS, com os processos da aba `geacs_verificar_marcadores` de
 Para cada processo: abre o processo (unidade sem acesso: como nos outros
 fluxos), lê os marcadores (`listar_marcadores`) e, só quando alguma
 conferência precisa, a árvore e o texto dos memos. **Nenhuma ação no SEI**
-(não remove nem adiciona marcador). A linha do processo vem da planilha lida
+(não remove nem adiciona marcador) e **não reabre processos**: o fechado no
+setor é lido como está, sem conferir o `Incluir Documento` (há teste). A linha do processo vem da planilha lida
 no início (`PlanilhaControleGeral.linha_processo`); se a planilha não pôde ser
 lida, a `prox_acao` não é conferida (só os memorandos).
 
@@ -1029,7 +1067,13 @@ inicial não são gravados (`RegistroResposta`). Há testes em
 
 ## Fluxo DEPROC
 
-`poetry run task run_deproc_calcula_copa` (`main_deproc_calcula_copa.py`). Roda **na unidade da DEPROC**
+`poetry run task run_deproc_calcula_copa -d 06/11/2026` (`main_deproc_calcula_copa.py`). O `-d`
+(`--data-geracao-base`) é a **data de geração da base DEPROC** (retorno do
+MANTIS ou data da planilha; muda a cada leva de dados e não está na planilha),
+citada no memo de resultado. É **obrigatório**: sem ele, com data inválida
+(fora de `DD/MM/AAAA`) ou no futuro, o `argparse` (`ler_argumentos`) mostra o
+erro e encerra antes do log, do login e de qualquer ação no SEI. A data vai
+para o log e para a coluna `data_geracao_base_deproc`. Roda **na unidade da DEPROC**
 (`alterar_unidade_sei(UNIDADE_DEPROC)`) e lê a aba `deproc_calcula_copa` de
 `dados/inputs/processos_a_processar.xlsx`. Carrega uma vez a base
 `dados/fluxo_deproc/Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx`, aba
@@ -1045,7 +1089,7 @@ encaminha o memo coloca o `01.02.1` e remove o `01.02`).
 Dentro de cada etapa, a retomada também é pelo nome do PDF e pelo assunto do
 memo, na rodada.
 
-Sequência: `01` + `01.01` → `01.02` (sem atendimento no período, sem relatório:
+Sequência: `01` + `01.01` → `01.02` (sem coparticipação no período, sem relatório:
 `01` + `01.02`). No SEI ao final: `01`, `01.02`; depois da assinatura
 (manual), `01`, `01.02.1`.
 
@@ -1081,23 +1125,41 @@ Para cada processo (erro: `prox_acao` = Verificar erro, sem ação no SEI):
    - filtra pelo período de apuração do memo da APIS (`DATA_ATENDIMENTO`):
      o do titular para todos ou, no modelo com período por dependente, o de
      cada dependente. Período variável sem período por dependente: erro;
-   - todas as linhas do período entram no relatório, inclusive isentas e de
-     cálculo impedido (valor 0).
+   - todas as linhas do período entram na apuração (colunas
+     `atendimentos_deproc` e totais), inclusive isentas e de cálculo impedido
+     (valor 0); no relatório em PDF, as de valor 0 não aparecem (abaixo).
 6. Antes de qualquer documento, confere bloco (`BLOCO_MEMO_GEACS_CALCULO_COPA`,
    `7765003`), signatário (`NOME_SIGNATARIO_DEPROC`: Danúbia Lacerda Gomes de
-   Oliveira) e texto do memo (`MemoGeacsCalculoCopa.TEXTO_DEFINIDO`).
-   Faltando algum: erro. **TODO**: definir o texto final (hoje para o
-   fluxo).
-7. **➕ `01`** e relatório em PDF (`relatorio_deproc.py`), só se houver atendimento no
-   período: documento externo `Coparticipação - <matrícula do titular> -
+   Oliveira), texto do memo (`MemoGeacsCalculoCopa.TEXTO_DEFINIDO`) e data de
+   geração da base (o `-d` da execução, citado no memo). Faltando algum: erro.
+7. **➕ `01`** e relatório em PDF (`relatorio_deproc.py`), só se houver
+   coparticipação no período (`ResultadoDeproc.tem_coparticipacao`: algum
+   atendimento e total apurado diferente de 0): documento externo `Coparticipação - <matrícula do titular> -
    <AAAAMMDD_HHMMSS>` (mesmas opções dos relatórios do MANTIS), arquivo em
    `dados/fluxo_deproc/pdf/`. Retomada: o PDF que começa com `PDF
    Coparticipação - <matrícula>` na rodada não é anexado de novo. Depois do
    relatório, **➕ `01.01`**.
-8. `MemoGeacsCalculoCopa` (da DEPROC à GEACS; assunto `Coparticipação apurada
-   – utilização indevida da assistência à saúde`): cita o memo DEPROC da
-   GEACS, o memo da APIS e o relatório, com o subtotal por matrícula e os três
-   totais; sem atendimento, informa que não há coparticipação. Retomada pelo
+8. `MemoGeacsCalculoCopa` (da DEPROC à GEACS; assunto `Retorno do
+   levantamento de coparticipação – utilização indevida da assistência à
+   saúde`), no modelo enviado pela GEACS em 12/11/2026: cita o memo DEPROC da
+   GEACS (sem o ano), as bases (Mantis nº 0011281, Memorandos ASGE nº
+   535/2026 e DIPS nº 452/2026, fixos no texto) e a data de geração da base, com
+   duas tabelas (`tabela_html`, no formato do editor do SEI):
+   - colunas Beneficiário (só as iniciais), Matrícula (da base, com DV:
+     `1234567-8`), Vínculo (`Titular` ou `Dependente`) e valor apurado no
+     período, e o total consolidado. Entram o titular (sem linha na base:
+     matrícula e nome do memo da APIS) e os dependentes com linhas do processo
+     na base (`ResultadoDeproc.beneficiarios`; nome da base,
+     `NOME_BENEFICIARIO`, o mais frequente). Dependente sem linha fica de
+     fora, e **beneficiário com valor apurado 0 no período não entra** na
+     tabela (titular inclusive);
+   - total apurado, valor efetivamente descontado e valor em aberto.
+
+   Sem coparticipação no período (nenhum atendimento, ou só atendimentos de
+   valor 0, ex.: isentos), redação fora do modelo: informa que não há
+   atendimentos com coparticipação, sem tabelas e sem relatório. O relatório não é citado pelo
+   número SEI. O padrão do assunto do memo DEPROC da GEACS não casa com este
+   (`(?<!retorno do )`). Retomada pelo
    assunto entre os memos da DEPROC na rodada. Depois do memo no bloco,
    **➕ `01.02 - No Bloco GEACS: Memo Cálculo COPA`** (↻ remove o `01.01`).
    `prox_acao` = DEPROC: assinar memo de resultado da coparticipação e
@@ -1125,7 +1187,9 @@ com a faixa MATRÍCULA (com DV, `3398372-1`), NOME BENEFICIÁRIO e CATEGORIA
 (e PERÍODO DE APURAÇÃO, no modelo com período por dependente), e a tabela DATA
 ATENDIMENTO, PRESTADOR, PROCEDIMENTO, QTDE e VALOR DA COPARTICIPAÇÃO. Os
 atendimentos com a mesma data, prestador e procedimento viram uma linha, com
-QTDE e valor somados (`resumir_atendimentos`). Depois de cada beneficiário vem
+QTDE e valor somados (`resumir_atendimentos`). **Linha cuja soma do valor da
+coparticipação é 0 não entra no relatório**, e o beneficiário sem nenhuma
+outra linha não aparece (nem faixa nem `SUBTOTAL`). Depois de cada beneficiário vem
 `SUBTOTAL :`; no fim, os totais:
 
 - VALOR TOTAL DA COPARTICIPAÇÃO: soma de U + AI;
@@ -1150,7 +1214,7 @@ R$ 94,32 em vez de R$ 30,32.)
   `tag_deproc_encaminhado_memo_copa`); as colunas de marcadores da GEACS
   (`marcadores_*`, `tag_*`), `processo_reaberto` e os resultados só do fluxo
   principal não são gravadas e continuam como estão. Outras colunas próprias:
-  `memo_deproc_geacs_sei`, `memo_deproc_assinado`, `linhas_base_deproc`,
+  `data_geracao_base_deproc`, `memo_deproc_geacs_sei`, `memo_deproc_assinado`, `linhas_base_deproc`,
   `linhas_fora_periodo_deproc`, `atendimentos_deproc`,
   `matriculas_divergentes_deproc`, `valor_total_coparticipacao`,
   `valor_total_descontado`, `valor_total_em_aberto`, `relatorio_deproc_*` e
@@ -1215,7 +1279,7 @@ coluna `num_sei` (um processo por linha; linhas vazias são ignoradas):
 | `geacs_adc_pdf_ant_man` | `poetry run task run_geacs_adc_pdf_ant_man` (`main_geacs_adc_pdf_ant_man.py`) |
 | `geacs_canc_memo_deproc_ant` | `poetry run task run_geacs_canc_memo_deproc_ant` (`main_geacs_canc_memo_deproc_ant.py`) |
 | `geacs_verificar_marcadores` | `poetry run task run_geacs_verificar_marcadores` (`main_geacs_verificar_marcadores.py`) |
-| `deproc_calcula_copa` | `poetry run task run_deproc_calcula_copa` (`main_deproc_calcula_copa.py`) |
+| `deproc_calcula_copa` | `poetry run task run_deproc_calcula_copa -d DD/MM/AAAA` (`main_deproc_calcula_copa.py`) |
 | `deproc_excluir_docs` | `poetry run task run_deproc_excluir_docs` (`main_deproc_excluir_docs.py`) |
 
 Aba faltando ou sem a coluna `num_sei`: a execução para com erro antes do
@@ -1285,7 +1349,9 @@ perca os processos já tratados.
 - `tem_periodo_var_deps` (sim/não) e `periodos_por_dependente` (modelo com
   período por dependente: `555: 01/2024 a 06/2024; ...`).
 - Matrículas não encontradas na base APIS:
-  `titular_nao_encontrado_base_geral` e `deps_nao_encontrados_base_geral`.
+  `titular_nao_encontrado_base_geral`, `deps_nao_encontrados_base_geral` e
+  `deps_nao_encontrados_ignorados` (fora também do MANTIS dos dependentes não
+  encontrados).
 - Formatação: cabeçalho congelado e com filtro; linha com erro em vermelho
   claro; matrículas não encontradas em amarelo; `verificar_marcadores_inconsistencia`
   e `verificar_marcadores_erro` preenchidas (e a `prox_acao` da linha) em
@@ -1331,8 +1397,8 @@ perca os processos já tratados.
   árvore e na troca de unidade; que `obter_conteudo_doc` traz a linha
   "Documento assinado eletronicamente por ..." do memo DEPROC; e que, na
   unidade da DEPROC, o processo recebido mostra `Incluir Documento`.
-- **TODO** (fluxo DEPROC): definir o texto final do `MemoGeacsCalculoCopa`
-  (`TEXTO_DEFINIDO`) e confirmar o cargo (`CARGO_SIGNATARIO_DEPROC`).
+- **TODO** (fluxo DEPROC): validar com a DEPROC a redação do memo (inclusive a do caso sem
+  atendimento) e confirmar o cargo (`CARGO_SIGNATARIO_DEPROC`).
 - Fluxo DEPROC EXCLUIR DOCS: confirmar no SEI real que `excluir_doc` funciona
   com o documento selecionado na árvore (inclusive documento externo) e qual
   erro aparece num documento assinado (hoje: qualquer falha conta como não

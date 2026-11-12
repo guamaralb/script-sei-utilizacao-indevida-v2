@@ -1,0 +1,59 @@
+2026-11-12 09:30:41 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-12 09:30:41 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-12_09-30-41_execucao_geacs_inicial.log
+2026-11-12 09:30:41 | INFO    | -                         | processos_a_processar | 2 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_inicial
+2026-11-12 09:30:41 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-12 09:30:41 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-12 09:30:41 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-12 09:30:41 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-12 09:30:42 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-12 09:30:42 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-12 09:30:42 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-12 09:30:43 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-12 09:30:43 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-12 09:30:43 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-12 09:31:12 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-12 09:31:31 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-12 09:31:33 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-12 09:31:33 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-12 09:31:34 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-11-12 09:31:39 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-12 09:31:39 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-12 09:31:40 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-12 09:31:40 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [1/2]
+2026-11-12 09:31:51 | ERROR   | 2010.01.0072726/2024-45   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_inicial.py", line 194, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 63, in acessar_processo
+    _busca.pesquisar_processo(driver, num_processo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\busca.py", line 58, in pesquisar_processo
+    elemento: WebElement = espera.until(
+                           ~~~~~~~~~~~~^
+        EC.any_of(
+        ^^^^^^^^^^
+    ...<2 lines>...
+        )
+        ^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+2026-11-12 09:31:51 | INFO    | 2010.01.0072726/2024-45   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-12_09-30-41.xlsx
+2026-11-12 09:32:00 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-12 09:32:00 | WARNING | 2010.01.0072726/2024-45   | __main__              | FIM COM ERRO (20.4s) | TimeoutException: Tempo esgotado esperando elemento do SEI em pesquisar_processo (detalhes no log)
+2026-11-12 09:32:00 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [2/2]
+2026-11-12 09:32:02 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 19 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-12 09:32:02 | INFO    | 2010.01.0072726/2024-45   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:32:02 | INFO    | 2010.01.0072726/2024-45   | __main__              | Fluxo: memo no bloco, aguardando assinatura ("v2: 01.06.1 - No Bloco APIS: Matrículas")
+2026-11-12 09:32:11 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-12 09:32:11 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (10.6s) | Próxima ação: Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-12 09:32:13 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-12 09:32:13 | INFO    | -                         | __main__              | Processos: 2 | Sem erro: 1 | Com erro: 1
+2026-11-12 09:32:13 | INFO    | -                         | __main__              |     1 | Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-12 09:32:13 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072726/2024-45 | TimeoutException: Tempo esgotado esperando elemento do SEI em pesquisar_processo (detalhes no log)
+2026-11-12 09:32:13 | INFO    | -                         | __main__              | Duração total da execução: 0h01m32s
+2026-11-12 09:32:13 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

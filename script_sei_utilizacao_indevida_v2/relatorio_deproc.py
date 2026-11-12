@@ -25,6 +25,7 @@ from coparticipacao_deproc import (
     COL_VALOR,
     TITULAR,
     ResultadoDeproc,
+    formatar_matricula_com_dv,
     mesma_matricula,
 )
 from docs_processo import encontrar_doc_por_nome, numero_sei_por_nome
@@ -62,21 +63,18 @@ def inicio_nome_relatorio_deproc(matricula_titular: str) -> str:
     return f'Coparticipação - {normalizar_matricula(matricula_titular)}'
 
 
-def formatar_matricula_com_dv(matricula: str) -> str:
-    """'33983721' -> '3398372-1' (a base DEPROC traz a matrícula com DV)."""
-    return f'{matricula[:-1]}-{matricula[-1]}' if len(matricula) > 1 else matricula
-
-
 def formatar_reais(valor: float) -> str:
     return f'R$ {formatar_valor_monetario(valor)}'
 
 
 def resumir_atendimentos(atendimentos: pd.DataFrame) -> pd.DataFrame:
     """Atendimentos de um beneficiário agrupados por data, prestador e
-    procedimento, com QTDE e valor somados (como no extrato do IPSEMG)."""
+    procedimento, com QTDE e valor somados (como no extrato do IPSEMG). As
+    linhas cuja soma do valor da coparticipação é 0 (ex.: isentos, cálculo
+    impedido) não entram no relatório."""
     resumo = atendimentos.groupby([COL_DATA, COL_PRESTADOR, COL_PROCEDIMENTO], as_index=False, sort=True)[[COL_QTDE, COL_VALOR]].sum()
     resumo[COL_VALOR] = resumo[COL_VALOR].round(2)
-    return resumo
+    return resumo[resumo[COL_VALOR] != 0].reset_index(drop=True)
 
 
 def _periodo_proprio(dados: DadosUI, matricula: str) -> str | None:
@@ -168,8 +166,10 @@ def _linha_total(rotulo: str, valor: float, estilos: _Estilos) -> Table:
 
 def gerar_pdf_deproc(resultado: ResultadoDeproc, dados: DadosUI, num_processo: str, path_destino: Path = DIR_FLUXO_DEPROC_PDF) -> Path:
     """Extrato por beneficiário (titular primeiro): faixa com matrícula, nome
-    e categoria, atendimentos agrupados (resumir_atendimentos) e SUBTOTAL; no
-    fim, os três totais (coparticipação, descontado, em aberto)."""
+    e categoria, atendimentos agrupados (resumir_atendimentos, sem as linhas
+    de valor 0) e SUBTOTAL; no fim, os três totais (coparticipação,
+    descontado, em aberto). Beneficiário sem nenhuma linha de valor
+    diferente de 0 não aparece."""
     path_destino.mkdir(parents=True, exist_ok=True)
     caminho_pdf = path_destino / f'Coparticipacao-{normalizar_matricula(dados.matricula_titular)}.pdf'
     estilos = _Estilos()
@@ -179,13 +179,16 @@ def gerar_pdf_deproc(resultado: ResultadoDeproc, dados: DadosUI, num_processo: s
     atendimentos = resultado.atendimentos
     for subtotal in resultado.subtotais:
         do_beneficiario = atendimentos[(atendimentos[COL_MATRICULA] == subtotal.matricula) & (atendimentos[COL_CATEGORIA] == subtotal.categoria)]
+        resumo = resumir_atendimentos(do_beneficiario)
+        if resumo.empty:
+            continue
         nome = do_beneficiario[COL_NOME].iloc[0]
         periodo = dados.periodo_titular if subtotal.categoria == TITULAR else (_periodo_proprio(dados, subtotal.matricula) or dados.periodo_titular)
         elementos += [
             KeepTogether([
                 _faixa_beneficiario(subtotal, nome, periodo, com_periodo, estilos),
                 Spacer(1, 4),
-                _tabela_atendimentos(resumir_atendimentos(do_beneficiario), estilos),
+                _tabela_atendimentos(resumo, estilos),
             ]),
             Spacer(1, 6),
             _linha_total('SUBTOTAL :', subtotal.valor, estilos),

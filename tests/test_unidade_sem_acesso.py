@@ -16,7 +16,7 @@ from sei_automacao.exceptions import UnidadeSemAcessoException
 
 FLUXOS = [
     pytest.param(main_geacs_inicial, (None, None), 'registrar_tags', id='geacs_inicial'),
-    pytest.param(main_deproc_calcula_copa, (None,), 'processar_deproc', id='deproc_calcula_copa'),
+    pytest.param(main_deproc_calcula_copa, (None, '06/11/2026'), 'processar_deproc', id='deproc_calcula_copa'),
     pytest.param(main_geacs_adc_pdf_ant_aut, (), 'registrar_tags', id='adc_pdf_ant'),
     pytest.param(main_geacs_canc_memo_deproc_ant, (), 'cancelar_memos_deproc_antigos', id='canc_memo_deproc_ant'),
     pytest.param(main_deproc_excluir_docs, (), 'excluir_docs_deproc', id='deproc_excluir_docs'),

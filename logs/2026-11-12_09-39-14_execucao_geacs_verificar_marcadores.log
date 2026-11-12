@@ -1,0 +1,394 @@
+2026-11-12 09:39:14 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-12 09:39:14 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-12_09-39-14_execucao_geacs_verificar_marcadores.log
+2026-11-12 09:39:14 | INFO    | -                         | processos_a_processar | 28 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-12 09:39:16 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-12 09:39:16 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-12 09:39:17 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-12 09:39:22 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-12 09:39:22 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-12 09:39:23 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-12 09:39:23 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [1/28]
+2026-11-12 09:39:24 | INFO    | 2010.01.0072726/2024-45   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:39:24 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 2069 (SEI 153169265)
+2026-11-12 09:39:25 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 153169265 lido (1990 caracteres)
+2026-11-12 09:39:25 | INFO    | 2010.01.0072726/2024-45   | conferencia_prox_acao | Memo à APIS (matrículas não encontradas) do marcador "01.06.1 - No Bloco APIS: Matrículas": Memorando 2069 (SEI 153169265)
+2026-11-12 09:39:25 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 1976 (SEI 148865233)
+2026-11-12 09:39:25 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 148865233 lido (2742 caracteres)
+2026-11-12 09:39:25 | INFO    | 2010.01.0072726/2024-45   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1976 (SEI 148865233)']
+2026-11-12 09:39:25 | INFO    | 2010.01.0072726/2024-45   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:39:25 | INFO    | 2010.01.0072726/2024-45   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-12_09-39-14.xlsx
+2026-11-12 09:39:34 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-12 09:39:34 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (10.6s) | Próxima ação: -
+2026-11-12 09:39:34 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [2/28]
+2026-11-12 09:39:34 | INFO    | 2010.01.0072726/2024-45   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:39:35 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 2069 (SEI 153169265)
+2026-11-12 09:39:35 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 153169265 lido (1990 caracteres)
+2026-11-12 09:39:35 | INFO    | 2010.01.0072726/2024-45   | conferencia_prox_acao | Memo à APIS (matrículas não encontradas) do marcador "01.06.1 - No Bloco APIS: Matrículas": Memorando 2069 (SEI 153169265)
+2026-11-12 09:39:35 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 1976 (SEI 148865233)
+2026-11-12 09:39:36 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 148865233 lido (2742 caracteres)
+2026-11-12 09:39:36 | INFO    | 2010.01.0072726/2024-45   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1976 (SEI 148865233)']
+2026-11-12 09:39:36 | INFO    | 2010.01.0072726/2024-45   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:39:44 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-12 09:39:44 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (10.3s) | Próxima ação: -
+2026-11-12 09:39:44 | INFO    | 2010.01.0050757/2025-50   | __main__              | INÍCIO [3/28]
+2026-11-12 09:39:45 | INFO    | 2010.01.0050757/2025-50   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:39:46 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Lendo documento Memorando 2092 (SEI 153211167)
+2026-11-12 09:39:47 | WARNING | 2010.01.0050757/2025-50   | docs_processo         | Documento Memorando 2092 (SEI 153211167) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:39:48 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Documento 153211167 lido (3566 caracteres)
+2026-11-12 09:39:48 | INFO    | 2010.01.0050757/2025-50   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2092 (SEI 153211167)
+2026-11-12 09:39:48 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Lendo documento Memorando 58 (SEI 114877556)
+2026-11-12 09:39:48 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Documento 114877556 lido (1585 caracteres)
+2026-11-12 09:39:48 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 58 (SEI 114877556)
+2026-11-12 09:39:48 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Lendo documento Memorando 1981 (SEI 148879338)
+2026-11-12 09:39:48 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Documento 148879338 lido (2759 caracteres)
+2026-11-12 09:39:48 | INFO    | 2010.01.0050757/2025-50   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1981 (SEI 148879338)']
+2026-11-12 09:39:48 | INFO    | 2010.01.0050757/2025-50   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:39:57 | DEBUG   | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-12 09:39:57 | INFO    | 2010.01.0050757/2025-50   | __main__              | FIM (13.2s) | Próxima ação: -
+2026-11-12 09:39:57 | INFO    | 2010.01.0082953/2024-75   | __main__              | INÍCIO [4/28]
+2026-11-12 09:39:58 | INFO    | 2010.01.0082953/2024-75   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:39:59 | DEBUG   | 2010.01.0082953/2024-75   | docs_processo         | Lendo documento Memorando 2072 (SEI 153170229)
+2026-11-12 09:39:59 | DEBUG   | 2010.01.0082953/2024-75   | docs_processo         | Documento 153170229 lido (2476 caracteres)
+2026-11-12 09:39:59 | INFO    | 2010.01.0082953/2024-75   | conferencia_prox_acao | Memo à APIS (matrículas não encontradas) do marcador "01.06.1 - No Bloco APIS: Matrículas": Memorando 2072 (SEI 153170229)
+2026-11-12 09:39:59 | DEBUG   | 2010.01.0082953/2024-75   | docs_processo         | Lendo documento Memorando 1597 (SEI 147375182)
+2026-11-12 09:39:59 | DEBUG   | 2010.01.0082953/2024-75   | docs_processo         | Documento 147375182 lido (2733 caracteres)
+2026-11-12 09:39:59 | INFO    | 2010.01.0082953/2024-75   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1597 (SEI 147375182)']
+2026-11-12 09:39:59 | INFO    | 2010.01.0082953/2024-75   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:40:08 | DEBUG   | 2010.01.0082953/2024-75   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-12 09:40:08 | INFO    | 2010.01.0082953/2024-75   | __main__              | FIM (10.9s) | Próxima ação: -
+2026-11-12 09:40:08 | INFO    | 2010.01.0050849/2025-88   | __main__              | INÍCIO [5/28]
+2026-11-12 09:40:09 | INFO    | 2010.01.0050849/2025-88   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:40:09 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 2253 (SEI 153316425)
+2026-11-12 09:40:10 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 153316425 lido (3539 caracteres)
+2026-11-12 09:40:10 | INFO    | 2010.01.0050849/2025-88   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2253 (SEI 153316425)
+2026-11-12 09:40:10 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 64 (SEI 114891636)
+2026-11-12 09:40:10 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 114891636 lido (1583 caracteres)
+2026-11-12 09:40:10 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 64 (SEI 114891636)
+2026-11-12 09:40:10 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 2459 (SEI 151287959)
+2026-11-12 09:40:11 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 151287959 lido (2714 caracteres)
+2026-11-12 09:40:11 | INFO    | 2010.01.0050849/2025-88   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2459 (SEI 151287959)']
+2026-11-12 09:40:11 | INFO    | 2010.01.0050849/2025-88   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:40:19 | DEBUG   | 2010.01.0050849/2025-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-12 09:40:19 | INFO    | 2010.01.0050849/2025-88   | __main__              | FIM (11.3s) | Próxima ação: -
+2026-11-12 09:40:19 | INFO    | 2010.01.0053646/2025-35   | __main__              | INÍCIO [6/28]
+2026-11-12 09:40:20 | INFO    | 2010.01.0053646/2025-35   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:40:20 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Lendo documento Memorando 2254 (SEI 153316492)
+2026-11-12 09:40:21 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Documento 153316492 lido (2295 caracteres)
+2026-11-12 09:40:21 | INFO    | 2010.01.0053646/2025-35   | conferencia_prox_acao | Memo à APIS (formato inválido) do marcador "01.05.1 - Aguarda APIS: Formato Inválido": Memorando 2254 (SEI 153316492)
+2026-11-12 09:40:21 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Lendo documento Memorando 200 (SEI 115330661)
+2026-11-12 09:40:21 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Documento 115330661 lido (1323 caracteres)
+2026-11-12 09:40:21 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 200 (SEI 115330661)
+2026-11-12 09:40:21 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Lendo documento Memorando 256 (SEI 133222246)
+2026-11-12 09:40:22 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Documento 133222246 lido (2101 caracteres)
+2026-11-12 09:40:22 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 256 (SEI 133222246)
+2026-11-12 09:40:22 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Lendo documento Memorando 2742 (SEI 152754654)
+2026-11-12 09:40:22 | DEBUG   | 2010.01.0053646/2025-35   | docs_processo         | Documento 152754654 lido (2884 caracteres)
+2026-11-12 09:40:22 | INFO    | 2010.01.0053646/2025-35   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2742 (SEI 152754654)']
+2026-11-12 09:40:22 | INFO    | 2010.01.0053646/2025-35   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:40:30 | DEBUG   | 2010.01.0053646/2025-35   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-12 09:40:30 | INFO    | 2010.01.0053646/2025-35   | __main__              | FIM (11.2s) | Próxima ação: -
+2026-11-12 09:40:30 | INFO    | 2010.01.0072778/2024-96   | __main__              | INÍCIO [7/28]
+2026-11-12 09:40:31 | INFO    | 2010.01.0072778/2024-96   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:40:32 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Lendo documento Memorando 2257 (SEI 153316824)
+2026-11-12 09:40:33 | WARNING | 2010.01.0072778/2024-96   | docs_processo         | Documento Memorando 2257 (SEI 153316824) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:40:34 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Documento 153316824 lido (3548 caracteres)
+2026-11-12 09:40:34 | INFO    | 2010.01.0072778/2024-96   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2257 (SEI 153316824)
+2026-11-12 09:40:34 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Lendo documento Memorando 48 (SEI 114773106)
+2026-11-12 09:40:35 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Documento 114773106 lido (1654 caracteres)
+2026-11-12 09:40:35 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 48 (SEI 114773106)
+2026-11-12 09:40:35 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Lendo documento Memorando 1684 (SEI 147645183)
+2026-11-12 09:40:35 | DEBUG   | 2010.01.0072778/2024-96   | docs_processo         | Documento 147645183 lido (2606 caracteres)
+2026-11-12 09:40:35 | INFO    | 2010.01.0072778/2024-96   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1684 (SEI 147645183)']
+2026-11-12 09:40:35 | INFO    | 2010.01.0072778/2024-96   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:40:44 | DEBUG   | 2010.01.0072778/2024-96   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-12 09:40:44 | INFO    | 2010.01.0072778/2024-96   | __main__              | FIM (13.1s) | Próxima ação: -
+2026-11-12 09:40:44 | INFO    | 2010.01.0072733/2024-50   | __main__              | INÍCIO [8/28]
+2026-11-12 09:40:44 | INFO    | 2010.01.0072733/2024-50   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:40:45 | DEBUG   | 2010.01.0072733/2024-50   | docs_processo         | Lendo documento Memorando 2122 (SEI 153218294)
+2026-11-12 09:40:45 | DEBUG   | 2010.01.0072733/2024-50   | docs_processo         | Documento 153218294 lido (3494 caracteres)
+2026-11-12 09:40:45 | INFO    | 2010.01.0072733/2024-50   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2122 (SEI 153218294)
+2026-11-12 09:40:45 | DEBUG   | 2010.01.0072733/2024-50   | docs_processo         | Lendo documento Memorando 80 (SEI 114976300)
+2026-11-12 09:40:46 | DEBUG   | 2010.01.0072733/2024-50   | docs_processo         | Documento 114976300 lido (1541 caracteres)
+2026-11-12 09:40:46 | DEBUG   | 2010.01.0072733/2024-50   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 80 (SEI 114976300)
+2026-11-12 09:40:46 | DEBUG   | 2010.01.0072733/2024-50   | docs_processo         | Lendo documento Memorando 2458 (SEI 151275286)
+2026-11-12 09:40:46 | DEBUG   | 2010.01.0072733/2024-50   | docs_processo         | Documento 151275286 lido (2593 caracteres)
+2026-11-12 09:40:46 | INFO    | 2010.01.0072733/2024-50   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2458 (SEI 151275286)']
+2026-11-12 09:40:46 | INFO    | 2010.01.0072733/2024-50   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:40:55 | DEBUG   | 2010.01.0072733/2024-50   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-12 09:40:55 | INFO    | 2010.01.0072733/2024-50   | __main__              | FIM (11.0s) | Próxima ação: -
+2026-11-12 09:40:55 | INFO    | 2010.01.0083647/2024-58   | __main__              | INÍCIO [9/28]
+2026-11-12 09:40:55 | INFO    | 2010.01.0083647/2024-58   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-12 09:40:56 | DEBUG   | 2010.01.0083647/2024-58   | docs_processo         | Lendo documento Memorando 2148 (SEI 153224225)
+2026-11-12 09:40:56 | DEBUG   | 2010.01.0083647/2024-58   | docs_processo         | Documento 153224225 lido (2919 caracteres)
+2026-11-12 09:40:56 | INFO    | 2010.01.0083647/2024-58   | conferencia_prox_acao | Memo à DISA (validar; não consta) do marcador "01.09.1 - Aguarda DISA: Validar (N Consta)": Memorando 2148 (SEI 153224225)
+2026-11-12 09:40:56 | DEBUG   | 2010.01.0083647/2024-58   | docs_processo         | Lendo documento Memorando 2476 (SEI 151432432)
+2026-11-12 09:40:57 | DEBUG   | 2010.01.0083647/2024-58   | docs_processo         | Documento 151432432 lido (2778 caracteres)
+2026-11-12 09:40:57 | INFO    | 2010.01.0083647/2024-58   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2476 (SEI 151432432)']
+2026-11-12 09:40:57 | INFO    | 2010.01.0083647/2024-58   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:41:06 | DEBUG   | 2010.01.0083647/2024-58   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-12 09:41:06 | INFO    | 2010.01.0083647/2024-58   | __main__              | FIM (11.0s) | Próxima ação: -
+2026-11-12 09:41:06 | INFO    | 2010.01.0058306/2025-24   | __main__              | INÍCIO [10/28]
+2026-11-12 09:41:06 | INFO    | 2010.01.0058306/2025-24   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:41:07 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Lendo documento Memorando 2155 (SEI 153225515)
+2026-11-12 09:41:07 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Documento 153225515 lido (2015 caracteres)
+2026-11-12 09:41:07 | INFO    | 2010.01.0058306/2025-24   | conferencia_prox_acao | Memo à APIS (matrículas não encontradas) do marcador "01.06.1 - No Bloco APIS: Matrículas": Memorando 2155 (SEI 153225515)
+2026-11-12 09:41:07 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Lendo documento Memorando 294 (SEI 116200930)
+2026-11-12 09:41:07 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Documento 116200930 lido (1434 caracteres)
+2026-11-12 09:41:07 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 294 (SEI 116200930)
+2026-11-12 09:41:07 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Lendo documento Memorando 2048 (SEI 149328957)
+2026-11-12 09:41:08 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Documento 149328957 lido (2727 caracteres)
+2026-11-12 09:41:08 | INFO    | 2010.01.0058306/2025-24   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2048 (SEI 149328957)']
+2026-11-12 09:41:08 | INFO    | 2010.01.0058306/2025-24   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:41:16 | DEBUG   | 2010.01.0058306/2025-24   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-12 09:41:16 | INFO    | 2010.01.0058306/2025-24   | __main__              | FIM (10.7s) | Próxima ação: -
+2026-11-12 09:41:16 | INFO    | 2010.01.0051657/2025-97   | __main__              | INÍCIO [11/28]
+2026-11-12 09:41:17 | INFO    | 2010.01.0051657/2025-97   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:41:17 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Lendo documento Memorando 2260 (SEI 153317102)
+2026-11-12 09:41:18 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Documento 153317102 lido (2295 caracteres)
+2026-11-12 09:41:18 | INFO    | 2010.01.0051657/2025-97   | conferencia_prox_acao | Memo à APIS (formato inválido) do marcador "01.05.1 - Aguarda APIS: Formato Inválido": Memorando 2260 (SEI 153317102)
+2026-11-12 09:41:18 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Lendo documento Memorando 90 (SEI 115022141)
+2026-11-12 09:41:18 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Documento 115022141 lido (1313 caracteres)
+2026-11-12 09:41:18 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 90 (SEI 115022141)
+2026-11-12 09:41:18 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Lendo documento Memorando 2697 (SEI 152594962)
+2026-11-12 09:41:19 | DEBUG   | 2010.01.0051657/2025-97   | docs_processo         | Documento 152594962 lido (2943 caracteres)
+2026-11-12 09:41:19 | INFO    | 2010.01.0051657/2025-97   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2697 (SEI 152594962)']
+2026-11-12 09:41:19 | INFO    | 2010.01.0051657/2025-97   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:41:27 | DEBUG   | 2010.01.0051657/2025-97   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-12 09:41:27 | INFO    | 2010.01.0051657/2025-97   | __main__              | FIM (10.8s) | Próxima ação: -
+2026-11-12 09:41:27 | INFO    | 2010.01.0051842/2025-49   | __main__              | INÍCIO [12/28]
+2026-11-12 09:41:28 | INFO    | 2010.01.0051842/2025-49   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:41:28 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Lendo documento Memorando 2261 (SEI 153317139)
+2026-11-12 09:41:28 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Documento 153317139 lido (2295 caracteres)
+2026-11-12 09:41:28 | INFO    | 2010.01.0051842/2025-49   | conferencia_prox_acao | Memo à APIS (formato inválido) do marcador "01.05.1 - Aguarda APIS: Formato Inválido": Memorando 2261 (SEI 153317139)
+2026-11-12 09:41:28 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Lendo documento Memorando 94 (SEI 115054454)
+2026-11-12 09:41:29 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Documento 115054454 lido (1359 caracteres)
+2026-11-12 09:41:29 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 94 (SEI 115054454)
+2026-11-12 09:41:29 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Lendo documento Memorando 2699 (SEI 152597594)
+2026-11-12 09:41:29 | DEBUG   | 2010.01.0051842/2025-49   | docs_processo         | Documento 152597594 lido (2946 caracteres)
+2026-11-12 09:41:29 | INFO    | 2010.01.0051842/2025-49   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2699 (SEI 152597594)']
+2026-11-12 09:41:29 | INFO    | 2010.01.0051842/2025-49   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:41:38 | DEBUG   | 2010.01.0051842/2025-49   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-12 09:41:38 | INFO    | 2010.01.0051842/2025-49   | __main__              | FIM (11.0s) | Próxima ação: -
+2026-11-12 09:41:38 | INFO    | 2010.01.0082914/2024-61   | __main__              | INÍCIO [13/28]
+2026-11-12 09:41:39 | INFO    | 2010.01.0082914/2024-61   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:41:39 | DEBUG   | 2010.01.0082914/2024-61   | docs_processo         | Lendo documento Memorando 2170 (SEI 153229006)
+2026-11-12 09:41:40 | DEBUG   | 2010.01.0082914/2024-61   | docs_processo         | Documento 153229006 lido (3496 caracteres)
+2026-11-12 09:41:40 | INFO    | 2010.01.0082914/2024-61   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2170 (SEI 153229006)
+2026-11-12 09:41:40 | DEBUG   | 2010.01.0082914/2024-61   | docs_processo         | Lendo documento Memorando 2469 (SEI 151334668)
+2026-11-12 09:41:40 | DEBUG   | 2010.01.0082914/2024-61   | docs_processo         | Documento 151334668 lido (2605 caracteres)
+2026-11-12 09:41:40 | INFO    | 2010.01.0082914/2024-61   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2469 (SEI 151334668)']
+2026-11-12 09:41:40 | INFO    | 2010.01.0082914/2024-61   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:41:49 | DEBUG   | 2010.01.0082914/2024-61   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-12 09:41:49 | INFO    | 2010.01.0082914/2024-61   | __main__              | FIM (10.8s) | Próxima ação: -
+2026-11-12 09:41:49 | INFO    | 2010.01.0051893/2025-30   | __main__              | INÍCIO [14/28]
+2026-11-12 09:41:49 | INFO    | 2010.01.0051893/2025-30   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:41:50 | DEBUG   | 2010.01.0051893/2025-30   | docs_processo         | Lendo documento Memorando 2173 (SEI 153229741)
+2026-11-12 09:41:52 | WARNING | 2010.01.0051893/2025-30   | docs_processo         | Documento Memorando 2173 (SEI 153229741) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:41:53 | DEBUG   | 2010.01.0051893/2025-30   | docs_processo         | Documento 153229741 lido (3550 caracteres)
+2026-11-12 09:41:53 | INFO    | 2010.01.0051893/2025-30   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2173 (SEI 153229741)
+2026-11-12 09:41:53 | DEBUG   | 2010.01.0051893/2025-30   | docs_processo         | Lendo documento Memorando 116 (SEI 115060776)
+2026-11-12 09:41:53 | DEBUG   | 2010.01.0051893/2025-30   | docs_processo         | Documento 115060776 lido (1497 caracteres)
+2026-11-12 09:41:53 | DEBUG   | 2010.01.0051893/2025-30   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 116 (SEI 115060776)
+2026-11-12 09:41:53 | DEBUG   | 2010.01.0051893/2025-30   | docs_processo         | Lendo documento Memorando 2152 (SEI 149751457)
+2026-11-12 09:41:53 | DEBUG   | 2010.01.0051893/2025-30   | docs_processo         | Documento 149751457 lido (2613 caracteres)
+2026-11-12 09:41:53 | INFO    | 2010.01.0051893/2025-30   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2152 (SEI 149751457)']
+2026-11-12 09:41:53 | INFO    | 2010.01.0051893/2025-30   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:42:02 | DEBUG   | 2010.01.0051893/2025-30   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-12 09:42:02 | INFO    | 2010.01.0051893/2025-30   | __main__              | FIM (13.3s) | Próxima ação: -
+2026-11-12 09:42:02 | INFO    | 2010.01.0080702/2024-33   | __main__              | INÍCIO [15/28]
+2026-11-12 09:42:03 | INFO    | 2010.01.0080702/2024-33   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:42:03 | DEBUG   | 2010.01.0080702/2024-33   | docs_processo         | Lendo documento Memorando 2184 (SEI 153232745)
+2026-11-12 09:42:04 | DEBUG   | 2010.01.0080702/2024-33   | docs_processo         | Documento 153232745 lido (3494 caracteres)
+2026-11-12 09:42:04 | INFO    | 2010.01.0080702/2024-33   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2184 (SEI 153232745)
+2026-11-12 09:42:04 | DEBUG   | 2010.01.0080702/2024-33   | docs_processo         | Lendo documento Memorando 2710 (SEI 152718561)
+2026-11-12 09:42:04 | DEBUG   | 2010.01.0080702/2024-33   | docs_processo         | Documento 152718561 lido (2971 caracteres)
+2026-11-12 09:42:04 | INFO    | 2010.01.0080702/2024-33   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2710 (SEI 152718561)']
+2026-11-12 09:42:04 | INFO    | 2010.01.0080702/2024-33   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:42:13 | DEBUG   | 2010.01.0080702/2024-33   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-12 09:42:13 | INFO    | 2010.01.0080702/2024-33   | __main__              | FIM (10.9s) | Próxima ação: -
+2026-11-12 09:42:13 | INFO    | 2010.01.0052695/2025-07   | __main__              | INÍCIO [16/28]
+2026-11-12 09:42:14 | INFO    | 2010.01.0052695/2025-07   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:42:15 | DEBUG   | 2010.01.0052695/2025-07   | docs_processo         | Lendo documento Memorando 2262 (SEI 153317332)
+2026-11-12 09:42:16 | WARNING | 2010.01.0052695/2025-07   | docs_processo         | Documento Memorando 2262 (SEI 153317332) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:42:17 | DEBUG   | 2010.01.0052695/2025-07   | docs_processo         | Documento 153317332 lido (3583 caracteres)
+2026-11-12 09:42:17 | INFO    | 2010.01.0052695/2025-07   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2262 (SEI 153317332)
+2026-11-12 09:42:17 | DEBUG   | 2010.01.0052695/2025-07   | docs_processo         | Lendo documento Memorando 144 (SEI 115175356)
+2026-11-12 09:42:17 | DEBUG   | 2010.01.0052695/2025-07   | docs_processo         | Documento 115175356 lido (1661 caracteres)
+2026-11-12 09:42:17 | DEBUG   | 2010.01.0052695/2025-07   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 144 (SEI 115175356)
+2026-11-12 09:42:17 | DEBUG   | 2010.01.0052695/2025-07   | docs_processo         | Lendo documento Memorando 2495 (SEI 151602683)
+2026-11-12 09:42:18 | DEBUG   | 2010.01.0052695/2025-07   | docs_processo         | Documento 151602683 lido (2713 caracteres)
+2026-11-12 09:42:18 | INFO    | 2010.01.0052695/2025-07   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2495 (SEI 151602683)']
+2026-11-12 09:42:18 | INFO    | 2010.01.0052695/2025-07   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:42:26 | DEBUG   | 2010.01.0052695/2025-07   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-12 09:42:26 | INFO    | 2010.01.0052695/2025-07   | __main__              | FIM (13.2s) | Próxima ação: -
+2026-11-12 09:42:26 | INFO    | 2010.01.0053003/2025-33   | __main__              | INÍCIO [17/28]
+2026-11-12 09:42:27 | INFO    | 2010.01.0053003/2025-33   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:42:28 | DEBUG   | 2010.01.0053003/2025-33   | docs_processo         | Lendo documento Memorando 2245 (SEI 153281572)
+2026-11-12 09:42:28 | DEBUG   | 2010.01.0053003/2025-33   | docs_processo         | Documento 153281572 lido (2024 caracteres)
+2026-11-12 09:42:28 | INFO    | 2010.01.0053003/2025-33   | conferencia_prox_acao | Memo à APIS (matrículas não encontradas) do marcador "01.06.1 - No Bloco APIS: Matrículas": Memorando 2245 (SEI 153281572)
+2026-11-12 09:42:28 | DEBUG   | 2010.01.0053003/2025-33   | docs_processo         | Lendo documento Memorando 163 (SEI 115220950)
+2026-11-12 09:42:29 | DEBUG   | 2010.01.0053003/2025-33   | docs_processo         | Documento 115220950 lido (1491 caracteres)
+2026-11-12 09:42:29 | DEBUG   | 2010.01.0053003/2025-33   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 163 (SEI 115220950)
+2026-11-12 09:42:29 | DEBUG   | 2010.01.0053003/2025-33   | docs_processo         | Lendo documento Memorando 1895 (SEI 148440370)
+2026-11-12 09:42:29 | DEBUG   | 2010.01.0053003/2025-33   | docs_processo         | Documento 148440370 lido (2612 caracteres)
+2026-11-12 09:42:29 | INFO    | 2010.01.0053003/2025-33   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1895 (SEI 148440370)']
+2026-11-12 09:42:29 | INFO    | 2010.01.0053003/2025-33   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:42:38 | DEBUG   | 2010.01.0053003/2025-33   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-12 09:42:38 | INFO    | 2010.01.0053003/2025-33   | __main__              | FIM (11.6s) | Próxima ação: -
+2026-11-12 09:42:38 | INFO    | 2010.01.0082922/2024-39   | __main__              | INÍCIO [18/28]
+2026-11-12 09:42:39 | INFO    | 2010.01.0082922/2024-39   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:42:40 | DEBUG   | 2010.01.0082922/2024-39   | docs_processo         | Lendo documento Memorando 2263 (SEI 153317492)
+2026-11-12 09:42:41 | WARNING | 2010.01.0082922/2024-39   | docs_processo         | Documento Memorando 2263 (SEI 153317492) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:42:42 | DEBUG   | 2010.01.0082922/2024-39   | docs_processo         | Documento 153317492 lido (3541 caracteres)
+2026-11-12 09:42:42 | INFO    | 2010.01.0082922/2024-39   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2263 (SEI 153317492)
+2026-11-12 09:42:42 | DEBUG   | 2010.01.0082922/2024-39   | docs_processo         | Lendo documento Memorando 2564 (SEI 151948311)
+2026-11-12 09:42:42 | DEBUG   | 2010.01.0082922/2024-39   | docs_processo         | Documento 151948311 lido (2885 caracteres)
+2026-11-12 09:42:42 | INFO    | 2010.01.0082922/2024-39   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2564 (SEI 151948311)']
+2026-11-12 09:42:42 | INFO    | 2010.01.0082922/2024-39   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:42:51 | DEBUG   | 2010.01.0082922/2024-39   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-12 09:42:51 | INFO    | 2010.01.0082922/2024-39   | __main__              | FIM (12.9s) | Próxima ação: -
+2026-11-12 09:42:51 | INFO    | 2010.01.0052989/2025-23   | __main__              | INÍCIO [19/28]
+2026-11-12 09:42:52 | INFO    | 2010.01.0052989/2025-23   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:42:52 | DEBUG   | 2010.01.0052989/2025-23   | docs_processo         | Lendo documento Memorando 2195 (SEI 153235696)
+2026-11-12 09:42:53 | DEBUG   | 2010.01.0052989/2025-23   | docs_processo         | Documento 153235696 lido (3496 caracteres)
+2026-11-12 09:42:53 | INFO    | 2010.01.0052989/2025-23   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2195 (SEI 153235696)
+2026-11-12 09:42:53 | DEBUG   | 2010.01.0052989/2025-23   | docs_processo         | Lendo documento Memorando 161 (SEI 115217264)
+2026-11-12 09:42:53 | DEBUG   | 2010.01.0052989/2025-23   | docs_processo         | Documento 115217264 lido (1365 caracteres)
+2026-11-12 09:42:53 | DEBUG   | 2010.01.0052989/2025-23   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 161 (SEI 115217264)
+2026-11-12 09:42:53 | DEBUG   | 2010.01.0052989/2025-23   | docs_processo         | Lendo documento Memorando 2479 (SEI 151499430)
+2026-11-12 09:42:54 | DEBUG   | 2010.01.0052989/2025-23   | docs_processo         | Documento 151499430 lido (2598 caracteres)
+2026-11-12 09:42:54 | INFO    | 2010.01.0052989/2025-23   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2479 (SEI 151499430)']
+2026-11-12 09:42:54 | INFO    | 2010.01.0052989/2025-23   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:43:03 | DEBUG   | 2010.01.0052989/2025-23   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-12 09:43:03 | INFO    | 2010.01.0052989/2025-23   | __main__              | FIM (11.8s) | Próxima ação: -
+2026-11-12 09:43:03 | INFO    | 2010.01.0052815/2025-65   | __main__              | INÍCIO [20/28]
+2026-11-12 09:43:03 | INFO    | 2010.01.0052815/2025-65   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:43:04 | DEBUG   | 2010.01.0052815/2025-65   | docs_processo         | Lendo documento Memorando 2198 (SEI 153236563)
+2026-11-12 09:43:05 | WARNING | 2010.01.0052815/2025-65   | docs_processo         | Documento Memorando 2198 (SEI 153236563) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:43:06 | DEBUG   | 2010.01.0052815/2025-65   | docs_processo         | Documento 153236563 lido (3551 caracteres)
+2026-11-12 09:43:06 | INFO    | 2010.01.0052815/2025-65   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2198 (SEI 153236563)
+2026-11-12 09:43:06 | DEBUG   | 2010.01.0052815/2025-65   | docs_processo         | Lendo documento Memorando 151 (SEI 115193009)
+2026-11-12 09:43:06 | DEBUG   | 2010.01.0052815/2025-65   | docs_processo         | Documento 115193009 lido (1582 caracteres)
+2026-11-12 09:43:06 | DEBUG   | 2010.01.0052815/2025-65   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 151 (SEI 115193009)
+2026-11-12 09:43:06 | DEBUG   | 2010.01.0052815/2025-65   | docs_processo         | Lendo documento Memorando 1615 (SEI 147451242)
+2026-11-12 09:43:07 | DEBUG   | 2010.01.0052815/2025-65   | docs_processo         | Documento 147451242 lido (2733 caracteres)
+2026-11-12 09:43:07 | INFO    | 2010.01.0052815/2025-65   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1615 (SEI 147451242)']
+2026-11-12 09:43:07 | INFO    | 2010.01.0052815/2025-65   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:43:16 | DEBUG   | 2010.01.0052815/2025-65   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-12 09:43:16 | INFO    | 2010.01.0052815/2025-65   | __main__              | FIM (13.2s) | Próxima ação: -
+2026-11-12 09:43:16 | INFO    | 2010.01.0052984/2025-61   | __main__              | INÍCIO [21/28]
+2026-11-12 09:43:17 | INFO    | 2010.01.0052984/2025-61   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:43:17 | DEBUG   | 2010.01.0052984/2025-61   | docs_processo         | Lendo documento Memorando 2203 (SEI 153237470)
+2026-11-12 09:43:18 | DEBUG   | 2010.01.0052984/2025-61   | docs_processo         | Documento 153237470 lido (3488 caracteres)
+2026-11-12 09:43:18 | INFO    | 2010.01.0052984/2025-61   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2203 (SEI 153237470)
+2026-11-12 09:43:18 | DEBUG   | 2010.01.0052984/2025-61   | docs_processo         | Lendo documento Memorando 162 (SEI 115218209)
+2026-11-12 09:43:18 | DEBUG   | 2010.01.0052984/2025-61   | docs_processo         | Documento 115218209 lido (1548 caracteres)
+2026-11-12 09:43:18 | DEBUG   | 2010.01.0052984/2025-61   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 162 (SEI 115218209)
+2026-11-12 09:43:18 | DEBUG   | 2010.01.0052984/2025-61   | docs_processo         | Lendo documento Memorando 1619 (SEI 147462387)
+2026-11-12 09:43:19 | DEBUG   | 2010.01.0052984/2025-61   | docs_processo         | Documento 147462387 lido (2675 caracteres)
+2026-11-12 09:43:19 | INFO    | 2010.01.0052984/2025-61   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1619 (SEI 147462387)']
+2026-11-12 09:43:19 | INFO    | 2010.01.0052984/2025-61   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:43:28 | DEBUG   | 2010.01.0052984/2025-61   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-12 09:43:28 | INFO    | 2010.01.0052984/2025-61   | __main__              | FIM (11.9s) | Próxima ação: -
+2026-11-12 09:43:28 | INFO    | 2010.01.0060888/2024-56   | __main__              | INÍCIO [22/28]
+2026-11-12 09:43:28 | INFO    | 2010.01.0060888/2024-56   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:43:29 | DEBUG   | 2010.01.0060888/2024-56   | docs_processo         | Lendo documento Memorando 2265 (SEI 153317832)
+2026-11-12 09:43:30 | WARNING | 2010.01.0060888/2024-56   | docs_processo         | Documento Memorando 2265 (SEI 153317832) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:43:31 | DEBUG   | 2010.01.0060888/2024-56   | docs_processo         | Documento 153317832 lido (3534 caracteres)
+2026-11-12 09:43:31 | INFO    | 2010.01.0060888/2024-56   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2265 (SEI 153317832)
+2026-11-12 09:43:31 | DEBUG   | 2010.01.0060888/2024-56   | docs_processo         | Lendo documento Memorando 189 (SEI 115317583)
+2026-11-12 09:43:32 | DEBUG   | 2010.01.0060888/2024-56   | docs_processo         | Documento 115317583 lido (1675 caracteres)
+2026-11-12 09:43:32 | DEBUG   | 2010.01.0060888/2024-56   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 189 (SEI 115317583)
+2026-11-12 09:43:32 | DEBUG   | 2010.01.0060888/2024-56   | docs_processo         | Lendo documento Memorando 2746 (SEI 152765549)
+2026-11-12 09:43:32 | DEBUG   | 2010.01.0060888/2024-56   | docs_processo         | Documento 152765549 lido (2892 caracteres)
+2026-11-12 09:43:32 | INFO    | 2010.01.0060888/2024-56   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2746 (SEI 152765549)']
+2026-11-12 09:43:32 | INFO    | 2010.01.0060888/2024-56   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:43:41 | DEBUG   | 2010.01.0060888/2024-56   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-12 09:43:41 | INFO    | 2010.01.0060888/2024-56   | __main__              | FIM (13.3s) | Próxima ação: -
+2026-11-12 09:43:41 | INFO    | 2010.01.0083354/2024-15   | __main__              | INÍCIO [23/28]
+2026-11-12 09:43:42 | INFO    | 2010.01.0083354/2024-15   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:43:42 | DEBUG   | 2010.01.0083354/2024-15   | docs_processo         | Lendo documento Memorando 2220 (SEI 153241141)
+2026-11-12 09:43:42 | DEBUG   | 2010.01.0083354/2024-15   | docs_processo         | Documento 153241141 lido (3531 caracteres)
+2026-11-12 09:43:42 | INFO    | 2010.01.0083354/2024-15   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2220 (SEI 153241141)
+2026-11-12 09:43:42 | DEBUG   | 2010.01.0083354/2024-15   | docs_processo         | Lendo documento Memorando 2548 (SEI 151907143)
+2026-11-12 09:43:43 | DEBUG   | 2010.01.0083354/2024-15   | docs_processo         | Documento 151907143 lido (3100 caracteres)
+2026-11-12 09:43:43 | INFO    | 2010.01.0083354/2024-15   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2548 (SEI 151907143)']
+2026-11-12 09:43:43 | INFO    | 2010.01.0083354/2024-15   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:43:52 | DEBUG   | 2010.01.0083354/2024-15   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-12 09:43:52 | INFO    | 2010.01.0083354/2024-15   | __main__              | FIM (10.7s) | Próxima ação: -
+2026-11-12 09:43:52 | INFO    | 2010.01.0053489/2025-06   | __main__              | INÍCIO [24/28]
+2026-11-12 09:43:53 | INFO    | 2010.01.0053489/2025-06   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:43:53 | DEBUG   | 2010.01.0053489/2025-06   | docs_processo         | Lendo documento Memorando 2221 (SEI 153241402)
+2026-11-12 09:43:54 | DEBUG   | 2010.01.0053489/2025-06   | docs_processo         | Documento 153241402 lido (3494 caracteres)
+2026-11-12 09:43:54 | INFO    | 2010.01.0053489/2025-06   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2221 (SEI 153241402)
+2026-11-12 09:43:54 | DEBUG   | 2010.01.0053489/2025-06   | docs_processo         | Lendo documento Memorando 177 (SEI 115305722)
+2026-11-12 09:43:54 | DEBUG   | 2010.01.0053489/2025-06   | docs_processo         | Documento 115305722 lido (1466 caracteres)
+2026-11-12 09:43:54 | DEBUG   | 2010.01.0053489/2025-06   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 177 (SEI 115305722)
+2026-11-12 09:43:54 | DEBUG   | 2010.01.0053489/2025-06   | docs_processo         | Lendo documento Memorando 1750 (SEI 147843169)
+2026-11-12 09:43:55 | DEBUG   | 2010.01.0053489/2025-06   | docs_processo         | Documento 147843169 lido (2684 caracteres)
+2026-11-12 09:43:55 | INFO    | 2010.01.0053489/2025-06   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1750 (SEI 147843169)']
+2026-11-12 09:43:55 | INFO    | 2010.01.0053489/2025-06   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:44:03 | DEBUG   | 2010.01.0053489/2025-06   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-12 09:44:03 | INFO    | 2010.01.0053489/2025-06   | __main__              | FIM (11.8s) | Próxima ação: -
+2026-11-12 09:44:03 | INFO    | 2010.01.0053690/2025-11   | __main__              | INÍCIO [25/28]
+2026-11-12 09:44:04 | INFO    | 2010.01.0053690/2025-11   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-12 09:44:05 | DEBUG   | 2010.01.0053690/2025-11   | docs_processo         | Lendo documento Memorando 2227 (SEI 153242691)
+2026-11-12 09:44:06 | WARNING | 2010.01.0053690/2025-11   | docs_processo         | Documento Memorando 2227 (SEI 153242691) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:44:07 | DEBUG   | 2010.01.0053690/2025-11   | docs_processo         | Documento 153242691 lido (2965 caracteres)
+2026-11-12 09:44:07 | INFO    | 2010.01.0053690/2025-11   | conferencia_prox_acao | Memo à DISA (validar; não consta) do marcador "01.09.1 - Aguarda DISA: Validar (N Consta)": Memorando 2227 (SEI 153242691)
+2026-11-12 09:44:07 | DEBUG   | 2010.01.0053690/2025-11   | docs_processo         | Lendo documento Memorando 209 (SEI 115335896)
+2026-11-12 09:44:07 | DEBUG   | 2010.01.0053690/2025-11   | docs_processo         | Documento 115335896 lido (1493 caracteres)
+2026-11-12 09:44:07 | DEBUG   | 2010.01.0053690/2025-11   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 209 (SEI 115335896)
+2026-11-12 09:44:07 | DEBUG   | 2010.01.0053690/2025-11   | docs_processo         | Lendo documento Memorando 1996 (SEI 148978788)
+2026-11-12 09:44:08 | DEBUG   | 2010.01.0053690/2025-11   | docs_processo         | Documento 148978788 lido (2732 caracteres)
+2026-11-12 09:44:08 | INFO    | 2010.01.0053690/2025-11   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1996 (SEI 148978788)']
+2026-11-12 09:44:08 | INFO    | 2010.01.0053690/2025-11   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:44:17 | DEBUG   | 2010.01.0053690/2025-11   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-12 09:44:17 | INFO    | 2010.01.0053690/2025-11   | __main__              | FIM (13.4s) | Próxima ação: -
+2026-11-12 09:44:17 | INFO    | 2010.01.0083668/2024-73   | __main__              | INÍCIO [26/28]
+2026-11-12 09:44:17 | INFO    | 2010.01.0083668/2024-73   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:44:18 | DEBUG   | 2010.01.0083668/2024-73   | docs_processo         | Lendo documento Memorando 2267 (SEI 153317999)
+2026-11-12 09:44:19 | DEBUG   | 2010.01.0083668/2024-73   | docs_processo         | Documento 153317999 lido (2295 caracteres)
+2026-11-12 09:44:19 | INFO    | 2010.01.0083668/2024-73   | conferencia_prox_acao | Memo à APIS (formato inválido) do marcador "01.05.1 - Aguarda APIS: Formato Inválido": Memorando 2267 (SEI 153317999)
+2026-11-12 09:44:19 | DEBUG   | 2010.01.0083668/2024-73   | docs_processo         | Lendo documento Memorando 2484 (SEI 151521701)
+2026-11-12 09:44:19 | DEBUG   | 2010.01.0083668/2024-73   | docs_processo         | Documento 151521701 lido (2591 caracteres)
+2026-11-12 09:44:19 | INFO    | 2010.01.0083668/2024-73   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2484 (SEI 151521701)']
+2026-11-12 09:44:19 | INFO    | 2010.01.0083668/2024-73   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:44:28 | DEBUG   | 2010.01.0083668/2024-73   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (26 passagem(ns) nesta execução)
+2026-11-12 09:44:28 | INFO    | 2010.01.0083668/2024-73   | __main__              | FIM (11.1s) | Próxima ação: -
+2026-11-12 09:44:28 | INFO    | 2010.01.0053733/2025-14   | __main__              | INÍCIO [27/28]
+2026-11-12 09:44:29 | INFO    | 2010.01.0053733/2025-14   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:44:30 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Lendo documento Memorando 2235 (SEI 153244107)
+2026-11-12 09:44:31 | WARNING | 2010.01.0053733/2025-14   | docs_processo         | Documento Memorando 2235 (SEI 153244107) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-12 09:44:32 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Documento 153244107 lido (2295 caracteres)
+2026-11-12 09:44:32 | INFO    | 2010.01.0053733/2025-14   | conferencia_prox_acao | Memo à APIS (formato inválido) do marcador "01.05.1 - Aguarda APIS: Formato Inválido": Memorando 2235 (SEI 153244107)
+2026-11-12 09:44:32 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Lendo documento Memorando 215 (SEI 115339977)
+2026-11-12 09:44:32 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Documento 115339977 lido (1324 caracteres)
+2026-11-12 09:44:32 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 215 (SEI 115339977)
+2026-11-12 09:44:32 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Lendo documento Memorando 2025 (SEI 149214711)
+2026-11-12 09:44:32 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Documento 149214711 lido (2596 caracteres)
+2026-11-12 09:44:32 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Lendo documento Memorando 2026 (SEI 149216091)
+2026-11-12 09:44:33 | DEBUG   | 2010.01.0053733/2025-14   | docs_processo         | Documento 149216091 lido (1149 caracteres)
+2026-11-12 09:44:33 | INFO    | 2010.01.0053733/2025-14   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2025 (SEI 149214711)', 'Memorando 2026 (SEI 149216091)']
+2026-11-12 09:44:33 | INFO    | 2010.01.0053733/2025-14   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:44:42 | DEBUG   | 2010.01.0053733/2025-14   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (27 passagem(ns) nesta execução)
+2026-11-12 09:44:42 | INFO    | 2010.01.0053733/2025-14   | __main__              | FIM (13.8s) | Próxima ação: -
+2026-11-12 09:44:42 | INFO    | 2010.01.0053774/2025-71   | __main__              | INÍCIO [28/28]
+2026-11-12 09:44:42 | INFO    | 2010.01.0053774/2025-71   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:44:43 | DEBUG   | 2010.01.0053774/2025-71   | docs_processo         | Lendo documento Memorando 2241 (SEI 153245124)
+2026-11-12 09:44:43 | DEBUG   | 2010.01.0053774/2025-71   | docs_processo         | Documento 153245124 lido (3494 caracteres)
+2026-11-12 09:44:43 | INFO    | 2010.01.0053774/2025-71   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2241 (SEI 153245124)
+2026-11-12 09:44:43 | DEBUG   | 2010.01.0053774/2025-71   | docs_processo         | Lendo documento Memorando 222 (SEI 115345428)
+2026-11-12 09:44:44 | DEBUG   | 2010.01.0053774/2025-71   | docs_processo         | Documento 115345428 lido (1322 caracteres)
+2026-11-12 09:44:44 | DEBUG   | 2010.01.0053774/2025-71   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 222 (SEI 115345428)
+2026-11-12 09:44:44 | DEBUG   | 2010.01.0053774/2025-71   | docs_processo         | Lendo documento Memorando 2408 (SEI 150572807)
+2026-11-12 09:44:44 | DEBUG   | 2010.01.0053774/2025-71   | docs_processo         | Documento 150572807 lido (2595 caracteres)
+2026-11-12 09:44:44 | INFO    | 2010.01.0053774/2025-71   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2408 (SEI 150572807)']
+2026-11-12 09:44:44 | INFO    | 2010.01.0053774/2025-71   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-12 09:44:53 | DEBUG   | 2010.01.0053774/2025-71   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (28 passagem(ns) nesta execução)
+2026-11-12 09:44:53 | INFO    | 2010.01.0053774/2025-71   | __main__              | FIM (11.3s) | Próxima ação: -
+2026-11-12 09:44:55 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-12 09:44:55 | INFO    | -                         | __main__              | Processos: 28 | Sem erro: 28 | Com erro: 0
+2026-11-12 09:44:55 | INFO    | -                         | __main__              |    28 | Marcadores verificados
+2026-11-12 09:44:55 | INFO    | -                         | __main__              | Duração total da execução: 0h05m41s
+2026-11-12 09:44:55 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

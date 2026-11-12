@@ -1,0 +1,62 @@
+2026-11-12 14:16:06 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC - COPARTICIPAÇÃO) =================
+2026-11-12 14:16:06 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-12_14-16-06_execucao_deproc_calcula_copa.log
+2026-11-12 14:16:06 | INFO    | -                         | __main__              | Data de geração da base DEPROC: 06/11/2026
+2026-11-12 14:16:06 | INFO    | -                         | processos_a_processar | 3 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_calcula_copa
+2026-11-12 14:16:09 | INFO    | -                         | coparticipacao_deproc | Base DEPROC carregada: 20498 linha(s), 195 processo(s) (Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx, aba Resultado)
+2026-11-12 14:16:09 | ERROR   | -                         | planilha_controle     | Falha ao ler a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx. Esta execução será salva à parte
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 308, in __init__
+    self._processos, self._historico = _ler(arquivo)
+                                       ~~~~^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 124, in _ler
+    planilhas = pd.read_excel(arquivo, sheet_name=None, dtype=object)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 508, in read_excel
+    data = io.parse(
+        sheet_name=sheet_name,
+    ...<21 lines>...
+        dtype_backend=dtype_backend,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1616, in parse
+    return self._reader.parse(
+           ~~~~~~~~~~~~~~~~~~^
+        sheet_name=sheet_name,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<17 lines>...
+        **kwds,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 778, in parse
+    data = self.get_sheet_data(sheet, file_rows_needed)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 615, in get_sheet_data
+    for row_number, row in enumerate(sheet.rows):
+                           ~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_read_only.py", line 85, in _cells_by_row
+    for idx, row in parser.parse():
+                    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 156, in parse
+    for _, element in it:
+                      ^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\xml\etree\ElementTree.py", line 1242, in iterator
+    yield from pullparser.read_events()
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\xml\etree\ElementTree.py", line 1325, in read_events
+    raise event
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\xml\etree\ElementTree.py", line 1297, in feed
+    self._parser.feed(data)
+    ~~~~~~~~~~~~~~~~~^^^^^^
+xml.etree.ElementTree.ParseError: not well-formed (invalid token): line 1, column 2844842
+2026-11-12 14:16:09 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-12 14:16:09 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-12 14:16:10 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-12 14:16:16 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-12 14:16:16 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/DEPROC-Utilização
+2026-11-12 14:16:16 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/DEPROC-Utilização
+2026-11-12 14:16:16 | INFO    | 2010.01.0053866/2025-12   | __main__              | INÍCIO [1/3]
+2026-11-12 14:16:17 | INFO    | 2010.01.0053866/2025-12   | __main__              | Marcadores: nenhum
+2026-11-12 14:16:19 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None)': /session/b76abe27980dad67ce479b237b07999d
+2026-11-12 14:16:23 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=53698): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/b76abe27980dad67ce479b237b07999d
+2026-11-12 14:16:27 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=53698): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/b76abe27980dad67ce479b237b07999d
+2026-11-12 14:16:31 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-12 14:16:31 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-12 14:16:31 | INFO    | -                         | __main__              | Duração total da execução: 25.3s
+2026-11-12 14:16:31 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

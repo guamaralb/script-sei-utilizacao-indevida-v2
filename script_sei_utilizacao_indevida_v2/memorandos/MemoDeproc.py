@@ -11,8 +11,9 @@ ASSUNTO_MEMO_DEPROC_DUAS_REDES = 'Levantamento de coparticipação – utilizaç
 
 # Início comum aos dois assuntos. Aceita também o assunto anterior
 # ("Levantamento de coparticipação - utilização indevida da assistência à
-# saúde"), dos memos já criados
-PADRAO_ASSUNTO_MEMO_DEPROC = re.compile(r'Levantamento de coparticipação\s*[-–]\s*utilização indevida da assistência à saúde', flags=re.IGNORECASE)
+# saúde"), dos memos já criados. Não casa com o assunto do memo de resultado
+# da DEPROC ("Retorno do levantamento de coparticipação – ...")
+PADRAO_ASSUNTO_MEMO_DEPROC = re.compile(r'(?<!retorno do )Levantamento de coparticipação\s*[-–]\s*utilização indevida da assistência à saúde', flags=re.IGNORECASE)
 
 
 def _par_rede_credenciada(docs_relatorio_rc: tuple[str, ...]) -> str:

@@ -4,7 +4,9 @@ from datetime import datetime
 from constantes import (
     ARQ_BASE_APIS,
     ARQ_MANTIS_REDE_CREDENCIADA,
+    ARQ_MANTIS_REDE_CREDENCIADA_DEPS_NAO_ENCONTRADOS,
     ARQ_MANTIS_REDE_PROPRIA,
+    ARQ_MANTIS_REDE_PROPRIA_DEPS_NAO_ENCONTRADOS,
     ARQ_USO_REDE_PROPRIA,
     DIR_CONTROLE,
     DIR_DADOS,
@@ -238,7 +240,12 @@ def main():
         total = len(processos)
 
         bases = carregar_bases(ARQ_USO_REDE_PROPRIA, ARQ_BASE_APIS)
-        bases_mantis = carregar_bases_mantis(ARQ_MANTIS_REDE_PROPRIA, ARQ_MANTIS_REDE_CREDENCIADA)
+        bases_mantis = carregar_bases_mantis(
+            ARQ_MANTIS_REDE_PROPRIA,
+            ARQ_MANTIS_REDE_CREDENCIADA,
+            ARQ_MANTIS_REDE_PROPRIA_DEPS_NAO_ENCONTRADOS,
+            ARQ_MANTIS_REDE_CREDENCIADA_DEPS_NAO_ENCONTRADOS,
+        )
 
         controle = PlanilhaControleGeral(SCRIPT, AGORA)
         driver = abrir_sei(UNIDADE_GEACS, download_dir=DIR_UI_ANTIGAS_XLS)

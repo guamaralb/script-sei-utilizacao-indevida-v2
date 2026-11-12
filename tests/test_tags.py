@@ -90,6 +90,12 @@ def _registro_com(*marcadores) -> RegistroMain:
         (tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_APIS_SEM_USO),
         # Sem estado: versão anterior ou falha antes do memo à APIS
         (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS),
+        # Só dependentes fora da base APIS: o fluxo segue até o estado final
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_AGUARDA_DISA_VALIDAR_CONSTA),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_MEMO_DEPROC_COPARTICIPACAO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_AGUARDA_APIS_SEM_USO),
+        (tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_PERIODO_VAR_DEP, tags.TAG_MEMO_APIS_PERIODO_DEPENDENTES),
         # Marcadores 01.03 da versão anterior: não são mais lidos
         ('v2v: 01.03 - Memos DISA e DEPROC no Bloco', 'v2v: 01.03 - Memo DEPROC no Bloco', tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA),
         (tags.TAG_PROCESSO_NOVO, tags.TAG_VELHO_MEMO_DISA),
@@ -123,7 +129,7 @@ def test_marcadores_consistentes(marcadores):
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA, tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS), 'mais de um marcador de estado'),
         ((tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA,), 'sem o marcador'),
         ((tags.TAG_AGUARDA_FLUXO_NORMAL,), 'sem o marcador'),
-        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), '01.02.1 - Mat. N Encontradas Base APIS com o estado 01.10'),
+        ((tags.TAG_PROCESSO_NOVO, tags.TAG_MAT_NAO_ENCONTRADAS_APIS, tags.TAG_MEMO_APIS_FORMATO_INVALIDO), '01.02.1 - Mat. N Encontradas Base APIS com o estado 01.05'),
         ((tags.TAG_PROCESSO_VELHO, tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), 'em processo VELHO'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_PERIODO_VAR_DEP, tags.TAG_MEMO_DEPROC_COPARTICIPACAO), '01.01 - Período Variável p/ Dependentes com o estado'),
         ((tags.TAG_PROCESSO_NOVO, tags.TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS), '01.06.1 - No Bloco APIS: Matrículas sem 01.02.1'),

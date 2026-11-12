@@ -10,7 +10,7 @@ main_geacs_inicial._tratar). Cada novo estado substitui o anterior no SEI.
 import logging
 import re
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from constantes import (
     BLOCO_MEMO_APIS_FORMATO_INVALIDO,
@@ -34,7 +34,9 @@ from rede_propria import (
     BasesUso,
     ErroAvaliacao,
     MatriculasProcesso,
+    NaoEncontradas,
     avaliar_uso_rede_propria_disa,
+    normalizar_matricula,
     registrar_uso,
     verificar_base_apis,
 )
@@ -282,7 +284,8 @@ def _parar_nao_encontradas_base_apis(driver: webdriver.Remote, registro: Registr
     registro.fluxo = 'NOVO - matrículas não encontradas na base APIS'
     garantir_marcadores_no_sei(driver, [TAG_MAT_NAO_ENCONTRADAS_APIS, TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS])
     adicionar_tag_se_ausente(driver, registro, TAG_MAT_NAO_ENCONTRADAS_APIS)
-    incluir_memo_apis_mat_nao_encontradas(driver, registro, matriculas.nao_encontradas_apis)
+    # Só o titular: os dependentes fora da base APIS não entram no memo
+    incluir_memo_apis_mat_nao_encontradas(driver, registro, NaoEncontradas(titular=matriculas.nao_encontradas_apis.titular))
     adicionar_tag(driver, registro, TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS)
     _finalizar(driver, registro, ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS)
 
@@ -292,17 +295,62 @@ def _parar_nao_encontradas_base_apis(driver: webdriver.Remote, registro: Registr
 # ---------------------------------------------------------------------------
 
 
-def _verificar_base_apis(driver: webdriver.Remote, registro: RegistroMain, dados_ui: DadosUI, bases: BasesUso) -> MatriculasProcesso:
+def _sem_dependentes(dados_ui: DadosUI, ignorados: tuple[str, ...]) -> DadosUI:
+    """Os dados do memo da APIS sem os dependentes ignorados (matrículas
+    normalizadas, como no memo). As demais matrículas ficam como no memo."""
+    partes = [p.strip() for p in (dados_ui.matriculas_dependentes or '').split(';') if p.strip()]
+    mantidas = [p for p in partes if normalizar_matricula(p) not in ignorados]
+    periodos = dados_ui.periodos_por_dependente
+    if periodos is not None:
+        periodos = {m: p for m, p in periodos.items() if normalizar_matricula(m) not in ignorados}
+    return replace(
+        dados_ui,
+        matriculas_dependentes='; '.join(mantidas) or None,
+        periodos_por_dependente=periodos,
+        # Sem dependentes, não há período variável a pedir à APIS
+        periodo_dependentes=dados_ui.periodo_dependentes and bool(mantidas),
+    )
+
+
+def _verificar_base_apis(
+    driver: webdriver.Remote,
+    registro: RegistroMain,
+    dados_ui: DadosUI,
+    bases: BasesUso,
+    bases_mantis: BasesMantis,
+) -> tuple[DadosUI, MatriculasProcesso]:
     """A existência das matrículas é conferida só na base APIS. Se todas
     estão na base e o processo tem o 01.02.1 (base corrigida depois), o
-    marcador é removido e o fluxo segue."""
+    marcador é removido e o fluxo segue. Titular fora da base: quem chama
+    para (memo à APIS só com o titular).
+
+    Só dependentes fora da base APIS: 01.02.1 e o fluxo segue. Os que estão
+    nos arquivos do MANTIS dos dependentes não encontrados são procurados
+    neles; os que não estão em nenhum dos dois são ignorados (saem dos dados
+    do memo usados no restante do fluxo: base DISA, MANTIS, relatórios e
+    memos). Devolve os dados e as matrículas que seguem no fluxo."""
     matriculas = verificar_base_apis(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
-    registro.titular_nao_encontrado_base_geral = matriculas.nao_encontradas_apis.titular
-    registro.deps_nao_encontrados_base_geral = list(matriculas.nao_encontradas_apis.dependentes)
-    if not matriculas.nao_encontradas_apis and tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_APIS):
+    nao_encontradas = matriculas.nao_encontradas_apis
+    registro.titular_nao_encontrado_base_geral = nao_encontradas.titular
+    registro.deps_nao_encontrados_base_geral = list(nao_encontradas.dependentes)
+    if not nao_encontradas and tem_tag(registro, TAG_MAT_NAO_ENCONTRADAS_APIS):
         logger.info('Matrículas agora encontradas na base APIS (base corrigida): o marcador 01.02.1 é removido e o fluxo segue')
         remover_tag(driver, registro, TAG_MAT_NAO_ENCONTRADAS_APIS)
-    return matriculas
+    if nao_encontradas.titular or not nao_encontradas.dependentes:
+        return dados_ui, matriculas
+
+    ignorados = tuple(d for d in nao_encontradas.dependentes if not bases_mantis.tem_dependente_nao_encontrado(d))
+    registro.deps_nao_encontrados_ignorados = list(ignorados)
+    localizados = [d for d in nao_encontradas.dependentes if d not in ignorados]
+    if localizados:
+        logger.info(f'Dependente(s) fora da base APIS, procurados no MANTIS dos dependentes não encontrados: {", ".join(localizados)}')
+    if ignorados:
+        logger.warning(f'Dependente(s) fora da base APIS e do MANTIS dos dependentes não encontrados: {", ".join(ignorados)}. Ignorado(s) no restante do fluxo')
+        dados_ui = _sem_dependentes(dados_ui, ignorados)
+        matriculas = verificar_base_apis(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
+    garantir_marcadores_no_sei(driver, [TAG_MAT_NAO_ENCONTRADAS_APIS])
+    adicionar_tag_se_ausente(driver, registro, TAG_MAT_NAO_ENCONTRADAS_APIS)
+    return dados_ui, matriculas
 
 
 def _avaliar_disa(driver: webdriver.Remote, registro: RegistroMain, matriculas: MatriculasProcesso, bases: BasesUso) -> UsoRedeBeneficiarios:
@@ -395,7 +443,14 @@ def _avaliar_mantis_e_criar_docs(
 
     Em todos os casos, os relatórios RP e RC de quem usou entram antes do
     memo. Quem vai para a DISA não vai para a DEPROC."""
-    mantis = avaliar_uso_rede_propria_mantis(matriculas.titular, matriculas.dependentes, dados_ui.periodo_titular, bases_mantis, matriculas.periodos_dos_dependentes(dados_ui.periodos_por_dependente))
+    mantis = avaliar_uso_rede_propria_mantis(
+        matriculas.titular,
+        matriculas.dependentes,
+        dados_ui.periodo_titular,
+        bases_mantis,
+        matriculas.periodos_dos_dependentes(dados_ui.periodos_por_dependente),
+        deps_nao_encontrados=matriculas.nao_encontradas_apis.dependentes,
+    )
     _registrar_uso_mantis(registro, mantis)
     registro.mats_uso_mantis_alem_disa = usos_mantis_alem_disa(uso_disa, mantis.rede_propria)
     propria, credenciada = mantis.rede_propria, mantis.rede_credenciada
@@ -448,7 +503,9 @@ def processar_novo(
     Termina em um destes pontos:
     - sem memo da APIS para a GEACS: memo à APIS (sem memorando);
     - memo da APIS em formato inválido: memo à APIS (formato inválido);
-    - matrícula fora da base APIS: 01.02.1 e memo à APIS;
+    - titular fora da base APIS: 01.02.1 e memo à APIS, só com o titular
+      (só dependentes fora dela: 01.02.1 e o fluxo segue, com o MANTIS dos
+      dependentes não encontrados; os que não estão nele são ignorados);
     - período variável para dependentes: 01.01 e memo à APIS;
     - uso da rede própria na base DISA e/ou no MANTIS: memo à DISA (um dos
       três casos);
@@ -468,8 +525,8 @@ def processar_novo(
         _parar_formato_invalido(driver, registro, e)
         return
 
-    matriculas = _verificar_base_apis(driver, registro, dados_ui, bases)
-    if matriculas.nao_encontradas_apis:
+    dados_ui, matriculas = _verificar_base_apis(driver, registro, dados_ui, bases, bases_mantis)
+    if matriculas.nao_encontradas_apis.titular:
         _parar_nao_encontradas_base_apis(driver, registro, matriculas)
         return
 

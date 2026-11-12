@@ -8,7 +8,9 @@ from datetime import datetime
 import conferencia_prox_acao
 import docs_processo
 import main_geacs_verificar_marcadores as fluxo
+import processo_fechado
 import pytest
+import sei_automacao.processo
 import tags
 from constantes import UNIDADE_GEACS
 from openpyxl import load_workbook
@@ -76,6 +78,9 @@ def _passar(monkeypatch, marcadores, sei: SEIFalso | None = None, linha: dict | 
     monkeypatch.setattr(docs_processo, 'ler_texto_doc', texto)
     monkeypatch.setattr(tags, 'remover_marcador', lambda driver, lista: removidos.extend(lista))
     monkeypatch.setattr(tags, 'adicionar_marcador', lambda driver, tag: pytest.fail('o fluxo não adiciona marcadores'))
+    # O fluxo não reabre processos (fechado no setor continua fechado)
+    for modulo in (processo_fechado, sei_automacao.processo):
+        monkeypatch.setattr(modulo, 'reabrir_processo', lambda *a, **k: pytest.fail('o fluxo não reabre processos'))
     registro = fluxo._processar_linha(object(), 'PROC', linha)
     assert removidos == []
     return registro
@@ -106,6 +111,15 @@ def test_uma_coluna_por_marcador_valido_e_os_demais_juntos(monkeypatch):
     # Planilha não lida (linha None): a prox_acao não é conferida
     assert dados['verificar_marcadores_inconsistencia'] is not None
     assert 'prox_acao' not in dados['verificar_marcadores_inconsistencia']
+
+
+def test_nao_reabre_processo_fechado():
+    # Nem confere o Incluir Documento: lê marcadores e árvore sem reabrir
+    for modulo in (fluxo, conferencia_prox_acao):
+        codigo = open(modulo.__file__, encoding='utf-8').read()
+        assert 'reabrir' not in codigo.lower()
+        assert 'tem_incluir_documento' not in codigo
+    assert 'processo_reaberto' not in fluxo.RegistroVerificarMarcadores(num_processo='PROC').to_dict()
 
 
 def test_sem_demais_marcadores(monkeypatch):

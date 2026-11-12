@@ -1,0 +1,11 @@
+2026-11-12 09:53:30 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (ADC PDF ANT AUT - PLANILHA ANTIGA BAIXADA DO SEI) =================
+2026-11-12 09:53:30 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-12_09-53-30_execucao_geacs_adc_pdf_ant_aut.log
+2026-11-12 09:53:30 | INFO    | -                         | processos_a_processar | 2 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_adc_pdf_ant_aut
+2026-11-12 09:53:31 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-12 09:53:31 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-12 09:53:32 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\geacs_adc_pdf_ant_aut\planilhas_baixadas
+2026-11-12 09:53:37 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-12 09:53:37 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-12 09:53:38 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-12 09:53:38 | INFO    | 2010.01.0080733/2024-69   | __main__              | INÍCIO [1/2]
+2026-11-12 09:53:46 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None)': /session/33f2a4c8f5bcb6d5b88e13c58b548151

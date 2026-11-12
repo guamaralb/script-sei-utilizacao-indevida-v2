@@ -82,6 +82,19 @@ class SubtotalBeneficiario:
 
 
 @dataclass(frozen=True)
+class BeneficiarioDeproc:
+    """Uma linha da tabela de valores do memo de resultado: o titular e cada
+    dependente com linhas do processo na base DEPROC (em qualquer período).
+    Dependente sem linha nenhuma não entra (sem nome na base). valor: soma
+    dos atendimentos no período (0 se só tem linhas fora dele)."""
+
+    matricula: str  # como exibida no memo
+    nome: str
+    categoria: str
+    valor: float
+
+
+@dataclass(frozen=True)
 class ResultadoDeproc:
     linhas_processo: int
     linhas_fora_periodo: int
@@ -90,6 +103,14 @@ class ResultadoDeproc:
     atendimentos: pd.DataFrame
     subtotais: tuple[SubtotalBeneficiario, ...]
     totais: TotaisDeproc
+    beneficiarios: tuple[BeneficiarioDeproc, ...] = ()
+
+    @property
+    def tem_coparticipacao(self) -> bool:
+        """Há valor de coparticipação no período. Sem atendimento, ou só com
+        atendimentos de valor 0 (isentos, cálculo impedido): não há relatório
+        e o memo usa a redação sem coparticipação."""
+        return not self.atendimentos.empty and round(self.totais.coparticipacao, 2) != 0
 
 
 def carregar_base_deproc(arquivo: Path) -> pd.DataFrame:
@@ -102,6 +123,11 @@ def carregar_base_deproc(arquivo: Path) -> pd.DataFrame:
     df['DATA_ATENDIMENTO'] = pd.to_datetime(df['DATA_ATENDIMENTO'], errors='coerce')
     logger.info(f'Base DEPROC carregada: {len(df)} linha(s), {df["SEI"].nunique()} processo(s) ({arquivo.name}, aba {ABA_BASE_DEPROC})')
     return df
+
+
+def formatar_matricula_com_dv(matricula: str) -> str:
+    """'33983721' -> '3398372-1' (a base DEPROC traz a matrícula com DV)."""
+    return f'{matricula[:-1]}-{matricula[-1]}' if len(matricula) > 1 else matricula
 
 
 def mesma_matricula(do_memo: str, da_base: str) -> bool:
@@ -218,6 +244,26 @@ def _subtotais(atendimentos: pd.DataFrame) -> tuple[SubtotalBeneficiario, ...]:
     return tuple(SubtotalBeneficiario(matricula, categoria, int(valores.count()), round(float(valores.sum()), 2)) for (matricula, categoria), valores in grupos)
 
 
+def _nome_mais_frequente(nomes: pd.Series) -> str:
+    nomes = nomes.fillna('').astype(str).str.strip()
+    nomes = nomes[nomes != '']
+    return nomes.value_counts().index[0] if not nomes.empty else ''
+
+
+def _beneficiarios(linhas: pd.DataFrame, atendimentos: pd.DataFrame, dados: DadosUI) -> tuple[BeneficiarioDeproc, ...]:
+    """Titular (sempre) e os dependentes com linhas do processo na base, com o
+    nome da base e o valor no período. Titular sem linha: matrícula e nome do
+    memo da APIS."""
+    valores = atendimentos.groupby([COL_MATRICULA, COL_CATEGORIA])[COL_VALOR].sum()
+    beneficiarios = []
+    for (matricula, categoria), grupo in linhas.groupby(['MATRICULA_BENEFICIARIO', 'TITULAR_DEPENDENTE'], sort=True):
+        valor = round(float(valores.get((matricula, categoria), 0.0)), 2)
+        beneficiarios.append(BeneficiarioDeproc(formatar_matricula_com_dv(matricula), _nome_mais_frequente(grupo['NOME_BENEFICIARIO']), categoria, valor))
+    if not any(b.categoria == TITULAR for b in beneficiarios):
+        beneficiarios.append(BeneficiarioDeproc(dados.matricula_titular, dados.nome_titular, TITULAR, 0.0))
+    return tuple(sorted(beneficiarios, key=lambda b: b.categoria != TITULAR))
+
+
 def apurar_coparticipacao(base: pd.DataFrame, num_processo: str, dados: DadosUI) -> ResultadoDeproc:
     """Linhas do processo na base DEPROC, conferidas com as matrículas do memo
     da APIS e filtradas pelo período de apuração.
@@ -240,6 +286,7 @@ def apurar_coparticipacao(base: pd.DataFrame, num_processo: str, dados: DadosUI)
         atendimentos=atendimentos,
         subtotais=_subtotais(atendimentos),
         totais=calcular_totais(no_periodo),
+        beneficiarios=_beneficiarios(linhas, atendimentos, dados),
     )
     totais = resultado.totais
     logger.info(

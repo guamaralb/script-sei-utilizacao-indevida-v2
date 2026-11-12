@@ -1,0 +1,209 @@
+2026-11-12 09:23:44 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-12 09:23:44 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-12_09-23-44_execucao_geacs_inicial.log
+2026-11-12 09:23:44 | INFO    | -                         | processos_a_processar | 27 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_inicial
+2026-11-12 09:23:44 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-12 09:23:44 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-12 09:23:45 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-12 09:23:45 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-12 09:23:45 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-12 09:23:45 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-12 09:23:45 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-12 09:23:46 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-12 09:23:46 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-12 09:23:46 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-12 09:24:17 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-12 09:24:35 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-12 09:24:37 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-12 09:24:37 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-12 09:24:38 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-11-12 09:24:43 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-12 09:24:43 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-12 09:24:44 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-12 09:24:44 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [1/27]
+2026-11-12 09:24:54 | ERROR   | 2010.01.0072726/2024-45   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_inicial.py", line 194, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 63, in acessar_processo
+    _busca.pesquisar_processo(driver, num_processo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\busca.py", line 58, in pesquisar_processo
+    elemento: WebElement = espera.until(
+                           ~~~~~~~~~~~~^
+        EC.any_of(
+        ^^^^^^^^^^
+    ...<2 lines>...
+        )
+        ^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+2026-11-12 09:24:55 | INFO    | 2010.01.0072726/2024-45   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-12_09-23-44.xlsx
+2026-11-12 09:25:03 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-12 09:25:03 | WARNING | 2010.01.0072726/2024-45   | __main__              | FIM COM ERRO (19.7s) | TimeoutException: Tempo esgotado esperando elemento do SEI em pesquisar_processo (detalhes no log)
+2026-11-12 09:25:03 | INFO    | 2010.01.0050757/2025-50   | __main__              | INÍCIO [2/27]
+2026-11-12 09:25:06 | INFO    | 2010.01.0050757/2025-50   | __main__              | Árvore: 25 documento(s) | GEACS: 9 documento(s), 2 memorando(s)
+2026-11-12 09:25:06 | INFO    | 2010.01.0050757/2025-50   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:25:15 | DEBUG   | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-12 09:25:15 | WARNING | 2010.01.0050757/2025-50   | __main__              | FIM COM ERRO (11.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:25:15 | INFO    | 2010.01.0082953/2024-75   | __main__              | INÍCIO [3/27]
+2026-11-12 09:25:17 | INFO    | 2010.01.0082953/2024-75   | __main__              | Árvore: 21 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-12 09:25:17 | INFO    | 2010.01.0082953/2024-75   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:25:17 | INFO    | 2010.01.0082953/2024-75   | __main__              | Fluxo: memo no bloco, aguardando assinatura ("v2: 01.06.1 - No Bloco APIS: Matrículas")
+2026-11-12 09:25:25 | DEBUG   | 2010.01.0082953/2024-75   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-12 09:25:25 | INFO    | 2010.01.0082953/2024-75   | __main__              | FIM (10.5s) | Próxima ação: Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-12 09:25:25 | INFO    | 2010.01.0050849/2025-88   | __main__              | INÍCIO [4/27]
+2026-11-12 09:25:27 | INFO    | 2010.01.0050849/2025-88   | __main__              | Árvore: 19 documento(s) | GEACS: 9 documento(s), 2 memorando(s)
+2026-11-12 09:25:27 | INFO    | 2010.01.0050849/2025-88   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:25:35 | DEBUG   | 2010.01.0050849/2025-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-12 09:25:35 | WARNING | 2010.01.0050849/2025-88   | __main__              | FIM COM ERRO (10.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:25:35 | INFO    | 2010.01.0053646/2025-35   | __main__              | INÍCIO [5/27]
+2026-11-12 09:25:37 | INFO    | 2010.01.0053646/2025-35   | __main__              | Árvore: 12 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-12 09:25:37 | INFO    | 2010.01.0053646/2025-35   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:25:46 | DEBUG   | 2010.01.0053646/2025-35   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-12 09:25:46 | WARNING | 2010.01.0053646/2025-35   | __main__              | FIM COM ERRO (10.3s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:25:46 | INFO    | 2010.01.0072778/2024-96   | __main__              | INÍCIO [6/27]
+2026-11-12 09:25:48 | INFO    | 2010.01.0072778/2024-96   | __main__              | Árvore: 31 documento(s) | GEACS: 14 documento(s), 3 memorando(s)
+2026-11-12 09:25:48 | INFO    | 2010.01.0072778/2024-96   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:25:57 | DEBUG   | 2010.01.0072778/2024-96   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-12 09:25:57 | WARNING | 2010.01.0072778/2024-96   | __main__              | FIM COM ERRO (11.2s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:25:57 | INFO    | 2010.01.0072733/2024-50   | __main__              | INÍCIO [7/27]
+2026-11-12 09:25:58 | INFO    | 2010.01.0072733/2024-50   | __main__              | Árvore: 19 documento(s) | GEACS: 8 documento(s), 3 memorando(s)
+2026-11-12 09:25:58 | INFO    | 2010.01.0072733/2024-50   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:26:07 | DEBUG   | 2010.01.0072733/2024-50   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-12 09:26:07 | WARNING | 2010.01.0072733/2024-50   | __main__              | FIM COM ERRO (10.3s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:26:07 | INFO    | 2010.01.0083647/2024-58   | __main__              | INÍCIO [8/27]
+2026-11-12 09:26:09 | INFO    | 2010.01.0083647/2024-58   | __main__              | Árvore: 19 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-12 09:26:09 | INFO    | 2010.01.0083647/2024-58   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-12 09:26:18 | DEBUG   | 2010.01.0083647/2024-58   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-12 09:26:18 | WARNING | 2010.01.0083647/2024-58   | __main__              | FIM COM ERRO (10.6s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (N Consta))
+2026-11-12 09:26:18 | INFO    | 2010.01.0058306/2025-24   | __main__              | INÍCIO [9/27]
+2026-11-12 09:26:19 | INFO    | 2010.01.0058306/2025-24   | __main__              | Árvore: 20 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-12 09:26:19 | INFO    | 2010.01.0058306/2025-24   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:26:19 | INFO    | 2010.01.0058306/2025-24   | __main__              | Fluxo: memo no bloco, aguardando assinatura ("v2: 01.06.1 - No Bloco APIS: Matrículas")
+2026-11-12 09:26:28 | DEBUG   | 2010.01.0058306/2025-24   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-12 09:26:28 | INFO    | 2010.01.0058306/2025-24   | __main__              | FIM (10.4s) | Próxima ação: Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-12 09:26:28 | INFO    | 2010.01.0051657/2025-97   | __main__              | INÍCIO [10/27]
+2026-11-12 09:26:30 | INFO    | 2010.01.0051657/2025-97   | __main__              | Árvore: 14 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-12 09:26:30 | INFO    | 2010.01.0051657/2025-97   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:26:38 | DEBUG   | 2010.01.0051657/2025-97   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-12 09:26:38 | WARNING | 2010.01.0051657/2025-97   | __main__              | FIM COM ERRO (10.2s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:26:38 | INFO    | 2010.01.0051842/2025-49   | __main__              | INÍCIO [11/27]
+2026-11-12 09:26:40 | INFO    | 2010.01.0051842/2025-49   | __main__              | Árvore: 14 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-12 09:26:40 | INFO    | 2010.01.0051842/2025-49   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:26:49 | DEBUG   | 2010.01.0051842/2025-49   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-12 09:26:49 | WARNING | 2010.01.0051842/2025-49   | __main__              | FIM COM ERRO (10.4s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:26:49 | INFO    | 2010.01.0082914/2024-61   | __main__              | INÍCIO [12/27]
+2026-11-12 09:26:50 | INFO    | 2010.01.0082914/2024-61   | __main__              | Árvore: 19 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-12 09:26:50 | INFO    | 2010.01.0082914/2024-61   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:26:59 | DEBUG   | 2010.01.0082914/2024-61   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-12 09:26:59 | WARNING | 2010.01.0082914/2024-61   | __main__              | FIM COM ERRO (10.7s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:26:59 | INFO    | 2010.01.0051893/2025-30   | __main__              | INÍCIO [13/27]
+2026-11-12 09:27:01 | INFO    | 2010.01.0051893/2025-30   | __main__              | Árvore: 28 documento(s) | GEACS: 9 documento(s), 2 memorando(s)
+2026-11-12 09:27:01 | INFO    | 2010.01.0051893/2025-30   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:27:10 | DEBUG   | 2010.01.0051893/2025-30   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-12 09:27:10 | WARNING | 2010.01.0051893/2025-30   | __main__              | FIM COM ERRO (10.7s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:27:10 | INFO    | 2010.01.0080702/2024-33   | __main__              | INÍCIO [14/27]
+2026-11-12 09:27:12 | INFO    | 2010.01.0080702/2024-33   | __main__              | Árvore: 16 documento(s) | GEACS: 6 documento(s), 2 memorando(s)
+2026-11-12 09:27:12 | INFO    | 2010.01.0080702/2024-33   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:27:21 | DEBUG   | 2010.01.0080702/2024-33   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-12 09:27:21 | WARNING | 2010.01.0080702/2024-33   | __main__              | FIM COM ERRO (10.7s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:27:21 | INFO    | 2010.01.0052695/2025-07   | __main__              | INÍCIO [15/27]
+2026-11-12 09:27:23 | INFO    | 2010.01.0052695/2025-07   | __main__              | Árvore: 22 documento(s) | GEACS: 10 documento(s), 2 memorando(s)
+2026-11-12 09:27:23 | INFO    | 2010.01.0052695/2025-07   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:27:32 | DEBUG   | 2010.01.0052695/2025-07   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-12 09:27:32 | WARNING | 2010.01.0052695/2025-07   | __main__              | FIM COM ERRO (11.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:27:32 | INFO    | 2010.01.0053003/2025-33   | __main__              | INÍCIO [16/27]
+2026-11-12 09:27:35 | INFO    | 2010.01.0053003/2025-33   | __main__              | Árvore: 21 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-12 09:27:35 | INFO    | 2010.01.0053003/2025-33   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.06.1 - No Bloco APIS: Matrículas']
+2026-11-12 09:27:35 | INFO    | 2010.01.0053003/2025-33   | __main__              | Fluxo: memo no bloco, aguardando assinatura ("v2: 01.06.1 - No Bloco APIS: Matrículas")
+2026-11-12 09:27:44 | DEBUG   | 2010.01.0053003/2025-33   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-12 09:27:44 | INFO    | 2010.01.0053003/2025-33   | __main__              | FIM (11.7s) | Próxima ação: Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-12 09:27:44 | INFO    | 2010.01.0082922/2024-39   | __main__              | INÍCIO [17/27]
+2026-11-12 09:27:46 | INFO    | 2010.01.0082922/2024-39   | __main__              | Árvore: 23 documento(s) | GEACS: 7 documento(s), 2 memorando(s)
+2026-11-12 09:27:46 | INFO    | 2010.01.0082922/2024-39   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:27:54 | DEBUG   | 2010.01.0082922/2024-39   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-12 09:27:54 | WARNING | 2010.01.0082922/2024-39   | __main__              | FIM COM ERRO (10.9s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:27:54 | INFO    | 2010.01.0052989/2025-23   | __main__              | INÍCIO [18/27]
+2026-11-12 09:27:56 | INFO    | 2010.01.0052989/2025-23   | __main__              | Árvore: 21 documento(s) | GEACS: 6 documento(s), 2 memorando(s)
+2026-11-12 09:27:56 | INFO    | 2010.01.0052989/2025-23   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:28:05 | DEBUG   | 2010.01.0052989/2025-23   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-12 09:28:05 | WARNING | 2010.01.0052989/2025-23   | __main__              | FIM COM ERRO (10.7s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:28:05 | INFO    | 2010.01.0052815/2025-65   | __main__              | INÍCIO [19/27]
+2026-11-12 09:28:07 | INFO    | 2010.01.0052815/2025-65   | __main__              | Árvore: 23 documento(s) | GEACS: 9 documento(s), 2 memorando(s)
+2026-11-12 09:28:07 | INFO    | 2010.01.0052815/2025-65   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:28:16 | DEBUG   | 2010.01.0052815/2025-65   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-12 09:28:16 | WARNING | 2010.01.0052815/2025-65   | __main__              | FIM COM ERRO (11.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:28:16 | INFO    | 2010.01.0052984/2025-61   | __main__              | INÍCIO [20/27]
+2026-11-12 09:28:18 | INFO    | 2010.01.0052984/2025-61   | __main__              | Árvore: 20 documento(s) | GEACS: 6 documento(s), 2 memorando(s)
+2026-11-12 09:28:18 | INFO    | 2010.01.0052984/2025-61   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:28:27 | DEBUG   | 2010.01.0052984/2025-61   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-12 09:28:27 | WARNING | 2010.01.0052984/2025-61   | __main__              | FIM COM ERRO (10.4s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:28:27 | INFO    | 2010.01.0060888/2024-56   | __main__              | INÍCIO [21/27]
+2026-11-12 09:28:29 | INFO    | 2010.01.0060888/2024-56   | __main__              | Árvore: 29 documento(s) | GEACS: 11 documento(s), 3 memorando(s)
+2026-11-12 09:28:29 | INFO    | 2010.01.0060888/2024-56   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:28:38 | DEBUG   | 2010.01.0060888/2024-56   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-12 09:28:38 | WARNING | 2010.01.0060888/2024-56   | __main__              | FIM COM ERRO (11.4s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:28:38 | INFO    | 2010.01.0083354/2024-15   | __main__              | INÍCIO [22/27]
+2026-11-12 09:28:40 | INFO    | 2010.01.0083354/2024-15   | __main__              | Árvore: 19 documento(s) | GEACS: 7 documento(s), 2 memorando(s)
+2026-11-12 09:28:40 | INFO    | 2010.01.0083354/2024-15   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:28:48 | DEBUG   | 2010.01.0083354/2024-15   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-12 09:28:48 | WARNING | 2010.01.0083354/2024-15   | __main__              | FIM COM ERRO (10.5s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:28:48 | INFO    | 2010.01.0053489/2025-06   | __main__              | INÍCIO [23/27]
+2026-11-12 09:28:50 | INFO    | 2010.01.0053489/2025-06   | __main__              | Árvore: 20 documento(s) | GEACS: 6 documento(s), 2 memorando(s)
+2026-11-12 09:28:50 | INFO    | 2010.01.0053489/2025-06   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:28:59 | DEBUG   | 2010.01.0053489/2025-06   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-12 09:28:59 | WARNING | 2010.01.0053489/2025-06   | __main__              | FIM COM ERRO (10.4s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:28:59 | INFO    | 2010.01.0053690/2025-11   | __main__              | INÍCIO [24/27]
+2026-11-12 09:29:01 | INFO    | 2010.01.0053690/2025-11   | __main__              | Árvore: 24 documento(s) | GEACS: 7 documento(s), 2 memorando(s)
+2026-11-12 09:29:01 | INFO    | 2010.01.0053690/2025-11   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-12 09:29:10 | DEBUG   | 2010.01.0053690/2025-11   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-12 09:29:10 | WARNING | 2010.01.0053690/2025-11   | __main__              | FIM COM ERRO (11.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (N Consta))
+2026-11-12 09:29:10 | INFO    | 2010.01.0083668/2024-73   | __main__              | INÍCIO [25/27]
+2026-11-12 09:29:11 | INFO    | 2010.01.0083668/2024-73   | __main__              | Árvore: 19 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-12 09:29:11 | INFO    | 2010.01.0083668/2024-73   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:29:20 | DEBUG   | 2010.01.0083668/2024-73   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-12 09:29:20 | WARNING | 2010.01.0083668/2024-73   | __main__              | FIM COM ERRO (10.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:29:20 | INFO    | 2010.01.0053733/2025-14   | __main__              | INÍCIO [26/27]
+2026-11-12 09:29:22 | INFO    | 2010.01.0053733/2025-14   | __main__              | Árvore: 22 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-12 09:29:22 | INFO    | 2010.01.0053733/2025-14   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.1 - Aguarda APIS: Formato Inválido']
+2026-11-12 09:29:31 | DEBUG   | 2010.01.0053733/2025-14   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (26 passagem(ns) nesta execução)
+2026-11-12 09:29:31 | WARNING | 2010.01.0053733/2025-14   | __main__              | FIM COM ERRO (11.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:29:31 | INFO    | 2010.01.0053774/2025-71   | __main__              | INÍCIO [27/27]
+2026-11-12 09:29:33 | INFO    | 2010.01.0053774/2025-71   | __main__              | Árvore: 20 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-12 09:29:33 | INFO    | 2010.01.0053774/2025-71   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-12 09:29:42 | DEBUG   | 2010.01.0053774/2025-71   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (27 passagem(ns) nesta execução)
+2026-11-12 09:29:42 | WARNING | 2010.01.0053774/2025-71   | __main__              | FIM COM ERRO (10.4s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | Processos: 27 | Sem erro: 3 | Com erro: 24
+2026-11-12 09:29:44 | INFO    | -                         | __main__              |     3 | Assinar memo à APIS (matrículas não encontradas) e encaminhar
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072726/2024-45 | TimeoutException: Tempo esgotado esperando elemento do SEI em pesquisar_processo (detalhes no log)
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0050757/2025-50 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0050849/2025-88 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0053646/2025-35 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072778/2024-96 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072733/2024-50 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0083647/2024-58 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (N Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051657/2025-97 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051842/2025-49 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0082914/2024-61 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051893/2025-30 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0080702/2024-33 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0052695/2025-07 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0082922/2024-39 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0052989/2025-23 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0052815/2025-65 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0052984/2025-61 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0060888/2024-56 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0083354/2024-15 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0053489/2025-06 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0053690/2025-11 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (N Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0083668/2024-73 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0053733/2025-14 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.1 - Aguarda APIS: Formato Inválido)
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ERRO  | 2010.01.0053774/2025-71 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.1 - Aguarda DISA: Validar (Consta))
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | Duração total da execução: 0h05m59s
+2026-11-12 09:29:44 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

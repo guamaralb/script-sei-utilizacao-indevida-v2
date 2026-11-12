@@ -2,10 +2,12 @@
 com o SEI simulado."""
 
 from dataclasses import replace
+from datetime import date
 
 import main_geacs_inicial
 import processar_novo
 import pytest
+from mantis import Atendimento, BaseMantis, BasesMantis
 from Registro import ProxAcao, RegistroMain, registrar_erro
 from relatorios_mantis import REDE_CREDENCIADA, inicio_nome_relatorio
 from selenium.common.exceptions import InvalidSessionIdException
@@ -17,7 +19,7 @@ from tags import (
     TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
     TAG_MANUAL,
     TAG_MAT_NAO_ENCONTRADAS_APIS,
-    TAG_MEMO_DEPROC_COPARTICIPACAO,
+    TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_DISA_USO_REDE_PROPRIA,
     TAG_NO_BLOCO_APIS_SEM_USO,
     TAG_PROCESSO_NOVO,
@@ -33,8 +35,10 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import (
     ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
 )
 from tests.sei_falso import (
+    DEPENDENTE,
     DISA_USOU_RP_ANTIGO,
     MANTIS_CREDENCIADA_TITULAR_USOU,
+    MANTIS_DEP_NAO_ENCONTRADO_USOU,
     MANTIS_DEPENDENTE_USOU,
     MANTIS_DUAS_REDES,
     MARCADORES_RP_RC_ANTIGOS,
@@ -275,6 +279,97 @@ def test_base_apis_para_com_memo_a_apis(sei):
     assert sei.qnt_memos_geacs == 1
 
 
+def test_dependente_fora_da_base_apis_segue_com_o_mantis_dos_nao_encontrados(sei):
+    # Só o dependente falta na base APIS: 01.02.1 e o fluxo segue, com a
+    # utilização dele procurada no arquivo dos dependentes não encontrados
+    sei.novo_processo()
+    registro = sei.passar(bases(tit_usou=False, dep_na_apis=False), MANTIS_DEP_NAO_ENCONTRADO_USOU)
+
+    assert registro.erro is None
+    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', AGUARDA_N_CONSTA]
+    assert sei.assuntos_memos_geacs == [ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA]
+    assert sei.pdfs == [PDF_DEP_RP]
+    assert registro.deps_nao_encontrados_base_geral == ['555']
+    assert registro.titular_nao_encontrado_base_geral is None
+    assert registro.deps_que_usaram_mantis_rede_propria == ['555']
+    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA
+
+    # Memo no bloco: na próxima passagem, só falta assinar
+    registro = sei.passar(bases(tit_usou=False, dep_na_apis=False), MANTIS_DEP_NAO_ENCONTRADO_USOU)
+    assert registro.erro is None
+    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA
+
+
+def test_dependente_fora_da_base_apis_e_do_mantis_dos_nao_encontrados_e_ignorado(sei):
+    # Fora da base APIS e do arquivo dos não encontrados: ignorado (o
+    # atendimento na base principal não conta, e ele sai dos memos), sem
+    # memo à APIS de matrículas
+    sei.novo_processo()
+    registro = sei.passar(bases(tit_usou=False, dep_na_apis=False), MANTIS_DEPENDENTE_USOU)
+
+    assert registro.erro is None
+    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', AGUARDA_SEM_USO]
+    assert sei.assuntos_memos_geacs == [ASSUNTO_MEMO_APIS_SEM_USO]
+    assert registro.deps_nao_encontrados_base_geral == ['555']
+    assert registro.deps_nao_encontrados_ignorados == ['555']
+    assert registro.deps_que_usaram_mantis_rede_propria == []
+    assert registro.deps_que_nao_usaram == []
+    assert 'Matrículas dos dependentes' not in sei.texto_ultimo_memo_geacs
+    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_SEM_USO
+    # A planilha continua com os dependentes do memo da APIS
+    assert registro.dados_ui.matriculas_dependentes == '555'
+
+
+def test_dependente_do_mantis_dos_nao_encontrados_nao_e_ignorado(sei):
+    sei.novo_processo()
+    registro = sei.passar(bases(tit_usou=False, dep_na_apis=False), MANTIS_DEP_NAO_ENCONTRADO_USOU)
+
+    assert registro.deps_nao_encontrados_ignorados == []
+    assert 'Matrículas dos dependentes' in sei.texto_ultimo_memo_geacs
+
+
+def test_dependentes_encontrados_e_nao_encontrados_na_base_apis(sei):
+    # Titular e 555 na base APIS: bases principais do MANTIS. 6661 fora da
+    # base APIS: só o arquivo dos não encontrados. 7771 fora dos dois:
+    # ignorado. Os valores "errados" (nas bases que não valem para cada um)
+    # não podem entrar na soma
+    sei.novo_doc('E-mail', 'IPSEMG/APIS-Utilização', 'e-mail')
+    sei.memo_apis(MEMO_APIS.replace('Matrícula dos dependentes: 555', 'Matrícula dos dependentes: 555; 6661; 7771'))
+    errado = Atendimento(date(2024, 3, 1), 1000.0, prestador='X', procedimento='X')
+    em_2024 = Atendimento(date(2024, 3, 1), 10.0, prestador='HOSPITAL', procedimento='CONSULTA')
+    mantis = BasesMantis(
+        BaseMantis('rede própria', {TITULAR[:-1]: (em_2024,)}, {DEPENDENTE: (em_2024,), '6661': (errado,)}, {'6661': (em_2024,), DEPENDENTE: (errado,)}),
+        BaseMantis('rede credenciada', {TITULAR[:-1]: (em_2024,)}, {}, {}),
+    )
+    registro = sei.passar(bases(tit_usou=False), mantis)
+
+    assert registro.erro is None
+    assert registro.titular_nao_encontrado_base_geral is None
+    assert registro.deps_nao_encontrados_base_geral == ['6661', '7771']
+    assert registro.deps_nao_encontrados_ignorados == ['7771']
+    assert registro.tit_usou_mantis_rede_propria is True
+    assert registro.tit_usou_mantis_rede_credenciada is True
+    assert registro.deps_que_usaram_mantis_rede_propria == [DEPENDENTE, '6661']
+    assert registro.deps_valor_total_uso_mantis_rede_propria == 20.0
+    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', AGUARDA_N_CONSTA]
+    assert ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS not in sei.assuntos_memos_geacs
+    assert '7771' not in sei.texto_ultimo_memo_geacs
+
+
+def test_titular_e_dependente_fora_da_base_apis_param_com_memo_a_apis(sei):
+    sei.novo_processo()
+    registro = sei.passar(bases(tit_na_apis=False, dep_na_apis=False), MANTIS_DEP_NAO_ENCONTRADO_USOU)
+
+    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', '01.06.1 - No Bloco APIS: Matrículas']
+    assert sei.assuntos_memos_geacs == [ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS]
+    assert sei.pdfs == []
+    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS
+    # O memo cita só o titular
+    texto = sei.texto_ultimo_memo_geacs
+    assert 'Matrícula do titular' in texto
+    assert 'dependente' not in texto.split('Matrícula do titular')[1].split('Caso seja identificada')[0]
+
+
 def test_base_apis_corrigida_remove_o_1_2_1_e_segue(sei):
     sei.novo_processo()
     sei.tags = [TAG_PROCESSO_NOVO, TAG_MAT_NAO_ENCONTRADAS_APIS]
@@ -389,9 +484,10 @@ def test_falha_na_remocao_deixa_dois_estados_e_gera_erro(sei):
 
 
 def test_marcadores_inconsistentes_param_antes_de_qualquer_acao(sei):
-    # Concluído (1.10) com matrícula fora da base APIS (1.2.1): impossível
+    # Formato inválido (1.05) com matrícula fora da base APIS (1.2.1):
+    # impossível (a base APIS é consultada depois do formato)
     sei.novo_processo()
-    sei.tags = [TAG_PROCESSO_NOVO, TAG_MAT_NAO_ENCONTRADAS_APIS, TAG_MEMO_DEPROC_COPARTICIPACAO]
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_MAT_NAO_ENCONTRADAS_APIS, TAG_MEMO_APIS_FORMATO_INVALIDO]
     registro = sei.passar(bases())
 
     assert registro.tipo_erro == 'MarcadoresInconsistentes'

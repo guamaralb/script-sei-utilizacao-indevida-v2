@@ -42,7 +42,9 @@ def _linha(celulas: list[str], *, negrito: bool = False) -> str:
     return f'<tr>{"".join(f"<td>{c}</td>" for c in conteudo)}</tr>'
 
 
-def _tabela(cabecalho: list[str], linhas: list[list[str]], *, ultima_em_negrito: bool = False) -> str:
+def tabela_html(cabecalho: list[str], linhas: list[list[str]], *, ultima_em_negrito: bool = False) -> str:
+    """Tabela no formato do editor do SEI (cabeçalho em negrito). Fica fora
+    do <p> do parágrafo (ver texto_principal dos memos com tabela)."""
     corpo = ''.join(_linha(linha, negrito=ultima_em_negrito and i == len(linhas) - 1) for i, linha in enumerate(linhas))
     return f'<table {_ATRIBUTOS_TABELA}><tbody>{_linha(cabecalho, negrito=True)}{corpo}</tbody></table>'
 
@@ -57,7 +59,7 @@ def _tabela_valores(beneficiarios: tuple[ValoresBeneficiario, ...]) -> str:
         valor_rede_propria=sum(b.valor_rede_propria for b in beneficiarios),
         coparticipacao=sum(b.coparticipacao for b in beneficiarios),
     )
-    return _tabela(
+    return tabela_html(
         ['Beneficiário / matrícula', 'Utilização da rede credenciada', 'Utilização da rede própria', 'Total dos serviços utilizados', 'Coparticipação apurada'],
         [[b.identificacao, *_valores(b)] for b in (*beneficiarios, total)],
         ultima_em_negrito=True,
@@ -69,7 +71,7 @@ def _documento(doc: str | None) -> str:
 
 
 def _tabela_demonstrativos(beneficiarios: tuple[ValoresBeneficiario, ...]) -> str:
-    return _tabela(
+    return tabela_html(
         ['Beneficiário / matrícula', 'Demonstrativo da rede credenciada', 'Demonstrativo da rede própria'],
         [[b.identificacao, _documento(b.doc_rede_credenciada), _documento(b.doc_rede_propria)] for b in beneficiarios],
     )

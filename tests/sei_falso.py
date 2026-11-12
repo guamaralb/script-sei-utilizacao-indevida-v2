@@ -65,14 +65,17 @@ MANTIS_DEPENDENTE_USOU = BasesMantis(BaseMantis('rede própria', {}, {DEPENDENTE
 # Titular (sem DV no MANTIS) com atendimento na rede credenciada
 MANTIS_CREDENCIADA_TITULAR_USOU = BasesMantis(_VAZIA, BaseMantis('rede credenciada', {TITULAR[:-1]: (_ATENDIMENTO,)}, {}))
 MANTIS_DUAS_REDES = BasesMantis(MANTIS_DEPENDENTE_USOU.rede_propria, MANTIS_CREDENCIADA_TITULAR_USOU.rede_credenciada)
+# Dependente fora da base APIS com atendimento na rede própria, só no arquivo
+# dos dependentes não encontrados (pela matrícula como no memo)
+MANTIS_DEP_NAO_ENCONTRADO_USOU = BasesMantis(BaseMantis('rede própria', {}, {}, {DEPENDENTE: (_ATENDIMENTO,)}), _VAZIA)
 
 
-def bases(*, tit_usou=True, tit_na_disa=True, tit_na_apis=True) -> BasesUso:
+def bases(*, tit_usou=True, tit_na_disa=True, tit_na_apis=True, dep_na_apis=True) -> BasesUso:
     return BasesUso(
         titulares={TITULAR: tit_usou} if tit_na_disa else {},
         dependentes={DEPENDENTE: False},
         apis_titulares=frozenset({TITULAR} if tit_na_apis else set()),
-        apis_dependentes=frozenset({DEPENDENTE_COM_DV}),
+        apis_dependentes=frozenset({DEPENDENTE_COM_DV} if dep_na_apis else set()),
     )
 
 

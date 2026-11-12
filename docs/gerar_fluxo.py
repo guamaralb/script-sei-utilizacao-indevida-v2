@@ -394,18 +394,27 @@ col_processar = Coluna(
         ),
         P('Matrícula em<br>formato inválido?', [E('<b>ErroAvaliacao</b>')]),
         P(
-            'Faltou matrícula<br>na base APIS?',
+            'Faltou o <b>titular</b><br>na base APIS?',
             [
                 F('_parar_nao_encontradas_base_apis()', chama='garantir_marcadores_no_sei, incluir_memo_apis_mat_nao_encontradas'),
                 M('01.02.1 - Mat. N Encontradas Base APIS'),
-                MEMO('MemoApisMatNaoEncontradas', 7711907),
+                MEMO('MemoApisMatNaoEncontradas (só o titular)', 7711907),
                 M('01.06.1 - No Bloco APIS: Matrículas'),
                 R('estado anterior (se houver)'),
                 T('prox_acao = Assinar memo à APIS (matrículas não encontradas)'),
             ],
         ),
         P(
-            'Tem 01.02.1 - Mat. N Encontradas Base APIS?<br>(base corrigida)',
+            'Faltou só <b>dependente</b><br>na base APIS?',
+            [
+                M('01.02.1 - Mat. N Encontradas Base APIS<br><span style="font-weight:normal">se faltar; o fluxo segue (abaixo)</span>'),
+                S('Sem memo à APIS de matrículas. No MANTIS (coluna 4), esses dependentes são procurados <b>só</b> nos arquivos dos dependentes não encontrados (RP e RC), pela matrícula como no memo'),
+                S('Fora também desses arquivos: <b>ignorado</b> (sai da base DISA, do MANTIS e dos memos; coluna deps_nao_encontrados_ignorados)'),
+            ],
+            largura=LARGURA_PRINCIPAL,
+        ),
+        P(
+            'Todas encontradas e tem<br>01.02.1 - Mat. N Encontradas Base APIS?<br>(base corrigida)',
             [R('01.02.1 - Mat. N Encontradas Base APIS<br><span style="font-weight:normal">remove e segue o fluxo (abaixo)</span>')],
             largura=LARGURA_PRINCIPAL,
         ),
@@ -434,7 +443,12 @@ col_mantis = Coluna(
     'a rede credenciada (RC) só separa DEPROC de APIS quando ninguém usou a RP. Cada caso tem o seu memo e o seu bloco. '
     '<b>Os relatórios RP e RC de quem usou entram em todos os casos</b>; <b>quem vai para a DISA não vai para a DEPROC</b>',
     [
-        F('avaliar_uso_rede_propria_mantis()', 'Atendimentos no período do titular (no modelo com período por dependente, no de cada dependente), nas duas redes', chama='interpretar_periodo'),
+        F(
+            'avaliar_uso_rede_propria_mantis()',
+            'Atendimentos no período do titular (no modelo com período por dependente, no de cada dependente), nas duas redes. '
+            'Dependente fora da base APIS: só nos arquivos utilizacao_MANTIS-rede_*-dependentes_nao_encontrados.xlsx',
+            chama='interpretar_periodo',
+        ),
         P('Período ou data<br>de atendimento<br>inválidos?', [E('<b>ErroAvaliacao</b>')]),
         F('_registrar_uso_mantis() · usos_mantis_alem_disa()', 'Planilha: uso nas duas redes, caso_disa_mantis e mats_uso_mantis_alem_disa (RP no MANTIS e fora da base DISA)'),
         S('Escolhe o memo pelo caso (abaixo) e o monta <b>antes de qualquer ação no SEI</b>'),
@@ -648,13 +662,15 @@ pendencias = N(
 # --- outros fluxos --------------------------------------------------------------
 
 
-def col_loop(task, aba, unidade, carga, ir_texto, planilha):
-    """Coluna 1 dos fluxos simples: main() e _processar_linha()."""
+def col_loop(task, aba, unidade, carga, ir_texto, planilha, argumentos=(), comando=''):
+    """Coluna 1 dos fluxos simples: main() e _processar_linha(). argumentos:
+    itens logo depois do início (ex.: conferência dos argumentos da execução)."""
     return Coluna(
         '1 · main() e _processar_linha()',
-        f'poetry run task {task}. Um erro nunca interrompe os demais processos',
+        f'poetry run task {task}{comando}. Um erro nunca interrompe os demais processos',
         [
             T('Início'),
+            *argumentos,
             F('configurar_logging() · ler_processos_a_processar()', f'Cria o log e lê a aba {aba} de processos_a_processar.xlsx{carga}'),
             F('PlanilhaControleGeral() · abrir_sei()', f'Lê a planilha de controle, faz login no SEI e troca para a unidade {unidade} (trocar_unidade)'),
             S('<b>Para cada processo</b>'),
@@ -860,9 +876,17 @@ col_copa_loop = col_loop(
     'da DEPROC',
     ' e a base DEPROC (Relatório Base 2 - MANTIS, aba Resultado, matrículas com DV)',
     'processar_deproc() — coluna 2',
-    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, marcadores_deproc_* e tag_deproc_*. Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',
+    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, data_geracao_base_deproc, marcadores_deproc_* e tag_deproc_*. '
+    'Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',
+    argumentos=[
+        P(
+            'ler_argumentos():<br>sem -d DD/MM/AAAA<br>(ou data inválida/futura)?',
+            [E('argparse mostra o erro e encerra (código 2), antes do log, do login e de qualquer ação no SEI')],
+        ),
+    ],
+    comando=' -d DD/MM/AAAA (data de geração da base DEPROC, obrigatória)',
 )
-_erro_segue(col_copa_loop, 6)
+_erro_segue(col_copa_loop, 7)
 col_copa = Coluna(
     '2 · processar_deproc()',
     'Na unidade da DEPROC: apura a coparticipação, anexa o relatório e cria o MemoGeacsCalculoCopa (da DEPROC à GEACS). Marcadores da DEPROC (mesmo prefixo "v2: ")',
@@ -884,18 +908,19 @@ col_copa = Coluna(
         ),
         F(
             '_conferir_configuracao()',
-            'Antes de qualquer documento: bloco BLOCO_MEMO_GEACS_CALCULO_COPA (7765003), signatário (Danúbia Lacerda Gomes de Oliveira) e texto do memo (TEXTO_DEFINIDO: TODO). Faltando: erro',
+            'Antes de qualquer documento: bloco BLOCO_MEMO_GEACS_CALCULO_COPA (7765003), signatário (Danúbia Lacerda Gomes de Oliveira), '
+            'texto do memo e data de geração da base (-d da execução). Faltando: erro',
         ),
         M('01 - Tratado pelo Script<br><span style="font-weight:normal">se faltar</span>'),
         P(
-            'Há atendimento<br>no período?',
+            'Há coparticipação no período?<br>(atendimento e total ≠ 0)',
             [
-                PDF('PDF Coparticipação - &lt;matrícula&gt; - &lt;data&gt;<br><span style="font-weight:normal">extrato de utilização; retomada pelo nome na rodada</span>'),
+                PDF('PDF Coparticipação - &lt;matrícula&gt; - &lt;data&gt;<br><span style="font-weight:normal">extrato de utilização, sem as linhas de valor 0; retomada pelo nome na rodada</span>'),
                 M('01.01 - Relatório Copart. Anexado'),
             ],
             rotulo='Sim (e segue)',
         ),
-        MEMO('MemoGeacsCalculoCopa', '7765003 (BLOCO_MEMO_GEACS_CALCULO_COPA)'),
+        MEMO('MemoGeacsCalculoCopa', '7765003 (BLOCO_MEMO_GEACS_CALCULO_COPA); tabelas: beneficiário (iniciais), matrícula, vínculo e valor (sem os de valor 0) e totais (apurado, descontado, em aberto)'),
         M('01.02 - No Bloco GEACS: Memo Cálculo COPA<br><span style="font-weight:normal">↻ remove o 01.01</span>'),
         T('prox_acao = DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS<br>Depois de assinar (manual): ➕ 01.02.1, ➖ 01.02'),
     ],

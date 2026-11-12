@@ -35,6 +35,9 @@ DIR_ADC_PDF_ANT_MAN_PDF = DIR_ADC_PDF_ANT_MAN / 'pdf'
 DIR_FLUXO_DEPROC = DIR_DADOS / 'fluxo_deproc'
 DIR_FLUXO_DEPROC_PDF = DIR_FLUXO_DEPROC / 'pdf'
 ARQ_BASE_DEPROC = DIR_FLUXO_DEPROC / 'Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx'
+# A data de geração da base DEPROC (retorno do MANTIS ou data da planilha;
+# muda a cada leva de dados) não está na planilha: é informada na execução,
+# poetry run task run_deproc_calcula_copa -d 06/11/2026
 
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'
 # Base APIS: listagem de todos os beneficiários da demanda (a base DISA é
@@ -43,6 +46,10 @@ ARQ_BASE_APIS = DIR_INPUTS / 'planilha_da_galantini_com_listagem_de_todos_benefi
 # Utilização registrada no MANTIS (abas TITULARES e DEPENDENTES)
 ARQ_MANTIS_REDE_PROPRIA = DIR_INPUTS / 'utilizacao_MANTIS-rede_propria.xlsx'
 ARQ_MANTIS_REDE_CREDENCIADA = DIR_INPUTS / 'utilizacao_MANTIS-rede_credenciada.xlsx'
+# Utilização dos dependentes que não estão na base APIS (só a aba
+# DEPENDENTES, com as colunas antigas do MANTIS). Matrículas como nos memos
+ARQ_MANTIS_REDE_PROPRIA_DEPS_NAO_ENCONTRADOS = DIR_INPUTS / 'utilizacao_MANTIS-rede_propria-dependentes_nao_encontrados.xlsx'
+ARQ_MANTIS_REDE_CREDENCIADA_DEPS_NAO_ENCONTRADOS = DIR_INPUTS / 'utilizacao_MANTIS-rede_credenciada-dependentes_nao_encontrados.xlsx'
 
 # Grafias exatas retornadas pela árvore do SEI (são diferentes entre si)
 UNIDADE_GEACS = 'IPSEMG/GEACS - Utilização'

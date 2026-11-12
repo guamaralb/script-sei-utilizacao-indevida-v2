@@ -284,9 +284,18 @@ def _com_aguarda(estados: tuple[str, ...]) -> tuple[str, ...]:
 # Informativos: estados com que podem conviver (os que vêm depois deles no
 # fluxo). Sem estado, não há regra (versão anterior ou falha antes do estado)
 _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {
-    # Depois do 01.02.1 o processo para (01.06.1); com 01.06 ou 01.08 (retomada),
-    # falhou antes do memo
-    TAG_MAT_NAO_ENCONTRADAS_APIS: (TAG_AVALIADO_USO_REDE_PROPRIA_DISA, TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS, TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS),
+    # Titular fora da base APIS: o processo para (01.06.1). Só dependentes
+    # fora dela: o fluxo segue até qualquer estado final (01.07, 01.09,
+    # 01.10). Com 01.06 ou 01.08 (retomada), falhou antes do memo
+    TAG_MAT_NAO_ENCONTRADAS_APIS: (
+        TAG_AVALIADO_USO_REDE_PROPRIA_DISA,
+        TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS,
+        TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
+        TAG_MEMO_APIS_PERIODO_DEPENDENTES,
+        *_ESTADOS_DISA,
+        TAG_MEMO_DEPROC_COPARTICIPACAO,
+        TAG_NO_BLOCO_APIS_SEM_USO,
+    ),
     TAG_PERIODO_VAR_DEP: (TAG_AVALIADO_USO_REDE_PROPRIA_DISA, TAG_MEMO_APIS_PERIODO_DEPENDENTES),
 }
 _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {tag: _com_aguarda(estados) for tag, estados in _ESTADOS_POSSIVEIS_POR_INFORMATIVO.items()}
