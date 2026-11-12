@@ -4,7 +4,22 @@ from dataclasses import dataclass, field, fields
 from datetime import datetime
 
 from docs_processo import filtrar_docs_geacs, filtrar_memos_geacs
-from tags import COLUNA_DEMAIS_MARCADORES, colunas_tags, colunas_tags_deproc, demais_marcadores
+from tags import (
+    COLUNA_DEMAIS_MARCADORES,
+    TAG_MEMO_APIS_FORMATO_INVALIDO,
+    TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
+    TAG_MEMO_APIS_PERIODO_DEPENDENTES,
+    TAG_MEMO_APIS_SEM_MEMO,
+    TAG_MEMO_DEPROC_COPARTICIPACAO,
+    TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
+    TAG_NO_BLOCO_APIS_SEM_USO,
+    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
+    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
+    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
+    colunas_tags,
+    colunas_tags_deproc,
+    demais_marcadores,
+)
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
@@ -53,6 +68,26 @@ class ProxAcao:
     # Fluxo DEPROC (coparticipação)
     DEPROC_ASSINAR_MEMO_RESULTADO = 'DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS'
     DEPROC_MEMO_ENCAMINHADO = 'DEPROC: memo de resultado da coparticipação encaminhado à GEACS (concluído)'
+
+
+# Memo no bloco, ainda sem o marcador manual "Aguarda" (colocado depois da
+# assinatura): falta assinar e encaminhar (main_geacs_inicial e a conferência
+# do main_geacs_verificar_marcadores)
+PROX_ACAO_POR_NO_BLOCO = {
+    TAG_MEMO_APIS_SEM_MEMO: ProxAcao.ASSINAR_MEMO_APIS_SEM_MEMO,
+    TAG_MEMO_APIS_FORMATO_INVALIDO: ProxAcao.ASSINAR_MEMO_APIS_FORMATO_INVALIDO,
+    TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS: ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
+    TAG_MEMO_APIS_PERIODO_DEPENDENTES: ProxAcao.ASSINAR_MEMO_APIS_PERIODO_DEPS,
+    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA,
+    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA: ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA,
+    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: ProxAcao.ASSINAR_MEMO_DISA_SEM_MANTIS_RELATORIO,
+    TAG_MEMO_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DEPROC,
+    TAG_NO_BLOCO_APIS_SEM_USO: ProxAcao.ASSINAR_MEMO_APIS_SEM_USO,
+}
+# Os 1.11 (VELHO, versão anterior) não chegam aqui: o VELHO é separado antes
+PROX_ACAO_POR_CONCLUSAO = {
+    TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DISA_DEPROC,
+}
 
 
 # Próximas ações definidas antes do erro que devem ser mantidas
@@ -106,7 +141,19 @@ def _agora() -> datetime:
 
 
 # Dados de trabalho da passagem, fora da planilha de controle
-_CAMPOS_INTERNOS = frozenset({'marcadores_atuais', 'tds_docs', 'docs_geacs', 'memos_geacs', 'docs_rodada', 'memos_criados', 'dados_ui', 'memo_apis', 'processo_fechado'})
+_CAMPOS_INTERNOS = frozenset({
+    'marcadores_atuais',
+    'tds_docs',
+    'docs_geacs',
+    'memos_geacs',
+    'docs_rodada',
+    'memos_criados',
+    'dados_ui',
+    'memo_apis',
+    'processo_fechado',
+    'marcadores_lidos',
+    'inconsistencias',
+})
 
 # Resultados do fluxo principal: o ADC PDF ANT AUT não os avalia e não pode apagá-los da
 # linha do processo na planilha de controle
@@ -466,19 +513,27 @@ class RegistroDeprocExcluirDocs(RegistroBase):
 class RegistroVerificarMarcadores(RegistroBase):
     """Uma passagem pelo fluxo de verificar os marcadores
     (main_geacs_verificar_marcadores.py). Na planilha de controle, grava só os
-    marcadores: uma coluna tag_* por marcador válido na GEACS,
-    demais_marcadores (os outros) e marcadores_finais; o erro vai para
-    verificar_marcadores_erro. Não grava prox_acao, fluxo, tipo_erro e erro."""
+    marcadores (uma coluna tag_* por marcador válido na GEACS,
+    demais_marcadores e marcadores_finais), as inconsistências encontradas
+    (verificar_marcadores_inconsistencia) e o erro da passagem
+    (verificar_marcadores_erro). Não grava prox_acao, fluxo, tipo_erro e erro."""
+
+    # Internos (ver _CAMPOS_INTERNOS)
+    marcadores_lidos: bool = False
+    # Inconsistências da prox_acao da planilha com os marcadores e os
+    # memorandos do processo (uma frase cada)
+    inconsistencias: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         dados = {
             'num_processo': self.num_processo,
             'ultima_passagem': self.ultima_passagem,
             'data_execucao': self.data_execucao,
+            'verificar_marcadores_inconsistencia': ' | '.join(self.inconsistencias) or None,
             'verificar_marcadores_erro': f'{self.tipo_erro}: {self.erro}' if self.erro is not None else None,
         }
         # Sem conseguir ler os marcadores, as colunas deles ficam como estão
-        if self.erro is None:
+        if self.marcadores_lidos:
             dados['marcadores_finais'] = _juntar(self.marcadores_atuais)
             dados.update(colunas_tags(self.marcadores_atuais))
             dados[COLUNA_DEMAIS_MARCADORES] = demais_marcadores(self.marcadores_atuais) or None
@@ -486,4 +541,5 @@ class RegistroVerificarMarcadores(RegistroBase):
 
     def para_log(self) -> dict:
         """Linha do resumo do log (com erro e próxima ação)."""
-        return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': 'Marcadores verificados'}
+        acao = f'{len(self.inconsistencias)} inconsistência(s) encontrada(s)' if self.inconsistencias else 'Marcadores verificados'
+        return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': acao}

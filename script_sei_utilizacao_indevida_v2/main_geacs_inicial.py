@@ -29,23 +29,13 @@ from processar_novo import processar_novo
 from processo_fechado import ProcessoFechadoNoSetor, reabrir_processo_fechado, tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
-from Registro import ProxAcao, RegistroMain, registrar_erro, registrar_sem_acesso
+from Registro import PROX_ACAO_POR_CONCLUSAO, PROX_ACAO_POR_NO_BLOCO, ProxAcao, RegistroMain, registrar_erro, registrar_sem_acesso
 from sei_automacao.exceptions import UnidadeSemAcessoException
 from sei_automacao.processo import acessar_processo, listar_documentos_arvore, listar_marcadores
 from selenium import webdriver
 from sessao_sei import abrir_sei, restaurar_navegador, sessao_encerrada
 from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
-    TAG_MEMO_APIS_FORMATO_INVALIDO,
-    TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
-    TAG_MEMO_APIS_PERIODO_DEPENDENTES,
-    TAG_MEMO_APIS_SEM_MEMO,
-    TAG_MEMO_DEPROC_COPARTICIPACAO,
-    TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
-    TAG_NO_BLOCO_APIS_SEM_USO,
-    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
-    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
-    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
     TAGS_PARADA_NOVO,
@@ -71,24 +61,6 @@ DIR_UI_ANTIGAS_XLS = DIR_DADOS / 'utilizacoes' / 'antigas' / 'xlsx'
 ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_geacs_inicial.log'
 
 logger = logging.getLogger(__name__)
-
-# Os 1.11 (VELHO, versão anterior) não chegam aqui: o VELHO é separado antes
-_PROX_ACAO_POR_CONCLUSAO = {
-    TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DISA_DEPROC,
-}
-# Memo no bloco, ainda sem o marcador manual "Aguarda" (colocado depois da
-# assinatura): falta assinar e encaminhar
-_PROX_ACAO_POR_NO_BLOCO = {
-    TAG_MEMO_APIS_SEM_MEMO: ProxAcao.ASSINAR_MEMO_APIS_SEM_MEMO,
-    TAG_MEMO_APIS_FORMATO_INVALIDO: ProxAcao.ASSINAR_MEMO_APIS_FORMATO_INVALIDO,
-    TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS: ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
-    TAG_MEMO_APIS_PERIODO_DEPENDENTES: ProxAcao.ASSINAR_MEMO_APIS_PERIODO_DEPS,
-    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA,
-    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA: ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA,
-    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: ProxAcao.ASSINAR_MEMO_DISA_SEM_MANTIS_RELATORIO,
-    TAG_MEMO_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DEPROC,
-    TAG_NO_BLOCO_APIS_SEM_USO: ProxAcao.ASSINAR_MEMO_APIS_SEM_USO,
-}
 
 
 def _conferir_marcadores(registro: RegistroMain, momento: str) -> None:
@@ -173,11 +145,11 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         return
 
     estado = estado_atual(registro)
-    if estado in _PROX_ACAO_POR_NO_BLOCO:
+    if estado in PROX_ACAO_POR_NO_BLOCO:
         # Quem assina coloca o marcador "Aguarda" e remove o "No Bloco"
         logger.info(f'Fluxo: memo no bloco, aguardando assinatura ("{estado}")')
         registro.fluxo = 'memo no bloco (aguardando assinatura)'
-        registro.prox_acao = _PROX_ACAO_POR_NO_BLOCO[estado]
+        registro.prox_acao = PROX_ACAO_POR_NO_BLOCO[estado]
         return
 
     if estado in TAGS_PARADA_NOVO:
@@ -187,10 +159,10 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         registro.prox_acao = ProxAcao.AGUARDAR_RESPOSTA_MEMO
         raise ErroAvaliacao(f'Processamento parado: memo enviado, aguardando resposta ({estado})')
 
-    if estado in _PROX_ACAO_POR_CONCLUSAO:
+    if estado in PROX_ACAO_POR_CONCLUSAO:
         logger.info(f'Fluxo: concluído ("{estado}")')
         registro.fluxo = 'concluído'
-        registro.prox_acao = _PROX_ACAO_POR_CONCLUSAO[estado]
+        registro.prox_acao = PROX_ACAO_POR_CONCLUSAO[estado]
         return
 
     # Antes de qualquer memo: o VELHO não pode receber memos do fluxo atual

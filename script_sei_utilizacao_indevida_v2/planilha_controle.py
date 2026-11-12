@@ -27,10 +27,17 @@ Formatação:
     - cabeçalho congelado e com filtro;
     - largura das colunas ajustada ao conteúdo;
     - linha com erro destacada em vermelho claro;
-    - células de matrículas não encontradas destacadas em amarelo.
+    - células de matrículas não encontradas destacadas em amarelo;
+    - inconsistência e erro do fluxo GEACS VERIFICAR MARCADORES em amarelo
+      (com a prox_acao da linha), em colunas logo antes das de marcadores.
+
+A gravação é atômica: o arquivo é gravado em uma cópia temporária, que só
+então substitui a planilha. Uma interrupção no meio da gravação (ex.:
+sistema operacional encerrando o processo) não corrompe a planilha.
 """
 
 import logging
+import os
 import shutil
 from pathlib import Path
 
@@ -66,6 +73,13 @@ _COLUNAS_NAO_ENCONTRADAS = (
     'titular_nao_encontrado_base_geral',
     'deps_nao_encontrados_base_geral',
 )
+
+# Fluxo GEACS VERIFICAR MARCADORES: inconsistência encontrada (prox_acao,
+# marcadores e memorandos) e erro da passagem. Ficam logo antes das colunas de
+# marcadores e, preenchidas, em amarelo (com a prox_acao da linha)
+COLUNA_VERIFICAR_INCONSISTENCIA = 'verificar_marcadores_inconsistencia'
+COLUNA_VERIFICAR_ERRO = 'verificar_marcadores_erro'
+_COLUNAS_ANTES_DOS_MARCADORES = (COLUNA_VERIFICAR_INCONSISTENCIA, COLUNA_VERIFICAR_ERRO)
 
 
 # ---------------------------------------------------------------------------
@@ -138,6 +152,8 @@ def _formatar(planilha, colunas: list[str]) -> None:
 
     idx_erro = colunas.index('erro') if 'erro' in colunas else None
     idx_nao_encontradas = [colunas.index(c) for c in _COLUNAS_NAO_ENCONTRADAS if c in colunas]
+    idx_verificar = [colunas.index(c) for c in _COLUNAS_ANTES_DOS_MARCADORES if c in colunas]
+    idx_prox_acao = colunas.index('prox_acao') if 'prox_acao' in colunas else None
 
     for linha in planilha.iter_rows(min_row=2):
         if idx_erro is not None and linha[idx_erro].value:
@@ -146,13 +162,31 @@ def _formatar(planilha, colunas: list[str]) -> None:
         for idx in idx_nao_encontradas:
             if linha[idx].value:
                 linha[idx].fill = _PREENCHIMENTO_NAO_ENCONTRADA
+        verificar = [idx for idx in idx_verificar if linha[idx].value]
+        if verificar and idx_prox_acao is not None:
+            verificar.append(idx_prox_acao)
+        for idx in verificar:
+            linha[idx].fill = _PREENCHIMENTO_NAO_ENCONTRADA
+
+
+def _eh_coluna_marcadores(coluna: str) -> bool:
+    return coluna.startswith(('marcadores_', 'tag_')) or coluna == COLUNA_DEMAIS_MARCADORES
+
+
+def _ordenar_colunas(colunas: list[str]) -> list[str]:
+    """As colunas do fluxo GEACS VERIFICAR MARCADORES vão logo antes da
+    primeira coluna de marcadores (no fim, se não houver)."""
+    mover = [c for c in _COLUNAS_ANTES_DOS_MARCADORES if c in colunas]
+    resto = [c for c in colunas if c not in mover]
+    posicao = next((i for i, c in enumerate(resto) if _eh_coluna_marcadores(str(c))), len(resto))
+    return resto[:posicao] + mover + resto[posicao:]
 
 
 def _dataframe(linhas: list[dict], colunas_iniciais: tuple[str, ...] = _COLUNAS_INICIAIS) -> pd.DataFrame:
     colunas = list(colunas_iniciais)
     for linha in linhas:
         colunas += [c for c in linha if c not in colunas]
-    return pd.DataFrame(linhas, columns=colunas)
+    return pd.DataFrame(linhas, columns=_ordenar_colunas(colunas))
 
 
 def _dataframe_processos(linhas: list[dict]) -> pd.DataFrame:
@@ -193,6 +227,24 @@ def _gravar_resumo(writer: pd.ExcelWriter, processos: list[dict]) -> None:
 
 
 def _gravar(arquivo: Path, abas: dict[str, list[dict]]) -> None:
+    """Grava em uma cópia temporária e só então substitui o arquivo
+    (os.replace é atômico): se o processo for encerrado no meio da gravação,
+    a planilha anterior continua inteira."""
+    temporario = arquivo.with_name(f'~gravando_{arquivo.name}')
+    try:
+        if arquivo.exists():
+            shutil.copy2(arquivo, temporario)
+        else:
+            temporario.unlink(missing_ok=True)
+        _gravar_arquivo(temporario, abas)
+        with temporario.open('rb') as gravado:
+            os.fsync(gravado.fileno())
+        os.replace(temporario, arquivo)
+    finally:
+        temporario.unlink(missing_ok=True)
+
+
+def _gravar_arquivo(arquivo: Path, abas: dict[str, list[dict]]) -> None:
     # Com o arquivo existente, só as abas do script são substituídas: as
     # demais (ex.: BUSCA) são mantidas
     modo = {'mode': 'a', 'if_sheet_exists': 'replace'} if arquivo.exists() else {'mode': 'w'}
@@ -256,6 +308,19 @@ class PlanilhaControleGeral:
             logger.exception(f'Falha ao ler a planilha de controle geral: {arquivo}. Esta execução será salva à parte')
             self._processos, self._historico = [], []
             self._incorporar = False
+
+    def linha_processo(self, num_processo) -> dict | None:
+        """A linha do processo na aba "processos", com as passagens desta
+        execução ({} se o processo não está na planilha). None se a planilha
+        não pôde ser lida (não há como saber o que está nela)."""
+        if not self._incorporar:
+            return None
+        chave = str(num_processo).strip()
+        linha: dict = {}
+        for existente in (*self._processos, *self._passagens):
+            if str(existente.get('num_processo')).strip() == chave:
+                linha.update(existente)
+        return linha
 
     def registrar(self, registro: dict) -> None:
         """registro: RegistroBase.to_dict() de uma passagem."""

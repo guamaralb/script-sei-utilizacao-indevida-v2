@@ -255,15 +255,18 @@ col_main = Coluna(
         F('carregar_bases() · carregar_bases_mantis()', 'Lê a aba geacs_inicial de processos_a_processar.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
         F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle, faz login no SEI e troca para a unidade da GEACS (alterar_unidade_sei: trocar_unidade da sei_automacao)'),
         S('<b>Para cada processo</b>'),
-        F('_processar_linha()', (
-            'Abre o processo e lê os marcadores do SEI. Unidade sem acesso (UnidadeSemAcessoException): '
-            'registrar_sem_acesso(), prox_acao = Verificar acesso da unidade ao processo, sem ação no SEI'
-        ), chama='acessar_processo, registrar_tags'),
+        F(
+            '_processar_linha()',
+            ('Abre o processo e lê os marcadores do SEI. Unidade sem acesso (UnidadeSemAcessoException): registrar_sem_acesso(), prox_acao = Verificar acesso da unidade ao processo, sem ação no SEI'),
+            chama='acessar_processo, registrar_tags',
+        ),
         F('tem_incluir_documento()', 'Sem o botão Incluir Documento = processo fechado no setor. Só registra: quem decide reabrir é _tratar() (coluna 2)'),
         F('registrar_arvore()', 'Lê a árvore do processo'),
         IR('_tratar() — coluna 2'),
         F('conferir_marcadores()', 'De novo, no fim da passagem (se não houve erro)'),
-        E('<b>Erro levantado em qualquer coluna?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro, erro e prox_acao = Verificar erro (ou a já definida). Inesperado: + traceback e recarrega a página (tela presa não derruba os próximos processos)'),
+        E(
+            '<b>Erro levantado em qualquer coluna?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro, erro e prox_acao = Verificar erro (ou a já definida). Inesperado: + traceback e recarrega a página (tela presa não derruba os próximos processos)'
+        ),
         F('controle.registrar()', 'Regrava a planilha de controle (abas processos e historico) depois de cada processo'),
         P('Há mais processos?', [IR('volta a "Para cada processo"')]),
         F('log_resumo()', 'Fecha o navegador e loga o resumo'),
@@ -309,7 +312,11 @@ col_tratar = Coluna(
             '01.09.1 - Aguarda DISA: Validar (N Consta)<br>01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br>01.10.1 - Aguarda DEPROC: Coparticipação<br>'
             '01.10.1 - Aguarda APIS: Sem Uso (todos manuais)<br>'
             'versão anterior: 01.08.1 - Memo DISA Validar Usos MANTIS, 01.09 - Memo DISA Uso Rede Própria',
-            [E('<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado<br><span style="font-weight:normal">resposta: run_geacs_resp_apis / _disa / _deproc (TODO)</span>')],
+            [
+                E(
+                    '<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado<br><span style="font-weight:normal">resposta: run_geacs_resp_apis / _disa / _deproc (TODO)</span>'
+                )
+            ],
             largura=LARGURA_PRINCIPAL,
         ),
         P(
@@ -336,7 +343,11 @@ col_tratar = Coluna(
                     'Com MANUAL ou sem<br>memo da APIS para a GEACS?',
                     [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é feito no SEI<br>prox_acao = Verificar erro')],
                 ),
-                F('reabrir_processo_fechado()', 'Reabre o processo na unidade (continua aberto) e relê a árvore. Coluna processo_reaberto. Não reabriu: ProcessoFechadoNoSetor', chama='reabrir_processo, listar_documentos_arvore'),
+                F(
+                    'reabrir_processo_fechado()',
+                    'Reabre o processo na unidade (continua aberto) e relê a árvore. Coluna processo_reaberto. Não reabriu: ProcessoFechadoNoSetor',
+                    chama='reabrir_processo, listar_documentos_arvore',
+                ),
             ],
         ),
         P('Sem o marcador<br><b>01 - Tratado pelo Script</b>?', [M('01 - Tratado pelo Script'), IR('processar_novo() do início — coluna 3')]),
@@ -377,7 +388,10 @@ col_processar = Coluna(
                 T('prox_acao = Assinar memo à APIS (formato inválido)'),
             ],
         ),
-        F('verificar_base_apis()', 'A existência das matrículas é conferida <b>só na base APIS</b> (a base DISA é feita a partir dela). Do memo, vêm com ou sem DV; a base APIS diz qual é a matrícula'),
+        F(
+            'verificar_base_apis()',
+            'A existência das matrículas é conferida <b>só na base APIS</b> (a base DISA é feita a partir dela). Do memo, vêm com ou sem DV; a base APIS diz qual é a matrícula',
+        ),
         P('Matrícula em<br>formato inválido?', [E('<b>ErroAvaliacao</b>')]),
         P(
             'Faltou matrícula<br>na base APIS?',
@@ -926,17 +940,43 @@ col_verif_loop = col_loop(
     'geacs_verificar_marcadores',
     'da GEACS',
     '',
-    'verificar_marcadores() — coluna 2',
-    'Não altera a prox_acao (nem fluxo e erro dos outros fluxos): só script, ultima_passagem, data_execucao e as colunas de marcadores',
+    'verificar_marcadores(linha_processo()) — coluna 2',
+    'Não altera a prox_acao (nem fluxo e erro dos outros fluxos): só script, ultima_passagem, data_execucao, as colunas de marcadores e verificar_marcadores_inconsistencia / verificar_marcadores_erro (antes das de marcadores, em amarelo)',
 )
 _erro_segue(col_verif_loop, 6)
 col_verif = Coluna(
-    '2 · verificar_marcadores()',
-    'Lê os marcadores do processo, sem nenhuma ação no SEI',
+    '2 · verificar_marcadores() · conferir_processo()',
+    'Lê os marcadores e confere a prox_acao da planilha de controle com eles e com os memorandos, sem nenhuma ação no SEI. Cada problema vai para verificar_marcadores_inconsistencia',
     [
         F('listar_marcadores() · registrar_tags()', 'Marcadores do processo no SEI'),
-        F('colunas_tags() · demais_marcadores()', 'Uma coluna tag_* por marcador válido na GEACS (TAGS_VALIDOS_GEACS, 30). Os outros (v2v:, 01.06.2 / 01.08.2 / 01.08.3, manuais, antigos) vão juntos para demais_marcadores'),
-        T('Planilha: tag_*, demais_marcadores e marcadores_finais (erro: verificar_marcadores_erro, e as colunas de marcadores ficam como estavam)'),
+        F(
+            'colunas_tags() · demais_marcadores()',
+            'Uma coluna tag_* por marcador válido na GEACS (TAGS_VALIDOS_GEACS, 30). Os outros (v2v:, 01.06.2 / 01.08.2 / 01.08.3, manuais, antigos) vão juntos para demais_marcadores',
+        ),
+        P('Planilha de controle<br>não lida?', [T('A prox_acao não é conferida (só os memorandos)')], rotulo='Sim (e segue)'),
+        P('conferir_marcadores():<br>combinação impossível?', [E('Inconsistência: os problemas (prox_acao esperada: Verificar marcadores inconsistentes)')], rotulo='Sim (e segue)'),
+        P(
+            'conferir_prox_acao():<br>prox_acao não é a do estado?',
+            [
+                E(
+                    'Inconsistência: prox_acao esperada (No Bloco: assinar; Aguarda: aguardar resposta; 00: VELHO; 01.00: ADC aguarda; sem estado: vazia ou erro). Sempre aceitas: erros, ADC sem planilhas / estado mantido, DEPROC:'
+                )
+            ],
+            rotulo='Sim (e segue)',
+        ),
+        P(
+            'No Bloco / Aguarda<br>de memo?',
+            [
+                F('conferir_caso_disa_mantis()', 'caso_disa_mantis da planilha (se preenchido) é o do memo'),
+                F(
+                    'conferir_memo_do_marcador()',
+                    'Memo pelo assunto na árvore (No Bloco: na rodada); relatórios RP / RC que ele cita antes dele; memo_*_sei da planilha na árvore; No Bloco Sem Memo com memo da APIS para a GEACS',
+                ),
+            ],
+            rotulo='Sim (e segue)',
+        ),
+        P('Retomada<br>(01.06, 01.08)?', [F('conferir_retomada()', 'Memo do fluxo na rodada sem o marcador (o geacs_inicial o reaproveita)')], rotulo='Sim (e segue)'),
+        T('Planilha: tag_*, demais_marcadores, marcadores_finais e verificar_marcadores_inconsistencia (erro: verificar_marcadores_erro; sem ler os marcadores, as colunas deles ficam como estavam)'),
     ],
 )
 
@@ -945,10 +985,7 @@ col_verif = Coluna(
 
 def _texto(valor, x, y, largura, altura, tamanho, negrito=False):
     estilo = f'text;html=1;align=left;verticalAlign=middle;fontSize={tamanho};' + ('fontStyle=1;' if negrito else '')
-    return (
-        f'<mxCell id="{_novo_id()}" value="{escape(valor)}" style="{estilo}" vertex="1" parent="1">'
-        f'<mxGeometry x="{x}" y="{y}" width="{largura}" height="{altura}" as="geometry"/></mxCell>'
-    )
+    return f'<mxCell id="{_novo_id()}" value="{escape(valor)}" style="{estilo}" vertex="1" parent="1"><mxGeometry x="{x}" y="{y}" width="{largura}" height="{altura}" as="geometry"/></mxCell>'
 
 
 def _cabecalho(celulas, titulo, subtitulo, nota=None):
@@ -1045,7 +1082,7 @@ abas = [
         'geacs-verificar-marcadores',
         'geacs_verificar_marcadores',
         'run_geacs_verificar_marcadores · Verificar os marcadores (main_geacs_verificar_marcadores.py)',
-        f'Na unidade da GEACS. Não altera a prox_acao: atualiza só as colunas de marcadores (tag_* e demais_marcadores). {LEIA}',
+        f'Na unidade da GEACS. Não altera a prox_acao: atualiza as colunas de marcadores (tag_* e demais_marcadores) e confere a prox_acao com os marcadores e os memorandos. {LEIA}',
         [col_verif_loop, col_verif],
     ),
     pagina(

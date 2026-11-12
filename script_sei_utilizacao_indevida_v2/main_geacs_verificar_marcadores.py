@@ -4,14 +4,21 @@ marcadores da planilha de controle: uma coluna tag_* por marcador válido na
 GEACS (tags.TAGS_VALIDOS_GEACS) e demais_marcadores com os outros (versão
 anterior, manuais, antigos).
 
+Confere também se a prox_acao registrada na planilha faz sentido com os
+marcadores e se os memorandos que os marcadores indicam estão na árvore
+(conferencia_prox_acao). Os problemas vão para a coluna
+verificar_marcadores_inconsistencia.
+
 Para cada processo da aba geacs_verificar_marcadores de
-processos_a_processar.xlsx: abre o processo e lê os marcadores. Nenhuma ação no
-SEI. Não altera a prox_acao (RegistroVerificarMarcadores).
+processos_a_processar.xlsx: abre o processo, lê os marcadores e, se preciso, a
+árvore e os memos. Nenhuma ação no SEI. Não altera a prox_acao
+(RegistroVerificarMarcadores).
 """
 
 import logging
 from datetime import datetime
 
+from conferencia_prox_acao import conferir_processo
 from constantes import DIR_CONTROLE, DIR_INPUTS, DIR_LOG, UNIDADE_GEACS
 from log_config import (
     configurar_logging,
@@ -39,21 +46,29 @@ ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_geacs_verificar_marcadores.log'
 logger = logging.getLogger(__name__)
 
 
-def verificar_marcadores(driver: webdriver.Remote, registro: RegistroVerificarMarcadores) -> None:
+def verificar_marcadores(driver: webdriver.Remote, registro: RegistroVerificarMarcadores, linha_planilha: dict | None) -> None:
+    """linha_planilha: a linha do processo na planilha de controle (None:
+    planilha não lida)."""
     registrar_tags(registro, listar_marcadores(driver))
+    registro.marcadores_lidos = True
     validos = sorted(tag for tag in registro.marcadores_sei if tag in TAGS_VALIDOS_GEACS)
     demais = sorted(tag for tag in registro.marcadores_sei if tag not in TAGS_VALIDOS_GEACS)
     logger.info(f'Marcadores válidos: {validos or "nenhum"}')
     if demais:
         logger.info(f'Demais marcadores: {demais}')
+    conferir_processo(driver, registro, linha_planilha)
+    for problema in registro.inconsistencias:
+        logger.warning(f'Inconsistência: {problema}')
+    if not registro.inconsistencias:
+        logger.info('prox_acao, marcadores e memorandos consistentes')
 
 
-def _processar_linha(driver: webdriver.Remote, num_processo) -> RegistroVerificarMarcadores:
+def _processar_linha(driver: webdriver.Remote, num_processo, linha_planilha: dict | None = None) -> RegistroVerificarMarcadores:
     registro = RegistroVerificarMarcadores(num_processo=num_processo, data_execucao=AGORA, fluxo=FLUXO)
 
     try:
         acessar_processo(driver, num_processo)
-        verificar_marcadores(driver, registro)
+        verificar_marcadores(driver, registro, linha_planilha)
 
     except UnidadeSemAcessoException as e:
         # Unidade sem acesso ao processo: nenhuma ação no SEI
@@ -94,7 +109,7 @@ def main():
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
 
-                registro = _processar_linha(driver, num_processo)
+                registro = _processar_linha(driver, num_processo, controle.linha_processo(num_processo))
                 registros_log.append(registro.para_log())
                 controle.registrar(registro.to_dict())
 

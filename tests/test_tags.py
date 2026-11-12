@@ -169,4 +169,4 @@ def test_todo_memo_no_bloco_tem_o_seu_aguarda():
 
 
 def test_prox_acao_de_todo_memo_no_bloco():
-    assert set(main_geacs_inicial._PROX_ACAO_POR_NO_BLOCO) == set(tags.TAGS_NO_BLOCO_NOVO)
+    assert set(main_geacs_inicial.PROX_ACAO_POR_NO_BLOCO) == set(tags.TAGS_NO_BLOCO_NOVO)

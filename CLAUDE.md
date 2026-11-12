@@ -69,15 +69,16 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos, data de corte do VELHO |
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
-| `Registro.py` | Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroAdcPdfAnt`, `RegistroDeproc`, `RegistroCancMemoDeprocAnt`, `RegistroResposta`, `RegistroDeprocExcluirDocs`, `RegistroVerificarMarcadores`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
-| `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo, com backup |
+| `Registro.py` | `PROX_ACAO_POR_NO_BLOCO` e `PROX_ACAO_POR_CONCLUSAO` (prox_acao de cada estado em que o fluxo inicial para). Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroAdcPdfAnt`, `RegistroDeproc`, `RegistroCancMemoDeprocAnt`, `RegistroResposta`, `RegistroDeprocExcluirDocs`, `RegistroVerificarMarcadores`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
+| `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo (gravação atômica), com backup; `linha_processo()` (linha atual do processo, para a conferência da `prox_acao`) |
 | `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; ainda fora do fluxo), `MemoGeacsCalculoCopa` (fluxo DEPROC: da DEPROC à GEACS) |
 | `main_geacs_adc_pdf_ant_aut.py` | Fluxo alternativo ADC PDF ANT AUT (`poetry run task run_geacs_adc_pdf_ant_aut`): loop dos processos e registro na planilha de controle ([seção](#fluxo-alternativo-adc-pdf-ant-aut)) |
 | `planilhas_adc_pdf_ant_aut.py` | ADC PDF ANT AUT: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`; `inserir_pdfs` e `deixar_aguardando_fluxo_normal` são usados também pelo fluxo ADC PDF ANT MAN) |
 | `main_geacs_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN (`poetry run task run_geacs_adc_pdf_ant_man`): usa o loop `executar` do `main_geacs_adc_pdf_ant_aut.py` ([seção](#fluxo-adc-pdf-ant-man)) |
 | `planilhas_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN: acha os arquivos do processo em `dados/geacs_adc_pdf_ant_man/planilhas`, o documento na árvore e insere os PDFs (`inserir_pdfs_da_pasta`) |
 | `main_geacs_canc_memo_deproc_ant.py` | Fluxo GEACS CANC MEMO DEPROC ANT (`poetry run task run_geacs_canc_memo_deproc_ant`): cancela o memo DEPROC antigo da GEACS, sem alterar a `prox_acao` ([seção](#fluxo-geacs-canc-memo-deproc-ant)) |
-| `main_geacs_verificar_marcadores.py` | Fluxo GEACS VERIFICAR MARCADORES (`poetry run task run_geacs_verificar_marcadores`): lê os marcadores e atualiza as colunas `tag_*` (uma por marcador válido) e `demais_marcadores`, sem alterar a `prox_acao` e sem ação no SEI ([seção](#fluxo-geacs-verificar-marcadores)) |
+| `main_geacs_verificar_marcadores.py` | Fluxo GEACS VERIFICAR MARCADORES (`poetry run task run_geacs_verificar_marcadores`): lê os marcadores e atualiza as colunas `tag_*` (uma por marcador válido) e `demais_marcadores`, e confere a `prox_acao` da planilha, sem alterá-la e sem ação no SEI ([seção](#fluxo-geacs-verificar-marcadores)) |
+| `conferencia_prox_acao.py` | Fluxo GEACS VERIFICAR MARCADORES: `conferir_processo()` confere a `prox_acao` da planilha com os marcadores (`conferir_prox_acao`), o caso base DISA × MANTIS, os memos e relatórios dos marcadores na árvore (`conferir_memo_do_marcador`) e a retomada (`conferir_retomada`) |
 | `fluxo_resposta.py` | Base dos fluxos de resposta (**TODO**: não montados): `conferir_marcador_aguarda()`, `processar_linha()`, `executar()`, `FluxoNaoMontado` ([seção](#fluxos-de-resposta-todo)) |
 | `main_geacs_resp_apis.py`, `main_geacs_resp_disa.py`, `main_geacs_resp_deproc.py` | Fluxos de resposta da APIS, da DISA e da DEPROC (`poetry run task run_geacs_resp_apis`, `..._disa`, `..._deproc`): modelos com TODO em `tratar_resposta` |
 | `main_deproc_calcula_copa.py` | Fluxo DEPROC (`poetry run task run_deproc_calcula_copa`), na unidade da DEPROC: memo DEPROC assinado, coparticipação, relatório e memo de resultado ([seção](#fluxo-deproc)) |
@@ -908,29 +909,87 @@ antigo cancelado").
 
 ## Fluxo GEACS VERIFICAR MARCADORES
 
-Lê os marcadores dos processos e atualiza as colunas de marcadores da
-planilha de controle. `poetry run task run_geacs_verificar_marcadores`
-(`main_geacs_verificar_marcadores.py`), na unidade da GEACS, com os processos
-da aba `geacs_verificar_marcadores` de `dados/inputs/processos_a_processar.xlsx`.
+Lê os marcadores dos processos, atualiza as colunas de marcadores da
+planilha de controle e **confere se a `prox_acao` registrada na planilha faz
+sentido** com os marcadores e com os memorandos do processo.
+`poetry run task run_geacs_verificar_marcadores`
+(`main_geacs_verificar_marcadores.py` e `conferencia_prox_acao.py`), na
+unidade da GEACS, com os processos da aba `geacs_verificar_marcadores` de
+`dados/inputs/processos_a_processar.xlsx`.
 
 Para cada processo: abre o processo (unidade sem acesso: como nos outros
-fluxos) e lê os marcadores (`listar_marcadores`). **Nenhuma ação no SEI**
-(não remove nem adiciona marcador).
+fluxos), lê os marcadores (`listar_marcadores`) e, só quando alguma
+conferência precisa, a árvore e o texto dos memos. **Nenhuma ação no SEI**
+(não remove nem adiciona marcador). A linha do processo vem da planilha lida
+no início (`PlanilhaControleGeral.linha_processo`); se a planilha não pôde ser
+lida, a `prox_acao` não é conferida (só os memorandos).
+
+Conferências (`conferir_processo`), cada problema numa frase:
+
+1. **Combinação de marcadores** (`conferir_marcadores`, as regras do fluxo
+   inicial). Impossível: os problemas e, se a `prox_acao` não é Verificar
+   marcadores inconsistentes, ela como esperada. As conferências 2 a 4 não são
+   feitas com mais de um estado.
+2. **`prox_acao` × estado** (`conferir_prox_acao`): a que o `geacs_inicial`
+   daria hoje.
+   - `No Bloco`: a de assinar do memo (`PROX_ACAO_POR_NO_BLOCO`); `Aguarda`
+     (e os de parada da versão anterior): Aguardar resposta ao memo enviado;
+     `01.10 - Concluído`: Assinar memos DISA e DEPROC; `00`: VELHO: não
+     processado (com `MANUAL`: Fora do escopo). Nesses, a mensagem lembra que
+     rodar o `geacs_inicial` atualiza a `prox_acao` (ex.: `Aguarda` colocado à
+     mão depois da última passagem);
+   - `01.00`: ADC PDF ANT AUT/MAN: PDFs inseridos; aguarda o fluxo normal;
+   - `01.06`, `01.08` (retomada) e `01` sem estado: só as de erro (a última
+     passagem não terminou);
+   - sem marcadores do script: vazia;
+   - aceitas com qualquer marcador: Verificar erro, Verificar acesso da
+     unidade, Verificar formato do memo, ADC sem planilhas; e as que começam
+     com `DEPROC:` (a última passagem foi na DEPROC). ADC "processo mantido no
+     estado atual" vale com qualquer estado e com o `00`;
+   - Verificar marcadores inconsistentes com os marcadores já consistentes:
+     inconsistência (rodar o `geacs_inicial`).
+3. **Caso base DISA × MANTIS** (`conferir_caso_disa_mantis`): com `01.09`,
+   `01.10` (ou o `Aguarda` deles) e `caso_disa_mantis` preenchida, o caso é o
+   do memo ([tabela](#decisão-base-disa--mantis)).
+4. **Memo do marcador** (`conferir_memo_do_marcador`), para cada `No Bloco` e
+   o seu `Aguarda`:
+   - o memo está na árvore (memo da GEACS, pelo assunto `PADRAO_ASSUNTO_*`);
+   - no `No Bloco`, ele é da rodada (depois do último memo da APIS destinado à
+     GEACS); senão o marcador é de um pedido anterior. No `Aguarda` pode ser de
+     antes (a resposta da APIS é um novo memo);
+   - os relatórios do MANTIS que ele cita estão antes dele, desde o memo da
+     APIS anterior: RP para os dois memos à DISA de validação, RC para o memo
+     DEPROC;
+   - o número SEI da coluna do memo na planilha (`memo_disa_sei`,
+     `memo_deproc_sei`, `memo_apis_*_sei`), se preenchido, está na árvore;
+   - `01.05 - No Bloco APIS: Sem Memo p/ GEACS` com memo da APIS destinado à
+     GEACS na árvore: o memo à APIS não é mais necessário.
+5. **Retomada** (`conferir_retomada`): com `01.06` ou `01.08`, nenhum memo do
+   fluxo na rodada (havendo, a passagem falhou entre o memo e o marcador; o
+   `geacs_inicial` o reaproveita).
 
 Na planilha de controle, **não altera a `prox_acao`** (nem `fluxo`,
 `tipo_erro`, `erro` e as outras colunas): na aba `processos`, só `script`,
-`ultima_passagem`, `data_execucao` e os marcadores:
+`ultima_passagem`, `data_execucao`, os marcadores e as duas colunas do fluxo:
 
+- `verificar_marcadores_inconsistencia`: as inconsistências encontradas,
+  separadas por ` | ` (vazia se tudo condiz);
+- `verificar_marcadores_erro`: o erro da passagem (`<tipo>: <mensagem>`), ou
+  vazia;
+- as duas ficam **logo antes das colunas de marcadores** (`marcadores_*`,
+  `tag_*`, `demais_marcadores`) e, preenchidas, em **amarelo**, junto com a
+  célula `prox_acao` da linha;
 - uma coluna `tag_*` por marcador válido na GEACS
   ([lista](#marcadores-tagspy)), verdadeira se o processo tem o marcador;
 - `demais_marcadores`: os outros marcadores do processo, em ordem,
   separados por `;` (vazia se não houver);
-- `marcadores_finais`: todos os marcadores do processo;
-- `verificar_marcadores_erro`: o erro da passagem (`<tipo>: <mensagem>`), ou
-  vazia. Com erro, as colunas de marcadores ficam como estavam.
+- `marcadores_finais`: todos os marcadores do processo.
+  Sem conseguir ler os marcadores, as colunas deles ficam como estavam; com
+  erro depois da leitura (ex.: na árvore), são gravadas.
 
-Log: `logs/<data>_execucao_geacs_verificar_marcadores.log`. Há testes em
-`tests/test_fluxo_geacs_verificar_marcadores.py`.
+Log: `logs/<data>_execucao_geacs_verificar_marcadores.log` (cada
+inconsistência em WARNING; no resumo, "N inconsistência(s) encontrada(s)").
+Há testes em `tests/test_fluxo_geacs_verificar_marcadores.py`.
 
 ---
 
@@ -1228,8 +1287,18 @@ perca os processos já tratados.
 - Matrículas não encontradas na base APIS:
   `titular_nao_encontrado_base_geral` e `deps_nao_encontrados_base_geral`.
 - Formatação: cabeçalho congelado e com filtro; linha com erro em vermelho
-  claro; matrículas não encontradas em amarelo. Se a formatação falhar, a
-  aba fica salva sem ela.
+  claro; matrículas não encontradas em amarelo; `verificar_marcadores_inconsistencia`
+  e `verificar_marcadores_erro` preenchidas (e a `prox_acao` da linha) em
+  amarelo. Essas duas colunas ficam sempre logo antes das colunas de
+  marcadores (`_ordenar_colunas`). Se a formatação falhar, a aba fica salva
+  sem ela.
+- Gravação atômica: a planilha é gravada em `~gravando_<nome>.xlsx`, na mesma
+  pasta, e só então substitui a original (`os.replace`). Em 11/11/2026 o
+  sistema operacional encerrou a execução do `geacs_verificar_marcadores` no
+  meio de uma gravação e corrompeu o arquivo (as abas `processos` e
+  `historico` estavam inteiras e foram recuperadas; o arquivo corrompido ficou
+  em `backup/CORROMPIDO_controle_geral_de_processos_2026-11-11_21-17-51.xlsx`, fora da rotação dos backups). Um `~gravando_` que
+  sobrar de uma interrupção pode ser apagado.
 - Backup: uma vez por execução, antes da primeira gravação, a planilha
   anterior é copiada para
   `dados/controle/backup/controle_geral_de_processos_<data>.xlsx` (são
