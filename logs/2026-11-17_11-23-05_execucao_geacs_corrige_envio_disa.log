@@ -1,0 +1,228 @@
+2026-11-17 11:23:05 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (CORRIGE ENVIO DISA - MEMO À DISA (N CONSTA) TROCADO PELO MEMO DEPROC) =================
+2026-11-17 11:23:05 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-17_11-23-05_execucao_geacs_corrige_envio_disa.log
+2026-11-17 11:23:05 | INFO    | -                         | processos_a_processar | 13 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_corrige_envio_disa
+2026-11-17 11:23:05 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-17 11:23:05 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-17 11:23:05 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-17 11:23:05 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-17 11:23:05 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-17 11:23:05 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-17 11:23:05 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-17 11:23:06 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-17 11:23:07 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-17 11:23:07 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_propria-dependentes_nao_encontrados.xlsx
+2026-11-17 11:23:08 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 10497 linha(s) | 1315 matrícula(s) única(s)
+2026-11-17 11:23:08 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-17 11:23:39 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-17 11:24:00 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-17 11:24:00 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_credenciada-dependentes_nao_encontrados.xlsx
+2026-11-17 11:24:20 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 322450 linha(s) | 5923 matrícula(s) única(s)
+2026-11-17 11:24:23 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-17 11:24:23 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-17 11:24:25 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-17 11:24:30 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-17 11:24:30 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-17 11:24:30 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-17 11:24:30 | INFO    | 2010.01.0051835/2025-44   | __main__              | INÍCIO [1/13]
+2026-11-17 11:24:31 | INFO    | 2010.01.0051835/2025-44   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Validar (N Consta)']
+2026-11-17 11:24:34 | INFO    | 2010.01.0051835/2025-44   | marcadores_disponiveis | Marcadores cadastrados na unidade: 33
+2026-11-17 11:24:34 | INFO    | 2010.01.0051835/2025-44   | __main__              | Árvore: 11 documento(s)
+2026-11-17 11:24:34 | DEBUG   | 2010.01.0051835/2025-44   | docs_processo         | Lendo documento Memorando 93 (SEI 115053953)
+2026-11-17 11:24:35 | DEBUG   | 2010.01.0051835/2025-44   | docs_processo         | Documento 115053953 lido (1363 caracteres)
+2026-11-17 11:24:35 | DEBUG   | 2010.01.0051835/2025-44   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 93 (SEI 115053953)
+2026-11-17 11:24:35 | DEBUG   | 2010.01.0051835/2025-44   | docs_processo         | Lendo documento Memorando 2707 (SEI 152713601)
+2026-11-17 11:24:36 | DEBUG   | 2010.01.0051835/2025-44   | docs_processo         | Documento 152713601 lido (2969 caracteres)
+2026-11-17 11:24:36 | INFO    | 2010.01.0051835/2025-44   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2707 (SEI 152713601)']
+2026-11-17 11:24:36 | INFO    | 2010.01.0051835/2025-44   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3611081-7 | Período titular: 01/08/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-17 11:24:36 | DEBUG   | 2010.01.0051835/2025-44   | docs_processo         | Lendo documento Memorando 2535 (SEI 153789235)
+2026-11-17 11:24:37 | DEBUG   | 2010.01.0051835/2025-44   | docs_processo         | Documento 153789235 lido (2494 caracteres)
+2026-11-17 11:24:37 | INFO    | 2010.01.0051835/2025-44   | __main__              | Memo(s) à DISA (não consta) na rodada: ['Memorando 2535 (SEI 153789235)']
+2026-11-17 11:24:37 | INFO    | 2010.01.0051835/2025-44   | mantis                | MANTIS rede própria | Titular 36110817: USOU (R$ 351.46) | Dependentes que usaram: - (R$ 0.00)
+2026-11-17 11:24:37 | INFO    | 2010.01.0051835/2025-44   | mantis                | MANTIS rede credenciada | Titular 36110817: USOU (R$ 541.85) | Dependentes que usaram: - (R$ 0.00)
+2026-11-17 11:24:37 | INFO    | 2010.01.0051835/2025-44   | rede_propria          | Uso da rede própria (base DISA) | Titular 36110817: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-11-17 11:24:37 | INFO    | 2010.01.0051835/2025-44   | __main__              | Base DISA x MANTIS: DISA não, MANTIS RP sim, MANTIS RC sim
+2026-11-17 11:24:37 | INFO    | 2010.01.0051835/2025-44   | __main__              | Relatórios do MANTIS citados no memo DEPROC: RP ['153789108'] | RC ['153789202']
+2026-11-17 11:24:38 | INFO    | 2010.01.0051835/2025-44   | __main__              | Memo à DISA excluído: Memorando 2535 (SEI 153789235)
+2026-11-17 11:24:52 | INFO    | 2010.01.0051835/2025-44   | memos_sei             | Memo DEPROC criado
+2026-11-17 11:24:55 | INFO    | 2010.01.0051835/2025-44   | memos_sei             | Memo DEPROC inserido no bloco 7697744
+2026-11-17 11:24:58 | INFO    | 2010.01.0051835/2025-44   | tags                  | Marcador adicionado: "v2: 01.10 - No Bloco DEPROC: Coparticipação"
+2026-11-17 11:25:01 | INFO    | 2010.01.0051835/2025-44   | tags                  | Marcador removido: "v2: 01.09 - No Bloco DISA: Validar (N Consta)"
+2026-11-17 11:25:01 | INFO    | 2010.01.0051835/2025-44   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2653 (SEI 153882002)']
+2026-11-17 11:25:01 | INFO    | 2010.01.0051835/2025-44   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-17_11-23-05.xlsx
+2026-11-17 11:25:22 | DEBUG   | 2010.01.0051835/2025-44   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-17 11:25:22 | INFO    | 2010.01.0051835/2025-44   | __main__              | FIM (52.1s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-17 11:25:22 | INFO    | 2010.01.0053645/2025-62   | __main__              | INÍCIO [2/13]
+2026-11-17 11:25:23 | INFO    | 2010.01.0053645/2025-62   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Validar (N Consta)']
+2026-11-17 11:25:24 | INFO    | 2010.01.0053645/2025-62   | __main__              | Árvore: 11 documento(s)
+2026-11-17 11:25:24 | DEBUG   | 2010.01.0053645/2025-62   | docs_processo         | Lendo documento Memorando 204 (SEI 115331552)
+2026-11-17 11:25:24 | DEBUG   | 2010.01.0053645/2025-62   | docs_processo         | Documento 115331552 lido (1678 caracteres)
+2026-11-17 11:25:24 | DEBUG   | 2010.01.0053645/2025-62   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 204 (SEI 115331552)
+2026-11-17 11:25:24 | DEBUG   | 2010.01.0053645/2025-62   | docs_processo         | Lendo documento Memorando 2539 (SEI 151884078)
+2026-11-17 11:25:25 | DEBUG   | 2010.01.0053645/2025-62   | docs_processo         | Documento 151884078 lido (3006 caracteres)
+2026-11-17 11:25:25 | INFO    | 2010.01.0053645/2025-62   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2539 (SEI 151884078)']
+2026-11-17 11:25:25 | INFO    | 2010.01.0053645/2025-62   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3713905-3 | Período titular: 01/01/2020 a 12/06/2024 | Dependentes: 3795055; 3795070; 3795071 | Período variável p/ dependentes: não
+2026-11-17 11:25:25 | DEBUG   | 2010.01.0053645/2025-62   | docs_processo         | Lendo documento Memorando 2544 (SEI 153793881)
+2026-11-17 11:25:26 | DEBUG   | 2010.01.0053645/2025-62   | docs_processo         | Documento 153793881 lido (2494 caracteres)
+2026-11-17 11:25:26 | INFO    | 2010.01.0053645/2025-62   | __main__              | Memo(s) à DISA (não consta) na rodada: ['Memorando 2544 (SEI 153793881)']
+2026-11-17 11:25:26 | WARNING | 2010.01.0053645/2025-62   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 3795055, 3795070, 3795071
+2026-11-17 11:25:26 | WARNING | 2010.01.0053645/2025-62   | todas_infos           | Dependente(s) fora da base APIS e do MANTIS dos dependentes não encontrados: 3795055, 3795070, 3795071. Ignorado(s), como no geacs_inicial
+2026-11-17 11:25:26 | INFO    | 2010.01.0053645/2025-62   | mantis                | MANTIS rede própria | Titular 37139053: USOU (R$ 50.00) | Dependentes que usaram: - (R$ 0.00)
+2026-11-17 11:25:26 | INFO    | 2010.01.0053645/2025-62   | mantis                | MANTIS rede credenciada | Titular 37139053: USOU (R$ 32.69) | Dependentes que usaram: - (R$ 0.00)
+2026-11-17 11:25:26 | INFO    | 2010.01.0053645/2025-62   | rede_propria          | Uso da rede própria (base DISA) | Titular 37139053: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-11-17 11:25:26 | INFO    | 2010.01.0053645/2025-62   | __main__              | Base DISA x MANTIS: DISA não, MANTIS RP sim, MANTIS RC sim
+2026-11-17 11:25:26 | INFO    | 2010.01.0053645/2025-62   | __main__              | Relatórios do MANTIS citados no memo DEPROC: RP ['153793766'] | RC ['153793863']
+2026-11-17 11:25:27 | INFO    | 2010.01.0053645/2025-62   | __main__              | Memo à DISA excluído: Memorando 2544 (SEI 153793881)
+2026-11-17 11:25:38 | INFO    | 2010.01.0053645/2025-62   | memos_sei             | Memo DEPROC criado
+2026-11-17 11:25:41 | INFO    | 2010.01.0053645/2025-62   | memos_sei             | Memo DEPROC inserido no bloco 7697744
+2026-11-17 11:25:43 | INFO    | 2010.01.0053645/2025-62   | tags                  | Marcador adicionado: "v2: 01.10 - No Bloco DEPROC: Coparticipação"
+2026-11-17 11:25:46 | INFO    | 2010.01.0053645/2025-62   | tags                  | Marcador removido: "v2: 01.09 - No Bloco DISA: Validar (N Consta)"
+2026-11-17 11:25:46 | INFO    | 2010.01.0053645/2025-62   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2654 (SEI 153882211)']
+2026-11-17 11:26:09 | DEBUG   | 2010.01.0053645/2025-62   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-17 11:26:09 | INFO    | 2010.01.0053645/2025-62   | __main__              | FIM (47.2s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-17 11:26:09 | INFO    | 2010.01.0061796/2025-78   | __main__              | INÍCIO [3/13]
+2026-11-17 11:26:10 | INFO    | 2010.01.0061796/2025-78   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Validar (N Consta)']
+2026-11-17 11:26:11 | INFO    | 2010.01.0061796/2025-78   | __main__              | Árvore: 11 documento(s)
+2026-11-17 11:26:11 | DEBUG   | 2010.01.0061796/2025-78   | docs_processo         | Lendo documento Memorando 476 (SEI 116871503)
+2026-11-17 11:26:12 | DEBUG   | 2010.01.0061796/2025-78   | docs_processo         | Documento 116871503 lido (1567 caracteres)
+2026-11-17 11:26:12 | DEBUG   | 2010.01.0061796/2025-78   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 476 (SEI 116871503)
+2026-11-17 11:26:12 | DEBUG   | 2010.01.0061796/2025-78   | docs_processo         | Lendo documento Memorando 2570 (SEI 151951638)
+2026-11-17 11:26:13 | DEBUG   | 2010.01.0061796/2025-78   | docs_processo         | Documento 151951638 lido (2985 caracteres)
+2026-11-17 11:26:13 | INFO    | 2010.01.0061796/2025-78   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2570 (SEI 151951638)']
+2026-11-17 11:26:13 | INFO    | 2010.01.0061796/2025-78   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2226008-1 | Período titular: 01/02/2020 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-17 11:26:13 | DEBUG   | 2010.01.0061796/2025-78   | docs_processo         | Lendo documento Memorando 2574 (SEI 153808402)
+2026-11-17 11:26:13 | DEBUG   | 2010.01.0061796/2025-78   | docs_processo         | Documento 153808402 lido (2494 caracteres)
+2026-11-17 11:26:13 | INFO    | 2010.01.0061796/2025-78   | __main__              | Memo(s) à DISA (não consta) na rodada: ['Memorando 2574 (SEI 153808402)']
+2026-11-17 11:26:13 | INFO    | 2010.01.0061796/2025-78   | mantis                | MANTIS rede própria | Titular 22260081: USOU (R$ 50.00) | Dependentes que usaram: - (R$ 0.00)
+2026-11-17 11:26:13 | INFO    | 2010.01.0061796/2025-78   | mantis                | MANTIS rede credenciada | Titular 22260081: USOU (R$ 1584.76) | Dependentes que usaram: - (R$ 0.00)
+2026-11-17 11:26:13 | INFO    | 2010.01.0061796/2025-78   | rede_propria          | Uso da rede própria (base DISA) | Titular 22260081: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-11-17 11:26:13 | INFO    | 2010.01.0061796/2025-78   | __main__              | Base DISA x MANTIS: DISA não, MANTIS RP sim, MANTIS RC sim
+2026-11-17 11:26:13 | INFO    | 2010.01.0061796/2025-78   | __main__              | Relatórios do MANTIS citados no memo DEPROC: RP ['153808268'] | RC ['153808379']
+2026-11-17 11:26:14 | INFO    | 2010.01.0061796/2025-78   | __main__              | Memo à DISA excluído: Memorando 2574 (SEI 153808402)
+2026-11-17 11:26:25 | INFO    | 2010.01.0061796/2025-78   | memos_sei             | Memo DEPROC criado
+2026-11-17 11:26:27 | INFO    | 2010.01.0061796/2025-78   | memos_sei             | Memo DEPROC inserido no bloco 7697744
+2026-11-17 11:26:30 | INFO    | 2010.01.0061796/2025-78   | tags                  | Marcador adicionado: "v2: 01.10 - No Bloco DEPROC: Coparticipação"
+2026-11-17 11:26:32 | INFO    | 2010.01.0061796/2025-78   | tags                  | Marcador removido: "v2: 01.09 - No Bloco DISA: Validar (N Consta)"
+2026-11-17 11:26:33 | INFO    | 2010.01.0061796/2025-78   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2655 (SEI 153882357)']
+2026-11-17 11:27:05 | DEBUG   | 2010.01.0061796/2025-78   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-17 11:27:05 | INFO    | 2010.01.0061796/2025-78   | __main__              | FIM (56.3s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-17 11:27:05 | INFO    | 2010.01.0063843/2025-02   | __main__              | INÍCIO [4/13]
+2026-11-17 11:27:06 | INFO    | 2010.01.0063843/2025-02   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Validar (N Consta)']
+2026-11-17 11:27:07 | INFO    | 2010.01.0063843/2025-02   | __main__              | Árvore: 11 documento(s)
+2026-11-17 11:27:07 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Lendo documento Memorando 572 (SEI 117232746)
+2026-11-17 11:27:08 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Documento 117232746 lido (1682 caracteres)
+2026-11-17 11:27:08 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 572 (SEI 117232746)
+2026-11-17 11:27:08 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Lendo documento Memorando 2776 (SEI 152820386)
+2026-11-17 11:27:08 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Documento 152820386 lido (3026 caracteres)
+2026-11-17 11:27:08 | INFO    | 2010.01.0063843/2025-02   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2776 (SEI 152820386)']
+2026-11-17 11:27:08 | INFO    | 2010.01.0063843/2025-02   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1310732 / 1 | Período titular: 01/05/2020 a 12/06/2024 | Dependentes: 1812832; 1812834; 1812836 | Período variável p/ dependentes: não
+2026-11-17 11:27:08 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Lendo documento Memorando 2630 (SEI 153829912)
+2026-11-17 11:27:09 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Documento 153829912 lido (2498 caracteres)
+2026-11-17 11:27:09 | INFO    | 2010.01.0063843/2025-02   | __main__              | Memo(s) à DISA (não consta) na rodada: ['Memorando 2630 (SEI 153829912)']
+2026-11-17 11:27:09 | WARNING | 2010.01.0063843/2025-02   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 1812832, 1812834, 1812836
+2026-11-17 11:27:09 | WARNING | 2010.01.0063843/2025-02   | todas_infos           | Dependente(s) fora da base APIS e do MANTIS dos dependentes não encontrados: 1812832, 1812834, 1812836. Ignorado(s), como no geacs_inicial
+2026-11-17 11:27:09 | INFO    | 2010.01.0063843/2025-02   | mantis                | MANTIS rede própria | Titular 13107321: USOU (R$ 150.00) | Dependentes que usaram: - (R$ 0.00)
+2026-11-17 11:27:09 | INFO    | 2010.01.0063843/2025-02   | mantis                | MANTIS rede credenciada | Titular 13107321: USOU (R$ 1093.69) | Dependentes que usaram: - (R$ 0.00)
+2026-11-17 11:27:09 | INFO    | 2010.01.0063843/2025-02   | rede_propria          | Uso da rede própria (base DISA) | Titular 13107321: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: -
+2026-11-17 11:27:09 | INFO    | 2010.01.0063843/2025-02   | __main__              | Base DISA x MANTIS: DISA não, MANTIS RP sim, MANTIS RC sim
+2026-11-17 11:27:09 | INFO    | 2010.01.0063843/2025-02   | __main__              | Relatórios do MANTIS citados no memo DEPROC: RP ['153829833'] | RC ['153829853']
+2026-11-17 11:27:10 | INFO    | 2010.01.0063843/2025-02   | __main__              | Memo à DISA excluído: Memorando 2630 (SEI 153829912)
+2026-11-17 11:27:21 | INFO    | 2010.01.0063843/2025-02   | memos_sei             | Memo DEPROC criado
+2026-11-17 11:27:23 | INFO    | 2010.01.0063843/2025-02   | memos_sei             | Memo DEPROC inserido no bloco 7697744
+2026-11-17 11:27:26 | INFO    | 2010.01.0063843/2025-02   | tags                  | Marcador adicionado: "v2: 01.10 - No Bloco DEPROC: Coparticipação"
+2026-11-17 11:27:28 | INFO    | 2010.01.0063843/2025-02   | tags                  | Marcador removido: "v2: 01.09 - No Bloco DISA: Validar (N Consta)"
+2026-11-17 11:27:29 | INFO    | 2010.01.0063843/2025-02   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2656 (SEI 153882549)']
+2026-11-17 11:28:11 | DEBUG   | 2010.01.0063843/2025-02   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-17 11:28:11 | INFO    | 2010.01.0063843/2025-02   | __main__              | FIM (0h01m05s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-17 11:28:11 | INFO    | 2010.01.0082944/2024-27   | __main__              | INÍCIO [5/13]
+2026-11-17 11:28:12 | INFO    | 2010.01.0082944/2024-27   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Validar (N Consta)']
+2026-11-17 11:28:13 | INFO    | 2010.01.0082944/2024-27   | __main__              | Árvore: 10 documento(s)
+2026-11-17 11:28:13 | DEBUG   | 2010.01.0082944/2024-27   | docs_processo         | Lendo documento Memorando 2522 (SEI 151828975)
+2026-11-17 11:28:14 | DEBUG   | 2010.01.0082944/2024-27   | docs_processo         | Documento 151828975 lido (2695 caracteres)
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2522 (SEI 151828975)']
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1251754-2 | Período titular: 01/10/2019 a 12/06/2024 | Dependentes: 3017348; 3017354 | Período variável p/ dependentes: não
+2026-11-17 11:28:14 | DEBUG   | 2010.01.0082944/2024-27   | docs_processo         | Lendo documento Memorando 2540 (SEI 153791367)
+2026-11-17 11:28:14 | DEBUG   | 2010.01.0082944/2024-27   | docs_processo         | Documento 153791367 lido (2528 caracteres)
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | __main__              | Memo(s) à DISA (não consta) na rodada: ['Memorando 2540 (SEI 153791367)']
+2026-11-17 11:28:14 | WARNING | 2010.01.0082944/2024-27   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 3017348, 3017354
+2026-11-17 11:28:14 | WARNING | 2010.01.0082944/2024-27   | todas_infos           | Dependente(s) fora da base APIS e do MANTIS dos dependentes não encontrados: 3017348. Ignorado(s), como no geacs_inicial
+2026-11-17 11:28:14 | WARNING | 2010.01.0082944/2024-27   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 3017354
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | mantis                | MANTIS rede própria | Titular 12517542: NÃO USOU (R$ 0.00) | Dependentes que usaram: ['3017354'] (R$ 350.00)
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | mantis                | MANTIS rede credenciada | Titular 12517542: USOU (R$ 732.81) | Dependentes que usaram: ['3017354'] (R$ 2808.19)
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | rede_propria          | Fora da base DISA (contam como não uso): ['3017354']
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | rede_propria          | Uso da rede própria (base DISA) | Titular 12517542: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['3017354']
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | __main__              | Base DISA x MANTIS: DISA não, MANTIS RP sim, MANTIS RC sim
+2026-11-17 11:28:14 | INFO    | 2010.01.0082944/2024-27   | __main__              | Relatórios do MANTIS citados no memo DEPROC: RP ['153791096'] | RC ['153791196', '153791342']
+2026-11-17 11:28:15 | INFO    | 2010.01.0082944/2024-27   | __main__              | Memo à DISA excluído: Memorando 2540 (SEI 153791367)
+2026-11-17 11:28:27 | INFO    | 2010.01.0082944/2024-27   | memos_sei             | Memo DEPROC criado
+2026-11-17 11:28:29 | INFO    | 2010.01.0082944/2024-27   | memos_sei             | Memo DEPROC inserido no bloco 7697744
+2026-11-17 11:28:32 | INFO    | 2010.01.0082944/2024-27   | tags                  | Marcador adicionado: "v2: 01.10 - No Bloco DEPROC: Coparticipação"
+2026-11-17 11:28:34 | INFO    | 2010.01.0082944/2024-27   | tags                  | Marcador removido: "v2: 01.09 - No Bloco DISA: Validar (N Consta)"
+2026-11-17 11:28:35 | INFO    | 2010.01.0082944/2024-27   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2657 (SEI 153882771)']
+2026-11-17 11:29:16 | DEBUG   | 2010.01.0082944/2024-27   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-17 11:29:16 | INFO    | 2010.01.0082944/2024-27   | __main__              | FIM (0h01m05s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-17 11:29:16 | INFO    | 2010.01.0104666/2024-92   | __main__              | INÍCIO [6/13]
+2026-11-17 11:29:17 | INFO    | 2010.01.0104666/2024-92   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Validar (N Consta)']
+2026-11-17 11:29:18 | INFO    | 2010.01.0104666/2024-92   | __main__              | Árvore: 13 documento(s)
+2026-11-17 11:29:18 | DEBUG   | 2010.01.0104666/2024-92   | docs_processo         | Lendo documento Memorando 94 (SEI 104700021)
+2026-11-17 11:29:19 | DEBUG   | 2010.01.0104666/2024-92   | docs_processo         | Documento 104700021 lido (1357 caracteres)
+2026-11-17 11:29:19 | DEBUG   | 2010.01.0104666/2024-92   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 94 (SEI 104700021)
+2026-11-17 11:29:19 | DEBUG   | 2010.01.0104666/2024-92   | docs_processo         | Lendo documento Memorando 2618 (SEI 152019759)
+2026-11-17 11:29:20 | DEBUG   | 2010.01.0104666/2024-92   | docs_processo         | Documento 152019759 lido (3003 caracteres)
+2026-11-17 11:29:20 | INFO    | 2010.01.0104666/2024-92   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2618 (SEI 152019759)']
+2026-11-17 11:29:20 | INFO    | 2010.01.0104666/2024-92   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2781275 / 8 | Período titular: 01/02/2020 a 12/06/2024 | Dependentes: 2781280; 2781287; 2854692 | Período variável p/ dependentes: não
+2026-11-17 11:29:20 | DEBUG   | 2010.01.0104666/2024-92   | docs_processo         | Lendo documento Memorando 2595 (SEI 153818203)
+2026-11-17 11:29:20 | DEBUG   | 2010.01.0104666/2024-92   | docs_processo         | Documento 153818203 lido (2548 caracteres)
+2026-11-17 11:29:20 | INFO    | 2010.01.0104666/2024-92   | __main__              | Memo(s) à DISA (não consta) na rodada: ['Memorando 2595 (SEI 153818203)']
+2026-11-17 11:29:20 | INFO    | 2010.01.0104666/2024-92   | mantis                | MANTIS rede própria | Titular 27812758: NÃO USOU (R$ 0.00) | Dependentes que usaram: ['2781280', '2854692'] (R$ 110.11)
+2026-11-17 11:29:20 | INFO    | 2010.01.0104666/2024-92   | mantis                | MANTIS rede credenciada | Titular 27812758: USOU (R$ 2639.44) | Dependentes que usaram: ['2781280', '2781287', '2854692'] (R$ 5284.52)
+2026-11-17 11:29:20 | INFO    | 2010.01.0104666/2024-92   | rede_propria          | Uso da rede própria (base DISA) | Titular 27812758: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['2781280', '2781287', '2854692']
+2026-11-17 11:29:20 | INFO    | 2010.01.0104666/2024-92   | __main__              | Base DISA x MANTIS: DISA não, MANTIS RP sim, MANTIS RC sim
+2026-11-17 11:29:20 | INFO    | 2010.01.0104666/2024-92   | __main__              | Relatórios do MANTIS citados no memo DEPROC: RP ['153818020'] | RC ['153818069', '153818138']
+2026-11-17 11:29:21 | INFO    | 2010.01.0104666/2024-92   | __main__              | Memo à DISA excluído: Memorando 2595 (SEI 153818203)
+2026-11-17 11:29:34 | INFO    | 2010.01.0104666/2024-92   | memos_sei             | Memo DEPROC criado
+2026-11-17 11:29:37 | INFO    | 2010.01.0104666/2024-92   | memos_sei             | Memo DEPROC inserido no bloco 7697744
+2026-11-17 11:29:40 | INFO    | 2010.01.0104666/2024-92   | tags                  | Marcador adicionado: "v2: 01.10 - No Bloco DEPROC: Coparticipação"
+2026-11-17 11:29:42 | INFO    | 2010.01.0104666/2024-92   | tags                  | Marcador removido: "v2: 01.09 - No Bloco DISA: Validar (N Consta)"
+2026-11-17 11:29:42 | INFO    | 2010.01.0104666/2024-92   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2658 (SEI 153882990)']
+2026-11-17 11:30:02 | DEBUG   | 2010.01.0104666/2024-92   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-17 11:30:02 | INFO    | 2010.01.0104666/2024-92   | __main__              | FIM (46.2s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-17 11:30:02 | INFO    | 2010.01.0049460/2025-52   | __main__              | INÍCIO [7/13]
+2026-11-17 11:30:03 | INFO    | 2010.01.0049460/2025-52   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-17 11:30:38 | DEBUG   | 2010.01.0049460/2025-52   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-17 11:30:38 | WARNING | 2010.01.0049460/2025-52   | __main__              | FIM COM ERRO (35.5s) | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:30:38 | INFO    | 2010.01.0051100/2025-04   | __main__              | INÍCIO [8/13]
+2026-11-17 11:30:39 | INFO    | 2010.01.0051100/2025-04   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-17 11:31:13 | DEBUG   | 2010.01.0051100/2025-04   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-17 11:31:13 | WARNING | 2010.01.0051100/2025-04   | __main__              | FIM COM ERRO (35.3s) | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:31:13 | INFO    | 2010.01.0051993/2025-46   | __main__              | INÍCIO [9/13]
+2026-11-17 11:31:14 | INFO    | 2010.01.0051993/2025-46   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-17 11:31:50 | DEBUG   | 2010.01.0051993/2025-46   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-17 11:31:50 | WARNING | 2010.01.0051993/2025-46   | __main__              | FIM COM ERRO (36.3s) | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:31:50 | INFO    | 2010.01.0053690/2025-11   | __main__              | INÍCIO [10/13]
+2026-11-17 11:31:50 | INFO    | 2010.01.0053690/2025-11   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-17 11:32:25 | DEBUG   | 2010.01.0053690/2025-11   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-17 11:32:25 | WARNING | 2010.01.0053690/2025-11   | __main__              | FIM COM ERRO (35.6s) | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:32:25 | INFO    | 2010.01.0058540/2025-11   | __main__              | INÍCIO [11/13]
+2026-11-17 11:32:26 | INFO    | 2010.01.0058540/2025-11   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-17 11:33:01 | DEBUG   | 2010.01.0058540/2025-11   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-17 11:33:01 | WARNING | 2010.01.0058540/2025-11   | __main__              | FIM COM ERRO (36.2s) | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:33:01 | INFO    | 2010.01.0072514/2024-46   | __main__              | INÍCIO [12/13]
+2026-11-17 11:33:02 | INFO    | 2010.01.0072514/2024-46   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-17 11:33:37 | DEBUG   | 2010.01.0072514/2024-46   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-17 11:33:37 | WARNING | 2010.01.0072514/2024-46   | __main__              | FIM COM ERRO (35.2s) | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:33:37 | INFO    | 2010.01.0083647/2024-58   | __main__              | INÍCIO [13/13]
+2026-11-17 11:33:38 | INFO    | 2010.01.0083647/2024-58   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-17 11:34:12 | DEBUG   | 2010.01.0083647/2024-58   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-17 11:34:12 | WARNING | 2010.01.0083647/2024-58   | __main__              | FIM COM ERRO (35.2s) | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | Processos: 13 | Sem erro: 6 | Com erro: 7
+2026-11-17 11:34:14 | INFO    | -                         | __main__              |     6 | Assinar memo DEPROC e encaminhar
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ERRO  | 2010.01.0049460/2025-52 | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051100/2025-04 | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051993/2025-46 | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ERRO  | 2010.01.0053690/2025-11 | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ERRO  | 2010.01.0058540/2025-11 | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072514/2024-46 | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ERRO  | 2010.01.0083647/2024-58 | ProcessoFechadoNoSetor: Processo sem "Incluir Documento" na unidade da GEACS: nada foi alterado (não reaberto)
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | Duração total da execução: 0h11m09s
+2026-11-17 11:34:14 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

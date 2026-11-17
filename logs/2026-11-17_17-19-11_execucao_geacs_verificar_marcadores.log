@@ -1,0 +1,80 @@
+2026-11-17 17:19:11 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-17 17:19:11 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-17_17-19-11_execucao_geacs_verificar_marcadores.log
+2026-11-17 17:19:11 | INFO    | -                         | processos_a_processar | 752 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-17 17:19:17 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-17 17:19:17 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-17 17:19:18 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-17 17:19:23 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-17 17:19:23 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-17 17:19:26 | ERROR   | -                         | __main__              | Erro crítico na execução (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES)
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 105, in main
+    driver = abrir_sei(UNIDADE_GEACS)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\sessao_sei.py", line 61, in abrir_sei
+    alterar_unidade_sei(driver, unidade)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\sessao_sei.py", line 43, in alterar_unidade_sei
+    trocar_unidade(driver, unidade)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\unidade.py", line 27, in trocar_unidade
+    _tela_unidade.selecionar_unidade(driver, unidade, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\unidade.py", line 58, in selecionar_unidade
+    esperar_pagina_carregada(driver, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\unidade.py", line 70, in esperar_pagina_carregada
+    espera.until(EC.element_to_be_clickable((By.ID, 'txtPesquisaRapida')))
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 112, in until
+    value = method(self._driver)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 519, in _predicate
+    element = visibility_of(target)(driver)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 212, in _predicate
+    return _element_if_visible(element)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 227, in _element_if_visible
+    return element if element.is_displayed() == visibility else False
+                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 308, in is_displayed
+    return self.parent.execute_script(f"/* isDisplayed */return ({isDisplayed_js}).apply(null, arguments);", self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 613, in execute_script
+    return self.execute(command, {"script": script, "args": converted_args})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.StaleElementReferenceException: Message: stale element reference: stale element not found
+  (Session info: chrome=157.0.8103.79); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff6a7a2d655]
+	(No symbol) [0x7ff6a7924790]
+	(No symbol) [0x7ff6a7792fb3]
+	(No symbol) [0x7ff6a7fafa32]
+	(No symbol) [0x7ff6a7faeca9]
+	(No symbol) [0x7ff6a779712d]
+	(No symbol) [0x7ff6a7796fc0]
+	(No symbol) [0x7ff6a7794eda]
+	(No symbol) [0x7ff6a779849c]
+	(No symbol) [0x7ff6a77c7dcf]
+	(No symbol) [0x7ff6a77be11a]
+	(No symbol) [0x7ff6a77c6bf1]
+	(No symbol) [0x7ff6a77ac109]
+	(No symbol) [0x7ff6a77ad433]
+	(No symbol) [0x7ff6a7ec7041]
+	(No symbol) [0x7ff6a7ee5c76]
+	(No symbol) [0x7ff6a7edc340]
+	(No symbol) [0x7ff6a7b5c9be]
+	(No symbol) [0x7ff6a7932fa5]
+	(No symbol) [0x7ff6a792e2d4]
+	(No symbol) [0x7ff6a792e464]
+	(No symbol) [0x7ff6a791731c]
+	(No symbol) [0x7fffc03ecd87]
+	(No symbol) [0x7fffc1b0caec]
+
+2026-11-17 17:19:26 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-17 17:19:26 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-17 17:19:26 | INFO    | -                         | __main__              | Duração total da execução: 14.7s
+2026-11-17 17:19:26 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================
