@@ -20,6 +20,11 @@ ASSUNTO_MEMO_GEACS_CALCULO_COPA = 'Retorno do levantamento de coparticipação �
 
 PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA = re.compile(r'Retorno do levantamento de coparticipação\s*[-–]\s*utilização indevida da assistência à saúde', flags=re.IGNORECASE)
 
+# Assunto da versão anterior deste memo ("Coparticipação apurada – ..."), que
+# ainda pode estar nos processos. Usado só para reconhecer os memos gerados
+# pelo script (fluxo DEPROC EXCLUIR DOCS), não na retomada
+PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA_ANTERIOR = re.compile(r'Coparticipação apurada\s*[-–]\s*utilização indevida da assistência à saúde', flags=re.IGNORECASE)
+
 # Documentos citados no texto (fixos no modelo)
 REFERENCIA_BASES = (
     'O relatório foi elaborado a partir das bases de coparticipação disponibilizadas pela ASGE no Mantis nº 0011281, extraídas do sistema AREC, '

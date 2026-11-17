@@ -89,7 +89,7 @@ logger = logging.getLogger(__name__)
 
 
 def _memo_deproc_assinado(driver: webdriver.Remote, registro: RegistroDeproc) -> DocArvore:
-    """O memo DEPROC da GEACS na rodada, assinado pela Bruna. Sem o memo ou
+    """O memo DEPROC da GEACS na rodada, assinado (PADRAO_ASSINATURA_MEMO_DEPROC). Sem o memo ou
     sem a assinatura: ErroAvaliacao, sem ação no SEI."""
     encontrado = encontrar_memo_por_assunto(driver, registro.docs_rodada, PADRAO_ASSUNTO_MEMO_DEPROC, 'DEPROC (da GEACS)', UNIDADE_GEACS)
     if encontrado is None:
@@ -99,7 +99,7 @@ def _memo_deproc_assinado(driver: webdriver.Remote, registro: RegistroDeproc) ->
     registro.memo_deproc_geacs_sei = memo['numero_sei']
     registro.memo_deproc_assinado = _PADRAO_ASSINATURA.search(texto) is not None
     if not registro.memo_deproc_assinado:
-        raise ErroAvaliacao(f'Memo DEPROC da GEACS ({memo["numero_sei"]}) ainda não assinado por {NOME_SIGNATARIO}')
+        raise ErroAvaliacao(f'Memo DEPROC da GEACS ({memo["numero_sei"]}) ainda não assinado por {NOME_SIGNATARIO} (ou Bruna Miiller Lavarini)')
     logger.info(f'Memo DEPROC da GEACS assinado: {memo["numero_sei"]}')
     return memo
 
@@ -107,6 +107,7 @@ def _memo_deproc_assinado(driver: webdriver.Remote, registro: RegistroDeproc) ->
 def _registrar_resultado(registro: RegistroDeproc, resultado: ResultadoDeproc) -> None:
     registro.linhas_base_deproc = resultado.linhas_processo
     registro.linhas_fora_periodo_deproc = resultado.linhas_fora_periodo
+    registro.linhas_base_copa_zero_deproc = resultado.linhas_base_copa_zero
     registro.atendimentos_deproc = len(resultado.atendimentos)
     registro.valor_total_coparticipacao = resultado.totais.coparticipacao
     registro.valor_total_descontado = resultado.totais.descontado

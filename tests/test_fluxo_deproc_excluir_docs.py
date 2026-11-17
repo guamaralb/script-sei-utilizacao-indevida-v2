@@ -5,10 +5,19 @@ from datetime import datetime
 
 import main_deproc_excluir_docs as fluxo
 import pytest
+import tags
 from constantes import UNIDADE_APIS, UNIDADE_DEPROC, UNIDADE_GEACS
 from openpyxl import load_workbook
 from planilha_controle import PlanilhaControleGeral
 from selenium.common.exceptions import InvalidSessionIdException, TimeoutException
+from tags import (
+    TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA,
+    TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA,
+    TAG_DEPROC_RELATORIO_ANEXADO,
+    TAG_DEPROC_TRATADO,
+)
+
+from script_sei_utilizacao_indevida_v2.memorandos.MemoGeacsCalculoCopa import ASSUNTO_MEMO_GEACS_CALCULO_COPA
 
 
 class ArvoreFalsa:
@@ -23,9 +32,28 @@ class ArvoreFalsa:
         # Leituras da árvore que ainda mostram os excluídos (árvore atrasada)
         self.leituras_atrasadas = 0
         self.acessos = 0
+        self.textos: dict[str, str] = {}
+        self.nao_legiveis: set[str] = set()
+        self.marcadores: list[str] = []
+        self.marcadores_lidos = 0
 
-    def doc(self, numero: str, unidade: str, nome: str = 'Memorando') -> None:
-        self.docs.append({'numero_sei': numero, 'nome_arvore': f'{nome} {numero}', 'unidade': unidade})
+    def _listar_marcadores(self, driver):
+        self.marcadores_lidos += 1
+        return list(self.marcadores)
+
+    def _remover_marcador(self, driver, marcadores):
+        for marcador in marcadores:
+            if marcador in self.marcadores:
+                self.marcadores.remove(marcador)
+
+    def doc(self, numero: str, unidade: str, nome: str | None = None, texto: str = '') -> None:
+        self.docs.append({'numero_sei': numero, 'nome_arvore': nome or f'Memorando {numero}', 'unidade': unidade})
+        self.textos[numero] = texto
+
+    def _ler_texto(self, driver, doc):
+        if doc['numero_sei'] in self.nao_legiveis:
+            raise TimeoutException()
+        return self.textos[doc['numero_sei']]
 
     def _excluir(self, driver):
         if self.fechar_navegador:
@@ -50,6 +78,9 @@ class ArvoreFalsa:
         monkeypatch.setattr(fluxo, 'listar_documentos_arvore', self._listar)
         monkeypatch.setattr(fluxo, 'selecionar_doc', lambda driver, doc: setattr(self, 'selecionado', doc['numero_sei']))
         monkeypatch.setattr(fluxo, 'excluir_doc', self._excluir)
+        monkeypatch.setattr(fluxo, 'ler_texto_doc', self._ler_texto)
+        monkeypatch.setattr(fluxo, 'listar_marcadores', self._listar_marcadores)
+        monkeypatch.setattr(tags, 'remover_marcador', self._remover_marcador)
         monkeypatch.setattr(fluxo, 'restaurar_navegador', lambda driver: setattr(self, 'recarregamentos', self.recarregamentos + 1))
 
 
@@ -59,16 +90,20 @@ def arvore(monkeypatch):
     arvore.instalar(monkeypatch)
     arvore.doc('100', UNIDADE_APIS)
     arvore.doc('200', UNIDADE_GEACS)
-    arvore.doc('300', UNIDADE_DEPROC)
-    arvore.doc('400', UNIDADE_DEPROC, 'PDF')
+    # Gerados pelo deproc_calcula_copa: relatório (pelo nome) e memo (pelo assunto)
+    arvore.doc('300', UNIDADE_DEPROC, 'PDF Coparticipação - 12345678 - 20261112_101500')
+    arvore.doc('400', UNIDADE_DEPROC, texto=MEMO_GERADO)
     return arvore
+
+
+MEMO_GERADO = f'Para: IPSEMG/GEACS - Utilização\nAssunto: {ASSUNTO_MEMO_GEACS_CALCULO_COPA}\nTexto'
 
 
 def _passar():
     return fluxo._processar_linha(object(), 'PROC')
 
 
-def test_exclui_todos_os_documentos_da_deproc_do_ultimo_para_o_primeiro(arvore):
+def test_exclui_os_documentos_gerados_do_ultimo_para_o_primeiro(arvore):
     registro = _passar()
 
     assert registro.erro is None
@@ -76,6 +111,39 @@ def test_exclui_todos_os_documentos_da_deproc_do_ultimo_para_o_primeiro(arvore):
     assert [d['numero_sei'] for d in arvore._listar(None)] == ['100', '200']
     assert registro.docs_excluidos == ['400', '300']
     assert '2 excluído(s): 400; 300' in registro.to_dict()['deproc_excluir_docs']
+
+
+def test_mantem_documentos_da_deproc_nao_gerados_pelo_script(arvore):
+    arvore.doc('500', UNIDADE_DEPROC, texto='Assunto: Despacho qualquer\nRetorno do levantamento solicitado')
+    arvore.doc('600', UNIDADE_DEPROC, 'PDF Relatório manual')
+    arvore.doc('700', UNIDADE_DEPROC, 'Despacho 700', texto=MEMO_GERADO)
+    arvore.doc('800', UNIDADE_DEPROC, texto='Assunto: Coparticipação apurada – utilização indevida da assistência à saúde')
+    registro = _passar()
+
+    assert registro.erro is None
+    # 800: memo com o assunto da versão anterior; 700 não é memorando
+    assert arvore.excluidos == ['800', '400', '300']
+    assert registro.docs_mantidos == ['500', '600', '700']
+    assert 'mantido(s), não gerado(s) pelo script: 500; 600; 700' in registro.to_dict()['deproc_excluir_docs']
+
+
+def test_so_documentos_nao_gerados_nada_e_excluido(arvore):
+    arvore.docs = arvore.docs[:2]
+    arvore.doc('500', UNIDADE_DEPROC, texto='Outro memo')
+    registro = _passar()
+
+    assert registro.erro is None
+    assert arvore.excluidos == []
+    assert 'nenhum documento gerado pelo deproc_calcula_copa' in registro.to_dict()['deproc_excluir_docs']
+
+
+def test_memo_que_nao_pode_ser_lido_nao_e_excluido(arvore):
+    arvore.nao_legiveis = {'400'}
+    registro = _passar()
+
+    assert arvore.excluidos == ['300']
+    assert registro.docs_nao_excluidos == ['400']
+    assert registro.tipo_erro == 'ErroAvaliacao'
 
 
 def test_sem_documento_da_deproc_nada_e_excluido(arvore):
@@ -162,3 +230,78 @@ def test_excluido_que_continua_na_arvore_conta_como_nao_excluido(arvore, monkeyp
     assert registro.tipo_erro == 'ErroAvaliacao'
     assert registro.docs_excluidos == []
     assert registro.docs_nao_excluidos == ['300', '400']
+
+
+# --- marcadores da DEPROC -----------------------------------------------------
+
+OUTRO_MARCADOR = 'PLANILHADO'
+
+
+def test_remove_os_marcadores_da_deproc_depois_de_excluir(arvore):
+    arvore.marcadores = [TAG_DEPROC_TRATADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA, OUTRO_MARCADOR]
+    registro = _passar()
+
+    assert registro.erro is None
+    assert arvore.excluidos == ['400', '300']
+    # O 01 por último; marcadores que não são da DEPROC ficam
+    assert registro.marcadores_removidos == [TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA, TAG_DEPROC_TRATADO]
+    assert arvore.marcadores == [OUTRO_MARCADOR]
+    dados = registro.to_dict()
+    assert 'marcador(es) removido(s)' in dados['deproc_excluir_docs']
+    assert dados['marcadores_deproc_finais'] == OUTRO_MARCADOR
+    assert dados['tag_deproc_tratado'] is False
+    assert dados['tag_deproc_concluido_memo'] is False
+
+
+def test_remove_todos_os_estados_da_deproc(arvore):
+    arvore.marcadores = [TAG_DEPROC_TRATADO, TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA, TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA]
+    _passar()
+
+    assert arvore.marcadores == []
+
+
+def test_sem_documento_gerado_remove_os_marcadores(arvore):
+    arvore.docs = arvore.docs[:2]
+    arvore.marcadores = [TAG_DEPROC_TRATADO, TAG_DEPROC_RELATORIO_ANEXADO]
+    registro = _passar()
+
+    assert registro.erro is None
+    assert arvore.marcadores == []
+
+
+def test_sem_marcador_da_deproc_nada_e_removido(arvore):
+    arvore.marcadores = [OUTRO_MARCADOR]
+    registro = _passar()
+
+    assert registro.erro is None
+    assert registro.marcadores_removidos == []
+    assert arvore.marcadores == [OUTRO_MARCADOR]
+    assert 'marcador' not in registro.to_dict()['deproc_excluir_docs']
+
+
+@pytest.mark.parametrize(
+    'preparar',
+    [
+        pytest.param(lambda arvore: setattr(arvore, 'nao_excluiveis', {'400'}), id='documento_nao_excluido'),
+        pytest.param(lambda arvore: setattr(arvore, 'nao_legiveis', {'400'}), id='memo_nao_lido'),
+    ],
+)
+def test_documento_gerado_que_ficou_mantem_os_marcadores(arvore, preparar):
+    arvore.marcadores = [TAG_DEPROC_TRATADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
+    preparar(arvore)
+    registro = _passar()
+
+    assert registro.tipo_erro == 'ErroAvaliacao'
+    assert 'marcadores da DEPROC mantidos' in registro.erro
+    assert arvore.marcadores_lidos == 0
+    assert arvore.marcadores == [TAG_DEPROC_TRATADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
+    # Sem ler os marcadores, as colunas deles ficam como estavam na planilha
+    assert 'marcadores_deproc_finais' not in registro.to_dict()
+
+
+def test_processo_fechado_nao_remove_marcadores(arvore):
+    arvore.processo_fechado = True
+    arvore.marcadores = [TAG_DEPROC_TRATADO]
+    _passar()
+
+    assert arvore.marcadores == [TAG_DEPROC_TRATADO]

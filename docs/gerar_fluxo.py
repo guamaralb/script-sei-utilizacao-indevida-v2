@@ -5,7 +5,7 @@
   funções chamadas em vários pontos;
 - geacs_resp_* (run_geacs_resp_apis / _disa / _deproc, TODO: não montados);
 - geacs_adc_pdf_ant_aut, geacs_adc_pdf_ant_man, geacs_canc_memo_deproc_ant,
-  geacs_verificar_marcadores;
+  geacs_verificar_marcadores, geacs_todas_infos;
 - deproc_calcula_copa e deproc_excluir_docs (na unidade da DEPROC).
  Em cada coluna o
 caminho principal desce reto; os desvios saem para a direita e terminam ali
@@ -302,7 +302,7 @@ col_tratar = Coluna(
             'Memo no bloco (aguarda assinatura)?<br>01.05 - No Bloco APIS: Sem Memo p/ GEACS<br>01.05 - No Bloco APIS: Formato Inválido<br>'
             '01.06.1 - No Bloco APIS: Matrículas<br>01.07 - No Bloco APIS: Período Deps<br>01.09 - No Bloco DISA: Validar (Consta)<br>'
             '01.09 - No Bloco DISA: Validar (N Consta)<br>01.09 - No Bloco DISA: Relat. s/ MANTIS<br>01.10 - No Bloco DEPROC: Coparticipação<br>'
-            '01.10 - No Bloco APIS: Sem Uso',
+            '01.10 - No Bloco APIS: Sem Uso<br>01.12 - No Bloco APIS: Todas as Infos (run_geacs_todas_infos)',
             [T('prox_acao = Assinar o memo correspondente e encaminhar<br><span style="font-weight:normal">quem assina coloca o "Aguarda" (.1) e remove o "No Bloco"</span>')],
             largura=LARGURA_PRINCIPAL,
         ),
@@ -320,8 +320,8 @@ col_tratar = Coluna(
             largura=LARGURA_PRINCIPAL,
         ),
         P(
-            'Estado de conclusão?<br>versão anterior: 01.10 - Concluído: Memos DISA e DEPROC',
-            [T('<b>Concluído</b>, prox_acao = assinar os memos DISA e DEPROC')],
+            'Estado de conclusão?<br>01.12.1 - Encaminhado APIS: Todas as Infos (manual)<br>versão anterior: 01.10 - Concluído: Memos DISA e DEPROC',
+            [T('<b>Concluído</b>, prox_acao = Memo à APIS (todas as informações) encaminhado (concluído)<br>versão anterior: assinar os memos DISA e DEPROC')],
             largura=LARGURA_PRINCIPAL,
         ),
         P(
@@ -613,6 +613,7 @@ marcadores = N(
     '★ 01.09 - No Bloco DISA: Relat. s/ MANTIS<br>'
     '★ 01.10 - No Bloco DEPROC: Coparticipação<br>'
     '★ 01.10 - No Bloco APIS: Sem Uso<br>'
+    '★ 01.12 - No Bloco APIS: Todas as Infos (run_geacs_todas_infos)<br>'
     '<i>Manuais, depois da assinatura (quem coloca remove o "No Bloco"):</i><br>'
     '★ 01.05.1 - Aguarda APIS: Sem Memo p/ GEACS<br>'
     '★ 01.05.1 - Aguarda APIS: Formato Inválido<br>'
@@ -623,6 +624,7 @@ marcadores = N(
     '★ 01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br>'
     '★ 01.10.1 - Aguarda DEPROC: Coparticipação<br>'
     '★ 01.10.1 - Aguarda APIS: Sem Uso<br>'
+    '★ 01.12.1 - Encaminhado APIS: Todas as Infos (conclusão)<br>'
     '<i>Versão anterior:<br>'
     '01.06.2 / 01.08.2 / 01.08.3 - Usou / Não Usou RP e RC (não são mais adicionados)<br>'
     '01.02 - Avaliado Se Usou Rede Própria<br>'
@@ -901,10 +903,10 @@ col_copa = Coluna(
         P('Sem Incluir Documento?', [E('<b>ProcessoFechadoNoSetor</b>: não está aberto na DEPROC (não reabre)')]),
         F('garantir_marcadores_no_sei()', 'Os três que o script adiciona (TAGS_DEPROC): 01, 01.01 e 01.02'),
         F('listar_documentos_arvore() · obter_dados_ui()', 'Último memo da APIS destinado à GEACS (define a rodada). Sem memo ou formato inválido: erro'),
-        F('_memo_deproc_assinado()', 'Memo DEPROC da GEACS na rodada (PADRAO_ASSUNTO_MEMO_DEPROC), assinado por Bruna Miiller Lavarini. Sem o memo ou sem a assinatura: erro'),
+        F('_memo_deproc_assinado()', 'Memo DEPROC da GEACS na rodada (PADRAO_ASSUNTO_MEMO_DEPROC), assinado por Gustavo Amaral Bernardino (ou, nos anteriores, Bruna Miiller Lavarini). Sem o memo ou sem a assinatura: erro'),
         F(
             'apurar_coparticipacao()',
-            'Linhas com SEI = processo; confere as matrículas com o memo da APIS (MatriculasDivergentes); filtra pelo período de apuração. Nenhuma linha: erro',
+            'Linhas com SEI = processo; confere as matrículas com o memo da APIS (MatriculasDivergentes); mantém só as linhas com VALOR_BASE_COPA diferente de 0; filtra pelo período de apuração. Nenhuma linha: erro',
         ),
         F(
             '_conferir_configuracao()',
@@ -938,12 +940,17 @@ col_excluir_loop = col_loop(
 _erro_segue(col_excluir_loop, 6)
 col_excluir = Coluna(
     '2 · excluir_docs_deproc()',
-    'Exclui todos os documentos da IPSEMG/DEPROC-Utilização do processo. Não lê nem adiciona marcadores',
+    'Exclui só os documentos da IPSEMG/DEPROC-Utilização gerados pelo deproc_calcula_copa (relatório de coparticipação e memo de resultado). Os outros documentos da DEPROC são mantidos. Depois, remove os marcadores da DEPROC. Não adiciona marcadores',
     [
         P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é excluído')]),
         F('listar_documentos_arvore() · filtrar_docs_deproc()', 'Documentos da DEPROC (todos os tipos, não só memorandos)'),
         P('Nenhum documento<br>da DEPROC?', [T('deproc_excluir_docs = "nenhum documento da DEPROC"')]),
-        S('<b>Para cada documento, do último para o primeiro</b> (um documento posterior pode citar o anterior)'),
+        F(
+            '_separar_docs_gerados()',
+            'PDF: nome "PDF Coparticipação - &lt;matrícula&gt; - &lt;AAAAMMDD_HHMMSS&gt;". Memorando: texto (ler_texto_doc) com o assunto do MemoGeacsCalculoCopa ("Retorno do levantamento de coparticipação – ..." ou o anterior, "Coparticipação apurada – ..."). Os outros: mantidos. Memo que não pôde ser lido: não excluído',
+        ),
+        P('Nenhum gerado<br>pelo script?', [T('deproc_excluir_docs = "nenhum documento gerado pelo deproc_calcula_copa"')]),
+        S('<b>Para cada documento gerado, do último para o primeiro</b> (um documento posterior pode citar o anterior)'),
         F('selecionar_doc() · excluir_doc()', 'sei_automacao.documento'),
         P(
             'Falhou?<br>(ex.: assinado)',
@@ -951,11 +958,68 @@ col_excluir = Coluna(
             rotulo='Sim (e segue)',
         ),
         F(
-            '_docs_deproc_restantes()',
+            '_docs_gerados_restantes()',
             'A árvore demora a refletir a exclusão: reabre o processo e relê a árvore até os excluídos sumirem, por até 15 s (TEMPO_CONFERENCIA)',
         ),
-        P('Algum documento da DEPROC<br>ainda na árvore?', [E('<b>ErroAvaliacao</b>: "Documento(s) da DEPROC não excluído(s): ..." (sai dos excluídos)')]),
-        T('deproc_excluir_docs = "&lt;data&gt; | N excluído(s): &lt;nºs SEI&gt;"'),
+        P('Algum documento gerado<br>ainda na árvore?', [E('<b>ErroAvaliacao</b>: "Documento(s) da DEPROC não excluído(s): ...; marcadores da DEPROC mantidos" (sai dos excluídos)')]),
+        F(
+            'remover_marcadores_deproc()',
+            'Lê os marcadores e remove os da DEPROC que o processo tiver (o 01 por último). Os outros ficam. Colunas marcadores_deproc_* e tag_deproc_*',
+            'listar_marcadores() · tags.remover_tag()',
+        ),
+        R('v2: 01.02.1 - Encaminhado GEACS: Memo Cálculo COPA'),
+        R('v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA'),
+        R('v2: 01.01 - Relatório Copart. Anexado'),
+        R('v2: 01 - Tratado pelo Script'),
+        T('deproc_excluir_docs = "&lt;data&gt; | N excluído(s): &lt;nºs SEI&gt; | mantido(s), não gerado(s) pelo script: &lt;nºs SEI&gt; | marcador(es) removido(s): ..."'),
+    ],
+)
+
+# GEACS TODAS INFOS
+col_todas_loop = col_loop(
+    'run_geacs_todas_infos',
+    'geacs_todas_infos',
+    'da GEACS',
+    ' e carrega as bases APIS, DISA, MANTIS e DEPROC',
+    'processar_todas_infos() — coluna 2',
+    'Linha do processo: script, fluxo e prox_acao; colunas memo_calculo_copa_*, caminho_todas_infos, valores_todas_infos, divergencias_todas_infos e memo_apis_todas_infos_*. Os resultados do fluxo inicial ficam como estão',
+)
+_erro_segue(col_todas_loop, 6)
+col_todas = Coluna(
+    '2 · processar_todas_infos()',
+    'Retorno final à APIS depois do retorno da DEPROC (MemoApisComTodasAsInformacoes). Cada valor é lido do SEI e recalculado das bases: se não baterem, nada é criado',
+    [
+        F('listar_marcadores() · conferir_marcadores()', 'As regras do fluxo inicial'),
+        P('Marcadores inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: prox_acao = Verificar marcadores inconsistentes, sem ação')]),
+        P('Com o 01.12 - No Bloco APIS: Todas as Infos?', [T('prox_acao = Assinar memo à APIS (todas as informações) e encaminhar')]),
+        P('Com o 01.12.1 - Encaminhado APIS: Todas as Infos?', [T('prox_acao = Memo à APIS (todas as informações) encaminhado (concluído)')]),
+        P('Sem o 01.10.1 - Aguarda DEPROC: Coparticipação?', [E('<b>SemAguardaDeproc</b>: sem ação')]),
+        P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é criado')]),
+        F('garantir_marcadores_no_sei()', 'O 01.12 cadastrado na GEACS'),
+        F('obter_dados_ui()', 'Último memo da APIS destinado à GEACS: define a rodada'),
+        F(
+            'memo_calculo_copa()',
+            'MemoGeacsCalculoCopa da DEPROC na rodada (pelo assunto), com "assinado eletronicamente por". Sem ele ou sem assinatura: erro',
+        ),
+        F('identificar_caminho()', 'Memo da GEACS à DISA (um dos 3 assuntos) na rodada?'),
+        P(
+            'Passou pela DISA?',
+            [
+                E('Sem documento da IPSEMG/DISA depois do memo: <b>RespostaDisaPendente</b>'),
+                E('Com resposta: <b>LeituraDisaNaoImplementada</b> (TODO: ler a rede própria da resposta da DISA)'),
+            ],
+        ),
+        F(
+            'apurar_todas_infos()',
+            'Coparticipação: tabela do memo da DEPROC x base DEPROC (apurar_coparticipacao). RC/RP: TOTAL de cada PDF do MANTIS da rodada (baixado e lido com pypdf) x bases do MANTIS no período. Uso da RP sem DISA, PDF faltando ou sobrando: divergência',
+            'ler_coparticipacao_do_memo() · recalcular_mantis() · baixar_pdf() · total_do_pdf()',
+        ),
+        P('Algum valor diverge?', [E('<b>ValoresDivergentes</b>: coluna divergencias_todas_infos, nada é criado')]),
+        F('montar_beneficiarios()', 'Titular e dependentes: iniciais / matrícula, RC, RP, coparticipação e o PDF de cada rede. Detalhamento da coparticipação: relatório da DEPROC (sem coparticipação: o memo da DEPROC)'),
+        MEMO('MemoApisComTodasAsInformacoes', 7768786),
+        F('incluir_memo()', 'Retomada: memo já na rodada (pelo assunto) não é recriado'),
+        M('v2: 01.12 - No Bloco APIS: Todas as Infos (↻ remove o 01.10.1)'),
+        T('prox_acao = Assinar memo à APIS (todas as informações) e encaminhar. Depois da assinatura, manual: ➕ 01.12.1 - Encaminhado APIS: Todas as Infos, ➖ 01.12'),
     ],
 )
 
@@ -1111,6 +1175,13 @@ abas = [
         [col_verif_loop, col_verif],
     ),
     pagina(
+        'geacs-todas-infos',
+        'geacs_todas_infos',
+        'run_geacs_todas_infos · Retorno final à APIS com todas as informações (main_geacs_todas_infos.py)',
+        f'Na unidade da GEACS, depois do retorno da DEPROC (01.10.1). Caminho pela DISA: TODO. {LEIA}',
+        [col_todas_loop, col_todas],
+    ),
+    pagina(
         'deproc-calcula-copa',
         'deproc_calcula_copa',
         'run_deproc_calcula_copa · Cálculo da coparticipação na DEPROC (main_deproc_calcula_copa.py)',
@@ -1120,8 +1191,8 @@ abas = [
     pagina(
         'deproc-excluir-docs',
         'deproc_excluir_docs',
-        'run_deproc_excluir_docs · Excluir os documentos da DEPROC (main_deproc_excluir_docs.py)',
-        f'Na unidade da DEPROC. Não altera a prox_acao (coluna própria deproc_excluir_docs). {LEIA}',
+        'run_deproc_excluir_docs · Excluir os documentos da DEPROC gerados pelo script (main_deproc_excluir_docs.py)',
+        f'Na unidade da DEPROC. Remove os marcadores da DEPROC. Não altera a prox_acao (coluna própria deproc_excluir_docs). {LEIA}',
         [col_excluir_loop, col_excluir],
     ),
 ]

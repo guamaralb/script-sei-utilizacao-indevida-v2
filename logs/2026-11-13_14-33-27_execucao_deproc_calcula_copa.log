@@ -1,0 +1,41 @@
+2026-11-13 14:33:27 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC - COPARTICIPAÇÃO) =================
+2026-11-13 14:33:27 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-13_14-33-27_execucao_deproc_calcula_copa.log
+2026-11-13 14:33:27 | INFO    | -                         | __main__              | Data de geração da base DEPROC: 06/11/2026
+2026-11-13 14:33:27 | INFO    | -                         | processos_a_processar | 1 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_calcula_copa
+2026-11-13 14:33:30 | INFO    | -                         | coparticipacao_deproc | Base DEPROC carregada: 20498 linha(s), 195 processo(s) (Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx, aba Resultado)
+2026-11-13 14:33:32 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-13 14:33:32 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-13 14:33:33 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-13 14:33:47 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-13 14:33:47 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/DEPROC-Utilização
+2026-11-13 14:33:48 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/DEPROC-Utilização
+2026-11-13 14:33:48 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [1/1]
+2026-11-13 14:33:50 | INFO    | 2010.01.0072726/2024-45   | __main__              | Marcadores: nenhum
+2026-11-13 14:33:55 | INFO    | 2010.01.0072726/2024-45   | marcadores_disponiveis | Marcadores cadastrados na unidade: 6
+2026-11-13 14:33:59 | INFO    | 2010.01.0072726/2024-45   | __main__              | Árvore: 21 documento(s)
+2026-11-13 14:33:59 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 1976 (SEI 148865233)
+2026-11-13 14:34:00 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 148865233 lido (2742 caracteres)
+2026-11-13 14:34:00 | INFO    | 2010.01.0072726/2024-45   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1976 (SEI 148865233)']
+2026-11-13 14:34:00 | INFO    | 2010.01.0072726/2024-45   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3222588-1 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 3457152; 3457153; 3472847 | Período variável p/ dependentes: não
+2026-11-13 14:34:00 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-13 14:34:00 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 2348 (SEI 153541364)
+2026-11-13 14:34:02 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 153541364 lido (2579 caracteres)
+2026-11-13 14:34:02 | INFO    | 2010.01.0072726/2024-45   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2348 (SEI 153541364)
+2026-11-13 14:34:02 | INFO    | 2010.01.0072726/2024-45   | __main__              | Memo DEPROC da GEACS assinado: 153541364
+2026-11-13 14:34:02 | INFO    | 2010.01.0072726/2024-45   | coparticipacao_deproc | Base DEPROC: 357 linha(s) do processo, 11 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 346 atendimento(s) | Coparticipação R$ 2529.52 | Descontado R$ 0.00 | Em aberto R$ 2529.52
+2026-11-13 14:34:07 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:34:29 | INFO    | 2010.01.0072726/2024-45   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 32225881 - 20261113_143407 (153667378)
+2026-11-13 14:34:35 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-13 14:35:00 | INFO    | 2010.01.0072726/2024-45   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-13 14:35:04 | INFO    | 2010.01.0072726/2024-45   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-13 14:35:11 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:35:15 | INFO    | 2010.01.0072726/2024-45   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-13 14:35:18 | INFO    | 2010.01.0072726/2024-45   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 120 (SEI 153667437)']
+2026-11-13 14:35:18 | INFO    | 2010.01.0072726/2024-45   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-13_14-33-27.xlsx
+2026-11-13 14:35:31 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-13 14:35:31 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (0h01m43s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-13 14:35:31 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-13 14:35:31 | INFO    | -                         | __main__              | Processos: 1 | Sem erro: 1 | Com erro: 0
+2026-11-13 14:35:31 | INFO    | -                         | __main__              |     1 | DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-13 14:35:31 | INFO    | -                         | __main__              | Duração total da execução: 0h02m04s
+2026-11-13 14:35:31 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

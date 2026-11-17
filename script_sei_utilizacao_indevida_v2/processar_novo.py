@@ -295,7 +295,7 @@ def _parar_nao_encontradas_base_apis(driver: webdriver.Remote, registro: Registr
 # ---------------------------------------------------------------------------
 
 
-def _sem_dependentes(dados_ui: DadosUI, ignorados: tuple[str, ...]) -> DadosUI:
+def sem_dependentes(dados_ui: DadosUI, ignorados: tuple[str, ...]) -> DadosUI:
     """Os dados do memo da APIS sem os dependentes ignorados (matrículas
     normalizadas, como no memo). As demais matrículas ficam como no memo."""
     partes = [p.strip() for p in (dados_ui.matriculas_dependentes or '').split(';') if p.strip()]
@@ -346,7 +346,7 @@ def _verificar_base_apis(
         logger.info(f'Dependente(s) fora da base APIS, procurados no MANTIS dos dependentes não encontrados: {", ".join(localizados)}')
     if ignorados:
         logger.warning(f'Dependente(s) fora da base APIS e do MANTIS dos dependentes não encontrados: {", ".join(ignorados)}. Ignorado(s) no restante do fluxo')
-        dados_ui = _sem_dependentes(dados_ui, ignorados)
+        dados_ui = sem_dependentes(dados_ui, ignorados)
         matriculas = verificar_base_apis(dados_ui.matricula_titular, dados_ui.matriculas_dependentes, bases)
     garantir_marcadores_no_sei(driver, [TAG_MAT_NAO_ENCONTRADAS_APIS])
     adicionar_tag_se_ausente(driver, registro, TAG_MAT_NAO_ENCONTRADAS_APIS)

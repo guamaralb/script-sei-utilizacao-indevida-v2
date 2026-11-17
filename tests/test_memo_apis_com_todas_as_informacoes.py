@@ -44,10 +44,14 @@ def test_formatar_reais(valor, esperado):
 
 def test_tabela_de_valores_com_totais():
     assert _linhas(_html())[1:4] == [
-        ['Titular – 1234567', 'R$ 1.000,00', 'R$ 234,50', 'R$ 1.234,50', 'R$ 100,00'],
-        ['Dependente – 555', 'R$ 500,25', 'R$ 0,00', 'R$ 500,25', 'R$ 50,10'],
-        ['Total', 'R$ 1.500,25', 'R$ 234,50', 'R$ 1.734,75', 'R$ 150,10'],
+        ['Titular – 1234567', 'R$ 1.000,00', 'R$ 234,50', 'R$ 1.234,50', 'R$ 100,00', 'R$ 1.334,50'],
+        ['Dependente – 555', 'R$ 500,25', 'R$ 0,00', 'R$ 500,25', 'R$ 50,10', 'R$ 550,35'],
+        ['Total', 'R$ 1.500,25', 'R$ 234,50', 'R$ 1.734,75', 'R$ 150,10', 'R$ 1.884,85'],
     ]
+
+
+def test_tabela_de_valores_tem_coluna_total_geral():
+    assert _linhas(_html())[0][-1] == 'Total geral'
 
 
 def test_tabela_de_demonstrativos_sem_documento_mostra_traco():

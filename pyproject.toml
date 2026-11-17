@@ -16,6 +16,7 @@ selenium = "^4.39.0"
 python-dotenv = "^1.2.1"
 reportlab = "^4.4.10"
 sei-automacao = { path = "../sei-automacao", develop = true }
+pypdf = "^5.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -45,6 +46,11 @@ run_geacs_resp_disa = 'python script_sei_utilizacao_indevida_v2/main_geacs_resp_
 pre_run_geacs_resp_disa = {cmd = "poetry run task format"}
 run_geacs_resp_deproc = 'python script_sei_utilizacao_indevida_v2/main_geacs_resp_deproc.py'
 pre_run_geacs_resp_deproc = {cmd = "poetry run task format"}
+
+# RETORNO FINAL À APIS (DEPOIS DO RETORNO DA DEPROC): MEMO À APIS COM TODAS AS
+# INFORMAÇÕES (UTILIZAÇÃO DAS REDES E COPARTICIPAÇÃO)
+run_geacs_todas_infos = 'python script_sei_utilizacao_indevida_v2/main_geacs_todas_infos.py'
+pre_run_geacs_todas_infos = {cmd = "poetry run task format"}
 
 # ADICIONA PDF DA PLANILHA ANTIGA - AUTOMÁTICO: BAIXA A PLANILHA DO SEI E ADD
 # PDF NO PROCESSO

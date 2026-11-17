@@ -1,0 +1,651 @@
+2026-11-13 14:42:12 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC EXCLUIR DOCS - EXCLUIR DOCUMENTOS DA DEPROC) =================
+2026-11-13 14:42:12 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-13_14-42-12_execucao_deproc_excluir_docs.log
+2026-11-13 14:42:12 | INFO    | -                         | processos_a_processar | 53 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_excluir_docs
+2026-11-13 14:42:14 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-13 14:42:14 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-13 14:42:14 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-13 14:42:30 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-13 14:42:30 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/DEPROC-Utilização
+2026-11-13 14:42:36 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/DEPROC-Utilização
+2026-11-13 14:42:36 | INFO    | 2010.01.0076221/2024-61   | __main__              | INÍCIO [1/53]
+2026-11-13 14:42:41 | INFO    | 2010.01.0076221/2024-61   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 33861056 - 20261112_175908 (SEI 153594664)', 'Memorando 116 (SEI 153594732)']
+2026-11-13 14:42:41 | DEBUG   | 2010.01.0076221/2024-61   | docs_processo         | Lendo documento Memorando 116 (SEI 153594732)
+2026-11-13 14:42:44 | DEBUG   | 2010.01.0076221/2024-61   | docs_processo         | Documento 153594732 lido (2588 caracteres)
+2026-11-13 14:42:44 | INFO    | 2010.01.0076221/2024-61   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 33861056 - 20261112_175908 (SEI 153594664)', 'Memorando 116 (SEI 153594732)']
+2026-11-13 14:42:47 | INFO    | 2010.01.0076221/2024-61   | __main__              | Documento excluído: Memorando 116 (SEI 153594732)
+2026-11-13 14:42:50 | INFO    | 2010.01.0076221/2024-61   | __main__              | Documento excluído: PDF Coparticipação - 33861056 - 20261112_175908 (SEI 153594664)
+2026-11-13 14:42:53 | INFO    | 2010.01.0076221/2024-61   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:42:58 | INFO    | 2010.01.0076221/2024-61   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:43:04 | INFO    | 2010.01.0076221/2024-61   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:43:04 | INFO    | 2010.01.0076221/2024-61   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-13_14-42-12.xlsx
+2026-11-13 14:43:15 | DEBUG   | 2010.01.0076221/2024-61   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-13 14:43:15 | INFO    | 2010.01.0076221/2024-61   | __main__              | FIM (38.8s) | Próxima ação: -
+2026-11-13 14:43:15 | INFO    | 2010.01.0049941/2025-63   | __main__              | INÍCIO [2/53]
+2026-11-13 14:43:20 | INFO    | 2010.01.0049941/2025-63   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35564113 - 20261112_175647 (SEI 153594477)', 'Memorando 113 (SEI 153594613)']
+2026-11-13 14:43:20 | DEBUG   | 2010.01.0049941/2025-63   | docs_processo         | Lendo documento Memorando 113 (SEI 153594613)
+2026-11-13 14:43:23 | DEBUG   | 2010.01.0049941/2025-63   | docs_processo         | Documento 153594613 lido (2699 caracteres)
+2026-11-13 14:43:23 | INFO    | 2010.01.0049941/2025-63   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35564113 - 20261112_175647 (SEI 153594477)', 'Memorando 113 (SEI 153594613)']
+2026-11-13 14:43:30 | INFO    | 2010.01.0049941/2025-63   | __main__              | Documento excluído: Memorando 113 (SEI 153594613)
+2026-11-13 14:43:33 | INFO    | 2010.01.0049941/2025-63   | __main__              | Documento excluído: PDF Coparticipação - 35564113 - 20261112_175647 (SEI 153594477)
+2026-11-13 14:43:41 | INFO    | 2010.01.0049941/2025-63   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:43:46 | INFO    | 2010.01.0049941/2025-63   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:43:51 | INFO    | 2010.01.0049941/2025-63   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:44:02 | DEBUG   | 2010.01.0049941/2025-63   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-13 14:44:02 | INFO    | 2010.01.0049941/2025-63   | __main__              | FIM (47.3s) | Próxima ação: -
+2026-11-13 14:44:02 | INFO    | 2010.01.0049537/2025-10   | __main__              | INÍCIO [3/53]
+2026-11-13 14:44:07 | INFO    | 2010.01.0049537/2025-10   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 32155433 - 20261112_175600 (SEI 153594467)', 'Memorando 112 (SEI 153594469)']
+2026-11-13 14:44:07 | DEBUG   | 2010.01.0049537/2025-10   | docs_processo         | Lendo documento Memorando 112 (SEI 153594469)
+2026-11-13 14:44:09 | DEBUG   | 2010.01.0049537/2025-10   | docs_processo         | Documento 153594469 lido (2707 caracteres)
+2026-11-13 14:44:09 | INFO    | 2010.01.0049537/2025-10   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 32155433 - 20261112_175600 (SEI 153594467)', 'Memorando 112 (SEI 153594469)']
+2026-11-13 14:44:12 | INFO    | 2010.01.0049537/2025-10   | __main__              | Documento excluído: Memorando 112 (SEI 153594469)
+2026-11-13 14:44:15 | INFO    | 2010.01.0049537/2025-10   | __main__              | Documento excluído: PDF Coparticipação - 32155433 - 20261112_175600 (SEI 153594467)
+2026-11-13 14:44:23 | INFO    | 2010.01.0049537/2025-10   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:44:28 | INFO    | 2010.01.0049537/2025-10   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:44:34 | INFO    | 2010.01.0049537/2025-10   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:44:46 | DEBUG   | 2010.01.0049537/2025-10   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-13 14:44:46 | INFO    | 2010.01.0049537/2025-10   | __main__              | FIM (43.5s) | Próxima ação: -
+2026-11-13 14:44:46 | INFO    | 2010.01.0071453/2024-78   | __main__              | INÍCIO [4/53]
+2026-11-13 14:44:50 | INFO    | 2010.01.0071453/2024-78   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 31732577 - 20261112_175426 (SEI 153594529)', 'Memorando 110 (SEI 153594533)']
+2026-11-13 14:44:50 | DEBUG   | 2010.01.0071453/2024-78   | docs_processo         | Lendo documento Memorando 110 (SEI 153594533)
+2026-11-13 14:44:52 | DEBUG   | 2010.01.0071453/2024-78   | docs_processo         | Documento 153594533 lido (2676 caracteres)
+2026-11-13 14:44:52 | INFO    | 2010.01.0071453/2024-78   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 31732577 - 20261112_175426 (SEI 153594529)', 'Memorando 110 (SEI 153594533)']
+2026-11-13 14:44:56 | INFO    | 2010.01.0071453/2024-78   | __main__              | Documento excluído: Memorando 110 (SEI 153594533)
+2026-11-13 14:45:00 | INFO    | 2010.01.0071453/2024-78   | __main__              | Documento excluído: PDF Coparticipação - 31732577 - 20261112_175426 (SEI 153594529)
+2026-11-13 14:45:03 | INFO    | 2010.01.0071453/2024-78   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:45:08 | INFO    | 2010.01.0071453/2024-78   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:45:14 | INFO    | 2010.01.0071453/2024-78   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:45:26 | DEBUG   | 2010.01.0071453/2024-78   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-13 14:45:26 | INFO    | 2010.01.0071453/2024-78   | __main__              | FIM (39.9s) | Próxima ação: -
+2026-11-13 14:45:26 | INFO    | 2010.01.0050790/2025-32   | __main__              | INÍCIO [5/53]
+2026-11-13 14:45:30 | INFO    | 2010.01.0050790/2025-32   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 38975262 - 20261112_175339 (SEI 153594442)', 'Memorando 109 (SEI 153594513)']
+2026-11-13 14:45:30 | DEBUG   | 2010.01.0050790/2025-32   | docs_processo         | Lendo documento Memorando 109 (SEI 153594513)
+2026-11-13 14:45:32 | DEBUG   | 2010.01.0050790/2025-32   | docs_processo         | Documento 153594513 lido (2588 caracteres)
+2026-11-13 14:45:32 | INFO    | 2010.01.0050790/2025-32   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 38975262 - 20261112_175339 (SEI 153594442)', 'Memorando 109 (SEI 153594513)']
+2026-11-13 14:45:34 | INFO    | 2010.01.0050790/2025-32   | __main__              | Documento excluído: Memorando 109 (SEI 153594513)
+2026-11-13 14:45:37 | INFO    | 2010.01.0050790/2025-32   | __main__              | Documento excluído: PDF Coparticipação - 38975262 - 20261112_175339 (SEI 153594442)
+2026-11-13 14:45:40 | INFO    | 2010.01.0050790/2025-32   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:45:45 | INFO    | 2010.01.0050790/2025-32   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:45:50 | INFO    | 2010.01.0050790/2025-32   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:46:03 | DEBUG   | 2010.01.0050790/2025-32   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-13 14:46:03 | INFO    | 2010.01.0050790/2025-32   | __main__              | FIM (37.5s) | Próxima ação: -
+2026-11-13 14:46:03 | INFO    | 2010.01.0071455/2024-24   | __main__              | INÍCIO [6/53]
+2026-11-13 14:46:07 | INFO    | 2010.01.0071455/2024-24   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35415100 - 20261112_175250 (SEI 153594480)', 'Memorando 108 (SEI 153594487)']
+2026-11-13 14:46:07 | DEBUG   | 2010.01.0071455/2024-24   | docs_processo         | Lendo documento Memorando 108 (SEI 153594487)
+2026-11-13 14:46:09 | DEBUG   | 2010.01.0071455/2024-24   | docs_processo         | Documento 153594487 lido (2588 caracteres)
+2026-11-13 14:46:09 | INFO    | 2010.01.0071455/2024-24   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35415100 - 20261112_175250 (SEI 153594480)', 'Memorando 108 (SEI 153594487)']
+2026-11-13 14:46:17 | INFO    | 2010.01.0071455/2024-24   | __main__              | Documento excluído: Memorando 108 (SEI 153594487)
+2026-11-13 14:46:19 | INFO    | 2010.01.0071455/2024-24   | __main__              | Documento excluído: PDF Coparticipação - 35415100 - 20261112_175250 (SEI 153594480)
+2026-11-13 14:46:27 | INFO    | 2010.01.0071455/2024-24   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:46:32 | INFO    | 2010.01.0071455/2024-24   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:46:37 | INFO    | 2010.01.0071455/2024-24   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:46:49 | DEBUG   | 2010.01.0071455/2024-24   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-13 14:46:49 | INFO    | 2010.01.0071455/2024-24   | __main__              | FIM (46.1s) | Próxima ação: -
+2026-11-13 14:46:49 | INFO    | 2010.01.0053750/2025-40   | __main__              | INÍCIO [7/53]
+2026-11-13 14:46:55 | INFO    | 2010.01.0053750/2025-40   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 25711806 - 20261112_173707 (SEI 153593417)', 'Memorando 107 (SEI 153593347)']
+2026-11-13 14:46:55 | DEBUG   | 2010.01.0053750/2025-40   | docs_processo         | Lendo documento Memorando 107 (SEI 153593347)
+2026-11-13 14:46:57 | DEBUG   | 2010.01.0053750/2025-40   | docs_processo         | Documento 153593347 lido (2588 caracteres)
+2026-11-13 14:46:57 | INFO    | 2010.01.0053750/2025-40   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 25711806 - 20261112_173707 (SEI 153593417)', 'Memorando 107 (SEI 153593347)']
+2026-11-13 14:47:04 | INFO    | 2010.01.0053750/2025-40   | __main__              | Documento excluído: Memorando 107 (SEI 153593347)
+2026-11-13 14:47:06 | INFO    | 2010.01.0053750/2025-40   | __main__              | Documento excluído: PDF Coparticipação - 25711806 - 20261112_173707 (SEI 153593417)
+2026-11-13 14:47:15 | INFO    | 2010.01.0053750/2025-40   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:47:20 | INFO    | 2010.01.0053750/2025-40   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:47:24 | INFO    | 2010.01.0053750/2025-40   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:47:36 | DEBUG   | 2010.01.0053750/2025-40   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-13 14:47:36 | INFO    | 2010.01.0053750/2025-40   | __main__              | FIM (47.0s) | Próxima ação: -
+2026-11-13 14:47:36 | INFO    | 2010.01.0053686/2025-22   | __main__              | INÍCIO [8/53]
+2026-11-13 14:47:42 | INFO    | 2010.01.0053686/2025-22   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 29876940 - 20261112_173532 (SEI 153593303)', 'Memorando 105 (SEI 153593215)']
+2026-11-13 14:47:42 | DEBUG   | 2010.01.0053686/2025-22   | docs_processo         | Lendo documento Memorando 105 (SEI 153593215)
+2026-11-13 14:47:44 | DEBUG   | 2010.01.0053686/2025-22   | docs_processo         | Documento 153593215 lido (2590 caracteres)
+2026-11-13 14:47:44 | INFO    | 2010.01.0053686/2025-22   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 29876940 - 20261112_173532 (SEI 153593303)', 'Memorando 105 (SEI 153593215)']
+2026-11-13 14:47:51 | INFO    | 2010.01.0053686/2025-22   | __main__              | Documento excluído: Memorando 105 (SEI 153593215)
+2026-11-13 14:47:54 | INFO    | 2010.01.0053686/2025-22   | __main__              | Documento excluído: PDF Coparticipação - 29876940 - 20261112_173532 (SEI 153593303)
+2026-11-13 14:47:58 | INFO    | 2010.01.0053686/2025-22   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:48:02 | INFO    | 2010.01.0053686/2025-22   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:48:06 | INFO    | 2010.01.0053686/2025-22   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:48:19 | DEBUG   | 2010.01.0053686/2025-22   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-13 14:48:19 | INFO    | 2010.01.0053686/2025-22   | __main__              | FIM (42.9s) | Próxima ação: -
+2026-11-13 14:48:19 | INFO    | 2010.01.0053751/2025-13   | __main__              | INÍCIO [9/53]
+2026-11-13 14:48:25 | INFO    | 2010.01.0053751/2025-13   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 11843187 - 20261112_173358 (SEI 153593095)', 'Memorando 103 (SEI 153593140)']
+2026-11-13 14:48:25 | DEBUG   | 2010.01.0053751/2025-13   | docs_processo         | Lendo documento Memorando 103 (SEI 153593140)
+2026-11-13 14:48:27 | DEBUG   | 2010.01.0053751/2025-13   | docs_processo         | Documento 153593140 lido (2588 caracteres)
+2026-11-13 14:48:27 | INFO    | 2010.01.0053751/2025-13   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 11843187 - 20261112_173358 (SEI 153593095)', 'Memorando 103 (SEI 153593140)']
+2026-11-13 14:48:30 | INFO    | 2010.01.0053751/2025-13   | __main__              | Documento excluído: Memorando 103 (SEI 153593140)
+2026-11-13 14:48:32 | INFO    | 2010.01.0053751/2025-13   | __main__              | Documento excluído: PDF Coparticipação - 11843187 - 20261112_173358 (SEI 153593095)
+2026-11-13 14:48:41 | INFO    | 2010.01.0053751/2025-13   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:48:45 | INFO    | 2010.01.0053751/2025-13   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:48:49 | INFO    | 2010.01.0053751/2025-13   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:49:02 | DEBUG   | 2010.01.0053751/2025-13   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-13 14:49:02 | INFO    | 2010.01.0053751/2025-13   | __main__              | FIM (42.8s) | Próxima ação: -
+2026-11-13 14:49:02 | INFO    | 2010.01.0083615/2024-49   | __main__              | INÍCIO [10/53]
+2026-11-13 14:49:06 | INFO    | 2010.01.0083615/2024-49   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 11281308 - 20261112_173219 (SEI 153592954)', 'Memorando 101 (SEI 153592958)']
+2026-11-13 14:49:06 | DEBUG   | 2010.01.0083615/2024-49   | docs_processo         | Lendo documento Memorando 101 (SEI 153592958)
+2026-11-13 14:49:08 | DEBUG   | 2010.01.0083615/2024-49   | docs_processo         | Documento 153592958 lido (2588 caracteres)
+2026-11-13 14:49:08 | INFO    | 2010.01.0083615/2024-49   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 11281308 - 20261112_173219 (SEI 153592954)', 'Memorando 101 (SEI 153592958)']
+2026-11-13 14:49:11 | INFO    | 2010.01.0083615/2024-49   | __main__              | Documento excluído: Memorando 101 (SEI 153592958)
+2026-11-13 14:49:14 | INFO    | 2010.01.0083615/2024-49   | __main__              | Documento excluído: PDF Coparticipação - 11281308 - 20261112_173219 (SEI 153592954)
+2026-11-13 14:49:22 | INFO    | 2010.01.0083615/2024-49   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:49:27 | INFO    | 2010.01.0083615/2024-49   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:49:32 | INFO    | 2010.01.0083615/2024-49   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:49:44 | DEBUG   | 2010.01.0083615/2024-49   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-13 14:49:44 | INFO    | 2010.01.0083615/2024-49   | __main__              | FIM (42.0s) | Próxima ação: -
+2026-11-13 14:49:44 | INFO    | 2010.01.0053656/2025-56   | __main__              | INÍCIO [11/53]
+2026-11-13 14:49:49 | INFO    | 2010.01.0053656/2025-56   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 32605234 - 20261112_173133 (SEI 153592927)', 'Memorando 100 (SEI 153592929)']
+2026-11-13 14:49:49 | DEBUG   | 2010.01.0053656/2025-56   | docs_processo         | Lendo documento Memorando 100 (SEI 153592929)
+2026-11-13 14:49:51 | DEBUG   | 2010.01.0053656/2025-56   | docs_processo         | Documento 153592929 lido (2627 caracteres)
+2026-11-13 14:49:51 | INFO    | 2010.01.0053656/2025-56   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 32605234 - 20261112_173133 (SEI 153592927)', 'Memorando 100 (SEI 153592929)']
+2026-11-13 14:49:58 | INFO    | 2010.01.0053656/2025-56   | __main__              | Documento excluído: Memorando 100 (SEI 153592929)
+2026-11-13 14:50:02 | INFO    | 2010.01.0053656/2025-56   | __main__              | Documento excluído: PDF Coparticipação - 32605234 - 20261112_173133 (SEI 153592927)
+2026-11-13 14:50:11 | INFO    | 2010.01.0053656/2025-56   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:50:16 | INFO    | 2010.01.0053656/2025-56   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:50:21 | INFO    | 2010.01.0053656/2025-56   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:50:34 | DEBUG   | 2010.01.0053656/2025-56   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-13 14:50:34 | INFO    | 2010.01.0053656/2025-56   | __main__              | FIM (50.1s) | Próxima ação: -
+2026-11-13 14:50:34 | INFO    | 2010.01.0083408/2024-12   | __main__              | INÍCIO [12/53]
+2026-11-13 14:50:39 | INFO    | 2010.01.0083408/2024-12   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 17818176 - 20261112_173046 (SEI 153592823)', 'Memorando 99 (SEI 153592889)']
+2026-11-13 14:50:39 | DEBUG   | 2010.01.0083408/2024-12   | docs_processo         | Lendo documento Memorando 99 (SEI 153592889)
+2026-11-13 14:50:41 | DEBUG   | 2010.01.0083408/2024-12   | docs_processo         | Documento 153592889 lido (2623 caracteres)
+2026-11-13 14:50:41 | INFO    | 2010.01.0083408/2024-12   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 17818176 - 20261112_173046 (SEI 153592823)', 'Memorando 99 (SEI 153592889)']
+2026-11-13 14:50:47 | INFO    | 2010.01.0083408/2024-12   | __main__              | Documento excluído: Memorando 99 (SEI 153592889)
+2026-11-13 14:50:51 | INFO    | 2010.01.0083408/2024-12   | __main__              | Documento excluído: PDF Coparticipação - 17818176 - 20261112_173046 (SEI 153592823)
+2026-11-13 14:50:59 | INFO    | 2010.01.0083408/2024-12   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:51:06 | INFO    | 2010.01.0083408/2024-12   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:51:11 | INFO    | 2010.01.0083408/2024-12   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:51:24 | DEBUG   | 2010.01.0083408/2024-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-13 14:51:24 | INFO    | 2010.01.0083408/2024-12   | __main__              | FIM (50.5s) | Próxima ação: -
+2026-11-13 14:51:24 | INFO    | 2010.01.0053659/2025-72   | __main__              | INÍCIO [13/53]
+2026-11-13 14:51:30 | INFO    | 2010.01.0053659/2025-72   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 32560150 - 20261112_172825 (SEI 153592663)', 'Memorando 96 (SEI 153592667)']
+2026-11-13 14:51:30 | DEBUG   | 2010.01.0053659/2025-72   | docs_processo         | Lendo documento Memorando 96 (SEI 153592667)
+2026-11-13 14:51:32 | DEBUG   | 2010.01.0053659/2025-72   | docs_processo         | Documento 153592667 lido (2670 caracteres)
+2026-11-13 14:51:32 | INFO    | 2010.01.0053659/2025-72   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 32560150 - 20261112_172825 (SEI 153592663)', 'Memorando 96 (SEI 153592667)']
+2026-11-13 14:51:36 | INFO    | 2010.01.0053659/2025-72   | __main__              | Documento excluído: Memorando 96 (SEI 153592667)
+2026-11-13 14:51:38 | INFO    | 2010.01.0053659/2025-72   | __main__              | Documento excluído: PDF Coparticipação - 32560150 - 20261112_172825 (SEI 153592663)
+2026-11-13 14:51:47 | INFO    | 2010.01.0053659/2025-72   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:51:52 | INFO    | 2010.01.0053659/2025-72   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:51:57 | INFO    | 2010.01.0053659/2025-72   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:52:09 | DEBUG   | 2010.01.0053659/2025-72   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-13 14:52:09 | INFO    | 2010.01.0053659/2025-72   | __main__              | FIM (44.6s) | Próxima ação: -
+2026-11-13 14:52:09 | INFO    | 2010.01.0053517/2025-26   | __main__              | INÍCIO [14/53]
+2026-11-13 14:52:15 | INFO    | 2010.01.0053517/2025-26   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 33843937 - 20261112_172735 (SEI 153592576)', 'Memorando 95 (SEI 153592632)']
+2026-11-13 14:52:15 | DEBUG   | 2010.01.0053517/2025-26   | docs_processo         | Lendo documento Memorando 95 (SEI 153592632)
+2026-11-13 14:52:17 | DEBUG   | 2010.01.0053517/2025-26   | docs_processo         | Documento 153592632 lido (2631 caracteres)
+2026-11-13 14:52:17 | INFO    | 2010.01.0053517/2025-26   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 33843937 - 20261112_172735 (SEI 153592576)', 'Memorando 95 (SEI 153592632)']
+2026-11-13 14:52:20 | INFO    | 2010.01.0053517/2025-26   | __main__              | Documento excluído: Memorando 95 (SEI 153592632)
+2026-11-13 14:52:23 | INFO    | 2010.01.0053517/2025-26   | __main__              | Documento excluído: PDF Coparticipação - 33843937 - 20261112_172735 (SEI 153592576)
+2026-11-13 14:52:28 | INFO    | 2010.01.0053517/2025-26   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:52:32 | INFO    | 2010.01.0053517/2025-26   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:52:36 | INFO    | 2010.01.0053517/2025-26   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:52:48 | DEBUG   | 2010.01.0053517/2025-26   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-13 14:52:48 | INFO    | 2010.01.0053517/2025-26   | __main__              | FIM (38.8s) | Próxima ação: -
+2026-11-13 14:52:48 | INFO    | 2010.01.0053131/2025-69   | __main__              | INÍCIO [15/53]
+2026-11-13 14:52:54 | INFO    | 2010.01.0053131/2025-69   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 22873945 - 20261112_172508 (SEI 153592312)', 'Memorando 92 (SEI 153592318)']
+2026-11-13 14:52:54 | DEBUG   | 2010.01.0053131/2025-69   | docs_processo         | Lendo documento Memorando 92 (SEI 153592318)
+2026-11-13 14:52:56 | DEBUG   | 2010.01.0053131/2025-69   | docs_processo         | Documento 153592318 lido (2629 caracteres)
+2026-11-13 14:52:56 | INFO    | 2010.01.0053131/2025-69   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 22873945 - 20261112_172508 (SEI 153592312)', 'Memorando 92 (SEI 153592318)']
+2026-11-13 14:53:03 | INFO    | 2010.01.0053131/2025-69   | __main__              | Documento excluído: Memorando 92 (SEI 153592318)
+2026-11-13 14:53:05 | INFO    | 2010.01.0053131/2025-69   | __main__              | Documento excluído: PDF Coparticipação - 22873945 - 20261112_172508 (SEI 153592312)
+2026-11-13 14:53:10 | INFO    | 2010.01.0053131/2025-69   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:53:15 | INFO    | 2010.01.0053131/2025-69   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:53:20 | INFO    | 2010.01.0053131/2025-69   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:53:33 | DEBUG   | 2010.01.0053131/2025-69   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-13 14:53:33 | INFO    | 2010.01.0053131/2025-69   | __main__              | FIM (45.6s) | Próxima ação: -
+2026-11-13 14:53:33 | INFO    | 2010.01.0083363/2024-63   | __main__              | INÍCIO [16/53]
+2026-11-13 14:53:38 | INFO    | 2010.01.0083363/2024-63   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 21463522 - 20261112_172418 (SEI 153592254)', 'Memorando 91 (SEI 153592268)']
+2026-11-13 14:53:38 | DEBUG   | 2010.01.0083363/2024-63   | docs_processo         | Lendo documento Memorando 91 (SEI 153592268)
+2026-11-13 14:53:40 | DEBUG   | 2010.01.0083363/2024-63   | docs_processo         | Documento 153592268 lido (2629 caracteres)
+2026-11-13 14:53:40 | INFO    | 2010.01.0083363/2024-63   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 21463522 - 20261112_172418 (SEI 153592254)', 'Memorando 91 (SEI 153592268)']
+2026-11-13 14:53:47 | INFO    | 2010.01.0083363/2024-63   | __main__              | Documento excluído: Memorando 91 (SEI 153592268)
+2026-11-13 14:53:50 | INFO    | 2010.01.0083363/2024-63   | __main__              | Documento excluído: PDF Coparticipação - 21463522 - 20261112_172418 (SEI 153592254)
+2026-11-13 14:53:54 | INFO    | 2010.01.0083363/2024-63   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:53:59 | INFO    | 2010.01.0083363/2024-63   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:54:04 | INFO    | 2010.01.0083363/2024-63   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:54:15 | DEBUG   | 2010.01.0083363/2024-63   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-13 14:54:15 | INFO    | 2010.01.0083363/2024-63   | __main__              | FIM (42.0s) | Próxima ação: -
+2026-11-13 14:54:15 | INFO    | 2010.01.0083237/2024-70   | __main__              | INÍCIO [17/53]
+2026-11-13 14:54:20 | INFO    | 2010.01.0083237/2024-70   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 39055434 - 20261112_172331 (SEI 153592104)', 'Memorando 90 (SEI 153592114)']
+2026-11-13 14:54:20 | DEBUG   | 2010.01.0083237/2024-70   | docs_processo         | Lendo documento Memorando 90 (SEI 153592114)
+2026-11-13 14:54:22 | DEBUG   | 2010.01.0083237/2024-70   | docs_processo         | Documento 153592114 lido (2626 caracteres)
+2026-11-13 14:54:22 | INFO    | 2010.01.0083237/2024-70   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 39055434 - 20261112_172331 (SEI 153592104)', 'Memorando 90 (SEI 153592114)']
+2026-11-13 14:54:25 | INFO    | 2010.01.0083237/2024-70   | __main__              | Documento excluído: Memorando 90 (SEI 153592114)
+2026-11-13 14:54:28 | INFO    | 2010.01.0083237/2024-70   | __main__              | Documento excluído: PDF Coparticipação - 39055434 - 20261112_172331 (SEI 153592104)
+2026-11-13 14:54:36 | INFO    | 2010.01.0083237/2024-70   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:54:41 | INFO    | 2010.01.0083237/2024-70   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:54:47 | INFO    | 2010.01.0083237/2024-70   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:54:59 | DEBUG   | 2010.01.0083237/2024-70   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-13 14:54:59 | INFO    | 2010.01.0083237/2024-70   | __main__              | FIM (43.8s) | Próxima ação: -
+2026-11-13 14:54:59 | INFO    | 2010.01.0083216/2024-55   | __main__              | INÍCIO [18/53]
+2026-11-13 14:55:06 | INFO    | 2010.01.0083216/2024-55   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 32231130 - 20261112_172243 (SEI 153592052)', 'Memorando 89 (SEI 153592027)']
+2026-11-13 14:55:06 | DEBUG   | 2010.01.0083216/2024-55   | docs_processo         | Lendo documento Memorando 89 (SEI 153592027)
+2026-11-13 14:55:08 | DEBUG   | 2010.01.0083216/2024-55   | docs_processo         | Documento 153592027 lido (2714 caracteres)
+2026-11-13 14:55:08 | INFO    | 2010.01.0083216/2024-55   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 32231130 - 20261112_172243 (SEI 153592052)', 'Memorando 89 (SEI 153592027)']
+2026-11-13 14:55:11 | INFO    | 2010.01.0083216/2024-55   | __main__              | Documento excluído: Memorando 89 (SEI 153592027)
+2026-11-13 14:55:14 | INFO    | 2010.01.0083216/2024-55   | __main__              | Documento excluído: PDF Coparticipação - 32231130 - 20261112_172243 (SEI 153592052)
+2026-11-13 14:55:19 | INFO    | 2010.01.0083216/2024-55   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:55:23 | INFO    | 2010.01.0083216/2024-55   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:55:28 | INFO    | 2010.01.0083216/2024-55   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:55:41 | DEBUG   | 2010.01.0083216/2024-55   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-13 14:55:41 | INFO    | 2010.01.0083216/2024-55   | __main__              | FIM (41.8s) | Próxima ação: -
+2026-11-13 14:55:41 | INFO    | 2010.01.0083189/2024-08   | __main__              | INÍCIO [19/53]
+2026-11-13 14:55:45 | INFO    | 2010.01.0083189/2024-08   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 39641708 - 20261112_172155 (SEI 153591960)', 'Memorando 88 (SEI 153591969)']
+2026-11-13 14:55:45 | DEBUG   | 2010.01.0083189/2024-08   | docs_processo         | Lendo documento Memorando 88 (SEI 153591969)
+2026-11-13 14:55:47 | DEBUG   | 2010.01.0083189/2024-08   | docs_processo         | Documento 153591969 lido (2589 caracteres)
+2026-11-13 14:55:47 | INFO    | 2010.01.0083189/2024-08   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 39641708 - 20261112_172155 (SEI 153591960)', 'Memorando 88 (SEI 153591969)']
+2026-11-13 14:55:55 | INFO    | 2010.01.0083189/2024-08   | __main__              | Documento excluído: Memorando 88 (SEI 153591969)
+2026-11-13 14:55:59 | INFO    | 2010.01.0083189/2024-08   | __main__              | Documento excluído: PDF Coparticipação - 39641708 - 20261112_172155 (SEI 153591960)
+2026-11-13 14:56:03 | INFO    | 2010.01.0083189/2024-08   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:56:08 | INFO    | 2010.01.0083189/2024-08   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:56:13 | INFO    | 2010.01.0083189/2024-08   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:56:25 | DEBUG   | 2010.01.0083189/2024-08   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-13 14:56:25 | INFO    | 2010.01.0083189/2024-08   | __main__              | FIM (44.2s) | Próxima ação: -
+2026-11-13 14:56:25 | INFO    | 2010.01.0053020/2025-59   | __main__              | INÍCIO [20/53]
+2026-11-13 14:56:31 | INFO    | 2010.01.0053020/2025-59   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 36016276 - 20261112_172016 (SEI 153591793)', 'Memorando 86 (SEI 153591797)']
+2026-11-13 14:56:31 | DEBUG   | 2010.01.0053020/2025-59   | docs_processo         | Lendo documento Memorando 86 (SEI 153591797)
+2026-11-13 14:56:32 | DEBUG   | 2010.01.0053020/2025-59   | docs_processo         | Documento 153591797 lido (2624 caracteres)
+2026-11-13 14:56:32 | INFO    | 2010.01.0053020/2025-59   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 36016276 - 20261112_172016 (SEI 153591793)', 'Memorando 86 (SEI 153591797)']
+2026-11-13 14:56:35 | INFO    | 2010.01.0053020/2025-59   | __main__              | Documento excluído: Memorando 86 (SEI 153591797)
+2026-11-13 14:56:38 | INFO    | 2010.01.0053020/2025-59   | __main__              | Documento excluído: PDF Coparticipação - 36016276 - 20261112_172016 (SEI 153591793)
+2026-11-13 14:56:42 | INFO    | 2010.01.0053020/2025-59   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:56:46 | INFO    | 2010.01.0053020/2025-59   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:56:51 | INFO    | 2010.01.0053020/2025-59   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:57:02 | DEBUG   | 2010.01.0053020/2025-59   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-13 14:57:02 | INFO    | 2010.01.0053020/2025-59   | __main__              | FIM (37.2s) | Próxima ação: -
+2026-11-13 14:57:02 | INFO    | 2010.01.0052775/2025-78   | __main__              | INÍCIO [21/53]
+2026-11-13 14:57:08 | INFO    | 2010.01.0052775/2025-78   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 36546941 - 20261112_171700 (SEI 153591381)', 'Memorando 82 (SEI 153591370)']
+2026-11-13 14:57:08 | DEBUG   | 2010.01.0052775/2025-78   | docs_processo         | Lendo documento Memorando 82 (SEI 153591370)
+2026-11-13 14:57:10 | DEBUG   | 2010.01.0052775/2025-78   | docs_processo         | Documento 153591370 lido (2626 caracteres)
+2026-11-13 14:57:10 | INFO    | 2010.01.0052775/2025-78   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 36546941 - 20261112_171700 (SEI 153591381)', 'Memorando 82 (SEI 153591370)']
+2026-11-13 14:57:18 | INFO    | 2010.01.0052775/2025-78   | __main__              | Documento excluído: Memorando 82 (SEI 153591370)
+2026-11-13 14:57:20 | INFO    | 2010.01.0052775/2025-78   | __main__              | Documento excluído: PDF Coparticipação - 36546941 - 20261112_171700 (SEI 153591381)
+2026-11-13 14:57:25 | INFO    | 2010.01.0052775/2025-78   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:57:29 | INFO    | 2010.01.0052775/2025-78   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:57:34 | INFO    | 2010.01.0052775/2025-78   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:57:46 | DEBUG   | 2010.01.0052775/2025-78   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-13 14:57:46 | INFO    | 2010.01.0052775/2025-78   | __main__              | FIM (43.5s) | Próxima ação: -
+2026-11-13 14:57:46 | INFO    | 2010.01.0052942/2025-31   | __main__              | INÍCIO [22/53]
+2026-11-13 14:57:52 | INFO    | 2010.01.0052942/2025-31   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35942584 - 20261112_171519 (SEI 153591115)', 'Memorando 80 (SEI 153591116)']
+2026-11-13 14:57:52 | DEBUG   | 2010.01.0052942/2025-31   | docs_processo         | Lendo documento Memorando 80 (SEI 153591116)
+2026-11-13 14:57:54 | DEBUG   | 2010.01.0052942/2025-31   | docs_processo         | Documento 153591116 lido (2632 caracteres)
+2026-11-13 14:57:54 | INFO    | 2010.01.0052942/2025-31   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35942584 - 20261112_171519 (SEI 153591115)', 'Memorando 80 (SEI 153591116)']
+2026-11-13 14:58:01 | INFO    | 2010.01.0052942/2025-31   | __main__              | Documento excluído: Memorando 80 (SEI 153591116)
+2026-11-13 14:58:04 | INFO    | 2010.01.0052942/2025-31   | __main__              | Documento excluído: PDF Coparticipação - 35942584 - 20261112_171519 (SEI 153591115)
+2026-11-13 14:58:09 | INFO    | 2010.01.0052942/2025-31   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:58:13 | INFO    | 2010.01.0052942/2025-31   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:58:18 | INFO    | 2010.01.0052942/2025-31   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:58:30 | DEBUG   | 2010.01.0052942/2025-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-13 14:58:30 | INFO    | 2010.01.0052942/2025-31   | __main__              | FIM (44.3s) | Próxima ação: -
+2026-11-13 14:58:30 | INFO    | 2010.01.0052917/2025-27   | __main__              | INÍCIO [23/53]
+2026-11-13 14:58:35 | INFO    | 2010.01.0052917/2025-27   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 13772929 - 20261112_171428 (SEI 153591078)', 'Memorando 79 (SEI 153591017)']
+2026-11-13 14:58:35 | DEBUG   | 2010.01.0052917/2025-27   | docs_processo         | Lendo documento Memorando 79 (SEI 153591017)
+2026-11-13 14:58:37 | DEBUG   | 2010.01.0052917/2025-27   | docs_processo         | Documento 153591017 lido (2630 caracteres)
+2026-11-13 14:58:37 | INFO    | 2010.01.0052917/2025-27   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 13772929 - 20261112_171428 (SEI 153591078)', 'Memorando 79 (SEI 153591017)']
+2026-11-13 14:58:45 | INFO    | 2010.01.0052917/2025-27   | __main__              | Documento excluído: Memorando 79 (SEI 153591017)
+2026-11-13 14:58:48 | INFO    | 2010.01.0052917/2025-27   | __main__              | Documento excluído: PDF Coparticipação - 13772929 - 20261112_171428 (SEI 153591078)
+2026-11-13 14:58:56 | INFO    | 2010.01.0052917/2025-27   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:59:01 | INFO    | 2010.01.0052917/2025-27   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:59:06 | INFO    | 2010.01.0052917/2025-27   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 14:59:18 | DEBUG   | 2010.01.0052917/2025-27   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-13 14:59:18 | INFO    | 2010.01.0052917/2025-27   | __main__              | FIM (47.6s) | Próxima ação: -
+2026-11-13 14:59:18 | INFO    | 2010.01.0052977/2025-56   | __main__              | INÍCIO [24/53]
+2026-11-13 14:59:24 | INFO    | 2010.01.0052977/2025-56   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 37820231 - 20261112_171340 (SEI 153590971)', 'Memorando 78 (SEI 153591030)']
+2026-11-13 14:59:24 | DEBUG   | 2010.01.0052977/2025-56   | docs_processo         | Lendo documento Memorando 78 (SEI 153591030)
+2026-11-13 14:59:26 | DEBUG   | 2010.01.0052977/2025-56   | docs_processo         | Documento 153591030 lido (2624 caracteres)
+2026-11-13 14:59:26 | INFO    | 2010.01.0052977/2025-56   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 37820231 - 20261112_171340 (SEI 153590971)', 'Memorando 78 (SEI 153591030)']
+2026-11-13 14:59:33 | INFO    | 2010.01.0052977/2025-56   | __main__              | Documento excluído: Memorando 78 (SEI 153591030)
+2026-11-13 14:59:35 | INFO    | 2010.01.0052977/2025-56   | __main__              | Documento excluído: PDF Coparticipação - 37820231 - 20261112_171340 (SEI 153590971)
+2026-11-13 14:59:40 | INFO    | 2010.01.0052977/2025-56   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 14:59:44 | INFO    | 2010.01.0052977/2025-56   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 14:59:48 | INFO    | 2010.01.0052977/2025-56   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:00:00 | DEBUG   | 2010.01.0052977/2025-56   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-13 15:00:00 | INFO    | 2010.01.0052977/2025-56   | __main__              | FIM (42.6s) | Próxima ação: -
+2026-11-13 15:00:00 | INFO    | 2010.01.0082937/2024-22   | __main__              | INÍCIO [25/53]
+2026-11-13 15:00:05 | INFO    | 2010.01.0082937/2024-22   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 36592251 - 20261112_171017 (SEI 153590377)', 'Memorando 74 (SEI 153590444)']
+2026-11-13 15:00:05 | DEBUG   | 2010.01.0082937/2024-22   | docs_processo         | Lendo documento Memorando 74 (SEI 153590444)
+2026-11-13 15:00:07 | DEBUG   | 2010.01.0082937/2024-22   | docs_processo         | Documento 153590444 lido (2587 caracteres)
+2026-11-13 15:00:07 | INFO    | 2010.01.0082937/2024-22   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 36592251 - 20261112_171017 (SEI 153590377)', 'Memorando 74 (SEI 153590444)']
+2026-11-13 15:00:10 | INFO    | 2010.01.0082937/2024-22   | __main__              | Documento excluído: Memorando 74 (SEI 153590444)
+2026-11-13 15:00:13 | INFO    | 2010.01.0082937/2024-22   | __main__              | Documento excluído: PDF Coparticipação - 36592251 - 20261112_171017 (SEI 153590377)
+2026-11-13 15:00:21 | INFO    | 2010.01.0082937/2024-22   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:00:26 | INFO    | 2010.01.0082937/2024-22   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:00:31 | INFO    | 2010.01.0082937/2024-22   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:00:42 | DEBUG   | 2010.01.0082937/2024-22   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-13 15:00:42 | INFO    | 2010.01.0082937/2024-22   | __main__              | FIM (42.0s) | Próxima ação: -
+2026-11-13 15:00:42 | INFO    | 2010.01.0083223/2024-60   | __main__              | INÍCIO [26/53]
+2026-11-13 15:00:47 | INFO    | 2010.01.0083223/2024-60   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 19187327 - 20261112_170929 (SEI 153590308)', 'Memorando 73 (SEI 153590326)']
+2026-11-13 15:00:47 | DEBUG   | 2010.01.0083223/2024-60   | docs_processo         | Lendo documento Memorando 73 (SEI 153590326)
+2026-11-13 15:00:49 | DEBUG   | 2010.01.0083223/2024-60   | docs_processo         | Documento 153590326 lido (2669 caracteres)
+2026-11-13 15:00:49 | INFO    | 2010.01.0083223/2024-60   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 19187327 - 20261112_170929 (SEI 153590308)', 'Memorando 73 (SEI 153590326)']
+2026-11-13 15:00:56 | INFO    | 2010.01.0083223/2024-60   | __main__              | Documento excluído: Memorando 73 (SEI 153590326)
+2026-11-13 15:00:59 | INFO    | 2010.01.0083223/2024-60   | __main__              | Documento excluído: PDF Coparticipação - 19187327 - 20261112_170929 (SEI 153590308)
+2026-11-13 15:01:07 | INFO    | 2010.01.0083223/2024-60   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:01:12 | INFO    | 2010.01.0083223/2024-60   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:01:17 | INFO    | 2010.01.0083223/2024-60   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:01:29 | DEBUG   | 2010.01.0083223/2024-60   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (26 passagem(ns) nesta execução)
+2026-11-13 15:01:29 | INFO    | 2010.01.0083223/2024-60   | __main__              | FIM (46.5s) | Próxima ação: -
+2026-11-13 15:01:29 | INFO    | 2010.01.0083585/2024-83   | __main__              | INÍCIO [27/53]
+2026-11-13 15:01:33 | INFO    | 2010.01.0083585/2024-83   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35902469 - 20261112_170842 (SEI 153590154)', 'Memorando 72 (SEI 153590162)']
+2026-11-13 15:01:33 | DEBUG   | 2010.01.0083585/2024-83   | docs_processo         | Lendo documento Memorando 72 (SEI 153590162)
+2026-11-13 15:01:35 | DEBUG   | 2010.01.0083585/2024-83   | docs_processo         | Documento 153590162 lido (2623 caracteres)
+2026-11-13 15:01:35 | INFO    | 2010.01.0083585/2024-83   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35902469 - 20261112_170842 (SEI 153590154)', 'Memorando 72 (SEI 153590162)']
+2026-11-13 15:01:42 | INFO    | 2010.01.0083585/2024-83   | __main__              | Documento excluído: Memorando 72 (SEI 153590162)
+2026-11-13 15:01:45 | INFO    | 2010.01.0083585/2024-83   | __main__              | Documento excluído: PDF Coparticipação - 35902469 - 20261112_170842 (SEI 153590154)
+2026-11-13 15:01:53 | INFO    | 2010.01.0083585/2024-83   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:01:58 | INFO    | 2010.01.0083585/2024-83   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:02:03 | INFO    | 2010.01.0083585/2024-83   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:02:15 | DEBUG   | 2010.01.0083585/2024-83   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (27 passagem(ns) nesta execução)
+2026-11-13 15:02:15 | INFO    | 2010.01.0083585/2024-83   | __main__              | FIM (45.7s) | Próxima ação: -
+2026-11-13 15:02:15 | INFO    | 2010.01.0051955/2025-05   | __main__              | INÍCIO [28/53]
+2026-11-13 15:02:19 | INFO    | 2010.01.0051955/2025-05   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 34687521 - 20261112_170755 (SEI 153590011)', 'Memorando 71 (SEI 153590083)']
+2026-11-13 15:02:19 | DEBUG   | 2010.01.0051955/2025-05   | docs_processo         | Lendo documento Memorando 71 (SEI 153590083)
+2026-11-13 15:02:21 | DEBUG   | 2010.01.0051955/2025-05   | docs_processo         | Documento 153590083 lido (2587 caracteres)
+2026-11-13 15:02:21 | INFO    | 2010.01.0051955/2025-05   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 34687521 - 20261112_170755 (SEI 153590011)', 'Memorando 71 (SEI 153590083)']
+2026-11-13 15:02:23 | INFO    | 2010.01.0051955/2025-05   | __main__              | Documento excluído: Memorando 71 (SEI 153590083)
+2026-11-13 15:02:27 | INFO    | 2010.01.0051955/2025-05   | __main__              | Documento excluído: PDF Coparticipação - 34687521 - 20261112_170755 (SEI 153590011)
+2026-11-13 15:02:30 | INFO    | 2010.01.0051955/2025-05   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:02:35 | INFO    | 2010.01.0051955/2025-05   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:02:40 | INFO    | 2010.01.0051955/2025-05   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:02:53 | DEBUG   | 2010.01.0051955/2025-05   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (28 passagem(ns) nesta execução)
+2026-11-13 15:02:53 | INFO    | 2010.01.0051955/2025-05   | __main__              | FIM (38.9s) | Próxima ação: -
+2026-11-13 15:02:53 | INFO    | 2010.01.0083239/2024-16   | __main__              | INÍCIO [29/53]
+2026-11-13 15:02:59 | INFO    | 2010.01.0083239/2024-16   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 39071863 - 20261112_170529 (SEI 153589671)', 'Memorando 68 (SEI 153589619)']
+2026-11-13 15:02:59 | DEBUG   | 2010.01.0083239/2024-16   | docs_processo         | Lendo documento Memorando 68 (SEI 153589619)
+2026-11-13 15:03:01 | DEBUG   | 2010.01.0083239/2024-16   | docs_processo         | Documento 153589619 lido (2624 caracteres)
+2026-11-13 15:03:01 | INFO    | 2010.01.0083239/2024-16   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 39071863 - 20261112_170529 (SEI 153589671)', 'Memorando 68 (SEI 153589619)']
+2026-11-13 15:03:03 | INFO    | 2010.01.0083239/2024-16   | __main__              | Documento excluído: Memorando 68 (SEI 153589619)
+2026-11-13 15:03:05 | INFO    | 2010.01.0083239/2024-16   | __main__              | Documento excluído: PDF Coparticipação - 39071863 - 20261112_170529 (SEI 153589671)
+2026-11-13 15:03:14 | INFO    | 2010.01.0083239/2024-16   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:03:19 | INFO    | 2010.01.0083239/2024-16   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:03:24 | INFO    | 2010.01.0083239/2024-16   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:03:36 | DEBUG   | 2010.01.0083239/2024-16   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (29 passagem(ns) nesta execução)
+2026-11-13 15:03:36 | INFO    | 2010.01.0083239/2024-16   | __main__              | FIM (42.4s) | Próxima ação: -
+2026-11-13 15:03:36 | INFO    | 2010.01.0082927/2024-98   | __main__              | INÍCIO [30/53]
+2026-11-13 15:03:42 | INFO    | 2010.01.0082927/2024-98   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 37178326 - 20261112_170349 (SEI 153589489)', 'Memorando 66 (SEI 153589469)']
+2026-11-13 15:03:42 | DEBUG   | 2010.01.0082927/2024-98   | docs_processo         | Lendo documento Memorando 66 (SEI 153589469)
+2026-11-13 15:03:44 | DEBUG   | 2010.01.0082927/2024-98   | docs_processo         | Documento 153589469 lido (2591 caracteres)
+2026-11-13 15:03:44 | INFO    | 2010.01.0082927/2024-98   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 37178326 - 20261112_170349 (SEI 153589489)', 'Memorando 66 (SEI 153589469)']
+2026-11-13 15:03:46 | INFO    | 2010.01.0082927/2024-98   | __main__              | Documento excluído: Memorando 66 (SEI 153589469)
+2026-11-13 15:03:48 | INFO    | 2010.01.0082927/2024-98   | __main__              | Documento excluído: PDF Coparticipação - 37178326 - 20261112_170349 (SEI 153589489)
+2026-11-13 15:03:52 | INFO    | 2010.01.0082927/2024-98   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:03:57 | INFO    | 2010.01.0082927/2024-98   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:04:03 | INFO    | 2010.01.0082927/2024-98   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:04:17 | DEBUG   | 2010.01.0082927/2024-98   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (30 passagem(ns) nesta execução)
+2026-11-13 15:04:17 | INFO    | 2010.01.0082927/2024-98   | __main__              | FIM (40.7s) | Próxima ação: -
+2026-11-13 15:04:17 | INFO    | 2010.01.0052729/2025-59   | __main__              | INÍCIO [31/53]
+2026-11-13 15:04:22 | INFO    | 2010.01.0052729/2025-59   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35736194 - 20261112_170257 (SEI 153589338)', 'Memorando 65 (SEI 153589326)']
+2026-11-13 15:04:22 | DEBUG   | 2010.01.0052729/2025-59   | docs_processo         | Lendo documento Memorando 65 (SEI 153589326)
+2026-11-13 15:04:24 | DEBUG   | 2010.01.0052729/2025-59   | docs_processo         | Documento 153589326 lido (2583 caracteres)
+2026-11-13 15:04:24 | INFO    | 2010.01.0052729/2025-59   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35736194 - 20261112_170257 (SEI 153589338)', 'Memorando 65 (SEI 153589326)']
+2026-11-13 15:04:32 | INFO    | 2010.01.0052729/2025-59   | __main__              | Documento excluído: Memorando 65 (SEI 153589326)
+2026-11-13 15:04:34 | INFO    | 2010.01.0052729/2025-59   | __main__              | Documento excluído: PDF Coparticipação - 35736194 - 20261112_170257 (SEI 153589338)
+2026-11-13 15:04:39 | INFO    | 2010.01.0052729/2025-59   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:04:44 | INFO    | 2010.01.0052729/2025-59   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:04:48 | INFO    | 2010.01.0052729/2025-59   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:05:00 | DEBUG   | 2010.01.0052729/2025-59   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (31 passagem(ns) nesta execução)
+2026-11-13 15:05:00 | INFO    | 2010.01.0052729/2025-59   | __main__              | FIM (42.9s) | Próxima ação: -
+2026-11-13 15:05:00 | INFO    | 2010.01.0052660/2025-79   | __main__              | INÍCIO [32/53]
+2026-11-13 15:05:06 | INFO    | 2010.01.0052660/2025-79   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 34621598 - 20261112_170117 (SEI 153589139)', 'Memorando 63 (SEI 153589180)']
+2026-11-13 15:05:06 | DEBUG   | 2010.01.0052660/2025-79   | docs_processo         | Lendo documento Memorando 63 (SEI 153589180)
+2026-11-13 15:05:08 | DEBUG   | 2010.01.0052660/2025-79   | docs_processo         | Documento 153589180 lido (2622 caracteres)
+2026-11-13 15:05:08 | INFO    | 2010.01.0052660/2025-79   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 34621598 - 20261112_170117 (SEI 153589139)', 'Memorando 63 (SEI 153589180)']
+2026-11-13 15:05:16 | INFO    | 2010.01.0052660/2025-79   | __main__              | Documento excluído: Memorando 63 (SEI 153589180)
+2026-11-13 15:05:18 | INFO    | 2010.01.0052660/2025-79   | __main__              | Documento excluído: PDF Coparticipação - 34621598 - 20261112_170117 (SEI 153589139)
+2026-11-13 15:05:24 | INFO    | 2010.01.0052660/2025-79   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:05:28 | INFO    | 2010.01.0052660/2025-79   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:05:33 | INFO    | 2010.01.0052660/2025-79   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:05:46 | DEBUG   | 2010.01.0052660/2025-79   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (32 passagem(ns) nesta execução)
+2026-11-13 15:05:46 | INFO    | 2010.01.0052660/2025-79   | __main__              | FIM (46.1s) | Próxima ação: -
+2026-11-13 15:05:46 | INFO    | 2010.01.0051846/2025-38   | __main__              | INÍCIO [33/53]
+2026-11-13 15:05:51 | INFO    | 2010.01.0051846/2025-38   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35725516 - 20261112_170025 (SEI 153589080)', 'Memorando 62 (SEI 153589089)']
+2026-11-13 15:05:51 | DEBUG   | 2010.01.0051846/2025-38   | docs_processo         | Lendo documento Memorando 62 (SEI 153589089)
+2026-11-13 15:05:53 | DEBUG   | 2010.01.0051846/2025-38   | docs_processo         | Documento 153589089 lido (2628 caracteres)
+2026-11-13 15:05:53 | INFO    | 2010.01.0051846/2025-38   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35725516 - 20261112_170025 (SEI 153589080)', 'Memorando 62 (SEI 153589089)']
+2026-11-13 15:05:55 | INFO    | 2010.01.0051846/2025-38   | __main__              | Documento excluído: Memorando 62 (SEI 153589089)
+2026-11-13 15:05:58 | INFO    | 2010.01.0051846/2025-38   | __main__              | Documento excluído: PDF Coparticipação - 35725516 - 20261112_170025 (SEI 153589080)
+2026-11-13 15:06:02 | INFO    | 2010.01.0051846/2025-38   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:06:06 | INFO    | 2010.01.0051846/2025-38   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:06:11 | INFO    | 2010.01.0051846/2025-38   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:06:22 | DEBUG   | 2010.01.0051846/2025-38   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (33 passagem(ns) nesta execução)
+2026-11-13 15:06:22 | INFO    | 2010.01.0051846/2025-38   | __main__              | FIM (36.2s) | Próxima ação: -
+2026-11-13 15:06:22 | INFO    | 2010.01.0058306/2025-24   | __main__              | INÍCIO [34/53]
+2026-11-13 15:06:27 | INFO    | 2010.01.0058306/2025-24   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35800241 - 20261112_165529 (SEI 153588415)', 'Memorando 56 (SEI 153588358)']
+2026-11-13 15:06:27 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Lendo documento Memorando 56 (SEI 153588358)
+2026-11-13 15:06:29 | DEBUG   | 2010.01.0058306/2025-24   | docs_processo         | Documento 153588358 lido (2587 caracteres)
+2026-11-13 15:06:29 | INFO    | 2010.01.0058306/2025-24   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35800241 - 20261112_165529 (SEI 153588415)', 'Memorando 56 (SEI 153588358)']
+2026-11-13 15:06:31 | INFO    | 2010.01.0058306/2025-24   | __main__              | Documento excluído: Memorando 56 (SEI 153588358)
+2026-11-13 15:06:34 | INFO    | 2010.01.0058306/2025-24   | __main__              | Documento excluído: PDF Coparticipação - 35800241 - 20261112_165529 (SEI 153588415)
+2026-11-13 15:06:43 | INFO    | 2010.01.0058306/2025-24   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:06:47 | INFO    | 2010.01.0058306/2025-24   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:06:52 | INFO    | 2010.01.0058306/2025-24   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:07:05 | DEBUG   | 2010.01.0058306/2025-24   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (34 passagem(ns) nesta execução)
+2026-11-13 15:07:05 | INFO    | 2010.01.0058306/2025-24   | __main__              | FIM (43.5s) | Próxima ação: -
+2026-11-13 15:07:05 | INFO    | 2010.01.0072671/2024-75   | __main__              | INÍCIO [35/53]
+2026-11-13 15:07:10 | INFO    | 2010.01.0072671/2024-75   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 22222197 - 20261112_165347 (SEI 153588212)', 'Memorando 54 (SEI 153588166)']
+2026-11-13 15:07:10 | DEBUG   | 2010.01.0072671/2024-75   | docs_processo         | Lendo documento Memorando 54 (SEI 153588166)
+2026-11-13 15:07:12 | DEBUG   | 2010.01.0072671/2024-75   | docs_processo         | Documento 153588166 lido (2630 caracteres)
+2026-11-13 15:07:12 | INFO    | 2010.01.0072671/2024-75   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 22222197 - 20261112_165347 (SEI 153588212)', 'Memorando 54 (SEI 153588166)']
+2026-11-13 15:07:16 | INFO    | 2010.01.0072671/2024-75   | __main__              | Documento excluído: Memorando 54 (SEI 153588166)
+2026-11-13 15:07:19 | INFO    | 2010.01.0072671/2024-75   | __main__              | Documento excluído: PDF Coparticipação - 22222197 - 20261112_165347 (SEI 153588212)
+2026-11-13 15:07:22 | INFO    | 2010.01.0072671/2024-75   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:07:28 | INFO    | 2010.01.0072671/2024-75   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:07:34 | INFO    | 2010.01.0072671/2024-75   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:07:45 | DEBUG   | 2010.01.0072671/2024-75   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (35 passagem(ns) nesta execução)
+2026-11-13 15:07:45 | INFO    | 2010.01.0072671/2024-75   | __main__              | FIM (39.7s) | Próxima ação: -
+2026-11-13 15:07:45 | INFO    | 2010.01.0072564/2024-54   | __main__              | INÍCIO [36/53]
+2026-11-13 15:07:51 | INFO    | 2010.01.0072564/2024-54   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35736097 - 20261112_165210 (SEI 153588000)', 'Memorando 52 (SEI 153588007)']
+2026-11-13 15:07:51 | DEBUG   | 2010.01.0072564/2024-54   | docs_processo         | Lendo documento Memorando 52 (SEI 153588007)
+2026-11-13 15:07:53 | DEBUG   | 2010.01.0072564/2024-54   | docs_processo         | Documento 153588007 lido (2591 caracteres)
+2026-11-13 15:07:53 | INFO    | 2010.01.0072564/2024-54   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35736097 - 20261112_165210 (SEI 153588000)', 'Memorando 52 (SEI 153588007)']
+2026-11-13 15:08:00 | INFO    | 2010.01.0072564/2024-54   | __main__              | Documento excluído: Memorando 52 (SEI 153588007)
+2026-11-13 15:08:03 | INFO    | 2010.01.0072564/2024-54   | __main__              | Documento excluído: PDF Coparticipação - 35736097 - 20261112_165210 (SEI 153588000)
+2026-11-13 15:08:10 | INFO    | 2010.01.0072564/2024-54   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:08:16 | INFO    | 2010.01.0072564/2024-54   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:08:21 | INFO    | 2010.01.0072564/2024-54   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:08:34 | DEBUG   | 2010.01.0072564/2024-54   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (36 passagem(ns) nesta execução)
+2026-11-13 15:08:34 | INFO    | 2010.01.0072564/2024-54   | __main__              | FIM (49.1s) | Próxima ação: -
+2026-11-13 15:08:34 | INFO    | 2010.01.0082967/2024-85   | __main__              | INÍCIO [37/53]
+2026-11-13 15:08:40 | INFO    | 2010.01.0082967/2024-85   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35653515 - 20261112_165121 (SEI 153587941)', 'Memorando 51 (SEI 153587909)']
+2026-11-13 15:08:40 | DEBUG   | 2010.01.0082967/2024-85   | docs_processo         | Lendo documento Memorando 51 (SEI 153587909)
+2026-11-13 15:08:42 | DEBUG   | 2010.01.0082967/2024-85   | docs_processo         | Documento 153587909 lido (2583 caracteres)
+2026-11-13 15:08:42 | INFO    | 2010.01.0082967/2024-85   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35653515 - 20261112_165121 (SEI 153587941)', 'Memorando 51 (SEI 153587909)']
+2026-11-13 15:08:50 | INFO    | 2010.01.0082967/2024-85   | __main__              | Documento excluído: Memorando 51 (SEI 153587909)
+2026-11-13 15:08:52 | INFO    | 2010.01.0082967/2024-85   | __main__              | Documento excluído: PDF Coparticipação - 35653515 - 20261112_165121 (SEI 153587941)
+2026-11-13 15:08:57 | INFO    | 2010.01.0082967/2024-85   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:09:01 | INFO    | 2010.01.0082967/2024-85   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:09:05 | INFO    | 2010.01.0082967/2024-85   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:09:17 | DEBUG   | 2010.01.0082967/2024-85   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (37 passagem(ns) nesta execução)
+2026-11-13 15:09:17 | INFO    | 2010.01.0082967/2024-85   | __main__              | FIM (43.1s) | Próxima ação: -
+2026-11-13 15:09:17 | INFO    | 2010.01.0051852/2025-70   | __main__              | INÍCIO [38/53]
+2026-11-13 15:09:23 | INFO    | 2010.01.0051852/2025-70   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 32019190 - 20261112_164942 (SEI 153587668)', 'Memorando 49 (SEI 153587676)']
+2026-11-13 15:09:23 | DEBUG   | 2010.01.0051852/2025-70   | docs_processo         | Lendo documento Memorando 49 (SEI 153587676)
+2026-11-13 15:09:25 | DEBUG   | 2010.01.0051852/2025-70   | docs_processo         | Documento 153587676 lido (2626 caracteres)
+2026-11-13 15:09:25 | INFO    | 2010.01.0051852/2025-70   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 32019190 - 20261112_164942 (SEI 153587668)', 'Memorando 49 (SEI 153587676)']
+2026-11-13 15:09:29 | INFO    | 2010.01.0051852/2025-70   | __main__              | Documento excluído: Memorando 49 (SEI 153587676)
+2026-11-13 15:09:31 | INFO    | 2010.01.0051852/2025-70   | __main__              | Documento excluído: PDF Coparticipação - 32019190 - 20261112_164942 (SEI 153587668)
+2026-11-13 15:09:41 | INFO    | 2010.01.0051852/2025-70   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:09:45 | INFO    | 2010.01.0051852/2025-70   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:09:50 | INFO    | 2010.01.0051852/2025-70   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:10:02 | DEBUG   | 2010.01.0051852/2025-70   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (38 passagem(ns) nesta execução)
+2026-11-13 15:10:02 | INFO    | 2010.01.0051852/2025-70   | __main__              | FIM (44.8s) | Próxima ação: -
+2026-11-13 15:10:02 | INFO    | 2010.01.0083210/2024-23   | __main__              | INÍCIO [39/53]
+2026-11-13 15:10:08 | INFO    | 2010.01.0083210/2024-23   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 20736835 - 20261112_164616 (SEI 153587214)', 'Memorando 45 (SEI 153587224)']
+2026-11-13 15:10:08 | DEBUG   | 2010.01.0083210/2024-23   | docs_processo         | Lendo documento Memorando 45 (SEI 153587224)
+2026-11-13 15:10:10 | DEBUG   | 2010.01.0083210/2024-23   | docs_processo         | Documento 153587224 lido (2625 caracteres)
+2026-11-13 15:10:10 | INFO    | 2010.01.0083210/2024-23   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 20736835 - 20261112_164616 (SEI 153587214)', 'Memorando 45 (SEI 153587224)']
+2026-11-13 15:10:12 | INFO    | 2010.01.0083210/2024-23   | __main__              | Documento excluído: Memorando 45 (SEI 153587224)
+2026-11-13 15:10:15 | INFO    | 2010.01.0083210/2024-23   | __main__              | Documento excluído: PDF Coparticipação - 20736835 - 20261112_164616 (SEI 153587214)
+2026-11-13 15:10:20 | INFO    | 2010.01.0083210/2024-23   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:10:24 | INFO    | 2010.01.0083210/2024-23   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:10:28 | INFO    | 2010.01.0083210/2024-23   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:10:40 | DEBUG   | 2010.01.0083210/2024-23   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (39 passagem(ns) nesta execução)
+2026-11-13 15:10:40 | INFO    | 2010.01.0083210/2024-23   | __main__              | FIM (37.8s) | Próxima ação: -
+2026-11-13 15:10:40 | INFO    | 2010.01.0049567/2025-73   | __main__              | INÍCIO [40/53]
+2026-11-13 15:10:46 | INFO    | 2010.01.0049567/2025-73   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 32906650 - 20261112_164115 (SEI 153586457)', 'Memorando 39 (SEI 153586510)']
+2026-11-13 15:10:46 | DEBUG   | 2010.01.0049567/2025-73   | docs_processo         | Lendo documento Memorando 39 (SEI 153586510)
+2026-11-13 15:10:48 | DEBUG   | 2010.01.0049567/2025-73   | docs_processo         | Documento 153586510 lido (2619 caracteres)
+2026-11-13 15:10:48 | INFO    | 2010.01.0049567/2025-73   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 32906650 - 20261112_164115 (SEI 153586457)', 'Memorando 39 (SEI 153586510)']
+2026-11-13 15:10:50 | INFO    | 2010.01.0049567/2025-73   | __main__              | Documento excluído: Memorando 39 (SEI 153586510)
+2026-11-13 15:10:53 | INFO    | 2010.01.0049567/2025-73   | __main__              | Documento excluído: PDF Coparticipação - 32906650 - 20261112_164115 (SEI 153586457)
+2026-11-13 15:10:58 | INFO    | 2010.01.0049567/2025-73   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:11:02 | INFO    | 2010.01.0049567/2025-73   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:11:07 | INFO    | 2010.01.0049567/2025-73   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:11:18 | DEBUG   | 2010.01.0049567/2025-73   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (40 passagem(ns) nesta execução)
+2026-11-13 15:11:18 | INFO    | 2010.01.0049567/2025-73   | __main__              | FIM (38.2s) | Próxima ação: -
+2026-11-13 15:11:18 | INFO    | 2010.01.0072735/2024-93   | __main__              | INÍCIO [41/53]
+2026-11-13 15:11:23 | INFO    | 2010.01.0072735/2024-93   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 14033232 - 20261112_163931 (SEI 153586185)', 'Memorando 37 (SEI 153586192)']
+2026-11-13 15:11:23 | DEBUG   | 2010.01.0072735/2024-93   | docs_processo         | Lendo documento Memorando 37 (SEI 153586192)
+2026-11-13 15:11:24 | DEBUG   | 2010.01.0072735/2024-93   | docs_processo         | Documento 153586192 lido (2630 caracteres)
+2026-11-13 15:11:24 | INFO    | 2010.01.0072735/2024-93   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 14033232 - 20261112_163931 (SEI 153586185)', 'Memorando 37 (SEI 153586192)']
+2026-11-13 15:11:27 | INFO    | 2010.01.0072735/2024-93   | __main__              | Documento excluído: Memorando 37 (SEI 153586192)
+2026-11-13 15:11:30 | INFO    | 2010.01.0072735/2024-93   | __main__              | Documento excluído: PDF Coparticipação - 14033232 - 20261112_163931 (SEI 153586185)
+2026-11-13 15:11:39 | INFO    | 2010.01.0072735/2024-93   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:11:44 | INFO    | 2010.01.0072735/2024-93   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:11:49 | INFO    | 2010.01.0072735/2024-93   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:12:02 | DEBUG   | 2010.01.0072735/2024-93   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (41 passagem(ns) nesta execução)
+2026-11-13 15:12:02 | INFO    | 2010.01.0072735/2024-93   | __main__              | FIM (43.6s) | Próxima ação: -
+2026-11-13 15:12:02 | INFO    | 2010.01.0072619/2024-24   | __main__              | INÍCIO [42/53]
+2026-11-13 15:12:07 | INFO    | 2010.01.0072619/2024-24   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35564334 - 20261112_163840 (SEI 153585999)', 'Memorando 36 (SEI 153586061)']
+2026-11-13 15:12:07 | DEBUG   | 2010.01.0072619/2024-24   | docs_processo         | Lendo documento Memorando 36 (SEI 153586061)
+2026-11-13 15:12:09 | DEBUG   | 2010.01.0072619/2024-24   | docs_processo         | Documento 153586061 lido (2712 caracteres)
+2026-11-13 15:12:09 | INFO    | 2010.01.0072619/2024-24   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35564334 - 20261112_163840 (SEI 153585999)', 'Memorando 36 (SEI 153586061)']
+2026-11-13 15:12:16 | INFO    | 2010.01.0072619/2024-24   | __main__              | Documento excluído: Memorando 36 (SEI 153586061)
+2026-11-13 15:12:19 | INFO    | 2010.01.0072619/2024-24   | __main__              | Documento excluído: PDF Coparticipação - 35564334 - 20261112_163840 (SEI 153585999)
+2026-11-13 15:12:23 | INFO    | 2010.01.0072619/2024-24   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:12:29 | INFO    | 2010.01.0072619/2024-24   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:12:34 | INFO    | 2010.01.0072619/2024-24   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:12:47 | DEBUG   | 2010.01.0072619/2024-24   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (42 passagem(ns) nesta execução)
+2026-11-13 15:12:47 | INFO    | 2010.01.0072619/2024-24   | __main__              | FIM (45.3s) | Próxima ação: -
+2026-11-13 15:12:47 | INFO    | 2010.01.0076234/2024-98   | __main__              | INÍCIO [43/53]
+2026-11-13 15:12:53 | INFO    | 2010.01.0076234/2024-98   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 25650645 - 20261112_163752 (SEI 153585867)', 'Memorando 35 (SEI 153585929)']
+2026-11-13 15:12:53 | DEBUG   | 2010.01.0076234/2024-98   | docs_processo         | Lendo documento Memorando 35 (SEI 153585929)
+2026-11-13 15:12:54 | DEBUG   | 2010.01.0076234/2024-98   | docs_processo         | Documento 153585929 lido (2589 caracteres)
+2026-11-13 15:12:54 | INFO    | 2010.01.0076234/2024-98   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 25650645 - 20261112_163752 (SEI 153585867)', 'Memorando 35 (SEI 153585929)']
+2026-11-13 15:12:57 | INFO    | 2010.01.0076234/2024-98   | __main__              | Documento excluído: Memorando 35 (SEI 153585929)
+2026-11-13 15:12:59 | INFO    | 2010.01.0076234/2024-98   | __main__              | Documento excluído: PDF Coparticipação - 25650645 - 20261112_163752 (SEI 153585867)
+2026-11-13 15:13:04 | INFO    | 2010.01.0076234/2024-98   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:13:08 | INFO    | 2010.01.0076234/2024-98   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:13:12 | INFO    | 2010.01.0076234/2024-98   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:13:23 | DEBUG   | 2010.01.0076234/2024-98   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (43 passagem(ns) nesta execução)
+2026-11-13 15:13:23 | INFO    | 2010.01.0076234/2024-98   | __main__              | FIM (36.4s) | Próxima ação: -
+2026-11-13 15:13:23 | INFO    | 2010.01.0071465/2024-45   | __main__              | INÍCIO [44/53]
+2026-11-13 15:13:29 | INFO    | 2010.01.0071465/2024-45   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 31798209 - 20261112_163700 (SEI 153585675)', 'Memorando 34 (SEI 153585737)']
+2026-11-13 15:13:29 | DEBUG   | 2010.01.0071465/2024-45   | docs_processo         | Lendo documento Memorando 34 (SEI 153585737)
+2026-11-13 15:13:31 | DEBUG   | 2010.01.0071465/2024-45   | docs_processo         | Documento 153585737 lido (2589 caracteres)
+2026-11-13 15:13:31 | INFO    | 2010.01.0071465/2024-45   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 31798209 - 20261112_163700 (SEI 153585675)', 'Memorando 34 (SEI 153585737)']
+2026-11-13 15:13:34 | INFO    | 2010.01.0071465/2024-45   | __main__              | Documento excluído: Memorando 34 (SEI 153585737)
+2026-11-13 15:13:37 | INFO    | 2010.01.0071465/2024-45   | __main__              | Documento excluído: PDF Coparticipação - 31798209 - 20261112_163700 (SEI 153585675)
+2026-11-13 15:13:47 | INFO    | 2010.01.0071465/2024-45   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:13:51 | INFO    | 2010.01.0071465/2024-45   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:13:55 | INFO    | 2010.01.0071465/2024-45   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:14:09 | DEBUG   | 2010.01.0071465/2024-45   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (44 passagem(ns) nesta execução)
+2026-11-13 15:14:09 | INFO    | 2010.01.0071465/2024-45   | __main__              | FIM (45.3s) | Próxima ação: -
+2026-11-13 15:14:09 | INFO    | 2010.01.0051398/2025-09   | __main__              | INÍCIO [45/53]
+2026-11-13 15:14:14 | INFO    | 2010.01.0051398/2025-09   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 17433487 - 20261112_163608 (SEI 153585581)', 'Memorando 33 (SEI 153585554)']
+2026-11-13 15:14:14 | DEBUG   | 2010.01.0051398/2025-09   | docs_processo         | Lendo documento Memorando 33 (SEI 153585554)
+2026-11-13 15:14:16 | DEBUG   | 2010.01.0051398/2025-09   | docs_processo         | Documento 153585554 lido (2632 caracteres)
+2026-11-13 15:14:16 | INFO    | 2010.01.0051398/2025-09   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 17433487 - 20261112_163608 (SEI 153585581)', 'Memorando 33 (SEI 153585554)']
+2026-11-13 15:14:19 | INFO    | 2010.01.0051398/2025-09   | __main__              | Documento excluído: Memorando 33 (SEI 153585554)
+2026-11-13 15:14:21 | INFO    | 2010.01.0051398/2025-09   | __main__              | Documento excluído: PDF Coparticipação - 17433487 - 20261112_163608 (SEI 153585581)
+2026-11-13 15:14:30 | INFO    | 2010.01.0051398/2025-09   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:14:34 | INFO    | 2010.01.0051398/2025-09   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:14:38 | INFO    | 2010.01.0051398/2025-09   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:14:51 | DEBUG   | 2010.01.0051398/2025-09   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (45 passagem(ns) nesta execução)
+2026-11-13 15:14:51 | INFO    | 2010.01.0051398/2025-09   | __main__              | FIM (41.8s) | Próxima ação: -
+2026-11-13 15:14:51 | INFO    | 2010.01.0071350/2024-46   | __main__              | INÍCIO [46/53]
+2026-11-13 15:14:57 | INFO    | 2010.01.0071350/2024-46   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 11864338 - 20261112_163512 (SEI 153585383)', 'Memorando 32 (SEI 153585430)']
+2026-11-13 15:14:57 | DEBUG   | 2010.01.0071350/2024-46   | docs_processo         | Lendo documento Memorando 32 (SEI 153585430)
+2026-11-13 15:14:59 | DEBUG   | 2010.01.0071350/2024-46   | docs_processo         | Documento 153585430 lido (2587 caracteres)
+2026-11-13 15:14:59 | INFO    | 2010.01.0071350/2024-46   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 11864338 - 20261112_163512 (SEI 153585383)', 'Memorando 32 (SEI 153585430)']
+2026-11-13 15:15:02 | INFO    | 2010.01.0071350/2024-46   | __main__              | Documento excluído: Memorando 32 (SEI 153585430)
+2026-11-13 15:15:05 | INFO    | 2010.01.0071350/2024-46   | __main__              | Documento excluído: PDF Coparticipação - 11864338 - 20261112_163512 (SEI 153585383)
+2026-11-13 15:15:15 | INFO    | 2010.01.0071350/2024-46   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:15:20 | INFO    | 2010.01.0071350/2024-46   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:15:24 | INFO    | 2010.01.0071350/2024-46   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:15:37 | DEBUG   | 2010.01.0071350/2024-46   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (46 passagem(ns) nesta execução)
+2026-11-13 15:15:37 | INFO    | 2010.01.0071350/2024-46   | __main__              | FIM (46.3s) | Próxima ação: -
+2026-11-13 15:15:37 | INFO    | 2010.01.0072059/2024-12   | __main__              | INÍCIO [47/53]
+2026-11-13 15:15:42 | INFO    | 2010.01.0072059/2024-12   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35505770 - 20261112_163416 (SEI 153585214)', 'Memorando 31 (SEI 153585168)']
+2026-11-13 15:15:42 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Lendo documento Memorando 31 (SEI 153585168)
+2026-11-13 15:15:44 | DEBUG   | 2010.01.0072059/2024-12   | docs_processo         | Documento 153585168 lido (2668 caracteres)
+2026-11-13 15:15:44 | INFO    | 2010.01.0072059/2024-12   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35505770 - 20261112_163416 (SEI 153585214)', 'Memorando 31 (SEI 153585168)']
+2026-11-13 15:15:51 | INFO    | 2010.01.0072059/2024-12   | __main__              | Documento excluído: Memorando 31 (SEI 153585168)
+2026-11-13 15:15:54 | INFO    | 2010.01.0072059/2024-12   | __main__              | Documento excluído: PDF Coparticipação - 35505770 - 20261112_163416 (SEI 153585214)
+2026-11-13 15:16:03 | INFO    | 2010.01.0072059/2024-12   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:16:08 | INFO    | 2010.01.0072059/2024-12   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:16:12 | INFO    | 2010.01.0072059/2024-12   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:16:25 | DEBUG   | 2010.01.0072059/2024-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (47 passagem(ns) nesta execução)
+2026-11-13 15:16:25 | INFO    | 2010.01.0072059/2024-12   | __main__              | FIM (48.1s) | Próxima ação: -
+2026-11-13 15:16:25 | INFO    | 2010.01.0049339/2025-21   | __main__              | INÍCIO [48/53]
+2026-11-13 15:16:32 | INFO    | 2010.01.0049339/2025-21   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 32708688 - 20261112_163133 (SEI 153584840)', 'Memorando 28 (SEI 153584824)']
+2026-11-13 15:16:32 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Lendo documento Memorando 28 (SEI 153584824)
+2026-11-13 15:16:34 | DEBUG   | 2010.01.0049339/2025-21   | docs_processo         | Documento 153584824 lido (2632 caracteres)
+2026-11-13 15:16:34 | INFO    | 2010.01.0049339/2025-21   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 32708688 - 20261112_163133 (SEI 153584840)', 'Memorando 28 (SEI 153584824)']
+2026-11-13 15:16:37 | INFO    | 2010.01.0049339/2025-21   | __main__              | Documento excluído: Memorando 28 (SEI 153584824)
+2026-11-13 15:16:40 | INFO    | 2010.01.0049339/2025-21   | __main__              | Documento excluído: PDF Coparticipação - 32708688 - 20261112_163133 (SEI 153584840)
+2026-11-13 15:16:49 | INFO    | 2010.01.0049339/2025-21   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:16:53 | INFO    | 2010.01.0049339/2025-21   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:16:58 | INFO    | 2010.01.0049339/2025-21   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:17:12 | DEBUG   | 2010.01.0049339/2025-21   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (48 passagem(ns) nesta execução)
+2026-11-13 15:17:12 | INFO    | 2010.01.0049339/2025-21   | __main__              | FIM (46.6s) | Próxima ação: -
+2026-11-13 15:17:12 | INFO    | 2010.01.0051843/2025-22   | __main__              | INÍCIO [49/53]
+2026-11-13 15:17:17 | INFO    | 2010.01.0051843/2025-22   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 32352484 - 20261112_162945 (SEI 153584522)', 'Memorando 26 (SEI 153584548)']
+2026-11-13 15:17:17 | DEBUG   | 2010.01.0051843/2025-22   | docs_processo         | Lendo documento Memorando 26 (SEI 153584548)
+2026-11-13 15:17:20 | DEBUG   | 2010.01.0051843/2025-22   | docs_processo         | Documento 153584548 lido (2589 caracteres)
+2026-11-13 15:17:20 | INFO    | 2010.01.0051843/2025-22   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 32352484 - 20261112_162945 (SEI 153584522)', 'Memorando 26 (SEI 153584548)']
+2026-11-13 15:17:22 | INFO    | 2010.01.0051843/2025-22   | __main__              | Documento excluído: Memorando 26 (SEI 153584548)
+2026-11-13 15:17:25 | INFO    | 2010.01.0051843/2025-22   | __main__              | Documento excluído: PDF Coparticipação - 32352484 - 20261112_162945 (SEI 153584522)
+2026-11-13 15:17:29 | INFO    | 2010.01.0051843/2025-22   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:17:35 | INFO    | 2010.01.0051843/2025-22   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:17:40 | INFO    | 2010.01.0051843/2025-22   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:17:53 | DEBUG   | 2010.01.0051843/2025-22   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (49 passagem(ns) nesta execução)
+2026-11-13 15:17:53 | INFO    | 2010.01.0051843/2025-22   | __main__              | FIM (41.2s) | Próxima ação: -
+2026-11-13 15:17:53 | INFO    | 2010.01.0051096/2025-15   | __main__              | INÍCIO [50/53]
+2026-11-13 15:18:00 | INFO    | 2010.01.0051096/2025-15   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35511702 - 20261112_162854 (SEI 153584378)', 'Memorando 25 (SEI 153584432)']
+2026-11-13 15:18:00 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Lendo documento Memorando 25 (SEI 153584432)
+2026-11-13 15:18:02 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Documento 153584432 lido (2620 caracteres)
+2026-11-13 15:18:02 | INFO    | 2010.01.0051096/2025-15   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35511702 - 20261112_162854 (SEI 153584378)', 'Memorando 25 (SEI 153584432)']
+2026-11-13 15:18:10 | INFO    | 2010.01.0051096/2025-15   | __main__              | Documento excluído: Memorando 25 (SEI 153584432)
+2026-11-13 15:18:12 | INFO    | 2010.01.0051096/2025-15   | __main__              | Documento excluído: PDF Coparticipação - 35511702 - 20261112_162854 (SEI 153584378)
+2026-11-13 15:18:17 | INFO    | 2010.01.0051096/2025-15   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:18:22 | INFO    | 2010.01.0051096/2025-15   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:18:26 | INFO    | 2010.01.0051096/2025-15   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:18:39 | DEBUG   | 2010.01.0051096/2025-15   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (50 passagem(ns) nesta execução)
+2026-11-13 15:18:39 | INFO    | 2010.01.0051096/2025-15   | __main__              | FIM (46.2s) | Próxima ação: -
+2026-11-13 15:18:39 | INFO    | 2010.01.0050905/2025-31   | __main__              | INÍCIO [51/53]
+2026-11-13 15:18:45 | INFO    | 2010.01.0050905/2025-31   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 26080974 - 20261112_162803 (SEI 153584241)', 'Memorando 24 (SEI 153584296)']
+2026-11-13 15:18:45 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Lendo documento Memorando 24 (SEI 153584296)
+2026-11-13 15:18:47 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Documento 153584296 lido (2589 caracteres)
+2026-11-13 15:18:47 | INFO    | 2010.01.0050905/2025-31   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 26080974 - 20261112_162803 (SEI 153584241)', 'Memorando 24 (SEI 153584296)']
+2026-11-13 15:18:54 | INFO    | 2010.01.0050905/2025-31   | __main__              | Documento excluído: Memorando 24 (SEI 153584296)
+2026-11-13 15:18:57 | INFO    | 2010.01.0050905/2025-31   | __main__              | Documento excluído: PDF Coparticipação - 26080974 - 20261112_162803 (SEI 153584241)
+2026-11-13 15:19:06 | INFO    | 2010.01.0050905/2025-31   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:19:10 | INFO    | 2010.01.0050905/2025-31   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:19:15 | INFO    | 2010.01.0050905/2025-31   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:19:28 | DEBUG   | 2010.01.0050905/2025-31   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (51 passagem(ns) nesta execução)
+2026-11-13 15:19:28 | INFO    | 2010.01.0050905/2025-31   | __main__              | FIM (48.7s) | Próxima ação: -
+2026-11-13 15:19:28 | INFO    | 2010.01.0050841/2025-13   | __main__              | INÍCIO [52/53]
+2026-11-13 15:19:33 | INFO    | 2010.01.0050841/2025-13   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 37060589 - 20261112_162622 (SEI 153583826)', 'Memorando 22 (SEI 153583884)']
+2026-11-13 15:19:33 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Lendo documento Memorando 22 (SEI 153583884)
+2026-11-13 15:19:35 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Documento 153583884 lido (2587 caracteres)
+2026-11-13 15:19:35 | INFO    | 2010.01.0050841/2025-13   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 37060589 - 20261112_162622 (SEI 153583826)', 'Memorando 22 (SEI 153583884)']
+2026-11-13 15:19:38 | INFO    | 2010.01.0050841/2025-13   | __main__              | Documento excluído: Memorando 22 (SEI 153583884)
+2026-11-13 15:19:43 | INFO    | 2010.01.0050841/2025-13   | __main__              | Documento excluído: PDF Coparticipação - 37060589 - 20261112_162622 (SEI 153583826)
+2026-11-13 15:19:47 | INFO    | 2010.01.0050841/2025-13   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:19:52 | INFO    | 2010.01.0050841/2025-13   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:19:58 | INFO    | 2010.01.0050841/2025-13   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:20:09 | DEBUG   | 2010.01.0050841/2025-13   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (52 passagem(ns) nesta execução)
+2026-11-13 15:20:09 | INFO    | 2010.01.0050841/2025-13   | __main__              | FIM (41.6s) | Próxima ação: -
+2026-11-13 15:20:09 | INFO    | 2010.01.0050829/2025-46   | __main__              | INÍCIO [53/53]
+2026-11-13 15:20:15 | INFO    | 2010.01.0050829/2025-46   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 35495073 - 20261112_162530 (SEI 153583696)', 'Memorando 21 (SEI 153583764)']
+2026-11-13 15:20:15 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Lendo documento Memorando 21 (SEI 153583764)
+2026-11-13 15:20:18 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Documento 153583764 lido (2629 caracteres)
+2026-11-13 15:20:18 | INFO    | 2010.01.0050829/2025-46   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 35495073 - 20261112_162530 (SEI 153583696)', 'Memorando 21 (SEI 153583764)']
+2026-11-13 15:20:20 | INFO    | 2010.01.0050829/2025-46   | __main__              | Documento excluído: Memorando 21 (SEI 153583764)
+2026-11-13 15:20:23 | INFO    | 2010.01.0050829/2025-46   | __main__              | Documento excluído: PDF Coparticipação - 35495073 - 20261112_162530 (SEI 153583696)
+2026-11-13 15:20:28 | INFO    | 2010.01.0050829/2025-46   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA']
+2026-11-13 15:20:33 | INFO    | 2010.01.0050829/2025-46   | tags                  | Marcador removido: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-13 15:20:37 | INFO    | 2010.01.0050829/2025-46   | tags                  | Marcador removido: "v2: 01 - Tratado pelo Script"
+2026-11-13 15:20:48 | DEBUG   | 2010.01.0050829/2025-46   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (53 passagem(ns) nesta execução)
+2026-11-13 15:20:48 | INFO    | 2010.01.0050829/2025-46   | __main__              | FIM (39.1s) | Próxima ação: -
+2026-11-13 15:20:49 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-13 15:20:49 | INFO    | -                         | __main__              | Processos: 53 | Sem erro: 53 | Com erro: 0
+2026-11-13 15:20:49 | INFO    | -                         | __main__              |    53 | DEPROC: 2 documento(s) excluído(s)
+2026-11-13 15:20:49 | INFO    | -                         | __main__              | Duração total da execução: 0h38m36s
+2026-11-13 15:20:49 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

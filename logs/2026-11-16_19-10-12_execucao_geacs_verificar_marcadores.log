@@ -1,0 +1,96 @@
+2026-11-16 19:10:12 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-16 19:10:12 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-16_19-10-12_execucao_geacs_verificar_marcadores.log
+2026-11-16 19:10:12 | INFO    | -                         | processos_a_processar | 752 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-16 19:10:16 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-16 19:10:16 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-16 19:10:17 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-16 19:10:22 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-16 19:10:22 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-16 19:10:24 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-16 19:10:24 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/752]
+2026-11-16 19:10:25 | INFO    | 2010.01.0082932/2024-60   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-16 19:10:26 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 2080 (SEI 153207988)
+2026-11-16 19:10:27 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 153207988 lido (2446 caracteres)
+2026-11-16 19:10:27 | INFO    | 2010.01.0082932/2024-60   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2080 (SEI 153207988)
+2026-11-16 19:10:27 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 2567 (SEI 151949102)
+2026-11-16 19:10:27 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 151949102 lido (2937 caracteres)
+2026-11-16 19:10:27 | INFO    | 2010.01.0082932/2024-60   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2567 (SEI 151949102)']
+2026-11-16 19:10:27 | INFO    | 2010.01.0082932/2024-60   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-16 19:10:27 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-16_19-10-12.xlsx
+2026-11-16 19:10:49 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-16 19:10:49 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (25.4s) | Próxima ação: -
+2026-11-16 19:10:49 | INFO    | 2010.01.0050804/2025-42   | __main__              | INÍCIO [2/752]
+2026-11-16 19:10:50 | INFO    | 2010.01.0050804/2025-42   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.09.1 - Aguarda DISA: Relat. s/ MANTIS']
+2026-11-16 19:10:52 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Lendo documento Memorando 2354 (SEI 153542210)
+2026-11-16 19:10:54 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Documento 153542210 lido (2542 caracteres)
+2026-11-16 19:10:54 | INFO    | 2010.01.0050804/2025-42   | conferencia_prox_acao | Memo à DISA (sem MANTIS: solicita relatório) do marcador "01.09.1 - Aguarda DISA: Relat. s/ MANTIS": Memorando 2354 (SEI 153542210)
+2026-11-16 19:10:54 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Lendo documento Memorando 61 (SEI 114884151)
+2026-11-16 19:10:56 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Documento 114884151 lido (1583 caracteres)
+2026-11-16 19:10:56 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 61 (SEI 114884151)
+2026-11-16 19:10:56 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Lendo documento Memorando 1601 (SEI 147385714)
+2026-11-16 19:10:57 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Documento 147385714 lido (2723 caracteres)
+2026-11-16 19:10:57 | INFO    | 2010.01.0050804/2025-42   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1601 (SEI 147385714)']
+2026-11-16 19:10:57 | WARNING | 2010.01.0050804/2025-42   | __main__              | Inconsistência: prox_acao "Assinar memo à DISA (sem MANTIS: solicita relatório) e encaminhar" não condiz com o marcador "01.09.1 - Aguarda DISA: Relat. s/ MANTIS"; esperada: "Aguardar resposta ao memo enviado (processo parado)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-16 19:11:19 | DEBUG   | 2010.01.0050804/2025-42   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-16 19:11:19 | INFO    | 2010.01.0050804/2025-42   | __main__              | FIM (29.9s) | Próxima ação: -
+2026-11-16 19:11:19 | INFO    | 2010.01.0076235/2024-71   | __main__              | INÍCIO [3/752]
+2026-11-16 19:11:20 | INFO    | 2010.01.0076235/2024-71   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Relat. s/ MANTIS']
+2026-11-16 19:11:20 | INFO    | 2010.01.0076235/2024-71   | __main__              | Demais marcadores: ['v2: 01.06.2 - Base DISA: Usou RP - DESATIVADO', 'v2: 01.08.2 - MANTIS: Não Usou RP - DESATIVADO', 'v2: 01.08.3 - MANTIS: Usou RC - DESATIVADO', 'v2: 02 - Processo VELHO - DESATIVADO']
+2026-11-16 19:11:21 | DEBUG   | 2010.01.0076235/2024-71   | docs_processo         | Lendo documento Memorando 2082 (SEI 153208385)
+2026-11-16 19:11:22 | DEBUG   | 2010.01.0076235/2024-71   | docs_processo         | Documento 153208385 lido (2512 caracteres)
+2026-11-16 19:11:22 | INFO    | 2010.01.0076235/2024-71   | conferencia_prox_acao | Memo à DISA (sem MANTIS: solicita relatório) do marcador "01.09 - No Bloco DISA: Relat. s/ MANTIS": Memorando 2082 (SEI 153208385)
+2026-11-16 19:11:22 | DEBUG   | 2010.01.0076235/2024-71   | docs_processo         | Lendo documento Memorando 1739 (SEI 147827721)
+2026-11-16 19:11:23 | DEBUG   | 2010.01.0076235/2024-71   | docs_processo         | Documento 147827721 lido (2721 caracteres)
+2026-11-16 19:11:23 | INFO    | 2010.01.0076235/2024-71   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1739 (SEI 147827721)']
+2026-11-16 19:11:23 | INFO    | 2010.01.0076235/2024-71   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-16 19:11:45 | DEBUG   | 2010.01.0076235/2024-71   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-16 19:11:45 | INFO    | 2010.01.0076235/2024-71   | __main__              | FIM (26.2s) | Próxima ação: -
+2026-11-16 19:11:45 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [4/752]
+2026-11-16 19:11:46 | INFO    | 2010.01.0071357/2024-51   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-16 19:11:47 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 2251 (SEI 153316095)
+2026-11-16 19:11:48 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 153316095 lido (2443 caracteres)
+2026-11-16 19:11:48 | INFO    | 2010.01.0071357/2024-51   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2251 (SEI 153316095)
+2026-11-16 19:11:48 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 1798 (SEI 148034263)
+2026-11-16 19:11:49 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 148034263 lido (2678 caracteres)
+2026-11-16 19:11:49 | INFO    | 2010.01.0071357/2024-51   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1798 (SEI 148034263)']
+2026-11-16 19:11:49 | INFO    | 2010.01.0071357/2024-51   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-16 19:12:11 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-16 19:12:11 | INFO    | 2010.01.0071357/2024-51   | __main__              | FIM (26.3s) | Próxima ação: -
+2026-11-16 19:12:11 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [5/752]
+2026-11-16 19:12:12 | INFO    | 2010.01.0072062/2024-28   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-16 19:12:14 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 2084 (SEI 153208938)
+2026-11-16 19:12:15 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 153208938 lido (2555 caracteres)
+2026-11-16 19:12:15 | INFO    | 2010.01.0072062/2024-28   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2084 (SEI 153208938)
+2026-11-16 19:12:15 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 44 (SEI 114761013)
+2026-11-16 19:12:16 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 114761013 lido (1667 caracteres)
+2026-11-16 19:12:16 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 44 (SEI 114761013)
+2026-11-16 19:12:16 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 1610 (SEI 147432858)
+2026-11-16 19:12:17 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 147432858 lido (2593 caracteres)
+2026-11-16 19:12:17 | INFO    | 2010.01.0072062/2024-28   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1610 (SEI 147432858)']
+2026-11-16 19:12:17 | INFO    | 2010.01.0072062/2024-28   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-16 19:12:39 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-16 19:12:39 | INFO    | 2010.01.0072062/2024-28   | __main__              | FIM (27.8s) | Próxima ação: -
+2026-11-16 19:12:39 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [6/752]
+2026-11-16 19:12:40 | INFO    | 2010.01.0071467/2024-88   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-16 19:12:42 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 2086 (SEI 153209585)
+2026-11-16 19:12:43 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 153209585 lido (2575 caracteres)
+2026-11-16 19:12:43 | INFO    | 2010.01.0071467/2024-88   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2086 (SEI 153209585)
+2026-11-16 19:12:43 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 53 (SEI 114830412)
+2026-11-16 19:12:44 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 114830412 lido (1595 caracteres)
+2026-11-16 19:12:44 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 53 (SEI 114830412)
+2026-11-16 19:12:44 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 1589 (SEI 147338560)
+2026-11-16 19:12:44 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 147338560 lido (2734 caracteres)
+2026-11-16 19:12:44 | INFO    | 2010.01.0071467/2024-88   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1589 (SEI 147338560)']
+2026-11-16 19:12:44 | INFO    | 2010.01.0071467/2024-88   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-16 19:13:07 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-16 19:13:07 | INFO    | 2010.01.0071467/2024-88   | __main__              | FIM (28.2s) | Próxima ação: -
+2026-11-16 19:13:07 | INFO    | 2010.01.0049247/2025-80   | __main__              | INÍCIO [7/752]
+2026-11-16 19:13:08 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=47353): Failed to establish a new connection: [Errno 111] Connection refused")': /session/0fd7224f06f5fddbd52baaa2b83c1cea
+2026-11-16 19:13:08 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=47353): Failed to establish a new connection: [Errno 111] Connection refused")': /session/0fd7224f06f5fddbd52baaa2b83c1cea
+2026-11-16 19:13:08 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=47353): Failed to establish a new connection: [Errno 111] Connection refused")': /session/0fd7224f06f5fddbd52baaa2b83c1cea
+2026-11-16 19:13:08 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-16 19:13:08 | INFO    | -                         | __main__              | Processos: 6 | Sem erro: 6 | Com erro: 0
+2026-11-16 19:13:08 | INFO    | -                         | __main__              |     5 | Marcadores verificados
+2026-11-16 19:13:08 | INFO    | -                         | __main__              |     1 | 1 inconsistência(s) encontrada(s)
+2026-11-16 19:13:08 | INFO    | -                         | __main__              | Duração total da execução: 0h02m56s
+2026-11-16 19:13:08 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

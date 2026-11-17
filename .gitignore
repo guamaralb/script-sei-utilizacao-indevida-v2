@@ -137,3 +137,6 @@ screenshots/
 downloads/
 
 *Zone.Identifier
+
+# Arquivos temporários do Excel/Office (arquivo aberto)
+~$*

@@ -31,6 +31,11 @@ class ValoresBeneficiario:
     def total(self) -> float:
         return self.valor_rede_credenciada + self.valor_rede_propria
 
+    @property
+    def total_geral(self) -> float:
+        """Total dos serviços utilizados mais a coparticipação apurada."""
+        return self.total + self.coparticipacao
+
 
 def formatar_reais(valor: float) -> str:
     """formatar_reais(1234.5) -> 'R$ 1.234,50'."""
@@ -51,7 +56,7 @@ def tabela_html(cabecalho: list[str], linhas: list[list[str]], *, ultima_em_negr
 
 def _tabela_valores(beneficiarios: tuple[ValoresBeneficiario, ...]) -> str:
     def _valores(b: ValoresBeneficiario) -> list[str]:
-        return [formatar_reais(v) for v in (b.valor_rede_credenciada, b.valor_rede_propria, b.total, b.coparticipacao)]
+        return [formatar_reais(v) for v in (b.valor_rede_credenciada, b.valor_rede_propria, b.total, b.coparticipacao, b.total_geral)]
 
     total = ValoresBeneficiario(
         identificacao='Total',
@@ -60,7 +65,7 @@ def _tabela_valores(beneficiarios: tuple[ValoresBeneficiario, ...]) -> str:
         coparticipacao=sum(b.coparticipacao for b in beneficiarios),
     )
     return tabela_html(
-        ['Beneficiário / matrícula', 'Utilização da rede credenciada', 'Utilização da rede própria', 'Total dos serviços utilizados', 'Coparticipação apurada'],
+        ['Beneficiário / matrícula', 'Utilização da rede credenciada', 'Utilização da rede própria', 'Total dos serviços utilizados', 'Coparticipação apurada', 'Total geral'],
         [[b.identificacao, *_valores(b)] for b in (*beneficiarios, total)],
         ultima_em_negrito=True,
     )

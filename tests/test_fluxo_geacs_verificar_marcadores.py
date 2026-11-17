@@ -22,7 +22,8 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import ASSUNTO_MEMO_DISA_VALIDAR_CONSTA
 from tests.sei_falso import DISA_USOU_RP_ANTIGO, MANTIS_USOU_RC_ANTIGO, SEIFalso
 
-# Marcadores válidos na GEACS (lista de 11/11/2026): uma coluna tag_* para cada
+# Marcadores válidos na GEACS (lista de 11/11/2026, mais os dois do fluxo GEACS
+# TODAS INFOS, a cadastrar no SEI): uma coluna tag_* para cada
 VALIDOS_NO_SEI = (
     'v2: 00 - Processo VELHO',
     'v2: 01 - Tratado pelo Script',
@@ -54,6 +55,8 @@ VALIDOS_NO_SEI = (
     'v2: 01.10.1 - Aguarda DEPROC: Coparticipação',
     'v2: 01.11 - VELHO Concluído: Memo DEPROC',
     'v2: 01.11 - VELHO Concluído: Memo DISA',
+    'v2: 01.12 - No Bloco APIS: Todas as Infos',
+    'v2: 01.12.1 - Encaminhado APIS: Todas as Infos',
 )
 
 

@@ -4,7 +4,9 @@
 Para cada processo: as linhas com SEI = número do processo, conferidas com
 as matrículas do memo da APIS e filtradas pelo período de apuração de cada
 beneficiário. As colunas do relatório e os totais seguem a aba "DE-PARA" da
-mesma planilha (fixados aqui; a aba não é lida).
+mesma planilha (fixados aqui; a aba não é lida). Só as linhas com
+VALOR_BASE_COPA diferente de 0 são mantidas, depois da conferência das
+matrículas.
 """
 
 import logging
@@ -41,6 +43,7 @@ _COLUNAS_BASE = (
     'SALDO_APOS_COMPETENCIA',  # Y
     'CALCULO_COPARTICIPACAO',  # AI
     'SITUACAO',
+    'VALOR_BASE_COPA',
 )
 
 SITUACAO_RATEIO_SALDO_NAO_QUITADO = 'APURADO, DESCONTADO PARCIALMENTE (RATEIO), SALDO NAO QUITADO'
@@ -98,6 +101,9 @@ class BeneficiarioDeproc:
 class ResultadoDeproc:
     linhas_processo: int
     linhas_fora_periodo: int
+    # Linhas com VALOR_BASE_COPA igual a 0 (ou vazio): ignoradas no relatório,
+    # no memo e nos totais
+    linhas_base_copa_zero: int
     # Uma linha por atendimento, nas colunas de COLUNAS_RELATORIO, ordenadas
     # por beneficiário (titular primeiro) e data
     atendimentos: pd.DataFrame
@@ -155,6 +161,12 @@ def conferir_matriculas(linhas: pd.DataFrame, dados: DadosUI) -> list[str]:
         if not any(mesma_matricula(dependente, matricula) for dependente in dependentes):
             divergentes.append(f'{matricula} (dependente)')
     return divergentes
+
+
+def manter_com_base_copa(linhas: pd.DataFrame) -> pd.DataFrame:
+    """Linhas com VALOR_BASE_COPA diferente de 0 (vazio ou não numérico
+    conta como 0)."""
+    return linhas[_valores(linhas, 'VALOR_BASE_COPA') != 0]
 
 
 def _intervalos_por_linha(linhas: pd.DataFrame, dados: DadosUI) -> list[tuple[Intervalo, ...]]:
@@ -266,23 +278,26 @@ def _beneficiarios(linhas: pd.DataFrame, atendimentos: pd.DataFrame, dados: Dado
 
 def apurar_coparticipacao(base: pd.DataFrame, num_processo: str, dados: DadosUI) -> ResultadoDeproc:
     """Linhas do processo na base DEPROC, conferidas com as matrículas do memo
-    da APIS e filtradas pelo período de apuração.
+    da APIS, só com VALOR_BASE_COPA diferente de 0 e filtradas pelo período
+    de apuração. As de base 0 entram só na conferência das matrículas.
 
     Processo fora da base: ErroAvaliacao (a base pode não cobrir o processo).
     Matrícula divergente: MatriculasDivergentes."""
-    linhas = base[base['SEI'] == str(num_processo).strip()]
-    if linhas.empty:
+    todas = base[base['SEI'] == str(num_processo).strip()]
+    if todas.empty:
         raise ErroAvaliacao('Processo não consta na base DEPROC (coluna SEI)')
 
-    divergentes = conferir_matriculas(linhas, dados)
+    divergentes = conferir_matriculas(todas, dados)
     if divergentes:
         raise MatriculasDivergentes(divergentes)
 
+    linhas = manter_com_base_copa(todas)
     no_periodo = filtrar_periodo(linhas, dados)
     atendimentos = montar_atendimentos(no_periodo)
     resultado = ResultadoDeproc(
-        linhas_processo=len(linhas),
+        linhas_processo=len(todas),
         linhas_fora_periodo=len(linhas) - len(no_periodo),
+        linhas_base_copa_zero=len(todas) - len(linhas),
         atendimentos=atendimentos,
         subtotais=_subtotais(atendimentos),
         totais=calcular_totais(no_periodo),
@@ -290,7 +305,8 @@ def apurar_coparticipacao(base: pd.DataFrame, num_processo: str, dados: DadosUI)
     )
     totais = resultado.totais
     logger.info(
-        f'Base DEPROC: {resultado.linhas_processo} linha(s) do processo, {resultado.linhas_fora_periodo} fora do período | '
+        f'Base DEPROC: {resultado.linhas_processo} linha(s) do processo, {resultado.linhas_base_copa_zero} com VALOR_BASE_COPA 0 (ignoradas), '
+        f'{resultado.linhas_fora_periodo} fora do período | '
         f'{len(atendimentos)} atendimento(s) | Coparticipação R$ {totais.coparticipacao:.2f} | '
         f'Descontado R$ {totais.descontado:.2f} | Em aberto R$ {totais.em_aberto:.2f}'
     )

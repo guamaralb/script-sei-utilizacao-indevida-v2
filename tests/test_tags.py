@@ -165,7 +165,10 @@ def test_marcadores_da_deproc_consistentes():
 
 
 def test_todo_memo_no_bloco_tem_o_seu_aguarda():
-    assert set(tags.AGUARDA_POR_NO_BLOCO) == set(tags.TAGS_NO_BLOCO_NOVO)
+    # Exceção: o retorno final à APIS (01.12) não aguarda resposta; depois da
+    # assinatura vem a conclusão (01.12.1)
+    assert set(tags.AGUARDA_POR_NO_BLOCO) == set(tags.TAGS_NO_BLOCO_NOVO) - {tags.TAG_NO_BLOCO_APIS_TODAS_INFOS}
+    assert tags.TAG_ENCAMINHADO_APIS_TODAS_INFOS in tags.TAGS_CONCLUSAO_NOVO
     for no_bloco, aguarda in tags.AGUARDA_POR_NO_BLOCO.items():
         numero = no_bloco.removeprefix(tags.PREFIXO).split(' - ')[0]
         assert aguarda.startswith(f'{tags.PREFIXO}{numero}.')

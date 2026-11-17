@@ -79,6 +79,12 @@ TAG_MEMO_DEPROC_COPARTICIPACAO = 'v2: 01.10 - No Bloco DEPROC: Coparticipação'
 TAG_NO_BLOCO_APIS_SEM_USO = 'v2: 01.10 - No Bloco APIS: Sem Uso'
 TAG_AGUARDA_DEPROC_COPARTICIPACAO = 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação'
 TAG_AGUARDA_APIS_SEM_USO = 'v2: 01.10.1 - Aguarda APIS: Sem Uso'
+# Retorno da DEPROC (01.10.1): memo à APIS com todas as informações (fluxo
+# GEACS TODAS INFOS) no bloco. Depois da assinatura, quem encaminha coloca o
+# 01.12.1 (conclusão, manual) e remove o 01.12. O 01.11 fica de fora: já foi
+# usado pelo VELHO da versão anterior
+TAG_NO_BLOCO_APIS_TODAS_INFOS = 'v2: 01.12 - No Bloco APIS: Todas as Infos'
+TAG_ENCAMINHADO_APIS_TODAS_INFOS = 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos'
 
 # Estados da versão anterior do fluxo (não são mais adicionados)
 TAG_MEMO_DISA_VALIDAR_USOS_MANTIS = 'v2: 01.08.1 - Memo DISA Validar Usos MANTIS'
@@ -114,8 +120,10 @@ AGUARDA_POR_NO_BLOCO = {
     TAG_MEMO_DEPROC_COPARTICIPACAO: TAG_AGUARDA_DEPROC_COPARTICIPACAO,
     TAG_NO_BLOCO_APIS_SEM_USO: TAG_AGUARDA_APIS_SEM_USO,
 }
-# Memo no bloco: aguarda assinatura (prox_acao: assinar e encaminhar)
-TAGS_NO_BLOCO_NOVO = tuple(AGUARDA_POR_NO_BLOCO)
+# Memo no bloco: aguarda assinatura (prox_acao: assinar e encaminhar). O
+# 01.12 (retorno final à APIS) não tem "Aguarda": depois da assinatura vem a
+# conclusão (01.12.1)
+TAGS_NO_BLOCO_NOVO = (*AGUARDA_POR_NO_BLOCO, TAG_NO_BLOCO_APIS_TODAS_INFOS)
 # Memo assinado e encaminhado (marcador manual) ou estado da versão
 # anterior: processo parado até a resposta do destinatário
 TAGS_PARADA_NOVO = (
@@ -139,6 +147,7 @@ TAGS_AGUARDA_RESPOSTA_DISA = (
 )
 TAGS_AGUARDA_RESPOSTA_DEPROC = (TAG_AGUARDA_DEPROC_COPARTICIPACAO,)
 TAGS_CONCLUSAO_NOVO = (
+    TAG_ENCAMINHADO_APIS_TODAS_INFOS,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
     TAG_VELHO_MEMO_DISA,
     TAG_VELHO_MEMO_DEPROC,
@@ -204,6 +213,8 @@ _COLUNA_POR_TAG = {
     TAG_AGUARDA_APIS_SEM_USO: 'tag_aguarda_resposta_apis_sem_uso',
     TAG_VELHO_MEMO_DISA: 'tag_velho_memo_disa',
     TAG_VELHO_MEMO_DEPROC: 'tag_velho_memo_deproc',
+    TAG_NO_BLOCO_APIS_TODAS_INFOS: 'tag_no_bloco_apis_todas_infos',
+    TAG_ENCAMINHADO_APIS_TODAS_INFOS: 'tag_encaminhado_apis_todas_infos',
 }
 
 # Colunas dos marcadores da DEPROC (só o fluxo DEPROC as grava)
@@ -295,6 +306,9 @@ _ESTADOS_POSSIVEIS_POR_INFORMATIVO = {
         *_ESTADOS_DISA,
         TAG_MEMO_DEPROC_COPARTICIPACAO,
         TAG_NO_BLOCO_APIS_SEM_USO,
+        # Retorno da DEPROC: retorno final à APIS
+        TAG_NO_BLOCO_APIS_TODAS_INFOS,
+        TAG_ENCAMINHADO_APIS_TODAS_INFOS,
     ),
     TAG_PERIODO_VAR_DEP: (TAG_AVALIADO_USO_REDE_PROPRIA_DISA, TAG_MEMO_APIS_PERIODO_DEPENDENTES),
 }
@@ -316,6 +330,8 @@ _SO_FLUXO_NORMAL = _com_aguarda((
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_NO_BLOCO_APIS_SEM_USO,
+    TAG_NO_BLOCO_APIS_TODAS_INFOS,
+    TAG_ENCAMINHADO_APIS_TODAS_INFOS,
 ))
 _INFORMATIVOS = tuple(_ESTADOS_POSSIVEIS_POR_INFORMATIVO)
 

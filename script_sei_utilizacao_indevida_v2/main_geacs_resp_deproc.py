@@ -26,7 +26,8 @@ def tratar_resposta(driver: webdriver.Remote, registro: RegistroResposta, tag_ag
     # TODO: definir o que fazer com a resposta da DEPROC (01.10.1 Aguarda
     # DEPROC: Coparticipação): conferir o MemoGeacsCalculoCopa assinado na
     # rodada (assunto PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA) e o relatório de
-    # coparticipação; retorno final à APIS (MemoApisComTodasAsInformacoes)?
+    # coparticipação. O retorno final à APIS (MemoApisComTodasAsInformacoes)
+    # já é feito pelo fluxo GEACS TODAS INFOS (main_geacs_todas_infos.py).
     # Definir o que ler na árvore, que memo criar (bloco), que marcador
     # adicionar (e se o "Aguarda" sai) e a prox_acao (Registro.ProxAcao)
     raise fluxo_nao_montado(FLUXO)

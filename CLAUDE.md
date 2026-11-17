@@ -17,7 +17,7 @@ O fluxo está descrito na seção [Fluxo do processo](#fluxo-do-processo) e
 desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 `geacs_inicial`, `geacs_resp_*`, `geacs_adc_pdf_ant_aut`,
 `geacs_adc_pdf_ant_man`, `geacs_canc_memo_deproc_ant`,
-`geacs_verificar_marcadores`, `deproc_calcula_copa` e `deproc_excluir_docs`; gerado por [`docs/gerar_fluxo.py`](docs/gerar_fluxo.py)). O
+`geacs_verificar_marcadores`, `geacs_todas_infos`, `deproc_calcula_copa` e `deproc_excluir_docs`; gerado por [`docs/gerar_fluxo.py`](docs/gerar_fluxo.py)). O
 `docs/fluxo_com_comments.drawio` é da versão anterior do fluxo.
 
 ## Glossário
@@ -71,7 +71,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
 | `Registro.py` | `PROX_ACAO_POR_NO_BLOCO` e `PROX_ACAO_POR_CONCLUSAO` (prox_acao de cada estado em que o fluxo inicial para). Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroAdcPdfAnt`, `RegistroDeproc`, `RegistroCancMemoDeprocAnt`, `RegistroResposta`, `RegistroDeprocExcluirDocs`, `RegistroVerificarMarcadores`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo (gravação atômica), com backup; `linha_processo()` (linha atual do processo, para a conferência da `prox_acao`) |
-| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; ainda fora do fluxo), `MemoGeacsCalculoCopa` (fluxo DEPROC: da DEPROC à GEACS) |
+| `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; [fluxo GEACS TODAS INFOS](#fluxo-geacs-todas-infos)), `MemoGeacsCalculoCopa` (fluxo DEPROC: da DEPROC à GEACS) |
 | `main_geacs_adc_pdf_ant_aut.py` | Fluxo alternativo ADC PDF ANT AUT (`poetry run task run_geacs_adc_pdf_ant_aut`): loop dos processos e registro na planilha de controle ([seção](#fluxo-alternativo-adc-pdf-ant-aut)) |
 | `planilhas_adc_pdf_ant_aut.py` | ADC PDF ANT AUT: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`; `inserir_pdfs` e `deixar_aguardando_fluxo_normal` são usados também pelo fluxo ADC PDF ANT MAN) |
 | `main_geacs_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN (`poetry run task run_geacs_adc_pdf_ant_man`): usa o loop `executar` do `main_geacs_adc_pdf_ant_aut.py` ([seção](#fluxo-adc-pdf-ant-man)) |
@@ -79,11 +79,13 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `main_geacs_canc_memo_deproc_ant.py` | Fluxo GEACS CANC MEMO DEPROC ANT (`poetry run task run_geacs_canc_memo_deproc_ant`): cancela o memo DEPROC antigo da GEACS, sem alterar a `prox_acao` ([seção](#fluxo-geacs-canc-memo-deproc-ant)) |
 | `main_geacs_verificar_marcadores.py` | Fluxo GEACS VERIFICAR MARCADORES (`poetry run task run_geacs_verificar_marcadores`): lê os marcadores e atualiza as colunas `tag_*` (uma por marcador válido) e `demais_marcadores`, e confere a `prox_acao` da planilha, sem alterá-la e sem ação no SEI ([seção](#fluxo-geacs-verificar-marcadores)) |
 | `conferencia_prox_acao.py` | Fluxo GEACS VERIFICAR MARCADORES: `conferir_processo()` confere a `prox_acao` da planilha com os marcadores (`conferir_prox_acao`), o caso base DISA × MANTIS, os memos e relatórios dos marcadores na árvore (`conferir_memo_do_marcador`) e a retomada (`conferir_retomada`) |
+| `main_geacs_todas_infos.py` | Fluxo GEACS TODAS INFOS (`poetry run task run_geacs_todas_infos`), na unidade da GEACS: depois do retorno da DEPROC (`01.10.1`), cria o memo à APIS com todas as informações e adiciona o `01.12` ([seção](#fluxo-geacs-todas-infos)) |
+| `todas_infos.py` | Fluxo GEACS TODAS INFOS: caminho (direto à DEPROC ou pela DISA), leitura do memo de resultado da DEPROC e dos PDFs do MANTIS (download e pypdf), recálculo nas bases DEPROC e MANTIS, conferência e linhas das tabelas do memo |
 | `fluxo_resposta.py` | Base dos fluxos de resposta (**TODO**: não montados): `conferir_marcador_aguarda()`, `processar_linha()`, `executar()`, `FluxoNaoMontado` ([seção](#fluxos-de-resposta-todo)) |
 | `main_geacs_resp_apis.py`, `main_geacs_resp_disa.py`, `main_geacs_resp_deproc.py` | Fluxos de resposta da APIS, da DISA e da DEPROC (`poetry run task run_geacs_resp_apis`, `..._disa`, `..._deproc`): modelos com TODO em `tratar_resposta` |
 | `main_deproc_calcula_copa.py` | Fluxo DEPROC (`poetry run task run_deproc_calcula_copa -d DD/MM/AAAA`), na unidade da DEPROC: memo DEPROC assinado, coparticipação, relatório e memo de resultado ([seção](#fluxo-deproc)) |
-| `main_deproc_excluir_docs.py` | Fluxo DEPROC EXCLUIR DOCS (`poetry run task run_deproc_excluir_docs`), na unidade da DEPROC: exclui todos os documentos da DEPROC do processo, sem alterar a `prox_acao` ([seção](#fluxo-deproc-excluir-docs)) |
-| `coparticipacao_deproc.py` | Fluxo DEPROC: carga da base DEPROC (aba `Resultado`), conferência das matrículas, filtro pelo período, colunas do relatório e totais (aba `DE-PARA`) |
+| `main_deproc_excluir_docs.py` | Fluxo DEPROC EXCLUIR DOCS (`poetry run task run_deproc_excluir_docs`), na unidade da DEPROC: exclui os documentos da DEPROC gerados pelo `deproc_calcula_copa` (PDF pelo nome, memo pelo assunto) e remove os marcadores da DEPROC, sem alterar a `prox_acao` ([seção](#fluxo-deproc-excluir-docs)) |
+| `coparticipacao_deproc.py` | Fluxo DEPROC: carga da base DEPROC (aba `Resultado`), conferência das matrículas, só as linhas com `VALOR_BASE_COPA` diferente de 0, filtro pelo período, colunas do relatório e totais (aba `DE-PARA`) |
 | `relatorio_deproc.py` | Fluxo DEPROC: PDF da coparticipação e inclusão no processo, com retomada pelo nome |
 | `processos_a_processar.py` | `ler_processos_a_processar(aba)`: lista de processos de cada fluxo ([Entrada](#entrada)) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
@@ -403,8 +405,9 @@ próprios. `TAGS_DEPROC` são os que o script adiciona (conferidos no SEI); o
 Os dois primeiros números têm dois dígitos (`00`, `01.08.3`), para a lista
 do SEI ficar em ordem.
 
-**Marcadores válidos na GEACS** (`tags.TAGS_VALIDOS_GEACS`, 30 em 11/11/2026, há
-teste com a lista do SEI): os `v2: ` de `00` a `01.11` da tabela abaixo, sem os
+**Marcadores válidos na GEACS** (`tags.TAGS_VALIDOS_GEACS`, 32: os 30 da lista do SEI
+de 11/11/2026 e os dois do fluxo GEACS TODAS INFOS, há teste com a lista): os `v2: `
+de `00` a `01.12.1` da tabela abaixo, sem os
 `01.06.2`, `01.08.2` e `01.08.3`. Cada um tem uma coluna `tag_*` na planilha de
 controle (`_COLUNA_POR_TAG`; os nomes das colunas não mudaram, por isso alguns
 não batem com o nome atual do marcador, ex.: `tag_aguarda_disa_validar_consta`
@@ -441,6 +444,8 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 | `01.10.1 - Aguarda DEPROC: Coparticipação` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.10` |
 | `01.10 - No Bloco APIS: Sem Uso` | Estado (no bloco): memo à APIS (nenhum uso em nenhuma base) no bloco |
 | `01.10.1 - Aguarda APIS: Sem Uso` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.10` |
+| `01.12 - No Bloco APIS: Todas as Infos` | Estado (no bloco): retorno final à APIS (`MemoApisComTodasAsInformacoes`, [fluxo GEACS TODAS INFOS](#fluxo-geacs-todas-infos)) no bloco, depois do retorno da DEPROC (substitui o `01.10.1 - Aguarda DEPROC`). Não tem `Aguarda` (`AGUARDA_POR_NO_BLOCO`): depois da assinatura vem a conclusão. O `01.11` não é usado: já foi o do VELHO da versão anterior |
+| `01.12.1 - Encaminhado APIS: Todas as Infos` | Estado (conclusão), **manual**: memo assinado e encaminhado à APIS. Quem coloca remove o `01.12` |
 | `01.06.2 - Base DISA: Usou RP` / `Não Usou RP`, `01.08.2 - MANTIS: Usou RP` / `Não Usou RP`, `01.08.3 - MANTIS: Usou RC` / `Não Usou RC` | Versão anterior (pares de uso da RP / RC). Não são mais adicionados nem conferidos; fora dos válidos (vão para `demais_marcadores`) |
 | `01.02 - Avaliado Se Usou Rede Própria`, `01.04 - Memo Não Usou Rede no Bloco` | Versão anterior / correção. Não são mais adicionados nem consultados |
 | `01.02.2 - Mat. N Encontradas Base DISA` | Versão anterior. Não é mais adicionado nem conferido; vai para `demais_marcadores` |
@@ -481,7 +486,7 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
   - informativo só com os estados que vêm depois dele (sem estado ou com
     `01.00`, não há regra): `01.02.1` com `01.06`, `01.08` (falhou antes do
     memo), `01.06.1` (titular fora da base APIS) ou, só dependente fora dela,
-    `01.07`, `01.09` e `01.10` (e os `Aguarda` deles); `01.01` com `01.06` ou
+    `01.07`, `01.09`, `01.10` (e os `Aguarda` deles), `01.12` e `01.12.1`; `01.01` com `01.06` ou
     `01.07`;
   - `01.06.1` exige `01.02.1`; `01.07` exige `01.01`;
   - os marcadores de uso da RP / RC (`01.06.2`, `01.08.2`, `01.08.3`, versão
@@ -489,7 +494,7 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
   - cada `Aguarda` manual (`.1`) segue as mesmas regras do seu `No Bloco`
     (`_com_aguarda`); `No Bloco` e `Aguarda` juntos são dois estados (quem
     colocou o `Aguarda` não removeu o `No Bloco`);
-  - VELHO (`00`) não tem `01.09` nem os `01.10` (nem os `Aguarda` deles).
+  - VELHO (`00`) não tem `01.09`, os `01.10` (nem os `Aguarda` deles) e os `01.12`.
 
   Ao mudar o fluxo, ajuste as regras em `tags.py` (há testes em
   `tests/test_tags.py`).
@@ -548,9 +553,15 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
   - `7730905`: memo à APIS (período dos dependentes);
   - `7711907` (`BLOCO_MEMO_APIS_MAT_NAO_ENCONTRADAS`): memo à APIS
     (matrículas). Se a constante for `None`, o processo para com erro
-    antes de criar o memo.
-- Signatária: Bruna Miiller Lavarini, Gerência de Auditoria e Contas da
-  Saúde.
+    antes de criar o memo;
+  - `7768786` (`BLOCO_MEMO_APIS_TODAS_INFOS`, "Script v2 - Memo à APIS: Todas
+    As Informações"): retorno final à APIS (fluxo GEACS TODAS INFOS).
+- Signatário dos memos da GEACS (`NOME_SIGNATARIO`, `CARGO_SIGNATARIO`):
+  Gustavo Amaral Bernardino, Assessor da Gerência de Auditoria e Contas da
+  Saúde. Exceção: o retorno final à APIS (`MemoApisComTodasAsInformacoes`)
+  é da Bruna Miiller Lavarini, Gerência de Auditoria e Contas da Saúde
+  (`NOME_SIGNATARIO_GERENCIA`, `CARGO_SIGNATARIO_GERENCIA`). O
+  `MemoGeacsCalculoCopa` (da DEPROC) usa `NOME_SIGNATARIO_DEPROC`.
 
 ---
 
@@ -596,6 +607,7 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 | Parado pela base APIS (titular) | `01` + `01.02.1` + `01.06.1` | `01`, `01.02.1`, `01.06.1` |
 | Dependente fora da base APIS | `01` + `01.02.1` + (um dos caminhos DISA × MANTIS ou o do período) | `01`, `01.02.1` e o estado final do caminho |
 | Parado pelo período dos dependentes | `01` + `01.06` + `01.01` → `01.07` | `01`, `01.01`, `01.07` |
+| Retorno da DEPROC ([GEACS TODAS INFOS](#fluxo-geacs-todas-infos)) | `01.10` → `01.10.1` (manual) → `01.12 No Bloco APIS: Todas as Infos` → `01.12.1` (manual) | `01`, `01.12` e, depois da assinatura, `01`, `01.12.1` |
 | VELHO | `00` (+ o que já tinha; o `01.00` sai) | `00`, … |
 | Depois da assinatura (manual) | `No Bloco` → `Aguarda` do mesmo número + `.1` (ex.: `01.09` → `01.09.1`) | o `Aguarda` no lugar do `No Bloco` |
 
@@ -632,9 +644,9 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 |---|---|---|
 | 1 | Marcadores inconsistentes (`conferir_marcadores`, [regras](#marcadores-tagspy))? | Erro, antes de qualquer ação. `prox_acao` = Verificar marcadores inconsistentes (corrigir no SEI) |
 | 2 | VELHO pelo marcador (`00`)? | `_separar_velho`: fechado no setor, `ProcessoFechadoNoSetor` sem ação (não reabre); com `MANUAL`, `prox_acao` = Fora do escopo; senão **➕ `00`** (se faltar), `prox_acao` = VELHO: não processado. Nos dois casos, **➖ `01.00`** (se tiver). **TODO**: fluxo do VELHO |
-| 3 | Memo no bloco (`TAGS_NO_BLOCO_NOVO`: `01.05`, `01.06.1`, `01.07`, `01.09 - No Bloco DISA`, `01.10 - No Bloco DEPROC`, `01.10 - No Bloco APIS: Sem Uso`)? | Aguarda assinatura, sem erro. `prox_acao` = Assinar o memo correspondente e encaminhar (`_PROX_ACAO_POR_NO_BLOCO`, a mesma da passagem que criou o memo). Quem assina coloca o `Aguarda` e remove o `No Bloco` |
+| 3 | Memo no bloco (`TAGS_NO_BLOCO_NOVO`: `01.05`, `01.06.1`, `01.07`, `01.09 - No Bloco DISA`, `01.10 - No Bloco DEPROC`, `01.10 - No Bloco APIS: Sem Uso`, `01.12 - No Bloco APIS: Todas as Infos`)? | Aguarda assinatura, sem erro. `prox_acao` = Assinar o memo correspondente e encaminhar (`_PROX_ACAO_POR_NO_BLOCO`, a mesma da passagem que criou o memo). Quem assina coloca o `Aguarda` e remove o `No Bloco` |
 | 4 | Estado de parada (`Aguarda` manuais: `01.05.1`, `01.06.1.1`, `01.07.1`, `01.09.1`, `01.10.1`; versão anterior: `01.08.1`, `01.09 Memo DISA`)? | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. A resposta é tratada nos [fluxos de resposta](#fluxos-de-resposta-todo) (**TODO**) |
-| 5 | Estado de conclusão (versão anterior: `01.10 - Concluído: Memos DISA e DEPROC`)? | Concluído. `prox_acao` = Assinar memos DISA e DEPROC e encaminhar |
+| 5 | Estado de conclusão (`01.12.1 - Encaminhado APIS: Todas as Infos`; versão anterior: `01.10 - Concluído: Memos DISA e DEPROC`)? | Concluído. `prox_acao` = Memo à APIS (todas as informações) encaminhado (concluído); na versão anterior, Assinar memos DISA e DEPROC e encaminhar |
 | 6 | Sem o `01` (ou com o `01.00`) e VELHO pelos memos da GEACS (`encontrar_memos_velho`: algum à DISA e/ou à DEPROC antes de 15/10/2026, [regra](#processo-velho))? | `_separar_velho` (como no 2). Memo sem data legível (e nenhum antes da data): erro, sem ação |
 | 7 | Processo fechado no setor (`_reabrir_se_fechado`)? | Com `MANUAL` ou sem memo da APIS destinado à GEACS (lido sem reabrir): `ProcessoFechadoNoSetor`, **não reabre**, sem ação no SEI, `prox_acao` = Verificar erro. Senão, reabre (`reabrir_processo_fechado`: `reabrir_processo` da `sei_automacao`, coluna `processo_reaberto`; o processo **continua aberto**), relê a árvore e segue. Não reabriu: `ProcessoFechadoNoSetor` |
 | 8 | **Não** tem `01`? | **➕ `01`** e [seção 2](#2-fluxo-processar_novo) do início (inclusive com documento da GEACS ou com o antigo `02`) |
@@ -1031,6 +1043,94 @@ Há testes em `tests/test_fluxo_geacs_verificar_marcadores.py`.
 
 ---
 
+## Fluxo GEACS TODAS INFOS
+
+Retorno final à APIS (`MemoApisComTodasAsInformacoes`), depois do retorno da
+DEPROC. `poetry run task run_geacs_todas_infos` (`main_geacs_todas_infos.py` e
+`todas_infos.py`), com os processos da aba `geacs_todas_infos` de
+`dados/inputs/processos_a_processar.xlsx`. Carrega as bases APIS, DISA, MANTIS
+e DEPROC, faz login e troca para a unidade da GEACS (`abrir_sei(UNIDADE_GEACS)`).
+
+Dois caminhos (a ordem das perguntas é a do código):
+
+- **direto à DEPROC** (sem uso da rede própria): completo;
+- **pela DISA antes**: memo da GEACS à DISA (um dos três assuntos dos memos à
+  DISA) na rodada. A DISA responde, e o processo segue depois à DEPROC. Os
+  valores da rede própria viriam da resposta da DISA, cuja leitura **ainda não
+  foi implementada** (**TODO**: falta um exemplo da resposta): o processo para
+  com `RespostaDisaPendente` (sem documento de uma unidade `IPSEMG/DISA`,
+  `PREFIXO_UNIDADE_DISA`, depois do memo) ou `LeituraDisaNaoImplementada`
+  (com resposta, coluna `resposta_disa_sei`), sem ação no SEI.
+
+Para cada processo:
+
+1. Abre o processo (unidade sem acesso: como nos outros fluxos), lê os
+   marcadores e confere a combinação (`conferir_marcadores`, no início e no
+   fim). Com o `01.12` (no bloco): `prox_acao` = Assinar memo à APIS (todas as
+   informações) e encaminhar; com o `01.12.1`: `prox_acao` = Memo à APIS (todas
+   as informações) encaminhado (concluído). Nos dois, sem ler mais nada.
+   **Sem o `01.10.1 - Aguarda DEPROC: Coparticipação`**: `SemAguardaDeproc`,
+   sem ação.
+2. Sem `Incluir Documento`: `ProcessoFechadoNoSetor`, **não reabre**. Confere
+   se o `01.12` está cadastrado (`garantir_marcadores_no_sei`).
+3. Lista a árvore e lê o último memo da APIS destinado à GEACS
+   (`obter_dados_ui`; define a rodada).
+4. **Memo de resultado da DEPROC** (`MemoGeacsCalculoCopa`) na rodada, pelo
+   assunto, entre os memos da DEPROC, com "assinado eletronicamente por" no
+   texto (`memo_calculo_copa`). Sem ele ou sem assinatura: erro (colunas
+   `memo_calculo_copa_sei` e `memo_calculo_copa_assinado`).
+5. Caminho (`identificar_caminho`, coluna `caminho_todas_infos`); pela DISA,
+   para (acima).
+6. **Valores** (`apurar_todas_infos`): cada um é lido do SEI **e** recalculado
+   das bases. Qualquer diferença (tolerância de meio centavo) para o processo
+   com `ValoresDivergentes`, coluna `divergencias_todas_infos`, sem criar nada:
+   - coparticipação por matrícula e total consolidado: lidos da tabela do memo
+     da DEPROC (`ler_coparticipacao_do_memo`; sem coparticipação, o memo diz
+     "Não foram identificados atendimentos com coparticipação") e recalculados
+     na base DEPROC (`apurar_coparticipacao`, como no fluxo DEPROC);
+   - rede credenciada e rede própria: recalculadas nas bases do MANTIS, no
+     período do memo da APIS (`recalcular_mantis`; dependente fora da base
+     APIS e do MANTIS dos não encontrados é ignorado, como no `geacs_inicial`),
+     e comparadas com a linha `TOTAL` de cada PDF do MANTIS da rodada
+     (`PDF Utilização <Tit.|Dep.> <RC|RP> - <matrícula>`, o mais recente), de
+     titular e de dependentes. O PDF é baixado do visualizador do SEI
+     (`baixar_pdf`: URL do anexo, `acao=documento_download_anexo`, do iframe
+     `ifrArvoreHtml`, dentro de `ifrVisualizacao`, inserida pelo JavaScript do
+     SEI; buscada na sessão do navegador, pois o Chrome não baixa PDF; espera a
+     URL mudar em relação ao PDF anterior) e lido com **pypdf** (`total_do_pdf`).
+     Atendimento sem PDF, ou PDF sem atendimento: divergência;
+   - no caminho direto, uso da rede própria no recálculo do MANTIS também é
+     divergência (o processo deveria ter ido à DISA).
+7. Monta o memo antes de qualquer ação no SEI (`montar_beneficiarios`): uma
+   linha por beneficiário do memo da APIS (titular e dependentes, sem os
+   ignorados), `<iniciais> / <matrícula>` (titular com DV; dependente com DV
+   da base DEPROC, senão como no MANTIS), valores RC, RP, total dos serviços, coparticipação e total geral (serviços + coparticipação), e
+   o PDF do MANTIS de cada rede (o de titular ou o de dependentes) de quem
+   usou. Detalhamento da coparticipação (`doc_coparticipacao`): o relatório
+   `PDF Coparticipação - ...` da DEPROC na rodada ou, sem coparticipação, o
+   próprio memo da DEPROC. Sem `doc_levantamento_disa` (caminho direto), o memo
+   informa que não houve atendimento na rede própria.
+8. `incluir_memo` (bloco `7768786`, `BLOCO_MEMO_APIS_TODAS_INFOS`; retomada pelo
+   assunto `PADRAO_ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES` na rodada) e
+   **➕ `01.12 - No Bloco APIS: Todas as Infos`** (↻ remove o `01.10.1`).
+   `prox_acao` = Assinar memo à APIS (todas as informações) e encaminhar.
+
+Depois da assinatura, quem encaminha coloca à mão o `01.12.1 - Encaminhado
+APIS: Todas as Infos` e remove o `01.12`.
+
+Planilha de controle: `script` = `geacs_todas_infos`, `fluxo` = `TODAS INFOS -
+RETORNO FINAL À APIS` (com o caminho), colunas `caminho_todas_infos`,
+`memo_disa_geacs_sei`, `resposta_disa_sei`, `memo_calculo_copa_*`,
+`doc_coparticipacao_sei`, `relatorios_rc_sei`, `relatorios_rp_sei`,
+`valor_total_rc_todas_infos`, `valor_total_rp_todas_infos`,
+`valor_total_copart_todas_infos`, `valores_todas_infos` (por beneficiário),
+`divergencias_todas_infos` e `memo_apis_todas_infos_*`; os resultados do fluxo
+inicial (base DISA e base APIS) e `processo_reaberto` não são gravados
+(`RegistroTodasInfos`). Log: `logs/<data>_execucao_geacs_todas_infos.log`. Há
+testes em `tests/test_fluxo_geacs_todas_infos.py`.
+
+---
+
 ## Fluxos de resposta (TODO)
 
 **TODO**: ainda não montados. `poetry run task run_geacs_resp_apis`,
@@ -1110,8 +1210,8 @@ Para cada processo (erro: `prox_acao` = Verificar erro, sem ação no SEI):
    formato inválido: erro.
 4. Procura o **memo DEPROC da GEACS** na rodada (`PADRAO_ASSUNTO_MEMO_DEPROC`)
    e confere a assinatura no texto (`PADRAO_ASSINATURA_MEMO_DEPROC`:
-   "assinado eletronicamente por Bruna Miiller Lavarini", com ou sem o "i" a
-   mais). Sem o memo ou sem a assinatura: erro (colunas
+   "assinado eletronicamente por Gustavo Amaral Bernardino" ou, nos memos
+   anteriores, "... por Bruna Miiller Lavarini", com ou sem o "i" a mais). Sem o memo ou sem a assinatura: erro (colunas
    `memo_deproc_geacs_sei` e `memo_deproc_assinado`).
 5. `apurar_coparticipacao`:
    - linhas com `SEI` = número do processo; nenhuma: erro (a base pode não
@@ -1122,11 +1222,17 @@ Para cada processo (erro: `prox_acao` = Verificar erro, sem ação no SEI):
      Divergência: `MatriculasDivergentes`, coluna
      `matriculas_divergentes_deproc`. Dependente do memo sem linha na base não
      é divergência (só não tem atendimento);
+   - **mantém só as linhas com `VALOR_BASE_COPA` diferente de 0** (vazio ou
+     não numérico conta como 0), depois da conferência das matrículas: as
+     outras não entram no relatório, no memo de resultado nem nos totais
+     (coluna `linhas_base_copa_zero_deproc`). Na base de 2019 (13/11/2026),
+     2.345 linhas têm base 0, todas `ISENTO NO SADS` (as 1.968 com
+     `MOTIVO_ISENCAO` e as 377 `SEM VALOR`) e sem valor de coparticipação;
    - filtra pelo período de apuração do memo da APIS (`DATA_ATENDIMENTO`):
      o do titular para todos ou, no modelo com período por dependente, o de
      cada dependente. Período variável sem período por dependente: erro;
-   - todas as linhas do período entram na apuração (colunas
-     `atendimentos_deproc` e totais), inclusive isentas e de cálculo impedido
+   - as demais linhas do período entram na apuração (colunas
+     `atendimentos_deproc` e totais), inclusive as de cálculo impedido
      (valor 0); no relatório em PDF, as de valor 0 não aparecem (abaixo).
 6. Antes de qualquer documento, confere bloco (`BLOCO_MEMO_GEACS_CALCULO_COPA`,
    `7765003`), signatário (`NOME_SIGNATARIO_DEPROC`: Danúbia Lacerda Gomes de
@@ -1215,7 +1321,7 @@ R$ 94,32 em vez de R$ 30,32.)
   (`marcadores_*`, `tag_*`), `processo_reaberto` e os resultados só do fluxo
   principal não são gravadas e continuam como estão. Outras colunas próprias:
   `data_geracao_base_deproc`, `memo_deproc_geacs_sei`, `memo_deproc_assinado`, `linhas_base_deproc`,
-  `linhas_fora_periodo_deproc`, `atendimentos_deproc`,
+  `linhas_fora_periodo_deproc`, `linhas_base_copa_zero_deproc`, `atendimentos_deproc`,
   `matriculas_divergentes_deproc`, `valor_total_coparticipacao`,
   `valor_total_descontado`, `valor_total_em_aberto`, `relatorio_deproc_*` e
   `memo_deproc_resultado_*`.
@@ -1225,8 +1331,9 @@ R$ 94,32 em vez de R$ 30,32.)
 
 ## Fluxo DEPROC EXCLUIR DOCS
 
-Exclui **todos os documentos da DEPROC** (`UNIDADE_DEPROC`,
-`IPSEMG/DEPROC-Utilização`) do processo. `poetry run task
+Exclui os documentos da DEPROC (`UNIDADE_DEPROC`,
+`IPSEMG/DEPROC-Utilização`) **gerados pelo [fluxo DEPROC](#fluxo-deproc)**
+(`deproc_calcula_copa`); os outros documentos da DEPROC são mantidos. `poetry run task
 run_deproc_excluir_docs` (`main_deproc_excluir_docs.py`), **na unidade da
 DEPROC**, com os processos da aba `deproc_excluir_docs` de
 `dados/inputs/processos_a_processar.xlsx`.
@@ -1238,25 +1345,48 @@ Para cada processo:
    reabre**, nada é excluído.
 2. Lista a árvore e separa os documentos da DEPROC (`filtrar_docs_deproc`:
    todos os tipos, não só memorandos). Nenhum: nada a fazer.
-3. Do **último para o primeiro** (um documento posterior pode citar o
-   anterior), seleciona o documento (`selecionar_doc`) e o exclui
+3. Separa os gerados pelo script (`_separar_docs_gerados`), na ordem da árvore:
+   - **relatório de coparticipação**: pelo nome na árvore, `PDF Coparticipação
+     - <matrícula> - <AAAAMMDD_HHMMSS>` (`_PADRAO_NOME_RELATORIO`);
+   - **memo de resultado à GEACS** (`MemoGeacsCalculoCopa`): memorando da
+     DEPROC cujo texto (`ler_texto_doc`) tem o assunto atual
+     (`PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA`, "Retorno do levantamento de
+     coparticipação – ...") ou o da versão anterior
+     (`PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA_ANTERIOR`, "Coparticipação
+     apurada – ...");
+   - os outros vão para os mantidos (não são tocados). Memorando que não pôde
+     ser lido não é excluído (vai para os não excluídos). Nenhum gerado: nada
+     a excluir.
+4. Do **último para o primeiro** (um documento posterior pode citar o
+   anterior), seleciona cada documento gerado (`selecionar_doc`) e o exclui
    (`excluir_doc` da `sei_automacao.documento`). Documento que não pode ser
    excluído (ex.: assinado ou já enviado: o SEI só permite cancelar) vai para
    a lista dos não excluídos, a página é recarregada e os demais seguem.
    Navegador fechado: para o processo (e o loop).
-4. Confere (`_docs_deproc_restantes`): logo depois da exclusão a árvore ainda
+5. Confere (`_docs_gerados_restantes`): logo depois da exclusão a árvore ainda
    mostra o documento, por isso reabre o processo (`acessar_processo`) e relê
    a árvore até os excluídos sumirem, por até `TEMPO_CONFERENCIA` (15 s).
-   Documento da DEPROC que continua lá conta como não excluído (e sai dos
-   excluídos). Algum não excluído: `ErroAvaliacao`.
+   Documento gerado que continua lá conta como não excluído (e sai dos
+   excluídos). Algum não excluído (ou memo não lido): `ErroAvaliacao`, e os
+   **marcadores ficam** (o processo ainda tem documento do script).
+6. Todos os gerados excluídos (ou nenhum): lê os marcadores e **remove os da
+   DEPROC** que o processo tiver (`TAGS_DEPROC_REMOVIDOS_AO_EXCLUIR`, com
+   `tags.remover_tag`): `01.02.1`, `01.02`, `01.01` e, por último, o `01`
+   (se falhar no meio, não sobra estado sem o `01`). Os outros marcadores
+   (ex.: manuais) ficam. Assim, o `deproc_calcula_copa` trata o processo do
+   início.
 
-Não lê nem adiciona marcadores. Na planilha de controle, **não altera a
-`prox_acao`** (nem `fluxo`, marcadores, `tipo_erro` e `erro` dos outros
-fluxos): na aba `processos`, só `script`, `ultima_passagem`, `data_execucao` e
-a coluna própria `deproc_excluir_docs`, com o resultado da passagem em uma
-frase (`RegistroDeprocExcluirDocs.resumo_exclusao`): data e hora, `N
-excluído(s): <nºs SEI>`, `não excluído(s): <nºs SEI>`, `nenhum documento da
-DEPROC` ou `ERRO (<tipo>): <mensagem>`.
+Não adiciona marcadores. Na planilha de controle, **não altera a
+`prox_acao`** (nem `fluxo`, `tipo_erro` e `erro` dos outros fluxos): na aba
+`processos`, só `script`, `ultima_passagem`, `data_execucao`, as colunas dos
+marcadores da DEPROC (`marcadores_deproc_sei`, `marcadores_deproc_removidos`,
+`marcadores_deproc_finais` e `tag_deproc_*`, só quando os marcadores foram
+lidos; senão ficam como estavam) e a coluna própria `deproc_excluir_docs`, com
+o resultado da passagem em uma frase (`RegistroDeprocExcluirDocs.resumo_exclusao`): data e hora, `N
+excluído(s): <nºs SEI>`, `não excluído(s): <nºs SEI>`, `mantido(s), não
+gerado(s) pelo script: <nºs SEI>`, `marcador(es) removido(s): <marcadores>`,
+`nenhum documento da DEPROC`, `nenhum
+documento gerado pelo deproc_calcula_copa` ou `ERRO (<tipo>): <mensagem>`.
 
 Log: `logs/<data>_execucao_deproc_excluir_docs.log`. Há testes em
 `tests/test_fluxo_deproc_excluir_docs.py`.
@@ -1279,6 +1409,7 @@ coluna `num_sei` (um processo por linha; linhas vazias são ignoradas):
 | `geacs_adc_pdf_ant_man` | `poetry run task run_geacs_adc_pdf_ant_man` (`main_geacs_adc_pdf_ant_man.py`) |
 | `geacs_canc_memo_deproc_ant` | `poetry run task run_geacs_canc_memo_deproc_ant` (`main_geacs_canc_memo_deproc_ant.py`) |
 | `geacs_verificar_marcadores` | `poetry run task run_geacs_verificar_marcadores` (`main_geacs_verificar_marcadores.py`) |
+| `geacs_todas_infos` | `poetry run task run_geacs_todas_infos` (`main_geacs_todas_infos.py`) |
 | `deproc_calcula_copa` | `poetry run task run_deproc_calcula_copa -d DD/MM/AAAA` (`main_deproc_calcula_copa.py`) |
 | `deproc_excluir_docs` | `poetry run task run_deproc_excluir_docs` (`main_deproc_excluir_docs.py`) |
 
@@ -1305,6 +1436,14 @@ perca os processos já tratados.
   reavaliado a cada passagem); as que ele não grava (ex.: colunas antigas
   do script de correção, `titular_nao_encontrado`, `deps_nao_encontrados`
   e `memo_deproc_credenciada_*`) e `primeira_passagem` são mantidas.
+  No `geacs_inicial`, a passagem que **não chega ao `processar_novo`**
+  (no bloco, aguarda, concluído, VELHO, marcadores inconsistentes, sem
+  acesso, fechado não reaberto; `RegistroMain.avaliou_processo` falso) não
+  grava as colunas de resultado da avaliação (memo da APIS, bases APIS,
+  DISA e MANTIS, `caso_disa_mantis`, relatórios e memos `*_sei`): a linha
+  mantém os da última avaliação. `velho` e `memos_velho_sei` só são gravadas
+  quando a passagem identifica o VELHO, e `processo_reaberto` só quando ela
+  reabre o processo. Há teste em `tests/test_fluxo_novo.py`.
 - Aba `historico`: **uma linha por passagem**, acrescentada a cada
   execução.
 - Outras abas (ex.: `BUSCA`, `ERROS`, mantidas à mão) são preservadas: só
@@ -1317,7 +1456,7 @@ perca os processos já tratados.
   só mantém). As duas não vão para o `historico`.
 - Primeiras colunas (depois dessas duas, na aba `processos`): `num_processo`, `primeira_passagem`,
   `ultima_passagem` (data e hora em que o processo passou pelo fluxo),
-  `script` (nome da aba de entrada: `geacs_inicial`, `geacs_resp_*`, `geacs_adc_pdf_ant_aut`, `geacs_adc_pdf_ant_man`, `geacs_canc_memo_deproc_ant`, `geacs_verificar_marcadores`, `deproc_calcula_copa` ou `deproc_excluir_docs`; nas passagens antigas, `geacs`, `deproc` e `correcao_rede_propria`),
+  `script` (nome da aba de entrada: `geacs_inicial`, `geacs_resp_*`, `geacs_adc_pdf_ant_aut`, `geacs_adc_pdf_ant_man`, `geacs_canc_memo_deproc_ant`, `geacs_verificar_marcadores`, `geacs_todas_infos`, `deproc_calcula_copa` ou `deproc_excluir_docs`; nas passagens antigas, `geacs`, `deproc` e `correcao_rede_propria`),
   `data_execucao` (identifica a execução), `fluxo`, `prox_acao`,
   `tipo_erro`, `erro`.
 - Cada linha vem de `RegistroBase.to_dict()`: todos os campos do registro,
@@ -1378,7 +1517,7 @@ perca os processos já tratados.
 
 ### Logs
 
-- `logs/<data>_execucao_geacs_inicial.log` (fluxo inicial), `_execucao_geacs_adc_pdf_ant_aut.log`, `_execucao_geacs_adc_pdf_ant_man.log`, `_execucao_geacs_canc_memo_deproc_ant.log`, `_execucao_geacs_verificar_marcadores.log`, `_execucao_deproc_calcula_copa.log`, `_execucao_deproc_excluir_docs.log` e `_execucao_geacs_resp_<apis|disa|deproc>.log`, cada um com resumo final.
+- `logs/<data>_execucao_geacs_inicial.log` (fluxo inicial), `_execucao_geacs_adc_pdf_ant_aut.log`, `_execucao_geacs_adc_pdf_ant_man.log`, `_execucao_geacs_canc_memo_deproc_ant.log`, `_execucao_geacs_verificar_marcadores.log`, `_execucao_geacs_todas_infos.log`, `_execucao_deproc_calcula_copa.log`, `_execucao_deproc_excluir_docs.log` e `_execucao_geacs_resp_<apis|disa|deproc>.log`, cada um com resumo final.
 
 ---
 
@@ -1436,10 +1575,19 @@ perca os processos já tratados.
   ainda não implementado. Confirmar o assunto e o texto da versão só com a
   rede credenciada. `PADRAO_ASSUNTO_MEMO_DEPROC` aceita os dois assuntos e
   o anterior.
-- **TODO**: `MemoApisComTodasAsInformacoes` depende do processamento do
-  retorno da DISA e da DEPROC, ainda não implementado. Confirmar no SEI real
-  que as tabelas são salvas (a `sei_automacao` não trata tabelas; o memo
-  manda o HTML no formato do editor do SEI, fora do `<p>`).
+- Fluxo GEACS TODAS INFOS:
+  - cadastrar na GEACS os marcadores `v2: 01.12 - No Bloco APIS: Todas as
+    Infos` e `v2: 01.12.1 - Encaminhado APIS: Todas as Infos` (sem eles,
+    `garantir_marcadores_no_sei` para o processo antes do memo);
+  - o download do PDF (`baixar_pdf`) foi conferido no SEI real em 13/11/2026
+    (a URL de `ifrVisualizacao` traz só a página do SEI, sem o PDF); confirmar
+    que o texto do `MemoGeacsCalculoCopa` (`obter_conteudo_doc`) traz a
+    tabela como "F. 1234567-8 Titular R$ 18,50" e o "Total consolidado R$ ...";
+  - confirmar que as tabelas do `MemoApisComTodasAsInformacoes` são salvas (a
+    `sei_automacao` não trata tabelas; o memo manda o HTML no formato do
+    editor do SEI, fora do `<p>`);
+  - **TODO**: caminho pela DISA (ler os valores da rede própria da resposta
+    da DISA, `doc_levantamento_disa`; hoje para com erro).
 - **TODO**: fluxo do processo VELHO (`main_geacs_inicial._separar_velho`).
 - Confirmar que todo processo aberto no setor mostra `Incluir Documento`
   (senão o fluxo normal tenta reabrir um processo já aberto e para com

@@ -1,6 +1,7 @@
 """Fluxo DEPROC (main_deproc_calcula_copa.py, coparticipacao_deproc.py e
 relatorio_deproc.py), com o SEI simulado e uma base DEPROC gerada no teste."""
 
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -8,7 +9,7 @@ import main_deproc_calcula_copa
 import pandas as pd
 import pytest
 import relatorio_deproc
-from constantes import UNIDADE_DEPROC, UNIDADE_GEACS
+from constantes import PADRAO_ASSINATURA_MEMO_DEPROC, UNIDADE_DEPROC, UNIDADE_GEACS
 from coparticipacao_deproc import (
     COL_VALOR,
     SITUACAO_NAO_DESCONTADO_SALDO_NAO_QUITADO,
@@ -54,6 +55,7 @@ def _linha(beneficiario, categoria, data, *, sei=PROCESSO, titular=TITULAR, **va
         'SALDO_APOS_COMPETENCIA': valores.get('saldo'),
         'CALCULO_COPARTICIPACAO': valores.get('calculado'),
         'SITUACAO': valores.get('situacao', 'NAO APURADO PELO SISTEMA, CALCULADO'),
+        'VALOR_BASE_COPA': valores.get('base', 10.0),
     }
 
 
@@ -104,6 +106,34 @@ def test_apura_linhas_do_processo_no_periodo(tmp_path):
     assert list(atendimentos[COL_VALOR]) == [8.5, 10.0, 3.5, 0.0]
     assert atendimentos['PRESTADOR'].iloc[0] == '123 - HOSPITAL & CIA'
     assert [(s.matricula, s.atendimentos, s.valor) for s in resultado.subtotais] == [('12345678', 2, 18.5), ('5559', 2, 3.5)]
+
+
+def test_so_linhas_com_valor_base_copa_diferente_de_zero(tmp_path):
+    linhas = [
+        *LINHAS,
+        # Base 0 no período (mesmo com valor) e um dependente só com base 0
+        _linha(TITULAR, 'TITULAR', '2024-05-01', calculado=50.0, base=0.0),
+        _linha(DEPENDENTE, 'DEPENDENTE', '2024-02-03', base=0),
+        _linha(66, 'DEPENDENTE', '2024-02-03', base=0),
+        # Vazio conta como 0; negativo é diferente de 0
+        _linha(TITULAR, 'TITULAR', '2024-05-02', calculado=7.0, base=None),
+        _linha(TITULAR, 'TITULAR', '2024-06-01', calculado=1.0, base=-5.0),
+    ]
+    dados = _dados(matriculas_dependentes='555; 6')
+    resultado = apurar_coparticipacao(_base(tmp_path, linhas), PROCESSO, dados)
+
+    assert resultado.linhas_processo == 10
+    assert resultado.linhas_base_copa_zero == 4
+    assert resultado.linhas_fora_periodo == 1
+    assert list(resultado.atendimentos[COL_VALOR]) == [8.5, 10.0, 1.0, 3.5, 0.0]
+    assert resultado.totais.coparticipacao == 23.0
+    # Dependente 6 só com linha de base 0: fora dos beneficiários
+    assert [b.matricula for b in resultado.beneficiarios] == ['1234567-8', '555-9']
+
+    # A de base 0 também passa pela conferência das matrículas
+    linhas.append(_linha(77, 'DEPENDENTE', '2024-02-03', base=0))
+    with pytest.raises(MatriculasDivergentes, match='77'):
+        apurar_coparticipacao(_base(tmp_path, linhas), PROCESSO, dados)
 
 
 def test_beneficiarios_do_memo_so_com_linhas_na_base(tmp_path):
@@ -473,3 +503,15 @@ def test_beneficiario_so_com_valor_zero_fora_do_relatorio(tmp_path, monkeypatch)
 
 def test_matricula_com_dv_no_extrato():
     assert relatorio_deproc.formatar_matricula_com_dv('33983721') == '3398372-1'
+
+
+@pytest.mark.parametrize(
+    'assinatura',
+    [
+        'Documento assinado eletronicamente por Gustavo Amaral Bernardino, Assessor, em 16/11/2026',
+        'Documento assinado eletronicamente por Bruna Miller Lavarini, Gerente, em 01/11/2026',
+        ASSINATURA,
+    ],
+)
+def test_assinatura_do_memo_deproc_aceita_signatario_atual_e_anterior(assinatura):
+    assert re.search(PADRAO_ASSINATURA_MEMO_DEPROC, assinatura, re.IGNORECASE)

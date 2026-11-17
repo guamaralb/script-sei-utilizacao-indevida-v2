@@ -186,6 +186,8 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         logger.info('Fluxo: NOVO - do início (veio do fluxo ADC PDF ANT AUT)')
     else:
         logger.info(f'Fluxo: retomada (estado "{estado}")')
+    # Daqui em diante, as colunas de resultado são gravadas (RegistroMain.to_dict)
+    registro.avaliou_processo = True
     processar_novo(driver, registro, bases, bases_mantis)
 
 

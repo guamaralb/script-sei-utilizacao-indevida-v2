@@ -40,6 +40,7 @@ from tags import (
     TAG_MEMO_APIS_SEM_MEMO,
     TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_NO_BLOCO_APIS_SEM_USO,
+    TAG_NO_BLOCO_APIS_TODAS_INFOS,
     TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
     TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
     TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
@@ -53,6 +54,7 @@ from tags import (
     conferir_marcadores,
 )
 
+from script_sei_utilizacao_indevida_v2.memorandos.MemoApisComTodasAsInformacoes import PADRAO_ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisFormatoInvalido import PADRAO_ASSUNTO_MEMO_APIS_FORMATO_INVALIDO
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisMatNaoEncontradas import PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisPeriodoDependentes import PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES
@@ -93,6 +95,7 @@ _MEMO_POR_NO_BLOCO = {
     TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: MemoDoMarcador('à DISA (sem MANTIS: solicita relatório)', PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, 'memo_disa_sei', (), ('sim', 'não', None)),
     TAG_MEMO_DEPROC_COPARTICIPACAO: MemoDoMarcador('DEPROC (coparticipação)', PADRAO_ASSUNTO_MEMO_DEPROC, 'memo_deproc_sei', ('RC',), ('não', 'não', 'sim')),
     TAG_NO_BLOCO_APIS_SEM_USO: MemoDoMarcador('à APIS (nenhum uso nas bases)', PADRAO_ASSUNTO_MEMO_APIS_SEM_USO, 'memo_apis_sem_uso_sei', (), ('não', 'não', 'não')),
+    TAG_NO_BLOCO_APIS_TODAS_INFOS: MemoDoMarcador('à APIS (todas as informações)', PADRAO_ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES, 'memo_apis_todas_infos_sei'),
 }
 # O "Aguarda" (manual, depois da assinatura) indica o mesmo memo
 _NO_BLOCO_POR_AGUARDA = {aguarda: no_bloco for no_bloco, aguarda in AGUARDA_POR_NO_BLOCO.items()}

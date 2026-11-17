@@ -1,0 +1,40 @@
+2026-11-13 10:25:04 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC EXCLUIR DOCS - EXCLUIR DOCUMENTOS DA DEPROC) =================
+2026-11-13 10:25:04 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-13_10-25-04_execucao_deproc_excluir_docs.log
+2026-11-13 10:25:04 | INFO    | -                         | processos_a_processar | 96 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_excluir_docs
+2026-11-13 10:25:06 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-13 10:25:06 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-13 10:25:10 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-13 10:25:30 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-13 10:25:30 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/DEPROC-Utilização
+2026-11-13 10:25:42 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/DEPROC-Utilização
+2026-11-13 10:25:42 | INFO    | 2010.01.0053866/2025-12   | __main__              | INÍCIO [1/96]
+2026-11-13 10:25:49 | INFO    | 2010.01.0053866/2025-12   | __main__              | Documentos da DEPROC na árvore: nenhum
+2026-11-13 10:25:49 | INFO    | 2010.01.0053866/2025-12   | __main__              | Documentos gerados pelo deproc_calcula_copa: nenhum
+2026-11-13 10:25:49 | INFO    | 2010.01.0053866/2025-12   | planilha_controle     | Backup da planilha de controle: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/backup/controle_geral_de_processos_2026-11-13_10-25-04.xlsx
+2026-11-13 10:26:00 | DEBUG   | 2010.01.0053866/2025-12   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-13 10:26:00 | INFO    | 2010.01.0053866/2025-12   | __main__              | FIM (17.7s) | Próxima ação: -
+2026-11-13 10:26:00 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [2/96]
+2026-11-13 10:26:06 | INFO    | 2010.01.0082932/2024-60   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 38038684 - 20261112_161335 (SEI 153581521)', 'Memorando 11 (SEI 153581558)']
+2026-11-13 10:26:06 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 11 (SEI 153581558)
+2026-11-13 10:26:08 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 153581558 lido (2591 caracteres)
+2026-11-13 10:26:08 | INFO    | 2010.01.0082932/2024-60   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 38038684 - 20261112_161335 (SEI 153581521)', 'Memorando 11 (SEI 153581558)']
+2026-11-13 10:26:16 | INFO    | 2010.01.0082932/2024-60   | __main__              | Documento excluído: Memorando 11 (SEI 153581558)
+2026-11-13 10:26:20 | INFO    | 2010.01.0082932/2024-60   | __main__              | Documento excluído: PDF Coparticipação - 38038684 - 20261112_161335 (SEI 153581521)
+2026-11-13 10:26:39 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/dados/controle/controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-13 10:26:39 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (39.8s) | Próxima ação: -
+2026-11-13 10:26:39 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [3/96]
+2026-11-13 10:26:49 | INFO    | 2010.01.0072062/2024-28   | __main__              | Documentos da DEPROC na árvore: ['PDF Coparticipação - 36318540 - 20261112_161244 (SEI 153581323)', 'Memorando 10 (SEI 153581431)']
+2026-11-13 10:26:49 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 10 (SEI 153581431)
+2026-11-13 10:26:51 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 153581431 lido (2619 caracteres)
+2026-11-13 10:26:51 | INFO    | 2010.01.0072062/2024-28   | __main__              | Documentos gerados pelo deproc_calcula_copa: ['PDF Coparticipação - 36318540 - 20261112_161244 (SEI 153581323)', 'Memorando 10 (SEI 153581431)']
+2026-11-13 10:26:54 | INFO    | 2010.01.0072062/2024-28   | __main__              | Documento excluído: Memorando 10 (SEI 153581431)
+2026-11-13 10:26:58 | INFO    | 2010.01.0072062/2024-28   | __main__              | Documento excluído: PDF Coparticipação - 36318540 - 20261112_161244 (SEI 153581323)
+2026-11-13 10:27:09 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(104, 'Connection reset by peer')': /session/41b0e070e1786b093a049e3d86a74b08
+2026-11-13 10:27:09 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=49617): Failed to establish a new connection: [Errno 111] Connection refused")': /session/41b0e070e1786b093a049e3d86a74b08
+2026-11-13 10:27:09 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=49617): Failed to establish a new connection: [Errno 111] Connection refused")': /session/41b0e070e1786b093a049e3d86a74b08
+2026-11-13 10:27:09 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-13 10:27:09 | INFO    | -                         | __main__              | Processos: 3 | Sem erro: 3 | Com erro: 0
+2026-11-13 10:27:09 | INFO    | -                         | __main__              |     2 | DEPROC: 2 documento(s) excluído(s)
+2026-11-13 10:27:09 | INFO    | -                         | __main__              |     1 | DEPROC: nenhum documento excluído
+2026-11-13 10:27:09 | INFO    | -                         | __main__              | Duração total da execução: 0h02m04s
+2026-11-13 10:27:09 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

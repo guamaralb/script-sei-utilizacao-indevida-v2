@@ -197,6 +197,39 @@ def test_concluido_e_conferido_na_passagem_seguinte(sei):
     assert sei.qnt_memos_geacs == 1
 
 
+_COLUNAS_RESULTADO = ('caso_disa_mantis', 'memo_deproc_sei', 'matricula_titular', 'tit_usou', 'relatorios_na_arvore', 'memo_apis_sei')
+
+
+def test_passagem_sem_avaliacao_mantem_os_resultados_na_planilha(sei):
+    sei.novo_processo()
+    primeira = sei.passar(bases(tit_usou=False), SO_RC).to_dict()
+    # No bloco: para no roteamento, sem avaliar o memo da APIS nem as bases
+    segunda = sei.passar(bases(tit_usou=False), SO_RC).to_dict()
+
+    assert primeira['caso_disa_mantis'] == 'DISA não, MANTIS RP não, MANTIS RC sim'
+    assert primeira['memo_deproc_sei']
+    assert not set(_COLUNAS_RESULTADO) & set(segunda)
+    assert 'velho' not in segunda
+    assert 'processo_reaberto' not in segunda
+    assert segunda['prox_acao'] == ProxAcao.ASSINAR_DEPROC
+    assert segunda['tag_memo_deproc_coparticipacao'] is True
+
+    # A planilha de controle atualiza a linha do processo com a passagem
+    # (planilha_controle._atualizar_processos): o que ela não traz fica
+    linha = {**primeira, **segunda}
+    assert {c: linha[c] for c in _COLUNAS_RESULTADO} == {c: primeira[c] for c in _COLUNAS_RESULTADO}
+    assert linha['prox_acao'] == ProxAcao.ASSINAR_DEPROC
+
+
+def test_passagem_com_avaliacao_grava_os_resultados(sei):
+    sei.novo_processo()
+    registro = sei.passar(bases(tit_usou=False), SO_RC)
+
+    assert registro.avaliou_processo
+    assert set(_COLUNAS_RESULTADO) <= set(registro.to_dict())
+    assert 'avaliou_processo' not in registro.to_dict()
+
+
 def test_titular_fora_da_base_disa_conta_como_nao_uso(sei):
     sei.novo_processo()
     registro = sei.passar(bases(tit_na_disa=False), SO_RC)
@@ -618,6 +651,10 @@ def test_velho_pelos_memos_disa_e_deproc_nao_e_processado(sei):
     assert sei.tags_curtas == [VELHO]
     assert registro.memos_criados == []
     assert sei.pdfs == []
+
+    dados = registro.to_dict()
+    assert dados['velho'] is True
+    assert 'caso_disa_mantis' not in dados
 
     registro = sei.passar(bases(), MANTIS_DUAS_REDES)
     assert registro.prox_acao == ProxAcao.VELHO_AGUARDAR_DEFINICAO

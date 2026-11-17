@@ -6,6 +6,7 @@ from datetime import datetime
 from docs_processo import filtrar_docs_geacs, filtrar_memos_geacs
 from tags import (
     COLUNA_DEMAIS_MARCADORES,
+    TAG_ENCAMINHADO_APIS_TODAS_INFOS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
     TAG_MEMO_APIS_PERIODO_DEPENDENTES,
@@ -13,6 +14,7 @@ from tags import (
     TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO,
     TAG_NO_BLOCO_APIS_SEM_USO,
+    TAG_NO_BLOCO_APIS_TODAS_INFOS,
     TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
     TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
     TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
@@ -50,6 +52,9 @@ class ProxAcao:
     ASSINAR_MEMO_APIS_FORMATO_INVALIDO = 'Assinar memo à APIS (formato do memorando inválido) e encaminhar'
     ASSINAR_MEMO_APIS_PERIODO_DEPS = 'Assinar memo à APIS (período dos dependentes) e encaminhar'
     ASSINAR_MEMO_APIS_SEM_USO = 'Assinar memo à APIS (nenhum uso nas bases) e encaminhar'
+    # Fluxo GEACS TODAS INFOS (retorno final à APIS)
+    ASSINAR_MEMO_APIS_TODAS_INFOS = 'Assinar memo à APIS (todas as informações) e encaminhar'
+    MEMO_APIS_TODAS_INFOS_ENCAMINHADO = 'Memo à APIS (todas as informações) encaminhado (concluído)'
     AGUARDAR_RESPOSTA_MEMO = 'Aguardar resposta ao memo enviado (processo parado)'
     VERIFICAR_MARCADORES = 'Verificar marcadores inconsistentes (corrigir no SEI)'
     VERIFICAR_ERRO = 'Verificar erro'
@@ -83,10 +88,12 @@ PROX_ACAO_POR_NO_BLOCO = {
     TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: ProxAcao.ASSINAR_MEMO_DISA_SEM_MANTIS_RELATORIO,
     TAG_MEMO_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DEPROC,
     TAG_NO_BLOCO_APIS_SEM_USO: ProxAcao.ASSINAR_MEMO_APIS_SEM_USO,
+    TAG_NO_BLOCO_APIS_TODAS_INFOS: ProxAcao.ASSINAR_MEMO_APIS_TODAS_INFOS,
 }
 # Os 1.11 (VELHO, versão anterior) não chegam aqui: o VELHO é separado antes
 PROX_ACAO_POR_CONCLUSAO = {
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DISA_DEPROC,
+    TAG_ENCAMINHADO_APIS_TODAS_INFOS: ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO,
 }
 
 
@@ -153,6 +160,7 @@ _CAMPOS_INTERNOS = frozenset({
     'processo_fechado',
     'marcadores_lidos',
     'inconsistencias',
+    'avaliou_processo',
 })
 
 # Resultados do fluxo principal: o ADC PDF ANT AUT não os avalia e não pode apagá-los da
@@ -316,7 +324,24 @@ class RegistroMain(RegistroBase):
     memo_deproc_na_arvore: bool = False
     memo_deproc_sei: str | None = None
 
+    # Interno: a passagem chegou ao processar_novo (avaliou o memo da APIS e
+    # as bases). Sem isso, as colunas de resultado não são gravadas
+    avaliou_processo: bool = False
+
     def to_dict(self) -> dict:
+        dados = self._to_dict_completo()
+        if not self.avaliou_processo:
+            # Passagem que parou no roteamento (no bloco, aguarda, concluído,
+            # VELHO, erro antes da avaliação): a linha do processo mantém os
+            # resultados da última avaliação
+            dados = {coluna: valor for coluna, valor in dados.items() if coluna not in _colunas_resultado_main()}
+            if self.velho is None:
+                dados = {coluna: valor for coluna, valor in dados.items() if coluna not in _COLUNAS_VELHO}
+            if not self.processo_reaberto:
+                dados.pop('processo_reaberto', None)
+        return dados
+
+    def _to_dict_completo(self) -> dict:
         dados = super().to_dict()
         dados_ui = self.dados_ui
         periodo_deps = dados_ui.periodo_dependentes if dados_ui else None
@@ -334,6 +359,19 @@ class RegistroMain(RegistroBase):
         itens = list(dados.items())
         posicao = list(dados).index('erro') + 1
         return dict(itens[:posicao] + list(colunas_ui.items()) + itens[posicao:])
+
+
+# Colunas que só a avaliação (processar_novo) preenche: dados do memo da APIS,
+# bases APIS, DISA e MANTIS, relatórios e memos criados
+_COLUNAS_UI = frozenset({'matricula_titular', 'nome_titular', 'periodo_titular', 'matriculas_dependentes', 'tem_periodo_var_deps', 'periodos_por_dependente'})
+# Preenchidas na separação do VELHO (no roteamento): gravadas só quando ela
+# identifica o VELHO
+_COLUNAS_VELHO = frozenset({'velho', 'memos_velho_sei'})
+
+
+def _colunas_resultado_main() -> frozenset[str]:
+    proprias = {campo.name for campo in fields(RegistroMain)} - {campo.name for campo in fields(RegistroBase)}
+    return frozenset(proprias - _COLUNAS_VELHO - _CAMPOS_INTERNOS) | _CAMPOS_SO_FLUXO_PRINCIPAL | _COLUNAS_UI
 
 
 @dataclass
@@ -385,9 +423,11 @@ class RegistroDeproc(RegistroBase):
     data_geracao_base_deproc: str | None = None
 
     # Base DEPROC (aba Resultado): linhas do processo (coluna SEI), linhas
-    # fora do período de apuração e atendimentos no relatório
+    # fora do período de apuração, com VALOR_BASE_COPA 0 (ignoradas) e
+    # atendimentos no relatório
     linhas_base_deproc: int | None = None
     linhas_fora_periodo_deproc: int | None = None
+    linhas_base_copa_zero_deproc: int | None = None
     atendimentos_deproc: int | None = None
     # Matrículas da base DEPROC que não estão no memo da APIS
     matriculas_divergentes_deproc: list[str] = field(default_factory=list)
@@ -485,19 +525,32 @@ class RegistroDeprocExcluirDocs(RegistroBase):
     (main_deproc_excluir_docs.py). Na planilha de controle, grava só a coluna
     própria deproc_excluir_docs (sem prox_acao, fluxo, erro e marcadores)."""
 
-    # Documentos da DEPROC na árvore, excluídos e não excluídos (número SEI)
+    # Documentos da DEPROC na árvore, gerados pelo deproc_calcula_copa
+    # (relatório de coparticipação e memo de resultado), mantidos (os outros),
+    # excluídos e não excluídos (número SEI)
     docs_deproc: list[str] = field(default_factory=list)
+    docs_gerados: list[str] = field(default_factory=list)
+    docs_mantidos: list[str] = field(default_factory=list)
     docs_excluidos: list[str] = field(default_factory=list)
     docs_nao_excluidos: list[str] = field(default_factory=list)
+    # Marcadores da DEPROC lidos (só depois de excluir todos os gerados): as
+    # colunas deles são gravadas (interno)
+    marcadores_lidos: bool = False
 
     def resumo_exclusao(self) -> str:
         partes = [self.ultima_passagem.strftime('%d/%m/%Y %H:%M')]
         if self.erro is None and not self.docs_deproc:
             partes.append('nenhum documento da DEPROC')
+        elif self.erro is None and not self.docs_gerados:
+            partes.append('nenhum documento gerado pelo deproc_calcula_copa')
         if self.docs_excluidos:
             partes.append(f'{len(self.docs_excluidos)} excluído(s): {_juntar(self.docs_excluidos)}')
         if self.docs_nao_excluidos:
             partes.append(f'não excluído(s): {_juntar(self.docs_nao_excluidos)}')
+        if self.docs_mantidos:
+            partes.append(f'mantido(s), não gerado(s) pelo script: {_juntar(self.docs_mantidos)}')
+        if self.marcadores_removidos:
+            partes.append(f'marcador(es) removido(s): {_juntar(self.marcadores_removidos)}')
         if self.erro is not None:
             partes.append(f'ERRO ({self.tipo_erro}): {self.erro}')
         return ' | '.join(partes)
@@ -508,12 +561,75 @@ class RegistroDeprocExcluirDocs(RegistroBase):
             'ultima_passagem': self.ultima_passagem,
             'data_execucao': self.data_execucao,
             'deproc_excluir_docs': self.resumo_exclusao(),
+            **(self._colunas_marcadores_deproc() if self.marcadores_lidos else {}),
+        }
+
+    def _colunas_marcadores_deproc(self) -> dict:
+        """As mesmas colunas de marcadores do fluxo DEPROC (marcadores_deproc_*
+        e tag_deproc_*), para não ficarem com os marcadores removidos."""
+        return {
+            'marcadores_deproc_sei': _juntar(self.marcadores_sei),
+            'marcadores_deproc_removidos': _juntar(self.marcadores_removidos),
+            'marcadores_deproc_finais': _juntar(self.marcadores_atuais),
+            **colunas_tags_deproc(self.marcadores_atuais),
         }
 
     def para_log(self) -> dict:
         """Linha do resumo do log (com erro e próxima ação)."""
         acao = f'DEPROC: {len(self.docs_excluidos)} documento(s) excluído(s)' if self.docs_excluidos else 'DEPROC: nenhum documento excluído'
         return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': acao}
+
+
+@dataclass
+class RegistroTodasInfos(RegistroBase):
+    """Uma passagem pelo fluxo GEACS TODAS INFOS (main_geacs_todas_infos.py):
+    retorno final à APIS (MemoApisComTodasAsInformacoes) depois do retorno da
+    DEPROC. Os resultados do fluxo inicial (base DISA, base APIS) não são
+    gravados e continuam como estão."""
+
+    # Instruções da APIS (mesmas colunas do fluxo normal)
+    ult_memo_obtido: bool = False
+    conteudo_ult_memo_obtido: bool = False
+    memo_apis_sei: str | None = None
+    memos_apis_geacs_sei: list[str] = field(default_factory=list)
+    modelo_memo_apis: str | None = None
+
+    # Caminho do processo: "DEPROC" (direto) ou "DISA" (passou pela DISA
+    # antes); memo da GEACS à DISA e resposta da DISA na rodada
+    caminho_todas_infos: str | None = None
+    memo_disa_geacs_sei: str | None = None
+    resposta_disa_sei: str | None = None
+
+    # Memo da DEPROC à GEACS (MemoGeacsCalculoCopa) na rodada e assinatura
+    memo_calculo_copa_sei: str | None = None
+    memo_calculo_copa_assinado: bool | None = None
+    # Documento citado como detalhamento da coparticipação: o relatório da
+    # DEPROC ou, sem coparticipação, o próprio memo
+    doc_coparticipacao_sei: str | None = None
+
+    # PDFs do MANTIS lidos (número SEI) e valores conferidos
+    relatorios_rc_sei: list[str] = field(default_factory=list)
+    relatorios_rp_sei: list[str] = field(default_factory=list)
+    valor_total_rc_todas_infos: float | None = None
+    valor_total_rp_todas_infos: float | None = None
+    valor_total_copart_todas_infos: float | None = None
+    # Por beneficiário: "<matrícula>: RC R$ x; RP R$ y; copart. R$ z"
+    valores_todas_infos: list[str] = field(default_factory=list)
+    # Valores que não batem entre o SEI e o recálculo (o processo para)
+    divergencias_todas_infos: list[str] = field(default_factory=list)
+
+    # Memo à APIS com todas as informações
+    memo_apis_todas_infos_criado: bool = False
+    memo_apis_todas_infos_inserido_bloco: bool = False
+    memo_apis_todas_infos_na_arvore: bool = False
+    memo_apis_todas_infos_sei: str | None = None
+
+    # Internos (ver _CAMPOS_INTERNOS)
+    memo_apis: DocArvore | None = None
+    dados_ui: DadosUI | None = None
+
+    def to_dict(self) -> dict:
+        return {coluna: valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_SO_FLUXO_PRINCIPAL | {'processo_reaberto'}}
 
 
 @dataclass

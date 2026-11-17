@@ -55,6 +55,9 @@ ARQ_MANTIS_REDE_CREDENCIADA_DEPS_NAO_ENCONTRADOS = DIR_INPUTS / 'utilizacao_MANT
 UNIDADE_GEACS = 'IPSEMG/GEACS - Utilização'
 UNIDADE_APIS = 'IPSEMG/APIS-Utilização'
 UNIDADE_DEPROC = 'IPSEMG/DEPROC-Utilização'
+# Unidade da DISA: só a sigla, pois a grafia varia (IPSEMG/DISA-UTI-INDEV,
+# IPSEMG/DISA). Fluxo GEACS TODAS INFOS: resposta da DISA na árvore
+PREFIXO_UNIDADE_DISA = 'IPSEMG/DISA'
 
 BLOCO_MEMO_DEPROC = 7697744
 
@@ -69,17 +72,27 @@ BLOCO_MEMO_APIS_SEM_MEMO = 7730344
 BLOCO_MEMO_APIS_FORMATO_INVALIDO = 7730341
 BLOCO_MEMO_APIS_PERIODO_DEPENDENTES = 7730905
 BLOCO_MEMO_APIS_SEM_USO = 7744349
+# Retorno final à APIS, com todas as informações (fluxo GEACS TODAS INFOS):
+# "Script v2 - Memo à APIS: Todas As Informações"
+BLOCO_MEMO_APIS_TODAS_INFOS = 7768786
 
 # Memo da DEPROC à GEACS com o cálculo da coparticipação (fluxo DEPROC), na
 # unidade da DEPROC. Com None, o processo para com erro antes de criar
 # qualquer documento
 BLOCO_MEMO_GEACS_CALCULO_COPA = 7765003
 
-NOME_SIGNATARIO = 'Bruna Miiller Lavarini'
-CARGO_SIGNATARIO = 'Gerência de Auditoria e Contas da Saúde'
+# Signatário dos memos da GEACS, exceto o retorno final à APIS
+# (MemoApisComTodasAsInformacoes)
+NOME_SIGNATARIO = 'Gustavo Amaral Bernardino'
+CARGO_SIGNATARIO = 'Assessor da Gerência de Auditoria e Contas da Saúde'
+# Signatária do retorno final à APIS (MemoApisComTodasAsInformacoes, fluxo
+# GEACS TODAS INFOS)
+NOME_SIGNATARIO_GERENCIA = 'Bruna Miiller Lavarini'
+CARGO_SIGNATARIO_GERENCIA = 'Gerência de Auditoria e Contas da Saúde'
 # Quem assina o memo DEPROC (fluxo DEPROC): procurado no texto da assinatura
-# eletrônica, com e sem o "i" a mais
-PADRAO_ASSINATURA_MEMO_DEPROC = r'assinado\s+eletronicamente\s+por\s+Bruna\s+Mii?ller\s+Lavarini'
+# eletrônica. O NOME_SIGNATARIO ou, nos memos anteriores, a Bruna (com e sem
+# o "i" a mais)
+PADRAO_ASSINATURA_MEMO_DEPROC = r'assinado\s+eletronicamente\s+por\s+(?:Gustavo\s+Amaral\s+Bernardino|Bruna\s+Mii?ller\s+Lavarini)'
 # Quem assina o memo da DEPROC à GEACS com o cálculo da coparticipação
 # (MemoGeacsCalculoCopa, fluxo DEPROC). Com None, o processo para com erro
 # antes de criar qualquer documento
