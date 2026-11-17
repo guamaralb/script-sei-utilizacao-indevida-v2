@@ -13,8 +13,9 @@ Para cada processo da aba geacs_todas_infos de processos_a_processar.xlsx:
 4. caminho: direto à DEPROC ou pela DISA antes (memo da GEACS à DISA na
    rodada). Pela DISA, para com erro: sem resposta da DISA, ou com resposta
    (leitura ainda não implementada, TODO);
-5. lê e recalcula os valores (todas_infos.apurar_todas_infos): divergência
-   para o processo, sem criar o memo;
+5. lê e recalcula os valores (todas_infos.apurar_todas_infos), com a base
+   DEPROC do ano usado no deproc_calcula_copa (coluna ano_base_deproc da
+   planilha de controle): divergência para o processo, sem criar o memo;
 6. cria o memo à APIS, insere no bloco BLOCO_MEMO_APIS_TODAS_INFOS e adiciona
    o 01.12 - No Bloco APIS: Todas as Infos (remove o 01.10.1). Retomada: o
    memo já na rodada (pelo assunto) não é recriado.
@@ -24,17 +25,19 @@ APIS: Todas as Infos e remove o 01.12.
 """
 
 import logging
+from collections.abc import Callable
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 from constantes import (
     ARQ_BASE_APIS,
-    ARQ_BASE_DEPROC,
     ARQ_MANTIS_REDE_CREDENCIADA,
     ARQ_MANTIS_REDE_CREDENCIADA_DEPS_NAO_ENCONTRADOS,
     ARQ_MANTIS_REDE_PROPRIA,
     ARQ_MANTIS_REDE_PROPRIA_DEPS_NAO_ENCONTRADOS,
     ARQ_USO_REDE_PROPRIA,
+    BASES_DEPROC,
     BLOCO_MEMO_APIS_TODAS_INFOS,
     CARGO_SIGNATARIO_GERENCIA,
     DIR_CONTROLE,
@@ -92,6 +95,59 @@ class SemAguardaDeproc(ErroAvaliacao):
     """O processo não está aguardando o retorno da DEPROC (01.10.1)."""
 
 
+class SemAnoBaseDeproc(ErroAvaliacao):
+    """Sem o ano da base DEPROC usada no deproc_calcula_copa (coluna
+    ano_base_deproc da planilha de controle), ou ano sem base cadastrada."""
+
+
+class BasesDeprocPorAno:
+    """Base DEPROC de cada ano (constantes.BASES_DEPROC), carregada na
+    primeira vez que um processo precisa dela."""
+
+    def __init__(self, carregar: Callable[[Path], pd.DataFrame] = carregar_base_deproc):
+        self._carregar = carregar
+        self._bases: dict[str, pd.DataFrame] = {}
+
+    def do_ano(self, ano: str) -> pd.DataFrame:
+        if ano not in self._bases:
+            self._bases[ano] = self._carregar(BASES_DEPROC[ano].arquivo)
+        return self._bases[ano]
+
+
+def _texto_celula(valor) -> str:
+    """Valor de uma célula da planilha de controle como texto (2019.0 ->
+    '2019'; vazio ou NaN -> '')."""
+    if valor is None or (isinstance(valor, float) and pd.isna(valor)):
+        return ''
+    if isinstance(valor, float) and valor.is_integer():
+        return str(int(valor))
+    if isinstance(valor, datetime):
+        return valor.strftime('%d/%m/%Y')
+    return str(valor).strip()
+
+
+def ano_da_base_deproc(linha_controle: dict | None) -> str:
+    """Ano da base DEPROC usada no deproc_calcula_copa, da coluna
+    ano_base_deproc da linha do processo na planilha de controle.
+
+    Processo apurado antes da coluna existir (sem o ano): o ano é o da base
+    cuja data de geração é a da coluna data_geracao_base_deproc, se só uma
+    base tem essa data. Senão: SemAnoBaseDeproc."""
+    if linha_controle is None:
+        raise SemAnoBaseDeproc('Planilha de controle não lida: sem o ano da base DEPROC usada no deproc_calcula_copa (coluna ano_base_deproc)')
+    ano = _texto_celula(linha_controle.get('ano_base_deproc'))
+    if ano:
+        if ano not in BASES_DEPROC:
+            raise SemAnoBaseDeproc(f'Ano da base DEPROC {ano} (coluna ano_base_deproc) sem base cadastrada em BASES_DEPROC')
+        return ano
+    data = _texto_celula(linha_controle.get('data_geracao_base_deproc'))
+    anos = [a for a, base in BASES_DEPROC.items() if base.data_geracao == data]
+    if data and len(anos) == 1:
+        logger.warning(f'Planilha de controle sem o ano da base DEPROC: usado {anos[0]}, o da base gerada em {data} (coluna data_geracao_base_deproc)')
+        return anos[0]
+    raise SemAnoBaseDeproc('Ano da base DEPROC não registrado na planilha de controle (coluna ano_base_deproc): rode o deproc_calcula_copa -a AAAA neste processo ou preencha a coluna')
+
+
 def _conferir_marcadores(registro: RegistroTodasInfos, momento: str) -> None:
     try:
         conferir_marcadores(registro)
@@ -106,7 +162,8 @@ def processar_todas_infos(
     registro: RegistroTodasInfos,
     bases: BasesUso,
     bases_mantis: BasesMantis,
-    base_deproc: pd.DataFrame,
+    bases_deproc: BasesDeprocPorAno,
+    linha_controle: dict | None,
 ) -> None:
     registrar_tags(registro, listar_marcadores(driver))
     logger.info(f'Marcadores: {registro.marcadores_sei or "nenhum"}')
@@ -123,6 +180,11 @@ def processar_todas_infos(
         return
     if estado != TAG_AGUARDA_DEPROC_COPARTICIPACAO:
         raise SemAguardaDeproc(f'Processo sem o marcador "{TAG_AGUARDA_DEPROC_COPARTICIPACAO}" (estado atual: {estado or "nenhum"})')
+
+    # Base DEPROC do ano usado no deproc_calcula_copa (antes de ler o SEI)
+    registro.ano_base_deproc_todas_infos = ano_da_base_deproc(linha_controle)
+    base_deproc = bases_deproc.do_ano(registro.ano_base_deproc_todas_infos)
+    logger.info(f'Base DEPROC: {registro.ano_base_deproc_todas_infos} ({BASES_DEPROC[registro.ano_base_deproc_todas_infos].arquivo.name})')
 
     if not tem_incluir_documento(driver):
         raise ProcessoFechadoNoSetor('Processo sem "Incluir Documento" na unidade da GEACS: nenhum memo criado (não reaberto)')
@@ -160,12 +222,19 @@ def processar_todas_infos(
     registro.prox_acao = ProxAcao.ASSINAR_MEMO_APIS_TODAS_INFOS
 
 
-def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, bases_mantis: BasesMantis, base_deproc: pd.DataFrame) -> RegistroTodasInfos:
+def _processar_linha(
+    driver: webdriver.Remote,
+    num_processo,
+    bases: BasesUso,
+    bases_mantis: BasesMantis,
+    bases_deproc: BasesDeprocPorAno,
+    linha_controle: dict | None = None,
+) -> RegistroTodasInfos:
     registro = RegistroTodasInfos(num_processo=num_processo, data_execucao=AGORA, fluxo=FLUXO)
 
     try:
         acessar_processo(driver, num_processo)
-        processar_todas_infos(driver, registro, bases, bases_mantis, base_deproc)
+        processar_todas_infos(driver, registro, bases, bases_mantis, bases_deproc, linha_controle)
         _conferir_marcadores(registro, 'no fim da passagem')
 
     except UnidadeSemAcessoException as e:
@@ -207,7 +276,8 @@ def main():
             ARQ_MANTIS_REDE_PROPRIA_DEPS_NAO_ENCONTRADOS,
             ARQ_MANTIS_REDE_CREDENCIADA_DEPS_NAO_ENCONTRADOS,
         )
-        base_deproc = carregar_base_deproc(ARQ_BASE_DEPROC)
+        # Carregadas quando um processo precisa (ano da coluna ano_base_deproc)
+        bases_deproc = BasesDeprocPorAno()
 
         controle = PlanilhaControleGeral(SCRIPT, AGORA)
         # Login e troca para a unidade da GEACS
@@ -218,7 +288,7 @@ def main():
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
 
-                registro = _processar_linha(driver, num_processo, bases, bases_mantis, base_deproc)
+                registro = _processar_linha(driver, num_processo, bases, bases_mantis, bases_deproc, controle.linha_processo(num_processo))
                 registros_processados.append(registro.to_dict())
                 controle.registrar(registros_processados[-1])
 

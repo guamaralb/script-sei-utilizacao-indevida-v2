@@ -1,5 +1,6 @@
 """Constantes do script."""
 
+from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
@@ -34,10 +35,25 @@ DIR_ADC_PDF_ANT_MAN_PDF = DIR_ADC_PDF_ANT_MAN / 'pdf'
 # gerados
 DIR_FLUXO_DEPROC = DIR_DADOS / 'fluxo_deproc'
 DIR_FLUXO_DEPROC_PDF = DIR_FLUXO_DEPROC / 'pdf'
-ARQ_BASE_DEPROC = DIR_FLUXO_DEPROC / 'Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx'
-# A data de geração da base DEPROC (retorno do MANTIS ou data da planilha;
-# muda a cada leva de dados) não está na planilha: é informada na execução,
-# poetry run task run_deproc_calcula_copa -d 06/11/2026
+
+
+@dataclass(frozen=True)
+class BaseDeproc:
+    """Base DEPROC de um ano: a planilha e a data de geração dela (retorno do
+    MANTIS ou data da planilha; não está na planilha), citada no memo de
+    resultado."""
+
+    arquivo: Path
+    data_geracao: str  # DD/MM/AAAA
+
+
+# Uma base por ano dos processos: poetry run task run_deproc_calcula_copa -a 2019.
+# Para um ano novo, acrescente a planilha (em DIR_FLUXO_DEPROC) e a data de
+# geração dela
+BASES_DEPROC: dict[str, BaseDeproc] = {
+    '2019': BaseDeproc(DIR_FLUXO_DEPROC / 'copa-MANTIS11281-base_2019.xlsx', '06/11/2026'),
+    '2020': BaseDeproc(DIR_FLUXO_DEPROC / 'copa-MANTIS11281-base_2020.xlsx', '16/11/2026'),
+}
 
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'
 # Base APIS: listagem de todos os beneficiários da demanda (a base DISA é
@@ -86,9 +102,14 @@ BLOCO_MEMO_GEACS_CALCULO_COPA = 7765003
 NOME_SIGNATARIO = 'Gustavo Amaral Bernardino'
 CARGO_SIGNATARIO = 'Assessor da Gerência de Auditoria e Contas da Saúde'
 # Signatária do retorno final à APIS (MemoApisComTodasAsInformacoes, fluxo
-# GEACS TODAS INFOS)
-NOME_SIGNATARIO_GERENCIA = 'Bruna Miiller Lavarini'
-CARGO_SIGNATARIO_GERENCIA = 'Gerência de Auditoria e Contas da Saúde'
+# GEACS TODAS INFOS).
+# TEMPORÁRIO (férias da gerente, desde 17/11/2026): assina a chefe da DEPROC.
+# Na volta, restaure:
+# NOME_SIGNATARIO_GERENCIA = 'Bruna Miiller Lavarini'
+# CARGO_SIGNATARIO_GERENCIA = 'Gerência de Auditoria e Contas da Saúde'
+# O cargo entra no HTML do memo: <br> quebra a linha e <em> põe em itálico
+NOME_SIGNATARIO_GERENCIA = 'Danúbia Lacerda Gomes de Oliveira'
+CARGO_SIGNATARIO_GERENCIA = 'Chefe do Departamento de Processamento de Contas e Coparticipação<br><em>Por Bruna Miiller Lavarini - Gerente de Auditoria e Contas da Saúde</em>'
 # Quem assina o memo DEPROC (fluxo DEPROC): procurado no texto da assinatura
 # eletrônica. O NOME_SIGNATARIO ou, nos memos anteriores, a Bruna (com e sem
 # o "i" a mais)

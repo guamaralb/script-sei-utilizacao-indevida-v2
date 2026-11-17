@@ -28,7 +28,7 @@ from tags import (
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisMatNaoEncontradas import ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisSemUso import ASSUNTO_MEMO_APIS_SEM_USO
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO_DEPROC
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO_DEPROC, ASSUNTO_MEMO_DEPROC_DUAS_REDES
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import (
     ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO,
     ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
@@ -55,7 +55,6 @@ NOVO = '01 - Tratado pelo Script'
 DISA = '01.06 - Avaliado Uso Rede Própria DISA'
 MANTIS = '01.08 - Avaliado Uso Rede Própria MANTIS'
 AGUARDA_CONSTA = '01.09 - No Bloco DISA: Validar (Consta)'
-AGUARDA_N_CONSTA = '01.09 - No Bloco DISA: Validar (N Consta)'
 AGUARDA_RELATORIO = '01.09 - No Bloco DISA: Relat. s/ MANTIS'
 CONCLUIDO_DEPROC = '01.10 - No Bloco DEPROC: Coparticipação'
 AGUARDA_SEM_USO = '01.10 - No Bloco APIS: Sem Uso'
@@ -117,24 +116,43 @@ def test_nenhum_uso_memo_a_apis_sem_deproc(sei):
     assert registro.prox_acao == ProxAcao.AGUARDAR_RESPOSTA_MEMO
 
 
-def test_disa_nao_mantis_sim_valida_com_rc_e_sem_deproc(sei):
-    # Também usou a rede credenciada: o relatório RC entra, mas quem vai
-    # para a DISA não vai para a DEPROC
+def test_disa_nao_mantis_rp_sim_vai_direto_a_deproc_com_rp_e_rc(sei):
+    # Sem uso na base DISA, com uso da rede própria no MANTIS: não vai à DISA
+    # (o memo "Validar (N Consta)" não é mais criado); memo DEPROC das duas
+    # redes, citando os relatórios RP e RC
     sei.novo_processo()
     registro = sei.passar(bases(tit_usou=False), MANTIS_DUAS_REDES)
 
-    assert sei.tags_curtas == [NOVO, AGUARDA_N_CONSTA]
-    assert sei.assuntos_memos_geacs == [ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA]
+    assert registro.erro is None
+    assert sei.tags_curtas == [NOVO, CONCLUIDO_DEPROC]
+    assert sei.assuntos_memos_geacs == [ASSUNTO_MEMO_DEPROC_DUAS_REDES]
+    assert ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA not in sei.assuntos_memos_geacs
     assert sei.pdfs == [PDF_DEP_RP, PDF_TIT_RC]
-    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA
+    assert registro.prox_acao == ProxAcao.ASSINAR_DEPROC
+    assert registro.caso_disa_mantis == 'DISA não, MANTIS RP sim, MANTIS RC sim'
     assert registro.mats_uso_mantis_alem_disa == ['555 (dependente)']
-    assert registro.memo_disa_sei
-    assert not registro.memo_deproc_criado
-    # O memo cita o memo da APIS e o relatório RP pelo número SEI
+    assert registro.memo_deproc_sei
+    assert not registro.memo_disa_criado
     texto = sei.texto_ultimo_memo_geacs
-    assert f'Memorando IPSEMG/APIS-UTILIZAÇÃO nº 7 ({sei.numero_sei("Memorando 7")})' in texto
-    assert f'no documento {sei.numero_sei(PDF_DEP_RP)}' in texto
-    assert sei.numero_sei(PDF_TIT_RC) not in texto
+    assert 'nas redes credenciada e própria' in texto
+    assert f'<strong>Rede credenciada:</strong> relatórios de utilização extraídos do SADS, constantes do documento {sei.numero_sei(PDF_TIT_RC)}' in texto
+    assert f'<strong>Rede própria:</strong> relatórios de utilização extraídos do SADS, constantes do documento {sei.numero_sei(PDF_DEP_RP)}' in texto
+    assert 'não constam da Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA' in texto
+
+
+def test_disa_nao_so_mantis_rp_vai_a_deproc_so_com_rp(sei):
+    sei.novo_processo()
+    registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
+
+    assert registro.erro is None
+    assert sei.tags_curtas == [NOVO, CONCLUIDO_DEPROC]
+    assert sei.assuntos_memos_geacs == [ASSUNTO_MEMO_DEPROC_DUAS_REDES]
+    assert sei.pdfs == [PDF_DEP_RP]
+    assert registro.prox_acao == ProxAcao.ASSINAR_DEPROC
+    texto = sei.texto_ultimo_memo_geacs
+    assert 'efetivamente realizados na rede própria' in texto
+    assert 'Rede credenciada:' not in texto
+    assert f'constantes do documento {sei.numero_sei(PDF_DEP_RP)}' in texto
 
 
 def test_disa_sim_mantis_sim_valida_e_complementa(sei):
@@ -176,9 +194,9 @@ def test_memo_a_disa_para_o_processo(sei):
 
 
 def test_bloco_nao_configurado_para_antes_dos_documentos(sei, monkeypatch):
-    monkeypatch.setattr(processar_novo, '_DISA_VALIDAR_NAO_CONSTA', replace(processar_novo._DISA_VALIDAR_NAO_CONSTA, bloco=None))
+    monkeypatch.setattr(processar_novo, '_DISA_VALIDAR_CONSTA', replace(processar_novo._DISA_VALIDAR_CONSTA, bloco=None))
     sei.novo_processo()
-    registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
+    registro = sei.passar(bases(tit_usou=True), MANTIS_DEPENDENTE_USOU)
 
     assert 'Bloco do memo à DISA' in registro.erro
     assert sei.tags_curtas == [NOVO, DISA]
@@ -276,17 +294,17 @@ def test_falha_ao_criar_deproc_retoma_pelo_estado(sei):
 def test_falha_depois_do_relatorio_nao_duplica_o_pdf(sei):
     sei.novo_processo()
     sei.falhar_memo_n = 1
-    sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
+    sei.passar(bases(tit_usou=True), MANTIS_DEPENDENTE_USOU)
     assert sei.tags_curtas == [NOVO, MANTIS]
     assert sei.pdfs == [PDF_DEP_RP]
 
     sei.falhar_memo_n = None
-    registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
+    registro = sei.passar(bases(tit_usou=True), MANTIS_DEPENDENTE_USOU)
     assert registro.erro is None
     assert sei.pdfs == [PDF_DEP_RP]
     assert registro.relatorios_na_arvore == [sei.numero_sei(PDF_DEP_RP)]
     assert registro.relatorios_incluidos == []
-    assert sei.tags_curtas[-1] == AGUARDA_N_CONSTA
+    assert sei.tags_curtas[-1] == AGUARDA_CONSTA
     # Na retomada, o memo cita o relatório que já estava na árvore
     assert f'no documento {sei.numero_sei(PDF_DEP_RP)}' in sei.texto_ultimo_memo_geacs
 
@@ -319,18 +337,18 @@ def test_dependente_fora_da_base_apis_segue_com_o_mantis_dos_nao_encontrados(sei
     registro = sei.passar(bases(tit_usou=False, dep_na_apis=False), MANTIS_DEP_NAO_ENCONTRADO_USOU)
 
     assert registro.erro is None
-    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', AGUARDA_N_CONSTA]
-    assert sei.assuntos_memos_geacs == [ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA]
+    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', CONCLUIDO_DEPROC]
+    assert sei.assuntos_memos_geacs == [ASSUNTO_MEMO_DEPROC_DUAS_REDES]
     assert sei.pdfs == [PDF_DEP_RP]
     assert registro.deps_nao_encontrados_base_geral == ['555']
     assert registro.titular_nao_encontrado_base_geral is None
     assert registro.deps_que_usaram_mantis_rede_propria == ['555']
-    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA
+    assert registro.prox_acao == ProxAcao.ASSINAR_DEPROC
 
     # Memo no bloco: na próxima passagem, só falta assinar
     registro = sei.passar(bases(tit_usou=False, dep_na_apis=False), MANTIS_DEP_NAO_ENCONTRADO_USOU)
     assert registro.erro is None
-    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA
+    assert registro.prox_acao == ProxAcao.ASSINAR_DEPROC
 
 
 def test_dependente_fora_da_base_apis_e_do_mantis_dos_nao_encontrados_e_ignorado(sei):
@@ -384,7 +402,7 @@ def test_dependentes_encontrados_e_nao_encontrados_na_base_apis(sei):
     assert registro.tit_usou_mantis_rede_credenciada is True
     assert registro.deps_que_usaram_mantis_rede_propria == [DEPENDENTE, '6661']
     assert registro.deps_valor_total_uso_mantis_rede_propria == 20.0
-    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', AGUARDA_N_CONSTA]
+    assert sei.tags_curtas == [NOVO, '01.02.1 - Mat. N Encontradas Base APIS', CONCLUIDO_DEPROC]
     assert ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS not in sei.assuntos_memos_geacs
     assert '7771' not in sei.texto_ultimo_memo_geacs
 
@@ -475,8 +493,8 @@ def test_atendimento_no_periodo_do_dependente_conta_como_uso(sei):
     sei.memo_apis(MEMO_APIS_PERIODO_POR_DEPENDENTE.replace('01/01/2023 a 28/02/2023', '01/03/2024 a 31/03/2024'))
     registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
 
-    assert sei.tags_curtas == [NOVO, AGUARDA_N_CONSTA]
-    assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA
+    assert sei.tags_curtas == [NOVO, CONCLUIDO_DEPROC]
+    assert registro.prox_acao == ProxAcao.ASSINAR_DEPROC
 
 
 def test_matriculas_do_memo_com_e_sem_dv(sei):
@@ -582,14 +600,14 @@ def test_memo_deproc_com_assunto_anterior_e_reaproveitado(sei):
 def test_memo_disa_sem_marcador_e_reaproveitado(sei):
     sei.novo_processo()
     sei.tags = ['v2: ' + NOVO, 'v2: ' + MANTIS]
-    sei.memo_geacs(ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA)
+    sei.memo_geacs(ASSUNTO_MEMO_DISA_VALIDAR_CONSTA)
 
-    registro = sei.passar(bases(tit_usou=False), MANTIS_DEPENDENTE_USOU)
+    registro = sei.passar(bases(tit_usou=True), MANTIS_DEPENDENTE_USOU)
     assert registro.erro is None
     assert registro.memo_disa_na_arvore
     assert registro.memos_criados == []
     assert sei.qnt_memos_geacs == 1
-    assert sei.tags_curtas == [NOVO, AGUARDA_N_CONSTA]
+    assert sei.tags_curtas == [NOVO, AGUARDA_CONSTA]
 
 
 def test_memo_a_apis_sem_marcador_e_reaproveitado(sei):

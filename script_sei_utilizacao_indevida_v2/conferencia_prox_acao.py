@@ -4,17 +4,29 @@ memorandos e relatórios que os marcadores indicam estão na árvore. Só leitur
 nenhuma ação no SEI.
 
 Cada problema vira uma frase em registro.inconsistencias (coluna
-verificar_marcadores_inconsistencia). Conferências:
+verificar_marcadores_inconsistencia) e uma ação curta em
+registro.acoes_sugeridas (coluna verificar_marcadores_acao_sugerida, valores
+de AcaoSugerida). Conferências:
 
 1. combinação de marcadores (tags.conferir_marcadores, as mesmas regras do
    fluxo inicial);
-2. prox_acao x marcador de estado (a que o geacs_inicial daria hoje);
+2. prox_acao x marcador de estado (a que o geacs_inicial daria hoje). As de
+   erro (Registro.PROX_ACOES_A_VERIFICAR) valem com qualquer marcador, exceto
+   "Verificar acesso" de uma passagem da GEACS (a GEACS acabou de abrir o
+   processo); as da DEPROC ("DEPROC: ..."), só com o 01.10 / 01.10.1 da DEPROC;
 3. caso base DISA x MANTIS da planilha x marcador do memo (se preenchido);
-4. memo do marcador "No Bloco" / "Aguarda" na árvore (pelo assunto), na rodada
-   (só "No Bloco"), com os relatórios do MANTIS que ele cita antes dele, e o
-   número SEI da planilha na árvore;
+4. memo do marcador "No Bloco" / "Aguarda" / "Encaminhado" (01.12.1) na
+   árvore (pelo assunto), na rodada (só "No Bloco"), com os relatórios do
+   MANTIS que ele cita antes dele, o número SEI da planilha na árvore e a
+   assinatura ("No Bloco" com o memo assinado: falta trocar o marcador;
+   "Aguarda" / "Encaminhado" com o memo não assinado);
 5. "No Bloco APIS: Sem Memo" com memo da APIS destinado à GEACS na árvore;
 6. retomada (01.06 / 01.08) com memo do fluxo já na rodada, sem o marcador.
+
+Além dos problemas, sugere o próximo fluxo (sugestoes_de_fluxo, só a ação):
+estado N Consta (geacs_corrige_envio_disa), "Aguarda DEPROC" com o memo de
+resultado da DEPROC assinado na rodada (geacs_todas_infos) e "Aguarda DISA"
+com documento da DISA depois do memo (resposta da DISA).
 
 A árvore e os textos dos memos só são lidos quando alguma conferência
 precisa deles.
@@ -24,16 +36,21 @@ import logging
 import re
 from dataclasses import dataclass
 from types import SimpleNamespace
+from typing import NamedTuple
 
-from docs_processo import filtrar_memos_geacs, ler_texto_doc, obter_memos_apis_para_geacs
-from Registro import PROX_ACAO_POR_CONCLUSAO, PROX_ACAO_POR_NO_BLOCO, ProxAcao, RegistroVerificarMarcadores
+from constantes import PREFIXO_UNIDADE_DISA, UNIDADE_DEPROC
+from docs_processo import filtrar_memos_geacs, filtrar_memos_unidade, ler_texto_doc, obter_memos_apis_para_geacs
+from Registro import PROX_ACAO_POR_CONCLUSAO, PROX_ACAO_POR_NO_BLOCO, PROX_ACOES_A_VERIFICAR, ProxAcao, RegistroVerificarMarcadores
 from sei_automacao.processo import listar_documentos_arvore
 from selenium import webdriver
 from tags import (
     AGUARDA_POR_NO_BLOCO,
     PREFIXO,
     PREFIXO_VELHO,
+    TAG_AGUARDA_DEPROC_COPARTICIPACAO,
+    TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
     TAG_AGUARDA_FLUXO_NORMAL,
+    TAG_ENCAMINHADO_APIS_TODAS_INFOS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
     TAG_MEMO_APIS_PERIODO_DEPENDENTES,
@@ -46,6 +63,7 @@ from tags import (
     TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
+    TAGS_AGUARDA_RESPOSTA_DISA,
     TAGS_ESTADO_NOVO,
     TAGS_PARADA_NOVO,
     TAGS_RETOMADA_NOVO,
@@ -66,8 +84,30 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import (
     PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
     PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
 )
+from script_sei_utilizacao_indevida_v2.memorandos.MemoGeacsCalculoCopa import PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA
 
 logger = logging.getLogger(__name__)
+
+
+class AcaoSugerida:
+    """Valores da coluna verificar_marcadores_acao_sugerida: o que fazer com
+    o processo (para filtrar e montar as abas de processos_a_processar)."""
+
+    RODAR_INICIAL = 'Rodar geacs_inicial'
+    RODAR_TODAS_INFOS = 'Rodar geacs_todas_infos'
+    RODAR_CORRIGE_ENVIO_DISA = 'Rodar geacs_corrige_envio_disa'
+    TRATAR_RESPOSTA_DISA = 'Tratar a resposta da DISA (geacs_resp_disa, TODO)'
+    TROCAR_MARCADOR_ASSINADO = 'Trocar o No Bloco pelo marcador de assinado (memo já assinado)'
+    CORRIGIR_MARCADORES = 'Corrigir marcadores no SEI'
+    VERIFICAR_MANUALMENTE = 'Verificar manualmente'
+
+
+class Problema(NamedTuple):
+    """Uma inconsistência: a frase (coluna verificar_marcadores_inconsistencia)
+    e a ação sugerida (verificar_marcadores_acao_sugerida)."""
+
+    frase: str
+    acao: str
 
 
 @dataclass(frozen=True)
@@ -80,9 +120,12 @@ class MemoDoMarcador:
     coluna_sei: str
     # Relatórios do MANTIS (RP / RC) que o memo cita, anexados antes dele
     redes_relatorios: tuple[str, ...] = ()
-    # Caso base DISA x MANTIS (coluna caso_disa_mantis): (DISA, MANTIS RP,
-    # MANTIS RC), None = qualquer
-    caso: tuple[str | None, str | None, str | None] | None = None
+    # Casos base DISA x MANTIS possíveis (coluna caso_disa_mantis), cada um
+    # (DISA, MANTIS RP, MANTIS RC), None = qualquer
+    casos: tuple[tuple[str | None, str | None, str | None], ...] = ()
+    # Memo DEPROC: cita os relatórios das redes com uso no MANTIS (RP e/ou
+    # RC), pelo caso_disa_mantis; sem o caso, algum dos dois
+    relatorios_pelo_caso: bool = False
 
 
 _MEMO_POR_NO_BLOCO = {
@@ -90,32 +133,34 @@ _MEMO_POR_NO_BLOCO = {
     TAG_MEMO_APIS_FORMATO_INVALIDO: MemoDoMarcador('à APIS (formato inválido)', PADRAO_ASSUNTO_MEMO_APIS_FORMATO_INVALIDO, 'memo_apis_formato_invalido_sei'),
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS: MemoDoMarcador('à APIS (matrículas não encontradas)', PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS, 'memo_apis_mat_nao_encontradas_sei'),
     TAG_MEMO_APIS_PERIODO_DEPENDENTES: MemoDoMarcador('à APIS (período dos dependentes)', PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES, 'memo_apis_periodo_deps_sei'),
-    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: MemoDoMarcador('à DISA (validar e complementar)', PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA, 'memo_disa_sei', ('RP',), ('sim', 'sim', None)),
-    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA: MemoDoMarcador('à DISA (validar; não consta)', PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, 'memo_disa_sei', ('RP',), ('não', 'sim', None)),
-    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: MemoDoMarcador('à DISA (sem MANTIS: solicita relatório)', PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, 'memo_disa_sei', (), ('sim', 'não', None)),
-    TAG_MEMO_DEPROC_COPARTICIPACAO: MemoDoMarcador('DEPROC (coparticipação)', PADRAO_ASSUNTO_MEMO_DEPROC, 'memo_deproc_sei', ('RC',), ('não', 'não', 'sim')),
-    TAG_NO_BLOCO_APIS_SEM_USO: MemoDoMarcador('à APIS (nenhum uso nas bases)', PADRAO_ASSUNTO_MEMO_APIS_SEM_USO, 'memo_apis_sem_uso_sei', (), ('não', 'não', 'não')),
+    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: MemoDoMarcador('à DISA (validar e complementar)', PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA, 'memo_disa_sei', ('RP',), (('sim', 'sim', None),)),
+    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA: MemoDoMarcador('à DISA (validar; não consta)', PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, 'memo_disa_sei', ('RP',), (('não', 'sim', None),)),
+    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: MemoDoMarcador('à DISA (sem MANTIS: solicita relatório)', PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, 'memo_disa_sei', (), (('sim', 'não', None),)),
+    TAG_MEMO_DEPROC_COPARTICIPACAO: MemoDoMarcador(
+        'DEPROC (coparticipação)', PADRAO_ASSUNTO_MEMO_DEPROC, 'memo_deproc_sei', casos=(('não', 'sim', None), ('não', 'não', 'sim')), relatorios_pelo_caso=True
+    ),
+    TAG_NO_BLOCO_APIS_SEM_USO: MemoDoMarcador('à APIS (nenhum uso nas bases)', PADRAO_ASSUNTO_MEMO_APIS_SEM_USO, 'memo_apis_sem_uso_sei', (), (('não', 'não', 'não'),)),
     TAG_NO_BLOCO_APIS_TODAS_INFOS: MemoDoMarcador('à APIS (todas as informações)', PADRAO_ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES, 'memo_apis_todas_infos_sei'),
 }
-# O "Aguarda" (manual, depois da assinatura) indica o mesmo memo
-_NO_BLOCO_POR_AGUARDA = {aguarda: no_bloco for no_bloco, aguarda in AGUARDA_POR_NO_BLOCO.items()}
+# Marcador manual depois da assinatura (o "Aguarda" e, no retorno final à
+# APIS, o "Encaminhado"), que indica o mesmo memo do seu "No Bloco"
+_ASSINADO_POR_NO_BLOCO = {**AGUARDA_POR_NO_BLOCO, TAG_NO_BLOCO_APIS_TODAS_INFOS: TAG_ENCAMINHADO_APIS_TODAS_INFOS}
+_NO_BLOCO_POR_ASSINADO = {assinado: no_bloco for no_bloco, assinado in _ASSINADO_POR_NO_BLOCO.items()}
 
-# Valem com qualquer marcador: o erro da passagem está nas colunas tipo_erro
-# e erro, ou o fluxo não mexe nos marcadores
-_PROX_ACOES_SEMPRE_ACEITAS = frozenset({
-    ProxAcao.VERIFICAR_ERRO,
-    ProxAcao.VERIFICAR_ACESSO_UNIDADE,
-    ProxAcao.VERIFICAR_FORMATO_MEMO,
-    ProxAcao.ADC_PDF_ANT_AUT_SEM_PLANILHAS,
-    ProxAcao.ADC_PDF_ANT_MAN_SEM_PLANILHAS,
-})
+_PADRAO_ASSINADO = re.compile(r'assinado\s+eletronicamente\s+por', re.IGNORECASE)
+
 # ADC PDF ANT AUT/MAN em processo que já tinha estado (ou VELHO): o estado
 # fica como estava
 _PROX_ACOES_ESTADO_MANTIDO = (ProxAcao.ADC_PDF_ANT_AUT_ESTADO_MANTIDO, ProxAcao.ADC_PDF_ANT_MAN_ESTADO_MANTIDO)
 _PROX_ACOES_AGUARDA_FLUXO_NORMAL = (ProxAcao.ADC_PDF_ANT_AUT_AGUARDA_FLUXO_NORMAL, ProxAcao.ADC_PDF_ANT_MAN_AGUARDA_FLUXO_NORMAL)
 # prox_acao dos fluxos da DEPROC: a última passagem foi na unidade da DEPROC,
-# com outros marcadores
+# com outros marcadores. Na GEACS, o processo está com o memo DEPROC (no bloco
+# ou, depois da assinatura, aguardando a DEPROC)
 _PREFIXO_PROX_ACAO_DEPROC = 'DEPROC:'
+_ESTADOS_COM_A_DEPROC = frozenset({TAG_MEMO_DEPROC_COPARTICIPACAO, TAG_AGUARDA_DEPROC_COPARTICIPACAO})
+# Memo à DISA "Validar (N Consta)": pela regra atual, o processo vai direto à
+# DEPROC (fluxo geacs_corrige_envio_disa)
+_ESTADOS_N_CONSTA = frozenset({TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA, TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA})
 
 # prox_acao que o geacs_inicial dá (sem erro) a cada estado em que para
 _PROX_ACAO_DO_INICIAL = {
@@ -171,45 +216,71 @@ def _esperadas(marcadores: set[str], estado: str | None) -> tuple[tuple[str | No
     return (ProxAcao.VERIFICAR_ERRO, *_PROX_ACOES_ESTADO_MANTIDO), f'{descricao} (estado intermediário: a última passagem não terminou)', False
 
 
-def conferir_prox_acao(prox_acao: str | None, marcadores: list[str]) -> list[str]:
-    """Confere a prox_acao da planilha com os marcadores do processo. Devolve
-    os problemas (vazia: faz sentido)."""
+def _passagem_na_deproc(fluxo) -> bool:
+    """A última passagem que gravou a prox_acao foi na unidade da DEPROC
+    (coluna fluxo: "DEPROC - ...")."""
+    return str(fluxo).strip().upper().startswith('DEPROC')
+
+
+def _aceita_com_o_estado(prox_acao: str | None, estado: str | None) -> bool:
+    """As de erro valem com qualquer marcador (o erro está nas colunas
+    tipo_erro e erro); as da DEPROC, com o memo DEPROC na GEACS."""
+    if prox_acao in PROX_ACOES_A_VERIFICAR:
+        return True
+    return prox_acao is not None and prox_acao.startswith(_PREFIXO_PROX_ACAO_DEPROC) and estado in _ESTADOS_COM_A_DEPROC
+
+
+def conferir_prox_acao(prox_acao: str | None, marcadores: list[str], fluxo: str | None = None) -> list[Problema]:
+    """Confere a prox_acao da planilha com os marcadores do processo. fluxo:
+    a coluna fluxo da planilha (a última passagem que gravou a prox_acao).
+    Devolve os problemas (vazia: faz sentido)."""
     atuais = set(marcadores)
     try:
         conferir_marcadores(SimpleNamespace(marcadores_atuais=list(marcadores)))
     except MarcadoresInconsistentes as e:
         # Sem estado único não há prox_acao esperada
         if prox_acao == ProxAcao.VERIFICAR_MARCADORES:
-            return [str(e)]
-        return [f'{e} (prox_acao "{prox_acao or "(vazia)"}"; esperada: "{ProxAcao.VERIFICAR_MARCADORES}")']
-
-    if prox_acao is not None and (prox_acao in _PROX_ACOES_SEMPRE_ACEITAS or prox_acao.startswith(_PREFIXO_PROX_ACAO_DEPROC)):
-        return []
-    if prox_acao == ProxAcao.VERIFICAR_MARCADORES:
-        return [f'prox_acao "{prox_acao}", mas os marcadores estão consistentes ({_RODAR_INICIAL})']
+            return [Problema(str(e), AcaoSugerida.CORRIGIR_MARCADORES)]
+        return [Problema(f'{e} (prox_acao "{prox_acao or "(vazia)"}"; esperada: "{ProxAcao.VERIFICAR_MARCADORES}")', AcaoSugerida.CORRIGIR_MARCADORES)]
 
     estado = next((tag for tag in TAGS_ESTADO_NOVO if tag in atuais), None)
+    # A GEACS acabou de abrir o processo: a falta de acesso numa passagem da
+    # GEACS foi resolvida. Na da DEPROC (ou sem a coluna fluxo), não dá para saber
+    if prox_acao == ProxAcao.VERIFICAR_ACESSO_UNIDADE and fluxo and not _passagem_na_deproc(fluxo):
+        frase = f'prox_acao "{prox_acao}", mas a GEACS abriu o processo nesta passagem: o acesso foi resolvido ({_RODAR_INICIAL})'
+        return [Problema(frase, AcaoSugerida.RODAR_INICIAL)]
+    if prox_acao == ProxAcao.VERIFICAR_MARCADORES:
+        return [Problema(f'prox_acao "{prox_acao}", mas os marcadores estão consistentes ({_RODAR_INICIAL})', AcaoSugerida.RODAR_INICIAL)]
+
     esperadas, origem, pelo_inicial = _esperadas(atuais, estado)
-    if prox_acao in esperadas:
+    if prox_acao in esperadas or _aceita_com_o_estado(prox_acao, estado):
         return []
     esperada = esperadas[0] or '(vazia)'
     dica = f' ({_RODAR_INICIAL})' if pelo_inicial else ''
-    return [f'prox_acao "{prox_acao or "(vazia)"}" não condiz com {origem}; esperada: "{esperada}"{dica}']
+    # Com marcadores do script, o geacs_inicial continua o fluxo (ou só
+    # atualiza a prox_acao); sem eles, não há o que rodar
+    tratado = estado is not None or bool(atuais & {TAG_PROCESSO_NOVO, TAG_PROCESSO_VELHO})
+    acao = AcaoSugerida.RODAR_INICIAL if tratado else AcaoSugerida.VERIFICAR_MANUALMENTE
+    return [Problema(f'prox_acao "{prox_acao or "(vazia)"}" não condiz com {origem}; esperada: "{esperada}"{dica}', acao)]
 
 
-def conferir_caso_disa_mantis(caso: str | None, no_bloco: str) -> list[str]:
+def _valores_caso(caso) -> tuple[str, str, str] | None:
+    """('sim'|'não', ...) do caso_disa_mantis da planilha (None se vazio ou
+    fora do padrão)."""
+    achado = _PADRAO_CASO.search(str(caso)) if caso else None
+    return tuple(v.casefold() for v in achado.groups()) if achado else None
+
+
+def conferir_caso_disa_mantis(caso: str | None, no_bloco: str) -> list[Problema]:
     """O caso base DISA x MANTIS da planilha (se preenchido) é o do memo do
     marcador."""
     memo = _MEMO_POR_NO_BLOCO[no_bloco]
-    if memo.caso is None or not caso:
+    valores = _valores_caso(caso)
+    if not memo.casos or valores is None:
         return []
-    achado = _PADRAO_CASO.search(str(caso))
-    if achado is None:
+    if any(all(esperado is None or esperado == valor for esperado, valor in zip(possivel, valores, strict=True)) for possivel in memo.casos):
         return []
-    valores = tuple(v.casefold() for v in achado.groups())
-    if all(esperado is None or esperado == valor for esperado, valor in zip(memo.caso, valores, strict=True)):
-        return []
-    return [f'caso_disa_mantis "{caso}" não condiz com o memo {memo.descricao} do marcador "{_curto(no_bloco)}"']
+    return [Problema(f'caso_disa_mantis "{caso}" não condiz com o memo {memo.descricao} do marcador "{_curto(no_bloco)}"', AcaoSugerida.VERIFICAR_MANUALMENTE)]
 
 
 # ---------------------------------------------------------------------------
@@ -258,6 +329,9 @@ class _Arvore:
         """O memo da GEACS mais recente cujo texto casa com o padrão."""
         return next((memo for memo in reversed(filtrar_memos_geacs(self.docs if docs is None else docs)) if padrao.search(self.texto(memo))), None)
 
+    def assinado(self, doc: dict) -> bool:
+        return _PADRAO_ASSINADO.search(self.texto(doc)) is not None
+
 
 def _descrever(doc: dict) -> str:
     return f'{doc["nome_arvore"]} (SEI {doc["numero_sei"]})'
@@ -268,40 +342,72 @@ def _relatorio_da_rede(doc: dict, rede: str) -> bool:
     return re.match(rf'PDF\s+Utiliza[çc][ãa]o\s+(Tit\.|Dep\.)\s+{rede}\b', doc['nome_arvore'], re.IGNORECASE) is not None
 
 
-def conferir_memo_do_marcador(arvore: _Arvore, estado: str, linha: dict) -> list[str]:
-    """O memo do marcador "No Bloco" (ou do seu "Aguarda") está na árvore,
-    com os relatórios que ele cita antes dele. O do "No Bloco" precisa estar
-    na rodada (depois do último memo da APIS destinado à GEACS); o do
-    "Aguarda" pode estar antes (a resposta da APIS é um novo memo)."""
-    aguarda = estado in _NO_BLOCO_POR_AGUARDA
-    no_bloco = _NO_BLOCO_POR_AGUARDA.get(estado, estado)
+def _redes_citadas(memo: MemoDoMarcador, linha: dict) -> tuple[str, ...]:
+    """Relatórios que o memo cita. O memo DEPROC cita os das redes com uso no
+    MANTIS (caso_disa_mantis)."""
+    if not memo.relatorios_pelo_caso:
+        return memo.redes_relatorios
+    valores = _valores_caso(linha.get('caso_disa_mantis'))
+    if valores is None:
+        return ()
+    return tuple(rede for rede, usou in (('RP', valores[1]), ('RC', valores[2])) if usou == 'sim')
+
+
+def _conferir_assinatura(arvore: _Arvore, estado: str, memo: MemoDoMarcador, encontrado: dict) -> list[Problema]:
+    """No Bloco: o memo ainda não foi assinado. Aguarda / Encaminhado
+    (colocados depois da assinatura): o memo está assinado."""
+    assinado = arvore.assinado(encontrado)
+    if estado in _ASSINADO_POR_NO_BLOCO and assinado:
+        frase = f'memo {memo.descricao} ({encontrado["numero_sei"]}) já assinado, mas o processo continua com o "{_curto(estado)}": troque pelo "{_curto(_ASSINADO_POR_NO_BLOCO[estado])}"'
+        return [Problema(frase, AcaoSugerida.TROCAR_MARCADOR_ASSINADO)]
+    if estado in _NO_BLOCO_POR_ASSINADO and not assinado:
+        return [Problema(f'marcador "{_curto(estado)}", mas o memo {memo.descricao} ({encontrado["numero_sei"]}) não está assinado', AcaoSugerida.VERIFICAR_MANUALMENTE)]
+    return []
+
+
+def conferir_memo_do_marcador(arvore: _Arvore, estado: str, linha: dict) -> list[Problema]:
+    """O memo do marcador "No Bloco" (ou do seu "Aguarda" / "Encaminhado")
+    está na árvore, com os relatórios que ele cita antes dele e a assinatura
+    condizente com o marcador. O do "No Bloco" precisa estar na rodada (depois
+    do último memo da APIS destinado à GEACS); o do "Aguarda" pode estar antes
+    (a resposta da APIS é um novo memo)."""
+    depois_da_assinatura = estado in _NO_BLOCO_POR_ASSINADO
+    no_bloco = _NO_BLOCO_POR_ASSINADO.get(estado, estado)
     memo = _MEMO_POR_NO_BLOCO[no_bloco]
+    manual = AcaoSugerida.VERIFICAR_MANUALMENTE
     problemas = []
 
     encontrado = arvore.ultimo_memo_geacs(memo.padrao_assunto)
     if encontrado is None:
-        problemas.append(f'marcador "{_curto(estado)}" sem o memo {memo.descricao} na árvore (procurado pelo assunto)')
+        problemas.append(Problema(f'marcador "{_curto(estado)}" sem o memo {memo.descricao} na árvore (procurado pelo assunto)', manual))
     else:
         indice = arvore.indice(encontrado)
+        numero = encontrado['numero_sei']
         logger.info(f'Memo {memo.descricao} do marcador "{_curto(estado)}": {_descrever(encontrado)}')
-        if not aguarda and indice < arvore.inicio_rodada():
-            problemas.append(f'memo {memo.descricao} ({encontrado["numero_sei"]}) é de antes do último memo da APIS destinado à GEACS: o marcador "{_curto(estado)}" é de um pedido anterior')
+        if not depois_da_assinatura and indice < arvore.inicio_rodada():
+            frase = f'memo {memo.descricao} ({numero}) é de antes do último memo da APIS destinado à GEACS: o marcador "{_curto(estado)}" é de um pedido anterior'
+            problemas.append(Problema(frase, manual))
         inicio = arvore.inicio_rodada(ate=indice)
-        for rede in memo.redes_relatorios:
-            if not any(_relatorio_da_rede(doc, rede) for doc in arvore.docs[inicio:indice]):
-                problemas.append(f'memo {memo.descricao} ({encontrado["numero_sei"]}) sem relatório {rede} do MANTIS antes dele na rodada')
+        antes = arvore.docs[inicio:indice]
+        for rede in _redes_citadas(memo, linha):
+            if not any(_relatorio_da_rede(doc, rede) for doc in antes):
+                problemas.append(Problema(f'memo {memo.descricao} ({numero}) sem relatório {rede} do MANTIS antes dele na rodada', manual))
+        if memo.relatorios_pelo_caso and _valores_caso(linha.get('caso_disa_mantis')) is None and not any(_relatorio_da_rede(doc, r) for doc in antes for r in ('RP', 'RC')):
+            problemas.append(Problema(f'memo {memo.descricao} ({numero}) sem relatório RP ou RC do MANTIS antes dele na rodada', manual))
+        problemas += _conferir_assinatura(arvore, estado, memo, encontrado)
 
     numero_planilha = _numero_sei(linha.get(memo.coluna_sei))
     if numero_planilha is not None and all(doc['numero_sei'] != numero_planilha for doc in arvore.docs):
-        problemas.append(f'{memo.coluna_sei} = {numero_planilha} na planilha, mas o documento não está na árvore')
+        problemas.append(Problema(f'{memo.coluna_sei} = {numero_planilha} na planilha, mas o documento não está na árvore', manual))
 
-    if no_bloco == TAG_MEMO_APIS_SEM_MEMO and not aguarda and arvore.memos_apis_para_geacs:
+    if no_bloco == TAG_MEMO_APIS_SEM_MEMO and not depois_da_assinatura and arvore.memos_apis_para_geacs:
         ultimo = arvore.memos_apis_para_geacs[-1]
-        problemas.append(f'marcador "{_curto(estado)}", mas o processo tem memo da APIS destinado à GEACS ({ultimo["numero_sei"]}): o memo à APIS (sem memorando) não é mais necessário')
+        frase = f'marcador "{_curto(estado)}", mas o processo tem memo da APIS destinado à GEACS ({ultimo["numero_sei"]}): o memo à APIS (sem memorando) não é mais necessário'
+        problemas.append(Problema(frase, manual))
     return problemas
 
 
-def conferir_retomada(arvore: _Arvore, estado: str) -> list[str]:
+def conferir_retomada(arvore: _Arvore, estado: str) -> list[Problema]:
     """Estado de retomada (01.06, 01.08): nenhum memo do fluxo na rodada. Se
     houver, a passagem falhou depois de criar o memo e antes do marcador (o
     geacs_inicial o reaproveita e só adiciona o marcador)."""
@@ -314,11 +420,59 @@ def conferir_retomada(arvore: _Arvore, estado: str) -> list[str]:
         vistos.add(memo.padrao_assunto.pattern)
         encontrado = arvore.ultimo_memo_geacs(memo.padrao_assunto, rodada)
         if encontrado is not None:
-            problemas.append(
+            frase = (
                 f'estado "{_curto(estado)}" com o memo {memo.descricao} ({encontrado["numero_sei"]}) na rodada, sem o marcador "{_curto(no_bloco)}" '
                 '(o geacs_inicial reaproveita o memo e adiciona o marcador)'
             )
+            problemas.append(Problema(frase, AcaoSugerida.RODAR_INICIAL))
     return problemas
+
+
+# ---------------------------------------------------------------------------
+# Próximo fluxo
+# ---------------------------------------------------------------------------
+
+
+def _memo_resultado_deproc_assinado(arvore: _Arvore) -> dict | None:
+    """O memo de resultado da DEPROC (MemoGeacsCalculoCopa) da rodada, se
+    assinado."""
+    rodada = arvore.docs[arvore.inicio_rodada() :]
+    for memo in reversed(filtrar_memos_unidade(rodada, UNIDADE_DEPROC)):
+        if PADRAO_ASSUNTO_MEMO_GEACS_CALCULO_COPA.search(arvore.texto(memo)):
+            if arvore.assinado(memo):
+                return memo
+            logger.info(f'Memo de resultado da DEPROC na rodada, ainda não assinado: {_descrever(memo)}')
+            return None
+    return None
+
+
+def _resposta_disa(arvore: _Arvore, estado: str) -> dict | None:
+    """Documento de uma unidade da DISA depois do memo à DISA do marcador."""
+    memo = arvore.ultimo_memo_geacs(_MEMO_POR_NO_BLOCO[_NO_BLOCO_POR_ASSINADO[estado]].padrao_assunto)
+    if memo is None:
+        return None
+    depois = arvore.docs[arvore.indice(memo) + 1 :]
+    return next((doc for doc in reversed(depois) if doc['unidade'].upper().startswith(PREFIXO_UNIDADE_DISA)), None)
+
+
+def sugestoes_de_fluxo(arvore: _Arvore, estado: str) -> list[str]:
+    """O próximo fluxo do processo, quando ele já pode seguir (não é
+    inconsistência: só a ação sugerida)."""
+    acoes = []
+    if estado in _ESTADOS_N_CONSTA:
+        logger.info('Memo à DISA "Validar (N Consta)": pela regra atual, o processo vai direto à DEPROC (geacs_corrige_envio_disa)')
+        acoes.append(AcaoSugerida.RODAR_CORRIGE_ENVIO_DISA)
+    if estado == TAG_AGUARDA_DEPROC_COPARTICIPACAO:
+        memo = _memo_resultado_deproc_assinado(arvore)
+        if memo is not None:
+            logger.info(f'Memo de resultado da DEPROC assinado na rodada ({_descrever(memo)}): pronto para o geacs_todas_infos')
+            acoes.append(AcaoSugerida.RODAR_TODAS_INFOS)
+    if estado in TAGS_AGUARDA_RESPOSTA_DISA:
+        resposta = _resposta_disa(arvore, estado)
+        if resposta is not None:
+            logger.info(f'Documento da DISA depois do memo à DISA: {_descrever(resposta)}')
+            acoes.append(AcaoSugerida.TRATAR_RESPOSTA_DISA)
+    return acoes
 
 
 # ---------------------------------------------------------------------------
@@ -326,16 +480,21 @@ def conferir_retomada(arvore: _Arvore, estado: str) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
+def _registrar(registro: RegistroVerificarMarcadores, problemas: list[Problema]) -> None:
+    registro.inconsistencias += [p.frase for p in problemas]
+    registro.acoes_sugeridas += [p.acao for p in problemas]
+
+
 def conferir_processo(driver: webdriver.Remote, registro: RegistroVerificarMarcadores, linha: dict | None) -> None:
-    """Preenche registro.inconsistencias. linha: a linha do processo na
-    planilha de controle (None: planilha não lida, a prox_acao não é
-    conferida)."""
+    """Preenche registro.inconsistencias e registro.acoes_sugeridas. linha: a
+    linha do processo na planilha de controle (None: planilha não lida, a
+    prox_acao não é conferida)."""
     marcadores = registro.marcadores_atuais
     atuais = set(marcadores)
     if linha is None:
         logger.warning('Planilha de controle não lida: a prox_acao não é conferida')
     else:
-        registro.inconsistencias += conferir_prox_acao(linha.get('prox_acao'), marcadores)
+        _registrar(registro, conferir_prox_acao(linha.get('prox_acao'), marcadores, linha.get('fluxo')))
 
     estados = [tag for tag in TAGS_ESTADO_NOVO if tag in atuais]
     if len(estados) != 1:
@@ -344,10 +503,11 @@ def conferir_processo(driver: webdriver.Remote, registro: RegistroVerificarMarca
         return
     estado = estados[0]
     arvore = _Arvore(driver)
-    no_bloco = _NO_BLOCO_POR_AGUARDA.get(estado, estado)
+    no_bloco = _NO_BLOCO_POR_ASSINADO.get(estado, estado)
     if no_bloco in _MEMO_POR_NO_BLOCO:
         if linha is not None:
-            registro.inconsistencias += conferir_caso_disa_mantis(linha.get('caso_disa_mantis'), no_bloco)
-        registro.inconsistencias += conferir_memo_do_marcador(arvore, estado, linha or {})
+            _registrar(registro, conferir_caso_disa_mantis(linha.get('caso_disa_mantis'), no_bloco))
+        _registrar(registro, conferir_memo_do_marcador(arvore, estado, linha or {}))
     elif estado in TAGS_RETOMADA_NOVO:
-        registro.inconsistencias += conferir_retomada(arvore, estado)
+        _registrar(registro, conferir_retomada(arvore, estado))
+    registro.acoes_sugeridas += sugestoes_de_fluxo(arvore, estado)

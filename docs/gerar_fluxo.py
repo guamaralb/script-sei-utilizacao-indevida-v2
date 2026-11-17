@@ -4,7 +4,7 @@
   lidas da esquerda para a direita (1 → 4); a coluna da direita detalha as
   funções chamadas em vários pontos;
 - geacs_resp_* (run_geacs_resp_apis / _disa / _deproc, TODO: não montados);
-- geacs_adc_pdf_ant_aut, geacs_adc_pdf_ant_man, geacs_canc_memo_deproc_ant,
+- geacs_adc_pdf_ant_aut, geacs_adc_pdf_ant_man, geacs_canc_memo_deproc_ant, geacs_corrige_envio_disa,
   geacs_verificar_marcadores, geacs_todas_infos;
 - deproc_calcula_copa e deproc_excluir_docs (na unidade da DEPROC).
  Em cada coluna o
@@ -439,8 +439,8 @@ col_processar = Coluna(
 
 col_mantis = Coluna(
     '4 · _avaliar_mantis_e_criar_docs()',
-    'MANTIS e a comparação base DISA × MANTIS, pelo processo inteiro (alguém usou). O memo à DISA depende só da rede própria (RP); '
-    'a rede credenciada (RC) só separa DEPROC de APIS quando ninguém usou a RP. Cada caso tem o seu memo e o seu bloco. '
+    'MANTIS e a comparação base DISA × MANTIS, pelo processo inteiro (alguém usou). Só vai à DISA quem tem uso na <b>base DISA</b>; '
+    'sem uso nela, qualquer uso no MANTIS (RP e/ou RC) vai direto à DEPROC, e nenhum uso, à APIS. Cada caso tem o seu memo e o seu bloco. '
     '<b>Os relatórios RP e RC de quem usou entram em todos os casos</b>; <b>quem vai para a DISA não vai para a DEPROC</b>',
     [
         F(
@@ -475,13 +475,13 @@ col_mantis = Coluna(
                 (
                     'DISA não × RP sim',
                     [
-                        CASO('DISA não × MANTIS RP sim', 'validar; não consta na planilha'),
+                        CASO('DISA não × MANTIS RP sim', 'não consta na planilha: direto à DEPROC (sem DISA)'),
                         PDF('PDF Utilização Tit./Dep. <b>RP</b>'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
-                        MEMO('MemoDisaValidarNaoConsta', 'BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA (TODO)'),
-                        M('01.09 - No Bloco DISA: Validar (N Consta)'),
+                        MEMO('MemoDeproc</b> (redes credenciada e própria: cita os RP e RC)<b>', 7697744),
+                        M('01.10 - No Bloco DEPROC: Coparticipação'),
                         R('01.08 - Avaliado Uso Rede Própria MANTIS'),
-                        T('prox_acao = Assinar memo à DISA (validar; não consta)<br><b>sem DEPROC</b>'),
+                        T('prox_acao = Assinar memo DEPROC<br>(antes: memo à DISA Validar (N Consta); os já enviados: geacs_corrige_envio_disa)'),
                     ],
                 ),
                 (
@@ -829,6 +829,53 @@ col_canc = Coluna(
     ],
 )
 
+# CORRIGE ENVIO DISA
+col_corrige_loop = col_loop(
+    'run_geacs_corrige_envio_disa',
+    'geacs_corrige_envio_disa',
+    'da GEACS',
+    ' e carrega as bases APIS, DISA e MANTIS',
+    'corrigir_envio_disa() — coluna 2',
+    'Linha do processo: script, fluxo, prox_acao e erro; colunas memos_disa_n_consta_sei, memos_disa_excluidos_sei, memos_disa_nao_excluidos_sei, '
+    'caso_disa_mantis, relatorios_rp_sei / _rc_sei, memo_deproc_* e corrige_envio_disa (resultado em uma frase)',
+)
+_erro_segue(col_corrige_loop, 6)
+col_corrige = Coluna(
+    '2 · corrigir_envio_disa()',
+    'Troca o memo à DISA "Validar (N Consta)" (uso da RP só no MANTIS) pelo memo DEPROC, como o geacs_inicial faz hoje',
+    [
+        F('listar_marcadores() · conferir_marcadores()', 'As regras do fluxo inicial'),
+        P('Marcadores inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: prox_acao = Verificar marcadores inconsistentes, sem ação')]),
+        P('Estado não é um memo à DISA?<br>(01.09 No Bloco ou 01.09.1 Aguarda,<br>os três casos)', [E('<b>SemMarcadorDisa</b>: sem ação')]),
+        P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, sem ação')]),
+        F('garantir_marcadores_no_sei()', 'O 01.10 - No Bloco DEPROC: Coparticipação cadastrado'),
+        F('obter_dados_ui()', 'Último memo da APIS destinado à GEACS: define a rodada'),
+        F(
+            '_memos_disa_n_consta()',
+            'Memos da GEACS na rodada com "Embora a Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791) não indique atendimento para as matrículas relacionadas"',
+        ),
+        P(
+            'Nenhum memo?',
+            [
+                S('Estado N Consta (No Bloco ou Aguarda): retomada (o memo já foi excluído numa passagem anterior); segue'),
+                T('Outro estado: nada a corrigir, sem ação. prox_acao = a do estado (assinar ou aguardar)'),
+            ],
+        ),
+        F('recalcular_mantis() · avaliar_uso_rede_propria_disa() · relatorios_da_rede()', 'Caso base DISA × MANTIS, como no geacs_inicial, e os relatórios RP / RC da rodada'),
+        P('DISA sim, nenhum uso no MANTIS<br>ou relatório faltando?', [E('<b>CasoNaoCorrigivel</b>: sem ação')]),
+        F('montar_memo_deproc()', 'MemoDeproc montado <b>antes de qualquer ação no SEI</b> (cita os RP e RC)'),
+        F('excluir_memos_disa()', 'selecionar_doc() · excluir_doc(), do último para o primeiro; relê a árvore até sumirem'),
+        P(
+            'Algum memo à DISA<br>não excluído?<br>(ex.: assinado)',
+            [E('<b>MemoDisaNaoExcluido</b>: nada é criado. prox_acao = Verificar o que fazer: memo à DISA (não consta) não excluído')],
+        ),
+        MEMO('MemoDeproc</b> (retomada: já na rodada, pelo assunto, não é recriado)<b>', 7697744),
+        M('01.10 - No Bloco DEPROC: Coparticipação'),
+        R('01.09 / 01.09.1 da DISA (estado); o 01 e os informativos ficam'),
+        T('prox_acao = Assinar memo DEPROC e encaminhar'),
+    ],
+)
+
 # Fluxos de resposta
 col_resp_loop = col_loop(
     'run_geacs_resp_apis / _disa / _deproc',
@@ -876,17 +923,17 @@ col_copa_loop = col_loop(
     'run_deproc_calcula_copa',
     'deproc_calcula_copa',
     'da DEPROC',
-    ' e a base DEPROC (Relatório Base 2 - MANTIS, aba Resultado, matrículas com DV)',
+    ' e a base DEPROC do ano (BASES_DEPROC; 2019 e 2020: copa-MANTIS11281-base_2019 / _2020, aba Resultado, matrículas com DV)',
     'processar_deproc() — coluna 2',
-    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, data_geracao_base_deproc, marcadores_deproc_* e tag_deproc_*. '
+    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, marcadores_deproc_* e tag_deproc_*. '
     'Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',
     argumentos=[
         P(
-            'ler_argumentos():<br>sem -d DD/MM/AAAA<br>(ou data inválida/futura)?',
+            'ler_argumentos():<br>sem -a AAAA<br>(ou ano sem base em BASES_DEPROC)?',
             [E('argparse mostra o erro e encerra (código 2), antes do log, do login e de qualquer ação no SEI')],
         ),
     ],
-    comando=' -d DD/MM/AAAA (data de geração da base DEPROC, obrigatória)',
+    comando=' -a AAAA (ano dos processos: base DEPROC e data de geração dela, obrigatório)',
 )
 _erro_segue(col_copa_loop, 7)
 col_copa = Coluna(
@@ -911,7 +958,7 @@ col_copa = Coluna(
         F(
             '_conferir_configuracao()',
             'Antes de qualquer documento: bloco BLOCO_MEMO_GEACS_CALCULO_COPA (7765003), signatário (Danúbia Lacerda Gomes de Oliveira), '
-            'texto do memo e data de geração da base (-d da execução). Faltando: erro',
+            'texto do memo e data de geração da base (a do ano -a, em BASES_DEPROC). Faltando: erro',
         ),
         M('01 - Tratado pelo Script<br><span style="font-weight:normal">se faltar</span>'),
         P(
@@ -980,9 +1027,9 @@ col_todas_loop = col_loop(
     'run_geacs_todas_infos',
     'geacs_todas_infos',
     'da GEACS',
-    ' e carrega as bases APIS, DISA, MANTIS e DEPROC',
+    ' e carrega as bases APIS, DISA e MANTIS (a DEPROC, por ano, quando um processo precisa)',
     'processar_todas_infos() — coluna 2',
-    'Linha do processo: script, fluxo e prox_acao; colunas memo_calculo_copa_*, caminho_todas_infos, valores_todas_infos, divergencias_todas_infos e memo_apis_todas_infos_*. Os resultados do fluxo inicial ficam como estão',
+    'Linha do processo: script, fluxo e prox_acao; colunas memo_calculo_copa_*, ano_base_deproc_todas_infos, caminho_todas_infos, valores_todas_infos, divergencias_todas_infos e memo_apis_todas_infos_*. Os resultados do fluxo inicial ficam como estão',
 )
 _erro_segue(col_todas_loop, 6)
 col_todas = Coluna(
@@ -994,6 +1041,11 @@ col_todas = Coluna(
         P('Com o 01.12 - No Bloco APIS: Todas as Infos?', [T('prox_acao = Assinar memo à APIS (todas as informações) e encaminhar')]),
         P('Com o 01.12.1 - Encaminhado APIS: Todas as Infos?', [T('prox_acao = Memo à APIS (todas as informações) encaminhado (concluído)')]),
         P('Sem o 01.10.1 - Aguarda DEPROC: Coparticipação?', [E('<b>SemAguardaDeproc</b>: sem ação')]),
+        F(
+            'ano_da_base_deproc()',
+            'Ano da coluna ano_base_deproc da planilha de controle (gravada pelo deproc_calcula_copa). Sem ela: o da base com a data de data_geracao_base_deproc. Carrega a base desse ano (BASES_DEPROC)',
+        ),
+        P('Sem o ano<br>(ou ano sem base)?', [E('<b>SemAnoBaseDeproc</b>: sem ação')]),
         P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é criado')]),
         F('garantir_marcadores_no_sei()', 'O 01.12 cadastrado na GEACS'),
         F('obter_dados_ui()', 'Último memo da APIS destinado à GEACS: define a rodada'),
@@ -1011,11 +1063,11 @@ col_todas = Coluna(
         ),
         F(
             'apurar_todas_infos()',
-            'Coparticipação: tabela do memo da DEPROC x base DEPROC (apurar_coparticipacao). RC/RP: TOTAL de cada PDF do MANTIS da rodada (baixado e lido com pypdf) x bases do MANTIS no período. Uso da RP sem DISA, PDF faltando ou sobrando: divergência',
+            'Coparticipação: tabela do memo da DEPROC (por matrícula, total e Valor total em aberto; sem essa linha, em aberto = total apurado) x base DEPROC do ano (apurar_coparticipacao). RC/RP: TOTAL de cada PDF do MANTIS da rodada (baixado e lido com pypdf) x bases do MANTIS no período. Uso da RP sem DISA, PDF faltando ou sobrando: divergência',
             'ler_coparticipacao_do_memo() · recalcular_mantis() · baixar_pdf() · total_do_pdf()',
         ),
         P('Algum valor diverge?', [E('<b>ValoresDivergentes</b>: coluna divergencias_todas_infos, nada é criado')]),
-        F('montar_beneficiarios()', 'Titular e dependentes: iniciais / matrícula, RC, RP, coparticipação e o PDF de cada rede. Detalhamento da coparticipação: relatório da DEPROC (sem coparticipação: o memo da DEPROC)'),
+        F('montar_beneficiarios()', 'Titular e dependentes: iniciais / matrícula, RC, RP, coparticipação <b>em aberto</b> (o já descontado em folha não é somado) e o PDF de cada rede. Detalhamento da coparticipação: relatório da DEPROC (sem coparticipação: o memo da DEPROC)'),
         MEMO('MemoApisComTodasAsInformacoes', 7768786),
         F('incluir_memo()', 'Retomada: memo já na rodada (pelo assunto) não é recriado'),
         M('v2: 01.12 - No Bloco APIS: Todas as Infos (↻ remove o 01.10.1)'),
@@ -1030,14 +1082,17 @@ col_verif_loop = col_loop(
     'da GEACS',
     '',
     'verificar_marcadores(linha_processo()) — coluna 2',
-    'Não altera a prox_acao (nem fluxo e erro dos outros fluxos): só script, ultima_passagem, data_execucao, as colunas de marcadores e verificar_marcadores_inconsistencia / verificar_marcadores_erro (antes das de marcadores, em amarelo)',
+    'Não altera a prox_acao (nem fluxo e erro dos outros fluxos): só script, ultima_passagem, data_execucao, as colunas de marcadores, '
+    'verificar_marcadores_acao_sugerida / _inconsistencia / _erro (antes das de marcadores, em amarelo) e verificar_marcadores_aberto_na_geacs',
 )
 _erro_segue(col_verif_loop, 6)
 col_verif = Coluna(
     '2 · verificar_marcadores() · conferir_processo()',
-    'Lê os marcadores e confere a prox_acao da planilha de controle com eles e com os memorandos, sem nenhuma ação no SEI. Cada problema vai para verificar_marcadores_inconsistencia',
+    'Lê os marcadores e confere a prox_acao da planilha de controle com eles e com os memorandos, sem nenhuma ação no SEI. Cada problema vai para '
+    'verificar_marcadores_inconsistencia, com uma ação (AcaoSugerida) em verificar_marcadores_acao_sugerida',
     [
         F('listar_marcadores() · registrar_tags()', 'Marcadores do processo no SEI'),
+        F('tem_incluir_documento()', 'Só informativo (verificar_marcadores_aberto_na_geacs): o fechado no setor é lido como está, sem reabrir'),
         F(
             'colunas_tags() · demais_marcadores()',
             'Uma coluna tag_* por marcador válido na GEACS (TAGS_VALIDOS_GEACS, 30). Os outros (v2v:, 01.06.2 / 01.08.2 / 01.08.3, manuais, antigos) vão juntos para demais_marcadores',
@@ -1048,24 +1103,39 @@ col_verif = Coluna(
             'conferir_prox_acao():<br>prox_acao não é a do estado?',
             [
                 E(
-                    'Inconsistência: prox_acao esperada (No Bloco: assinar; Aguarda: aguardar resposta; 00: VELHO; 01.00: ADC aguarda; sem estado: vazia ou erro). Sempre aceitas: erros, ADC sem planilhas / estado mantido, DEPROC:'
-                )
+                    'Inconsistência: prox_acao esperada (No Bloco: assinar; Aguarda: aguardar resposta; 00: VELHO; 01.00: ADC aguarda; sem estado: vazia ou erro). '
+                    'Sempre aceitas: as de erro (PROX_ACOES_A_VERIFICAR), ADC estado mantido'
+                ),
+                E('Verificar acesso de uma passagem da GEACS: a GEACS abriu o processo, o acesso foi resolvido (Rodar geacs_inicial)'),
+                E('DEPROC: ... só com o 01.10 / 01.10.1 da DEPROC'),
             ],
             rotulo='Sim (e segue)',
         ),
         P(
-            'No Bloco / Aguarda<br>de memo?',
+            'No Bloco / Aguarda /<br>Encaminhado de memo?',
             [
                 F('conferir_caso_disa_mantis()', 'caso_disa_mantis da planilha (se preenchido) é o do memo'),
                 F(
                     'conferir_memo_do_marcador()',
                     'Memo pelo assunto na árvore (No Bloco: na rodada); relatórios RP / RC que ele cita antes dele; memo_*_sei da planilha na árvore; No Bloco Sem Memo com memo da APIS para a GEACS',
                 ),
+                F(
+                    '_conferir_assinatura()',
+                    'No Bloco com memo assinado: trocar pelo Aguarda / Encaminhado. Aguarda / 01.12.1 com memo não assinado: verificar manualmente',
+                ),
             ],
             rotulo='Sim (e segue)',
         ),
         P('Retomada<br>(01.06, 01.08)?', [F('conferir_retomada()', 'Memo do fluxo na rodada sem o marcador (o geacs_inicial o reaproveita)')], rotulo='Sim (e segue)'),
-        T('Planilha: tag_*, demais_marcadores, marcadores_finais e verificar_marcadores_inconsistencia (erro: verificar_marcadores_erro; sem ler os marcadores, as colunas deles ficam como estavam)'),
+        F(
+            'sugestoes_de_fluxo()',
+            'Só a ação sugerida: N Consta → Rodar geacs_corrige_envio_disa; 01.10.1 com memo de resultado da DEPROC assinado na rodada → Rodar geacs_todas_infos; '
+            '01.09.1 com documento da DISA depois do memo → Tratar a resposta da DISA',
+        ),
+        T(
+            'Planilha: tag_*, demais_marcadores, marcadores_finais, verificar_marcadores_acao_sugerida (sem repetição), verificar_marcadores_inconsistencia e '
+            'verificar_marcadores_aberto_na_geacs (erro: verificar_marcadores_erro; sem ler os marcadores, as colunas deles ficam como estavam)'
+        ),
     ],
 )
 
@@ -1166,6 +1236,13 @@ abas = [
         'run_geacs_canc_memo_deproc_ant · Cancelar o memo DEPROC antigo (main_geacs_canc_memo_deproc_ant.py)',
         f'Na unidade da GEACS. Não altera a prox_acao. {LEIA}',
         [col_canc_loop, col_canc],
+    ),
+    pagina(
+        'geacs-corrige-envio-disa',
+        'geacs_corrige_envio_disa',
+        'run_geacs_corrige_envio_disa · Trocar o memo à DISA (N Consta) pelo memo DEPROC (main_geacs_corrige_envio_disa.py)',
+        f'Na unidade da GEACS. Para os processos enviados à DISA antes da regra atual (sem uso na base DISA: direto à DEPROC). {LEIA}',
+        [col_corrige_loop, col_corrige],
     ),
     pagina(
         'geacs-verificar-marcadores',

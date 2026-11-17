@@ -10,8 +10,9 @@ estado de retomada), 01.02 (memo no bloco, aguarda assinatura) e 01.02.1
 a retomada é pelo nome do PDF e pelo assunto do memo, na rodada (depois do
 último memo da APIS destinado à GEACS).
 
-A data de geração da base DEPROC (citada no memo de resultado) é obrigatória
-na execução: poetry run task run_deproc_calcula_copa -d 06/11/2026
+O ano dos processos é obrigatório na execução e escolhe a base DEPROC e a
+data de geração dela, citada no memo de resultado (constantes.BASES_DEPROC):
+poetry run task run_deproc_calcula_copa -a 2019
 """
 
 import argparse
@@ -21,7 +22,7 @@ from datetime import datetime
 
 import pandas as pd
 from constantes import (
-    ARQ_BASE_DEPROC,
+    BASES_DEPROC,
     BLOCO_MEMO_GEACS_CALCULO_COPA,
     CARGO_SIGNATARIO_DEPROC,
     DIR_CONTROLE,
@@ -114,31 +115,21 @@ def _registrar_resultado(registro: RegistroDeproc, resultado: ResultadoDeproc) -
     registro.valor_total_em_aberto = resultado.totais.em_aberto
 
 
-def _data_geracao(texto: str) -> str:
-    """Data DD/MM/AAAA válida e não futura (type do argparse)."""
-    try:
-        data = datetime.strptime(texto.strip(), '%d/%m/%Y')
-    except ValueError:
-        raise argparse.ArgumentTypeError(f'data inválida: {texto!r} (use DD/MM/AAAA, ex.: 06/11/2026)') from None
-    if data > datetime.now():
-        raise argparse.ArgumentTypeError(f'data no futuro: {texto!r}')
-    return data.strftime('%d/%m/%Y')
-
-
 def ler_argumentos(argv: list[str] | None = None) -> argparse.Namespace:
-    """Sem -d (ou com data inválida), o argparse mostra o erro e encerra
-    (código 2) antes do login e de qualquer ação no SEI."""
+    """Sem -a (ou com ano sem base cadastrada em BASES_DEPROC), o argparse
+    mostra o erro e encerra (código 2) antes do login e de qualquer ação no
+    SEI."""
     parser = argparse.ArgumentParser(
         prog='poetry run task run_deproc_calcula_copa',
         description='Fluxo DEPROC: apura a coparticipação, anexa o relatório e cria o memo de resultado à GEACS.',
     )
     parser.add_argument(
-        '-d',
-        '--data-geracao-base',
+        '-a',
+        '--ano',
         required=True,
-        type=_data_geracao,
-        metavar='DD/MM/AAAA',
-        help='data de geração da base DEPROC (retorno do MANTIS ou data da planilha), citada no memo de resultado',
+        type=str.strip,
+        choices=sorted(BASES_DEPROC),
+        help='ano dos processos: escolhe a base DEPROC e a data de geração dela, citada no memo de resultado (constantes.BASES_DEPROC)',
     )
     return parser.parse_args(argv)
 
@@ -162,7 +153,7 @@ def _conferir_configuracao(data_geracao_base: str | None) -> None:
     if NOME_SIGNATARIO_DEPROC is None:
         raise ErroAvaliacao('Signatário do memo de resultado da DEPROC não configurado (NOME_SIGNATARIO_DEPROC)')
     if not data_geracao_base:
-        raise ErroAvaliacao('Data de geração da base DEPROC não informada (-d DD/MM/AAAA): o memo de resultado não é criado')
+        raise ErroAvaliacao('Data de geração da base DEPROC não configurada (BASES_DEPROC): o memo de resultado não é criado')
 
 
 def _conferir_marcadores(registro: RegistroDeproc, momento: str) -> None:
@@ -174,7 +165,7 @@ def _conferir_marcadores(registro: RegistroDeproc, momento: str) -> None:
         raise
 
 
-def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: pd.DataFrame, data_geracao_base: str | None) -> None:
+def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: pd.DataFrame, data_geracao_base: str | None, ano: str | None = None) -> None:
     registrar_tags(registro, listar_marcadores(driver))
     logger.info(f'Marcadores: {registro.marcadores_sei or "nenhum"}')
     _conferir_marcadores(registro, 'no início da passagem')
@@ -209,6 +200,10 @@ def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: p
         registro.matriculas_divergentes_deproc = e.divergentes
         raise
     _registrar_resultado(registro, resultado)
+    # A base foi usada: o fluxo GEACS TODAS INFOS confere a coparticipação
+    # na base deste ano (coluna ano_base_deproc)
+    registro.ano_base_deproc = ano
+    registro.data_geracao_base_deproc = data_geracao_base
 
     # Memo montado antes do relatório só para conferir texto, bloco e
     # signatário: nada é anexado se o memo não puder ser criado
@@ -238,12 +233,12 @@ def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: p
     registro.prox_acao = ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO
 
 
-def _processar_linha(driver: webdriver.Remote, num_processo, base: pd.DataFrame, data_geracao_base: str | None) -> RegistroDeproc:
-    registro = RegistroDeproc(num_processo=num_processo, data_execucao=AGORA, fluxo=FLUXO, data_geracao_base_deproc=data_geracao_base)
+def _processar_linha(driver: webdriver.Remote, num_processo, base: pd.DataFrame, data_geracao_base: str | None, ano: str | None = None) -> RegistroDeproc:
+    registro = RegistroDeproc(num_processo=num_processo, data_execucao=AGORA, fluxo=FLUXO)
 
     try:
         acessar_processo(driver, num_processo)
-        processar_deproc(driver, registro, base, data_geracao_base)
+        processar_deproc(driver, registro, base, data_geracao_base, ano)
         _conferir_marcadores(registro, 'no fim da passagem')
 
     except UnidadeSemAcessoException as e:
@@ -263,8 +258,9 @@ def _processar_linha(driver: webdriver.Remote, num_processo, base: pd.DataFrame,
 
 
 def main(argv: list[str] | None = None):
-    # Antes de tudo: sem a data, nada é feito (nem login)
-    data_geracao_base = ler_argumentos(argv).data_geracao_base
+    # Antes de tudo: sem o ano, nada é feito (nem login)
+    ano = ler_argumentos(argv).ano
+    base_ano = BASES_DEPROC[ano]
 
     for diretorio in [DIR_INPUTS, DIR_CONTROLE, DIR_LOG, DIR_FLUXO_DEPROC_PDF]:
         diretorio.mkdir(parents=True, exist_ok=True)
@@ -277,12 +273,12 @@ def main(argv: list[str] | None = None):
     try:
         logger.info(f'================= INÍCIO DA EXECUÇÃO ({FLUXO}) =================')
         logger.info(f'Log: {ARQ_LOG}')
-        logger.info(f'Data de geração da base DEPROC: {data_geracao_base}')
+        logger.info(f'Ano dos processos: {ano} | Base DEPROC: {base_ano.arquivo.name} | Data de geração: {base_ano.data_geracao}')
 
         processos = ler_processos_a_processar(SCRIPT)
         total = len(processos)
 
-        base = carregar_base_deproc(ARQ_BASE_DEPROC)
+        base = carregar_base_deproc(base_ano.arquivo)
         controle = PlanilhaControleGeral(SCRIPT, AGORA)
         driver = abrir_sei(UNIDADE_DEPROC)
 
@@ -291,7 +287,7 @@ def main(argv: list[str] | None = None):
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
 
-                registro = _processar_linha(driver, num_processo, base, data_geracao_base)
+                registro = _processar_linha(driver, num_processo, base, base_ano.data_geracao, ano)
                 registros_processados.append(registro.to_dict())
                 controle.registrar(registros_processados[-1])
 

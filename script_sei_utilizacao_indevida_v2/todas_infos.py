@@ -4,15 +4,19 @@ dos valores do retorno final à APIS (MemoApisComTodasAsInformacoes).
 Cada valor do memo é lido do SEI e recalculado das bases; se não baterem, o
 processo para (ValoresDivergentes), sem criar o memo:
 
-- coparticipação por matrícula e total: lidos do memo da DEPROC à GEACS
-  (MemoGeacsCalculoCopa) e recalculados na base DEPROC
-  (coparticipacao_deproc.apurar_coparticipacao, como no fluxo DEPROC);
+- coparticipação por matrícula e total, e valor total em aberto: lidos do
+  memo da DEPROC à GEACS (MemoGeacsCalculoCopa) e recalculados na base DEPROC
+  (coparticipacao_deproc.apurar_coparticipacao, como no fluxo DEPROC). No
+  memo à APIS entra o valor **em aberto** (o já descontado em folha não é
+  somado à utilização);
 - rede credenciada e rede própria: o TOTAL de cada PDF do MANTIS da rodada
   (baixado do SEI e lido com pypdf) e o recálculo nas bases do MANTIS, no
   período do memo da APIS (como no geacs_inicial).
 
 Caminho do processo: direto à DEPROC, ou pela DISA antes (memo da GEACS à
-DISA na rodada). No caminho com DISA, os valores da rede própria vêm da
+DISA na rodada). No caminho direto, a rede própria pode ter uso no MANTIS
+(sem constar na base DISA: o processo não vai à DISA); uso na base DISA é
+divergência. No caminho com DISA, os valores da rede própria vêm da
 resposta da DISA, cuja leitura ainda não foi implementada (TODO): o processo
 para com erro.
 """
@@ -30,7 +34,7 @@ from docs_processo import encontrar_doc_por_nome, encontrar_memo_por_assunto, fi
 from mantis import AvaliacaoMantis, BasesMantis, UsoMantis, avaliar_uso_rede_propria_mantis
 from processar_novo import sem_dependentes
 from pypdf import PdfReader
-from rede_propria import BasesUso, ErroAvaliacao, MatriculasProcesso, normalizar_matricula, verificar_base_apis
+from rede_propria import BasesUso, ErroAvaliacao, MatriculasProcesso, avaliar_uso_rede_propria_disa, normalizar_matricula, verificar_base_apis
 from relatorios_mantis import REDE_CREDENCIADA, REDE_PROPRIA, TIPO_DOC, inicio_nome_relatorio
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -65,6 +69,8 @@ _VALOR = r'R\$\s*(-?[\d.]+,\d{2})'
 # Linha da tabela do MemoGeacsCalculoCopa: iniciais, matrícula, vínculo, valor
 _PADRAO_LINHA_COPART = re.compile(rf'(\d[\d.\s/-]*?)\s+(Titular|Dependente)\s+{_VALOR}', re.IGNORECASE)
 _PADRAO_TOTAL_COPART = re.compile(rf'Total\s+consolidado\s+{_VALOR}', re.IGNORECASE)
+# Tabela de totais do MemoGeacsCalculoCopa (apurado, descontado e em aberto)
+_PADRAO_EM_ABERTO = re.compile(rf'Valor\s+total\s+em\s+aberto\s+{_VALOR}', re.IGNORECASE)
 # Linha TOTAL dos PDFs do MANTIS (transformar_xls_em_pdf): valor sem "R$"
 _PADRAO_TOTAL_PDF = re.compile(r'\bTOTAL\b[^\d-]*(-?[\d.]+,\d{2})')
 _PREFIXO_RELATORIO_DEPROC = f'{TIPO_DOC} Coparticipação - '
@@ -137,10 +143,14 @@ def identificar_caminho(driver: webdriver.Remote, registro) -> str:
 class CopartDoMemo:
     """Coparticipação lida do texto do MemoGeacsCalculoCopa."""
 
-    # Matrícula normalizada (com DV, como no memo) -> valor
+    # Matrícula normalizada (com DV, como no memo) -> valor apurado
     por_matricula: dict[str, float]
     total: float
     sem_coparticipacao: bool = False
+    # "Valor total em aberto" da tabela de totais. Memo sem essa linha (sem
+    # desconto informado): o total apurado
+    em_aberto: float = 0.0
+    em_aberto_no_memo: bool = False
 
 
 def memo_calculo_copa(driver: webdriver.Remote, registro) -> tuple[dict, str]:
@@ -170,7 +180,11 @@ def ler_coparticipacao_do_memo(texto: str) -> CopartDoMemo:
     for matricula, _, valor in linhas:
         chave = normalizar_matricula(matricula)
         por_matricula[chave] = round(por_matricula.get(chave, 0.0) + _reais(valor), 2)
-    return CopartDoMemo(por_matricula, _reais(total.group(1)))
+    total_apurado = _reais(total.group(1))
+    em_aberto = _PADRAO_EM_ABERTO.search(texto)
+    if em_aberto is None:
+        return CopartDoMemo(por_matricula, total_apurado, em_aberto=total_apurado)
+    return CopartDoMemo(por_matricula, total_apurado, em_aberto=_reais(em_aberto.group(1)), em_aberto_no_memo=True)
 
 
 def conferir_coparticipacao(memo: CopartDoMemo, resultado: ResultadoDeproc) -> list[str]:
@@ -188,6 +202,10 @@ def conferir_coparticipacao(memo: CopartDoMemo, resultado: ResultadoDeproc) -> l
             divergencias.append(f'coparticipação de {matricula}: memo da DEPROC {formatar_reais(lido)}, recálculo {formatar_reais(calculado)}')
     if _difere(memo.total, total):
         divergencias.append(f'coparticipação total: memo da DEPROC {formatar_reais(memo.total)}, recálculo {formatar_reais(total)}')
+    em_aberto = resultado.totais.em_aberto
+    if _difere(memo.em_aberto, em_aberto):
+        lido = 'memo da DEPROC' if memo.em_aberto_no_memo else 'memo da DEPROC sem o valor em aberto (considerado o total apurado)'
+        divergencias.append(f'coparticipação em aberto: {lido} {formatar_reais(memo.em_aberto)}, recálculo {formatar_reais(em_aberto)}')
     return divergencias
 
 
@@ -374,9 +392,10 @@ def montar_beneficiarios(
 ) -> tuple[ValoresBeneficiario, ...]:
     """Titular e cada dependente do memo da APIS (sem os ignorados), com as
     iniciais e a matrícula, os valores recalculados e o PDF de cada rede
-    (o de titular ou o de dependentes) de quem usou."""
+    (o de titular ou o de dependentes) de quem usou. A coparticipação é a
+    em aberto (o já descontado em folha não é somado à utilização)."""
     credenciada, propria = avaliacao.rede_credenciada, avaliacao.rede_propria
-    copart_titular = sum(b.valor for b in resultado.beneficiarios if b.categoria == TITULAR)
+    copart_titular = sum(b.em_aberto for b in resultado.beneficiarios if b.categoria == TITULAR)
     beneficiarios = [
         ValoresBeneficiario(
             identificacao=f'{dados_ui.nome_titular_iniciais} / {formatar_matricula_com_dv(matriculas.titular)}',
@@ -397,7 +416,7 @@ def montar_beneficiarios(
                 identificacao=f'{iniciais_nome(nome) or "Dependente"} / {matricula}',
                 valor_rede_credenciada=valor_rc,
                 valor_rede_propria=valor_rp,
-                coparticipacao=round(sum(b.valor for b in da_deproc), 2),
+                coparticipacao=round(sum(b.em_aberto for b in da_deproc), 2),
                 doc_rede_credenciada=rc.dependentes if _usou(credenciada, dependente) else None,
                 doc_rede_propria=rp.dependentes if _usou(propria, dependente) else None,
             )
@@ -423,8 +442,9 @@ def apurar_todas_infos(
     divergencias = conferir_coparticipacao(copart, resultado)
 
     dados_memo, matriculas, avaliacao = recalcular_mantis(dados_ui, bases, bases_mantis)
-    if avaliacao.rede_propria.alguem_usou:
-        divergencias.append('uso da rede própria no recálculo do MANTIS sem passagem pela DISA')
+    if avaliar_uso_rede_propria_disa(matriculas, bases).alguem_usou:
+        # Com uso na base DISA, o processo deveria ter ido à DISA
+        divergencias.append('uso da rede própria na base DISA sem passagem pela DISA')
     rc, faltando_rc = relatorios_da_rede(registro, avaliacao.rede_credenciada, REDE_CREDENCIADA, matriculas.titular)
     rp, faltando_rp = relatorios_da_rede(registro, avaliacao.rede_propria, REDE_PROPRIA, matriculas.titular)
     divergencias += faltando_rc + faltando_rp
@@ -435,7 +455,7 @@ def apurar_todas_infos(
 
     beneficiarios = montar_beneficiarios(dados_memo, matriculas, avaliacao, resultado, rc, rp)
     registro.valores_todas_infos = [
-        f'{b.identificacao}: RC {formatar_reais(b.valor_rede_credenciada)}; RP {formatar_reais(b.valor_rede_propria)}; copart. {formatar_reais(b.coparticipacao)}' for b in beneficiarios
+        f'{b.identificacao}: RC {formatar_reais(b.valor_rede_credenciada)}; RP {formatar_reais(b.valor_rede_propria)}; copart. em aberto {formatar_reais(b.coparticipacao)}' for b in beneficiarios
     ]
     registro.valor_total_rc_todas_infos = round(sum(b.valor_rede_credenciada for b in beneficiarios), 2)
     registro.valor_total_rp_todas_infos = round(sum(b.valor_rede_propria for b in beneficiarios), 2)
@@ -443,12 +463,12 @@ def apurar_todas_infos(
     if divergencias:
         registro.divergencias_todas_infos = divergencias
         raise ValoresDivergentes(divergencias)
-    if _difere(registro.valor_total_copart_todas_infos, copart.total):
+    if _difere(registro.valor_total_copart_todas_infos, copart.em_aberto):
         # Coparticipação de matrícula fora do memo da APIS (não acontece: a
         # base DEPROC confere as matrículas)
-        raise ValoresDivergentes([f'coparticipação nas tabelas {formatar_reais(registro.valor_total_copart_todas_infos)}, memo da DEPROC {formatar_reais(copart.total)}'])
+        raise ValoresDivergentes([f'coparticipação em aberto nas tabelas {formatar_reais(registro.valor_total_copart_todas_infos)}, memo da DEPROC {formatar_reais(copart.em_aberto)}'])
     logger.info(
         f'Valores conferidos | RC {formatar_reais(registro.valor_total_rc_todas_infos)} | RP {formatar_reais(registro.valor_total_rp_todas_infos)} | '
-        f'Coparticipação {formatar_reais(registro.valor_total_copart_todas_infos)}'
+        f'Coparticipação em aberto {formatar_reais(registro.valor_total_copart_todas_infos)} (apurada {formatar_reais(copart.total)})'
     )
     return dados_memo, beneficiarios, doc_coparticipacao(registro, copart.sem_coparticipacao)

@@ -23,6 +23,7 @@ class ValoresBeneficiario:
     identificacao: str
     valor_rede_credenciada: float
     valor_rede_propria: float
+    # Coparticipação em aberto (apurada menos o já descontado em folha)
     coparticipacao: float
     doc_rede_credenciada: str | None = None
     doc_rede_propria: str | None = None
@@ -33,7 +34,7 @@ class ValoresBeneficiario:
 
     @property
     def total_geral(self) -> float:
-        """Total dos serviços utilizados mais a coparticipação apurada."""
+        """Total dos serviços utilizados mais a coparticipação em aberto."""
         return self.total + self.coparticipacao
 
 
@@ -65,7 +66,7 @@ def _tabela_valores(beneficiarios: tuple[ValoresBeneficiario, ...]) -> str:
         coparticipacao=sum(b.coparticipacao for b in beneficiarios),
     )
     return tabela_html(
-        ['Beneficiário / matrícula', 'Utilização da rede credenciada', 'Utilização da rede própria', 'Total dos serviços utilizados', 'Coparticipação apurada', 'Total geral'],
+        ['Beneficiário / matrícula', 'Utilização da rede credenciada', 'Utilização da rede própria', 'Total dos serviços utilizados', 'Coparticipação em aberto', 'Total geral'],
         [[b.identificacao, *_valores(b)] for b in (*beneficiarios, total)],
         ultima_em_negrito=True,
     )
@@ -82,16 +83,23 @@ def _tabela_demonstrativos(beneficiarios: tuple[ValoresBeneficiario, ...]) -> st
     )
 
 
-def _resultado_rede_propria(doc_levantamento_disa: str | None) -> str:
+def _resultado_rede_propria(doc_levantamento_disa: str | None, rede_propria_mantis: bool) -> str:
     if doc_levantamento_disa:
         return f'o levantamento apresentado ou validado pela DISA, conforme documento {doc_levantamento_disa}'
+    if rede_propria_mantis:
+        return (
+            'os atendimentos identificados na base de faturamento do SADS consultada pela GEACS, conforme os demonstrativos relacionados abaixo, '
+            'que não constam da Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791)'
+        )
     return 'a ausência de atendimento identificado na Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791) e na base de faturamento do SADS consultada pela GEACS'
 
 
 class MemoApisComTodasAsInformacoes(Memorando):
     """Memo à APIS-Utilização: retorno final, com os valores da utilização e
-    da coparticipação em tabelas. Sem doc_levantamento_disa, informa que não
-    houve atendimento na rede própria."""
+    da coparticipação em tabelas. Sem doc_levantamento_disa: com uso da rede
+    própria só no MANTIS (algum valor de rede própria nos beneficiários),
+    informa que os atendimentos vêm do SADS e não constam da planilha da
+    DISA; sem uso, que não houve atendimento na rede própria."""
 
     def __init__(
         self,
@@ -119,7 +127,7 @@ class MemoApisComTodasAsInformacoes(Memorando):
             paragrafos=[
                 f'Em atendimento à solicitação constante do <strong>{identificar_doc(memo_apis)}</strong>, encaminhamos o resultado do levantamento dos serviços assistenciais utilizados e da respectiva coparticipação, referente aos beneficiários e períodos abaixo indicados:',
                 dados.texto_levantamento_html() + dados.periodo_dependentes_html(),
-                f'O levantamento da rede credenciada foi realizado a partir dos registros de faturamento constantes do Sistema de Assistência Descentralizada à Saúde – SADS, extraídos pela ASGE no Mantis 0011156. Quanto à rede própria, o resultado considera {_resultado_rede_propria(doc_levantamento_disa)}.',
+                f'O levantamento da rede credenciada foi realizado a partir dos registros de faturamento constantes do Sistema de Assistência Descentralizada à Saúde – SADS, extraídos pela ASGE no Mantis 0011156. Quanto à rede própria, o resultado considera {_resultado_rede_propria(doc_levantamento_disa, any(round(b.valor_rede_propria, 2) for b in beneficiarios))}.',
                 'A coparticipação correspondente aos atendimentos identificados foi apurada pelo Departamento de Processamento de Contas e Coparticipação – DEPROC, conforme relatórios extraídos e consolidados pela ASGE no Mantis 0011281.',
                 'Os valores apurados estão sintetizados a seguir:',
                 _tabela_valores(beneficiarios),

@@ -75,7 +75,19 @@ def test_rede_propria_com_levantamento_da_disa():
 
 
 def test_rede_propria_sem_atendimento():
-    assert 'a ausência de atendimento identificado na Planilha' in _html()
+    sem_rp = tuple(ValoresBeneficiario(b.identificacao, b.valor_rede_credenciada, 0, b.coparticipacao, b.doc_rede_credenciada) for b in BENEFICIARIOS)
+    html = _html(beneficiarios=sem_rp)
+    assert 'a ausência de atendimento identificado na Planilha' in html
+    assert 'base de faturamento do SADS consultada pela GEACS, conforme os demonstrativos' not in html
+
+
+def test_rede_propria_so_no_mantis():
+    # Uso da rede própria no MANTIS, sem constar na planilha da DISA (o
+    # processo não foi à DISA)
+    html = _html()
+    assert 'os atendimentos identificados na base de faturamento do SADS consultada pela GEACS, conforme os demonstrativos relacionados abaixo' in html
+    assert 'que não constam da Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791).' in html
+    assert 'a ausência de atendimento' not in html
 
 
 def test_cita_memo_da_apis_coparticipacao_e_periodo_dos_dependentes():

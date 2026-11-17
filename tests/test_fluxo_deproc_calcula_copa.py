@@ -254,10 +254,10 @@ class SEIDeproc(SEIFalso):
         monkeypatch.setattr(relatorio_deproc, 'gerar_pdf_deproc', lambda *args: Path('relatorio.pdf'))
 
 
-def _passar(sei, base, data_geracao_base='06/11/2026'):
+def _passar(sei, base, data_geracao_base='06/11/2026', ano='2019'):
     """Uma passagem do processo pelo main_deproc_calcula_copa.py."""
     sei.memos_passagem = 0
-    return main_deproc_calcula_copa._processar_linha(DriverFalso(), PROCESSO, base, data_geracao_base)
+    return main_deproc_calcula_copa._processar_linha(DriverFalso(), PROCESSO, base, data_geracao_base, ano)
 
 
 @pytest.fixture
@@ -400,20 +400,56 @@ def test_texto_pendente_ou_bloco_ausente_param_antes_do_relatorio(sei, tmp_path,
     # Sem a data de geração da base, nada é criado
     monkeypatch.setattr(main_deproc_calcula_copa, 'BLOCO_MEMO_GEACS_CALCULO_COPA', 1)
     registro = _passar(sei, _base(tmp_path), None)
-    assert 'Data de geração da base DEPROC não informada' in registro.erro
+    assert 'Data de geração da base DEPROC não configurada' in registro.erro
     assert not any(nome.startswith('PDF ') for nome in sei.nomes)
     assert sei.assuntos_memos_deproc == []
 
 
-def test_data_geracao_base_obrigatoria_na_execucao(capsys):
-    assert main_deproc_calcula_copa.ler_argumentos(['-d', '6/11/2026']).data_geracao_base == '06/11/2026'
-    assert main_deproc_calcula_copa.ler_argumentos(['--data-geracao-base', '06/11/2026']).data_geracao_base == '06/11/2026'
+def test_ano_obrigatorio_na_execucao(capsys):
+    assert main_deproc_calcula_copa.ler_argumentos(['-a', '2019']).ano == '2019'
+    assert main_deproc_calcula_copa.ler_argumentos(['--ano', '2019']).ano == '2019'
 
-    for argv in ([], ['-d', '2026-11-06'], ['-d', '31/02/2026'], ['-d', '06/11/2999']):
+    # Sem o ano, com ano sem base cadastrada e com o antigo -d
+    for argv in ([], ['-a', '2018'], ['-a', '19'], ['-d', '06/11/2026']):
         with pytest.raises(SystemExit) as erro:
             main_deproc_calcula_copa.ler_argumentos(argv)
         assert erro.value.code == 2
-    assert '-d' in capsys.readouterr().err
+    assert '-a' in capsys.readouterr().err
+
+
+@pytest.mark.parametrize(('ano', 'arquivo', 'data'), [('2019', 'copa-MANTIS11281-base_2019.xlsx', '06/11/2026'), ('2020', 'copa-MANTIS11281-base_2020.xlsx', '16/11/2026')])
+def test_bases_cadastradas(ano, arquivo, data):
+    base = main_deproc_calcula_copa.BASES_DEPROC[ano]
+    assert base.arquivo.name == arquivo
+    assert base.data_geracao == data
+    assert main_deproc_calcula_copa.ler_argumentos(['-a', ano]).ano == ano
+
+
+def test_ano_escolhe_a_base_e_a_data(monkeypatch):
+    carregadas = []
+    chamadas = []
+
+    class Controle:
+        def __init__(self, script, agora):
+            pass
+
+        def registrar(self, linha):
+            pass
+
+    def processar_linha(driver, num_processo, base, data_geracao_base, ano):
+        chamadas.append((base, data_geracao_base, ano))
+        return main_deproc_calcula_copa.RegistroDeproc(num_processo=num_processo)
+
+    monkeypatch.setattr(main_deproc_calcula_copa, 'configurar_logging', lambda arq: None)
+    monkeypatch.setattr(main_deproc_calcula_copa, 'ler_processos_a_processar', lambda script: ['PROC'])
+    monkeypatch.setattr(main_deproc_calcula_copa, 'carregar_base_deproc', lambda arquivo: carregadas.append(arquivo) or 'BASE')
+    monkeypatch.setattr(main_deproc_calcula_copa, 'PlanilhaControleGeral', Controle)
+    monkeypatch.setattr(main_deproc_calcula_copa, 'abrir_sei', lambda unidade: None)
+    monkeypatch.setattr(main_deproc_calcula_copa, '_processar_linha', processar_linha)
+    main_deproc_calcula_copa.main(['-a', '2019'])
+
+    assert carregadas == [main_deproc_calcula_copa.BASES_DEPROC['2019'].arquivo]
+    assert chamadas == [('BASE', '06/11/2026', '2019')]
 
 
 def test_sem_data_a_execucao_para_antes_do_login(monkeypatch):
@@ -423,10 +459,25 @@ def test_sem_data_a_execucao_para_antes_do_login(monkeypatch):
         main_deproc_calcula_copa.main([])
 
 
-def test_data_geracao_base_na_planilha(sei, tmp_path):
+def test_ano_e_data_geracao_base_na_planilha(sei, tmp_path):
     sei.memo_deproc_geacs()
-    registro = _passar(sei, _base(tmp_path))
-    assert registro.to_dict()['data_geracao_base_deproc'] == '06/11/2026'
+    registro = _passar(sei, _base(tmp_path), '16/11/2026', '2020')
+    linha = registro.to_dict()
+    assert linha['ano_base_deproc'] == '2020'
+    assert linha['data_geracao_base_deproc'] == '16/11/2026'
+
+    # Nova passagem (memo no bloco, base não usada), com outro -a: não
+    # sobrescreve o ano usado na apuração (o GEACS TODAS INFOS confere nele)
+    linha = _passar(sei, _base(tmp_path), '06/11/2026', '2019').to_dict()
+    assert 'ano_base_deproc' not in linha
+    assert 'data_geracao_base_deproc' not in linha
+
+
+def test_erro_antes_da_apuracao_nao_grava_o_ano(sei, tmp_path):
+    # Sem o memo DEPROC da GEACS: para antes de usar a base
+    registro = _passar(sei, _base(tmp_path), '06/11/2026', '2019')
+    assert registro.erro
+    assert 'ano_base_deproc' not in registro.to_dict()
 
 
 def test_processo_fechado_na_deproc_nao_e_reaberto(sei, tmp_path):

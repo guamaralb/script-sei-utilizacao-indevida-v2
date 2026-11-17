@@ -56,6 +56,9 @@ class ProxAcao:
     ASSINAR_MEMO_APIS_TODAS_INFOS = 'Assinar memo à APIS (todas as informações) e encaminhar'
     MEMO_APIS_TODAS_INFOS_ENCAMINHADO = 'Memo à APIS (todas as informações) encaminhado (concluído)'
     AGUARDAR_RESPOSTA_MEMO = 'Aguardar resposta ao memo enviado (processo parado)'
+    # Fluxo GEACS CORRIGE ENVIO DISA: o memo à DISA (N Consta) não pôde ser
+    # excluído (ex.: assinado); nada foi criado
+    VERIFICAR_MEMO_DISA_NAO_EXCLUIDO = 'Verificar o que fazer: memo à DISA (não consta) não excluído'
     VERIFICAR_MARCADORES = 'Verificar marcadores inconsistentes (corrigir no SEI)'
     VERIFICAR_ERRO = 'Verificar erro'
     VERIFICAR_ACESSO_UNIDADE = 'Verificar acesso da unidade ao processo'
@@ -103,6 +106,19 @@ _PROX_ACOES_DE_ERRO = frozenset({
     ProxAcao.ASSINAR_MEMO_APIS_MAT_NAO_ENCONTRADAS,
     ProxAcao.AGUARDAR_RESPOSTA_MEMO,
     ProxAcao.VERIFICAR_MARCADORES,
+    ProxAcao.VERIFICAR_MEMO_DISA_NAO_EXCLUIDO,
+})
+
+# prox_acao que pedem uma verificação manual (erro da passagem): valem com
+# qualquer marcador na conferência do fluxo GEACS VERIFICAR MARCADORES. Toda
+# prox_acao nova de erro entra aqui (há teste: as "Verificar ..." todas)
+PROX_ACOES_A_VERIFICAR = frozenset({
+    ProxAcao.VERIFICAR_ERRO,
+    ProxAcao.VERIFICAR_ACESSO_UNIDADE,
+    ProxAcao.VERIFICAR_FORMATO_MEMO,
+    ProxAcao.VERIFICAR_MEMO_DISA_NAO_EXCLUIDO,
+    ProxAcao.ADC_PDF_ANT_AUT_SEM_PLANILHAS,
+    ProxAcao.ADC_PDF_ANT_MAN_SEM_PLANILHAS,
 })
 
 
@@ -160,6 +176,8 @@ _CAMPOS_INTERNOS = frozenset({
     'processo_fechado',
     'marcadores_lidos',
     'inconsistencias',
+    'acoes_sugeridas',
+    'aberto_na_geacs',
     'avaliou_processo',
 })
 
@@ -404,6 +422,10 @@ _COLUNAS_MARCADORES_DEPROC = {
 }
 
 
+# Ano e data de geração da base DEPROC usada na apuração
+_COLUNAS_BASE_DEPROC = ('ano_base_deproc', 'data_geracao_base_deproc')
+
+
 @dataclass
 class RegistroDeproc(RegistroBase):
     """Uma passagem pelo fluxo DEPROC (main_deproc_calcula_copa.py), na unidade da DEPROC."""
@@ -419,7 +441,12 @@ class RegistroDeproc(RegistroBase):
     memo_deproc_geacs_sei: str | None = None
     memo_deproc_assinado: bool | None = None
 
-    # Data de geração da base DEPROC informada na execução (-d), citada no memo
+    # Ano informado na execução (-a) e data de geração da base DEPROC desse ano
+    # (constantes.BASES_DEPROC), citada no memo. Preenchidos só quando a base
+    # é usada na apuração: a passagem que não apura (memo no bloco,
+    # encaminhado, erro antes) não sobrescreve o ano da base usada antes. O
+    # fluxo GEACS TODAS INFOS confere a coparticipação na base desse ano
+    ano_base_deproc: str | None = None
     data_geracao_base_deproc: str | None = None
 
     # Base DEPROC (aba Resultado): linhas do processo (coluna SEI), linhas
@@ -457,6 +484,10 @@ class RegistroDeproc(RegistroBase):
             for coluna, valor in super().to_dict().items()
             if coluna not in _CAMPOS_FORA_DEPROC and not coluna.startswith('tag_') and coluna != COLUNA_DEMAIS_MARCADORES
         }
+        # Sem apuração nesta passagem: mantém o ano e a data da base usada antes
+        for coluna in _COLUNAS_BASE_DEPROC:
+            if dados.get(coluna) is None:
+                dados.pop(coluna, None)
         dados.update(colunas_tags_deproc(self.marcadores_atuais))
         return dados
 
@@ -594,6 +625,10 @@ class RegistroTodasInfos(RegistroBase):
     memos_apis_geacs_sei: list[str] = field(default_factory=list)
     modelo_memo_apis: str | None = None
 
+    # Ano da base DEPROC usada na conferência da coparticipação: o da coluna
+    # ano_base_deproc, gravada pelo deproc_calcula_copa
+    ano_base_deproc_todas_infos: str | None = None
+
     # Caminho do processo: "DEPROC" (direto) ou "DISA" (passou pela DISA
     # antes); memo da GEACS à DISA e resposta da DISA na rodada
     caminho_todas_infos: str | None = None
@@ -639,22 +674,32 @@ class RegistroVerificarMarcadores(RegistroBase):
     marcadores (uma coluna tag_* por marcador válido na GEACS,
     demais_marcadores e marcadores_finais), as inconsistências encontradas
     (verificar_marcadores_inconsistencia) e o erro da passagem
-    (verificar_marcadores_erro). Não grava prox_acao, fluxo, tipo_erro e erro."""
+    (verificar_marcadores_erro), as ações sugeridas
+    (verificar_marcadores_acao_sugerida) e se o processo está aberto na GEACS
+    (verificar_marcadores_aberto_na_geacs). Não grava prox_acao, fluxo,
+    tipo_erro e erro."""
 
     # Internos (ver _CAMPOS_INTERNOS)
     marcadores_lidos: bool = False
     # Inconsistências da prox_acao da planilha com os marcadores e os
     # memorandos do processo (uma frase cada)
     inconsistencias: list[str] = field(default_factory=list)
+    # O que fazer com o processo (curtas, filtráveis; ver AcaoSugerida)
+    acoes_sugeridas: list[str] = field(default_factory=list)
+    # "Incluir Documento" na GEACS (None: não conferido)
+    aberto_na_geacs: bool | None = None
 
     def to_dict(self) -> dict:
         dados = {
             'num_processo': self.num_processo,
             'ultima_passagem': self.ultima_passagem,
             'data_execucao': self.data_execucao,
+            'verificar_marcadores_acao_sugerida': ' | '.join(dict.fromkeys(self.acoes_sugeridas)) or None,
             'verificar_marcadores_inconsistencia': ' | '.join(self.inconsistencias) or None,
             'verificar_marcadores_erro': f'{self.tipo_erro}: {self.erro}' if self.erro is not None else None,
         }
+        if self.aberto_na_geacs is not None:
+            dados['verificar_marcadores_aberto_na_geacs'] = self.aberto_na_geacs
         # Sem conseguir ler os marcadores, as colunas deles ficam como estão
         if self.marcadores_lidos:
             dados['marcadores_finais'] = _juntar(self.marcadores_atuais)
@@ -666,3 +711,45 @@ class RegistroVerificarMarcadores(RegistroBase):
         """Linha do resumo do log (com erro e próxima ação)."""
         acao = f'{len(self.inconsistencias)} inconsistência(s) encontrada(s)' if self.inconsistencias else 'Marcadores verificados'
         return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': acao}
+
+
+@dataclass
+class RegistroCorrigeEnvioDisa(RegistroBase):
+    """Uma passagem pelo fluxo GEACS CORRIGE ENVIO DISA
+    (main_geacs_corrige_envio_disa.py): troca o memo à DISA "Validar (N
+    Consta)" pelo memo DEPROC. Os resultados do fluxo inicial (base DISA,
+    base APIS) não são gravados e continuam como estão."""
+
+    # Instruções da APIS (mesmas colunas do fluxo normal)
+    ult_memo_obtido: bool = False
+    conteudo_ult_memo_obtido: bool = False
+    memo_apis_sei: str | None = None
+    memos_apis_geacs_sei: list[str] = field(default_factory=list)
+    modelo_memo_apis: str | None = None
+
+    # Memo(s) da GEACS à DISA (N Consta) na rodada, excluídos e não excluídos
+    memos_disa_n_consta_sei: list[str] = field(default_factory=list)
+    memos_disa_excluidos_sei: list[str] = field(default_factory=list)
+    memos_disa_nao_excluidos_sei: list[str] = field(default_factory=list)
+
+    # Caso base DISA x MANTIS recalculado e relatórios do MANTIS citados no
+    # memo DEPROC
+    caso_disa_mantis: str | None = None
+    relatorios_rp_sei: list[str] = field(default_factory=list)
+    relatorios_rc_sei: list[str] = field(default_factory=list)
+
+    # Memo DEPROC (mesmas colunas do fluxo inicial)
+    memo_deproc_criado: bool = False
+    memo_deproc_inserido_bloco: bool = False
+    memo_deproc_na_arvore: bool = False
+    memo_deproc_sei: str | None = None
+
+    # Resultado da passagem em uma frase (data e hora, o que foi feito)
+    corrige_envio_disa: str | None = None
+
+    # Internos (ver _CAMPOS_INTERNOS)
+    memo_apis: DocArvore | None = None
+    dados_ui: DadosUI | None = None
+
+    def to_dict(self) -> dict:
+        return {coluna: valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_SO_FLUXO_PRINCIPAL | {'processo_reaberto'}}

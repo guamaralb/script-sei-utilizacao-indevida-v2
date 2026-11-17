@@ -20,7 +20,6 @@ from constantes import (
     BLOCO_MEMO_DEPROC,
     BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO,
     BLOCO_MEMO_DISA_VALIDAR_CONSTA,
-    BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA,
     CARGO_SIGNATARIO,
     NOME_SIGNATARIO,
 )
@@ -56,7 +55,6 @@ from tags import (
     TAG_NO_BLOCO_APIS_SEM_USO,
     TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
     TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
-    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
     TAG_PERIODO_VAR_DEP,
     TAGS_RETOMADA_NOVO,
     adicionar_tag,
@@ -75,10 +73,8 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import PADRAO_ASSUN
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import (
     PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO,
     PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
-    PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
     MemoDisaSemMantisSolicitaRelatorio,
     MemoDisaValidarConsta,
-    MemoDisaValidarNaoConsta,
 )
 from script_sei_utilizacao_indevida_v2.memorandos.UsoRede import UsoRedeBeneficiarios
 
@@ -193,8 +189,10 @@ _PERIODO_VARIAVEL = _Parada(
     prox_acao=ProxAcao.ASSINAR_MEMO_APIS_PERIODO_DEPS,
     padrao_assunto=PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES,
 )
-# Memos à DISA (comparação base DISA x MANTIS, rede própria). O processo
-# fica parado até o retorno da DISA e não vai para a DEPROC
+# Memos à DISA (uso da rede própria na base DISA). O processo fica parado até
+# o retorno da DISA e não vai para a DEPROC. Sem uso na base DISA, o processo
+# não vai à DISA (o memo "Validar (N Consta)" não é mais criado: com uso só no
+# MANTIS, vai direto à DEPROC; ver geacs_corrige_envio_disa)
 _DISA_VALIDAR_CONSTA = _Parada(
     fluxo='DISA sim, MANTIS sim: memo à DISA (validar e complementar)',
     descricao='à DISA (validar e complementar)',
@@ -203,15 +201,6 @@ _DISA_VALIDAR_CONSTA = _Parada(
     tag=TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
     prox_acao=ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA,
     padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA,
-)
-_DISA_VALIDAR_NAO_CONSTA = _Parada(
-    fluxo='DISA não, MANTIS sim: memo à DISA (validar, não consta)',
-    descricao='à DISA (validar, não consta na base DISA)',
-    prefixo_registro='memo_disa',
-    bloco=BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA,
-    tag=TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
-    prox_acao=ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_NAO_CONSTA,
-    padrao_assunto=PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA,
 )
 _DISA_SEM_MANTIS_RELATORIO = _Parada(
     fluxo='DISA sim, MANTIS não: memo à DISA (sem MANTIS, solicita relatório)',
@@ -401,12 +390,14 @@ def _escolher_memo(
 ) -> tuple[_Parada | None, Callable[[tuple[str, ...], tuple[str, ...]], Memorando]]:
     """A parada (None: memo DEPROC, conclusão) e uma função que monta o memo
     a partir do número SEI dos relatórios da rede própria (citados nos memos
-    à DISA de validação) e da rede credenciada (citados no memo DEPROC)."""
-    if not (uso_disa.alguem_usou or propria.alguem_usou):
-        if usou_rc:
-            return None, lambda docs_rp, docs_rc: MemoDeproc(
-                dados=dados_ui, docs_relatorio_rc=docs_rc, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO, memo_apis=registro.memo_apis
-            )
+    à DISA de validação e no memo DEPROC) e da rede credenciada (citados no
+    memo DEPROC).
+
+    Sem uso na base DISA, o processo não vai à DISA: com uso no MANTIS (RP
+    ou RC), memo DEPROC; sem nenhum uso, memo à APIS."""
+    if not uso_disa.alguem_usou:
+        if propria.alguem_usou or usou_rc:
+            return None, lambda docs_rp, docs_rc: montar_memo_deproc(registro, dados_ui, docs_rp, docs_rc)
         return _APIS_SEM_USO, lambda docs_rp, docs_rc: MemoApisSemUso(dados=dados_ui, memo_apis=registro.memo_apis, nome_signatario=NOME_SIGNATARIO, cargo_signatario=CARGO_SIGNATARIO)
 
     argumentos = {
@@ -420,8 +411,21 @@ def _escolher_memo(
     }
     if not propria.alguem_usou:
         return _DISA_SEM_MANTIS_RELATORIO, lambda docs_rp, docs_rc: MemoDisaSemMantisSolicitaRelatorio(**argumentos)
-    parada, classe = (_DISA_VALIDAR_CONSTA, MemoDisaValidarConsta) if uso_disa.alguem_usou else (_DISA_VALIDAR_NAO_CONSTA, MemoDisaValidarNaoConsta)
-    return parada, lambda docs_rp, docs_rc: classe(**argumentos, docs_relatorio_rp=docs_rp)
+    return _DISA_VALIDAR_CONSTA, lambda docs_rp, docs_rc: MemoDisaValidarConsta(**argumentos, docs_relatorio_rp=docs_rp)
+
+
+def montar_memo_deproc(registro, dados_ui: DadosUI, docs_rp: tuple[str, ...], docs_rc: tuple[str, ...]) -> MemoDeproc:
+    """Memo DEPROC (todos os beneficiários), com os relatórios RC e, se
+    alguém usou a rede própria no MANTIS (sem constar na base DISA), os RP.
+    Usado também pelo geacs_corrige_envio_disa."""
+    return MemoDeproc(
+        dados=dados_ui,
+        docs_relatorio_rc=tuple(docs_rc),
+        docs_relatorio_rp=tuple(docs_rp),
+        nome_signatario=NOME_SIGNATARIO,
+        cargo_signatario=CARGO_SIGNATARIO,
+        memo_apis=registro.memo_apis,
+    )
 
 
 def _avaliar_mantis_e_criar_docs(
@@ -436,8 +440,9 @@ def _avaliar_mantis_e_criar_docs(
     inteiro: alguém usou) e decide o memo:
 
     - DISA sim, MANTIS RP sim: memo à DISA (validar e complementar);
-    - DISA não, MANTIS RP sim: memo à DISA (validar, não consta);
     - DISA sim, MANTIS RP não: memo à DISA (sem MANTIS, solicita relatório);
+    - DISA não, MANTIS RP sim: memo DEPROC (redes própria e, se houver,
+      credenciada), sem passar pela DISA;
     - DISA não, MANTIS RP não: memo DEPROC se alguém usou a rede
       credenciada; senão, memo à APIS (nenhum uso nas bases).
 
@@ -480,7 +485,7 @@ def _avaliar_mantis_e_criar_docs(
         _parar_com_memo(driver, registro, memo, parada)
         return
 
-    registro.fluxo = 'NOVO - DISA não, MANTIS RP não, MANTIS RC sim: memo DEPROC'
+    registro.fluxo = f'NOVO - {registro.caso_disa_mantis}: memo DEPROC'
     incluir_memo(driver, registro, memo, BLOCO_MEMO_DEPROC, 'memo_deproc', 'DEPROC', padrao_assunto=PADRAO_ASSUNTO_MEMO_DEPROC)
     adicionar_tag(driver, registro, TAG_MEMO_DEPROC_COPARTICIPACAO)
     _finalizar(driver, registro, ProxAcao.ASSINAR_DEPROC)
@@ -507,9 +512,9 @@ def processar_novo(
       (só dependentes fora dela: 01.02.1 e o fluxo segue, com o MANTIS dos
       dependentes não encontrados; os que não estão nele são ignorados);
     - período variável para dependentes: 01.01 e memo à APIS;
-    - uso da rede própria na base DISA e/ou no MANTIS: memo à DISA (um dos
-      três casos);
-    - sem uso da rede própria, com uso da rede credenciada: memo DEPROC;
+    - uso da rede própria na base DISA: memo à DISA (com ou sem uso no
+      MANTIS);
+    - sem uso na base DISA, com uso no MANTIS (RP e/ou RC): memo DEPROC;
     - nenhum uso em nenhuma base: memo à APIS.
 
     Em todos os casos o marcador do memo só é adicionado depois que ele

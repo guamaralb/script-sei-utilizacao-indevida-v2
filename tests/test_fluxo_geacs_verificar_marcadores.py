@@ -12,14 +12,17 @@ import processo_fechado
 import pytest
 import sei_automacao.processo
 import tags
-from constantes import UNIDADE_GEACS
+from conferencia_prox_acao import AcaoSugerida
+from constantes import UNIDADE_DEPROC, UNIDADE_GEACS
 from openpyxl import load_workbook
 from planilha_controle import PlanilhaControleGeral, migrar_colunas_marcadores
-from Registro import ProxAcao, RegistroMain
+from Registro import PROX_ACOES_A_VERIFICAR, ProxAcao, RegistroMain
 
+from script_sei_utilizacao_indevida_v2.memorandos.MemoApisComTodasAsInformacoes import ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisSemMemo import ASSUNTO_MEMO_APIS_SEM_MEMO
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO_DEPROC
-from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import ASSUNTO_MEMO_DISA_VALIDAR_CONSTA
+from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import ASSUNTO_MEMO_DISA_VALIDAR_CONSTA, ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA
+from script_sei_utilizacao_indevida_v2.memorandos.MemoGeacsCalculoCopa import ASSUNTO_MEMO_GEACS_CALCULO_COPA
 from tests.sei_falso import DISA_USOU_RP_ANTIGO, MANTIS_USOU_RC_ANTIGO, SEIFalso
 
 # Marcadores válidos na GEACS (lista de 11/11/2026, mais os dois do fluxo GEACS
@@ -60,10 +63,10 @@ VALIDOS_NO_SEI = (
 )
 
 
-def _passar(monkeypatch, marcadores, sei: SEIFalso | None = None, linha: dict | None = None):
+def _passar(monkeypatch, marcadores, sei: SEIFalso | None = None, linha: dict | None = None, *, aberto: bool = True):
     """Uma passagem pelo fluxo. sei: árvore e textos (sem ele, árvore vazia);
     linha: a linha do processo na planilha de controle (None: planilha não
-    lida)."""
+    lida); aberto: o processo tem "Incluir Documento" na GEACS."""
     sei = sei or SEIFalso()
     removidos = []
 
@@ -76,6 +79,7 @@ def _passar(monkeypatch, marcadores, sei: SEIFalso | None = None, linha: dict | 
     monkeypatch.setattr(fluxo, 'acessar_processo', lambda driver, num: None)
     monkeypatch.setattr(fluxo, 'listar_marcadores', lambda driver: list(marcadores))
     monkeypatch.setattr(fluxo, 'restaurar_navegador', lambda driver: None)
+    monkeypatch.setattr(fluxo, 'tem_incluir_documento', lambda driver: aberto)
     monkeypatch.setattr(conferencia_prox_acao, 'listar_documentos_arvore', arvore)
     monkeypatch.setattr(conferencia_prox_acao, 'ler_texto_doc', texto)
     monkeypatch.setattr(docs_processo, 'ler_texto_doc', texto)
@@ -91,6 +95,10 @@ def _passar(monkeypatch, marcadores, sei: SEIFalso | None = None, linha: dict | 
 
 def _inconsistencia(registro) -> str | None:
     return registro.to_dict()['verificar_marcadores_inconsistencia']
+
+
+def _acao(registro) -> str | None:
+    return registro.to_dict()['verificar_marcadores_acao_sugerida']
 
 
 def _colunas_tag(dados: dict) -> dict:
@@ -116,13 +124,17 @@ def test_uma_coluna_por_marcador_valido_e_os_demais_juntos(monkeypatch):
     assert 'prox_acao' not in dados['verificar_marcadores_inconsistencia']
 
 
-def test_nao_reabre_processo_fechado():
-    # Nem confere o Incluir Documento: lê marcadores e árvore sem reabrir
+def test_nao_reabre_processo_fechado(monkeypatch):
+    # Confere o Incluir Documento só para informar: lê marcadores e árvore sem reabrir
     for modulo in (fluxo, conferencia_prox_acao):
         codigo = open(modulo.__file__, encoding='utf-8').read()
         assert 'reabrir' not in codigo.lower()
-        assert 'tem_incluir_documento' not in codigo
     assert 'processo_reaberto' not in fluxo.RegistroVerificarMarcadores(num_processo='PROC').to_dict()
+
+    dados = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.ASSINAR_DEPROC}, aberto=False).to_dict()
+    assert dados['verificar_marcadores_aberto_na_geacs'] is False
+    assert dados['verificar_marcadores_inconsistencia'] is None
+    assert _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.ASSINAR_DEPROC}).to_dict()['verificar_marcadores_aberto_na_geacs'] is True
 
 
 def test_sem_demais_marcadores(monkeypatch):
@@ -243,12 +255,12 @@ def _processo_disa_consta() -> SEIFalso:
     return sei
 
 
-def _processo_deproc(*, com_relatorio: bool = True) -> SEIFalso:
+def _processo_deproc(*, com_relatorio: bool = True, assinado: bool = False) -> SEIFalso:
     sei = SEIFalso()
     sei.novo_processo()
     if com_relatorio:
         sei.novo_doc('PDF Utilização Tit. RC - 12345678 - 20261101_100000', UNIDADE_GEACS, '')
-    sei.memo_geacs(ASSUNTO_MEMO_DEPROC)
+    sei.memo_geacs(ASSUNTO_MEMO_DEPROC, assinado=assinado)
     return sei
 
 
@@ -288,7 +300,14 @@ def test_prox_acao_vazia_com_estado(monkeypatch):
 
 @pytest.mark.parametrize(
     'prox_acao',
-    [ProxAcao.VERIFICAR_ERRO, ProxAcao.VERIFICAR_ACESSO_UNIDADE, ProxAcao.ADC_PDF_ANT_AUT_ESTADO_MANTIDO, ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO],
+    [
+        ProxAcao.VERIFICAR_ERRO,
+        ProxAcao.VERIFICAR_ACESSO_UNIDADE,
+        ProxAcao.VERIFICAR_MEMO_DISA_NAO_EXCLUIDO,
+        ProxAcao.ADC_PDF_ANT_AUT_ESTADO_MANTIDO,
+        ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO,
+        ProxAcao.DEPROC_MEMO_ENCAMINHADO,
+    ],
 )
 def test_prox_acoes_aceitas_com_o_estado(monkeypatch, prox_acao):
     assert _inconsistencia(_passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': prox_acao})) is None
@@ -339,10 +358,39 @@ def test_marcador_sem_o_memo(monkeypatch):
 
 
 def test_memo_sem_o_relatorio_que_cita(monkeypatch):
+    # Sem o caso na planilha: o memo DEPROC cita algum relatório (RP ou RC)
     sei = _processo_deproc(com_relatorio=False)
     registro = _passar(monkeypatch, NO_BLOCO_DEPROC, sei, {'prox_acao': ProxAcao.ASSINAR_DEPROC})
 
-    assert 'sem relatório RC do MANTIS antes dele na rodada' in _inconsistencia(registro)
+    assert 'sem relatório RP ou RC do MANTIS antes dele na rodada' in _inconsistencia(registro)
+
+
+@pytest.mark.parametrize(
+    ('caso', 'esperado'),
+    [
+        ('DISA não, MANTIS RP não, MANTIS RC sim', None),
+        # Uso da rede própria só no MANTIS: o memo DEPROC cita também o RP
+        ('DISA não, MANTIS RP sim, MANTIS RC sim', 'sem relatório RP do MANTIS antes dele na rodada'),
+        ('DISA sim, MANTIS RP sim, MANTIS RC sim', 'não condiz com o memo DEPROC'),
+        ('DISA não, MANTIS RP não, MANTIS RC não', 'não condiz com o memo DEPROC'),
+    ],
+)
+def test_memo_deproc_pelo_caso(monkeypatch, caso, esperado):
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.ASSINAR_DEPROC, 'caso_disa_mantis': caso})
+
+    inconsistencia = _inconsistencia(registro)
+    if esperado is None:
+        assert inconsistencia is None
+    else:
+        assert esperado in inconsistencia
+
+
+def test_memo_deproc_com_rp_do_mantis(monkeypatch):
+    sei = _processo_deproc(com_relatorio=False)
+    sei.docs.insert(len(sei.docs) - 1, {'numero_sei': '9001', 'nome_arvore': 'PDF Utilização Dep. RP - 12345678 - 20261101_100000', 'unidade': UNIDADE_GEACS})
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, sei, {'prox_acao': ProxAcao.ASSINAR_DEPROC, 'caso_disa_mantis': 'DISA não, MANTIS RP sim, MANTIS RC não'})
+
+    assert _inconsistencia(registro) is None
 
 
 def test_memo_no_bloco_de_pedido_anterior(monkeypatch):
@@ -354,7 +402,7 @@ def test_memo_no_bloco_de_pedido_anterior(monkeypatch):
 
 
 def test_aguarda_com_novo_memo_da_apis_depois(monkeypatch):
-    sei = _processo_deproc()
+    sei = _processo_deproc(assinado=True)
     sei.memo_apis()
     marcadores = [tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DEPROC_COPARTICIPACAO]
 
@@ -445,3 +493,120 @@ def test_coluna_de_inconsistencia_antes_dos_marcadores_e_em_amarelo(monkeypatch,
     assert celulas['verificar_marcadores_inconsistencia'].fill.start_color.rgb == 'FFFFE599'
     assert celulas['prox_acao'].fill.start_color.rgb == 'FFFFE599'
     assert celulas['verificar_marcadores_erro'].fill.fill_type is None
+
+
+# ---------------------------------------------------------------------------
+# prox_acao de erro, acesso, DEPROC, assinatura e ação sugerida
+# ---------------------------------------------------------------------------
+
+AGUARDA_DEPROC = [tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DEPROC_COPARTICIPACAO]
+
+
+def test_toda_prox_acao_de_verificar_vale_com_qualquer_marcador():
+    # Uma prox_acao nova de erro ("Verificar ...") esquecida fora da lista
+    # vira inconsistência falsa em todo processo com ela
+    verificar = {v for k, v in vars(ProxAcao).items() if not k.startswith('_') and v.startswith('Verificar')}
+    assert verificar - {ProxAcao.VERIFICAR_MARCADORES} <= PROX_ACOES_A_VERIFICAR
+
+
+@pytest.mark.parametrize(
+    ('fluxo_planilha', 'consistente'),
+    [
+        (None, True),
+        ('DEPROC - COPARTICIPAÇÃO', True),
+        ('NOVO - DISA não, MANTIS RP não, MANTIS RC sim: memo DEPROC', False),
+    ],
+)
+def test_verificar_acesso_resolvido_pela_geacs(monkeypatch, fluxo_planilha, consistente):
+    linha = {'prox_acao': ProxAcao.VERIFICAR_ACESSO_UNIDADE, 'fluxo': fluxo_planilha}
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), linha)
+
+    assert (_inconsistencia(registro) is None) is consistente
+    if not consistente:
+        assert 'o acesso foi resolvido' in _inconsistencia(registro)
+        assert _acao(registro) == AcaoSugerida.RODAR_INICIAL
+
+
+def test_prox_acao_da_deproc_so_com_o_memo_deproc(monkeypatch):
+    linha = {'prox_acao': ProxAcao.DEPROC_MEMO_ENCAMINHADO}
+    assert _inconsistencia(_passar(monkeypatch, AGUARDA_DEPROC, _processo_deproc(assinado=True), linha)) is None
+
+    sei = SEIFalso()
+    sei.novo_processo()
+    sei.memo_geacs(ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES)
+    registro = _passar(monkeypatch, [tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_APIS_TODAS_INFOS], sei, linha)
+    assert f'esperada: "{ProxAcao.ASSINAR_MEMO_APIS_TODAS_INFOS}"' in _inconsistencia(registro)
+    assert _acao(registro) == AcaoSugerida.RODAR_INICIAL
+
+
+def test_no_bloco_com_memo_ja_assinado(monkeypatch):
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(assinado=True), {'prox_acao': ProxAcao.ASSINAR_DEPROC})
+
+    assert _inconsistencia(registro).endswith('troque pelo "01.10.1 - Aguarda DEPROC: Coparticipação"')
+    assert _acao(registro) == AcaoSugerida.TROCAR_MARCADOR_ASSINADO
+
+
+def test_aguarda_com_memo_nao_assinado(monkeypatch):
+    registro = _passar(monkeypatch, AGUARDA_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.AGUARDAR_RESPOSTA_MEMO})
+
+    assert 'não está assinado' in _inconsistencia(registro)
+    assert _acao(registro) == AcaoSugerida.VERIFICAR_MANUALMENTE
+
+
+@pytest.mark.parametrize('assinado', [True, False])
+def test_encaminhado_apis_confere_o_memo(monkeypatch, assinado):
+    sei = SEIFalso()
+    sei.novo_processo()
+    sei.memo_geacs(ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES, assinado=assinado)
+    marcadores = [tags.TAG_PROCESSO_NOVO, tags.TAG_ENCAMINHADO_APIS_TODAS_INFOS]
+    registro = _passar(monkeypatch, marcadores, sei, {'prox_acao': ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO})
+
+    assert (_inconsistencia(registro) is None) is assinado
+
+    sem_memo = SEIFalso()
+    sem_memo.novo_processo()
+    assert 'sem o memo à APIS (todas as informações)' in _inconsistencia(_passar(monkeypatch, marcadores, sem_memo, {}))
+
+
+@pytest.mark.parametrize(('assinado', 'acao'), [(True, AcaoSugerida.RODAR_TODAS_INFOS), (False, None)])
+def test_aguarda_deproc_com_o_resultado_da_deproc(monkeypatch, assinado, acao):
+    sei = _processo_deproc(assinado=True)
+    texto = f'Assunto: {ASSUNTO_MEMO_GEACS_CALCULO_COPA}' + ('\nDocumento assinado eletronicamente por Fulana' if assinado else '')
+    sei.novo_doc('Memorando 3', UNIDADE_DEPROC, texto)
+    registro = _passar(monkeypatch, AGUARDA_DEPROC, sei, {'prox_acao': ProxAcao.AGUARDAR_RESPOSTA_MEMO})
+
+    assert _inconsistencia(registro) is None
+    assert _acao(registro) == acao
+
+
+@pytest.mark.parametrize('marcador', [tags.TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA, tags.TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA])
+def test_n_consta_sugere_o_corrige_envio_disa(monkeypatch, marcador):
+    sei = SEIFalso()
+    sei.novo_processo()
+    sei.memo_geacs(ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, assinado=marcador == tags.TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA)
+    registro = _passar(monkeypatch, [tags.TAG_PROCESSO_NOVO, marcador], sei)
+
+    assert AcaoSugerida.RODAR_CORRIGE_ENVIO_DISA in _acao(registro).split(' | ')
+
+
+def test_aguarda_disa_com_resposta_da_disa(monkeypatch):
+    sei = _processo_disa_consta()
+    sei.textos[sei.docs[-1]['numero_sei']] += '\nDocumento assinado eletronicamente por Fulano'
+    marcadores = [tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_DISA_VALIDAR_CONSTA]
+    linha = {'prox_acao': ProxAcao.AGUARDAR_RESPOSTA_MEMO}
+    assert _acao(_passar(monkeypatch, marcadores, sei, linha)) is None
+
+    sei.novo_doc('Despacho 9', 'IPSEMG/DISA-UTI-INDEV', 'resposta')
+    registro = _passar(monkeypatch, marcadores, sei, linha)
+    assert _inconsistencia(registro) is None
+    assert _acao(registro) == AcaoSugerida.TRATAR_RESPOSTA_DISA
+
+
+def test_acoes_sugeridas_sem_repeticao(monkeypatch):
+    # Dois problemas com a mesma ação: a ação aparece uma vez
+    sei = _processo_deproc(com_relatorio=False)
+    sei.memo_apis()
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, sei, {'prox_acao': ProxAcao.ASSINAR_DEPROC})
+
+    assert len(registro.inconsistencias) == 2
+    assert _acao(registro) == AcaoSugerida.VERIFICAR_MANUALMENTE

@@ -78,9 +78,10 @@ _COLUNAS_NAO_ENCONTRADAS = (
 # Fluxo GEACS VERIFICAR MARCADORES: inconsistência encontrada (prox_acao,
 # marcadores e memorandos) e erro da passagem. Ficam logo antes das colunas de
 # marcadores e, preenchidas, em amarelo (com a prox_acao da linha)
+COLUNA_VERIFICAR_ACAO_SUGERIDA = 'verificar_marcadores_acao_sugerida'
 COLUNA_VERIFICAR_INCONSISTENCIA = 'verificar_marcadores_inconsistencia'
 COLUNA_VERIFICAR_ERRO = 'verificar_marcadores_erro'
-_COLUNAS_ANTES_DOS_MARCADORES = (COLUNA_VERIFICAR_INCONSISTENCIA, COLUNA_VERIFICAR_ERRO)
+_COLUNAS_ANTES_DOS_MARCADORES = (COLUNA_VERIFICAR_ACAO_SUGERIDA, COLUNA_VERIFICAR_INCONSISTENCIA, COLUNA_VERIFICAR_ERRO)
 
 
 # ---------------------------------------------------------------------------

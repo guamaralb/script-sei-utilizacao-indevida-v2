@@ -7,7 +7,9 @@ anterior, manuais, antigos).
 Confere também se a prox_acao registrada na planilha faz sentido com os
 marcadores e se os memorandos que os marcadores indicam estão na árvore
 (conferencia_prox_acao). Os problemas vão para a coluna
-verificar_marcadores_inconsistencia.
+verificar_marcadores_inconsistencia, e o que fazer com o processo, para a
+verificar_marcadores_acao_sugerida. Registra se o processo está aberto na
+GEACS (verificar_marcadores_aberto_na_geacs), sem mexer nele.
 
 Para cada processo da aba geacs_verificar_marcadores de
 processos_a_processar.xlsx: abre o processo, lê os marcadores e, se preciso, a
@@ -28,6 +30,7 @@ from log_config import (
     log_resumo,
 )
 from planilha_controle import PlanilhaControleGeral
+from processo_fechado import tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
 from rede_propria import ErroAvaliacao
 from Registro import RegistroVerificarMarcadores, registrar_erro, registrar_sem_acesso
@@ -51,6 +54,10 @@ def verificar_marcadores(driver: webdriver.Remote, registro: RegistroVerificarMa
     planilha não lida)."""
     registrar_tags(registro, listar_marcadores(driver))
     registro.marcadores_lidos = True
+    # Só informativo: o processo fechado no setor é lido como está
+    registro.aberto_na_geacs = tem_incluir_documento(driver)
+    if not registro.aberto_na_geacs:
+        logger.info('Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está')
     validos = sorted(tag for tag in registro.marcadores_sei if tag in TAGS_VALIDOS_GEACS)
     demais = sorted(tag for tag in registro.marcadores_sei if tag not in TAGS_VALIDOS_GEACS)
     logger.info(f'Marcadores válidos: {validos or "nenhum"}')
@@ -61,6 +68,8 @@ def verificar_marcadores(driver: webdriver.Remote, registro: RegistroVerificarMa
         logger.warning(f'Inconsistência: {problema}')
     if not registro.inconsistencias:
         logger.info('prox_acao, marcadores e memorandos consistentes')
+    for acao in dict.fromkeys(registro.acoes_sugeridas):
+        logger.info(f'Ação sugerida: {acao}')
 
 
 def _processar_linha(driver: webdriver.Remote, num_processo, linha_planilha: dict | None = None) -> RegistroVerificarMarcadores:

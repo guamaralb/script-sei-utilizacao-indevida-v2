@@ -7,6 +7,7 @@ import main_deproc_calcula_copa
 import main_deproc_excluir_docs
 import main_geacs_adc_pdf_ant_aut
 import main_geacs_canc_memo_deproc_ant
+import main_geacs_corrige_envio_disa
 import main_geacs_inicial
 import main_geacs_resp_disa
 import main_geacs_todas_infos
@@ -22,7 +23,8 @@ FLUXOS = [
     pytest.param(main_geacs_canc_memo_deproc_ant, (), 'cancelar_memos_deproc_antigos', id='canc_memo_deproc_ant'),
     pytest.param(main_deproc_excluir_docs, (), 'excluir_docs_deproc', id='deproc_excluir_docs'),
     pytest.param(main_geacs_verificar_marcadores, (), 'verificar_marcadores', id='geacs_verificar_marcadores'),
-    pytest.param(main_geacs_todas_infos, (None, None, None), 'processar_todas_infos', id='geacs_todas_infos'),
+    pytest.param(main_geacs_todas_infos, (None, None, None, None), 'processar_todas_infos', id='geacs_todas_infos'),
+    pytest.param(main_geacs_corrige_envio_disa, (None, None), 'corrigir_envio_disa', id='geacs_corrige_envio_disa'),
 ]
 
 

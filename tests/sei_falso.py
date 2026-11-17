@@ -140,8 +140,9 @@ class SEIFalso:
         if com_memo_apis:
             self.memo_apis(extra=extra)
 
-    def memo_geacs(self, assunto: str) -> str:
-        return self.novo_doc('Memorando 1', UNIDADE_GEACS, f'Assunto: {assunto}')
+    def memo_geacs(self, assunto: str, *, assinado: bool = False) -> str:
+        assinatura = '\nDocumento assinado eletronicamente por Fulano de Tal, em 01/11/2026' if assinado else ''
+        return self.novo_doc('Memorando 1', UNIDADE_GEACS, f'Assunto: {assunto}{assinatura}')
 
     def memo_geacs_para(self, destino: str, data: str | None = '18 de setembro de 2026') -> str:
         """Memo da GEACS com destinatário e data (identificação do VELHO)."""
@@ -227,7 +228,7 @@ class SEIFalso:
         monkeypatch.setattr(processar_novo, 'garantir_marcadores_no_sei', lambda driver, lista: None)
         monkeypatch.setattr(main_geacs_inicial, 'garantir_marcadores_no_sei', lambda driver, lista: None)
         # Blocos dos memos à DISA e à APIS (sem uso) ainda não configurados (None)
-        for nome, bloco in (('_DISA_VALIDAR_CONSTA', 1), ('_DISA_VALIDAR_NAO_CONSTA', 2), ('_DISA_SEM_MANTIS_RELATORIO', 3), ('_APIS_SEM_USO', 4)):
+        for nome, bloco in (('_DISA_VALIDAR_CONSTA', 1), ('_DISA_SEM_MANTIS_RELATORIO', 3), ('_APIS_SEM_USO', 4)):
             monkeypatch.setattr(processar_novo, nome, replace(getattr(processar_novo, nome), bloco=bloco))
         monkeypatch.setattr(relatorios_mantis, 'incluir_doc_externo', self._incluir_doc_externo)
         monkeypatch.setattr(relatorios_mantis, 'transformar_xls_em_pdf', lambda **kwargs: Path('relatorio.pdf'))

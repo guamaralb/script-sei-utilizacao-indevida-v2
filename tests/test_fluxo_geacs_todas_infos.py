@@ -23,7 +23,7 @@ from script_sei_utilizacao_indevida_v2.memorandos.MemoApisComTodasAsInformacoes 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDeproc import ASSUNTO_MEMO_DEPROC
 from script_sei_utilizacao_indevida_v2.memorandos.MemoDisa import ASSUNTO_MEMO_DISA_VALIDAR_CONSTA
 from script_sei_utilizacao_indevida_v2.memorandos.MemoGeacsCalculoCopa import MemoGeacsCalculoCopa
-from tests.sei_falso import MANTIS_CREDENCIADA_TITULAR_USOU, MANTIS_DEPENDENTE_USOU, DriverFalso, SEIFalso, bases
+from tests.sei_falso import MANTIS_CREDENCIADA_TITULAR_USOU, MANTIS_DUAS_REDES, DriverFalso, SEIFalso, bases
 from tests.test_fluxo_deproc_calcula_copa import LINHAS, _base, _linha
 
 PROCESSO = 'PROC'
@@ -88,9 +88,19 @@ def sei(monkeypatch):
     return sei
 
 
-def _passar(sei, base, bases_mantis=MANTIS_CREDENCIADA_TITULAR_USOU):
+def _passar(sei, base, bases_mantis=MANTIS_CREDENCIADA_TITULAR_USOU, linha_controle=None, carregadas=None):
+    """base: a base DEPROC de qualquer ano; linha_controle: a linha do
+    processo na planilha de controle (padrão: ano 2019)."""
     sei.memos_passagem = 0
-    return fluxo._processar_linha(DriverFalso(), PROCESSO, bases(tit_usou=False), bases_mantis, base)
+    if linha_controle is None:
+        linha_controle = {'ano_base_deproc': '2019'}
+
+    def carregar(arquivo):
+        if carregadas is not None:
+            carregadas.append(arquivo.name)
+        return base
+
+    return fluxo._processar_linha(DriverFalso(), PROCESSO, bases(tit_usou=False), bases_mantis, fluxo.BasesDeprocPorAno(carregar), linha_controle)
 
 
 def _memos_apis(sei) -> list[str]:
@@ -114,18 +124,72 @@ def test_cria_memo_a_apis_com_todas_as_informacoes(sei, tmp_path):
     (texto,) = _memos_apis(sei)
     rc_titular = sei.numero_sei('PDF Utilização Tit. RC')
     relatorio_copart = sei.numero_sei('PDF Coparticipação')
-    # Titular: RC do MANTIS (R$ 10,00) e coparticipação da DEPROC (R$ 18,50)
-    assert '<tr><td>F. / 1234567-8</td><td>R$ 10,00</td><td>R$ 0,00</td><td>R$ 10,00</td><td>R$ 18,50</td><td>R$ 28,50</td></tr>' in texto
+    # Titular: RC do MANTIS (R$ 10,00) e coparticipação em aberto da DEPROC
+    # (apurado R$ 18,50, dos quais R$ 4,00 já descontados em folha)
+    assert '<tr><td>F. / 1234567-8</td><td>R$ 10,00</td><td>R$ 0,00</td><td>R$ 10,00</td><td>R$ 14,50</td><td>R$ 24,50</td></tr>' in texto
     # Dependente: só coparticipação (nome da base DEPROC, matrícula com DV)
     assert '<tr><td>B. / 555-9</td><td>R$ 0,00</td><td>R$ 0,00</td><td>R$ 0,00</td><td>R$ 3,50</td><td>R$ 3,50</td></tr>' in texto
-    assert '<td><strong>R$ 22,00</strong></td><td><strong>R$ 32,00</strong></td></tr>' in texto
+    assert '<td><strong>R$ 18,00</strong></td><td><strong>R$ 28,00</strong></td></tr>' in texto
+    assert 'Coparticipação em aberto' in texto
     assert f'<tr><td>F. / 1234567-8</td><td>Documento {rc_titular}</td><td>–</td></tr>' in texto
     assert f'consta do documento {relatorio_copart}' in texto
     assert 'ausência de atendimento identificado' in texto
     assert registro.doc_coparticipacao_sei == relatorio_copart
     assert registro.relatorios_rc_sei == [rc_titular]
-    assert registro.valor_total_copart_todas_infos == 22.0
+    assert registro.valor_total_copart_todas_infos == 18.0
     assert registro.memo_apis_todas_infos_sei is not None
+
+
+@pytest.mark.parametrize(
+    ('linha_controle', 'arquivo'),
+    [
+        ({'ano_base_deproc': '2020'}, 'copa-MANTIS11281-base_2020.xlsx'),
+        # Lido do Excel como número
+        ({'ano_base_deproc': 2019.0}, 'copa-MANTIS11281-base_2019.xlsx'),
+        # Apurado antes da coluna existir: pela data de geração da base
+        ({'ano_base_deproc': float('nan'), 'data_geracao_base_deproc': '16/11/2026'}, 'copa-MANTIS11281-base_2020.xlsx'),
+    ],
+)
+def test_usa_a_base_deproc_do_ano_da_planilha_de_controle(sei, tmp_path, linha_controle, arquivo):
+    base = _base(tmp_path)
+    sei.processo_pronto(base)
+    carregadas = []
+    registro = _passar(sei, base, linha_controle=linha_controle, carregadas=carregadas)
+
+    assert registro.erro is None
+    assert carregadas == [arquivo]
+    assert registro.ano_base_deproc_todas_infos == arquivo[-9:-5]
+    assert registro.to_dict()['ano_base_deproc_todas_infos'] == arquivo[-9:-5]
+
+
+@pytest.mark.parametrize(
+    ('linha_controle', 'mensagem'),
+    [
+        ({}, 'não registrado na planilha de controle'),
+        ({'data_geracao_base_deproc': '01/01/2026'}, 'não registrado na planilha de controle'),
+        ({'ano_base_deproc': '2018'}, 'sem base cadastrada'),
+    ],
+)
+def test_sem_ano_da_base_deproc_para_sem_acao(sei, tmp_path, linha_controle, mensagem):
+    base = _base(tmp_path)
+    sei.processo_pronto(base)
+    carregadas = []
+    registro = _passar(sei, base, linha_controle=linha_controle, carregadas=carregadas)
+
+    assert registro.tipo_erro == 'SemAnoBaseDeproc'
+    assert mensagem in registro.erro
+    assert carregadas == []
+    assert _memos_apis(sei) == []
+    assert TAG_AGUARDA_DEPROC_COPARTICIPACAO in sei.tags
+
+
+def test_planilha_de_controle_nao_lida(sei, tmp_path):
+    base = _base(tmp_path)
+    sei.processo_pronto(base)
+    registro = fluxo._processar_linha(DriverFalso(), PROCESSO, bases(tit_usou=False), MANTIS_CREDENCIADA_TITULAR_USOU, fluxo.BasesDeprocPorAno(lambda arquivo: base), None)
+
+    assert registro.tipo_erro == 'SemAnoBaseDeproc'
+    assert 'Planilha de controle não lida' in registro.erro
 
 
 def test_memo_no_bloco_ou_encaminhado_so_registra_a_prox_acao(sei, tmp_path):
@@ -185,6 +249,23 @@ def test_coparticipacao_do_memo_diferente_do_recalculo(sei, tmp_path):
     assert TAG_AGUARDA_DEPROC_COPARTICIPACAO in sei.tags
 
 
+def test_memo_da_deproc_sem_valor_em_aberto_com_desconto_no_recalculo(sei, tmp_path):
+    # Memo da DEPROC só com a tabela por matrícula: o recálculo tem R$ 4,00
+    # descontados em folha, e o em aberto não pode ser conferido
+    base = _base(tmp_path)
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_AGUARDA_DEPROC_COPARTICIPACAO]
+    sei.pdf_rc_titular()
+    sei.memo_deproc_geacs()
+    sei.novo_doc('PDF Coparticipação - 12345678 - 20261112_101500', UNIDADE_DEPROC, '')
+    texto = 'Assunto: Retorno do levantamento de coparticipação – utilização indevida da assistência à saúde\nF. 1234567-8 Titular R$ 18,50\nB. 555-9 Dependente R$ 3,50\nTotal consolidado R$ 22,00'
+    sei.memo_calculo_copa(base, texto=texto)
+    registro = _passar(sei, base)
+
+    assert registro.tipo_erro == 'ValoresDivergentes'
+    assert 'coparticipação em aberto: memo da DEPROC sem o valor em aberto (considerado o total apurado) R$ 22,00, recálculo R$ 18,00' in registro.erro
+    assert _memos_apis(sei) == []
+
+
 def test_total_do_pdf_diferente_do_recalculo(sei, tmp_path):
     base = _base(tmp_path)
     sei.processo_pronto(base, total_pdf=12.0)
@@ -208,13 +289,32 @@ def test_atendimento_sem_pdf_na_rodada(sei, tmp_path):
     assert 'sem PDF na rodada' in registro.erro
 
 
-def test_uso_da_rede_propria_sem_passar_pela_disa(sei, tmp_path):
+def test_uso_da_rede_propria_na_base_disa_sem_passar_pela_disa(sei, tmp_path, monkeypatch):
     base = _base(tmp_path)
     sei.processo_pronto(base)
-    registro = _passar(sei, base, bases_mantis=MANTIS_DEPENDENTE_USOU)
+    monkeypatch.setattr(todas_infos, 'avaliar_uso_rede_propria_disa', lambda matriculas, bases: type('Uso', (), {'alguem_usou': True})())
+    registro = _passar(sei, base)
 
     assert registro.tipo_erro == 'ValoresDivergentes'
-    assert 'uso da rede própria no recálculo do MANTIS sem passagem pela DISA' in registro.erro
+    assert 'uso da rede própria na base DISA sem passagem pela DISA' in registro.erro
+
+
+def test_uso_da_rede_propria_so_no_mantis_vai_ao_memo(sei, tmp_path):
+    # Processo que foi direto à DEPROC com uso da rede própria só no MANTIS
+    base = _base(tmp_path)
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_AGUARDA_DEPROC_COPARTICIPACAO]
+    rp = sei.novo_doc('PDF Utilização Dep. RP - 12345678 - 20261110_101010', UNIDADE_GEACS, '')
+    sei.totais_pdf[rp] = 10.0
+    sei.pdf_rc_titular()
+    sei.memo_deproc_geacs()
+    sei.memo_calculo_copa(base)
+    registro = _passar(sei, base, bases_mantis=MANTIS_DUAS_REDES)
+
+    assert registro.erro is None
+    assert registro.valor_total_rp_todas_infos == 10.0
+    (texto,) = _memos_apis(sei)
+    assert 'base de faturamento do SADS consultada pela GEACS, conforme os demonstrativos relacionados abaixo' in texto
+    assert f'<td>Documento {rp}</td>' in texto
 
 
 def test_sem_coparticipacao_cita_o_memo_da_deproc(sei, tmp_path):
@@ -297,6 +397,16 @@ def test_le_a_coparticipacao_do_texto_do_sei():
 
     assert copart.por_matricula == {'12345678': 1018.5, '5559': 3.5}
     assert copart.total == 1022.0
+    # Sem a tabela de totais: nada descontado informado, em aberto = apurado
+    assert copart.em_aberto == 1022.0
+    assert not copart.em_aberto_no_memo
+
+    com_totais = todas_infos.ler_coparticipacao_do_memo(
+        texto + 'Descrição Valor\nValor total de coparticipação apurado R$ 1.022,00\nValor efetivamente descontado R$ 22,00\nValor total em aberto R$ 1.000,00\n'
+    )
+    assert com_totais.total == 1022.0
+    assert com_totais.em_aberto == 1000.0
+    assert com_totais.em_aberto_no_memo
     assert todas_infos.ler_coparticipacao_do_memo('Não foram identificados atendimentos com coparticipação').sem_coparticipacao
 
 

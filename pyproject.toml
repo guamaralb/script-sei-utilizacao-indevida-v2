@@ -51,6 +51,8 @@ pre_run_geacs_resp_deproc = {cmd = "poetry run task format"}
 # INFORMAÇÕES (UTILIZAÇÃO DAS REDES E COPARTICIPAÇÃO)
 run_geacs_todas_infos = 'python script_sei_utilizacao_indevida_v2/main_geacs_todas_infos.py'
 pre_run_geacs_todas_infos = {cmd = "poetry run task format"}
+run_geacs_corrige_envio_disa = 'python script_sei_utilizacao_indevida_v2/main_geacs_corrige_envio_disa.py'
+pre_run_geacs_corrige_envio_disa = {cmd = "poetry run task format"}
 
 # ADICIONA PDF DA PLANILHA ANTIGA - AUTOMÁTICO: BAIXA A PLANILHA DO SEI E ADD
 # PDF NO PROCESSO
