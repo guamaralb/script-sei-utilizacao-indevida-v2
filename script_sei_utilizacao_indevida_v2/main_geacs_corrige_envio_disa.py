@@ -21,7 +21,7 @@ Para cada processo da aba geacs_corrige_envio_disa de processos_a_processar.xlsx
    excluído (ex.: assinado): para com erro, prox_acao = Verificar o que
    fazer: memo à DISA (não consta) não excluído, sem criar o memo DEPROC;
 6. cria o memo DEPROC (retomada: o memo já na rodada, pelo assunto, não é
-   recriado), insere no bloco BLOCO_MEMO_DEPROC e adiciona o 01.10 - No Bloco
+   recriado), insere no bloco BLOCO_MEMO_DEPROC e adiciona o 01.10.B - No Bloco
    DEPROC: Coparticipação, que remove o marcador da DISA (estado). O 01 e os
    informativos ficam. prox_acao = Assinar memo DEPROC e encaminhar.
 

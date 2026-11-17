@@ -299,18 +299,18 @@ col_tratar = Coluna(
         ),
         S('<font face="Courier New">estado_atual()</font>: marcador de estado do processo'),
         P(
-            'Memo no bloco (aguarda assinatura)?<br>01.05 - No Bloco APIS: Sem Memo p/ GEACS<br>01.05 - No Bloco APIS: Formato Inválido<br>'
-            '01.06.1 - No Bloco APIS: Matrículas<br>01.07 - No Bloco APIS: Período Deps<br>01.09 - No Bloco DISA: Validar (Consta)<br>'
-            '01.09 - No Bloco DISA: Validar (N Consta)<br>01.09 - No Bloco DISA: Relat. s/ MANTIS<br>01.10 - No Bloco DEPROC: Coparticipação<br>'
-            '01.10 - No Bloco APIS: Sem Uso<br>01.12 - No Bloco APIS: Todas as Infos (run_geacs_todas_infos)',
+            'Memo no bloco (aguarda assinatura)?<br>01.05.B - No Bloco APIS: Sem Memo p/ GEACS<br>01.05.A - No Bloco APIS: Formato Inválido<br>'
+            '01.06.1 - No Bloco APIS: Matrículas<br>01.07 - No Bloco APIS: Período Deps<br>01.09.B - No Bloco DISA: Validar (Consta)<br>'
+            '01.09.C - No Bloco DISA: Validar (N Consta)<br>01.09.A - No Bloco DISA: Relat. s/ MANTIS<br>01.10.B - No Bloco DEPROC: Coparticipação<br>'
+            '01.10.A - No Bloco APIS: Sem Uso<br>01.12 - No Bloco APIS: Todas as Infos (run_geacs_todas_infos)',
             [T('prox_acao = Assinar o memo correspondente e encaminhar<br><span style="font-weight:normal">quem assina coloca o "Aguarda" (.1) e remove o "No Bloco"</span>')],
             largura=LARGURA_PRINCIPAL,
         ),
         P(
-            'Estado de parada (memo assinado)?<br>01.05.1 - Aguarda APIS: Sem Memo p/ GEACS<br>01.05.1 - Aguarda APIS: Formato Inválido<br>'
-            '01.06.1.1 - Aguarda APIS: Matrículas<br>01.07.1 - Aguarda APIS: Período Deps<br>01.09.1 - Aguarda DISA: Validar (Consta)<br>'
-            '01.09.1 - Aguarda DISA: Validar (N Consta)<br>01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br>01.10.1 - Aguarda DEPROC: Coparticipação<br>'
-            '01.10.1 - Aguarda APIS: Sem Uso (todos manuais)<br>'
+            'Estado de parada (memo assinado)?<br>01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS<br>01.05.A.1 - Aguarda APIS: Formato Inválido<br>'
+            '01.06.1.1 - Aguarda APIS: Matrículas<br>01.07.1 - Aguarda APIS: Período Deps<br>01.09.B.1 - Aguarda DISA: Validar (Consta)<br>'
+            '01.09.C.1 - Aguarda DISA: Validar (N Consta)<br>01.09.A.1 - Aguarda DISA: Relat. s/ MANTIS<br>01.10.B.1 - Aguarda DEPROC: Coparticipação<br>'
+            '01.10.A.1 - Aguarda APIS: Sem Uso (todos manuais)<br>'
             'versão anterior: 01.08.1 - Memo DISA Validar Usos MANTIS, 01.09 - Memo DISA Uso Rede Própria',
             [
                 E(
@@ -373,7 +373,7 @@ col_processar = Coluna(
             [
                 F('_parar_sem_memo_apis()', chama='_parar_com_memo'),
                 MEMO('MemoApisSemMemo', 7730344),
-                M('01.05 - No Bloco APIS: Sem Memo p/ GEACS'),
+                M('01.05.B - No Bloco APIS: Sem Memo p/ GEACS'),
                 R('estado anterior (se houver)'),
                 T('prox_acao = Assinar memo à APIS (sem memorando)'),
             ],
@@ -383,7 +383,7 @@ col_processar = Coluna(
             [
                 F('_parar_formato_invalido()', chama='_parar_com_memo'),
                 MEMO('MemoApisFormatoInvalido', 7730341),
-                M('01.05 - No Bloco APIS: Formato Inválido'),
+                M('01.05.A - No Bloco APIS: Formato Inválido'),
                 R('estado anterior (se houver)'),
                 T('prox_acao = Assinar memo à APIS (formato inválido)'),
             ],
@@ -467,7 +467,7 @@ col_mantis = Coluna(
                         PDF('PDF Utilização Tit./Dep. <b>RP</b>'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDisaValidarConsta', 'BLOCO_MEMO_DISA_VALIDAR_CONSTA (TODO)'),
-                        M('01.09 - No Bloco DISA: Validar (Consta)'),
+                        M('01.09.B - No Bloco DISA: Validar (Consta)'),
                         R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo à DISA (validar e complementar)<br><b>sem DEPROC</b>'),
                     ],
@@ -479,7 +479,7 @@ col_mantis = Coluna(
                         PDF('PDF Utilização Tit./Dep. <b>RP</b>'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDeproc</b> (redes credenciada e própria: cita os RP e RC)<b>', 7697744),
-                        M('01.10 - No Bloco DEPROC: Coparticipação'),
+                        M('01.10.B - No Bloco DEPROC: Coparticipação'),
                         R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo DEPROC<br>(antes: memo à DISA Validar (N Consta); os já enviados: geacs_corrige_envio_disa)'),
                     ],
@@ -490,7 +490,7 @@ col_mantis = Coluna(
                         CASO('DISA sim × MANTIS RP não', 'sem MANTIS: solicita relatório à DISA'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDisaSemMantisSolicitaRelatorio', 'BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO (TODO)'),
-                        M('01.09 - No Bloco DISA: Relat. s/ MANTIS'),
+                        M('01.09.A - No Bloco DISA: Relat. s/ MANTIS'),
                         R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo à DISA (sem MANTIS: solicita relatório)<br><b>sem DEPROC</b>'),
                     ],
@@ -501,7 +501,7 @@ col_mantis = Coluna(
                         CASO('DISA não × MANTIS RP não × MANTIS RC sim', 'só DEPROC'),
                         PDF('PDF Utilização Tit./Dep. <b>RC</b><br>(só de quem usou)'),
                         MEMO('MemoDeproc', 7697744),
-                        M('01.10 - No Bloco DEPROC: Coparticipação'),
+                        M('01.10.B - No Bloco DEPROC: Coparticipação'),
                         R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo DEPROC'),
                     ],
@@ -512,7 +512,7 @@ col_mantis = Coluna(
                         CASO('DISA não × MANTIS RP não × MANTIS RC não', 'nenhum uso: avisa a APIS'),
                         S('Sem relatório para anexar'),
                         MEMO('MemoApisSemUso</b> (TODO: texto)<b>', 'BLOCO_MEMO_APIS_SEM_USO (TODO)'),
-                        M('01.10 - No Bloco APIS: Sem Uso'),
+                        M('01.10.A - No Bloco APIS: Sem Uso'),
                         R('01.08 - Avaliado Uso Rede Própria MANTIS'),
                         T('prox_acao = Assinar memo à APIS (nenhum uso nas bases)<br><b>sem DEPROC</b>'),
                     ],
@@ -602,28 +602,28 @@ marcadores = N(
     '01.01 - Período Variável p/ Dependentes<br>'
     '01.02.1 - Mat. N Encontradas Base APIS<br>'
     '★ 01.00 - Aguarda Script: Fluxo Normal (adicionado pelo fluxo ADC PDF ANT AUT)<br>'
-    '★ 01.05 - No Bloco APIS: Sem Memo p/ GEACS<br>'
-    '★ 01.05 - No Bloco APIS: Formato Inválido<br>'
+    '★ 01.05.B - No Bloco APIS: Sem Memo p/ GEACS<br>'
+    '★ 01.05.A - No Bloco APIS: Formato Inválido<br>'
     '★ 01.06 - Avaliado Uso Rede Própria DISA<br>'
     '★ 01.06.1 - No Bloco APIS: Matrículas<br>'
     '★ 01.07 - No Bloco APIS: Período Deps<br>'
     '★ 01.08 - Avaliado Uso Rede Própria MANTIS<br>'
-    '★ 01.09 - No Bloco DISA: Validar (Consta)<br>'
-    '★ 01.09 - No Bloco DISA: Validar (N Consta)<br>'
-    '★ 01.09 - No Bloco DISA: Relat. s/ MANTIS<br>'
-    '★ 01.10 - No Bloco DEPROC: Coparticipação<br>'
-    '★ 01.10 - No Bloco APIS: Sem Uso<br>'
+    '★ 01.09.B - No Bloco DISA: Validar (Consta)<br>'
+    '★ 01.09.C - No Bloco DISA: Validar (N Consta)<br>'
+    '★ 01.09.A - No Bloco DISA: Relat. s/ MANTIS<br>'
+    '★ 01.10.B - No Bloco DEPROC: Coparticipação<br>'
+    '★ 01.10.A - No Bloco APIS: Sem Uso<br>'
     '★ 01.12 - No Bloco APIS: Todas as Infos (run_geacs_todas_infos)<br>'
     '<i>Manuais, depois da assinatura (quem coloca remove o "No Bloco"):</i><br>'
-    '★ 01.05.1 - Aguarda APIS: Sem Memo p/ GEACS<br>'
-    '★ 01.05.1 - Aguarda APIS: Formato Inválido<br>'
+    '★ 01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS<br>'
+    '★ 01.05.A.1 - Aguarda APIS: Formato Inválido<br>'
     '★ 01.06.1.1 - Aguarda APIS: Matrículas<br>'
     '★ 01.07.1 - Aguarda APIS: Período Deps<br>'
-    '★ 01.09.1 - Aguarda DISA: Validar (Consta)<br>'
-    '★ 01.09.1 - Aguarda DISA: Validar (N Consta)<br>'
-    '★ 01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br>'
-    '★ 01.10.1 - Aguarda DEPROC: Coparticipação<br>'
-    '★ 01.10.1 - Aguarda APIS: Sem Uso<br>'
+    '★ 01.09.B.1 - Aguarda DISA: Validar (Consta)<br>'
+    '★ 01.09.C.1 - Aguarda DISA: Validar (N Consta)<br>'
+    '★ 01.09.A.1 - Aguarda DISA: Relat. s/ MANTIS<br>'
+    '★ 01.10.B.1 - Aguarda DEPROC: Coparticipação<br>'
+    '★ 01.10.A.1 - Aguarda APIS: Sem Uso<br>'
     '★ 01.12.1 - Encaminhado APIS: Todas as Infos (conclusão)<br>'
     '<i>Versão anterior:<br>'
     '01.06.2 / 01.08.2 / 01.08.3 - Usou / Não Usou RP e RC (não são mais adicionados)<br>'
@@ -848,7 +848,7 @@ col_corrige = Coluna(
         P('Marcadores inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: prox_acao = Verificar marcadores inconsistentes, sem ação')]),
         P('Estado não é um memo à DISA?<br>(01.09 No Bloco ou 01.09.1 Aguarda,<br>os três casos)', [E('<b>SemMarcadorDisa</b>: sem ação')]),
         P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, sem ação')]),
-        F('garantir_marcadores_no_sei()', 'O 01.10 - No Bloco DEPROC: Coparticipação cadastrado'),
+        F('garantir_marcadores_no_sei()', 'O 01.10.B - No Bloco DEPROC: Coparticipação cadastrado'),
         F('obter_dados_ui()', 'Último memo da APIS destinado à GEACS: define a rodada'),
         F(
             '_memos_disa_n_consta()',
@@ -870,7 +870,7 @@ col_corrige = Coluna(
             [E('<b>MemoDisaNaoExcluido</b>: nada é criado. prox_acao = Verificar o que fazer: memo à DISA (não consta) não excluído')],
         ),
         MEMO('MemoDeproc</b> (retomada: já na rodada, pelo assunto, não é recriado)<b>', 7697744),
-        M('01.10 - No Bloco DEPROC: Coparticipação'),
+        M('01.10.B - No Bloco DEPROC: Coparticipação'),
         R('01.09 / 01.09.1 da DISA (estado); o 01 e os informativos ficam'),
         T('prox_acao = Assinar memo DEPROC e encaminhar'),
     ],
@@ -904,17 +904,17 @@ col_resp = Coluna(
 nota_resp = N(
     '<b>Marcadores "Aguarda" de cada fluxo</b> (manuais: quem assina o memo coloca o "Aguarda" e remove o "No Bloco")<br><br>'
     '<b>run_geacs_resp_apis</b> (TAGS_AGUARDA_RESPOSTA_APIS)<br>'
-    '01.05.1 - Aguarda APIS: Sem Memo p/ GEACS<br>'
-    '01.05.1 - Aguarda APIS: Formato Inválido<br>'
+    '01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS<br>'
+    '01.05.A.1 - Aguarda APIS: Formato Inválido<br>'
     '01.06.1.1 - Aguarda APIS: Matrículas<br>'
     '01.07.1 - Aguarda APIS: Período Deps<br>'
-    '01.10.1 - Aguarda APIS: Sem Uso<br><br>'
+    '01.10.A.1 - Aguarda APIS: Sem Uso<br><br>'
     '<b>run_geacs_resp_disa</b> (TAGS_AGUARDA_RESPOSTA_DISA)<br>'
-    '01.09.1 - Aguarda DISA: Validar (Consta)<br>'
-    '01.09.1 - Aguarda DISA: Validar (N Consta)<br>'
-    '01.09.1 - Aguarda DISA: Relat. s/ MANTIS<br><br>'
+    '01.09.B.1 - Aguarda DISA: Validar (Consta)<br>'
+    '01.09.C.1 - Aguarda DISA: Validar (N Consta)<br>'
+    '01.09.A.1 - Aguarda DISA: Relat. s/ MANTIS<br><br>'
     '<b>run_geacs_resp_deproc</b> (TAGS_AGUARDA_RESPOSTA_DEPROC)<br>'
-    '01.10.1 - Aguarda DEPROC: Coparticipação',
+    '01.10.B.1 - Aguarda DEPROC: Coparticipação',
     largura=420,
 )
 
@@ -1040,7 +1040,7 @@ col_todas = Coluna(
         P('Marcadores inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: prox_acao = Verificar marcadores inconsistentes, sem ação')]),
         P('Com o 01.12 - No Bloco APIS: Todas as Infos?', [T('prox_acao = Assinar memo à APIS (todas as informações) e encaminhar')]),
         P('Com o 01.12.1 - Encaminhado APIS: Todas as Infos?', [T('prox_acao = Memo à APIS (todas as informações) encaminhado (concluído)')]),
-        P('Sem o 01.10.1 - Aguarda DEPROC: Coparticipação?', [E('<b>SemAguardaDeproc</b>: sem ação')]),
+        P('Sem o 01.10.B.1 - Aguarda DEPROC: Coparticipação?', [E('<b>SemAguardaDeproc</b>: sem ação')]),
         F(
             'ano_da_base_deproc()',
             'Ano da coluna ano_base_deproc da planilha de controle (gravada pelo deproc_calcula_copa). Sem ela: o da base com a data de data_geracao_base_deproc. Carrega a base desse ano (BASES_DEPROC)',

@@ -24,9 +24,11 @@ PREFIXO = 'v2: '
 PREFIXO_VELHO = 'v2v: '
 
 # Numeração: os dois primeiros números têm dois dígitos (01.08.3); o número
-# após o "01." é a ordem de inserção. Marcadores com o mesmo número são
-# alternativos (o processo recebe um ou outro). Um ".1" no fim é o marcador
-# manual "Aguarda", colocado depois da assinatura do memo do mesmo número.
+# após o "01." é a ordem de inserção. Marcadores alternativos (o processo
+# recebe um ou outro) têm o mesmo número e uma letra, em ordem alfabética do
+# motivo (01.09.A, 01.09.B, 01.09.C; renomeados em 17/11/2026, antes eram
+# todos "01.09"). Um ".1" no fim é o marcador manual "Aguarda", colocado
+# depois da assinatura do memo do mesmo número (01.09.A -> 01.09.A.1).
 # O SEI limita o nome do marcador a 50 caracteres.
 
 # Processo VELHO: enviado à DISA e à DEPROC antes da avaliação da rede
@@ -50,10 +52,10 @@ TAG_MAT_NAO_ENCONTRADAS_APIS = 'v2: 01.02.1 - Mat. N Encontradas Base APIS'
 # à mão depois da assinatura (quem coloca remove o "No Bloco"): o processo
 # aguarda a resposta do destinatário.
 # Memo da APIS ausente ou em formato inválido (alternativos)
-TAG_MEMO_APIS_SEM_MEMO = 'v2: 01.05 - No Bloco APIS: Sem Memo p/ GEACS'
-TAG_MEMO_APIS_FORMATO_INVALIDO = 'v2: 01.05 - No Bloco APIS: Formato Inválido'
-TAG_AGUARDA_APIS_SEM_MEMO = 'v2: 01.05.1 - Aguarda APIS: Sem Memo p/ GEACS'
-TAG_AGUARDA_APIS_FORMATO_INVALIDO = 'v2: 01.05.1 - Aguarda APIS: Formato Inválido'
+TAG_MEMO_APIS_SEM_MEMO = 'v2: 01.05.B - No Bloco APIS: Sem Memo p/ GEACS'
+TAG_MEMO_APIS_FORMATO_INVALIDO = 'v2: 01.05.A - No Bloco APIS: Formato Inválido'
+TAG_AGUARDA_APIS_SEM_MEMO = 'v2: 01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS'
+TAG_AGUARDA_APIS_FORMATO_INVALIDO = 'v2: 01.05.A.1 - Aguarda APIS: Formato Inválido'
 TAG_AVALIADO_USO_REDE_PROPRIA_DISA = 'v2: 01.06 - Avaliado Uso Rede Própria DISA'
 # Depois do 01.02.1 (matrícula não encontrada na base APIS)
 TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS = 'v2: 01.06.1 - No Bloco APIS: Matrículas'
@@ -64,21 +66,21 @@ TAG_AGUARDA_APIS_PERIODO_DEPS = 'v2: 01.07.1 - Aguarda APIS: Período Deps'
 TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS = 'v2: 01.08 - Avaliado Uso Rede Própria MANTIS'
 # Memo à DISA (alternativos). Quem vai para a DISA não vai para a DEPROC
 # Base DISA sim, MANTIS sim: validar e complementar (relatórios RP anexados)
-TAG_NO_BLOCO_DISA_VALIDAR_CONSTA = 'v2: 01.09 - No Bloco DISA: Validar (Consta)'
+TAG_NO_BLOCO_DISA_VALIDAR_CONSTA = 'v2: 01.09.B - No Bloco DISA: Validar (Consta)'
 # Base DISA não, MANTIS sim: validar (relatórios RP anexados)
-TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA = 'v2: 01.09 - No Bloco DISA: Validar (N Consta)'
+TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA = 'v2: 01.09.C - No Bloco DISA: Validar (N Consta)'
 # Base DISA sim, MANTIS não: relatório da DISA
-TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO = 'v2: 01.09 - No Bloco DISA: Relat. s/ MANTIS'
-TAG_AGUARDA_DISA_VALIDAR_CONSTA = 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)'
-TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA = 'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)'
-TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO = 'v2: 01.09.1 - Aguarda DISA: Relat. s/ MANTIS'
+TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO = 'v2: 01.09.A - No Bloco DISA: Relat. s/ MANTIS'
+TAG_AGUARDA_DISA_VALIDAR_CONSTA = 'v2: 01.09.B.1 - Aguarda DISA: Validar (Consta)'
+TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA = 'v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta)'
+TAG_AGUARDA_DISA_SEM_MANTIS_RELATORIO = 'v2: 01.09.A.1 - Aguarda DISA: Relat. s/ MANTIS'
 # Base DISA não e MANTIS RP não (alternativos):
 # - MANTIS RC sim: relatórios RC e memo DEPROC no bloco;
 # - MANTIS RC não: memo à APIS (nenhum uso nas bases) no bloco
-TAG_MEMO_DEPROC_COPARTICIPACAO = 'v2: 01.10 - No Bloco DEPROC: Coparticipação'
-TAG_NO_BLOCO_APIS_SEM_USO = 'v2: 01.10 - No Bloco APIS: Sem Uso'
-TAG_AGUARDA_DEPROC_COPARTICIPACAO = 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação'
-TAG_AGUARDA_APIS_SEM_USO = 'v2: 01.10.1 - Aguarda APIS: Sem Uso'
+TAG_MEMO_DEPROC_COPARTICIPACAO = 'v2: 01.10.B - No Bloco DEPROC: Coparticipação'
+TAG_NO_BLOCO_APIS_SEM_USO = 'v2: 01.10.A - No Bloco APIS: Sem Uso'
+TAG_AGUARDA_DEPROC_COPARTICIPACAO = 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação'
+TAG_AGUARDA_APIS_SEM_USO = 'v2: 01.10.A.1 - Aguarda APIS: Sem Uso'
 # Retorno da DEPROC (01.10.1): memo à APIS com todas as informações (fluxo
 # GEACS TODAS INFOS) no bloco. Depois da assinatura, quem encaminha coloca o
 # 01.12.1 (conclusão, manual) e remove o 01.12. O 01.11 fica de fora: já foi

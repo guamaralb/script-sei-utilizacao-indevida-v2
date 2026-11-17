@@ -6,7 +6,7 @@ Para cada processo da aba geacs_todas_infos de processos_a_processar.xlsx:
 
 1. lê os marcadores e confere a combinação (tags.conferir_marcadores). Com o
    01.12 (memo no bloco) ou o 01.12.1 (encaminhado), só registra a prox_acao;
-   sem o 01.10.1 - Aguarda DEPROC: Coparticipação, para com erro;
+   sem o 01.10.B.1 - Aguarda DEPROC: Coparticipação, para com erro;
 2. sem "Incluir Documento" (fechado no setor), para sem reabrir;
 3. lê o último memo da APIS destinado à GEACS (define a rodada) e procura o
    memo de resultado da DEPROC (MemoGeacsCalculoCopa) na rodada, assinado;

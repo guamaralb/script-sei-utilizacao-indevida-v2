@@ -33,10 +33,10 @@ VALIDOS_NO_SEI = (
     'v2: 01.00 - Aguarda Script: Fluxo Normal',
     'v2: 01.01 - Período Variável p/ Dependentes',
     'v2: 01.02.1 - Mat. N Encontradas Base APIS',
-    'v2: 01.05 - No Bloco APIS: Formato Inválido',
-    'v2: 01.05 - No Bloco APIS: Sem Memo p/ GEACS',
-    'v2: 01.05.1 - Aguarda APIS: Formato Inválido',
-    'v2: 01.05.1 - Aguarda APIS: Sem Memo p/ GEACS',
+    'v2: 01.05.A - No Bloco APIS: Formato Inválido',
+    'v2: 01.05.B - No Bloco APIS: Sem Memo p/ GEACS',
+    'v2: 01.05.A.1 - Aguarda APIS: Formato Inválido',
+    'v2: 01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS',
     'v2: 01.06 - Avaliado Uso Rede Própria DISA',
     'v2: 01.06.1 - No Bloco APIS: Matrículas',
     'v2: 01.06.1.1 - Aguarda APIS: Matrículas',
@@ -45,17 +45,17 @@ VALIDOS_NO_SEI = (
     'v2: 01.08 - Avaliado Uso Rede Própria MANTIS',
     'v2: 01.08.1 - Memo DISA Validar Usos MANTIS',
     'v2: 01.09 - Memo DISA Uso Rede Própria',
-    'v2: 01.09 - No Bloco DISA: Relat. s/ MANTIS',
-    'v2: 01.09 - No Bloco DISA: Validar (Consta)',
-    'v2: 01.09 - No Bloco DISA: Validar (N Consta)',
-    'v2: 01.09.1 - Aguarda DISA: Relat. s/ MANTIS',
-    'v2: 01.09.1 - Aguarda DISA: Validar (Consta)',
-    'v2: 01.09.1 - Aguarda DISA: Validar (N Consta)',
+    'v2: 01.09.A - No Bloco DISA: Relat. s/ MANTIS',
+    'v2: 01.09.B - No Bloco DISA: Validar (Consta)',
+    'v2: 01.09.C - No Bloco DISA: Validar (N Consta)',
+    'v2: 01.09.A.1 - Aguarda DISA: Relat. s/ MANTIS',
+    'v2: 01.09.B.1 - Aguarda DISA: Validar (Consta)',
+    'v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta)',
     'v2: 01.10 - Concluído: Memos DISA e DEPROC',
-    'v2: 01.10 - No Bloco APIS: Sem Uso',
-    'v2: 01.10 - No Bloco DEPROC: Coparticipação',
-    'v2: 01.10.1 - Aguarda APIS: Sem Uso',
-    'v2: 01.10.1 - Aguarda DEPROC: Coparticipação',
+    'v2: 01.10.A - No Bloco APIS: Sem Uso',
+    'v2: 01.10.B - No Bloco DEPROC: Coparticipação',
+    'v2: 01.10.A.1 - Aguarda APIS: Sem Uso',
+    'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação',
     'v2: 01.11 - VELHO Concluído: Memo DEPROC',
     'v2: 01.11 - VELHO Concluído: Memo DISA',
     'v2: 01.12 - No Bloco APIS: Todas as Infos',
@@ -280,7 +280,7 @@ def test_prox_acao_de_outro_memo(monkeypatch):
     registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA})
 
     assert _inconsistencia(registro) == (
-        f'prox_acao "{ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA}" não condiz com o marcador "01.10 - No Bloco DEPROC: Coparticipação"; '
+        f'prox_acao "{ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA}" não condiz com o marcador "01.10.B - No Bloco DEPROC: Coparticipação"; '
         f'esperada: "{ProxAcao.ASSINAR_DEPROC}" (rodar o geacs_inicial atualiza a prox_acao)'
     )
 
@@ -354,7 +354,7 @@ def test_marcador_sem_o_memo(monkeypatch):
     sei.novo_processo()
     registro = _passar(monkeypatch, NO_BLOCO_DEPROC, sei, {'prox_acao': ProxAcao.ASSINAR_DEPROC})
 
-    assert _inconsistencia(registro) == 'marcador "01.10 - No Bloco DEPROC: Coparticipação" sem o memo DEPROC (coparticipação) na árvore (procurado pelo assunto)'
+    assert _inconsistencia(registro) == 'marcador "01.10.B - No Bloco DEPROC: Coparticipação" sem o memo DEPROC (coparticipação) na árvore (procurado pelo assunto)'
 
 
 def test_memo_sem_o_relatorio_que_cita(monkeypatch):
@@ -542,7 +542,7 @@ def test_prox_acao_da_deproc_so_com_o_memo_deproc(monkeypatch):
 def test_no_bloco_com_memo_ja_assinado(monkeypatch):
     registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(assinado=True), {'prox_acao': ProxAcao.ASSINAR_DEPROC})
 
-    assert _inconsistencia(registro).endswith('troque pelo "01.10.1 - Aguarda DEPROC: Coparticipação"')
+    assert _inconsistencia(registro).endswith('troque pelo "01.10.B.1 - Aguarda DEPROC: Coparticipação"')
     assert _acao(registro) == AcaoSugerida.TROCAR_MARCADOR_ASSINADO
 
 

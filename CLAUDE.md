@@ -77,7 +77,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `main_geacs_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN (`poetry run task run_geacs_adc_pdf_ant_man`): usa o loop `executar` do `main_geacs_adc_pdf_ant_aut.py` ([seção](#fluxo-adc-pdf-ant-man)) |
 | `planilhas_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN: acha os arquivos do processo em `dados/geacs_adc_pdf_ant_man/planilhas`, o documento na árvore e insere os PDFs (`inserir_pdfs_da_pasta`) |
 | `main_geacs_canc_memo_deproc_ant.py` | Fluxo GEACS CANC MEMO DEPROC ANT (`poetry run task run_geacs_canc_memo_deproc_ant`): cancela o memo DEPROC antigo da GEACS, sem alterar a `prox_acao` ([seção](#fluxo-geacs-canc-memo-deproc-ant)) |
-| `main_geacs_corrige_envio_disa.py` | Fluxo GEACS CORRIGE ENVIO DISA (`poetry run task run_geacs_corrige_envio_disa`), na unidade da GEACS: troca o memo à DISA "Validar (N Consta)" pelo memo DEPROC (exclui o memo à DISA, cria o DEPROC e deixa o `01.10 - No Bloco DEPROC`) ([seção](#fluxo-geacs-corrige-envio-disa)) |
+| `main_geacs_corrige_envio_disa.py` | Fluxo GEACS CORRIGE ENVIO DISA (`poetry run task run_geacs_corrige_envio_disa`), na unidade da GEACS: troca o memo à DISA "Validar (N Consta)" pelo memo DEPROC (exclui o memo à DISA, cria o DEPROC e deixa o `01.10.B - No Bloco DEPROC`) ([seção](#fluxo-geacs-corrige-envio-disa)) |
 | `main_geacs_verificar_marcadores.py` | Fluxo GEACS VERIFICAR MARCADORES (`poetry run task run_geacs_verificar_marcadores`): lê os marcadores e atualiza as colunas `tag_*` (uma por marcador válido) e `demais_marcadores`, e confere a `prox_acao` da planilha, sem alterá-la e sem ação no SEI ([seção](#fluxo-geacs-verificar-marcadores)) |
 | `conferencia_prox_acao.py` | Fluxo GEACS VERIFICAR MARCADORES: `conferir_processo()` confere a `prox_acao` da planilha com os marcadores (`conferir_prox_acao`), o caso base DISA × MANTIS, os memos e relatórios dos marcadores na árvore (`conferir_memo_do_marcador`) e a retomada (`conferir_retomada`) |
 | `main_geacs_todas_infos.py` | Fluxo GEACS TODAS INFOS (`poetry run task run_geacs_todas_infos`), na unidade da GEACS: depois do retorno da DEPROC (`01.10.1`), cria o memo à APIS com todas as informações e adiciona o `01.12` ([seção](#fluxo-geacs-todas-infos)) |
@@ -347,16 +347,16 @@ Usou", da versão anterior, não são mais adicionados).
 
 | Base DISA | MANTIS RP | MANTIS RC | Ação | Memo (bloco) | Marcador |
 |---|---|---|---|---|---|
-| sim | sim | qualquer | Memo à DISA para **validar e complementar** com os dados dela | `MemoDisaValidarConsta` (`BLOCO_MEMO_DISA_VALIDAR_CONSTA`) | `01.09 - No Bloco DISA: Validar (Consta)` |
-| não | sim | qualquer | **Direto à DEPROC** (sem DISA): memo DEPROC das redes própria e, se houver, credenciada, citando os relatórios RP e RC do MANTIS | `MemoDeproc` (`7697744`) | `01.10 - No Bloco DEPROC: Coparticipação` |
-| sim | não | qualquer | Sem MANTIS: memo à DISA **solicitando o relatório** com os dados dela | `MemoDisaSemMantisSolicitaRelatorio` (`BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO`) | `01.09 - No Bloco DISA: Relat. s/ MANTIS` |
-| não | não | sim | Memo DEPROC | `MemoDeproc` (`7697744`) | `01.10 - No Bloco DEPROC: Coparticipação` |
-| não | não | não | **Nenhum uso**: memo à APIS (sem DEPROC) | `MemoApisSemUso` (`BLOCO_MEMO_APIS_SEM_USO`) | `01.10 - No Bloco APIS: Sem Uso` |
+| sim | sim | qualquer | Memo à DISA para **validar e complementar** com os dados dela | `MemoDisaValidarConsta` (`BLOCO_MEMO_DISA_VALIDAR_CONSTA`) | `01.09.B - No Bloco DISA: Validar (Consta)` |
+| não | sim | qualquer | **Direto à DEPROC** (sem DISA): memo DEPROC das redes própria e, se houver, credenciada, citando os relatórios RP e RC do MANTIS | `MemoDeproc` (`7697744`) | `01.10.B - No Bloco DEPROC: Coparticipação` |
+| sim | não | qualquer | Sem MANTIS: memo à DISA **solicitando o relatório** com os dados dela | `MemoDisaSemMantisSolicitaRelatorio` (`BLOCO_MEMO_DISA_SEM_MANTIS_RELATORIO`) | `01.09.A - No Bloco DISA: Relat. s/ MANTIS` |
+| não | não | sim | Memo DEPROC | `MemoDeproc` (`7697744`) | `01.10.B - No Bloco DEPROC: Coparticipação` |
+| não | não | não | **Nenhum uso**: memo à APIS (sem DEPROC) | `MemoApisSemUso` (`BLOCO_MEMO_APIS_SEM_USO`) | `01.10.A - No Bloco APIS: Sem Uso` |
 
 - Só vai à DISA quem tem uso na **base DISA**. Sem uso nela (fora da base ou
   com NÃO), o uso da rede própria só no MANTIS vai **direto à DEPROC**, como o
   da rede credenciada (até 17/11/2026 ia à DISA com o memo `MemoDisaValidarNaoConsta`,
-  marcador `01.09 - No Bloco DISA: Validar (N Consta)`; os processos já
+  marcador `01.09.C - No Bloco DISA: Validar (N Consta)`; os processos já
   enviados são corrigidos pelo [fluxo GEACS CORRIGE ENVIO
   DISA](#fluxo-geacs-corrige-envio-disa)). O `MemoDisaValidarNaoConsta`, o
   `BLOCO_MEMO_DISA_VALIDAR_NAO_CONSTA` e os marcadores N Consta continuam no
@@ -426,7 +426,7 @@ de `00` a `01.12.1` da tabela abaixo, sem os
 `01.06.2`, `01.08.2` e `01.08.3`. Cada um tem uma coluna `tag_*` na planilha de
 controle (`_COLUNA_POR_TAG`; os nomes das colunas não mudaram, por isso alguns
 não batem com o nome atual do marcador, ex.: `tag_aguarda_disa_validar_consta`
-é o `01.09 - No Bloco DISA: Validar (Consta)`). Todos os outros marcadores do
+é o `01.09.B - No Bloco DISA: Validar (Consta)`). Todos os outros marcadores do
 processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 `PLANILHADO` e `MANUAL`, antigos `v2: 02 ...`) vão juntos para a coluna
 `demais_marcadores`. **Atenção**: o script ainda lê alguns desses (ver
@@ -439,27 +439,27 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 | `01.00 - Aguarda Script: Fluxo Normal` | Estado (entrada): PDFs inseridos pelo [fluxo ADC PDF ANT AUT](#fluxo-alternativo-adc-pdf-ant-aut). O fluxo normal trata o processo do início e o próximo estado o substitui. Sai também se o processo for VELHO |
 | `01.01 - Período Variável p/ Dependentes` | Memo da APIS tem período específico para dependentes |
 | `01.02.1 - Mat. N Encontradas Base APIS` | Matrícula não encontrada na base APIS (renomeado de `... Base Geral`). Titular: o processo para (`01.06.1`). Só dependente: o fluxo segue até o estado final |
-| `01.05 - No Bloco APIS: Sem Memo p/ GEACS` | Estado (no bloco): memo à APIS (sem memorando para a GEACS) no bloco |
-| `01.05.1 - Aguarda APIS: Sem Memo p/ GEACS` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.05` |
-| `01.05 - No Bloco APIS: Formato Inválido` | Estado (no bloco): memo à APIS (formato inválido) no bloco |
-| `01.05.1 - Aguarda APIS: Formato Inválido` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.05` |
+| `01.05.B - No Bloco APIS: Sem Memo p/ GEACS` | Estado (no bloco): memo à APIS (sem memorando para a GEACS) no bloco |
+| `01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.05` |
+| `01.05.A - No Bloco APIS: Formato Inválido` | Estado (no bloco): memo à APIS (formato inválido) no bloco |
+| `01.05.A.1 - Aguarda APIS: Formato Inválido` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.05` |
 | `01.06 - Avaliado Uso Rede Própria DISA` | Estado: base APIS e base DISA consultadas |
 | `01.06.1 - No Bloco APIS: Matrículas` | Estado (no bloco): memo à APIS (matrículas não encontradas) no bloco, depois do `01.02.1` |
 | `01.06.1.1 - Aguarda APIS: Matrículas` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.06.1` |
 | `01.07 - No Bloco APIS: Período Deps` | Estado (no bloco): memo à APIS (período dos dependentes) no bloco, depois do `01.01` |
 | `01.07.1 - Aguarda APIS: Período Deps` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.07` |
 | `01.08 - Avaliado Uso Rede Própria MANTIS` | Estado: MANTIS consultado |
-| `01.09 - No Bloco DISA: Validar (Consta)` | Estado (no bloco): relatórios e memo à DISA (validar e complementar) no bloco |
-| `01.09.1 - Aguarda DISA: Validar (Consta)` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.09` |
-| `01.09 - No Bloco DISA: Validar (N Consta)` | Estado (no bloco): relatórios e memo à DISA (validar, não consta) no bloco |
-| `01.09.1 - Aguarda DISA: Validar (N Consta)` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.09` |
-| `01.09 - No Bloco DISA: Relat. s/ MANTIS` | Estado (no bloco): memo à DISA (sem MANTIS, solicita relatório) no bloco |
-| `01.09.1 - Aguarda DISA: Relat. s/ MANTIS` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.09` |
-| `01.10 - No Bloco DEPROC: Coparticipação` | Estado (no bloco): relatórios RC e memo DEPROC no bloco |
-| `01.10.1 - Aguarda DEPROC: Coparticipação` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.10` |
-| `01.10 - No Bloco APIS: Sem Uso` | Estado (no bloco): memo à APIS (nenhum uso em nenhuma base) no bloco |
-| `01.10.1 - Aguarda APIS: Sem Uso` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.10` |
-| `01.12 - No Bloco APIS: Todas as Infos` | Estado (no bloco): retorno final à APIS (`MemoApisComTodasAsInformacoes`, [fluxo GEACS TODAS INFOS](#fluxo-geacs-todas-infos)) no bloco, depois do retorno da DEPROC (substitui o `01.10.1 - Aguarda DEPROC`). Não tem `Aguarda` (`AGUARDA_POR_NO_BLOCO`): depois da assinatura vem a conclusão. O `01.11` não é usado: já foi o do VELHO da versão anterior |
+| `01.09.B - No Bloco DISA: Validar (Consta)` | Estado (no bloco): relatórios e memo à DISA (validar e complementar) no bloco |
+| `01.09.B.1 - Aguarda DISA: Validar (Consta)` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.09` |
+| `01.09.C - No Bloco DISA: Validar (N Consta)` | Estado (no bloco): relatórios e memo à DISA (validar, não consta) no bloco |
+| `01.09.C.1 - Aguarda DISA: Validar (N Consta)` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.09` |
+| `01.09.A - No Bloco DISA: Relat. s/ MANTIS` | Estado (no bloco): memo à DISA (sem MANTIS, solicita relatório) no bloco |
+| `01.09.A.1 - Aguarda DISA: Relat. s/ MANTIS` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.09` |
+| `01.10.B - No Bloco DEPROC: Coparticipação` | Estado (no bloco): relatórios RC e memo DEPROC no bloco |
+| `01.10.B.1 - Aguarda DEPROC: Coparticipação` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.10` |
+| `01.10.A - No Bloco APIS: Sem Uso` | Estado (no bloco): memo à APIS (nenhum uso em nenhuma base) no bloco |
+| `01.10.A.1 - Aguarda APIS: Sem Uso` | Estado (parada), **manual**: memo assinado e encaminhado; aguarda a resposta. Quem coloca remove o `01.10` |
+| `01.12 - No Bloco APIS: Todas as Infos` | Estado (no bloco): retorno final à APIS (`MemoApisComTodasAsInformacoes`, [fluxo GEACS TODAS INFOS](#fluxo-geacs-todas-infos)) no bloco, depois do retorno da DEPROC (substitui o `01.10.B.1 - Aguarda DEPROC`). Não tem `Aguarda` (`AGUARDA_POR_NO_BLOCO`): depois da assinatura vem a conclusão. O `01.11` não é usado: já foi o do VELHO da versão anterior |
 | `01.12.1 - Encaminhado APIS: Todas as Infos` | Estado (conclusão), **manual**: memo assinado e encaminhado à APIS. Quem coloca remove o `01.12` |
 | `01.06.2 - Base DISA: Usou RP` / `Não Usou RP`, `01.08.2 - MANTIS: Usou RP` / `Não Usou RP`, `01.08.3 - MANTIS: Usou RC` / `Não Usou RC` | Versão anterior (pares de uso da RP / RC). Não são mais adicionados nem conferidos; fora dos válidos (vão para `demais_marcadores`) |
 | `01.02 - Avaliado Se Usou Rede Própria`, `01.04 - Memo Não Usou Rede no Bloco` | Versão anterior / correção. Não são mais adicionados nem consultados |
@@ -477,9 +477,15 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 | `MANUAL` (sem prefixo) | Manual; tira o processo VELHO do escopo, e o processo fechado no setor com ele não é reaberto (`TAGS_TRATAMENTO_MANUAL`) |
 | `ASSINADO` (sem prefixo) | Manual; não interfere |
 
-- Numeração: o número após `01.` é a ordem de inserção. **Mesmo número =
-  alternativas** (o processo recebe um ou outro). O `.1` no fim de um
-  `No Bloco` é o seu `Aguarda` (`tags.AGUARDA_POR_NO_BLOCO`).
+- Numeração: o número após `01.` é a ordem de inserção. **Mesmo número com
+  letra = alternativas** (o processo recebe um ou outro): `01.05.A` / `B`,
+  `01.09.A` / `B` / `C` e `01.10.A` / `B`, com as letras em ordem alfabética
+  do motivo. Até 17/11/2026 as alternativas tinham o mesmo nome de número
+  (`01.09 - No Bloco DISA: ...`); os marcadores foram **renomeados no SEI**
+  (editados, não recriados). Os da versão anterior (`01.09 - Memo DISA Uso
+  Rede Própria`, `01.10 - Concluído`, os `01.11` VELHO) não mudaram. O `.1` no
+  fim de um `No Bloco` é o seu `Aguarda` (`01.09.A` → `01.09.A.1`;
+  `tags.AGUARDA_POR_NO_BLOCO`).
 - **Marcadores de estado** (`TAGS_ESTADO_NOVO`: entrada, no bloco
   (`TAGS_NO_BLOCO_NOVO`), parada (`TAGS_PARADA_NOVO`), retomada e conclusão):
   o processo tem no máximo um. Ao adicionar um estado,
@@ -627,7 +633,7 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 | Parado pelo período dos dependentes | `01` + `01.06` + `01.01` → `01.07` | `01`, `01.01`, `01.07` |
 | Retorno da DEPROC ([GEACS TODAS INFOS](#fluxo-geacs-todas-infos)) | `01.10` → `01.10.1` (manual) → `01.12 No Bloco APIS: Todas as Infos` → `01.12.1` (manual) | `01`, `01.12` e, depois da assinatura, `01`, `01.12.1` |
 | VELHO | `00` (+ o que já tinha; o `01.00` sai) | `00`, … |
-| Depois da assinatura (manual) | `No Bloco` → `Aguarda` do mesmo número + `.1` (ex.: `01.09` → `01.09.1`) | o `Aguarda` no lugar do `No Bloco` |
+| Depois da assinatura (manual) | `No Bloco` → `Aguarda` do mesmo número + `.1` (ex.: `01.09.B` → `01.09.B.1`) | o `Aguarda` no lugar do `No Bloco` |
 
 ### 1. Script principal (`main_geacs_inicial.py`)
 
@@ -662,7 +668,7 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 |---|---|---|
 | 1 | Marcadores inconsistentes (`conferir_marcadores`, [regras](#marcadores-tagspy))? | Erro, antes de qualquer ação. `prox_acao` = Verificar marcadores inconsistentes (corrigir no SEI) |
 | 2 | VELHO pelo marcador (`00`)? | `_separar_velho`: fechado no setor, `ProcessoFechadoNoSetor` sem ação (não reabre); com `MANUAL`, `prox_acao` = Fora do escopo; senão **➕ `00`** (se faltar), `prox_acao` = VELHO: não processado. Nos dois casos, **➖ `01.00`** (se tiver). **TODO**: fluxo do VELHO |
-| 3 | Memo no bloco (`TAGS_NO_BLOCO_NOVO`: `01.05`, `01.06.1`, `01.07`, `01.09 - No Bloco DISA`, `01.10 - No Bloco DEPROC`, `01.10 - No Bloco APIS: Sem Uso`, `01.12 - No Bloco APIS: Todas as Infos`)? | Aguarda assinatura, sem erro. `prox_acao` = Assinar o memo correspondente e encaminhar (`_PROX_ACAO_POR_NO_BLOCO`, a mesma da passagem que criou o memo). Quem assina coloca o `Aguarda` e remove o `No Bloco` |
+| 3 | Memo no bloco (`TAGS_NO_BLOCO_NOVO`: `01.05.A` / `B`, `01.06.1`, `01.07`, `01.09.A` / `B` / `C - No Bloco DISA`, `01.10.B - No Bloco DEPROC`, `01.10.A - No Bloco APIS: Sem Uso`, `01.12 - No Bloco APIS: Todas as Infos`)? | Aguarda assinatura, sem erro. `prox_acao` = Assinar o memo correspondente e encaminhar (`_PROX_ACAO_POR_NO_BLOCO`, a mesma da passagem que criou o memo). Quem assina coloca o `Aguarda` e remove o `No Bloco` |
 | 4 | Estado de parada (`Aguarda` manuais: `01.05.1`, `01.06.1.1`, `01.07.1`, `01.09.1`, `01.10.1`; versão anterior: `01.08.1`, `01.09 Memo DISA`)? | Erro: processo parado. `prox_acao` = Aguardar resposta ao memo enviado. A resposta é tratada nos [fluxos de resposta](#fluxos-de-resposta-todo) (**TODO**) |
 | 5 | Estado de conclusão (`01.12.1 - Encaminhado APIS: Todas as Infos`; versão anterior: `01.10 - Concluído: Memos DISA e DEPROC`)? | Concluído. `prox_acao` = Memo à APIS (todas as informações) encaminhado (concluído); na versão anterior, Assinar memos DISA e DEPROC e encaminhar |
 | 6 | Sem o `01` (ou com o `01.00`) e VELHO pelos memos da GEACS (`encontrar_memos_velho`: algum à DISA e/ou à DEPROC antes de 15/10/2026, [regra](#processo-velho))? | `_separar_velho` (como no 2). Memo sem data legível (e nenhum antes da data): erro, sem ação |
@@ -693,7 +699,7 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
 1. `obter_dados_ui` lê **todos os memorandos da APIS-Utilização**, mantém
    os destinados à GEACS (coluna `memos_apis_geacs_sei`) e usa o
    **último**. Os documentos depois dele são a rodada.
-   - **Nenhum?** Cria `MemoApisSemMemo` (bloco `7730344`), **➕ `01.05 -
+   - **Nenhum?** Cria `MemoApisSemMemo` (bloco `7730344`), **➕ `01.05.B -
      No Bloco APIS: Sem Memo p/ GEACS`**, `prox_acao` = Assinar memo à APIS (sem
      memorando para a GEACS) e encaminhar. Fim.
 2. `validar_template` e `extrair_dados_ui`: nome e matrícula do titular,
@@ -705,7 +711,7 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
    - **Formato inválido** (modelo com período por dependente incompleto,
      qualquer outro modelo diferente do novo_novo, ou período do titular que
      `interpretar_periodo` recusa, ex.: erro de digitação `01/112019`)? Cria
-     `MemoApisFormatoInvalido` (bloco `7730341`), **➕ `01.05 - No Bloco APIS:
+     `MemoApisFormatoInvalido` (bloco `7730341`), **➕ `01.05.A - No Bloco APIS:
      Formato Inválido`**, `prox_acao` = Assinar memo à APIS (formato do
      memorando inválido) e encaminhar. Motivo na coluna
      `motivo_formato_invalido`. Fim.
@@ -746,18 +752,18 @@ Antes de cada grupo de marcadores, `garantir_marcadores_no_sei`.
    de validação ou, sem uso na base DISA, para o memo DEPROC; o dos RC, para
    o memo DEPROC.
 8. **Base DISA × MANTIS** (processo inteiro):
-   - **DISA sim, MANTIS RP sim**: `MemoDisaValidarConsta`, **➕ `01.09 -
+   - **DISA sim, MANTIS RP sim**: `MemoDisaValidarConsta`, **➕ `01.09.B -
      No Bloco DISA: Validar (Consta)`**; `prox_acao` = Assinar memo à DISA
      (validar e complementar) e encaminhar. Fim;
    - **DISA sim, MANTIS RP não**: `MemoDisaSemMantisSolicitaRelatorio`,
-     **➕ `01.09 - No Bloco DISA: Relat. s/ MANTIS`**; `prox_acao` = Assinar
+     **➕ `01.09.A - No Bloco DISA: Relat. s/ MANTIS`**; `prox_acao` = Assinar
      memo à DISA (sem MANTIS: solicita relatório) e encaminhar. Fim;
    - **DISA não, MANTIS RP e/ou RC sim**: `MemoDeproc` (todos os
      beneficiários; cita os relatórios RP e RC de quem usou; bloco
-     `7697744`), **➕ `01.10 - No Bloco DEPROC: Coparticipação`**;
+     `7697744`), **➕ `01.10.B - No Bloco DEPROC: Coparticipação`**;
      `prox_acao` = Assinar memo DEPROC e encaminhar. Fim;
    - **DISA não, MANTIS RP não, MANTIS RC não** (nenhum uso):
-     `MemoApisSemUso` (bloco `BLOCO_MEMO_APIS_SEM_USO`), **➕ `01.10 - No Bloco
+     `MemoApisSemUso` (bloco `BLOCO_MEMO_APIS_SEM_USO`), **➕ `01.10.A - No Bloco
      APIS: Sem Uso`**; `prox_acao` = Assinar memo à APIS (nenhum uso nas
      bases) e encaminhar. Fim.
 
@@ -987,10 +993,10 @@ Para cada processo:
 1. Abre o processo (unidade sem acesso: como nos outros fluxos), lê os
    marcadores e confere a combinação (`conferir_marcadores`, no início e no
    fim). O estado precisa ser um **marcador de memo à DISA** (`TAGS_MEMO_DISA`:
-   os três `01.09 - No Bloco DISA` e os três `01.09.1 - Aguarda DISA`); senão,
+   os três `01.09.A` / `B` / `C - No Bloco DISA` e os três `01.09.A.1` / `B.1` / `C.1 - Aguarda DISA`); senão,
    `SemMarcadorDisa`, sem ação.
 2. Sem `Incluir Documento`: `ProcessoFechadoNoSetor`, **não reabre**. Confere
-   se o `01.10 - No Bloco DEPROC: Coparticipação` está cadastrado.
+   se o `01.10.B - No Bloco DEPROC: Coparticipação` está cadastrado.
 3. Lista a árvore e lê o último memo da APIS destinado à GEACS (`obter_dados_ui`;
    define a rodada). Procura nos memos da GEACS da rodada o memo à DISA com o
    trecho `TRECHO_MEMO_DISA_N_CONSTA` ("Embora a Planilha BENEFICIÁRIOS
@@ -1018,7 +1024,7 @@ Para cada processo:
    Verificar o que fazer: memo à DISA (não consta) não excluído (colunas
    `memos_disa_excluidos_sei` e `memos_disa_nao_excluidos_sei`).
 6. Cria o memo DEPROC (bloco `7697744`; retomada: o memo já na rodada, pelo
-   assunto, não é recriado; colunas `memo_deproc_*`) e **➕ `01.10 - No Bloco
+   assunto, não é recriado; colunas `memo_deproc_*`) e **➕ `01.10.B - No Bloco
    DEPROC: Coparticipação`** (↻ remove o marcador da DISA). O `01` e os
    informativos (`01.02.1`) ficam. `prox_acao` = Assinar memo DEPROC e
    encaminhar.
@@ -1086,7 +1092,7 @@ SEI, Trocar o No Bloco pelo marcador de assinado, Verificar manualmente):
      acabou de abrir o processo (o acesso foi resolvido; rodar o
      `geacs_inicial`). A da DEPROC ou sem `fluxo` continua aceita;
    - as que começam com `DEPROC:` (a última passagem foi na DEPROC): só com o
-     `01.10 - No Bloco DEPROC` ou o `01.10.1 - Aguarda DEPROC`; com outro estado
+     `01.10.B - No Bloco DEPROC` ou o `01.10.B.1 - Aguarda DEPROC`; com outro estado
      (ex.: `01.12`), estão desatualizadas;
    - Verificar marcadores inconsistentes com os marcadores já consistentes:
      inconsistência (rodar o `geacs_inicial`).
@@ -1111,7 +1117,7 @@ SEI, Trocar o No Bloco pelo marcador de assinado, Verificar manualmente):
      MANTIS (RP sim, ou RP não e RC sim);
    - o número SEI da coluna do memo na planilha (`memo_disa_sei`,
      `memo_deproc_sei`, `memo_apis_*_sei`), se preenchido, está na árvore;
-   - `01.05 - No Bloco APIS: Sem Memo p/ GEACS` com memo da APIS destinado à
+   - `01.05.B - No Bloco APIS: Sem Memo p/ GEACS` com memo da APIS destinado à
      GEACS na árvore: o memo à APIS não é mais necessário.
 5. **Retomada** (`conferir_retomada`): com `01.06` ou `01.08`, nenhum memo do
    fluxo na rodada (havendo, a passagem falhou entre o memo e o marcador; o
@@ -1120,9 +1126,9 @@ SEI, Trocar o No Bloco pelo marcador de assinado, Verificar manualmente):
    sugerida):
    - estado N Consta (`01.09` / `01.09.1` Validar (N Consta)): Rodar
      geacs_corrige_envio_disa;
-   - `01.10.1 - Aguarda DEPROC` com o memo de resultado da DEPROC
+   - `01.10.B.1 - Aguarda DEPROC` com o memo de resultado da DEPROC
      (`MemoGeacsCalculoCopa`) assinado na rodada: Rodar geacs_todas_infos;
-   - `01.09.1 - Aguarda DISA` com documento de uma unidade `IPSEMG/DISA` depois
+   - `01.09.A.1` / `B.1` / `C.1 - Aguarda DISA` com documento de uma unidade `IPSEMG/DISA` depois
      do memo à DISA: Tratar a resposta da DISA (geacs_resp_disa, TODO).
 
 Na planilha de controle, **não altera a `prox_acao`** (nem `fluxo`,
@@ -1184,7 +1190,7 @@ Para cada processo:
    fim). Com o `01.12` (no bloco): `prox_acao` = Assinar memo à APIS (todas as
    informações) e encaminhar; com o `01.12.1`: `prox_acao` = Memo à APIS (todas
    as informações) encaminhado (concluído). Nos dois, sem ler mais nada.
-   **Sem o `01.10.1 - Aguarda DEPROC: Coparticipação`**: `SemAguardaDeproc`,
+   **Sem o `01.10.B.1 - Aguarda DEPROC: Coparticipação`**: `SemAguardaDeproc`,
    sem ação.
    **Ano da base DEPROC** (`ano_da_base_deproc`, coluna
    `ano_base_deproc_todas_infos`): o da coluna `ano_base_deproc` da linha do

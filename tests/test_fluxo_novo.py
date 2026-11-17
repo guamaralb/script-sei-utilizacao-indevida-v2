@@ -54,10 +54,10 @@ VELHO = '00 - Processo VELHO'
 NOVO = '01 - Tratado pelo Script'
 DISA = '01.06 - Avaliado Uso Rede Própria DISA'
 MANTIS = '01.08 - Avaliado Uso Rede Própria MANTIS'
-AGUARDA_CONSTA = '01.09 - No Bloco DISA: Validar (Consta)'
-AGUARDA_RELATORIO = '01.09 - No Bloco DISA: Relat. s/ MANTIS'
-CONCLUIDO_DEPROC = '01.10 - No Bloco DEPROC: Coparticipação'
-AGUARDA_SEM_USO = '01.10 - No Bloco APIS: Sem Uso'
+AGUARDA_CONSTA = '01.09.B - No Bloco DISA: Validar (Consta)'
+AGUARDA_RELATORIO = '01.09.A - No Bloco DISA: Relat. s/ MANTIS'
+CONCLUIDO_DEPROC = '01.10.B - No Bloco DEPROC: Coparticipação'
+AGUARDA_SEM_USO = '01.10.A - No Bloco APIS: Sem Uso'
 
 PDF_DEP_RP = f'PDF Utilização Dep. RP - {TITULAR}'
 PDF_TIT_RC = f'PDF Utilização Tit. RC - {TITULAR}'
@@ -435,7 +435,7 @@ def test_sem_memo_da_apis(sei):
     sei.novo_processo(com_memo_apis=False)
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Sem Memo p/ GEACS']
+    assert sei.tags_curtas == [NOVO, '01.05.B - No Bloco APIS: Sem Memo p/ GEACS']
     assert registro.prox_acao == ProxAcao.ASSINAR_MEMO_APIS_SEM_MEMO
 
 
@@ -444,7 +444,7 @@ def test_modelo_novo_velho_e_formato_invalido(sei):
     sei.memo_apis(MEMO_APIS_NOVO_VELHO)
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Formato Inválido']
+    assert sei.tags_curtas == [NOVO, '01.05.A - No Bloco APIS: Formato Inválido']
     assert 'novo_velho' in registro.motivo_formato_invalido
 
 
@@ -515,7 +515,7 @@ def test_dependente_sem_periodo_no_modelo_por_dependente_para_com_memo_a_apis(se
     sei.memo_apis(MEMO_APIS_PERIODO_POR_DEPENDENTE, extra='Matrícula do dependente: 666')
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Formato Inválido']
+    assert sei.tags_curtas == [NOVO, '01.05.A - No Bloco APIS: Formato Inválido']
     assert 'fora de dupla' in registro.motivo_formato_invalido
 
 
@@ -646,7 +646,7 @@ def test_aguardando_fluxo_normal_parado_troca_o_estado(sei):
 
     sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Sem Memo p/ GEACS']
+    assert sei.tags_curtas == [NOVO, '01.05.B - No Bloco APIS: Sem Memo p/ GEACS']
 
 
 # --- VELHO (memo à DISA e/ou à DEPROC antes de 15/10/2026) -------------------
@@ -900,7 +900,7 @@ def test_periodo_do_titular_invalido_e_formato_invalido_antes_das_bases(sei, per
 
     registro = sei.passar(bases())
 
-    assert sei.tags_curtas == [NOVO, '01.05 - No Bloco APIS: Formato Inválido']
+    assert sei.tags_curtas == [NOVO, '01.05.A - No Bloco APIS: Formato Inválido']
     assert 'Período de apuração do titular' in registro.motivo_formato_invalido
     assert registro.erro is None
 
@@ -914,7 +914,7 @@ def test_periodo_invalido_em_processo_ja_avaliado_na_base_disa(sei):
     registro = sei.passar(bases())
 
     assert registro.erro is None
-    assert sei.tags_curtas == [NOVO, curto(DISA_USOU_RP_ANTIGO), '01.05 - No Bloco APIS: Formato Inválido']
+    assert sei.tags_curtas == [NOVO, curto(DISA_USOU_RP_ANTIGO), '01.05.A - No Bloco APIS: Formato Inválido']
 
 
 @pytest.mark.parametrize('periodo', ['01/04/2019 a12/06/2024', '01/05/2019 A 12/06/2024', '11/2019 A 06/2024'])

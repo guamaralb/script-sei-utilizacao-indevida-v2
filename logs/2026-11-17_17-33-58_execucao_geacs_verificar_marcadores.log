@@ -1,0 +1,1489 @@
+2026-11-17 17:33:58 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-17 17:33:58 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-17_17-33-58_execucao_geacs_verificar_marcadores.log
+2026-11-17 17:33:59 | INFO    | -                         | processos_a_processar | 752 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-17 17:34:02 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-17 17:34:02 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-17 17:34:03 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-17 17:34:08 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-17 17:34:08 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-17 17:34:08 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-17 17:34:08 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/752]
+2026-11-17 17:34:24 | INFO    | 2010.01.0082932/2024-60   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:34:24 | INFO    | 2010.01.0082932/2024-60   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-17 17:34:24 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 2080 (SEI 153207988)
+2026-11-17 17:34:25 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 153207988 lido (2446 caracteres)
+2026-11-17 17:34:25 | INFO    | 2010.01.0082932/2024-60   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2080 (SEI 153207988)
+2026-11-17 17:34:25 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 2567 (SEI 151949102)
+2026-11-17 17:34:25 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 151949102 lido (2937 caracteres)
+2026-11-17 17:34:25 | INFO    | 2010.01.0082932/2024-60   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2567 (SEI 151949102)']
+2026-11-17 17:34:25 | INFO    | 2010.01.0082932/2024-60   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:34:25 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-17_17-33-58.xlsx
+2026-11-17 17:34:44 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-17 17:34:44 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (35.8s) | Próxima ação: -
+2026-11-17 17:34:44 | INFO    | 2010.01.0050804/2025-42   | __main__              | INÍCIO [2/752]
+2026-11-17 17:35:00 | INFO    | 2010.01.0050804/2025-42   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:35:00 | INFO    | 2010.01.0050804/2025-42   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.09.1 - Aguarda DISA: Relat. s/ MANTIS']
+2026-11-17 17:35:01 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Lendo documento Memorando 2354 (SEI 153542210)
+2026-11-17 17:35:02 | WARNING | 2010.01.0050804/2025-42   | docs_processo         | Documento Memorando 2354 (SEI 153542210) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:35:02 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Documento 153542210 lido (2542 caracteres)
+2026-11-17 17:35:02 | INFO    | 2010.01.0050804/2025-42   | conferencia_prox_acao | Memo à DISA (sem MANTIS: solicita relatório) do marcador "01.09.1 - Aguarda DISA: Relat. s/ MANTIS": Memorando 2354 (SEI 153542210)
+2026-11-17 17:35:02 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Lendo documento Memorando 61 (SEI 114884151)
+2026-11-17 17:35:03 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Documento 114884151 lido (1583 caracteres)
+2026-11-17 17:35:03 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 61 (SEI 114884151)
+2026-11-17 17:35:03 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Lendo documento Memorando 1601 (SEI 147385714)
+2026-11-17 17:35:03 | DEBUG   | 2010.01.0050804/2025-42   | docs_processo         | Documento 147385714 lido (2723 caracteres)
+2026-11-17 17:35:03 | INFO    | 2010.01.0050804/2025-42   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1601 (SEI 147385714)']
+2026-11-17 17:35:03 | WARNING | 2010.01.0050804/2025-42   | __main__              | Inconsistência: prox_acao "Assinar memo à DISA (sem MANTIS: solicita relatório) e encaminhar" não condiz com o marcador "01.09.1 - Aguarda DISA: Relat. s/ MANTIS"; esperada: "Aguardar resposta ao memo enviado (processo parado)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:35:03 | INFO    | 2010.01.0050804/2025-42   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:35:23 | DEBUG   | 2010.01.0050804/2025-42   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-17 17:35:23 | INFO    | 2010.01.0050804/2025-42   | __main__              | FIM (38.8s) | Próxima ação: -
+2026-11-17 17:35:23 | INFO    | 2010.01.0076235/2024-71   | __main__              | INÍCIO [3/752]
+2026-11-17 17:35:39 | INFO    | 2010.01.0076235/2024-71   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:35:39 | INFO    | 2010.01.0076235/2024-71   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Relat. s/ MANTIS']
+2026-11-17 17:35:39 | INFO    | 2010.01.0076235/2024-71   | __main__              | Demais marcadores: ['v2: 01.06.2 - Base DISA: Usou RP - DESATIVADO', 'v2: 01.08.2 - MANTIS: Não Usou RP - DESATIVADO', 'v2: 01.08.3 - MANTIS: Usou RC - DESATIVADO', 'v2: 02 - Processo VELHO - DESATIVADO']
+2026-11-17 17:35:39 | DEBUG   | 2010.01.0076235/2024-71   | docs_processo         | Lendo documento Memorando 2082 (SEI 153208385)
+2026-11-17 17:35:39 | DEBUG   | 2010.01.0076235/2024-71   | docs_processo         | Documento 153208385 lido (2512 caracteres)
+2026-11-17 17:35:39 | INFO    | 2010.01.0076235/2024-71   | conferencia_prox_acao | Memo à DISA (sem MANTIS: solicita relatório) do marcador "01.09 - No Bloco DISA: Relat. s/ MANTIS": Memorando 2082 (SEI 153208385)
+2026-11-17 17:35:39 | DEBUG   | 2010.01.0076235/2024-71   | docs_processo         | Lendo documento Memorando 1739 (SEI 147827721)
+2026-11-17 17:35:40 | DEBUG   | 2010.01.0076235/2024-71   | docs_processo         | Documento 147827721 lido (2721 caracteres)
+2026-11-17 17:35:40 | INFO    | 2010.01.0076235/2024-71   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1739 (SEI 147827721)']
+2026-11-17 17:35:40 | WARNING | 2010.01.0076235/2024-71   | __main__              | Inconsistência: memo à DISA (sem MANTIS: solicita relatório) (153208385) já assinado, mas o processo continua com o "01.09 - No Bloco DISA: Relat. s/ MANTIS": troque pelo "01.09.1 - Aguarda DISA: Relat. s/ MANTIS"
+2026-11-17 17:35:40 | INFO    | 2010.01.0076235/2024-71   | __main__              | Ação sugerida: Trocar o No Bloco pelo marcador de assinado (memo já assinado)
+2026-11-17 17:35:59 | DEBUG   | 2010.01.0076235/2024-71   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-17 17:35:59 | INFO    | 2010.01.0076235/2024-71   | __main__              | FIM (36.4s) | Próxima ação: -
+2026-11-17 17:35:59 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [4/752]
+2026-11-17 17:36:15 | INFO    | 2010.01.0071357/2024-51   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:36:15 | INFO    | 2010.01.0071357/2024-51   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-17 17:36:15 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 2251 (SEI 153316095)
+2026-11-17 17:36:16 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 153316095 lido (2443 caracteres)
+2026-11-17 17:36:16 | INFO    | 2010.01.0071357/2024-51   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2251 (SEI 153316095)
+2026-11-17 17:36:16 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 1798 (SEI 148034263)
+2026-11-17 17:36:16 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 148034263 lido (2678 caracteres)
+2026-11-17 17:36:16 | INFO    | 2010.01.0071357/2024-51   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1798 (SEI 148034263)']
+2026-11-17 17:36:16 | INFO    | 2010.01.0071357/2024-51   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:36:35 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-17 17:36:35 | INFO    | 2010.01.0071357/2024-51   | __main__              | FIM (36.2s) | Próxima ação: -
+2026-11-17 17:36:35 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [5/752]
+2026-11-17 17:36:51 | INFO    | 2010.01.0072062/2024-28   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:36:51 | INFO    | 2010.01.0072062/2024-28   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-17 17:36:52 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 2084 (SEI 153208938)
+2026-11-17 17:36:53 | WARNING | 2010.01.0072062/2024-28   | docs_processo         | Documento Memorando 2084 (SEI 153208938) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:36:54 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 153208938 lido (2555 caracteres)
+2026-11-17 17:36:54 | INFO    | 2010.01.0072062/2024-28   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2084 (SEI 153208938)
+2026-11-17 17:36:54 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 44 (SEI 114761013)
+2026-11-17 17:36:55 | WARNING | 2010.01.0072062/2024-28   | docs_processo         | Documento Memorando 44 (SEI 114761013) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:36:56 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 114761013 lido (1667 caracteres)
+2026-11-17 17:36:56 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 44 (SEI 114761013)
+2026-11-17 17:36:56 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 1610 (SEI 147432858)
+2026-11-17 17:36:56 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 147432858 lido (2593 caracteres)
+2026-11-17 17:36:56 | INFO    | 2010.01.0072062/2024-28   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1610 (SEI 147432858)']
+2026-11-17 17:36:56 | INFO    | 2010.01.0072062/2024-28   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:37:16 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-17 17:37:16 | INFO    | 2010.01.0072062/2024-28   | __main__              | FIM (40.4s) | Próxima ação: -
+2026-11-17 17:37:16 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [6/752]
+2026-11-17 17:37:32 | INFO    | 2010.01.0071467/2024-88   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:37:32 | INFO    | 2010.01.0071467/2024-88   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-17 17:37:33 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 2086 (SEI 153209585)
+2026-11-17 17:37:34 | WARNING | 2010.01.0071467/2024-88   | docs_processo         | Documento Memorando 2086 (SEI 153209585) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:37:34 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 153209585 lido (2575 caracteres)
+2026-11-17 17:37:34 | INFO    | 2010.01.0071467/2024-88   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2086 (SEI 153209585)
+2026-11-17 17:37:34 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 53 (SEI 114830412)
+2026-11-17 17:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 114830412 lido (1595 caracteres)
+2026-11-17 17:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 53 (SEI 114830412)
+2026-11-17 17:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 1589 (SEI 147338560)
+2026-11-17 17:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 147338560 lido (2734 caracteres)
+2026-11-17 17:37:35 | INFO    | 2010.01.0071467/2024-88   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1589 (SEI 147338560)']
+2026-11-17 17:37:35 | INFO    | 2010.01.0071467/2024-88   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:37:56 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-17 17:37:56 | INFO    | 2010.01.0071467/2024-88   | __main__              | FIM (40.4s) | Próxima ação: -
+2026-11-17 17:37:56 | INFO    | 2010.01.0049247/2025-80   | __main__              | INÍCIO [7/752]
+2026-11-17 17:38:12 | INFO    | 2010.01.0049247/2025-80   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:38:12 | INFO    | 2010.01.0049247/2025-80   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09 - No Bloco DISA: Relat. s/ MANTIS']
+2026-11-17 17:38:12 | INFO    | 2010.01.0049247/2025-80   | __main__              | Demais marcadores: ['v2: 01.06.2 - Base DISA: Usou RP - DESATIVADO', 'v2: 01.08.2 - MANTIS: Não Usou RP - DESATIVADO', 'v2: 01.08.3 - MANTIS: Usou RC - DESATIVADO', 'v2: 02 - Processo VELHO - DESATIVADO']
+2026-11-17 17:38:12 | DEBUG   | 2010.01.0049247/2025-80   | docs_processo         | Lendo documento Memorando 2089 (SEI 153210262)
+2026-11-17 17:38:13 | DEBUG   | 2010.01.0049247/2025-80   | docs_processo         | Documento 153210262 lido (2510 caracteres)
+2026-11-17 17:38:13 | INFO    | 2010.01.0049247/2025-80   | conferencia_prox_acao | Memo à DISA (sem MANTIS: solicita relatório) do marcador "01.09 - No Bloco DISA: Relat. s/ MANTIS": Memorando 2089 (SEI 153210262)
+2026-11-17 17:38:13 | DEBUG   | 2010.01.0049247/2025-80   | docs_processo         | Lendo documento Memorando 11 (SEI 114634421)
+2026-11-17 17:38:13 | DEBUG   | 2010.01.0049247/2025-80   | docs_processo         | Documento 114634421 lido (1374 caracteres)
+2026-11-17 17:38:13 | DEBUG   | 2010.01.0049247/2025-80   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 11 (SEI 114634421)
+2026-11-17 17:38:13 | DEBUG   | 2010.01.0049247/2025-80   | docs_processo         | Lendo documento Memorando 1970 (SEI 148858550)
+2026-11-17 17:38:13 | DEBUG   | 2010.01.0049247/2025-80   | docs_processo         | Documento 148858550 lido (2670 caracteres)
+2026-11-17 17:38:13 | INFO    | 2010.01.0049247/2025-80   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1970 (SEI 148858550)']
+2026-11-17 17:38:13 | WARNING | 2010.01.0049247/2025-80   | __main__              | Inconsistência: memo à DISA (sem MANTIS: solicita relatório) (153210262) já assinado, mas o processo continua com o "01.09 - No Bloco DISA: Relat. s/ MANTIS": troque pelo "01.09.1 - Aguarda DISA: Relat. s/ MANTIS"
+2026-11-17 17:38:13 | INFO    | 2010.01.0049247/2025-80   | __main__              | Ação sugerida: Trocar o No Bloco pelo marcador de assinado (memo já assinado)
+2026-11-17 17:38:32 | DEBUG   | 2010.01.0049247/2025-80   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-17 17:38:32 | INFO    | 2010.01.0049247/2025-80   | __main__              | FIM (36.4s) | Próxima ação: -
+2026-11-17 17:38:32 | INFO    | 2010.01.0049305/2025-66   | __main__              | INÍCIO [8/752]
+2026-11-17 17:38:48 | INFO    | 2010.01.0049305/2025-66   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:38:48 | INFO    | 2010.01.0049305/2025-66   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-17 17:38:49 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 2534 (SEI 153701700)
+2026-11-17 17:38:50 | WARNING | 2010.01.0049305/2025-66   | docs_processo         | Documento Memorando 2534 (SEI 153701700) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:38:51 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 153701700 lido (3627 caracteres)
+2026-11-17 17:38:51 | INFO    | 2010.01.0049305/2025-66   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2534 (SEI 153701700)
+2026-11-17 17:38:51 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 13 (SEI 114642201)
+2026-11-17 17:38:52 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 114642201 lido (1361 caracteres)
+2026-11-17 17:38:52 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 13 (SEI 114642201)
+2026-11-17 17:38:52 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Lendo documento Memorando 1971 (SEI 148860469)
+2026-11-17 17:38:52 | DEBUG   | 2010.01.0049305/2025-66   | docs_processo         | Documento 148860469 lido (2710 caracteres)
+2026-11-17 17:38:52 | INFO    | 2010.01.0049305/2025-66   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1971 (SEI 148860469)']
+2026-11-17 17:38:52 | WARNING | 2010.01.0049305/2025-66   | __main__              | Inconsistência: prox_acao "Assinar memo à APIS (todas as informações) e encaminhar" não condiz com o marcador "01.12.1 - Encaminhado APIS: Todas as Infos"; esperada: "Memo à APIS (todas as informações) encaminhado (concluído)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:38:52 | INFO    | 2010.01.0049305/2025-66   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:39:12 | DEBUG   | 2010.01.0049305/2025-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-17 17:39:12 | INFO    | 2010.01.0049305/2025-66   | __main__              | FIM (39.3s) | Próxima ação: -
+2026-11-17 17:39:12 | INFO    | 2010.01.0072726/2024-45   | __main__              | INÍCIO [9/752]
+2026-11-17 17:39:27 | INFO    | 2010.01.0072726/2024-45   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:39:27 | INFO    | 2010.01.0072726/2024-45   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-17 17:39:28 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 2480 (SEI 153700328)
+2026-11-17 17:39:30 | WARNING | 2010.01.0072726/2024-45   | docs_processo         | Documento Memorando 2480 (SEI 153700328) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:39:30 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 153700328 lido (3800 caracteres)
+2026-11-17 17:39:30 | INFO    | 2010.01.0072726/2024-45   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2480 (SEI 153700328)
+2026-11-17 17:39:30 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Lendo documento Memorando 1976 (SEI 148865233)
+2026-11-17 17:39:31 | DEBUG   | 2010.01.0072726/2024-45   | docs_processo         | Documento 148865233 lido (2742 caracteres)
+2026-11-17 17:39:31 | INFO    | 2010.01.0072726/2024-45   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1976 (SEI 148865233)']
+2026-11-17 17:39:31 | WARNING | 2010.01.0072726/2024-45   | __main__              | Inconsistência: prox_acao "Assinar memo à APIS (todas as informações) e encaminhar" não condiz com o marcador "01.12.1 - Encaminhado APIS: Todas as Infos"; esperada: "Memo à APIS (todas as informações) encaminhado (concluído)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:39:31 | INFO    | 2010.01.0072726/2024-45   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:39:51 | DEBUG   | 2010.01.0072726/2024-45   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-17 17:39:51 | INFO    | 2010.01.0072726/2024-45   | __main__              | FIM (39.5s) | Próxima ação: -
+2026-11-17 17:39:51 | INFO    | 2010.01.0072584/2024-96   | __main__              | INÍCIO [10/752]
+2026-11-17 17:40:07 | INFO    | 2010.01.0072584/2024-96   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:40:07 | INFO    | 2010.01.0072584/2024-96   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-17 17:40:07 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Lendo documento Memorando 2070 (SEI 153169686)
+2026-11-17 17:40:08 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Documento 153169686 lido (3539 caracteres)
+2026-11-17 17:40:08 | INFO    | 2010.01.0072584/2024-96   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2070 (SEI 153169686)
+2026-11-17 17:40:08 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Lendo documento Memorando 1979 (SEI 148871804)
+2026-11-17 17:40:08 | DEBUG   | 2010.01.0072584/2024-96   | docs_processo         | Documento 148871804 lido (2862 caracteres)
+2026-11-17 17:40:08 | INFO    | 2010.01.0072584/2024-96   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1979 (SEI 148871804)']
+2026-11-17 17:40:08 | INFO    | 2010.01.0072584/2024-96   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:40:27 | DEBUG   | 2010.01.0072584/2024-96   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-17 17:40:27 | INFO    | 2010.01.0072584/2024-96   | __main__              | FIM (36.2s) | Próxima ação: -
+2026-11-17 17:40:27 | INFO    | 2010.01.0071348/2024-03   | __main__              | INÍCIO [11/752]
+2026-11-17 17:40:43 | INFO    | 2010.01.0071348/2024-03   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:40:43 | INFO    | 2010.01.0071348/2024-03   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-17 17:40:44 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Lendo documento Memorando 2091 (SEI 153210800)
+2026-11-17 17:40:45 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Documento 153210800 lido (2555 caracteres)
+2026-11-17 17:40:45 | INFO    | 2010.01.0071348/2024-03   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2091 (SEI 153210800)
+2026-11-17 17:40:45 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Lendo documento Memorando 1980 (SEI 148874019)
+2026-11-17 17:40:45 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Documento 148874019 lido (2717 caracteres)
+2026-11-17 17:40:45 | INFO    | 2010.01.0071348/2024-03   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1980 (SEI 148874019)']
+2026-11-17 17:40:45 | INFO    | 2010.01.0071348/2024-03   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:41:31 | DEBUG   | 2010.01.0071348/2024-03   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-17 17:41:31 | INFO    | 2010.01.0071348/2024-03   | __main__              | FIM (0h01m03s) | Próxima ação: -
+2026-11-17 17:41:31 | INFO    | 2010.01.0050757/2025-50   | __main__              | INÍCIO [12/752]
+2026-11-17 17:41:47 | INFO    | 2010.01.0050757/2025-50   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:41:47 | INFO    | 2010.01.0050757/2025-50   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-17 17:41:48 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Lendo documento Memorando 2092 (SEI 153211167)
+2026-11-17 17:41:49 | WARNING | 2010.01.0050757/2025-50   | docs_processo         | Documento Memorando 2092 (SEI 153211167) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:41:50 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Documento 153211167 lido (3566 caracteres)
+2026-11-17 17:41:50 | INFO    | 2010.01.0050757/2025-50   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2092 (SEI 153211167)
+2026-11-17 17:41:50 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Lendo documento Memorando 58 (SEI 114877556)
+2026-11-17 17:41:51 | WARNING | 2010.01.0050757/2025-50   | docs_processo         | Documento Memorando 58 (SEI 114877556) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:41:52 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Documento 114877556 lido (1585 caracteres)
+2026-11-17 17:41:52 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 58 (SEI 114877556)
+2026-11-17 17:41:52 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Lendo documento Memorando 1981 (SEI 148879338)
+2026-11-17 17:41:52 | DEBUG   | 2010.01.0050757/2025-50   | docs_processo         | Documento 148879338 lido (2759 caracteres)
+2026-11-17 17:41:52 | INFO    | 2010.01.0050757/2025-50   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1981 (SEI 148879338)']
+2026-11-17 17:41:52 | INFO    | 2010.01.0050757/2025-50   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:42:38 | DEBUG   | 2010.01.0050757/2025-50   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-17 17:42:38 | INFO    | 2010.01.0050757/2025-50   | __main__              | FIM (0h01m06s) | Próxima ação: -
+2026-11-17 17:42:38 | INFO    | 2010.01.0072057/2024-66   | __main__              | INÍCIO [13/752]
+2026-11-17 17:42:54 | INFO    | 2010.01.0072057/2024-66   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:42:54 | INFO    | 2010.01.0072057/2024-66   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-17 17:42:55 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 2252 (SEI 153316241)
+2026-11-17 17:42:56 | WARNING | 2010.01.0072057/2024-66   | docs_processo         | Documento Memorando 2252 (SEI 153316241) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:42:57 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 153316241 lido (2444 caracteres)
+2026-11-17 17:42:57 | INFO    | 2010.01.0072057/2024-66   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2252 (SEI 153316241)
+2026-11-17 17:42:57 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 45 (SEI 114762240)
+2026-11-17 17:42:57 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 114762240 lido (1543 caracteres)
+2026-11-17 17:42:57 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 45 (SEI 114762240)
+2026-11-17 17:42:57 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 1626 (SEI 147489399)
+2026-11-17 17:42:58 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 147489399 lido (2498 caracteres)
+2026-11-17 17:42:58 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1626 (SEI 147489399)
+2026-11-17 17:42:58 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 2450 (SEI 151127831)
+2026-11-17 17:42:58 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 151127831 lido (2589 caracteres)
+2026-11-17 17:42:58 | INFO    | 2010.01.0072057/2024-66   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2450 (SEI 151127831)']
+2026-11-17 17:42:58 | INFO    | 2010.01.0072057/2024-66   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:43:44 | DEBUG   | 2010.01.0072057/2024-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-17 17:43:44 | INFO    | 2010.01.0072057/2024-66   | __main__              | FIM (0h01m06s) | Próxima ação: -
+2026-11-17 17:43:44 | INFO    | 2010.01.0082953/2024-75   | __main__              | INÍCIO [14/752]
+2026-11-17 17:44:00 | INFO    | 2010.01.0082953/2024-75   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:44:00 | INFO    | 2010.01.0082953/2024-75   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.06.1.1 - Aguarda APIS: Matrículas']
+2026-11-17 17:44:01 | DEBUG   | 2010.01.0082953/2024-75   | docs_processo         | Lendo documento Memorando 2349 (SEI 153541410)
+2026-11-17 17:44:01 | DEBUG   | 2010.01.0082953/2024-75   | docs_processo         | Documento 153541410 lido (2429 caracteres)
+2026-11-17 17:44:01 | INFO    | 2010.01.0082953/2024-75   | conferencia_prox_acao | Memo à APIS (matrículas não encontradas) do marcador "01.06.1.1 - Aguarda APIS: Matrículas": Memorando 2349 (SEI 153541410)
+2026-11-17 17:44:01 | DEBUG   | 2010.01.0082953/2024-75   | docs_processo         | Lendo documento Memorando 1597 (SEI 147375182)
+2026-11-17 17:44:02 | DEBUG   | 2010.01.0082953/2024-75   | docs_processo         | Documento 147375182 lido (2733 caracteres)
+2026-11-17 17:44:02 | INFO    | 2010.01.0082953/2024-75   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1597 (SEI 147375182)']
+2026-11-17 17:44:02 | WARNING | 2010.01.0082953/2024-75   | __main__              | Inconsistência: prox_acao "Assinar memo à APIS (matrículas não encontradas) e encaminhar" não condiz com o marcador "01.06.1.1 - Aguarda APIS: Matrículas"; esperada: "Aguardar resposta ao memo enviado (processo parado)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:44:02 | INFO    | 2010.01.0082953/2024-75   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:44:46 | DEBUG   | 2010.01.0082953/2024-75   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-17 17:44:46 | INFO    | 2010.01.0082953/2024-75   | __main__              | FIM (0h01m02s) | Próxima ação: -
+2026-11-17 17:44:46 | INFO    | 2010.01.0050829/2025-46   | __main__              | INÍCIO [15/752]
+2026-11-17 17:45:02 | INFO    | 2010.01.0050829/2025-46   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:45:02 | INFO    | 2010.01.0050829/2025-46   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-17 17:45:04 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Lendo documento Memorando 2533 (SEI 153701684)
+2026-11-17 17:45:05 | WARNING | 2010.01.0050829/2025-46   | docs_processo         | Documento Memorando 2533 (SEI 153701684) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:45:06 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Documento 153701684 lido (3643 caracteres)
+2026-11-17 17:45:06 | INFO    | 2010.01.0050829/2025-46   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2533 (SEI 153701684)
+2026-11-17 17:45:06 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Lendo documento Memorando 62 (SEI 114886981)
+2026-11-17 17:45:07 | WARNING | 2010.01.0050829/2025-46   | docs_processo         | Documento Memorando 62 (SEI 114886981) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:45:08 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Documento 114886981 lido (1581 caracteres)
+2026-11-17 17:45:08 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 62 (SEI 114886981)
+2026-11-17 17:45:08 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Lendo documento Memorando 1602 (SEI 147389532)
+2026-11-17 17:45:08 | DEBUG   | 2010.01.0050829/2025-46   | docs_processo         | Documento 147389532 lido (2719 caracteres)
+2026-11-17 17:45:08 | INFO    | 2010.01.0050829/2025-46   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1602 (SEI 147389532)']
+2026-11-17 17:45:08 | WARNING | 2010.01.0050829/2025-46   | __main__              | Inconsistência: prox_acao "Assinar memo à APIS (todas as informações) e encaminhar" não condiz com o marcador "01.12.1 - Encaminhado APIS: Todas as Infos"; esperada: "Memo à APIS (todas as informações) encaminhado (concluído)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:45:08 | INFO    | 2010.01.0050829/2025-46   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:45:48 | DEBUG   | 2010.01.0050829/2025-46   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-17 17:45:48 | INFO    | 2010.01.0050829/2025-46   | __main__              | FIM (0h01m01s) | Próxima ação: -
+2026-11-17 17:45:48 | INFO    | 2010.01.0050841/2025-13   | __main__              | INÍCIO [16/752]
+2026-11-17 17:46:04 | INFO    | 2010.01.0050841/2025-13   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:46:04 | INFO    | 2010.01.0050841/2025-13   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-17 17:46:05 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Lendo documento Memorando 2532 (SEI 153701675)
+2026-11-17 17:46:06 | WARNING | 2010.01.0050841/2025-13   | docs_processo         | Documento Memorando 2532 (SEI 153701675) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:46:07 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Documento 153701675 lido (3459 caracteres)
+2026-11-17 17:46:07 | INFO    | 2010.01.0050841/2025-13   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2532 (SEI 153701675)
+2026-11-17 17:46:07 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Lendo documento Memorando 63 (SEI 114889088)
+2026-11-17 17:46:07 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Documento 114889088 lido (1588 caracteres)
+2026-11-17 17:46:07 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 63 (SEI 114889088)
+2026-11-17 17:46:07 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Lendo documento Memorando 2585 (SEI 151964501)
+2026-11-17 17:46:08 | DEBUG   | 2010.01.0050841/2025-13   | docs_processo         | Documento 151964501 lido (2998 caracteres)
+2026-11-17 17:46:08 | INFO    | 2010.01.0050841/2025-13   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2585 (SEI 151964501)']
+2026-11-17 17:46:08 | WARNING | 2010.01.0050841/2025-13   | __main__              | Inconsistência: prox_acao "Assinar memo à APIS (todas as informações) e encaminhar" não condiz com o marcador "01.12.1 - Encaminhado APIS: Todas as Infos"; esperada: "Memo à APIS (todas as informações) encaminhado (concluído)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:46:08 | INFO    | 2010.01.0050841/2025-13   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:46:52 | DEBUG   | 2010.01.0050841/2025-13   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-17 17:46:52 | INFO    | 2010.01.0050841/2025-13   | __main__              | FIM (0h01m04s) | Próxima ação: -
+2026-11-17 17:46:52 | INFO    | 2010.01.0050849/2025-88   | __main__              | INÍCIO [17/752]
+2026-11-17 17:47:08 | INFO    | 2010.01.0050849/2025-88   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:47:08 | INFO    | 2010.01.0050849/2025-88   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.1 - Aguarda DISA: Validar (Consta)']
+2026-11-17 17:47:08 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 2253 (SEI 153316425)
+2026-11-17 17:47:09 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 153316425 lido (3539 caracteres)
+2026-11-17 17:47:09 | INFO    | 2010.01.0050849/2025-88   | conferencia_prox_acao | Memo à DISA (validar e complementar) do marcador "01.09.1 - Aguarda DISA: Validar (Consta)": Memorando 2253 (SEI 153316425)
+2026-11-17 17:47:09 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 64 (SEI 114891636)
+2026-11-17 17:47:09 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 114891636 lido (1583 caracteres)
+2026-11-17 17:47:09 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 64 (SEI 114891636)
+2026-11-17 17:47:09 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Lendo documento Memorando 2459 (SEI 151287959)
+2026-11-17 17:47:09 | DEBUG   | 2010.01.0050849/2025-88   | docs_processo         | Documento 151287959 lido (2714 caracteres)
+2026-11-17 17:47:09 | INFO    | 2010.01.0050849/2025-88   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2459 (SEI 151287959)']
+2026-11-17 17:47:09 | INFO    | 2010.01.0050849/2025-88   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:47:56 | DEBUG   | 2010.01.0050849/2025-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-17 17:47:56 | INFO    | 2010.01.0050849/2025-88   | __main__              | FIM (0h01m04s) | Próxima ação: -
+2026-11-17 17:47:56 | INFO    | 2010.01.0050885/2025-86   | __main__              | INÍCIO [18/752]
+2026-11-17 17:48:12 | INFO    | 2010.01.0050885/2025-86   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:48:12 | INFO    | 2010.01.0050885/2025-86   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.1 - Aguarda DEPROC: Coparticipação']
+2026-11-17 17:48:13 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Lendo documento Memorando 2097 (SEI 153212486)
+2026-11-17 17:48:14 | WARNING | 2010.01.0050885/2025-86   | docs_processo         | Documento Memorando 2097 (SEI 153212486) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:48:15 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Documento 153212486 lido (2438 caracteres)
+2026-11-17 17:48:15 | INFO    | 2010.01.0050885/2025-86   | conferencia_prox_acao | Memo DEPROC (coparticipação) do marcador "01.10.1 - Aguarda DEPROC: Coparticipação": Memorando 2097 (SEI 153212486)
+2026-11-17 17:48:15 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Lendo documento Memorando 66 (SEI 114896125)
+2026-11-17 17:48:16 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Documento 114896125 lido (1466 caracteres)
+2026-11-17 17:48:16 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 66 (SEI 114896125)
+2026-11-17 17:48:16 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Lendo documento Memorando 1604 (SEI 147402159)
+2026-11-17 17:48:16 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Documento 147402159 lido (2675 caracteres)
+2026-11-17 17:48:16 | INFO    | 2010.01.0050885/2025-86   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1604 (SEI 147402159)']
+2026-11-17 17:48:16 | INFO    | 2010.01.0050885/2025-86   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-17 17:49:03 | DEBUG   | 2010.01.0050885/2025-86   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-17 17:49:03 | INFO    | 2010.01.0050885/2025-86   | __main__              | FIM (0h01m06s) | Próxima ação: -
+2026-11-17 17:49:03 | INFO    | 2010.01.0051097/2025-85   | __main__              | INÍCIO [19/752]
+2026-11-17 17:49:19 | INFO    | 2010.01.0051097/2025-85   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:49:19 | INFO    | 2010.01.0051097/2025-85   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.09.1 - Aguarda DISA: Relat. s/ MANTIS']
+2026-11-17 17:49:19 | DEBUG   | 2010.01.0051097/2025-85   | docs_processo         | Lendo documento Memorando 2361 (SEI 153543116)
+2026-11-17 17:49:19 | DEBUG   | 2010.01.0051097/2025-85   | docs_processo         | Documento 153543116 lido (2542 caracteres)
+2026-11-17 17:49:19 | INFO    | 2010.01.0051097/2025-85   | conferencia_prox_acao | Memo à DISA (sem MANTIS: solicita relatório) do marcador "01.09.1 - Aguarda DISA: Relat. s/ MANTIS": Memorando 2361 (SEI 153543116)
+2026-11-17 17:49:19 | DEBUG   | 2010.01.0051097/2025-85   | docs_processo         | Lendo documento Memorando 69 (SEI 114938401)
+2026-11-17 17:49:20 | DEBUG   | 2010.01.0051097/2025-85   | docs_processo         | Documento 114938401 lido (1588 caracteres)
+2026-11-17 17:49:20 | DEBUG   | 2010.01.0051097/2025-85   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 69 (SEI 114938401)
+2026-11-17 17:49:20 | DEBUG   | 2010.01.0051097/2025-85   | docs_processo         | Lendo documento Memorando 1706 (SEI 147733687)
+2026-11-17 17:49:20 | DEBUG   | 2010.01.0051097/2025-85   | docs_processo         | Documento 147733687 lido (2733 caracteres)
+2026-11-17 17:49:20 | INFO    | 2010.01.0051097/2025-85   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1706 (SEI 147733687)']
+2026-11-17 17:49:20 | WARNING | 2010.01.0051097/2025-85   | __main__              | Inconsistência: prox_acao "Assinar memo à DISA (sem MANTIS: solicita relatório) e encaminhar" não condiz com o marcador "01.09.1 - Aguarda DISA: Relat. s/ MANTIS"; esperada: "Aguardar resposta ao memo enviado (processo parado)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:49:20 | INFO    | 2010.01.0051097/2025-85   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:50:06 | DEBUG   | 2010.01.0051097/2025-85   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-17 17:50:06 | INFO    | 2010.01.0051097/2025-85   | __main__              | FIM (0h01m03s) | Próxima ação: -
+2026-11-17 17:50:06 | INFO    | 2010.01.0050905/2025-31   | __main__              | INÍCIO [20/752]
+2026-11-17 17:50:22 | INFO    | 2010.01.0050905/2025-31   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:50:22 | INFO    | 2010.01.0050905/2025-31   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-17 17:50:23 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Lendo documento Memorando 2531 (SEI 153701656)
+2026-11-17 17:50:25 | WARNING | 2010.01.0050905/2025-31   | docs_processo         | Documento Memorando 2531 (SEI 153701656) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:50:26 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Documento 153701656 lido (3637 caracteres)
+2026-11-17 17:50:26 | INFO    | 2010.01.0050905/2025-31   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2531 (SEI 153701656)
+2026-11-17 17:50:26 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Lendo documento Memorando 67 (SEI 114898221)
+2026-11-17 17:50:26 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Documento 114898221 lido (1589 caracteres)
+2026-11-17 17:50:26 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 67 (SEI 114898221)
+2026-11-17 17:50:26 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Lendo documento Memorando 2460 (SEI 151296065)
+2026-11-17 17:50:26 | DEBUG   | 2010.01.0050905/2025-31   | docs_processo         | Documento 151296065 lido (2827 caracteres)
+2026-11-17 17:50:26 | INFO    | 2010.01.0050905/2025-31   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2460 (SEI 151296065)']
+2026-11-17 17:50:26 | WARNING | 2010.01.0050905/2025-31   | __main__              | Inconsistência: prox_acao "Assinar memo à APIS (todas as informações) e encaminhar" não condiz com o marcador "01.12.1 - Encaminhado APIS: Todas as Infos"; esperada: "Memo à APIS (todas as informações) encaminhado (concluído)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:50:26 | INFO    | 2010.01.0050905/2025-31   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:51:12 | DEBUG   | 2010.01.0050905/2025-31   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-17 17:51:12 | INFO    | 2010.01.0050905/2025-31   | __main__              | FIM (0h01m06s) | Próxima ação: -
+2026-11-17 17:51:12 | INFO    | 2010.01.0051096/2025-15   | __main__              | INÍCIO [21/752]
+2026-11-17 17:51:28 | INFO    | 2010.01.0051096/2025-15   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:51:28 | INFO    | 2010.01.0051096/2025-15   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-17 17:51:29 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Lendo documento Memorando 2530 (SEI 153701649)
+2026-11-17 17:51:30 | WARNING | 2010.01.0051096/2025-15   | docs_processo         | Documento Memorando 2530 (SEI 153701649) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:51:31 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Documento 153701649 lido (3636 caracteres)
+2026-11-17 17:51:31 | INFO    | 2010.01.0051096/2025-15   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2530 (SEI 153701649)
+2026-11-17 17:51:31 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Lendo documento Memorando 68 (SEI 114938317)
+2026-11-17 17:51:32 | WARNING | 2010.01.0051096/2025-15   | docs_processo         | Documento Memorando 68 (SEI 114938317) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:51:34 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Documento 114938317 lido (1576 caracteres)
+2026-11-17 17:51:34 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 68 (SEI 114938317)
+2026-11-17 17:51:34 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Lendo documento Memorando 2464 (SEI 151321355)
+2026-11-17 17:51:34 | DEBUG   | 2010.01.0051096/2025-15   | docs_processo         | Documento 151321355 lido (2807 caracteres)
+2026-11-17 17:51:34 | INFO    | 2010.01.0051096/2025-15   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2464 (SEI 151321355)']
+2026-11-17 17:51:34 | WARNING | 2010.01.0051096/2025-15   | __main__              | Inconsistência: prox_acao "Assinar memo à APIS (todas as informações) e encaminhar" não condiz com o marcador "01.12.1 - Encaminhado APIS: Todas as Infos"; esperada: "Memo à APIS (todas as informações) encaminhado (concluído)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:51:34 | INFO    | 2010.01.0051096/2025-15   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:52:21 | DEBUG   | 2010.01.0051096/2025-15   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-17 17:52:21 | INFO    | 2010.01.0051096/2025-15   | __main__              | FIM (0h01m08s) | Próxima ação: -
+2026-11-17 17:52:21 | INFO    | 2010.01.0049549/2025-74   | __main__              | INÍCIO [22/752]
+2026-11-17 17:52:37 | INFO    | 2010.01.0049549/2025-74   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-17 17:52:37 | INFO    | 2010.01.0049549/2025-74   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.06.1.1 - Aguarda APIS: Matrículas']
+2026-11-17 17:52:38 | DEBUG   | 2010.01.0049549/2025-74   | docs_processo         | Lendo documento Memorando 2377 (SEI 153545150)
+2026-11-17 17:52:39 | WARNING | 2010.01.0049549/2025-74   | docs_processo         | Documento Memorando 2377 (SEI 153545150) não selecionado na árvore (ElementClickInterceptedException): relendo a árvore e tentando de novo
+2026-11-17 17:52:40 | DEBUG   | 2010.01.0049549/2025-74   | docs_processo         | Documento 153545150 lido (2430 caracteres)
+2026-11-17 17:52:40 | INFO    | 2010.01.0049549/2025-74   | conferencia_prox_acao | Memo à APIS (matrículas não encontradas) do marcador "01.06.1.1 - Aguarda APIS: Matrículas": Memorando 2377 (SEI 153545150)
+2026-11-17 17:52:40 | DEBUG   | 2010.01.0049549/2025-74   | docs_processo         | Lendo documento Memorando 25 (SEI 114682341)
+2026-11-17 17:52:40 | DEBUG   | 2010.01.0049549/2025-74   | docs_processo         | Documento 114682341 lido (1425 caracteres)
+2026-11-17 17:52:40 | DEBUG   | 2010.01.0049549/2025-74   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 25 (SEI 114682341)
+2026-11-17 17:52:40 | DEBUG   | 2010.01.0049549/2025-74   | docs_processo         | Lendo documento Memorando 1685 (SEI 147647990)
+2026-11-17 17:52:41 | DEBUG   | 2010.01.0049549/2025-74   | docs_processo         | Documento 147647990 lido (2612 caracteres)
+2026-11-17 17:52:41 | INFO    | 2010.01.0049549/2025-74   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1685 (SEI 147647990)']
+2026-11-17 17:52:41 | WARNING | 2010.01.0049549/2025-74   | __main__              | Inconsistência: prox_acao "Assinar memo à APIS (matrículas não encontradas) e encaminhar" não condiz com o marcador "01.06.1.1 - Aguarda APIS: Matrículas"; esperada: "Aguardar resposta ao memo enviado (processo parado)" (rodar o geacs_inicial atualiza a prox_acao)
+2026-11-17 17:52:41 | INFO    | 2010.01.0049549/2025-74   | __main__              | Ação sugerida: Rodar geacs_inicial
+2026-11-17 17:53:08 | DEBUG   | 2010.01.0049549/2025-74   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-17 17:53:08 | INFO    | 2010.01.0049549/2025-74   | __main__              | FIM (46.5s) | Próxima ação: -
+2026-11-17 17:53:08 | INFO    | 2010.01.0051875/2025-31   | __main__              | INÍCIO [23/752]
+2026-11-17 17:53:08 | ERROR   | 2010.01.0051875/2025-31   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 187, in pode_incluir_documento
+    _elementos.encontrar_elemento(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        driver, 'XPATH', _XPATH_INCLUIR_DOCUMENTO, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\elementos.py", line 51, in encontrar_elemento
+    return WebDriverWait(driver, timeout).until(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.presence_of_element_located((by, termo_busca))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 120, in until
+    time.sleep(self._poll)
+    ~~~~~~~~~~^^^^^^^^^^^^
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 571, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [WinError 10054] Foi forçado o cancelamento de uma conexão existente pelo host remoto
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 80, in _processar_linha
+    verificar_marcadores(driver, registro, linha_planilha)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 58, in verificar_marcadores
+    registro.aberto_na_geacs = tem_incluir_documento(driver)
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processo_fechado.py", line 27, in tem_incluir_documento
+    return pode_incluir_documento(driver, timeout=_TIMEOUT_TELA_PROCESSO)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 193, in pode_incluir_documento
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 498, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 571, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None))
+2026-11-17 17:53:12 | WARNING | 2010.01.0051875/2025-31   | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:53:16 | WARNING | 2010.01.0051875/2025-31   | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:53:20 | WARNING | 2010.01.0051875/2025-31   | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:53:25 | WARNING | 2010.01.0051875/2025-31   | sessao_sei            | Não foi possível recarregar a página depois do erro
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 187, in pode_incluir_documento
+    _elementos.encontrar_elemento(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        driver, 'XPATH', _XPATH_INCLUIR_DOCUMENTO, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\elementos.py", line 51, in encontrar_elemento
+    return WebDriverWait(driver, timeout).until(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.presence_of_element_located((by, termo_busca))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 120, in until
+    time.sleep(self._poll)
+    ~~~~~~~~~~^^^^^^^^^^^^
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 571, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [WinError 10054] Foi forçado o cancelamento de uma conexão existente pelo host remoto
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 80, in _processar_linha
+    verificar_marcadores(driver, registro, linha_planilha)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 58, in verificar_marcadores
+    registro.aberto_na_geacs = tem_incluir_documento(driver)
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\processo_fechado.py", line 27, in tem_incluir_documento
+    return pode_incluir_documento(driver, timeout=_TIMEOUT_TELA_PROCESSO)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 193, in pode_incluir_documento
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 498, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 571, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\sessao_sei.py", line 33, in restaurar_navegador
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-17 17:53:45 | DEBUG   | 2010.01.0051875/2025-31   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-17 17:53:45 | WARNING | 2010.01.0051875/2025-31   | __main__              | FIM COM ERRO (37.3s) | ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'Foi forçado o cancelamento de uma conexão existente pelo host remoto', None, 10054, None))
+2026-11-17 17:53:45 | INFO    | 2010.01.0051843/2025-22   | __main__              | INÍCIO [24/752]
+2026-11-17 17:53:49 | WARNING | 2010.01.0051843/2025-22   | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:53:53 | WARNING | 2010.01.0051843/2025-22   | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:53:57 | WARNING | 2010.01.0051843/2025-22   | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:54:01 | ERROR   | 2010.01.0051843/2025-22   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 79, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 63, in acessar_processo
+    _busca.pesquisar_processo(driver, num_processo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\busca.py", line 29, in pesquisar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-17 17:54:05 | WARNING | 2010.01.0051843/2025-22   | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:54:09 | WARNING | 2010.01.0051843/2025-22   | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:54:13 | WARNING | 2010.01.0051843/2025-22   | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:54:17 | WARNING | 2010.01.0051843/2025-22   | sessao_sei            | Não foi possível recarregar a página depois do erro
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 79, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 63, in acessar_processo
+    _busca.pesquisar_processo(driver, num_processo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\busca.py", line 29, in pesquisar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\sessao_sei.py", line 33, in restaurar_navegador
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-17 17:54:38 | DEBUG   | 2010.01.0051843/2025-22   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-17 17:54:38 | WARNING | 2010.01.0051843/2025-22   | __main__              | FIM COM ERRO (53.1s) | MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-17 17:54:38 | INFO    | 2010.01.0052516/2025-87   | __main__              | INÍCIO [25/752]
+2026-11-17 17:54:42 | WARNING | 2010.01.0052516/2025-87   | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:54:46 | WARNING | 2010.01.0052516/2025-87   | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:54:50 | WARNING | 2010.01.0052516/2025-87   | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:54:54 | ERROR   | 2010.01.0052516/2025-87   | __main__              | Erro inesperado durante o processamento
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 79, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 63, in acessar_processo
+    _busca.pesquisar_processo(driver, num_processo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\busca.py", line 29, in pesquisar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-17 17:54:58 | WARNING | 2010.01.0052516/2025-87   | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:55:02 | WARNING | 2010.01.0052516/2025-87   | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:55:07 | WARNING | 2010.01.0052516/2025-87   | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:55:11 | WARNING | 2010.01.0052516/2025-87   | sessao_sei            | Não foi possível recarregar a página depois do erro
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 79, in _processar_linha
+    acessar_processo(driver, num_processo)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\processo.py", line 63, in acessar_processo
+    _busca.pesquisar_processo(driver, num_processo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\busca.py", line 29, in pesquisar_processo
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\http\client.py", line 1037, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\sessao_sei.py", line 33, in restaurar_navegador
+    driver.switch_to.default_content()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\switch_to.py", line 66, in default_content
+    self._driver.execute(Command.SWITCH_TO_FRAME, {"id": None})
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 500, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-17 17:55:30 | DEBUG   | 2010.01.0052516/2025-87   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-17 17:55:30 | WARNING | 2010.01.0052516/2025-87   | __main__              | FIM COM ERRO (51.6s) | MaxRetryError: HTTPConnectionPool(host='localhost', port=57034): Max retries exceeded with url: /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame (Caused by NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente"))
+2026-11-17 17:55:30 | INFO    | 2010.01.0053646/2025-35   | __main__              | INÍCIO [26/752]
+2026-11-17 17:55:34 | WARNING | 2010.01.0053646/2025-35   | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame
+2026-11-17 17:55:38 | WARNING | 2010.01.0053646/2025-35   | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57034): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/d4abc8e2392c3652577b0d7a5e7f06ec/frame

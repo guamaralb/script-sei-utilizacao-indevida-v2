@@ -203,7 +203,7 @@ def test_memo_no_bloco_ou_encaminhado_so_registra_a_prox_acao(sei, tmp_path):
     assert _memos_apis(sei) == []
 
 
-@pytest.mark.parametrize('marcadores', [[], [TAG_PROCESSO_NOVO], [TAG_PROCESSO_NOVO, 'v2: 01.10 - No Bloco DEPROC: Coparticipação']])
+@pytest.mark.parametrize('marcadores', [[], [TAG_PROCESSO_NOVO], [TAG_PROCESSO_NOVO, 'v2: 01.10.B - No Bloco DEPROC: Coparticipação']])
 def test_sem_aguarda_deproc_para_sem_acao(sei, tmp_path, marcadores):
     base = _base(tmp_path)
     sei.processo_pronto(base)
