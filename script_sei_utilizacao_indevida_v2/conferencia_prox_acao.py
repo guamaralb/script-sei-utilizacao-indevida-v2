@@ -1,7 +1,8 @@
 """Conferência da prox_acao da planilha de controle (fluxo GEACS VERIFICAR
 MARCADORES): confere se ela faz sentido com os marcadores do processo e se os
-memorandos e relatórios que os marcadores indicam estão na árvore. Só leitura:
-nenhuma ação no SEI.
+memorandos e relatórios que os marcadores indicam estão na árvore. A única
+ação no SEI é a troca do "No Bloco" pelo marcador de assinado
+(trocar_no_bloco_assinado).
 
 Cada problema vira uma frase em registro.inconsistencias (coluna
 verificar_marcadores_inconsistencia) e uma ação curta em
@@ -28,6 +29,17 @@ estado N Consta (geacs_corrige_envio_disa), "Aguarda DEPROC" com o memo de
 resultado da DEPROC assinado na rodada (geacs_todas_infos) e "Aguarda DISA"
 com documento da DISA depois do memo (resposta da DISA).
 
+Antes de tudo (trocar_no_bloco_assinado), o "No Bloco" cujo memo da rodada já
+está assinado por Gustavo, Bruna ou Danúbia é trocado pelo marcador de assinado
+("Aguarda" ou, no 01.12, "Encaminhado"), com a prox_acao que o geacs_inicial
+daria. Depois (conferir_memos_aguarda), para cada marcador "Aguarda" do
+processo, procura o memo do marcador assinado por Gustavo, Bruna ou Danúbia
+(PADRAO_ASSINATURA_MEMO_AGUARDA). Achou: atualiza a planilha de controle com
+o número SEI do memo (coluna do memo e
+verificar_marcadores_memo_aguarda_assinado) e, com os marcadores
+consistentes, a prox_acao (Aguardar resposta ao memo enviado, a que o
+geacs_inicial daria).
+
 A árvore e os textos dos memos só são lidos quando alguma conferência
 precisa deles.
 """
@@ -38,10 +50,13 @@ from dataclasses import dataclass
 from types import SimpleNamespace
 from typing import NamedTuple
 
-from constantes import PREFIXO_UNIDADE_DISA, UNIDADE_DEPROC
+from constantes import PADRAO_ASSINATURA_MEMO_AGUARDA, PREFIXO_UNIDADE_DISA, UNIDADE_DEPROC
 from docs_processo import filtrar_memos_geacs, filtrar_memos_unidade, ler_texto_doc, obter_memos_apis_para_geacs
+from marcadores_disponiveis import garantir_marcadores_no_sei
+from processo_fechado import ProcessoFechadoNoSetor, reabrir_processo_fechado
+from rede_propria import ErroAvaliacao
 from Registro import PROX_ACAO_POR_CONCLUSAO, PROX_ACAO_POR_NO_BLOCO, PROX_ACOES_A_VERIFICAR, ProxAcao, RegistroVerificarMarcadores
-from sei_automacao.processo import listar_documentos_arvore
+from sei_automacao.processo import acessar_processo, concluir_processo, listar_documentos_arvore
 from selenium import webdriver
 from tags import (
     AGUARDA_POR_NO_BLOCO,
@@ -69,6 +84,7 @@ from tags import (
     TAGS_RETOMADA_NOVO,
     TAGS_TRATAMENTO_MANUAL,
     MarcadoresInconsistentes,
+    adicionar_tag,
     conferir_marcadores,
 )
 
@@ -148,6 +164,9 @@ _ASSINADO_POR_NO_BLOCO = {**AGUARDA_POR_NO_BLOCO, TAG_NO_BLOCO_APIS_TODAS_INFOS:
 _NO_BLOCO_POR_ASSINADO = {assinado: no_bloco for no_bloco, assinado in _ASSINADO_POR_NO_BLOCO.items()}
 
 _PADRAO_ASSINADO = re.compile(r'assinado\s+eletronicamente\s+por', re.IGNORECASE)
+_PADRAO_ASSINADO_POR = re.compile(PADRAO_ASSINATURA_MEMO_AGUARDA, re.IGNORECASE)
+# Marcadores "Aguarda" (manuais, depois da assinatura) com memo conhecido
+_TAGS_AGUARDA = frozenset(AGUARDA_POR_NO_BLOCO.values())
 
 # ADC PDF ANT AUT/MAN em processo que já tinha estado (ou VELHO): o estado
 # fica como estava
@@ -288,7 +307,7 @@ def conferir_caso_disa_mantis(caso: str | None, no_bloco: str) -> list[Problema]
 # ---------------------------------------------------------------------------
 
 
-class _Arvore:
+class ArvoreProcesso:
     """Árvore e textos dos memos, lidos uma vez e só quando preciso."""
 
     def __init__(self, driver: webdriver.Remote):
@@ -332,6 +351,12 @@ class _Arvore:
     def assinado(self, doc: dict) -> bool:
         return _PADRAO_ASSINADO.search(self.texto(doc)) is not None
 
+    def signatario(self, doc: dict) -> str | None:
+        """Quem assinou o memo, se for Gustavo, Bruna ou Danúbia
+        (PADRAO_ASSINATURA_MEMO_AGUARDA); None se não."""
+        achado = _PADRAO_ASSINADO_POR.search(self.texto(doc))
+        return ' '.join(achado.group(1).split()) if achado else None
+
 
 def _descrever(doc: dict) -> str:
     return f'{doc["nome_arvore"]} (SEI {doc["numero_sei"]})'
@@ -353,7 +378,7 @@ def _redes_citadas(memo: MemoDoMarcador, linha: dict) -> tuple[str, ...]:
     return tuple(rede for rede, usou in (('RP', valores[1]), ('RC', valores[2])) if usou == 'sim')
 
 
-def _conferir_assinatura(arvore: _Arvore, estado: str, memo: MemoDoMarcador, encontrado: dict) -> list[Problema]:
+def _conferir_assinatura(arvore: ArvoreProcesso, estado: str, memo: MemoDoMarcador, encontrado: dict) -> list[Problema]:
     """No Bloco: o memo ainda não foi assinado. Aguarda / Encaminhado
     (colocados depois da assinatura): o memo está assinado."""
     assinado = arvore.assinado(encontrado)
@@ -365,7 +390,7 @@ def _conferir_assinatura(arvore: _Arvore, estado: str, memo: MemoDoMarcador, enc
     return []
 
 
-def conferir_memo_do_marcador(arvore: _Arvore, estado: str, linha: dict) -> list[Problema]:
+def conferir_memo_do_marcador(arvore: ArvoreProcesso, estado: str, linha: dict) -> list[Problema]:
     """O memo do marcador "No Bloco" (ou do seu "Aguarda" / "Encaminhado")
     está na árvore, com os relatórios que ele cita antes dele e a assinatura
     condizente com o marcador. O do "No Bloco" precisa estar na rodada (depois
@@ -407,7 +432,7 @@ def conferir_memo_do_marcador(arvore: _Arvore, estado: str, linha: dict) -> list
     return problemas
 
 
-def conferir_retomada(arvore: _Arvore, estado: str) -> list[Problema]:
+def conferir_retomada(arvore: ArvoreProcesso, estado: str) -> list[Problema]:
     """Estado de retomada (01.06, 01.08): nenhum memo do fluxo na rodada. Se
     houver, a passagem falhou depois de criar o memo e antes do marcador (o
     geacs_inicial o reaproveita e só adiciona o marcador)."""
@@ -433,7 +458,7 @@ def conferir_retomada(arvore: _Arvore, estado: str) -> list[Problema]:
 # ---------------------------------------------------------------------------
 
 
-def _memo_resultado_deproc_assinado(arvore: _Arvore) -> dict | None:
+def _memo_resultado_deproc_assinado(arvore: ArvoreProcesso) -> dict | None:
     """O memo de resultado da DEPROC (MemoGeacsCalculoCopa) da rodada, se
     assinado."""
     rodada = arvore.docs[arvore.inicio_rodada() :]
@@ -446,7 +471,7 @@ def _memo_resultado_deproc_assinado(arvore: _Arvore) -> dict | None:
     return None
 
 
-def _resposta_disa(arvore: _Arvore, estado: str) -> dict | None:
+def _resposta_disa(arvore: ArvoreProcesso, estado: str) -> dict | None:
     """Documento de uma unidade da DISA depois do memo à DISA do marcador."""
     memo = arvore.ultimo_memo_geacs(_MEMO_POR_NO_BLOCO[_NO_BLOCO_POR_ASSINADO[estado]].padrao_assunto)
     if memo is None:
@@ -455,7 +480,7 @@ def _resposta_disa(arvore: _Arvore, estado: str) -> dict | None:
     return next((doc for doc in reversed(depois) if doc['unidade'].upper().startswith(PREFIXO_UNIDADE_DISA)), None)
 
 
-def sugestoes_de_fluxo(arvore: _Arvore, estado: str) -> list[str]:
+def sugestoes_de_fluxo(arvore: ArvoreProcesso, estado: str) -> list[str]:
     """O próximo fluxo do processo, quando ele já pode seguir (não é
     inconsistência: só a ação sugerida)."""
     acoes = []
@@ -476,6 +501,147 @@ def sugestoes_de_fluxo(arvore: _Arvore, estado: str) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
+# Começo do fluxo: "No Bloco" com o memo assinado e memo do "Aguarda" assinado
+# ---------------------------------------------------------------------------
+
+
+def _marcadores_consistentes(marcadores: list[str]) -> bool:
+    try:
+        conferir_marcadores(SimpleNamespace(marcadores_atuais=list(marcadores)))
+    except MarcadoresInconsistentes:
+        return False
+    return True
+
+
+def trocar_no_bloco_assinado(driver: webdriver.Remote, arvore: ArvoreProcesso, registro: RegistroVerificarMarcadores, linha: dict | None) -> None:
+    """Começo do fluxo: o estado "No Bloco" com o memo dele na rodada já
+    assinado por Gustavo, Bruna ou Danúbia (PADRAO_ASSINATURA_MEMO_AGUARDA) é
+    trocado pelo marcador de assinado ("Aguarda" ou, no 01.12, "Encaminhado"),
+    com tags.adicionar_tag (que remove o "No Bloco"). A prox_acao passa a ser a
+    que o geacs_inicial daria ao novo estado (exceto a da DEPROC, que diz mais).
+
+    Só com os marcadores consistentes (um estado) e o marcador novo cadastrado
+    no SEI (senão, inconsistência e nada muda). Processo fechado na GEACS (sem
+    "Incluir Documento"): é reaberto, o marcador é trocado e o processo é
+    concluído de novo (_concluir_de_novo, mesmo se a troca falhar). Com o
+    MANUAL, o fechado não é reaberto (TAGS_TRATAMENTO_MANUAL), e o marcador
+    não é trocado."""
+    estados = [tag for tag in TAGS_ESTADO_NOVO if tag in registro.marcadores_atuais]
+    if len(estados) != 1 or estados[0] not in _ASSINADO_POR_NO_BLOCO or not _marcadores_consistentes(registro.marcadores_atuais):
+        return
+    no_bloco = estados[0]
+    novo = _ASSINADO_POR_NO_BLOCO[no_bloco]
+    memo = _MEMO_POR_NO_BLOCO[no_bloco]
+    encontrado = arvore.ultimo_memo_geacs(memo.padrao_assunto)
+    if encontrado is None or arvore.indice(encontrado) < arvore.inicio_rodada():
+        # Sem o memo da rodada: a conferência do memo do marcador aponta
+        return
+    signatario = arvore.signatario(encontrado)
+    if signatario is None:
+        return
+    reaberto = False
+    if not registro.aberto_na_geacs:
+        if TAGS_TRATAMENTO_MANUAL & set(registro.marcadores_atuais):
+            logger.info(f'Memo {memo.descricao} ({_descrever(encontrado)}) assinado, mas o processo está fechado na GEACS e tem o MANUAL: não é reaberto')
+            return
+        logger.info(f'Memo {memo.descricao} ({_descrever(encontrado)}) assinado e processo fechado na GEACS: reabre para trocar o "{_curto(no_bloco)}"')
+        try:
+            reabrir_processo_fechado(driver, registro)
+        except ProcessoFechadoNoSetor as e:
+            logger.warning(f'Marcador "{_curto(no_bloco)}" não trocado: {e}')
+            _registrar(
+                registro,
+                [Problema(f'memo {memo.descricao} ({encontrado["numero_sei"]}) assinado, mas o processo fechado não pôde ser reaberto para trocar o marcador', AcaoSugerida.TROCAR_MARCADOR_ASSINADO)],
+            )
+            return
+        reaberto = True
+
+    try:
+        try:
+            garantir_marcadores_no_sei(driver, [novo])
+        except ErroAvaliacao as e:
+            logger.warning(f'Marcador "{_curto(no_bloco)}" não trocado: {e}')
+            _registrar(registro, [Problema(f'memo {memo.descricao} ({encontrado["numero_sei"]}) assinado, mas o "{_curto(novo)}" não está cadastrado no SEI', AcaoSugerida.CORRIGIR_MARCADORES)])
+            return
+        logger.info(f'Memo {memo.descricao} assinado por {signatario} ({_descrever(encontrado)}): troca "{_curto(no_bloco)}" -> "{_curto(novo)}"')
+        adicionar_tag(driver, registro, novo)
+        registro.marcadores_trocados.append(f'{_curto(no_bloco)} -> {_curto(novo)}: {encontrado["numero_sei"]} ({signatario})')
+        # Antes de concluir: a troca vale mesmo se a conclusão falhar
+        _atualizar_prox_acao_pela_troca(registro, linha, novo)
+    finally:
+        if reaberto:
+            _concluir_de_novo(driver, registro)
+
+
+def _atualizar_prox_acao_pela_troca(registro: RegistroVerificarMarcadores, linha: dict | None, novo: str) -> None:
+    """A prox_acao do novo estado (exceto a da DEPROC, que diz mais)."""
+    atual = (linha or {}).get('prox_acao')
+    esperada = _PROX_ACAO_DO_INICIAL[novo]
+    if atual != esperada and not (isinstance(atual, str) and atual.startswith(_PREFIXO_PROX_ACAO_DEPROC)):
+        registro.prox_acao_atualizada = esperada
+        logger.info(f'Planilha: prox_acao "{atual or "(vazia)"}" -> "{esperada}" (marcador trocado)')
+
+
+def _concluir_de_novo(driver: webdriver.Remote, registro: RegistroVerificarMarcadores) -> None:
+    """Conclui o processo reaberto para trocar o marcador (volta a ficar
+    fechado na GEACS). Falhou: ErroAvaliacao (concluir à mão)."""
+    try:
+        acessar_processo(driver, registro.num_processo)
+        concluir_processo(driver)
+        acessar_processo(driver, registro.num_processo)
+    except Exception as e:
+        logger.exception('Falha ao concluir de novo o processo reaberto para trocar o marcador')
+        raise ErroAvaliacao('Processo reaberto para trocar o marcador e não foi concluído de novo: conclua à mão no SEI') from e
+    registro.concluido_de_novo = True
+    if registro.marcadores_trocados:
+        registro.marcadores_trocados[-1] += ' (processo reaberto e concluído de novo)'
+    logger.info('Processo concluído de novo na GEACS (estava fechado antes da troca do marcador)')
+
+
+def conferir_memos_aguarda(arvore: ArvoreProcesso, registro: RegistroVerificarMarcadores, linha: dict | None) -> None:
+    """Começo do fluxo: para cada marcador "Aguarda" do processo, procura o
+    memo do marcador (o mais recente da GEACS com o assunto do memo) assinado
+    por Gustavo, Bruna ou Danúbia. Achou: registra o número SEI na coluna do
+    memo (memo_disa_sei, memo_deproc_sei, ...) e em
+    verificar_marcadores_memo_aguarda_assinado. Se o "Aguarda" é o único estado
+    e os marcadores estão consistentes, atualiza também a prox_acao para
+    Aguardar resposta ao memo enviado (exceto a prox_acao da DEPROC, que diz
+    mais). Sem o memo ou sem a assinatura, nada muda aqui (a conferência do memo
+    do marcador aponta o problema)."""
+    aguardas = [tag for tag in registro.marcadores_atuais if tag in _TAGS_AGUARDA]
+    if not aguardas:
+        return
+    assinados = []
+    for tag in aguardas:
+        memo = _MEMO_POR_NO_BLOCO[_NO_BLOCO_POR_ASSINADO[tag]]
+        encontrado = arvore.ultimo_memo_geacs(memo.padrao_assunto)
+        if encontrado is None:
+            logger.info(f'Marcador "{_curto(tag)}" sem o memo {memo.descricao} na árvore')
+            continue
+        signatario = arvore.signatario(encontrado)
+        if signatario is None:
+            logger.info(f'Memo {memo.descricao} do marcador "{_curto(tag)}" ({_descrever(encontrado)}) sem assinatura de Gustavo, Bruna ou Danúbia')
+            continue
+        numero = encontrado['numero_sei']
+        logger.info(f'Memo {memo.descricao} do marcador "{_curto(tag)}" assinado por {signatario}: {_descrever(encontrado)}')
+        registro.memos_aguarda_assinados.append(f'{_curto(tag)}: {numero} ({signatario})')
+        anterior = _numero_sei((linha or {}).get(memo.coluna_sei))
+        if anterior != numero:
+            logger.info(f'Planilha: {memo.coluna_sei} = {numero} (antes: {anterior or "vazia"})')
+        registro.colunas_memo_aguarda[memo.coluna_sei] = numero
+        assinados.append(tag)
+
+    estados = [tag for tag in TAGS_ESTADO_NOVO if tag in registro.marcadores_atuais]
+    if len(estados) != 1 or estados[0] not in assinados or not _marcadores_consistentes(registro.marcadores_atuais):
+        return
+    atual = registro.prox_acao_atualizada or (linha or {}).get('prox_acao')
+    if atual == ProxAcao.AGUARDAR_RESPOSTA_MEMO or (isinstance(atual, str) and atual.startswith(_PREFIXO_PROX_ACAO_DEPROC)):
+        return
+    registro.prox_acao_atualizada = ProxAcao.AGUARDAR_RESPOSTA_MEMO
+    logger.info(f'Planilha: prox_acao "{atual or "(vazia)"}" -> "{ProxAcao.AGUARDAR_RESPOSTA_MEMO}" (memo do "Aguarda" assinado)')
+
+
+# ---------------------------------------------------------------------------
 # Conferência do processo
 # ---------------------------------------------------------------------------
 
@@ -485,10 +651,14 @@ def _registrar(registro: RegistroVerificarMarcadores, problemas: list[Problema])
     registro.acoes_sugeridas += [p.acao for p in problemas]
 
 
-def conferir_processo(driver: webdriver.Remote, registro: RegistroVerificarMarcadores, linha: dict | None) -> None:
+def conferir_processo(driver: webdriver.Remote, registro: RegistroVerificarMarcadores, linha: dict | None, arvore: ArvoreProcesso | None = None) -> None:
     """Preenche registro.inconsistencias e registro.acoes_sugeridas. linha: a
     linha do processo na planilha de controle (None: planilha não lida, a
-    prox_acao não é conferida)."""
+    prox_acao não é conferida). arvore: a já lida (conferir_memos_aguarda).
+    A prox_acao conferida é a atualizada pelo memo do "Aguarda" assinado."""
+    arvore = arvore or ArvoreProcesso(driver)
+    if linha is not None and registro.prox_acao_atualizada is not None:
+        linha = {**linha, 'prox_acao': registro.prox_acao_atualizada}
     marcadores = registro.marcadores_atuais
     atuais = set(marcadores)
     if linha is None:
@@ -502,7 +672,6 @@ def conferir_processo(driver: webdriver.Remote, registro: RegistroVerificarMarca
         # é inconsistente
         return
     estado = estados[0]
-    arvore = _Arvore(driver)
     no_bloco = _NO_BLOCO_POR_ASSINADO.get(estado, estado)
     if no_bloco in _MEMO_POR_NO_BLOCO:
         if linha is not None:

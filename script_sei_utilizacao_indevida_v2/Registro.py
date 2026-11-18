@@ -178,6 +178,11 @@ _CAMPOS_INTERNOS = frozenset({
     'inconsistencias',
     'acoes_sugeridas',
     'aberto_na_geacs',
+    'memos_aguarda_assinados',
+    'colunas_memo_aguarda',
+    'prox_acao_atualizada',
+    'marcadores_trocados',
+    'concluido_de_novo',
     'avaliou_processo',
 })
 
@@ -676,8 +681,13 @@ class RegistroVerificarMarcadores(RegistroBase):
     (verificar_marcadores_inconsistencia) e o erro da passagem
     (verificar_marcadores_erro), as ações sugeridas
     (verificar_marcadores_acao_sugerida) e se o processo está aberto na GEACS
-    (verificar_marcadores_aberto_na_geacs). Não grava prox_acao, fluxo,
-    tipo_erro e erro."""
+    (verificar_marcadores_aberto_na_geacs). Não grava fluxo, tipo_erro e erro.
+    A prox_acao e a coluna do memo (memo_*_sei) só são gravadas quando o memo
+    de um marcador "Aguarda" está assinado (conferir_memos_aguarda; coluna
+    verificar_marcadores_memo_aguarda_assinado) ou quando o "No Bloco" é
+    trocado pelo marcador de assinado (trocar_no_bloco_assinado; colunas
+    verificar_marcadores_marcador_trocado, marcadores_adicionados e
+    marcadores_removidos)."""
 
     # Internos (ver _CAMPOS_INTERNOS)
     marcadores_lidos: bool = False
@@ -688,6 +698,20 @@ class RegistroVerificarMarcadores(RegistroBase):
     acoes_sugeridas: list[str] = field(default_factory=list)
     # "Incluir Documento" na GEACS (None: não conferido)
     aberto_na_geacs: bool | None = None
+    # Memos dos marcadores "Aguarda" assinados (conferencia_prox_acao.
+    # conferir_memos_aguarda): "<marcador>: <nº SEI> (<signatário>)"
+    memos_aguarda_assinados: list[str] = field(default_factory=list)
+    # Coluna do memo na planilha (memo_disa_sei, memo_deproc_sei, ...) ->
+    # número SEI do memo assinado
+    colunas_memo_aguarda: dict[str, str] = field(default_factory=dict)
+    # prox_acao atualizada pelo memo do "Aguarda" assinado (None: a da
+    # planilha fica como está). Separada da prox_acao, que registrar_erro altera
+    prox_acao_atualizada: str | None = None
+    # "No Bloco" trocado pelo marcador de assinado (conferencia_prox_acao.
+    # trocar_no_bloco_assinado): "<No Bloco> -> <novo>: <nº SEI> (<signatário>)"
+    marcadores_trocados: list[str] = field(default_factory=list)
+    # Processo fechado reaberto para a troca e concluído de novo
+    concluido_de_novo: bool = False
 
     def to_dict(self) -> dict:
         dados = {
@@ -700,6 +724,17 @@ class RegistroVerificarMarcadores(RegistroBase):
         }
         if self.aberto_na_geacs is not None:
             dados['verificar_marcadores_aberto_na_geacs'] = self.aberto_na_geacs
+        # Só com os marcadores lidos (senão a coluna fica como está)
+        if self.marcadores_lidos:
+            dados['verificar_marcadores_memo_aguarda_assinado'] = ' | '.join(self.memos_aguarda_assinados) or None
+            dados['verificar_marcadores_marcador_trocado'] = ' | '.join(self.marcadores_trocados) or None
+        # Só com a troca do "No Bloco" (senão ficam as dos outros fluxos)
+        if self.marcadores_trocados:
+            dados['marcadores_adicionados'] = _juntar(self.marcadores_adicionados)
+            dados['marcadores_removidos'] = _juntar(self.marcadores_removidos)
+        dados.update(self.colunas_memo_aguarda)
+        if self.prox_acao_atualizada is not None:
+            dados['prox_acao'] = self.prox_acao_atualizada
         # Sem conseguir ler os marcadores, as colunas deles ficam como estão
         if self.marcadores_lidos:
             dados['marcadores_finais'] = _juntar(self.marcadores_atuais)

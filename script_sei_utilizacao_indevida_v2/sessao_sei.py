@@ -12,12 +12,16 @@ from dotenv import load_dotenv
 from sei_automacao import efetuar_login, iniciar_sei, trocar_unidade
 from selenium import webdriver
 from selenium.common.exceptions import InvalidSessionIdException, NoSuchWindowException
+from urllib3.exceptions import MaxRetryError
 
 logger = logging.getLogger(__name__)
 
 URL_SEI = 'https://www.sei.mg.gov.br'
 
-_SESSAO_ENCERRADA = (InvalidSessionIdException, NoSuchWindowException)
+# MaxRetryError: o chromedriver não responde mais (ex.: encerrado pelo Ctrl+C
+# junto com o navegador; em 18/11/2026 uma execução seguiu assim por 1h20,
+# com erro em todos os processos, e gravou a planilha junto com outra)
+_SESSAO_ENCERRADA = (InvalidSessionIdException, NoSuchWindowException, MaxRetryError)
 
 
 def sessao_encerrada(registro) -> bool:

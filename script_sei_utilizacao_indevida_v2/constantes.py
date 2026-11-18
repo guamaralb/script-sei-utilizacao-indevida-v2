@@ -114,6 +114,10 @@ CARGO_SIGNATARIO_GERENCIA = 'Chefe do Departamento de Processamento de Contas e 
 # eletrônica. O NOME_SIGNATARIO ou, nos memos anteriores, a Bruna (com e sem
 # o "i" a mais)
 PADRAO_ASSINATURA_MEMO_DEPROC = r'assinado\s+eletronicamente\s+por\s+(?:Gustavo\s+Amaral\s+Bernardino|Bruna\s+Mii?ller\s+Lavarini)'
+# Fluxo GEACS VERIFICAR MARCADORES: quem assina os memos dos marcadores
+# "Aguarda" (Gustavo; Bruna, com e sem o "i" a mais; Danúbia, que assina pela
+# gerente). O grupo 1 é o nome, como no texto
+PADRAO_ASSINATURA_MEMO_AGUARDA = r'assinado\s+eletronicamente\s+por\s+(Gustavo\s+Amaral\s+Bernardino|Bruna\s+Mii?ller\s+Lavarini|Dan[úu]bia\s+Lacerda\s+Gomes\s+de\s+Oliveira)'
 # Quem assina o memo da DEPROC à GEACS com o cálculo da coparticipação
 # (MemoGeacsCalculoCopa, fluxo DEPROC). Com None, o processo para com erro
 # antes de criar qualquer documento

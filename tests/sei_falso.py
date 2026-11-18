@@ -140,8 +140,8 @@ class SEIFalso:
         if com_memo_apis:
             self.memo_apis(extra=extra)
 
-    def memo_geacs(self, assunto: str, *, assinado: bool = False) -> str:
-        assinatura = '\nDocumento assinado eletronicamente por Fulano de Tal, em 01/11/2026' if assinado else ''
+    def memo_geacs(self, assunto: str, *, assinado: bool = False, signatario: str = 'Fulano de Tal') -> str:
+        assinatura = f'\nDocumento assinado eletronicamente por {signatario}, em 01/11/2026' if assinado else ''
         return self.novo_doc('Memorando 1', UNIDADE_GEACS, f'Assunto: {assunto}{assinatura}')
 
     def memo_geacs_para(self, destino: str, data: str | None = '18 de setembro de 2026') -> str:

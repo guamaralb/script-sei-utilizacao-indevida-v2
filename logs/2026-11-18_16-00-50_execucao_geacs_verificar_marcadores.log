@@ -1,0 +1,77 @@
+2026-11-18 16:00:50 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-18 16:00:50 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-18_16-00-50_execucao_geacs_verificar_marcadores.log
+2026-11-18 16:00:50 | INFO    | -                         | processos_a_processar | 197 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-18 16:00:55 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-18 16:00:55 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-18 16:00:56 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-18 16:01:16 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-18 16:01:16 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-18 16:01:34 | ERROR   | -                         | __main__              | Erro crítico na execução (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES)
+Traceback (most recent call last):
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/main_geacs_verificar_marcadores.py", line 126, in main
+    driver = abrir_sei(UNIDADE_GEACS)
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/sessao_sei.py", line 65, in abrir_sei
+    alterar_unidade_sei(driver, unidade)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/script_sei_utilizacao_indevida_v2/sessao_sei.py", line 47, in alterar_unidade_sei
+    trocar_unidade(driver, unidade)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/src/sei_automacao/unidade.py", line 27, in trocar_unidade
+    _tela_unidade.selecionar_unidade(driver, unidade, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/src/sei_automacao/_internal/telas/unidade.py", line 58, in selecionar_unidade
+    esperar_pagina_carregada(driver, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/REPOSITORIOS/GEACS/sei-automacao/src/sei_automacao/_internal/telas/unidade.py", line 70, in esperar_pagina_carregada
+    espera.until(EC.element_to_be_clickable((By.ID, 'txtPesquisaRapida')))
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/wait.py", line 112, in until
+    value = method(self._driver)
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/expected_conditions.py", line 519, in _predicate
+    element = visibility_of(target)(driver)
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/expected_conditions.py", line 212, in _predicate
+    return _element_if_visible(element)
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/support/expected_conditions.py", line 227, in _element_if_visible
+    return element if element.is_displayed() == visibility else False
+                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/webelement.py", line 308, in is_displayed
+    return self.parent.execute_script(f"/* isDisplayed */return ({isDisplayed_js}).apply(null, arguments);", self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 613, in execute_script
+    return self.execute(command, {"script": script, "args": converted_args})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 503, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/guamaralb/.cache/pypoetry/virtualenvs/script-sei-utilizacao-indevida-v2-kURcPqjt-py3.14/lib/python3.14/site-packages/selenium/webdriver/remote/errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.StaleElementReferenceException: Message: stale element reference: stale element not found
+  (Session info: chrome=153.0.8010.52); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+#0 0x5f96020a59fa <unknown>
+#1 0x5f96019db5b9 <unknown>
+#2 0x5f96019f02e8 <unknown>
+#3 0x5f96019ef061 <unknown>
+#4 0x5f96019e3259 <unknown>
+#5 0x5f96019e3393 <unknown>
+#6 0x5f96019e1419 <unknown>
+#7 0x5f96019e538c <unknown>
+#8 0x5f9601a7c9c1 <unknown>
+#9 0x5f9601a7b8de <unknown>
+#10 0x5f9601a24b8b <unknown>
+#11 0x5f9601a25971 <unknown>
+#12 0x5f9602068667 <unknown>
+#13 0x5f9602066e95 <unknown>
+#14 0x5f9602051f55 <unknown>
+#15 0x5f9602067aea <unknown>
+#16 0x5f960203a6c9 <unknown>
+#17 0x5f960208f9a8 <unknown>
+#18 0x5f960208fb45 <unknown>
+#19 0x5f96020a4353 <unknown>
+#20 0x7db60d4a3dfa <unknown>
+#21 0x7db60d5375cc <unknown>
+
+2026-11-18 16:01:34 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-18 16:01:34 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-18 16:01:34 | INFO    | -                         | __main__              | Duração total da execução: 43.6s
+2026-11-18 16:01:34 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

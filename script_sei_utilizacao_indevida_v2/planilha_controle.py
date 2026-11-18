@@ -34,12 +34,21 @@ Formatação:
 A gravação é atômica: o arquivo é gravado em uma cópia temporária, que só
 então substitui a planilha. Uma interrupção no meio da gravação (ex.:
 sistema operacional encerrando o processo) não corrompe a planilha.
+
+Uma execução por vez: a planilha fica travada (~em_uso_<nome>.lock, trava do
+sistema operacional, liberada quando o processo termina) do início ao fim da
+execução. Outra execução, de qualquer fluxo, para antes do login
+(PlanilhaEmUso). Em 18/11/2026, duas execuções gravaram juntas a mesma cópia
+temporária e corromperam a planilha.
 """
 
 import logging
 import os
 import shutil
+import sys
+from datetime import datetime
 from pathlib import Path
+from typing import IO
 
 import pandas as pd
 from constantes import ARQ_CONTROLE_GERAL, DIR_BACKUP_CONTROLE
@@ -232,7 +241,8 @@ def _gravar(arquivo: Path, abas: dict[str, list[dict]]) -> None:
     """Grava em uma cópia temporária e só então substitui o arquivo
     (os.replace é atômico): se o processo for encerrado no meio da gravação,
     a planilha anterior continua inteira."""
-    temporario = arquivo.with_name(f'~gravando_{arquivo.name}')
+    # Com o pid, uma cópia temporária nunca é a de outro processo
+    temporario = arquivo.with_name(f'~gravando_{os.getpid()}_{arquivo.name}')
     try:
         if arquivo.exists():
             shutil.copy2(arquivo, temporario)
@@ -291,14 +301,82 @@ def _salvar_a_parte(arquivo: Path, execucao: str, abas: dict[str, list[dict]]) -
     return a_parte
 
 
+class PlanilhaEmUso(RuntimeError):
+    """Outra execução está usando a planilha de controle geral."""
+
+
+# Travas deste processo, por arquivo: abertas até o processo terminar. Várias
+# PlanilhaControleGeral do mesmo arquivo no mesmo processo (ex.: testes)
+# compartilham a trava
+_TRAVAS: dict[Path, IO] = {}
+
+
+def _arquivo_trava(arquivo: Path) -> Path:
+    return arquivo.with_name(f'~em_uso_{arquivo.stem}.lock')
+
+
+#: No Windows, a trava é de um byte depois do texto da trava (a parte travada
+#: não pode ser lida pela outra execução, que precisa dizer quem está rodando)
+_POSICAO_TRAVA_WINDOWS = 1 << 20
+
+
+def _travar_sem_esperar(trava: IO) -> None:
+    """Trava exclusiva do sistema operacional; OSError se outra execução já a
+    tem. É liberada quando o processo termina, mesmo encerrado à força."""
+    if sys.platform == 'win32':
+        import msvcrt  # noqa: PLC0415
+
+        trava.seek(_POSICAO_TRAVA_WINDOWS)
+        msvcrt.locking(trava.fileno(), msvcrt.LK_NBLCK, 1)
+    else:
+        import fcntl  # noqa: PLC0415
+
+        fcntl.flock(trava.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+
+def travar_planilha(arquivo: Path, script: str) -> None:
+    """Uma execução por vez na planilha de controle: levanta PlanilhaEmUso se
+    outro processo a está usando (o arquivo da trava diz qual)."""
+    chave = arquivo.resolve()
+    if chave in _TRAVAS:
+        return
+    caminho = _arquivo_trava(arquivo)
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    # 'a+': não apaga o que a outra execução escreveu antes de travar
+    trava = caminho.open('a+', encoding='utf-8')
+    try:
+        _travar_sem_esperar(trava)
+    except OSError:
+        try:
+            trava.seek(0)
+            dono = trava.read().strip() or 'desconhecida'
+        except OSError:
+            # No Windows, a parte travada não pode ser lida
+            dono = f'veja {caminho.name}'
+        trava.close()
+        raise PlanilhaEmUso(
+            f'A planilha de controle geral está sendo usada por outra execução ({dono}). '
+            f'Espere ela terminar (ou encerre-a) antes de rodar outro fluxo: duas execuções gravando juntas corrompem a planilha'
+        ) from None
+    trava.seek(0)
+    trava.truncate()
+    trava.write(f'script {script}, pid {os.getpid()}, início {datetime.now():%d/%m/%Y %H:%M:%S}')
+    trava.flush()
+    _TRAVAS[chave] = trava
+
+
 class PlanilhaControleGeral:
     """Planilha de controle geral de uma execução.
 
     É lida uma vez, no início, e regravada a cada processo (registrar), para
     que uma interrupção da execução não perca os processos já tratados. O
-    backup é feito uma vez por execução, antes da primeira gravação."""
+    backup é feito uma vez por execução, antes da primeira gravação.
+
+    Trava a planilha até o fim do processo (travar_planilha): com outra
+    execução usando a planilha, levanta PlanilhaEmUso, antes do login."""
 
     def __init__(self, script: str, execucao: str, arquivo: Path = ARQ_CONTROLE_GERAL):
+        travar_planilha(arquivo, script)
         self.script = script
         self.execucao = execucao
         self.arquivo = arquivo
