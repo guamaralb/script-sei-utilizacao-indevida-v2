@@ -267,7 +267,7 @@ col_main = Coluna(
         E(
             '<b>Erro levantado em qualquer coluna?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro, erro e prox_acao = Verificar erro (ou a já definida). Inesperado: + traceback e recarrega a página (tela presa não derruba os próximos processos)'
         ),
-        F('controle.registrar()', 'Regrava a planilha de controle (abas processos e historico) depois de cada processo'),
+        F('controle.registrar()', 'Regrava a planilha de controle (aba processos) e acrescenta a passagem ao histórico em CSV, depois de cada processo'),
         P('Há mais processos?', [IR('volta a "Para cada processo"')]),
         F('log_resumo()', 'Fecha o navegador e loga o resumo'),
         T('Fim'),
@@ -936,7 +936,7 @@ col_copa_loop = col_loop(
     'da DEPROC',
     ' e a base DEPROC do ano (BASES_DEPROC; 2019 e 2020: copa-MANTIS11281-base_2019 / _2020, aba Resultado, matrículas com DV)',
     'processar_deproc() — coluna 2',
-    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, marcadores_deproc_* e tag_deproc_*. '
+    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, marcadores_deproc_*, estado_atual_deproc e DEPROC | <marcador>. '
     'Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',
     argumentos=[
         P(
@@ -1022,7 +1022,7 @@ col_excluir = Coluna(
         P('Algum documento gerado<br>ainda na árvore?', [E('<b>ErroAvaliacao</b>: "Documento(s) da DEPROC não excluído(s): ...; marcadores da DEPROC mantidos" (sai dos excluídos)')]),
         F(
             'remover_marcadores_deproc()',
-            'Lê os marcadores e remove os da DEPROC que o processo tiver (o 01 por último). Os outros ficam. Colunas marcadores_deproc_* e tag_deproc_*',
+            'Lê os marcadores e remove os da DEPROC que o processo tiver (o 01 por último). Os outros ficam. Colunas marcadores_deproc_*, estado_atual_deproc e DEPROC | <marcador>',
             'listar_marcadores() · tags.remover_tag()',
         ),
         R('v2: 01.02.1 - Encaminhado GEACS: Memo Cálculo COPA'),
@@ -1129,8 +1129,8 @@ col_verif = Coluna(
             rotulo='Sim (e segue)',
         ),
         F(
-            'colunas_tags() · demais_marcadores()',
-            'Uma coluna tag_* por marcador válido na GEACS (TAGS_VALIDOS_GEACS, 30). Os outros (v2v:, 01.06.2 / 01.08.2 / 01.08.3, manuais, antigos) vão juntos para demais_marcadores',
+            'colunas_tags() · descrever_estado() · demais_marcadores()',
+            'Uma coluna por marcador válido na GEACS (TAGS_VALIDOS_GEACS, 32), com o nome do marcador, no fim da planilha; estado_atual. Os outros (v2v:, 01.06.2 / 01.08.2 / 01.08.3, manuais, antigos) vão juntos para demais_marcadores',
         ),
         P('Planilha de controle<br>não lida?', [T('A prox_acao não é conferida (só os memorandos)')], rotulo='Sim (e segue)'),
         P('conferir_marcadores():<br>combinação impossível?', [E('Inconsistência: os problemas (prox_acao esperada: Verificar marcadores inconsistentes)')], rotulo='Sim (e segue)'),
@@ -1162,14 +1162,25 @@ col_verif = Coluna(
             rotulo='Sim (e segue)',
         ),
         P('Retomada<br>(01.06, 01.08)?', [F('conferir_retomada()', 'Memo do fluxo na rodada sem o marcador (o geacs_inicial o reaproveita)')], rotulo='Sim (e segue)'),
+        P(
+            'Planilha com o 01.02 - No Bloco<br>GEACS da DEPROC e memo de<br>resultado da DEPROC assinado?',
+            [
+                E(
+                    'conferir_marcador_deproc(): GEACS em 01.12 / 01.12.1, ou em 01.10.B.1 com o memo assinado na rodada. '
+                    'Trocar na DEPROC o No Bloco pelo Encaminhado e rodar deproc_calcula_copa'
+                )
+            ],
+            rotulo='Sim (e segue)',
+        ),
         F(
             'sugestoes_de_fluxo()',
             'Só a ação sugerida: N Consta → Rodar geacs_corrige_envio_disa; 01.10.1 com memo de resultado da DEPROC assinado na rodada → Rodar geacs_todas_infos; '
             '01.09.1 com documento da DISA depois do memo → Tratar a resposta da DISA',
         ),
         T(
-            'Planilha: tag_*, demais_marcadores, marcadores_finais, verificar_marcadores_acao_sugerida (sem repetição), verificar_marcadores_inconsistencia e '
-            'verificar_marcadores_aberto_na_geacs (erro: verificar_marcadores_erro; sem ler os marcadores, as colunas deles ficam como estavam)'
+            'Planilha: colunas dos marcadores, estado_atual, demais_marcadores, marcadores_finais, verificar_marcadores_em, verificar_marcadores_acao_sugerida (sem repetição), '
+            'verificar_marcadores_inconsistencia e verificar_marcadores_aberto_na_geacs (erro: verificar_marcadores_erro; sem ler os marcadores, as colunas deles ficam como estavam). '
+            'script e ultima_passagem: só no histórico (na aba processos, os do último fluxo que agiu)'
         ),
     ],
 )
@@ -1283,7 +1294,7 @@ abas = [
         'geacs-verificar-marcadores',
         'geacs_verificar_marcadores',
         'run_geacs_verificar_marcadores · Verificar os marcadores (main_geacs_verificar_marcadores.py)',
-        f'Na unidade da GEACS. Não altera a prox_acao: atualiza as colunas de marcadores (tag_* e demais_marcadores) e confere a prox_acao com os marcadores e os memorandos. {LEIA}',
+        f'Na unidade da GEACS. Não altera a prox_acao: atualiza as colunas de marcadores (uma por marcador, estado_atual e demais_marcadores) e confere a prox_acao com os marcadores e os memorandos. {LEIA}',
         [col_verif_loop, col_verif],
     ),
     pagina(

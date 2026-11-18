@@ -3,11 +3,13 @@ de marcadores, conferência da prox_acao com os marcadores e os memorandos
 (conferencia_prox_acao.py) e a migração das colunas de marcadores da planilha
 de controle."""
 
+import textwrap
 from datetime import datetime
 
 import conferencia_prox_acao
 import docs_processo
 import main_geacs_verificar_marcadores as fluxo
+import pandas as pd
 import processo_fechado
 import pytest
 import sei_automacao.processo
@@ -15,9 +17,10 @@ import tags
 from conferencia_prox_acao import AcaoSugerida
 from constantes import UNIDADE_DEPROC, UNIDADE_GEACS
 from openpyxl import load_workbook
-from planilha_controle import PlanilhaControleGeral, migrar_colunas_marcadores
+from openpyxl.utils import get_column_letter
+from planilha_controle import CARACTERES_POR_LINHA_MARCADOR, PlanilhaControleGeral, migrar_colunas_marcadores
 from rede_propria import ErroAvaliacao
-from Registro import PROX_ACOES_A_VERIFICAR, ProxAcao, RegistroMain
+from Registro import PROX_ACOES_A_VERIFICAR, ProxAcao, RegistroMain, RegistroVerificarMarcadores
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisComTodasAsInformacoes import ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisSemMemo import ASSUNTO_MEMO_APIS_SEM_MEMO
@@ -155,7 +158,7 @@ def _acao(registro) -> str | None:
 
 
 def _colunas_tag(dados: dict) -> dict:
-    return {c: v for c, v in dados.items() if c.startswith('tag_')}
+    return {c: v for c, v in dados.items() if c in tags.COLUNAS_TAGS_VALIDOS}
 
 
 def test_validos_sao_os_marcadores_cadastrados_na_geacs():
@@ -167,8 +170,11 @@ def test_uma_coluna_por_marcador_valido_e_os_demais_juntos(monkeypatch):
     dados = _passar(monkeypatch, marcadores).to_dict()
 
     colunas = _colunas_tag(dados)
+    # O nome da coluna é o do marcador, na ordem da numeração
+    assert list(colunas) == list(tags.COLUNAS_TAGS_GEACS)
     assert len(colunas) == len(VALIDOS_NO_SEI)
-    assert {c for c, v in colunas.items() if v} == {'tag_processo_novo', 'tag_aguarda_disa_validar_consta'}
+    assert {c for c, v in colunas.items() if v} == {tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA}
+    assert dados['estado_atual'] == tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA
     assert dados['demais_marcadores'] == '; '.join(sorted(['PLANILHADO', 'v2: 02 - Processo VELHO', 'v2v: 01.03 - Memos DISA e DEPROC no Bloco', DISA_USOU_RP_ANTIGO, 'MANUAL']))
     assert dados['marcadores_finais'] == '; '.join(marcadores)
     assert dados['verificar_marcadores_erro'] is None
@@ -221,10 +227,10 @@ def test_outros_fluxos_tambem_gravam_demais_marcadores():
     dados = registro.to_dict()
 
     assert dados['demais_marcadores'] == MANTIS_USOU_RC_ANTIGO
-    assert set(_colunas_tag(dados)) == {coluna for coluna in tags.COLUNAS_TAGS_VALIDOS if not coluna.startswith('tag_deproc_')}
+    assert set(_colunas_tag(dados)) == set(tags.COLUNAS_TAGS_GEACS)
 
 
-def test_migracao_remove_colunas_obsoletas_e_preenche_demais_marcadores():
+def test_migracao_renomeia_as_colunas_e_remove_as_obsoletas():
     linhas = [
         {
             'num_processo': 'P1',
@@ -232,6 +238,8 @@ def test_migracao_remove_colunas_obsoletas_e_preenche_demais_marcadores():
             'tit_usou': True,
             'marcadores_finais': f'{tags.TAG_PROCESSO_NOVO}; {DISA_USOU_RP_ANTIGO}; PLANILHADO',
             'tag_processo_novo': True,
+            # Nome antigo diferente do marcador (era o 01.09.B - No Bloco)
+            'tag_aguarda_disa_validar_consta': False,
             'tag_base_disa_usou_rp': True,
             'tag_planilhado': True,
             'tag_deproc_tratado': False,
@@ -241,20 +249,33 @@ def test_migracao_remove_colunas_obsoletas_e_preenche_demais_marcadores():
         {'num_processo': 'P2', 'marcadores_finais': 'PLANILHADO', 'demais_marcadores': 'MANUAL'},
         # Sem marcadores_finais (ex.: só passou pelo cancelamento do memo)
         {'num_processo': 'P3', 'canc_memo_deproc_ant_cancelado': True},
+        # Com a antiga e a atual, vale a atual
+        {'num_processo': 'P4', 'tag_processo_novo': False, tags.TAG_PROCESSO_NOVO: True},
     ]
-    p1, p2, p3 = migrar_colunas_marcadores(linhas)
+    p1, p2, p3, p4 = migrar_colunas_marcadores(linhas)
 
     assert p1 == {
         'num_processo': 'P1',
         'prox_acao': 'Assinar',
         'tit_usou': True,
         'marcadores_finais': f'{tags.TAG_PROCESSO_NOVO}; {DISA_USOU_RP_ANTIGO}; PLANILHADO',
-        'tag_processo_novo': True,
-        'tag_deproc_tratado': False,
+        tags.TAG_PROCESSO_NOVO: True,
+        tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: False,
+        f'DEPROC | {tags.TAG_DEPROC_TRATADO}': False,
         'demais_marcadores': f'PLANILHADO; {DISA_USOU_RP_ANTIGO}',
     }
     assert p2['demais_marcadores'] == 'MANUAL'
     assert p3 == {'num_processo': 'P3', 'canc_memo_deproc_ant_cancelado': True}
+    assert p4 == {'num_processo': 'P4', tags.TAG_PROCESSO_NOVO: True}
+
+
+def test_colunas_antigas_cobrem_todos_os_marcadores():
+    assert set(tags.COLUNA_POR_COLUNA_ANTIGA.values()) == tags.COLUNAS_TAGS_VALIDOS
+
+
+def test_nome_do_marcador_cabe_em_3_linhas_na_coluna():
+    for coluna in tags.COLUNAS_TAGS:
+        assert len(textwrap.wrap(coluna, CARACTERES_POR_LINHA_MARCADOR)) <= 3, coluna
 
 
 def test_planilha_de_controle_mantem_o_resto_e_migra_os_marcadores(monkeypatch, tmp_path):
@@ -272,25 +293,39 @@ def test_planilha_de_controle_mantem_o_resto_e_migra_os_marcadores(monkeypatch, 
         'tag_processo_novo': True,
         'tag_base_disa_usou_rp': True,
     }
-    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(anterior)
+    # Planilha de antes de 18/11/2026: colunas tag_* e aba historico
+    with pd.ExcelWriter(arquivo) as writer:
+        pd.DataFrame([{**anterior, 'script': 'geacs_inicial'}]).to_excel(writer, sheet_name='processos', index=False)
+        pd.DataFrame([{**anterior, 'script': 'geacs_inicial'}]).to_excel(writer, sheet_name='historico', index=False)
 
-    PlanilhaControleGeral(fluxo.SCRIPT, 'exec2', arquivo).registrar(_passar(monkeypatch, [tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_APIS_SEM_USO, 'PLANILHADO']).to_dict())
+    controle = PlanilhaControleGeral(fluxo.SCRIPT, 'exec2', arquivo, colunas_so_historico=RegistroVerificarMarcadores.COLUNAS_SO_HISTORICO)
+    controle.registrar(_passar(monkeypatch, [tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_APIS_SEM_USO, 'PLANILHADO']).to_dict())
 
     livro = load_workbook(arquivo)
-    for aba in ('processos', 'historico'):
-        assert 'tag_base_disa_usou_rp' not in [c.value for c in livro[aba][1]]
+    # A aba historico foi para o CSV
+    assert 'historico' not in livro.sheetnames
     processos = livro['processos']
+    assert 'tag_base_disa_usou_rp' not in [c.value for c in processos[1]]
+    assert 'tag_processo_novo' not in [c.value for c in processos[1]]
     linha = {c.value: v.value for c, v in zip(processos[1], processos[2], strict=True)}
     assert linha['prox_acao'] == 'Assinar memo DEPROC e encaminhar'
     assert linha['fluxo'] == 'NOVO'
     assert linha['tit_usou'] is True
-    assert linha['script'] == fluxo.SCRIPT
-    assert linha['tag_processo_novo'] is True
-    assert linha['tag_aguarda_apis_sem_uso'] is True
+    # script e ultima_passagem são os do último fluxo que agiu no processo
+    assert linha['script'] == 'geacs_inicial'
+    assert linha['ultima_passagem'] == datetime(2026, 11, 1, 9)
+    assert linha['data_execucao'] == 'exec1'
+    assert linha['verificar_marcadores_em'] is not None
+    assert linha[tags.TAG_PROCESSO_NOVO] is True
+    assert linha[tags.TAG_NO_BLOCO_APIS_SEM_USO] is True
+    assert linha['estado_atual'] == tags.TAG_NO_BLOCO_APIS_SEM_USO
     assert linha['demais_marcadores'] == 'PLANILHADO'
-    historico = livro['historico']
-    primeira = {c.value: v.value for c, v in zip(historico[1], historico[2], strict=True)}
-    assert primeira['demais_marcadores'] == DISA_USOU_RP_ANTIGO
+    historico = controle.historico.ler()
+    assert [h['script'] for h in historico] == ['geacs_inicial', fluxo.SCRIPT]
+    assert historico[0]['demais_marcadores'] == DISA_USOU_RP_ANTIGO
+    assert historico[0][tags.TAG_PROCESSO_NOVO] == 'VERDADEIRO'
+    assert 'tag_processo_novo' not in historico[0]
+    assert historico[1]['ultima_passagem']
 
 
 # ---------------------------------------------------------------------------
@@ -516,12 +551,12 @@ def test_erro_ao_ler_a_arvore_mantem_os_marcadores_lidos(monkeypatch):
     dados = _passar(monkeypatch, NO_BLOCO_DEPROC, sei, {'prox_acao': ProxAcao.ASSINAR_DEPROC}).to_dict()
 
     assert dados['verificar_marcadores_erro'] == 'RuntimeError: árvore presa'
-    assert dados['tag_memo_deproc_coparticipacao'] is True
+    assert dados[tags.TAG_MEMO_DEPROC_COPARTICIPACAO] is True
 
 
-def test_coluna_de_inconsistencia_antes_dos_marcadores_e_em_amarelo(monkeypatch, tmp_path):
+def test_ordem_e_formato_das_colunas_da_planilha(monkeypatch, tmp_path):
     arquivo = tmp_path / 'controle.xlsx'
-    anterior = {'num_processo': 'PROC', 'ultima_passagem': datetime(2026, 11, 1, 9), 'prox_acao': ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA, 'tit_usou': True}
+    anterior = {'num_processo': 'PROC', 'ultima_passagem': datetime(2026, 11, 1, 9), 'prox_acao': ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA, 'tipo_erro': None, 'erro': None, 'tit_usou': True}
     PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar({
         **anterior,
         'qnt_memos_geacs_na_arvore': 1,
@@ -529,7 +564,7 @@ def test_coluna_de_inconsistencia_antes_dos_marcadores_e_em_amarelo(monkeypatch,
         'marcadores_finais': tags.TAG_PROCESSO_NOVO,
     })
 
-    controle = PlanilhaControleGeral(fluxo.SCRIPT, 'exec2', arquivo)
+    controle = PlanilhaControleGeral(fluxo.SCRIPT, 'exec2', arquivo, colunas_so_historico=RegistroVerificarMarcadores.COLUNAS_SO_HISTORICO)
     linha = controle.linha_processo('PROC')
     assert linha['prox_acao'] == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA
     assert controle.linha_processo('OUTRO') == {}
@@ -538,9 +573,19 @@ def test_coluna_de_inconsistencia_antes_dos_marcadores_e_em_amarelo(monkeypatch,
     assert not list(tmp_path.glob('~gravando_*'))
     processos = load_workbook(arquivo)['processos']
     colunas = [c.value for c in processos[1]]
-    posicao = colunas.index('marcadores_sei')
-    assert colunas[posicao - 2 : posicao] == ['verificar_marcadores_inconsistencia', 'verificar_marcadores_erro']
+    # estado_atual logo depois da prox_acao; as do verificar logo depois de erro
+    assert colunas[colunas.index('prox_acao') + 1] == 'estado_atual'
+    posicao = colunas.index('erro') + 1
+    assert colunas[posicao : posicao + 3] == ['verificar_marcadores_acao_sugerida', 'verificar_marcadores_inconsistencia', 'verificar_marcadores_erro']
+    # No fim: demais_marcadores e os marcadores, na ordem da numeração
+    assert colunas[-len(tags.COLUNAS_TAGS_GEACS) - 1 :] == ['demais_marcadores', *tags.COLUNAS_TAGS_GEACS]
+    for indice, coluna in enumerate(colunas, start=1):
+        if coluna in tags.COLUNAS_TAGS_VALIDOS:
+            assert processos.cell(row=1, column=indice).alignment.wrap_text
+            assert processos.column_dimensions[get_column_letter(indice)].width == 22
+    assert processos.row_dimensions[1].height == 48
     celulas = dict(zip(colunas, processos[2], strict=True))
+    assert celulas['estado_atual'].value == tags.TAG_MEMO_DEPROC_COPARTICIPACAO
     assert celulas['verificar_marcadores_inconsistencia'].value.startswith('prox_acao "Assinar memo à DISA')
     assert celulas['verificar_marcadores_inconsistencia'].fill.start_color.rgb == 'FFFFE599'
     assert celulas['prox_acao'].fill.start_color.rgb == 'FFFFE599'
@@ -629,6 +674,32 @@ def test_aguarda_deproc_com_o_resultado_da_deproc(monkeypatch, assinado, acao):
 
     assert _inconsistencia(registro) is None
     assert _acao(registro) == acao
+
+
+DEPROC_NO_BLOCO = f'DEPROC | {tags.TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}'
+
+
+@pytest.mark.parametrize(('assinado', 'no_bloco_na_planilha', 'aponta'), [(True, True, True), (False, True, False), (True, False, False), (True, 'VERDADEIRO', True)])
+def test_no_bloco_da_deproc_com_o_resultado_assinado(monkeypatch, assinado, no_bloco_na_planilha, aponta):
+    sei = _processo_deproc(assinado=True)
+    texto = f'Assunto: {ASSUNTO_MEMO_GEACS_CALCULO_COPA}' + ('\nDocumento assinado eletronicamente por Fulana' if assinado else '')
+    sei.novo_doc('Memorando 3', UNIDADE_DEPROC, texto)
+    linha = {'prox_acao': ProxAcao.AGUARDAR_RESPOSTA_MEMO, DEPROC_NO_BLOCO: no_bloco_na_planilha}
+    registro = _passar(monkeypatch, AGUARDA_DEPROC, sei, linha)
+
+    assert (AcaoSugerida.TROCAR_MARCADOR_DEPROC in (_acao(registro) or '')) is aponta
+    assert ('a DEPROC continua com "01.02 - No Bloco GEACS' in (_inconsistencia(registro) or '')) is aponta
+
+
+def test_no_bloco_da_deproc_com_a_geacs_ja_no_retorno_final(monkeypatch):
+    sei = SEIFalso()
+    sei.novo_processo()
+    sei.memo_geacs(ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES, assinado=True)
+    linha = {'prox_acao': ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO, DEPROC_NO_BLOCO: True}
+    registro = _passar(monkeypatch, [tags.TAG_PROCESSO_NOVO, tags.TAG_ENCAMINHADO_APIS_TODAS_INFOS], sei, linha)
+
+    assert _acao(registro) == AcaoSugerida.TROCAR_MARCADOR_DEPROC
+    assert '"01.12.1 - Encaminhado APIS: Todas as Infos"' in _inconsistencia(registro)
 
 
 @pytest.mark.parametrize('marcador', [tags.TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA, tags.TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA])

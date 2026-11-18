@@ -55,9 +55,10 @@ def test_colunas_tags_refletem_marcadores_finais(registro):
     tags.adicionar_tag(None, registro, tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS)
     dados = registro.to_dict()
 
-    assert dados['tag_processo_novo'] is True
-    assert dados['tag_avaliado_uso_rede_propria_disa'] is False
-    assert dados['tag_avaliado_uso_rede_propria_mantis'] is True
+    assert dados[tags.TAG_PROCESSO_NOVO] is True
+    assert dados[tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA] is False
+    assert dados[tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS] is True
+    assert dados['estado_atual'] == tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS
     assert 'tds_docs' not in dados
 
 

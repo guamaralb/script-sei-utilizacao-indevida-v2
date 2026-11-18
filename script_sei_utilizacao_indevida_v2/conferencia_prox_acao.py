@@ -22,7 +22,12 @@ de AcaoSugerida). Conferências:
    assinatura ("No Bloco" com o memo assinado: falta trocar o marcador;
    "Aguarda" / "Encaminhado" com o memo não assinado);
 5. "No Bloco APIS: Sem Memo" com memo da APIS destinado à GEACS na árvore;
-6. retomada (01.06 / 01.08) com memo do fluxo já na rodada, sem o marcador.
+6. retomada (01.06 / 01.08) com memo do fluxo já na rodada, sem o marcador;
+7. marcadores da DEPROC na planilha (conferir_marcador_deproc): o "01.02 - No
+   Bloco GEACS" da DEPROC com o memo de resultado da DEPROC já assinado (a
+   GEACS em 01.12 / 01.12.1, ou em "Aguarda DEPROC" com o memo assinado na
+   rodada). Os marcadores da DEPROC só são lidos na unidade da DEPROC: a
+   planilha tem os da última passagem do deproc_calcula_copa.
 
 Além dos problemas, sugere o próximo fluxo (sugestoes_de_fluxo, só a ação):
 estado N Consta (geacs_corrige_envio_disa), "Aguarda DEPROC" com o memo de
@@ -65,6 +70,8 @@ from tags import (
     TAG_AGUARDA_DEPROC_COPARTICIPACAO,
     TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA,
     TAG_AGUARDA_FLUXO_NORMAL,
+    TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA,
+    TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA,
     TAG_ENCAMINHADO_APIS_TODAS_INFOS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
@@ -85,6 +92,7 @@ from tags import (
     TAGS_TRATAMENTO_MANUAL,
     MarcadoresInconsistentes,
     adicionar_tag,
+    coluna_tag_deproc,
     conferir_marcadores,
 )
 
@@ -114,6 +122,7 @@ class AcaoSugerida:
     RODAR_CORRIGE_ENVIO_DISA = 'Rodar geacs_corrige_envio_disa'
     TRATAR_RESPOSTA_DISA = 'Tratar a resposta da DISA (geacs_resp_disa, TODO)'
     TROCAR_MARCADOR_ASSINADO = 'Trocar o No Bloco pelo marcador de assinado (memo já assinado)'
+    TROCAR_MARCADOR_DEPROC = 'Trocar na DEPROC o No Bloco pelo Encaminhado e rodar deproc_calcula_copa'
     CORRIGIR_MARCADORES = 'Corrigir marcadores no SEI'
     VERIFICAR_MANUALMENTE = 'Verificar manualmente'
 
@@ -480,6 +489,36 @@ def _resposta_disa(arvore: ArvoreProcesso, estado: str) -> dict | None:
     return next((doc for doc in reversed(depois) if doc['unidade'].upper().startswith(PREFIXO_UNIDADE_DISA)), None)
 
 
+_COLUNA_DEPROC_NO_BLOCO = coluna_tag_deproc(TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)
+# Estados da GEACS em que o memo de resultado da DEPROC já foi assinado (o
+# geacs_todas_infos só cria o memo à APIS com ele assinado)
+_ESTADOS_DEPOIS_DO_MEMO_DEPROC_ASSINADO = (TAG_NO_BLOCO_APIS_TODAS_INFOS, TAG_ENCAMINHADO_APIS_TODAS_INFOS)
+
+
+def _verdadeiro(valor) -> bool:
+    """Célula booleana da planilha (True, ou o texto, se veio de um CSV)."""
+    return valor is True or str(valor).strip().lower() in {'true', 'verdadeiro', '1'}
+
+
+def conferir_marcador_deproc(arvore: ArvoreProcesso, estado: str, linha: dict) -> list[Problema]:
+    """Na planilha, a DEPROC continua com o "01.02 - No Bloco GEACS", mas o
+    memo de resultado dela já foi assinado: quem assinou não trocou o marcador
+    na DEPROC pelo 01.02.1 (ou o deproc_calcula_copa não rodou depois). Os
+    marcadores da DEPROC só são lidos na unidade da DEPROC."""
+    if not _verdadeiro(linha.get(_COLUNA_DEPROC_NO_BLOCO)):
+        return []
+    if estado not in _ESTADOS_DEPOIS_DO_MEMO_DEPROC_ASSINADO and (estado != TAG_AGUARDA_DEPROC_COPARTICIPACAO or _memo_resultado_deproc_assinado(arvore) is None):
+        return []
+    return [
+        Problema(
+            f'Na planilha, a DEPROC continua com "{_curto(TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)}", mas o memo de resultado da DEPROC já está assinado '
+            f'(GEACS em "{_curto(estado)}"): trocar na DEPROC pelo "{_curto(TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA)}" e rodar o deproc_calcula_copa '
+            f'(atualiza a planilha)',
+            AcaoSugerida.TROCAR_MARCADOR_DEPROC,
+        )
+    ]
+
+
 def sugestoes_de_fluxo(arvore: ArvoreProcesso, estado: str) -> list[str]:
     """O próximo fluxo do processo, quando ele já pode seguir (não é
     inconsistência: só a ação sugerida)."""
@@ -679,4 +718,6 @@ def conferir_processo(driver: webdriver.Remote, registro: RegistroVerificarMarca
         _registrar(registro, conferir_memo_do_marcador(arvore, estado, linha or {}))
     elif estado in TAGS_RETOMADA_NOVO:
         _registrar(registro, conferir_retomada(arvore, estado))
+    if linha is not None:
+        _registrar(registro, conferir_marcador_deproc(arvore, estado, linha))
     registro.acoes_sugeridas += sugestoes_de_fluxo(arvore, estado)

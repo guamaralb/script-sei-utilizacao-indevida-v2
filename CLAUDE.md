@@ -65,12 +65,12 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `docs_processo.py` | Filtros da árvore, memos da APIS destinados à GEACS, busca de memos da GEACS pelo assunto e de documentos pelo nome, `encontrar_memos_velho()` (memos DISA → DEPROC antigos) |
 | `extrator_dados_ui.py` | Extrai as instruções do texto do memo da APIS: o modelo com período por dependente (procurado primeiro, pela linha do período do dependente; duplas matrícula + período) e o "novo_novo"; os outros são formato inválido |
 | `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base APIS (`incluir_memo_apis_mat_nao_encontradas`) |
-| `tags.py` | Todos os marcadores e grupos de estado, `registrar_tags()`, `adicionar_tag()` (troca o estado), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()` e `conferir_marcadores()` |
+| `tags.py` | Todos os marcadores e grupos de estado, `registrar_tags()`, `adicionar_tag()` (troca o estado), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()` e `conferir_marcadores()`; colunas dos marcadores na planilha de controle (`COLUNAS_TAGS`, `colunas_tags()`, `colunas_tags_deproc()`, `descrever_estado()`, `eh_coluna_tag()`, `COLUNA_POR_COLUNA_ANTIGA`) |
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
 | `constantes.py` | Unidades, blocos, signatária, caminhos fixos, data de corte do VELHO |
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
 | `Registro.py` | `PROX_ACAO_POR_NO_BLOCO` e `PROX_ACAO_POR_CONCLUSAO` (prox_acao de cada estado em que o fluxo inicial para). Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroAdcPdfAnt`, `RegistroDeproc`, `RegistroCancMemoDeprocAnt`, `RegistroResposta`, `RegistroDeprocExcluirDocs`, `RegistroVerificarMarcadores`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
-| `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo (gravação atômica), com backup; `linha_processo()` (linha atual do processo, para a conferência da `prox_acao`) |
+| `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo (gravação atômica), com backup; `linha_processo()` (linha atual do processo, para a conferência da `prox_acao`); `HistoricoCsv` (histórico das passagens em CSV) e a migração da aba `historico` antiga |
 | `memorandos/` | `DadosUI`, `DocArvore` (item da árvore: memo da APIS), `UsoRede` (`UsoRedeBeneficiarios`), `MemoDisa` (`MemoDisaValidarConsta`, `MemoDisaValidarNaoConsta`, `MemoDisaSemMantisSolicitaRelatorio`), `MemoDeproc`, `MemoApisSemUso`, `MemoApisMatNaoEncontradas`, `MemoApisSemMemo`, `MemoApisFormatoInvalido`, `MemoApisPeriodoDependentes` (ver `TextoPendente`), `MemoApisComTodasAsInformacoes` (retorno final à APIS, com tabelas; [fluxo GEACS TODAS INFOS](#fluxo-geacs-todas-infos)), `MemoGeacsCalculoCopa` (fluxo DEPROC: da DEPROC à GEACS) |
 | `main_geacs_adc_pdf_ant_aut.py` | Fluxo alternativo ADC PDF ANT AUT (`poetry run task run_geacs_adc_pdf_ant_aut`): loop dos processos e registro na planilha de controle ([seção](#fluxo-alternativo-adc-pdf-ant-aut)) |
 | `planilhas_adc_pdf_ant_aut.py` | ADC PDF ANT AUT: encontra as planilhas na árvore, baixa, lê (`ler_planilha`), gera o PDF e o insere (`inserir_pdfs_das_planilhas`; `inserir_pdfs` e `deixar_aguardando_fluxo_normal` são usados também pelo fluxo ADC PDF ANT MAN) |
@@ -78,8 +78,8 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `planilhas_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN: acha os arquivos do processo em `dados/geacs_adc_pdf_ant_man/planilhas`, o documento na árvore e insere os PDFs (`inserir_pdfs_da_pasta`) |
 | `main_geacs_canc_memo_deproc_ant.py` | Fluxo GEACS CANC MEMO DEPROC ANT (`poetry run task run_geacs_canc_memo_deproc_ant`): cancela o memo DEPROC antigo da GEACS, sem alterar a `prox_acao` ([seção](#fluxo-geacs-canc-memo-deproc-ant)) |
 | `main_geacs_corrige_envio_disa.py` | Fluxo GEACS CORRIGE ENVIO DISA (`poetry run task run_geacs_corrige_envio_disa`), na unidade da GEACS: troca o memo à DISA "Validar (N Consta)" pelo memo DEPROC (exclui o memo à DISA ou, sem conseguir, cancela; cria o DEPROC e deixa o `01.10.B - No Bloco DEPROC`) ([seção](#fluxo-geacs-corrige-envio-disa)) |
-| `main_geacs_verificar_marcadores.py` | Fluxo GEACS VERIFICAR MARCADORES (`poetry run task run_geacs_verificar_marcadores`): lê os marcadores e atualiza as colunas `tag_*` (uma por marcador válido) e `demais_marcadores`, troca o `No Bloco` cujo memo já está assinado pelo `Aguarda` / `Encaminhado` (`trocar_no_bloco_assinado`, única ação no SEI), atualiza a planilha pelo memo do `Aguarda` assinado (`conferir_memos_aguarda`) e confere a `prox_acao` da planilha ([seção](#fluxo-geacs-verificar-marcadores)) |
-| `conferencia_prox_acao.py` | Fluxo GEACS VERIFICAR MARCADORES: `conferir_processo()` confere a `prox_acao` da planilha com os marcadores (`conferir_prox_acao`), o caso base DISA × MANTIS, os memos e relatórios dos marcadores na árvore (`conferir_memo_do_marcador`) e a retomada (`conferir_retomada`) |
+| `main_geacs_verificar_marcadores.py` | Fluxo GEACS VERIFICAR MARCADORES (`poetry run task run_geacs_verificar_marcadores`): lê os marcadores e atualiza as colunas dos marcadores (uma por marcador válido, com o nome dele), `estado_atual` e `demais_marcadores`, troca o `No Bloco` cujo memo já está assinado pelo `Aguarda` / `Encaminhado` (`trocar_no_bloco_assinado`, única ação no SEI), atualiza a planilha pelo memo do `Aguarda` assinado (`conferir_memos_aguarda`) e confere a `prox_acao` da planilha ([seção](#fluxo-geacs-verificar-marcadores)) |
+| `conferencia_prox_acao.py` | Fluxo GEACS VERIFICAR MARCADORES: `conferir_processo()` confere a `prox_acao` da planilha com os marcadores (`conferir_prox_acao`), o caso base DISA × MANTIS, os memos e relatórios dos marcadores na árvore (`conferir_memo_do_marcador`) a retomada (`conferir_retomada`) e o `01.02 - No Bloco GEACS` da DEPROC com o memo de resultado assinado (`conferir_marcador_deproc`) |
 | `main_geacs_todas_infos.py` | Fluxo GEACS TODAS INFOS (`poetry run task run_geacs_todas_infos`), na unidade da GEACS: depois do retorno da DEPROC (`01.10.1`), cria o memo à APIS com todas as informações e adiciona o `01.12` ([seção](#fluxo-geacs-todas-infos)) |
 | `todas_infos.py` | Fluxo GEACS TODAS INFOS: caminho (direto à DEPROC ou pela DISA), leitura do memo de resultado da DEPROC e dos PDFs do MANTIS (download e pypdf), recálculo nas bases DEPROC e MANTIS, conferência e linhas das tabelas do memo |
 | `fluxo_resposta.py` | Base dos fluxos de resposta (**TODO**: não montados): `conferir_marcador_aguarda()`, `processar_linha()`, `executar()`, `FluxoNaoMontado` ([seção](#fluxos-de-resposta-todo)) |
@@ -425,10 +425,13 @@ do SEI ficar em ordem.
 **Marcadores válidos na GEACS** (`tags.TAGS_VALIDOS_GEACS`, 32: os 30 da lista do SEI
 de 11/11/2026 e os dois do fluxo GEACS TODAS INFOS, há teste com a lista): os `v2: `
 de `00` a `01.12.1` da tabela abaixo, sem os
-`01.06.2`, `01.08.2` e `01.08.3`. Cada um tem uma coluna `tag_*` na planilha de
-controle (`_COLUNA_POR_TAG`; os nomes das colunas não mudaram, por isso alguns
-não batem com o nome atual do marcador, ex.: `tag_aguarda_disa_validar_consta`
-é o `01.09.B - No Bloco DISA: Validar (Consta)`). Todos os outros marcadores do
+`01.06.2`, `01.08.2` e `01.08.3`. Cada um tem uma coluna na planilha de
+controle com o **nome inteiro do marcador** (`tags.COLUNAS_TAGS`, na ordem da
+numeração; os da DEPROC com o prefixo `DEPROC | `, pois `v2: 01 - Tratado pelo
+Script` existe nas duas unidades). Até 18/11/2026 as colunas eram `tag_*`
+(`_COLUNA_ANTIGA_POR_TAG`; alguns nomes não batiam com o marcador, ex.:
+`tag_aguarda_disa_validar_consta` era o `01.09.B - No Bloco DISA: Validar
+(Consta)`); na leitura, são renomeadas (`COLUNA_POR_COLUNA_ANTIGA`). Todos os outros marcadores do
 processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 `PLANILHADO` e `MANUAL`, antigos `v2: 02 ...`) vão juntos para a coluna
 `demais_marcadores`. **Atenção**: o script ainda lê alguns desses (ver
@@ -1114,7 +1117,8 @@ lida, a `prox_acao` não é conferida (só os memorandos).
 
 Conferências (`conferir_processo`), cada problema numa frase e com uma
 **ação sugerida** (`AcaoSugerida`: Rodar geacs_inicial, Corrigir marcadores no
-SEI, Trocar o No Bloco pelo marcador de assinado, Verificar manualmente):
+SEI, Trocar o No Bloco pelo marcador de assinado, Trocar na DEPROC o No Bloco
+pelo Encaminhado e rodar deproc_calcula_copa, Verificar manualmente):
 
 1. **Combinação de marcadores** (`conferir_marcadores`, as regras do fluxo
    inicial). Impossível: os problemas e, se a `prox_acao` não é Verificar
@@ -1173,7 +1177,16 @@ SEI, Trocar o No Bloco pelo marcador de assinado, Verificar manualmente):
 5. **Retomada** (`conferir_retomada`): com `01.06` ou `01.08`, nenhum memo do
    fluxo na rodada (havendo, a passagem falhou entre o memo e o marcador; o
    `geacs_inicial` o reaproveita).
-6. **Próximo fluxo** (`sugestoes_de_fluxo`; não é inconsistência, só a ação
+6. **Marcador da DEPROC** (`conferir_marcador_deproc`): a planilha tem o
+   `DEPROC | v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA` verdadeiro, mas o
+   memo de resultado da DEPROC já está assinado (a GEACS está em `01.12` /
+   `01.12.1`, ou em `01.10.B.1 - Aguarda DEPROC` com o memo assinado na
+   rodada): quem assinou não trocou o marcador na DEPROC. Ação: trocar na
+   DEPROC o `01.02` pelo `01.02.1` e rodar o `deproc_calcula_copa` (atualiza as
+   colunas da DEPROC). Os marcadores da DEPROC só são lidos na unidade da
+   DEPROC: a planilha tem os da última passagem do fluxo DEPROC (em 18/11/2026,
+   140 processos com o `01.02` e 2 com o `01.02.1`).
+7. **Próximo fluxo** (`sugestoes_de_fluxo`; não é inconsistência, só a ação
    sugerida):
    - estado N Consta (`01.09` / `01.09.1` Validar (N Consta)): Rodar
      geacs_corrige_envio_disa;
@@ -1184,9 +1197,19 @@ SEI, Trocar o No Bloco pelo marcador de assinado, Verificar manualmente):
 
 Na planilha de controle, **só altera a `prox_acao`** pela troca do `No Bloco`
 ou pelo memo do `Aguarda` assinado (acima; não altera `fluxo`, `tipo_erro`, `erro` e as outras colunas):
-na aba `processos`, só `script`, `ultima_passagem`, `data_execucao`, os
-marcadores, a coluna do memo e a `verificar_marcadores_memo_aguarda_assinado`
-(memo do `Aguarda`) e as duas colunas do fluxo:
+na aba `processos`, só os marcadores, a coluna do memo e a
+`verificar_marcadores_memo_aguarda_assinado` (memo do `Aguarda`) e as colunas
+do fluxo. **`script`, `ultima_passagem` e `data_execucao` não são gravados na
+aba `processos`** (`RegistroVerificarMarcadores.COLUNAS_SO_HISTORICO`, passado
+à `PlanilhaControleGeral` como `colunas_so_historico`): continuam os do último
+fluxo que agiu no processo, e a passagem do verificar fica em
+`verificar_marcadores_em` (e no histórico, com `script` e `ultima_passagem`).
+Até 18/11/2026 eram gravados; na migração da aba `historico` para o CSV, os
+730 processos com `script` = `geacs_verificar_marcadores` voltaram aos do
+último outro fluxo do histórico (`planilha_controle.restaurar_ultimo_fluxo`).
+Colunas:
+
+- `verificar_marcadores_em`: data e hora da passagem;
 
 - `verificar_marcadores_inconsistencia`: as inconsistências encontradas,
   separadas por ` | ` (vazia se tudo condiz);
@@ -1196,13 +1219,15 @@ marcadores, a coluna do memo e a `verificar_marcadores_memo_aguarda_assinado`
   repetição, separado por ` | ` (vazia se nada a fazer). Filtrando por ela
   saem as listas das abas de `processos_a_processar.xlsx` (ex.: Rodar
   geacs_todas_infos);
-- as três ficam **logo antes das colunas de marcadores** (`marcadores_*`,
-  `tag_*`, `demais_marcadores`), na ordem ação, inconsistência e erro, e,
-  preenchidas, em **amarelo**, junto com a célula `prox_acao` da linha;
+- as três ficam **logo depois de `erro`**, na ordem ação, inconsistência e
+  erro, e, preenchidas, em **amarelo**, junto com a célula `prox_acao` da
+  linha;
 - `verificar_marcadores_aberto_na_geacs`: o processo tem `Incluir Documento`
   na GEACS (sem ler os marcadores, fica como estava);
-- uma coluna `tag_*` por marcador válido na GEACS
+- uma coluna por marcador válido na GEACS, com o nome dele
   ([lista](#marcadores-tagspy)), verdadeira se o processo tem o marcador;
+- `estado_atual`: o marcador de estado do processo (mais de um, separados por
+  `; `);
 - `demais_marcadores`: os outros marcadores do processo, em ordem,
   separados por `;` (vazia se não houver);
 - `marcadores_finais`: todos os marcadores do processo.
@@ -1523,11 +1548,12 @@ R$ 94,32 em vez de R$ 30,32.)
 - Planilha de controle: `script` = `deproc_calcula_copa` (as passagens antigas têm `deproc`), `fluxo` = `DEPROC -
   COPARTICIPAÇÃO`. Os marcadores da DEPROC vão para colunas próprias,
   `marcadores_deproc_sei`, `marcadores_deproc_adicionados`,
-  `marcadores_deproc_removidos`, `marcadores_deproc_finais` e uma `tag_deproc_*`
-  por marcador (`tag_deproc_tratado`, `tag_deproc_relatorio_anexado`,
+  `marcadores_deproc_removidos`, `marcadores_deproc_finais`,
+  `estado_atual_deproc` e uma coluna por marcador, `DEPROC | <marcador>`
+  (até 18/11/2026: `tag_deproc_tratado`, `tag_deproc_relatorio_anexado`,
   `tag_deproc_concluido_memo`, que é o `01.02 - No Bloco GEACS`, e
   `tag_deproc_encaminhado_memo_copa`); as colunas de marcadores da GEACS
-  (`marcadores_*`, `tag_*`), `processo_reaberto` e os resultados só do fluxo
+  (`marcadores_*`, as dos marcadores, `estado_atual` e `demais_marcadores`), `processo_reaberto` e os resultados só do fluxo
   principal não são gravadas e continuam como estão. Outras colunas próprias:
   `ano_base_deproc`, `data_geracao_base_deproc`, `memo_deproc_geacs_sei`, `memo_deproc_assinado`, `linhas_base_deproc`,
   `linhas_fora_periodo_deproc`, `linhas_base_copa_zero_deproc`, `atendimentos_deproc`,
@@ -1589,7 +1615,7 @@ Não adiciona marcadores. Na planilha de controle, **não altera a
 `prox_acao`** (nem `fluxo`, `tipo_erro` e `erro` dos outros fluxos): na aba
 `processos`, só `script`, `ultima_passagem`, `data_execucao`, as colunas dos
 marcadores da DEPROC (`marcadores_deproc_sei`, `marcadores_deproc_removidos`,
-`marcadores_deproc_finais` e `tag_deproc_*`, só quando os marcadores foram
+`marcadores_deproc_finais`, `estado_atual_deproc` e `DEPROC | <marcador>`, só quando os marcadores foram
 lidos; senão ficam como estavam) e a coluna própria `deproc_excluir_docs`, com
 o resultado da passagem em uma frase (`RegistroDeprocExcluirDocs.resumo_exclusao`): data e hora, `N
 excluído(s): <nºs SEI>`, `não excluído(s): <nºs SEI>`, `mantido(s), não
@@ -1654,33 +1680,58 @@ perca os processos já tratados.
   mantém os da última avaliação. `velho` e `memos_velho_sei` só são gravadas
   quando a passagem identifica o VELHO, e `processo_reaberto` só quando ela
   reabre o processo. Há teste em `tests/test_fluxo_novo.py`.
-- Aba `historico`: **uma linha por passagem**, acrescentada a cada
-  execução.
+- **Histórico** (`HistoricoCsv`): **uma linha por passagem**, em
+  `dados/controle/controle_geral_de_processos_historico.csv` (ao lado da
+  planilha: `arquivo_historico`), separador `;`, UTF-8 com BOM, booleanos
+  `VERDADEIRO` / `FALSO`, datas `DD/MM/AAAA HH:MM:SS` e decimal com vírgula (o
+  Excel em português abre direto). A passagem é **acrescentada no fim** do
+  arquivo; só uma coluna nova faz regravar o CSV (cópia temporária +
+  `os.replace`). Sem conseguir gravar (ex.: CSV aberto no Excel), as linhas
+  ficam pendentes e vão na gravação seguinte, e a planilha continua sendo
+  gravada. Até 18/11/2026 era a aba `historico`, regravada inteira a cada
+  processo (6.599 linhas: cada gravação levava ~35 s; sem ela, ~4 s, e o
+  arquivo foi de 3,9 MB para 0,5 MB). **Migração** (`_migrar_aba_historico`,
+  na leitura): com o CSV vazio, a aba é copiada para ele e sai da planilha na
+  primeira gravação (o backup da execução ainda a tem); com o CSV já tendo
+  pelo menos as linhas da aba (cópia feita e a execução parou antes de
+  gravar), só sai; com o CSV menor, a aba fica, com aviso no log, para
+  conferir à mão.
 - Outras abas (ex.: `BUSCA`, `ERROS`, mantidas à mão) são preservadas: só
-  `processos` e `historico` são substituídas. Sem a aba `BUSCA`, ela é
-  criada vazia.
+  `processos` é substituída. Sem a aba `BUSCA`, ela é criada vazia.
 - Aba `processos`: a 2ª coluna é `BUSCA`, com a fórmula
   `=MATCH(A<linha>,BUSCA!$A:$A,0)` (procura o processo na coluna A da aba
   `BUSCA`; `#N/D` se não estiver lá), regravada a cada gravação; a 3ª é
   `ERROS VERIFICADOS MANUALMENTE` (anotações do usuário; o script não grava,
-  só mantém). As duas não vão para o `historico`.
+  só mantém). As duas não vão para o histórico.
 - Primeiras colunas (depois dessas duas, na aba `processos`): `num_processo`, `primeira_passagem`,
   `ultima_passagem` (data e hora em que o processo passou pelo fluxo),
   `script` (nome da aba de entrada: `geacs_inicial`, `geacs_resp_*`, `geacs_adc_pdf_ant_aut`, `geacs_adc_pdf_ant_man`, `geacs_canc_memo_deproc_ant`, `geacs_corrige_envio_disa`, `geacs_verificar_marcadores`, `geacs_todas_infos`, `deproc_calcula_copa` ou `deproc_excluir_docs`; nas passagens antigas, `geacs`, `deproc` e `correcao_rede_propria`),
   `data_execucao` (identifica a execução), `fluxo`, `prox_acao`,
-  `tipo_erro`, `erro`.
+  `estado_atual` (e `estado_atual_deproc`, do fluxo DEPROC), `tipo_erro`,
+  `erro` e as três do verificar marcadores (ação sugerida, inconsistência e
+  erro). Na aba `processos`, `script`, `ultima_passagem` e `data_execucao`
+  são os do último fluxo que agiu no processo (o verificar marcadores não os
+  grava; [seção](#fluxo-geacs-verificar-marcadores)).
+- **No fim**: `demais_marcadores` e as colunas dos marcadores (uma por
+  marcador, com o nome inteiro, na ordem de `tags.COLUNAS_TAGS`: os da GEACS
+  e depois os da DEPROC), com largura fixa (22) e o nome quebrado em até 3
+  linhas no cabeçalho (há teste com todos os nomes). A ordem é aplicada a cada
+  gravação (`_ordenar_colunas`).
 - Cada linha vem de `RegistroBase.to_dict()`: todos os campos do registro,
-  exceto os de `_CAMPOS_INTERNOS`, mais `marcadores_finais`, uma coluna
-  `tag_*` por marcador **válido** na GEACS (o processo terminou a passagem com
-  ele) e `demais_marcadores` (os outros, separados por `;`). Na leitura, as
-  colunas `tag_*` de marcadores que não são mais válidos (e a antiga
-  `verificar_marcadores`) são removidas das abas `processos` e `historico`;
-  sem `demais_marcadores`, ela é calculada de `marcadores_finais`
-  (`planilha_controle.migrar_colunas_marcadores`). As outras colunas ficam
-  como estão. A planilha foi migrada assim em 11/11/2026 (backup
+  exceto os de `_CAMPOS_INTERNOS`, mais `marcadores_finais`, `estado_atual`,
+  uma coluna por marcador **válido** na GEACS (o processo terminou a passagem
+  com ele) e `demais_marcadores` (os outros, separados por `;`). Na leitura
+  (planilha e aba `historico` antiga; `planilha_controle.migrar_colunas_marcadores`),
+  as colunas `tag_*` dos marcadores válidos são renomeadas para o nome do
+  marcador (`tags.COLUNA_POR_COLUNA_ANTIGA`; com as duas, vale a atual), as de
+  marcadores que não são mais válidos (e a antiga `verificar_marcadores`) são
+  removidas, e, sem `demais_marcadores`, ela é calculada de
+  `marcadores_finais`. As outras colunas ficam como estão. A planilha foi
+  migrada assim em 11/11/2026 (backup
   `controle_geral_de_processos_<data>_migracao_marcadores.xlsx`).
   **Não renomeie as colunas existentes** (por isso as da base APIS
-  continuam com `base_geral`).
+  continuam com `base_geral`), exceto com migração na leitura, como a das
+  colunas dos marcadores (18/11/2026).
 - Rastreabilidade: `processo_reaberto`, `velho`, `memos_velho_sei`, `memo_apis_sei`,
   `memos_apis_geacs_sei`, `modelo_memo_apis` (`periodo_por_dependente` ou
   `novo_novo`), `motivo_formato_invalido`,
@@ -1702,11 +1753,10 @@ perca os processos já tratados.
   `deps_nao_encontrados_ignorados` (fora também do MANTIS dos dependentes não
   encontrados).
 - Formatação: cabeçalho congelado e com filtro; linha com erro em vermelho
-  claro; matrículas não encontradas em amarelo; `verificar_marcadores_inconsistencia`
-  e `verificar_marcadores_erro` preenchidas (e a `prox_acao` da linha) em
-  amarelo. Essas duas colunas ficam sempre logo antes das colunas de
-  marcadores (`_ordenar_colunas`). Se a formatação falhar, a aba fica salva
-  sem ela.
+  claro; matrículas não encontradas em amarelo; as três colunas do verificar
+  marcadores preenchidas (e a `prox_acao` da linha) em amarelo; colunas dos
+  marcadores com largura fixa e quebra de linha no cabeçalho. Se a formatação
+  falhar, a aba fica salva sem ela.
 - **Uma execução por vez**: a `PlanilhaControleGeral` trava a planilha
   (`~em_uso_<nome>.lock`, na mesma pasta; trava do sistema operacional, liberada
   quando o processo termina, mesmo encerrado à força) do início ao fim da
@@ -1884,5 +1934,5 @@ perca os processos já tratados.
   reprocessados do início: se a matrícula ainda falta na base APIS, recebem
   o memo à APIS; se agora está na base, o `01.02.1` é removido e o fluxo
   segue.
-- A planilha de controle, os backups, os PDFs (`dados/utilizacoes`) e os
-  logs têm nomes e matrículas (LGPD). Restrinja o acesso a essas pastas.
+- A planilha de controle, o histórico em CSV, os backups, os PDFs
+  (`dados/utilizacoes`) e os logs têm nomes e matrículas (LGPD). Restrinja o acesso a essas pastas.

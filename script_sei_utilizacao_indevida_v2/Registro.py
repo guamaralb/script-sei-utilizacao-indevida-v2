@@ -2,10 +2,12 @@ import logging
 import traceback
 from dataclasses import dataclass, field, fields
 from datetime import datetime
+from typing import ClassVar
 
 from docs_processo import filtrar_docs_geacs, filtrar_memos_geacs
 from tags import (
     COLUNA_DEMAIS_MARCADORES,
+    COLUNA_ESTADO_ATUAL,
     TAG_ENCAMINHADO_APIS_TODAS_INFOS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
@@ -21,6 +23,8 @@ from tags import (
     colunas_tags,
     colunas_tags_deproc,
     demais_marcadores,
+    descrever_estado,
+    eh_coluna_tag,
 )
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
@@ -202,6 +206,16 @@ _CAMPOS_SO_FLUXO_PRINCIPAL = frozenset({
 })
 
 
+def _colunas_marcadores_geacs(marcadores: list[str]) -> dict:
+    """estado_atual, demais_marcadores e uma coluna por marcador válido na
+    GEACS."""
+    return {
+        COLUNA_ESTADO_ATUAL: descrever_estado(marcadores),
+        COLUNA_DEMAIS_MARCADORES: demais_marcadores(marcadores) or None,
+        **colunas_tags(marcadores),
+    }
+
+
 @dataclass
 class RegistroBase:
     """Uma passagem de um processo pelo fluxo: dados da árvore e dos
@@ -276,8 +290,7 @@ class RegistroBase:
             valor = getattr(self, campo.name)
             dados[campo.name] = _juntar(valor) if isinstance(valor, list) else valor
         dados['marcadores_finais'] = _juntar(self.marcadores_atuais)
-        dados.update(colunas_tags(self.marcadores_atuais))
-        dados[COLUNA_DEMAIS_MARCADORES] = demais_marcadores(self.marcadores_atuais) or None
+        dados.update(_colunas_marcadores_geacs(self.marcadores_atuais))
         return dados
 
 
@@ -483,11 +496,12 @@ class RegistroDeproc(RegistroBase):
     dados_ui: DadosUI | None = None
 
     def to_dict(self) -> dict:
-        # Os marcadores da GEACS (tag_* e demais_marcadores) são de outra unidade
+        # Os marcadores da GEACS (colunas dos marcadores, estado_atual e
+        # demais_marcadores) são de outra unidade
         dados = {
             _COLUNAS_MARCADORES_DEPROC.get(coluna, coluna): valor
             for coluna, valor in super().to_dict().items()
-            if coluna not in _CAMPOS_FORA_DEPROC and not coluna.startswith('tag_') and coluna != COLUNA_DEMAIS_MARCADORES
+            if coluna not in _CAMPOS_FORA_DEPROC and not eh_coluna_tag(coluna) and coluna not in {COLUNA_DEMAIS_MARCADORES, COLUNA_ESTADO_ATUAL}
         }
         # Sem apuração nesta passagem: mantém o ano e a data da base usada antes
         for coluna in _COLUNAS_BASE_DEPROC:
@@ -534,7 +548,7 @@ class RegistroCancMemoDeprocAnt(RegistroBase):
         return {
             _COLUNAS_ERRO_CANC_MEMO_DEPROC_ANT.get(coluna, coluna): valor
             for coluna, valor in super().to_dict().items()
-            if coluna not in _CAMPOS_FORA_CANC_MEMO_DEPROC_ANT and not coluna.startswith('tag_')
+            if coluna not in _CAMPOS_FORA_CANC_MEMO_DEPROC_ANT and not eh_coluna_tag(coluna) and coluna not in {COLUNA_DEMAIS_MARCADORES, COLUNA_ESTADO_ATUAL}
         }
 
     def para_log(self) -> dict:
@@ -676,8 +690,10 @@ class RegistroTodasInfos(RegistroBase):
 class RegistroVerificarMarcadores(RegistroBase):
     """Uma passagem pelo fluxo de verificar os marcadores
     (main_geacs_verificar_marcadores.py). Na planilha de controle, grava só os
-    marcadores (uma coluna tag_* por marcador válido na GEACS,
-    demais_marcadores e marcadores_finais), as inconsistências encontradas
+    marcadores (uma coluna por marcador válido na GEACS, estado_atual,
+    demais_marcadores e marcadores_finais), a data da passagem
+    (verificar_marcadores_em; script e ultima_passagem só vão para o
+    histórico), as inconsistências encontradas
     (verificar_marcadores_inconsistencia) e o erro da passagem
     (verificar_marcadores_erro), as ações sugeridas
     (verificar_marcadores_acao_sugerida) e se o processo está aberto na GEACS
@@ -713,11 +729,19 @@ class RegistroVerificarMarcadores(RegistroBase):
     # Processo fechado reaberto para a troca e concluído de novo
     concluido_de_novo: bool = False
 
+    # Colunas que a passagem grava só no histórico: na aba processos, script,
+    # ultima_passagem e data_execucao continuam os do último fluxo que agiu
+    # no processo (a passagem do verificar fica em verificar_marcadores_em)
+    COLUNAS_SO_HISTORICO: ClassVar[frozenset[str]] = frozenset({'script', 'ultima_passagem', 'data_execucao'})
+
     def to_dict(self) -> dict:
         dados = {
             'num_processo': self.num_processo,
+            # Só no histórico (COLUNAS_SO_HISTORICO): na aba processos, a
+            # passagem do verificar vai para verificar_marcadores_em
             'ultima_passagem': self.ultima_passagem,
             'data_execucao': self.data_execucao,
+            'verificar_marcadores_em': self.ultima_passagem,
             'verificar_marcadores_acao_sugerida': ' | '.join(dict.fromkeys(self.acoes_sugeridas)) or None,
             'verificar_marcadores_inconsistencia': ' | '.join(self.inconsistencias) or None,
             'verificar_marcadores_erro': f'{self.tipo_erro}: {self.erro}' if self.erro is not None else None,
@@ -738,8 +762,7 @@ class RegistroVerificarMarcadores(RegistroBase):
         # Sem conseguir ler os marcadores, as colunas deles ficam como estão
         if self.marcadores_lidos:
             dados['marcadores_finais'] = _juntar(self.marcadores_atuais)
-            dados.update(colunas_tags(self.marcadores_atuais))
-            dados[COLUNA_DEMAIS_MARCADORES] = demais_marcadores(self.marcadores_atuais) or None
+            dados.update(_colunas_marcadores_geacs(self.marcadores_atuais))
         return dados
 
     def para_log(self) -> dict:

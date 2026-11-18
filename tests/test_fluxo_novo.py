@@ -20,6 +20,7 @@ from tags import (
     TAG_MANUAL,
     TAG_MAT_NAO_ENCONTRADAS_APIS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
+    TAG_MEMO_DEPROC_COPARTICIPACAO,
     TAG_MEMO_DISA_USO_REDE_PROPRIA,
     TAG_NO_BLOCO_APIS_SEM_USO,
     TAG_PROCESSO_NOVO,
@@ -230,7 +231,8 @@ def test_passagem_sem_avaliacao_mantem_os_resultados_na_planilha(sei):
     assert 'velho' not in segunda
     assert 'processo_reaberto' not in segunda
     assert segunda['prox_acao'] == ProxAcao.ASSINAR_DEPROC
-    assert segunda['tag_memo_deproc_coparticipacao'] is True
+    assert segunda[TAG_MEMO_DEPROC_COPARTICIPACAO] is True
+    assert segunda['estado_atual'] == TAG_MEMO_DEPROC_COPARTICIPACAO
 
     # A planilha de controle atualiza a linha do processo com a passagem
     # (planilha_controle._atualizar_processos): o que ela não traz fica

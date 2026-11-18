@@ -494,18 +494,20 @@ def test_planilha_de_controle_com_colunas_dos_marcadores_da_deproc(sei, tmp_path
     colunas = _passar(sei, _base(tmp_path)).to_dict()
 
     # Os marcadores da GEACS (outra unidade) ficam como estão na planilha
-    assert [c for c in colunas if c.startswith(('tag_', 'marcadores_'))] == [
+    assert [c for c in colunas if c.startswith(('DEPROC | ', 'marcadores_', 'estado_atual', 'v2: ', 'tag_')) or c == 'demais_marcadores'] == [
         'marcadores_deproc_sei',
         'marcadores_deproc_adicionados',
         'marcadores_deproc_removidos',
         'marcadores_deproc_finais',
-        'tag_deproc_tratado',
-        'tag_deproc_relatorio_anexado',
-        'tag_deproc_concluido_memo',
-        'tag_deproc_encaminhado_memo_copa',
+        f'DEPROC | {TAG_DEPROC_TRATADO}',
+        f'DEPROC | {TAG_DEPROC_RELATORIO_ANEXADO}',
+        f'DEPROC | {TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}',
+        f'DEPROC | {TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA}',
+        'estado_atual_deproc',
     ]
-    assert colunas['tag_deproc_concluido_memo'] is True
-    assert colunas['tag_deproc_relatorio_anexado'] is False
+    assert colunas[f'DEPROC | {TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}'] is True
+    assert colunas[f'DEPROC | {TAG_DEPROC_RELATORIO_ANEXADO}'] is False
+    assert colunas['estado_atual_deproc'] == TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA
     assert colunas['marcadores_deproc_finais'] == f'{TAG_DEPROC_TRATADO}; {TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}'
     assert 'processo_reaberto' not in colunas
     assert colunas['memo_apis_sei'] is not None

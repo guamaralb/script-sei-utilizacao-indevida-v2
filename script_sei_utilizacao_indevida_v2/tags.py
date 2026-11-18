@@ -179,11 +179,11 @@ TAGS_DEPROC = (TAG_DEPROC_TRATADO, TAG_DEPROC_RELATORIO_ANEXADO, TAG_DEPROC_NO_B
 # Grupos de alternativos: adicionar um remove os outros do mesmo grupo
 _GRUPOS_ALTERNATIVOS = (TAGS_ESTADO_NOVO, TAGS_ESTADO_DEPROC)
 
-# Coluna da planilha de controle de cada marcador válido na GEACS (indica se o
-# processo terminou a passagem com o marcador). Os demais (versão anterior,
-# manuais, antigos) vão juntos para a coluna demais_marcadores. Os nomes das
-# colunas não mudam (por isso alguns não batem com o nome atual do marcador)
-_COLUNA_POR_TAG = {
+# Marcadores válidos na GEACS -> nome antigo da coluna da planilha de controle
+# (até 18/11/2026). Hoje a coluna de cada marcador tem o nome dele
+# (COLUNAS_TAGS); os nomes antigos só servem para migrar as planilhas
+# (COLUNA_POR_COLUNA_ANTIGA), por isso alguns não batem com o marcador
+_COLUNA_ANTIGA_POR_TAG = {
     TAG_PROCESSO_VELHO: 'tag_processo_velho',
     TAG_PROCESSO_NOVO: 'tag_processo_novo',
     TAG_AGUARDA_FLUXO_NORMAL: 'tag_aguarda_fluxo_normal',
@@ -219,8 +219,8 @@ _COLUNA_POR_TAG = {
     TAG_ENCAMINHADO_APIS_TODAS_INFOS: 'tag_encaminhado_apis_todas_infos',
 }
 
-# Colunas dos marcadores da DEPROC (só o fluxo DEPROC as grava)
-_COLUNA_POR_TAG_DEPROC = {
+# Marcadores da DEPROC -> nome antigo da coluna (só o fluxo DEPROC as grava)
+_COLUNA_ANTIGA_POR_TAG_DEPROC = {
     TAG_DEPROC_TRATADO: 'tag_deproc_tratado',
     TAG_DEPROC_RELATORIO_ANEXADO: 'tag_deproc_relatorio_anexado',
     TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA: 'tag_deproc_concluido_memo',
@@ -229,12 +229,50 @@ _COLUNA_POR_TAG_DEPROC = {
 
 # Marcadores válidos na unidade da GEACS (cadastrados no SEI, um por coluna
 # da planilha de controle)
-TAGS_VALIDOS_GEACS = frozenset(_COLUNA_POR_TAG)
-COLUNAS_TAGS_VALIDOS = frozenset((*_COLUNA_POR_TAG.values(), *_COLUNA_POR_TAG_DEPROC.values()))
+TAGS_VALIDOS_GEACS = frozenset(_COLUNA_ANTIGA_POR_TAG)
+
+# Colunas da planilha de controle (verdadeiro se o processo terminou a passagem
+# com o marcador): o nome inteiro do marcador, na ordem da numeração (a da
+# lista do SEI), primeiro as da GEACS e depois as da DEPROC. As da DEPROC têm
+# o prefixo PREFIXO_COLUNA_DEPROC, pois "v2: 01 - Tratado pelo Script" existe
+# nas duas unidades. Ficam no fim da planilha (planilha_controle)
+PREFIXO_COLUNA_DEPROC = 'DEPROC | '
+
+
+def _ordem_numeracao(tag: str) -> str:
+    # Sem o prefixo, a ordem alfabética é a da numeração (01.05.A antes de
+    # 01.05.A.1: o espaço vem antes do ponto)
+    return tag.removeprefix(PREFIXO).removeprefix(PREFIXO_VELHO)
+
+
+def coluna_tag_deproc(tag: str) -> str:
+    return f'{PREFIXO_COLUNA_DEPROC}{tag}'
+
+
+COLUNAS_TAGS_GEACS = tuple(sorted(TAGS_VALIDOS_GEACS, key=_ordem_numeracao))
+COLUNAS_TAGS_DEPROC = tuple(coluna_tag_deproc(tag) for tag in sorted(_COLUNA_ANTIGA_POR_TAG_DEPROC, key=_ordem_numeracao))
+COLUNAS_TAGS = (*COLUNAS_TAGS_GEACS, *COLUNAS_TAGS_DEPROC)
+COLUNAS_TAGS_VALIDOS = frozenset(COLUNAS_TAGS)
+# Migração das planilhas: nome antigo da coluna -> nome atual
+COLUNA_POR_COLUNA_ANTIGA = {
+    **{antiga: tag for tag, antiga in _COLUNA_ANTIGA_POR_TAG.items()},
+    **{antiga: coluna_tag_deproc(tag) for tag, antiga in _COLUNA_ANTIGA_POR_TAG_DEPROC.items()},
+}
 # Coluna com os marcadores do processo fora de TAGS_VALIDOS_GEACS
 COLUNA_DEMAIS_MARCADORES = 'demais_marcadores'
+# Marcador(es) de estado do processo no fim da passagem (GEACS e DEPROC;
+# mais de um, separados por "; ", é inconsistência)
+COLUNA_ESTADO_ATUAL = 'estado_atual'
+COLUNA_ESTADO_ATUAL_DEPROC = 'estado_atual_deproc'
 
-TAGS_SCRIPT = frozenset((*_COLUNA_POR_TAG, *_COLUNA_POR_TAG_DEPROC))
+TAGS_SCRIPT = frozenset((*_COLUNA_ANTIGA_POR_TAG, *_COLUNA_ANTIGA_POR_TAG_DEPROC))
+
+
+def eh_coluna_tag(coluna) -> bool:
+    """Coluna de marcador da planilha de controle: atual (nome do marcador) ou
+    antiga (tag_*, a migrar ou obsoleta)."""
+    coluna = str(coluna)
+    return coluna in COLUNAS_TAGS_VALIDOS or coluna.startswith('tag_')
 
 
 def normalizar_tags(tags: list) -> list[str]:
@@ -248,7 +286,14 @@ def registrar_tags(registro, tags: list[str]) -> None:
 
 
 def colunas_tags(marcadores: list[str]) -> dict[str, bool]:
-    return {coluna: tag in marcadores for tag, coluna in _COLUNA_POR_TAG.items()}
+    return {tag: tag in marcadores for tag in COLUNAS_TAGS_GEACS}
+
+
+def descrever_estado(marcadores: list[str], estados: tuple[str, ...] = TAGS_ESTADO_NOVO) -> str | None:
+    """Coluna estado_atual (ou estado_atual_deproc): o marcador de estado do
+    processo, sem levantar erro com mais de um (vão todos, separados por
+    "; ")."""
+    return '; '.join(tag for tag in estados if tag in marcadores) or None
 
 
 def demais_marcadores(marcadores: list[str]) -> str:
@@ -257,8 +302,11 @@ def demais_marcadores(marcadores: list[str]) -> str:
     return '; '.join(sorted(tag for tag in marcadores if tag not in TAGS_VALIDOS_GEACS))
 
 
-def colunas_tags_deproc(marcadores: list[str]) -> dict[str, bool]:
-    return {coluna: tag in marcadores for tag, coluna in _COLUNA_POR_TAG_DEPROC.items()}
+def colunas_tags_deproc(marcadores: list[str]) -> dict:
+    """As colunas dos marcadores da DEPROC e o estado_atual_deproc."""
+    colunas: dict = {coluna_tag_deproc(tag): tag in marcadores for tag in sorted(_COLUNA_ANTIGA_POR_TAG_DEPROC, key=_ordem_numeracao)}
+    colunas[COLUNA_ESTADO_ATUAL_DEPROC] = descrever_estado(marcadores, TAGS_ESTADO_DEPROC)
+    return colunas
 
 
 def tem_tag(registro, tag: str) -> bool:

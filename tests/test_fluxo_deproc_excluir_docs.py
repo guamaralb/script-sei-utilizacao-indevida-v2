@@ -249,8 +249,9 @@ def test_remove_os_marcadores_da_deproc_depois_de_excluir(arvore):
     dados = registro.to_dict()
     assert 'marcador(es) removido(s)' in dados['deproc_excluir_docs']
     assert dados['marcadores_deproc_finais'] == OUTRO_MARCADOR
-    assert dados['tag_deproc_tratado'] is False
-    assert dados['tag_deproc_concluido_memo'] is False
+    assert dados[tags.coluna_tag_deproc(TAG_DEPROC_TRATADO)] is False
+    assert dados[tags.coluna_tag_deproc(TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)] is False
+    assert dados['estado_atual_deproc'] is None
 
 
 def test_remove_todos_os_estados_da_deproc(arvore):

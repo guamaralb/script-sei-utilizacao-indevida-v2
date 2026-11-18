@@ -14,7 +14,9 @@ planilha (coluna do memo, verificar_marcadores_memo_aguarda_assinado e, com os
 marcadores consistentes, a prox_acao). Os problemas vão para a coluna
 verificar_marcadores_inconsistencia, e o que fazer com o processo, para a
 verificar_marcadores_acao_sugerida. Registra se o processo está aberto na
-GEACS (verificar_marcadores_aberto_na_geacs), sem mexer nele.
+GEACS (verificar_marcadores_aberto_na_geacs), sem mexer nele. Na aba
+processos, script e ultima_passagem continuam os do último fluxo que agiu no
+processo: a passagem fica em verificar_marcadores_em (e no histórico).
 
 Para cada processo da aba geacs_verificar_marcadores de
 processos_a_processar.xlsx: abre o processo, lê os marcadores e, se preciso, a
@@ -122,7 +124,9 @@ def main():
         processos = ler_processos_a_processar(SCRIPT)
         total = len(processos)
 
-        controle = PlanilhaControleGeral(SCRIPT, AGORA)
+        # script e ultima_passagem continuam os do último fluxo que agiu no
+        # processo (a passagem fica em verificar_marcadores_em e no histórico)
+        controle = PlanilhaControleGeral(SCRIPT, AGORA, colunas_so_historico=RegistroVerificarMarcadores.COLUNAS_SO_HISTORICO)
         driver = abrir_sei(UNIDADE_GEACS)
 
         for i, num_processo in enumerate(processos, start=1):

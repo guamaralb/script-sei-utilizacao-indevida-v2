@@ -6,6 +6,7 @@ from datetime import datetime
 import main_geacs_canc_memo_deproc_ant as fluxo
 import planilha_controle
 import pytest
+import tags
 from constantes import UNIDADE_APIS, UNIDADE_GEACS
 from openpyxl import load_workbook
 from planilha_controle import PlanilhaControleGeral
@@ -175,7 +176,9 @@ def test_planilha_de_controle_mantem_prox_acao_fluxo_e_erro_dos_outros_fluxos(se
     linha = {cabecalho.value: valor.value for cabecalho, valor in zip(processos[1], processos[2], strict=True)}
     assert linha['prox_acao'] == 'Assinar memo DEPROC e encaminhar'
     assert linha['fluxo'] == 'NOVO'
-    assert linha['tag_processo_novo'] is True
+    # Coluna antiga (tag_processo_novo) migrada para o nome do marcador
+    assert linha[tags.TAG_PROCESSO_NOVO] is True
+    assert 'tag_processo_novo' not in linha
     assert linha['script'] == fluxo.SCRIPT
     assert linha['canc_memo_deproc_ant_cancelado'] is True
     assert linha['canc_memo_deproc_ant_em'] is not None

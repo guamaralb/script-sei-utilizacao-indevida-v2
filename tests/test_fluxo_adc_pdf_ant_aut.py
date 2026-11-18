@@ -503,7 +503,7 @@ def test_controle_nao_apaga_as_colunas_do_fluxo_principal(sei, alt):
     colunas = passar().to_dict()
 
     assert colunas['fluxo'] == 'ADC PDF ANT AUT - PLANILHA ANTIGA BAIXADA DO SEI'
-    assert colunas['tag_aguarda_fluxo_normal'] is True
+    assert colunas[TAG_AGUARDA_FLUXO_NORMAL] is True
     assert 'tit_usou' not in colunas
     assert 'memo_apis_mat_nao_encontradas_criado' not in colunas
 

@@ -10,7 +10,7 @@ import planilha_controle
 import processos_a_processar
 import pytest
 from openpyxl import load_workbook
-from planilha_controle import PlanilhaControleGeral
+from planilha_controle import HistoricoCsv, PlanilhaControleGeral, arquivo_historico
 from sessao_sei import sessao_encerrada
 
 
@@ -28,6 +28,10 @@ def _ler(arquivo):
     return pd.read_excel(arquivo, sheet_name=None)
 
 
+def _historico(arquivo) -> list[dict]:
+    return HistoricoCsv(arquivo_historico(arquivo)).ler()
+
+
 def test_grava_a_cada_processo(arquivo):
     controle = PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo)
     controle.registrar(_passagem('P1', 9, prox_acao='A'))
@@ -36,9 +40,12 @@ def test_grava_a_cada_processo(arquivo):
     controle.registrar(_passagem('P2', 10, prox_acao='B'))
     abas = _ler(arquivo)
     assert list(abas['processos']['num_processo']) == ['P1', 'P2']
-    assert len(abas['historico']) == 2
+    assert 'historico' not in abas
     assert list(abas['processos'].columns[:6]) == ['num_processo', 'BUSCA', 'ERROS VERIFICADOS MANUALMENTE', 'primeira_passagem', 'ultima_passagem', 'script']
-    assert list(abas['historico'].columns[:4]) == ['num_processo', 'primeira_passagem', 'ultima_passagem', 'script']
+    historico = _historico(arquivo)
+    assert [h['num_processo'] for h in historico] == ['P1', 'P2']
+    assert list(historico[0])[:3] == ['script', 'num_processo', 'data_execucao']
+    assert historico[0]['ultima_passagem'] == '21/10/2026 09:00:00'
 
 
 def test_nova_passagem_atualiza_linha_e_mantem_primeira_passagem(arquivo):
@@ -54,7 +61,7 @@ def test_nova_passagem_atualiza_linha_e_mantem_primeira_passagem(arquivo):
     assert linha['script'] == 'correcao_rede_propria'
     # Coluna que a segunda passagem não grava é mantida
     assert str(linha['memo_disa_sei']) == '111'
-    assert list(abas['historico']['prox_acao']) == ['A', 'B']
+    assert [h['prox_acao'] for h in _historico(arquivo)] == ['A', 'B']
 
 
 def test_backup_uma_vez_por_execucao(arquivo):
@@ -119,7 +126,7 @@ def test_mantem_outras_abas_formula_de_busca_e_anotacoes(arquivo):
     assert processos['B3'].value == '=MATCH(A3,BUSCA!$A:$A,0)'
     assert processos['C2'].value == 'erro visto na execução'
     assert processos['C3'].value is None
-    assert 'BUSCA' not in [c.value for c in wb['historico'][1]]
+    assert 'BUSCA' not in _historico(arquivo)[0]
 
 
 def test_primeira_aba_e_o_resumo_por_prox_acao(arquivo):
@@ -148,7 +155,112 @@ def test_resumo_continua_primeiro_com_outras_abas(arquivo):
 
     wb = load_workbook(arquivo)
     assert wb.sheetnames[0] == 'resumo'
-    assert {'processos', 'historico', 'BUSCA', 'ERROS'} <= set(wb.sheetnames)
+    assert {'processos', 'BUSCA', 'ERROS'} <= set(wb.sheetnames)
+
+
+def test_historico_em_csv_acrescenta_sem_regravar(arquivo):
+    controle = PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo)
+    controle.registrar(_passagem('P1', 9, prox_acao='A', valor=1.5, ok=True))
+    csv = arquivo_historico(arquivo)
+    antes = csv.read_bytes()
+    # Mesmas colunas: só acrescenta a linha no fim
+    controle.registrar(_passagem('P2', 10, prox_acao='B', valor=2.0, ok=False))
+    assert csv.read_bytes().startswith(antes)
+    # BOM só no começo, separador ";" e valores como o Excel em português lê
+    texto = csv.read_text(encoding='utf-8')
+    assert texto.count('\ufeff') == 1
+    assert ';1,5;VERDADEIRO' in texto
+    assert ';2,0;FALSO' in texto
+
+    # Coluna nova: regrava o arquivo com o cabeçalho maior
+    controle.registrar(_passagem('P3', 11, prox_acao='C', nova='x'))
+    historico = _historico(arquivo)
+    assert [h['prox_acao'] for h in historico] == ['A', 'B', 'C']
+    assert [h['nova'] for h in historico] == ['', '', 'x']
+    assert not list(arquivo.parent.glob('~gravando_*'))
+
+
+def test_historico_pendente_quando_o_csv_nao_pode_ser_gravado(arquivo, monkeypatch):
+    controle = PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo)
+    controle.registrar(_passagem('P1', 9))
+    gravar = HistoricoCsv._gravar_pendentes
+
+    def falhar(self):
+        raise PermissionError('CSV aberto no Excel')
+
+    monkeypatch.setattr(HistoricoCsv, '_gravar_pendentes', falhar)
+    controle.registrar(_passagem('P2', 10))
+    # A planilha continua sendo gravada
+    assert list(_ler(arquivo)['processos']['num_processo']) == ['P1', 'P2']
+
+    monkeypatch.setattr(HistoricoCsv, '_gravar_pendentes', gravar)
+    controle.registrar(_passagem('P3', 11))
+    assert [h['num_processo'] for h in _historico(arquivo)] == ['P1', 'P2', 'P3']
+
+
+def _planilha_com_aba_historico(arquivo, historico: list[dict]) -> None:
+    with pd.ExcelWriter(arquivo) as writer:
+        pd.DataFrame([historico[-1]]).to_excel(writer, sheet_name='processos', index=False)
+        pd.DataFrame(historico).to_excel(writer, sheet_name='historico', index=False)
+        pd.DataFrame({'A': ['P1']}).to_excel(writer, sheet_name='BUSCA', index=False)
+
+
+def test_aba_historico_antiga_vai_para_o_csv(arquivo):
+    _planilha_com_aba_historico(arquivo, [_passagem('P1', 8, prox_acao='X', script='geacs', tag_processo_novo=True), _passagem('P1', 9, prox_acao='A', script='geacs')])
+
+    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(_passagem('P1', 10, prox_acao='B'))
+
+    assert 'historico' not in load_workbook(arquivo).sheetnames
+    historico = _historico(arquivo)
+    assert [h['prox_acao'] for h in historico] == ['X', 'A', 'B']
+    assert historico[0]['v2: 01 - Tratado pelo Script'] == 'VERDADEIRO'
+    # Backup da planilha com a aba, antes de tirá-la
+    assert 'historico' in load_workbook(next(planilha_controle.DIR_BACKUP_CONTROLE.iterdir())).sheetnames
+
+
+def test_migracao_restaura_o_ultimo_fluxo_que_agiu(arquivo):
+    """Até 18/11/2026, o verificar marcadores gravava script e ultima_passagem
+    na aba processos: na migração, voltam os do último fluxo que agiu."""
+    historico = [
+        _passagem('P1', 8, prox_acao='A', script='geacs_inicial', data_execucao='exec_inicial'),
+        _passagem('P1', 9, prox_acao='A', script='geacs_verificar_marcadores'),
+        _passagem('P2', 9, script='geacs_verificar_marcadores'),
+    ]
+    _planilha_com_aba_historico(arquivo, historico)
+    with pd.ExcelWriter(arquivo, mode='a', if_sheet_exists='replace') as writer:
+        pd.DataFrame([historico[1], historico[2]]).to_excel(writer, sheet_name='processos', index=False)
+
+    controle = PlanilhaControleGeral('geacs_verificar_marcadores', 'exec2', arquivo)
+    p1, p2 = controle.linha_processo('P1'), controle.linha_processo('P2')
+
+    assert p1['script'] == 'geacs_inicial'
+    assert p1['ultima_passagem'] == datetime(2026, 10, 21, 8)
+    assert p1['data_execucao'] == 'exec_inicial'
+    assert p1['verificar_marcadores_em'] == datetime(2026, 10, 21, 9)
+    # Só passou pelo verificar: fica como está
+    assert p2['script'] == 'geacs_verificar_marcadores'
+
+
+def test_aba_historico_ja_copiada_so_sai_da_planilha(arquivo):
+    passagens = [_passagem('P1', 9, prox_acao='A')]
+    _planilha_com_aba_historico(arquivo, passagens)
+    # Execução anterior copiou a aba e parou antes de gravar a planilha
+    HistoricoCsv(arquivo_historico(arquivo)).acrescentar(passagens)
+
+    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(_passagem('P1', 10, prox_acao='B'))
+
+    assert 'historico' not in load_workbook(arquivo).sheetnames
+    assert [h['prox_acao'] for h in _historico(arquivo)] == ['A', 'B']
+
+
+def test_aba_historico_maior_que_o_csv_fica_na_planilha(arquivo):
+    _planilha_com_aba_historico(arquivo, [_passagem('P1', 8, prox_acao='X'), _passagem('P1', 9, prox_acao='A')])
+    HistoricoCsv(arquivo_historico(arquivo)).acrescentar([_passagem('P9', 7, prox_acao='Z')])
+
+    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(_passagem('P1', 10, prox_acao='B'))
+
+    assert 'historico' in load_workbook(arquivo).sheetnames
+    assert [h['prox_acao'] for h in _historico(arquivo)] == ['Z', 'B']
 
 
 def test_le_a_aba_do_fluxo_em_processos_a_processar(tmp_path, monkeypatch):
