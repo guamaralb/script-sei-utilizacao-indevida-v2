@@ -17,16 +17,18 @@ Para cada processo da aba geacs_corrige_envio_disa de processos_a_processar.xlsx
    relatórios do MANTIS na rodada. O caso precisa ser "DISA não" com uso no
    MANTIS; senão, ou sem algum relatório, para com erro, sem ação. O memo
    DEPROC é montado antes de qualquer ação no SEI;
-5. exclui o(s) memo(s) à DISA (excluir_doc da sei_automacao). Algum não
-   excluído (ex.: assinado): para com erro, prox_acao = Verificar o que
-   fazer: memo à DISA (não consta) não excluído, sem criar o memo DEPROC;
+5. exclui o(s) memo(s) à DISA (excluir_doc da sei_automacao). O que não pôde
+   ser excluído (ex.: assinado) é cancelado (cancelar_doc), com o motivo
+   MOTIVO_CANCELAMENTO. Algum nem excluído nem cancelado: para com erro,
+   prox_acao = Verificar o que fazer: memo à DISA (não consta) não excluído,
+   sem criar o memo DEPROC;
 6. cria o memo DEPROC (retomada: o memo já na rodada, pelo assunto, não é
    recriado), insere no bloco BLOCO_MEMO_DEPROC e adiciona o 01.10.B - No Bloco
    DEPROC: Coparticipação, que remove o marcador da DISA (estado). O 01 e os
    informativos ficam. prox_acao = Assinar memo DEPROC e encaminhar.
 
-Retomada: se uma passagem excluiu o memo à DISA e falhou antes do memo DEPROC,
-o processo continua com o marcador N Consta e sem o memo; a próxima passagem
+Retomada: se uma passagem excluiu (ou cancelou) o memo à DISA e falhou antes do
+memo DEPROC, o processo continua com o marcador N Consta e sem o memo; a próxima passagem
 segue do passo 4.
 """
 
@@ -67,7 +69,7 @@ from processos_a_processar import ler_processos_a_processar
 from rede_propria import BasesUso, ErroAvaliacao, avaliar_uso_rede_propria_disa, carregar_bases
 from Registro import PROX_ACAO_POR_NO_BLOCO, ProxAcao, RegistroCorrigeEnvioDisa, registrar_erro, registrar_sem_acesso
 from relatorios_mantis import REDE_CREDENCIADA, REDE_PROPRIA
-from sei_automacao.documento import excluir_doc
+from sei_automacao.documento import cancelar_doc, excluir_doc
 from sei_automacao.exceptions import UnidadeSemAcessoException
 from sei_automacao.processo import acessar_processo, listar_documentos_arvore, listar_marcadores
 from selenium import webdriver
@@ -101,6 +103,13 @@ ARQ_LOG = DIR_LOG / f'{AGORA}_execucao_geacs_corrige_envio_disa.log'
 TRECHO_MEMO_DISA_N_CONSTA = 'Embora a Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791) não indique atendimento para as matrículas relacionadas'
 _PADRAO_MEMO_DISA_N_CONSTA = re.compile(r'\s+'.join(re.escape(palavra) for palavra in TRECHO_MEMO_DISA_N_CONSTA.split()), re.IGNORECASE)
 
+# Motivo do cancelamento do memo à DISA que não pôde ser excluído
+MOTIVO_CANCELAMENTO = (
+    'O fluxo de apuração da utilização foi alterado, de forma que os processos cujos beneficiários não tiveram utilização '
+    'na Rede Própria - isto é, não estão contidos na Planilha BENEFICIÁRIOS ATENDIDOS NA REDE PRÓPRIA (149768791) - '
+    'não deverão passar pela DISA'
+)
+
 # Marcadores de memo à DISA: No Bloco (não assinado) e Aguarda (assinado)
 _NO_BLOCO_DISA = (TAG_NO_BLOCO_DISA_VALIDAR_CONSTA, TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA, TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO)
 TAGS_MEMO_DISA = (*_NO_BLOCO_DISA, *(AGUARDA_POR_NO_BLOCO[tag] for tag in _NO_BLOCO_DISA))
@@ -126,7 +135,7 @@ class CasoNaoCorrigivel(ErroAvaliacao):
 
 
 class MemoDisaNaoExcluido(ErroAvaliacao):
-    """Memo à DISA que o SEI não deixou excluir (ex.: assinado)."""
+    """Memo à DISA que o SEI não deixou excluir nem cancelar."""
 
 
 def _descrever(doc: dict) -> str:
@@ -180,10 +189,29 @@ def _memos_restantes(driver: webdriver.Remote, registro: RegistroCorrigeEnvioDis
         time.sleep(1)
 
 
+def _cancelar_memo_disa(driver: webdriver.Remote, registro: RegistroCorrigeEnvioDisa, memo: dict) -> None:
+    """Cancela o memo à DISA que não pôde ser excluído. Sem conseguir, ele vai
+    para os não excluídos."""
+    try:
+        selecionar_doc(driver, memo)
+        cancelar_doc(driver, MOTIVO_CANCELAMENTO)
+    except _SESSAO_ENCERRADA:
+        raise
+    except Exception:
+        logger.warning(f'Memo à DISA não cancelado: {_descrever(memo)} (já cancelado ou sem permissão?)', exc_info=True)
+        registro.memos_disa_nao_excluidos_sei.append(memo['numero_sei'])
+        restaurar_navegador(driver)
+        return
+    registro.memos_disa_cancelados_sei.append(memo['numero_sei'])
+    logger.info(f'Memo à DISA cancelado: {_descrever(memo)} | Motivo: "{MOTIVO_CANCELAMENTO}"')
+
+
 def excluir_memos_disa(driver: webdriver.Remote, registro: RegistroCorrigeEnvioDisa, memos: list[dict]) -> None:
     """Exclui os memos à DISA, do último para o primeiro, e confere na
-    árvore. Algum não excluído: MemoDisaNaoExcluido, com a prox_acao de
-    verificar o que fazer."""
+    árvore. O que não pôde ser excluído (ex.: assinado) é cancelado. Algum nem
+    excluído nem cancelado: MemoDisaNaoExcluido, com a prox_acao de verificar
+    o que fazer."""
+    a_cancelar = []
     for memo in reversed(memos):
         try:
             selecionar_doc(driver, memo)
@@ -191,9 +219,9 @@ def excluir_memos_disa(driver: webdriver.Remote, registro: RegistroCorrigeEnvioD
         except _SESSAO_ENCERRADA:
             raise
         except Exception:
-            logger.warning(f'Memo à DISA não excluído: {_descrever(memo)} (assinado, já enviado ou sem permissão?)', exc_info=True)
-            registro.memos_disa_nao_excluidos_sei.append(memo['numero_sei'])
+            logger.warning(f'Memo à DISA não excluído: {_descrever(memo)} (assinado, já enviado ou sem permissão?); será cancelado', exc_info=True)
             restaurar_navegador(driver)
+            a_cancelar.append(memo)
             continue
         registro.memos_disa_excluidos_sei.append(memo['numero_sei'])
         logger.info(f'Memo à DISA excluído: {_descrever(memo)}')
@@ -201,11 +229,16 @@ def excluir_memos_disa(driver: webdriver.Remote, registro: RegistroCorrigeEnvioD
     if registro.memos_disa_excluidos_sei:
         for numero in _memos_restantes(driver, registro, registro.memos_disa_excluidos_sei):
             # A exclusão não deu erro, mas o memo continua na árvore
+            logger.warning(f'Memo à DISA excluído sem erro, mas ainda na árvore: SEI {numero}; será cancelado')
             registro.memos_disa_excluidos_sei.remove(numero)
-            registro.memos_disa_nao_excluidos_sei.append(numero)
+            a_cancelar.append(next(memo for memo in memos if memo['numero_sei'] == numero))
+
+    for memo in a_cancelar:
+        _cancelar_memo_disa(driver, registro, memo)
+
     if registro.memos_disa_nao_excluidos_sei:
         registro.prox_acao = ProxAcao.VERIFICAR_MEMO_DISA_NAO_EXCLUIDO
-        raise MemoDisaNaoExcluido(f'Memo(s) à DISA (não consta) não excluído(s): {", ".join(registro.memos_disa_nao_excluidos_sei)}; memo DEPROC não criado')
+        raise MemoDisaNaoExcluido(f'Memo(s) à DISA (não consta) não excluído(s) nem cancelado(s): {", ".join(registro.memos_disa_nao_excluidos_sei)}; memo DEPROC não criado')
 
 
 def _montar_memo_deproc(registro: RegistroCorrigeEnvioDisa, bases: BasesUso, bases_mantis: BasesMantis):
@@ -268,6 +301,9 @@ def corrigir_envio_disa(driver: webdriver.Remote, registro: RegistroCorrigeEnvio
     if memos_disa:
         excluir_memos_disa(driver, registro, memos_disa)
         _relistar_arvore(driver, registro)
+        # Os cancelados continuam na árvore: não são lidos na busca do memo
+        # DEPROC
+        registro.docs_rodada = [doc for doc in registro.docs_rodada if doc['numero_sei'] not in registro.memos_disa_cancelados_sei]
 
     incluir_memo(driver, registro, memo, BLOCO_MEMO_DEPROC, 'memo_deproc', 'DEPROC', padrao_assunto=PADRAO_ASSUNTO_MEMO_DEPROC)
     # Estado: remove o marcador da DISA
@@ -275,14 +311,23 @@ def corrigir_envio_disa(driver: webdriver.Remote, registro: RegistroCorrigeEnvio
     registrar_numeros_memos(driver, registro)
     registro.fluxo = f'{FLUXO} ({registro.caso_disa_mantis})'
     registro.prox_acao = ProxAcao.ASSINAR_DEPROC
-    excluidos = ', '.join(registro.memos_disa_excluidos_sei) or 'nenhum (já excluído antes)'
-    registro.corrige_envio_disa = f'{datetime.now():%d/%m/%Y %H:%M}: memo à DISA excluído: {excluidos}; memo DEPROC: {registro.memo_deproc_sei or "criado"}'
+    registro.corrige_envio_disa = f'{datetime.now():%d/%m/%Y %H:%M}: {_memos_disa_tratados(registro)}; memo DEPROC: {registro.memo_deproc_sei or "criado"}'
+
+
+def _memos_disa_tratados(registro: RegistroCorrigeEnvioDisa) -> str:
+    """Os memos à DISA excluídos e cancelados, para a coluna corrige_envio_disa."""
+    partes = []
+    if registro.memos_disa_excluidos_sei:
+        partes.append(f'memo à DISA excluído: {", ".join(registro.memos_disa_excluidos_sei)}')
+    if registro.memos_disa_cancelados_sei:
+        partes.append(f'memo à DISA cancelado: {", ".join(registro.memos_disa_cancelados_sei)}')
+    return '; '.join(partes) or 'memo à DISA excluído: nenhum (já excluído antes)'
 
 
 def _resumo_erro(registro: RegistroCorrigeEnvioDisa) -> None:
     if registro.erro:
-        excluidos = f'; memo à DISA excluído: {", ".join(registro.memos_disa_excluidos_sei)}' if registro.memos_disa_excluidos_sei else ''
-        registro.corrige_envio_disa = f'{datetime.now():%d/%m/%Y %H:%M}: ERRO ({registro.tipo_erro}): {registro.erro}{excluidos}'
+        tratados = f'; {_memos_disa_tratados(registro)}' if registro.memos_disa_excluidos_sei or registro.memos_disa_cancelados_sei else ''
+        registro.corrige_envio_disa = f'{datetime.now():%d/%m/%Y %H:%M}: ERRO ({registro.tipo_erro}): {registro.erro}{tratados}'
 
 
 def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, bases_mantis: BasesMantis) -> RegistroCorrigeEnvioDisa:

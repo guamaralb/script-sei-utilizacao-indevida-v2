@@ -7,7 +7,7 @@ from datetime import date
 from constantes import DATA_CORTE_PROCESSO_VELHO, UNIDADE_APIS, UNIDADE_GEACS
 from rede_propria import ErroAvaliacao
 from sei_automacao.documento import obter_conteudo_doc
-from sei_automacao.exceptions import DocumentoNaoEncontrado
+from sei_automacao.exceptions import DocumentoNaoEncontrado, DocumentoSemConteudo
 from sei_automacao.processo import listar_documentos_arvore, selecionar_doc_arvore
 from selenium import webdriver
 from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException
@@ -124,8 +124,14 @@ def selecionar_doc(driver: webdriver.Remote, doc: dict) -> None:
 
 
 def ler_texto_doc(driver: webdriver.Remote, doc: dict) -> str:
+    """Texto do documento. Documento sem conteúdo para exibir (ex.: cancelado)
+    é lido como texto vazio."""
     logger.debug(f'Lendo documento {_descrever(doc)}')
-    selecionar_doc(driver, doc)
+    try:
+        selecionar_doc(driver, doc)
+    except DocumentoSemConteudo:
+        logger.debug(f'Documento {doc["numero_sei"]} sem conteúdo (cancelado?): lido como vazio')
+        return ''
     texto = obter_conteudo_doc(driver, formato='texto')
     logger.debug(f'Documento {doc["numero_sei"]} lido ({len(texto)} caracteres)')
     return texto

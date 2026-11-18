@@ -1,6 +1,6 @@
 import docs_processo
 import pytest
-from sei_automacao.exceptions import DocumentoNaoEncontrado
+from sei_automacao.exceptions import DocumentoNaoEncontrado, DocumentoSemConteudo
 from selenium.common.exceptions import ElementClickInterceptedException
 
 DOC = {'nome_arvore': 'Memorando 7', 'unidade': 'IPSEMG/APIS-Utilização', 'numero_sei': '123'}
@@ -78,4 +78,12 @@ def test_outro_erro_nao_tenta_de_novo(monkeypatch, driver):
 
     with pytest.raises(RuntimeError):
         docs_processo.ler_texto_doc(driver, DOC)
+    assert chamadas == ['selecionar']
+
+
+def test_documento_sem_conteudo_e_lido_como_vazio(monkeypatch, driver):
+    # Documento cancelado: sem o iframe do conteúdo; não tenta de novo
+    chamadas = _seleciona_na_tentativa(monkeypatch, DocumentoSemConteudo('cancelado?'), tentativas_com_erro=1)
+
+    assert not docs_processo.ler_texto_doc(driver, DOC)
     assert chamadas == ['selecionar']

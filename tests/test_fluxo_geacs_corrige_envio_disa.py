@@ -45,6 +45,8 @@ class SEICorrige(SEIFalso):
         self.excluidos_que_ficam: set[str] = set()
         self.selecionado: str | None = None
         self.excluidos: list[str] = []
+        self.nao_cancelaveis: set[str] = set()
+        self.cancelados: list[tuple[str, str]] = []
 
     def _excluir(self, driver):
         if self.selecionado in self.nao_excluiveis:
@@ -52,6 +54,12 @@ class SEICorrige(SEIFalso):
         self.excluidos.append(self.selecionado)
         if self.selecionado not in self.excluidos_que_ficam:
             self.docs = [doc for doc in self.docs if doc['numero_sei'] != self.selecionado]
+
+    def _cancelar(self, driver, motivo):
+        if self.selecionado in self.nao_cancelaveis:
+            raise RuntimeError('Opção "Cancelar Documento" indisponível')
+        # O cancelado continua na árvore
+        self.cancelados.append((self.selecionado, motivo))
 
     def processo_n_consta(self, estado: str = TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA, *, com_rc: bool = False) -> str:
         """Processo enviado à DISA (N Consta): relatório RP (e RC) e o memo à
@@ -73,6 +81,7 @@ class SEICorrige(SEIFalso):
         monkeypatch.setattr(fluxo, 'ler_texto_doc', lambda driver, doc: self.textos[doc['numero_sei']])
         monkeypatch.setattr(fluxo, 'selecionar_doc', lambda driver, doc: setattr(self, 'selecionado', doc['numero_sei']))
         monkeypatch.setattr(fluxo, 'excluir_doc', self._excluir)
+        monkeypatch.setattr(fluxo, 'cancelar_doc', self._cancelar)
         monkeypatch.setattr(fluxo, 'restaurar_navegador', lambda driver: None)
         monkeypatch.setattr(fluxo, 'TEMPO_CONFERENCIA', 0)
 
@@ -135,7 +144,7 @@ def test_mantem_o_informativo(sei):
 
 
 @pytest.mark.parametrize('ficou_na_arvore', [False, True])
-def test_memo_a_disa_nao_excluido_para_sem_criar_nada(sei, ficou_na_arvore):
+def test_memo_a_disa_nao_excluido_e_cancelado(sei, ficou_na_arvore):
     memo_disa = sei.processo_n_consta(TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA)
     if ficou_na_arvore:
         sei.excluidos_que_ficam = {memo_disa}
@@ -143,13 +152,48 @@ def test_memo_a_disa_nao_excluido_para_sem_criar_nada(sei, ficou_na_arvore):
         sei.nao_excluiveis = {memo_disa}
     registro = _passar(sei)
 
+    assert registro.erro is None
+    assert sei.cancelados == [(memo_disa, fluxo.MOTIVO_CANCELAMENTO)]
+    assert 'não deverão passar pela DISA' in fluxo.MOTIVO_CANCELAMENTO
+    assert registro.memos_disa_cancelados_sei == [memo_disa]
+    assert registro.memos_disa_excluidos_sei == []
+    assert registro.memos_disa_nao_excluidos_sei == []
+    assert len(_memos_deproc(sei)) == 1
+    assert sei.tags == [TAG_PROCESSO_NOVO, TAG_MEMO_DEPROC_COPARTICIPACAO]
+    assert registro.prox_acao == ProxAcao.ASSINAR_DEPROC
+    assert f'memo à DISA cancelado: {memo_disa}' in registro.to_dict()['corrige_envio_disa']
+    # O cancelado fica na árvore, mas não é lido de novo na busca do memo DEPROC
+    assert memo_disa in [doc['numero_sei'] for doc in sei.docs]
+    assert memo_disa not in [doc['numero_sei'] for doc in registro.docs_rodada]
+
+
+def test_memo_a_disa_nem_excluido_nem_cancelado_para_sem_criar_nada(sei):
+    memo_disa = sei.processo_n_consta(TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA)
+    sei.nao_excluiveis = {memo_disa}
+    sei.nao_cancelaveis = {memo_disa}
+    registro = _passar(sei)
+
     assert registro.tipo_erro == 'MemoDisaNaoExcluido'
     assert registro.prox_acao == ProxAcao.VERIFICAR_MEMO_DISA_NAO_EXCLUIDO
     assert registro.memos_disa_nao_excluidos_sei == [memo_disa]
     assert registro.memos_disa_excluidos_sei == []
+    assert registro.memos_disa_cancelados_sei == []
     assert _memos_deproc(sei) == []
     assert sei.tags == [TAG_PROCESSO_NOVO, TAG_AGUARDA_DISA_VALIDAR_NAO_CONSTA]
     assert 'ERRO (MemoDisaNaoExcluido)' in registro.to_dict()['corrige_envio_disa']
+
+
+def test_um_excluido_e_outro_cancelado(sei):
+    memo_1 = sei.processo_n_consta()
+    memo_2 = sei.novo_doc('Memorando 10', UNIDADE_GEACS, TEXTO_MEMO_N_CONSTA)
+    sei.nao_excluiveis = {memo_1}
+    registro = _passar(sei)
+
+    assert registro.erro is None
+    assert registro.memos_disa_excluidos_sei == [memo_2]
+    assert registro.memos_disa_cancelados_sei == [memo_1]
+    resumo = registro.to_dict()['corrige_envio_disa']
+    assert f'memo à DISA excluído: {memo_2}; memo à DISA cancelado: {memo_1}' in resumo
 
 
 def test_sem_marcador_da_disa_para_sem_acao(sei):

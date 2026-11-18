@@ -1,0 +1,483 @@
+2026-11-18 16:21:06 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-18 16:21:06 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-18_16-21-06_execucao_geacs_verificar_marcadores.log
+2026-11-18 16:21:06 | INFO    | -                         | processos_a_processar | 31 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-18 16:21:10 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-18 16:21:10 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-18 16:21:16 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-18 16:21:21 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-18 16:21:21 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-18 16:21:21 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-18 16:21:21 | INFO    | 2010.01.0104703/2024-63   | __main__              | INÍCIO [1/31]
+2026-11-18 16:21:37 | INFO    | 2010.01.0104703/2024-63   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:21:37 | INFO    | 2010.01.0104703/2024-63   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:21:38 | DEBUG   | 2010.01.0104703/2024-63   | docs_processo         | Lendo documento Memorando 2714 (SEI 153940670)
+2026-11-18 16:21:38 | DEBUG   | 2010.01.0104703/2024-63   | docs_processo         | Documento 153940670 lido (3853 caracteres)
+2026-11-18 16:21:38 | INFO    | 2010.01.0104703/2024-63   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2714 (SEI 153940670)
+2026-11-18 16:21:38 | DEBUG   | 2010.01.0104703/2024-63   | docs_processo         | Lendo documento Memorando 103 (SEI 104710779)
+2026-11-18 16:21:39 | DEBUG   | 2010.01.0104703/2024-63   | docs_processo         | Documento 104710779 lido (1356 caracteres)
+2026-11-18 16:21:39 | DEBUG   | 2010.01.0104703/2024-63   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 103 (SEI 104710779)
+2026-11-18 16:21:39 | DEBUG   | 2010.01.0104703/2024-63   | docs_processo         | Lendo documento Memorando 2637 (SEI 152047461)
+2026-11-18 16:21:39 | DEBUG   | 2010.01.0104703/2024-63   | docs_processo         | Documento 152047461 lido (3018 caracteres)
+2026-11-18 16:21:39 | INFO    | 2010.01.0104703/2024-63   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2637 (SEI 152047461)']
+2026-11-18 16:21:39 | INFO    | 2010.01.0104703/2024-63   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:21:39 | INFO    | 2010.01.0104703/2024-63   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-18_16-21-06.xlsx
+2026-11-18 16:22:35 | DEBUG   | 2010.01.0104703/2024-63   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-18 16:22:35 | INFO    | 2010.01.0104703/2024-63   | __main__              | FIM (0h01m13s) | Próxima ação: -
+2026-11-18 16:22:35 | INFO    | 2010.01.0104712/2024-14   | __main__              | INÍCIO [2/31]
+2026-11-18 16:22:51 | INFO    | 2010.01.0104712/2024-14   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:22:51 | INFO    | 2010.01.0104712/2024-14   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:22:51 | DEBUG   | 2010.01.0104712/2024-14   | docs_processo         | Lendo documento Memorando 2715 (SEI 153940836)
+2026-11-18 16:22:51 | DEBUG   | 2010.01.0104712/2024-14   | docs_processo         | Documento 153940836 lido (3845 caracteres)
+2026-11-18 16:22:51 | INFO    | 2010.01.0104712/2024-14   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2715 (SEI 153940836)
+2026-11-18 16:22:51 | DEBUG   | 2010.01.0104712/2024-14   | docs_processo         | Lendo documento Memorando 104 (SEI 104712122)
+2026-11-18 16:22:52 | DEBUG   | 2010.01.0104712/2024-14   | docs_processo         | Documento 104712122 lido (1341 caracteres)
+2026-11-18 16:22:52 | DEBUG   | 2010.01.0104712/2024-14   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 104 (SEI 104712122)
+2026-11-18 16:22:52 | DEBUG   | 2010.01.0104712/2024-14   | docs_processo         | Lendo documento Memorando 2638 (SEI 152049307)
+2026-11-18 16:22:52 | DEBUG   | 2010.01.0104712/2024-14   | docs_processo         | Documento 152049307 lido (2969 caracteres)
+2026-11-18 16:22:52 | INFO    | 2010.01.0104712/2024-14   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2638 (SEI 152049307)']
+2026-11-18 16:22:52 | INFO    | 2010.01.0104712/2024-14   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:23:47 | DEBUG   | 2010.01.0104712/2024-14   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-18 16:23:47 | INFO    | 2010.01.0104712/2024-14   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:23:47 | INFO    | 2010.01.0000057/2025-86   | __main__              | INÍCIO [3/31]
+2026-11-18 16:24:04 | INFO    | 2010.01.0000057/2025-86   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:24:04 | INFO    | 2010.01.0000057/2025-86   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:24:04 | DEBUG   | 2010.01.0000057/2025-86   | docs_processo         | Lendo documento Memorando 2716 (SEI 153940928)
+2026-11-18 16:24:04 | DEBUG   | 2010.01.0000057/2025-86   | docs_processo         | Documento 153940928 lido (3974 caracteres)
+2026-11-18 16:24:04 | INFO    | 2010.01.0000057/2025-86   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2716 (SEI 153940928)
+2026-11-18 16:24:04 | DEBUG   | 2010.01.0000057/2025-86   | docs_processo         | Lendo documento Memorando 1 (SEI 104797623)
+2026-11-18 16:24:05 | DEBUG   | 2010.01.0000057/2025-86   | docs_processo         | Documento 104797623 lido (1443 caracteres)
+2026-11-18 16:24:05 | DEBUG   | 2010.01.0000057/2025-86   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1 (SEI 104797623)
+2026-11-18 16:24:05 | DEBUG   | 2010.01.0000057/2025-86   | docs_processo         | Lendo documento Memorando 2639 (SEI 152050097)
+2026-11-18 16:24:05 | DEBUG   | 2010.01.0000057/2025-86   | docs_processo         | Documento 152050097 lido (3013 caracteres)
+2026-11-18 16:24:05 | INFO    | 2010.01.0000057/2025-86   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2639 (SEI 152050097)']
+2026-11-18 16:24:05 | INFO    | 2010.01.0000057/2025-86   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:24:59 | DEBUG   | 2010.01.0000057/2025-86   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-18 16:24:59 | INFO    | 2010.01.0000057/2025-86   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:24:59 | INFO    | 2010.01.0000068/2025-80   | __main__              | INÍCIO [4/31]
+2026-11-18 16:25:15 | INFO    | 2010.01.0000068/2025-80   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:25:15 | INFO    | 2010.01.0000068/2025-80   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:25:16 | DEBUG   | 2010.01.0000068/2025-80   | docs_processo         | Lendo documento Memorando 2717 (SEI 153941030)
+2026-11-18 16:25:16 | DEBUG   | 2010.01.0000068/2025-80   | docs_processo         | Documento 153941030 lido (3636 caracteres)
+2026-11-18 16:25:16 | INFO    | 2010.01.0000068/2025-80   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2717 (SEI 153941030)
+2026-11-18 16:25:16 | DEBUG   | 2010.01.0000068/2025-80   | docs_processo         | Lendo documento Memorando 2 (SEI 104800653)
+2026-11-18 16:25:17 | DEBUG   | 2010.01.0000068/2025-80   | docs_processo         | Documento 104800653 lido (1317 caracteres)
+2026-11-18 16:25:17 | DEBUG   | 2010.01.0000068/2025-80   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 2 (SEI 104800653)
+2026-11-18 16:25:17 | DEBUG   | 2010.01.0000068/2025-80   | docs_processo         | Lendo documento Memorando 2641 (SEI 152051168)
+2026-11-18 16:25:17 | DEBUG   | 2010.01.0000068/2025-80   | docs_processo         | Documento 152051168 lido (2980 caracteres)
+2026-11-18 16:25:17 | INFO    | 2010.01.0000068/2025-80   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2641 (SEI 152051168)']
+2026-11-18 16:25:17 | INFO    | 2010.01.0000068/2025-80   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:26:12 | DEBUG   | 2010.01.0000068/2025-80   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-18 16:26:12 | INFO    | 2010.01.0000068/2025-80   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:26:12 | INFO    | 2010.01.0063067/2025-02   | __main__              | INÍCIO [5/31]
+2026-11-18 16:26:28 | INFO    | 2010.01.0063067/2025-02   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:26:28 | INFO    | 2010.01.0063067/2025-02   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:26:28 | DEBUG   | 2010.01.0063067/2025-02   | docs_processo         | Lendo documento Memorando 2718 (SEI 153941103)
+2026-11-18 16:26:29 | DEBUG   | 2010.01.0063067/2025-02   | docs_processo         | Documento 153941103 lido (3963 caracteres)
+2026-11-18 16:26:29 | INFO    | 2010.01.0063067/2025-02   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2718 (SEI 153941103)
+2026-11-18 16:26:29 | DEBUG   | 2010.01.0063067/2025-02   | docs_processo         | Lendo documento Memorando 546 (SEI 117143867)
+2026-11-18 16:26:29 | DEBUG   | 2010.01.0063067/2025-02   | docs_processo         | Documento 117143867 lido (1429 caracteres)
+2026-11-18 16:26:29 | DEBUG   | 2010.01.0063067/2025-02   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 546 (SEI 117143867)
+2026-11-18 16:26:29 | DEBUG   | 2010.01.0063067/2025-02   | docs_processo         | Lendo documento Memorando 2644 (SEI 152054484)
+2026-11-18 16:26:29 | DEBUG   | 2010.01.0063067/2025-02   | docs_processo         | Documento 152054484 lido (3000 caracteres)
+2026-11-18 16:26:29 | INFO    | 2010.01.0063067/2025-02   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2644 (SEI 152054484)']
+2026-11-18 16:26:29 | INFO    | 2010.01.0063067/2025-02   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:27:26 | DEBUG   | 2010.01.0063067/2025-02   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-18 16:27:26 | INFO    | 2010.01.0063067/2025-02   | __main__              | FIM (0h01m13s) | Próxima ação: -
+2026-11-18 16:27:26 | INFO    | 2010.01.0063152/2025-35   | __main__              | INÍCIO [6/31]
+2026-11-18 16:27:42 | INFO    | 2010.01.0063152/2025-35   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:27:42 | INFO    | 2010.01.0063152/2025-35   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:27:42 | DEBUG   | 2010.01.0063152/2025-35   | docs_processo         | Lendo documento Memorando 2719 (SEI 153941265)
+2026-11-18 16:27:43 | DEBUG   | 2010.01.0063152/2025-35   | docs_processo         | Documento 153941265 lido (3834 caracteres)
+2026-11-18 16:27:43 | INFO    | 2010.01.0063152/2025-35   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2719 (SEI 153941265)
+2026-11-18 16:27:43 | DEBUG   | 2010.01.0063152/2025-35   | docs_processo         | Lendo documento Memorando 560 (SEI 117200373)
+2026-11-18 16:27:43 | DEBUG   | 2010.01.0063152/2025-35   | docs_processo         | Documento 117200373 lido (1433 caracteres)
+2026-11-18 16:27:43 | DEBUG   | 2010.01.0063152/2025-35   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 560 (SEI 117200373)
+2026-11-18 16:27:43 | DEBUG   | 2010.01.0063152/2025-35   | docs_processo         | Lendo documento Memorando 2587 (SEI 151974526)
+2026-11-18 16:27:43 | DEBUG   | 2010.01.0063152/2025-35   | docs_processo         | Documento 151974526 lido (3002 caracteres)
+2026-11-18 16:27:43 | INFO    | 2010.01.0063152/2025-35   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2587 (SEI 151974526)']
+2026-11-18 16:27:43 | INFO    | 2010.01.0063152/2025-35   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:28:37 | DEBUG   | 2010.01.0063152/2025-35   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-18 16:28:37 | INFO    | 2010.01.0063152/2025-35   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:28:37 | INFO    | 2010.01.0063196/2025-11   | __main__              | INÍCIO [7/31]
+2026-11-18 16:28:53 | INFO    | 2010.01.0063196/2025-11   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:28:53 | INFO    | 2010.01.0063196/2025-11   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:28:53 | DEBUG   | 2010.01.0063196/2025-11   | docs_processo         | Lendo documento Memorando 2720 (SEI 153941386)
+2026-11-18 16:28:53 | DEBUG   | 2010.01.0063196/2025-11   | docs_processo         | Documento 153941386 lido (3957 caracteres)
+2026-11-18 16:28:53 | INFO    | 2010.01.0063196/2025-11   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2720 (SEI 153941386)
+2026-11-18 16:28:53 | DEBUG   | 2010.01.0063196/2025-11   | docs_processo         | Lendo documento Memorando 578 (SEI 117254925)
+2026-11-18 16:28:54 | DEBUG   | 2010.01.0063196/2025-11   | docs_processo         | Documento 117254925 lido (1437 caracteres)
+2026-11-18 16:28:54 | DEBUG   | 2010.01.0063196/2025-11   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 578 (SEI 117254925)
+2026-11-18 16:28:54 | DEBUG   | 2010.01.0063196/2025-11   | docs_processo         | Lendo documento Memorando 2592 (SEI 151990109)
+2026-11-18 16:28:54 | DEBUG   | 2010.01.0063196/2025-11   | docs_processo         | Documento 151990109 lido (2997 caracteres)
+2026-11-18 16:28:54 | INFO    | 2010.01.0063196/2025-11   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2592 (SEI 151990109)']
+2026-11-18 16:28:54 | INFO    | 2010.01.0063196/2025-11   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:29:49 | DEBUG   | 2010.01.0063196/2025-11   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-18 16:29:49 | INFO    | 2010.01.0063196/2025-11   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:29:49 | INFO    | 2010.01.0063202/2025-43   | __main__              | INÍCIO [8/31]
+2026-11-18 16:30:05 | INFO    | 2010.01.0063202/2025-43   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:30:05 | INFO    | 2010.01.0063202/2025-43   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:30:06 | DEBUG   | 2010.01.0063202/2025-43   | docs_processo         | Lendo documento Memorando 2721 (SEI 153941534)
+2026-11-18 16:30:06 | DEBUG   | 2010.01.0063202/2025-43   | docs_processo         | Documento 153941534 lido (3824 caracteres)
+2026-11-18 16:30:06 | INFO    | 2010.01.0063202/2025-43   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2721 (SEI 153941534)
+2026-11-18 16:30:06 | DEBUG   | 2010.01.0063202/2025-43   | docs_processo         | Lendo documento Memorando 579 (SEI 117256775)
+2026-11-18 16:30:06 | DEBUG   | 2010.01.0063202/2025-43   | docs_processo         | Documento 117256775 lido (1432 caracteres)
+2026-11-18 16:30:06 | DEBUG   | 2010.01.0063202/2025-43   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 579 (SEI 117256775)
+2026-11-18 16:30:06 | DEBUG   | 2010.01.0063202/2025-43   | docs_processo         | Lendo documento Memorando 2594 (SEI 151990570)
+2026-11-18 16:30:07 | DEBUG   | 2010.01.0063202/2025-43   | docs_processo         | Documento 151990570 lido (2998 caracteres)
+2026-11-18 16:30:07 | INFO    | 2010.01.0063202/2025-43   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2594 (SEI 151990570)']
+2026-11-18 16:30:07 | INFO    | 2010.01.0063202/2025-43   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:31:01 | DEBUG   | 2010.01.0063202/2025-43   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-18 16:31:01 | INFO    | 2010.01.0063202/2025-43   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:31:01 | INFO    | 2010.01.0063212/2025-64   | __main__              | INÍCIO [9/31]
+2026-11-18 16:31:17 | INFO    | 2010.01.0063212/2025-64   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:31:17 | INFO    | 2010.01.0063212/2025-64   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:31:17 | DEBUG   | 2010.01.0063212/2025-64   | docs_processo         | Lendo documento Memorando 2722 (SEI 153941603)
+2026-11-18 16:31:17 | DEBUG   | 2010.01.0063212/2025-64   | docs_processo         | Documento 153941603 lido (3831 caracteres)
+2026-11-18 16:31:17 | INFO    | 2010.01.0063212/2025-64   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2722 (SEI 153941603)
+2026-11-18 16:31:17 | DEBUG   | 2010.01.0063212/2025-64   | docs_processo         | Lendo documento Memorando 607 (SEI 117322990)
+2026-11-18 16:31:18 | DEBUG   | 2010.01.0063212/2025-64   | docs_processo         | Documento 117322990 lido (1427 caracteres)
+2026-11-18 16:31:18 | DEBUG   | 2010.01.0063212/2025-64   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 607 (SEI 117322990)
+2026-11-18 16:31:18 | DEBUG   | 2010.01.0063212/2025-64   | docs_processo         | Lendo documento Memorando 2595 (SEI 151990826)
+2026-11-18 16:31:18 | DEBUG   | 2010.01.0063212/2025-64   | docs_processo         | Documento 151990826 lido (3002 caracteres)
+2026-11-18 16:31:18 | INFO    | 2010.01.0063212/2025-64   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2595 (SEI 151990826)']
+2026-11-18 16:31:18 | INFO    | 2010.01.0063212/2025-64   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:32:13 | DEBUG   | 2010.01.0063212/2025-64   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-18 16:32:13 | INFO    | 2010.01.0063212/2025-64   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:32:13 | INFO    | 2010.01.0063217/2025-26   | __main__              | INÍCIO [10/31]
+2026-11-18 16:32:29 | INFO    | 2010.01.0063217/2025-26   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:32:29 | INFO    | 2010.01.0063217/2025-26   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:32:29 | DEBUG   | 2010.01.0063217/2025-26   | docs_processo         | Lendo documento Memorando 2723 (SEI 153941713)
+2026-11-18 16:32:30 | DEBUG   | 2010.01.0063217/2025-26   | docs_processo         | Documento 153941713 lido (3935 caracteres)
+2026-11-18 16:32:30 | INFO    | 2010.01.0063217/2025-26   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2723 (SEI 153941713)
+2026-11-18 16:32:30 | DEBUG   | 2010.01.0063217/2025-26   | docs_processo         | Lendo documento Memorando 609 (SEI 117323897)
+2026-11-18 16:32:30 | DEBUG   | 2010.01.0063217/2025-26   | docs_processo         | Documento 117323897 lido (1422 caracteres)
+2026-11-18 16:32:30 | DEBUG   | 2010.01.0063217/2025-26   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 609 (SEI 117323897)
+2026-11-18 16:32:30 | DEBUG   | 2010.01.0063217/2025-26   | docs_processo         | Lendo documento Memorando 2596 (SEI 151990962)
+2026-11-18 16:32:31 | DEBUG   | 2010.01.0063217/2025-26   | docs_processo         | Documento 151990962 lido (2983 caracteres)
+2026-11-18 16:32:31 | INFO    | 2010.01.0063217/2025-26   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2596 (SEI 151990962)']
+2026-11-18 16:32:31 | INFO    | 2010.01.0063217/2025-26   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:33:25 | DEBUG   | 2010.01.0063217/2025-26   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-18 16:33:25 | INFO    | 2010.01.0063217/2025-26   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:33:25 | INFO    | 2010.01.0063220/2025-42   | __main__              | INÍCIO [11/31]
+2026-11-18 16:33:41 | INFO    | 2010.01.0063220/2025-42   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:33:41 | INFO    | 2010.01.0063220/2025-42   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:33:41 | DEBUG   | 2010.01.0063220/2025-42   | docs_processo         | Lendo documento Memorando 2724 (SEI 153941812)
+2026-11-18 16:33:41 | DEBUG   | 2010.01.0063220/2025-42   | docs_processo         | Documento 153941812 lido (3622 caracteres)
+2026-11-18 16:33:41 | INFO    | 2010.01.0063220/2025-42   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2724 (SEI 153941812)
+2026-11-18 16:33:41 | DEBUG   | 2010.01.0063220/2025-42   | docs_processo         | Lendo documento Memorando 612 (SEI 117325403)
+2026-11-18 16:33:42 | DEBUG   | 2010.01.0063220/2025-42   | docs_processo         | Documento 117325403 lido (1430 caracteres)
+2026-11-18 16:33:42 | DEBUG   | 2010.01.0063220/2025-42   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 612 (SEI 117325403)
+2026-11-18 16:33:42 | DEBUG   | 2010.01.0063220/2025-42   | docs_processo         | Lendo documento Memorando 2597 (SEI 151991272)
+2026-11-18 16:33:42 | DEBUG   | 2010.01.0063220/2025-42   | docs_processo         | Documento 151991272 lido (2974 caracteres)
+2026-11-18 16:33:42 | INFO    | 2010.01.0063220/2025-42   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2597 (SEI 151991272)']
+2026-11-18 16:33:42 | INFO    | 2010.01.0063220/2025-42   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:34:38 | DEBUG   | 2010.01.0063220/2025-42   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-18 16:34:38 | INFO    | 2010.01.0063220/2025-42   | __main__              | FIM (0h01m13s) | Próxima ação: -
+2026-11-18 16:34:38 | INFO    | 2010.01.0063230/2025-63   | __main__              | INÍCIO [12/31]
+2026-11-18 16:34:54 | INFO    | 2010.01.0063230/2025-63   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:34:54 | INFO    | 2010.01.0063230/2025-63   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:34:54 | DEBUG   | 2010.01.0063230/2025-63   | docs_processo         | Lendo documento Memorando 2725 (SEI 153942083)
+2026-11-18 16:34:55 | DEBUG   | 2010.01.0063230/2025-63   | docs_processo         | Documento 153942083 lido (4115 caracteres)
+2026-11-18 16:34:55 | INFO    | 2010.01.0063230/2025-63   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2725 (SEI 153942083)
+2026-11-18 16:34:55 | DEBUG   | 2010.01.0063230/2025-63   | docs_processo         | Lendo documento Memorando 633 (SEI 117409096)
+2026-11-18 16:34:55 | DEBUG   | 2010.01.0063230/2025-63   | docs_processo         | Documento 117409096 lido (1433 caracteres)
+2026-11-18 16:34:55 | DEBUG   | 2010.01.0063230/2025-63   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 633 (SEI 117409096)
+2026-11-18 16:34:55 | DEBUG   | 2010.01.0063230/2025-63   | docs_processo         | Lendo documento Memorando 2598 (SEI 151991627)
+2026-11-18 16:34:56 | DEBUG   | 2010.01.0063230/2025-63   | docs_processo         | Documento 151991627 lido (3011 caracteres)
+2026-11-18 16:34:56 | INFO    | 2010.01.0063230/2025-63   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2598 (SEI 151991627)']
+2026-11-18 16:34:56 | INFO    | 2010.01.0063230/2025-63   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:35:52 | DEBUG   | 2010.01.0063230/2025-63   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-18 16:35:52 | INFO    | 2010.01.0063230/2025-63   | __main__              | FIM (0h01m14s) | Próxima ação: -
+2026-11-18 16:35:52 | INFO    | 2010.01.0064459/2025-54   | __main__              | INÍCIO [13/31]
+2026-11-18 16:36:08 | INFO    | 2010.01.0064459/2025-54   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:36:08 | INFO    | 2010.01.0064459/2025-54   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:36:09 | DEBUG   | 2010.01.0064459/2025-54   | docs_processo         | Lendo documento Memorando 2726 (SEI 153942270)
+2026-11-18 16:36:09 | DEBUG   | 2010.01.0064459/2025-54   | docs_processo         | Documento 153942270 lido (3966 caracteres)
+2026-11-18 16:36:09 | INFO    | 2010.01.0064459/2025-54   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2726 (SEI 153942270)
+2026-11-18 16:36:09 | DEBUG   | 2010.01.0064459/2025-54   | docs_processo         | Lendo documento Memorando 645 (SEI 117416980)
+2026-11-18 16:36:10 | DEBUG   | 2010.01.0064459/2025-54   | docs_processo         | Documento 117416980 lido (1420 caracteres)
+2026-11-18 16:36:10 | DEBUG   | 2010.01.0064459/2025-54   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 645 (SEI 117416980)
+2026-11-18 16:36:10 | DEBUG   | 2010.01.0064459/2025-54   | docs_processo         | Lendo documento Memorando 2599 (SEI 151991809)
+2026-11-18 16:36:10 | DEBUG   | 2010.01.0064459/2025-54   | docs_processo         | Documento 151991809 lido (2989 caracteres)
+2026-11-18 16:36:10 | INFO    | 2010.01.0064459/2025-54   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2599 (SEI 151991809)']
+2026-11-18 16:36:10 | INFO    | 2010.01.0064459/2025-54   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:37:03 | DEBUG   | 2010.01.0064459/2025-54   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-18 16:37:03 | INFO    | 2010.01.0064459/2025-54   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:37:03 | INFO    | 2010.01.0064463/2025-43   | __main__              | INÍCIO [14/31]
+2026-11-18 16:37:20 | INFO    | 2010.01.0064463/2025-43   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:37:20 | INFO    | 2010.01.0064463/2025-43   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:37:20 | DEBUG   | 2010.01.0064463/2025-43   | docs_processo         | Lendo documento Memorando 2727 (SEI 153942534)
+2026-11-18 16:37:21 | DEBUG   | 2010.01.0064463/2025-43   | docs_processo         | Documento 153942534 lido (3626 caracteres)
+2026-11-18 16:37:21 | INFO    | 2010.01.0064463/2025-43   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2727 (SEI 153942534)
+2026-11-18 16:37:21 | DEBUG   | 2010.01.0064463/2025-43   | docs_processo         | Lendo documento Memorando 677 (SEI 117641161)
+2026-11-18 16:37:21 | DEBUG   | 2010.01.0064463/2025-43   | docs_processo         | Documento 117641161 lido (1317 caracteres)
+2026-11-18 16:37:21 | DEBUG   | 2010.01.0064463/2025-43   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 677 (SEI 117641161)
+2026-11-18 16:37:21 | DEBUG   | 2010.01.0064463/2025-43   | docs_processo         | Lendo documento Memorando 2600 (SEI 151992075)
+2026-11-18 16:37:22 | DEBUG   | 2010.01.0064463/2025-43   | docs_processo         | Documento 151992075 lido (2977 caracteres)
+2026-11-18 16:37:22 | INFO    | 2010.01.0064463/2025-43   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2600 (SEI 151992075)']
+2026-11-18 16:37:22 | INFO    | 2010.01.0064463/2025-43   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:37:49 | DEBUG   | 2010.01.0064463/2025-43   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-18 16:37:49 | INFO    | 2010.01.0064463/2025-43   | __main__              | FIM (45.8s) | Próxima ação: -
+2026-11-18 16:37:49 | INFO    | 2010.01.0064485/2025-31   | __main__              | INÍCIO [15/31]
+2026-11-18 16:38:05 | INFO    | 2010.01.0064485/2025-31   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:38:05 | INFO    | 2010.01.0064485/2025-31   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:38:06 | DEBUG   | 2010.01.0064485/2025-31   | docs_processo         | Lendo documento Memorando 2728 (SEI 153942631)
+2026-11-18 16:38:06 | DEBUG   | 2010.01.0064485/2025-31   | docs_processo         | Documento 153942631 lido (3620 caracteres)
+2026-11-18 16:38:06 | INFO    | 2010.01.0064485/2025-31   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2728 (SEI 153942631)
+2026-11-18 16:38:06 | DEBUG   | 2010.01.0064485/2025-31   | docs_processo         | Lendo documento Memorando 679 (SEI 117645034)
+2026-11-18 16:38:06 | DEBUG   | 2010.01.0064485/2025-31   | docs_processo         | Documento 117645034 lido (1319 caracteres)
+2026-11-18 16:38:06 | DEBUG   | 2010.01.0064485/2025-31   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 679 (SEI 117645034)
+2026-11-18 16:38:06 | DEBUG   | 2010.01.0064485/2025-31   | docs_processo         | Lendo documento Memorando 2602 (SEI 151992578)
+2026-11-18 16:38:07 | DEBUG   | 2010.01.0064485/2025-31   | docs_processo         | Documento 151992578 lido (2978 caracteres)
+2026-11-18 16:38:07 | INFO    | 2010.01.0064485/2025-31   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2602 (SEI 151992578)']
+2026-11-18 16:38:07 | INFO    | 2010.01.0064485/2025-31   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:38:48 | DEBUG   | 2010.01.0064485/2025-31   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-18 16:38:48 | INFO    | 2010.01.0064485/2025-31   | __main__              | FIM (59.0s) | Próxima ação: -
+2026-11-18 16:38:48 | INFO    | 2010.01.0064497/2025-95   | __main__              | INÍCIO [16/31]
+2026-11-18 16:39:04 | INFO    | 2010.01.0064497/2025-95   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:39:04 | INFO    | 2010.01.0064497/2025-95   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:39:05 | DEBUG   | 2010.01.0064497/2025-95   | docs_processo         | Lendo documento Memorando 2729 (SEI 153942753)
+2026-11-18 16:39:05 | DEBUG   | 2010.01.0064497/2025-95   | docs_processo         | Documento 153942753 lido (3921 caracteres)
+2026-11-18 16:39:05 | INFO    | 2010.01.0064497/2025-95   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2729 (SEI 153942753)
+2026-11-18 16:39:05 | DEBUG   | 2010.01.0064497/2025-95   | docs_processo         | Lendo documento Memorando 680 (SEI 117647284)
+2026-11-18 16:39:06 | DEBUG   | 2010.01.0064497/2025-95   | docs_processo         | Documento 117647284 lido (1432 caracteres)
+2026-11-18 16:39:06 | DEBUG   | 2010.01.0064497/2025-95   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 680 (SEI 117647284)
+2026-11-18 16:39:06 | DEBUG   | 2010.01.0064497/2025-95   | docs_processo         | Lendo documento Memorando 2603 (SEI 151992701)
+2026-11-18 16:39:06 | DEBUG   | 2010.01.0064497/2025-95   | docs_processo         | Documento 151992701 lido (2990 caracteres)
+2026-11-18 16:39:06 | INFO    | 2010.01.0064497/2025-95   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2603 (SEI 151992701)']
+2026-11-18 16:39:06 | INFO    | 2010.01.0064497/2025-95   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:40:01 | DEBUG   | 2010.01.0064497/2025-95   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-18 16:40:01 | INFO    | 2010.01.0064497/2025-95   | __main__              | FIM (0h01m13s) | Próxima ação: -
+2026-11-18 16:40:01 | INFO    | 2010.01.0064526/2025-88   | __main__              | INÍCIO [17/31]
+2026-11-18 16:40:18 | INFO    | 2010.01.0064526/2025-88   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:40:18 | INFO    | 2010.01.0064526/2025-88   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:40:18 | DEBUG   | 2010.01.0064526/2025-88   | docs_processo         | Lendo documento Memorando 2730 (SEI 153943002)
+2026-11-18 16:40:18 | DEBUG   | 2010.01.0064526/2025-88   | docs_processo         | Documento 153943002 lido (4166 caracteres)
+2026-11-18 16:40:18 | INFO    | 2010.01.0064526/2025-88   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2730 (SEI 153943002)
+2026-11-18 16:40:18 | DEBUG   | 2010.01.0064526/2025-88   | docs_processo         | Lendo documento Memorando 684 (SEI 117652593)
+2026-11-18 16:40:19 | DEBUG   | 2010.01.0064526/2025-88   | docs_processo         | Documento 117652593 lido (1434 caracteres)
+2026-11-18 16:40:19 | DEBUG   | 2010.01.0064526/2025-88   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 684 (SEI 117652593)
+2026-11-18 16:40:19 | DEBUG   | 2010.01.0064526/2025-88   | docs_processo         | Lendo documento Memorando 2604 (SEI 151993237)
+2026-11-18 16:40:19 | DEBUG   | 2010.01.0064526/2025-88   | docs_processo         | Documento 151993237 lido (3008 caracteres)
+2026-11-18 16:40:19 | INFO    | 2010.01.0064526/2025-88   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2604 (SEI 151993237)']
+2026-11-18 16:40:19 | INFO    | 2010.01.0064526/2025-88   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:41:15 | DEBUG   | 2010.01.0064526/2025-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-18 16:41:15 | INFO    | 2010.01.0064526/2025-88   | __main__              | FIM (0h01m14s) | Próxima ação: -
+2026-11-18 16:41:15 | INFO    | 2010.01.0063194/2025-65   | __main__              | INÍCIO [18/31]
+2026-11-18 16:41:32 | INFO    | 2010.01.0063194/2025-65   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:41:32 | INFO    | 2010.01.0063194/2025-65   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:41:32 | DEBUG   | 2010.01.0063194/2025-65   | docs_processo         | Lendo documento Memorando 2731 (SEI 153943209)
+2026-11-18 16:41:32 | DEBUG   | 2010.01.0063194/2025-65   | docs_processo         | Documento 153943209 lido (3807 caracteres)
+2026-11-18 16:41:32 | INFO    | 2010.01.0063194/2025-65   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2731 (SEI 153943209)
+2026-11-18 16:41:32 | DEBUG   | 2010.01.0063194/2025-65   | docs_processo         | Lendo documento Memorando 576 (SEI 117252144)
+2026-11-18 16:41:33 | DEBUG   | 2010.01.0063194/2025-65   | docs_processo         | Documento 117252144 lido (1442 caracteres)
+2026-11-18 16:41:33 | DEBUG   | 2010.01.0063194/2025-65   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 576 (SEI 117252144)
+2026-11-18 16:41:33 | DEBUG   | 2010.01.0063194/2025-65   | docs_processo         | Lendo documento Memorando 2605 (SEI 151993589)
+2026-11-18 16:41:33 | DEBUG   | 2010.01.0063194/2025-65   | docs_processo         | Documento 151993589 lido (2989 caracteres)
+2026-11-18 16:41:33 | INFO    | 2010.01.0063194/2025-65   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2605 (SEI 151993589)']
+2026-11-18 16:41:33 | INFO    | 2010.01.0063194/2025-65   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:42:28 | DEBUG   | 2010.01.0063194/2025-65   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-18 16:42:28 | INFO    | 2010.01.0063194/2025-65   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:42:28 | INFO    | 2010.01.0063205/2025-59   | __main__              | INÍCIO [19/31]
+2026-11-18 16:42:44 | INFO    | 2010.01.0063205/2025-59   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:42:44 | INFO    | 2010.01.0063205/2025-59   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:42:44 | DEBUG   | 2010.01.0063205/2025-59   | docs_processo         | Lendo documento Memorando 2732 (SEI 153943406)
+2026-11-18 16:42:44 | DEBUG   | 2010.01.0063205/2025-59   | docs_processo         | Documento 153943406 lido (4070 caracteres)
+2026-11-18 16:42:44 | INFO    | 2010.01.0063205/2025-59   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2732 (SEI 153943406)
+2026-11-18 16:42:44 | DEBUG   | 2010.01.0063205/2025-59   | docs_processo         | Lendo documento Memorando 603 (SEI 117320431)
+2026-11-18 16:42:45 | DEBUG   | 2010.01.0063205/2025-59   | docs_processo         | Documento 117320431 lido (1436 caracteres)
+2026-11-18 16:42:45 | DEBUG   | 2010.01.0063205/2025-59   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 603 (SEI 117320431)
+2026-11-18 16:42:45 | DEBUG   | 2010.01.0063205/2025-59   | docs_processo         | Lendo documento Memorando 2606 (SEI 151993716)
+2026-11-18 16:42:45 | DEBUG   | 2010.01.0063205/2025-59   | docs_processo         | Documento 151993716 lido (3012 caracteres)
+2026-11-18 16:42:45 | INFO    | 2010.01.0063205/2025-59   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2606 (SEI 151993716)']
+2026-11-18 16:42:45 | INFO    | 2010.01.0063205/2025-59   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:43:40 | DEBUG   | 2010.01.0063205/2025-59   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-18 16:43:40 | INFO    | 2010.01.0063205/2025-59   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:43:40 | INFO    | 2010.01.0063181/2025-28   | __main__              | INÍCIO [20/31]
+2026-11-18 16:43:56 | INFO    | 2010.01.0063181/2025-28   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:43:56 | INFO    | 2010.01.0063181/2025-28   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:43:57 | DEBUG   | 2010.01.0063181/2025-28   | docs_processo         | Lendo documento Memorando 2733 (SEI 153943603)
+2026-11-18 16:43:57 | DEBUG   | 2010.01.0063181/2025-28   | docs_processo         | Documento 153943603 lido (3620 caracteres)
+2026-11-18 16:43:57 | INFO    | 2010.01.0063181/2025-28   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2733 (SEI 153943603)
+2026-11-18 16:43:57 | DEBUG   | 2010.01.0063181/2025-28   | docs_processo         | Lendo documento Memorando 569 (SEI 117229941)
+2026-11-18 16:43:57 | DEBUG   | 2010.01.0063181/2025-28   | docs_processo         | Documento 117229941 lido (1309 caracteres)
+2026-11-18 16:43:57 | DEBUG   | 2010.01.0063181/2025-28   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 569 (SEI 117229941)
+2026-11-18 16:43:57 | DEBUG   | 2010.01.0063181/2025-28   | docs_processo         | Lendo documento Memorando 2607 (SEI 151993755)
+2026-11-18 16:43:58 | DEBUG   | 2010.01.0063181/2025-28   | docs_processo         | Documento 151993755 lido (2973 caracteres)
+2026-11-18 16:43:58 | INFO    | 2010.01.0063181/2025-28   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2607 (SEI 151993755)']
+2026-11-18 16:43:58 | INFO    | 2010.01.0063181/2025-28   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:44:53 | DEBUG   | 2010.01.0063181/2025-28   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-18 16:44:53 | INFO    | 2010.01.0063181/2025-28   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:44:53 | INFO    | 2010.01.0058959/2025-47   | __main__              | INÍCIO [21/31]
+2026-11-18 16:45:09 | INFO    | 2010.01.0058959/2025-47   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:45:09 | INFO    | 2010.01.0058959/2025-47   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:45:09 | DEBUG   | 2010.01.0058959/2025-47   | docs_processo         | Lendo documento Memorando 2734 (SEI 153943847)
+2026-11-18 16:45:09 | DEBUG   | 2010.01.0058959/2025-47   | docs_processo         | Documento 153943847 lido (3948 caracteres)
+2026-11-18 16:45:09 | INFO    | 2010.01.0058959/2025-47   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2734 (SEI 153943847)
+2026-11-18 16:45:09 | DEBUG   | 2010.01.0058959/2025-47   | docs_processo         | Lendo documento Memorando 321 (SEI 116310316)
+2026-11-18 16:45:10 | DEBUG   | 2010.01.0058959/2025-47   | docs_processo         | Documento 116310316 lido (1441 caracteres)
+2026-11-18 16:45:10 | DEBUG   | 2010.01.0058959/2025-47   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 321 (SEI 116310316)
+2026-11-18 16:45:10 | DEBUG   | 2010.01.0058959/2025-47   | docs_processo         | Lendo documento Memorando 2648 (SEI 152058611)
+2026-11-18 16:45:10 | DEBUG   | 2010.01.0058959/2025-47   | docs_processo         | Documento 152058611 lido (3008 caracteres)
+2026-11-18 16:45:10 | INFO    | 2010.01.0058959/2025-47   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2648 (SEI 152058611)']
+2026-11-18 16:45:10 | INFO    | 2010.01.0058959/2025-47   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:46:05 | DEBUG   | 2010.01.0058959/2025-47   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-18 16:46:05 | INFO    | 2010.01.0058959/2025-47   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:46:05 | INFO    | 2010.01.0063565/2025-39   | __main__              | INÍCIO [22/31]
+2026-11-18 16:46:21 | INFO    | 2010.01.0063565/2025-39   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:46:21 | INFO    | 2010.01.0063565/2025-39   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:46:21 | DEBUG   | 2010.01.0063565/2025-39   | docs_processo         | Lendo documento Memorando 2735 (SEI 153944018)
+2026-11-18 16:46:22 | DEBUG   | 2010.01.0063565/2025-39   | docs_processo         | Documento 153944018 lido (3912 caracteres)
+2026-11-18 16:46:22 | INFO    | 2010.01.0063565/2025-39   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2735 (SEI 153944018)
+2026-11-18 16:46:22 | DEBUG   | 2010.01.0063565/2025-39   | docs_processo         | Lendo documento Memorando 553 (SEI 117190969)
+2026-11-18 16:46:22 | DEBUG   | 2010.01.0063565/2025-39   | docs_processo         | Documento 117190969 lido (1682 caracteres)
+2026-11-18 16:46:22 | DEBUG   | 2010.01.0063565/2025-39   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 553 (SEI 117190969)
+2026-11-18 16:46:22 | DEBUG   | 2010.01.0063565/2025-39   | docs_processo         | Lendo documento Memorando 2749 (SEI 152766783)
+2026-11-18 16:46:23 | DEBUG   | 2010.01.0063565/2025-39   | docs_processo         | Documento 152766783 lido (3041 caracteres)
+2026-11-18 16:46:23 | INFO    | 2010.01.0063565/2025-39   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2749 (SEI 152766783)']
+2026-11-18 16:46:23 | INFO    | 2010.01.0063565/2025-39   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:47:19 | DEBUG   | 2010.01.0063565/2025-39   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-18 16:47:19 | INFO    | 2010.01.0063565/2025-39   | __main__              | FIM (0h01m14s) | Próxima ação: -
+2026-11-18 16:47:19 | INFO    | 2010.01.0063663/2025-12   | __main__              | INÍCIO [23/31]
+2026-11-18 16:47:35 | INFO    | 2010.01.0063663/2025-12   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:47:35 | INFO    | 2010.01.0063663/2025-12   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:47:35 | DEBUG   | 2010.01.0063663/2025-12   | docs_processo         | Lendo documento Memorando 2736 (SEI 153944256)
+2026-11-18 16:47:36 | DEBUG   | 2010.01.0063663/2025-12   | docs_processo         | Documento 153944256 lido (4059 caracteres)
+2026-11-18 16:47:36 | INFO    | 2010.01.0063663/2025-12   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2736 (SEI 153944256)
+2026-11-18 16:47:36 | DEBUG   | 2010.01.0063663/2025-12   | docs_processo         | Lendo documento Memorando 563 (SEI 117207966)
+2026-11-18 16:47:36 | DEBUG   | 2010.01.0063663/2025-12   | docs_processo         | Documento 117207966 lido (1681 caracteres)
+2026-11-18 16:47:36 | DEBUG   | 2010.01.0063663/2025-12   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 563 (SEI 117207966)
+2026-11-18 16:47:36 | DEBUG   | 2010.01.0063663/2025-12   | docs_processo         | Lendo documento Memorando 2766 (SEI 152810312)
+2026-11-18 16:47:37 | DEBUG   | 2010.01.0063663/2025-12   | docs_processo         | Documento 152810312 lido (3027 caracteres)
+2026-11-18 16:47:37 | INFO    | 2010.01.0063663/2025-12   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2766 (SEI 152810312)']
+2026-11-18 16:47:37 | INFO    | 2010.01.0063663/2025-12   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:48:32 | DEBUG   | 2010.01.0063663/2025-12   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-18 16:48:32 | INFO    | 2010.01.0063663/2025-12   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:48:32 | INFO    | 2010.01.0063843/2025-02   | __main__              | INÍCIO [24/31]
+2026-11-18 16:48:47 | INFO    | 2010.01.0063843/2025-02   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:48:47 | INFO    | 2010.01.0063843/2025-02   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:48:48 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Lendo documento Memorando 2737 (SEI 153944420)
+2026-11-18 16:48:48 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Documento 153944420 lido (3722 caracteres)
+2026-11-18 16:48:48 | INFO    | 2010.01.0063843/2025-02   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2737 (SEI 153944420)
+2026-11-18 16:48:48 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Lendo documento Memorando 572 (SEI 117232746)
+2026-11-18 16:48:49 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Documento 117232746 lido (1682 caracteres)
+2026-11-18 16:48:49 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 572 (SEI 117232746)
+2026-11-18 16:48:49 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Lendo documento Memorando 2776 (SEI 152820386)
+2026-11-18 16:48:49 | DEBUG   | 2010.01.0063843/2025-02   | docs_processo         | Documento 152820386 lido (3026 caracteres)
+2026-11-18 16:48:49 | INFO    | 2010.01.0063843/2025-02   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2776 (SEI 152820386)']
+2026-11-18 16:48:49 | INFO    | 2010.01.0063843/2025-02   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:49:43 | DEBUG   | 2010.01.0063843/2025-02   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-18 16:49:43 | INFO    | 2010.01.0063843/2025-02   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:49:43 | INFO    | 2010.01.0064466/2025-59   | __main__              | INÍCIO [25/31]
+2026-11-18 16:49:59 | INFO    | 2010.01.0064466/2025-59   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:49:59 | INFO    | 2010.01.0064466/2025-59   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:49:59 | DEBUG   | 2010.01.0064466/2025-59   | docs_processo         | Lendo documento Memorando 2738 (SEI 153944629)
+2026-11-18 16:50:00 | DEBUG   | 2010.01.0064466/2025-59   | docs_processo         | Documento 153944629 lido (3642 caracteres)
+2026-11-18 16:50:00 | INFO    | 2010.01.0064466/2025-59   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2738 (SEI 153944629)
+2026-11-18 16:50:00 | DEBUG   | 2010.01.0064466/2025-59   | docs_processo         | Lendo documento Memorando 627 (SEI 117346898)
+2026-11-18 16:50:00 | DEBUG   | 2010.01.0064466/2025-59   | docs_processo         | Documento 117346898 lido (1670 caracteres)
+2026-11-18 16:50:00 | DEBUG   | 2010.01.0064466/2025-59   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 627 (SEI 117346898)
+2026-11-18 16:50:00 | DEBUG   | 2010.01.0064466/2025-59   | docs_processo         | Lendo documento Memorando 2794 (SEI 152839311)
+2026-11-18 16:50:01 | DEBUG   | 2010.01.0064466/2025-59   | docs_processo         | Documento 152839311 lido (3013 caracteres)
+2026-11-18 16:50:01 | INFO    | 2010.01.0064466/2025-59   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2794 (SEI 152839311)']
+2026-11-18 16:50:01 | INFO    | 2010.01.0064466/2025-59   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:50:57 | DEBUG   | 2010.01.0064466/2025-59   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-18 16:50:57 | INFO    | 2010.01.0064466/2025-59   | __main__              | FIM (0h01m13s) | Próxima ação: -
+2026-11-18 16:50:57 | INFO    | 2010.01.0064483/2025-85   | __main__              | INÍCIO [26/31]
+2026-11-18 16:51:13 | INFO    | 2010.01.0064483/2025-85   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:51:13 | INFO    | 2010.01.0064483/2025-85   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:51:13 | DEBUG   | 2010.01.0064483/2025-85   | docs_processo         | Lendo documento Memorando 2739 (SEI 153944880)
+2026-11-18 16:51:14 | DEBUG   | 2010.01.0064483/2025-85   | docs_processo         | Documento 153944880 lido (3905 caracteres)
+2026-11-18 16:51:14 | INFO    | 2010.01.0064483/2025-85   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2739 (SEI 153944880)
+2026-11-18 16:51:14 | DEBUG   | 2010.01.0064483/2025-85   | docs_processo         | Lendo documento Memorando 628 (SEI 117349589)
+2026-11-18 16:51:14 | DEBUG   | 2010.01.0064483/2025-85   | docs_processo         | Documento 117349589 lido (1673 caracteres)
+2026-11-18 16:51:14 | DEBUG   | 2010.01.0064483/2025-85   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 628 (SEI 117349589)
+2026-11-18 16:51:14 | DEBUG   | 2010.01.0064483/2025-85   | docs_processo         | Lendo documento Memorando 2798 (SEI 152853304)
+2026-11-18 16:51:15 | DEBUG   | 2010.01.0064483/2025-85   | docs_processo         | Documento 152853304 lido (3018 caracteres)
+2026-11-18 16:51:15 | INFO    | 2010.01.0064483/2025-85   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2798 (SEI 152853304)']
+2026-11-18 16:51:15 | INFO    | 2010.01.0064483/2025-85   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:52:09 | DEBUG   | 2010.01.0064483/2025-85   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (26 passagem(ns) nesta execução)
+2026-11-18 16:52:09 | INFO    | 2010.01.0064483/2025-85   | __main__              | FIM (0h01m12s) | Próxima ação: -
+2026-11-18 16:52:09 | INFO    | 2010.01.0064495/2025-52   | __main__              | INÍCIO [27/31]
+2026-11-18 16:52:25 | INFO    | 2010.01.0064495/2025-52   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:52:25 | INFO    | 2010.01.0064495/2025-52   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:52:25 | DEBUG   | 2010.01.0064495/2025-52   | docs_processo         | Lendo documento Memorando 2740 (SEI 153945047)
+2026-11-18 16:52:26 | DEBUG   | 2010.01.0064495/2025-52   | docs_processo         | Documento 153945047 lido (3618 caracteres)
+2026-11-18 16:52:26 | INFO    | 2010.01.0064495/2025-52   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2740 (SEI 153945047)
+2026-11-18 16:52:26 | DEBUG   | 2010.01.0064495/2025-52   | docs_processo         | Lendo documento Memorando 629 (SEI 117352463)
+2026-11-18 16:52:26 | DEBUG   | 2010.01.0064495/2025-52   | docs_processo         | Documento 117352463 lido (1552 caracteres)
+2026-11-18 16:52:26 | DEBUG   | 2010.01.0064495/2025-52   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 629 (SEI 117352463)
+2026-11-18 16:52:26 | DEBUG   | 2010.01.0064495/2025-52   | docs_processo         | Lendo documento Memorando 2614 (SEI 152016020)
+2026-11-18 16:52:27 | DEBUG   | 2010.01.0064495/2025-52   | docs_processo         | Documento 152016020 lido (2984 caracteres)
+2026-11-18 16:52:27 | INFO    | 2010.01.0064495/2025-52   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2614 (SEI 152016020)']
+2026-11-18 16:52:27 | INFO    | 2010.01.0064495/2025-52   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:53:21 | DEBUG   | 2010.01.0064495/2025-52   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (27 passagem(ns) nesta execução)
+2026-11-18 16:53:21 | INFO    | 2010.01.0064495/2025-52   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:53:21 | INFO    | 2010.01.0064087/2025-10   | __main__              | INÍCIO [28/31]
+2026-11-18 16:53:37 | INFO    | 2010.01.0064087/2025-10   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:53:37 | INFO    | 2010.01.0064087/2025-10   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:53:37 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Lendo documento Memorando 2741 (SEI 153945239)
+2026-11-18 16:53:38 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Documento 153945239 lido (3619 caracteres)
+2026-11-18 16:53:38 | INFO    | 2010.01.0064087/2025-10   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2741 (SEI 153945239)
+2026-11-18 16:53:38 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Lendo documento Memorando 584 (SEI 117282505)
+2026-11-18 16:53:38 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Documento 117282505 lido (1371 caracteres)
+2026-11-18 16:53:38 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 584 (SEI 117282505)
+2026-11-18 16:53:38 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Lendo documento Memorando 220 (SEI 132677386)
+2026-11-18 16:53:38 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Documento 132677386 lido (1421 caracteres)
+2026-11-18 16:53:38 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 220 (SEI 132677386)
+2026-11-18 16:53:38 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Lendo documento Memorando 2906 (SEI 153151710)
+2026-11-18 16:53:39 | DEBUG   | 2010.01.0064087/2025-10   | docs_processo         | Documento 153151710 lido (2997 caracteres)
+2026-11-18 16:53:39 | INFO    | 2010.01.0064087/2025-10   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2906 (SEI 153151710)']
+2026-11-18 16:53:39 | INFO    | 2010.01.0064087/2025-10   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:54:35 | DEBUG   | 2010.01.0064087/2025-10   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (28 passagem(ns) nesta execução)
+2026-11-18 16:54:35 | INFO    | 2010.01.0064087/2025-10   | __main__              | FIM (0h01m14s) | Próxima ação: -
+2026-11-18 16:54:35 | INFO    | 2010.01.0064008/2025-09   | __main__              | INÍCIO [29/31]
+2026-11-18 16:54:51 | INFO    | 2010.01.0064008/2025-09   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:54:51 | INFO    | 2010.01.0064008/2025-09   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:54:51 | DEBUG   | 2010.01.0064008/2025-09   | docs_processo         | Lendo documento Memorando 2742 (SEI 153945340)
+2026-11-18 16:54:52 | DEBUG   | 2010.01.0064008/2025-09   | docs_processo         | Documento 153945340 lido (4082 caracteres)
+2026-11-18 16:54:52 | INFO    | 2010.01.0064008/2025-09   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2742 (SEI 153945340)
+2026-11-18 16:54:52 | DEBUG   | 2010.01.0064008/2025-09   | docs_processo         | Lendo documento Memorando 1260 (SEI 119940728)
+2026-11-18 16:54:52 | DEBUG   | 2010.01.0064008/2025-09   | docs_processo         | Documento 119940728 lido (1502 caracteres)
+2026-11-18 16:54:52 | DEBUG   | 2010.01.0064008/2025-09   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1260 (SEI 119940728)
+2026-11-18 16:54:52 | DEBUG   | 2010.01.0064008/2025-09   | docs_processo         | Lendo documento Memorando 2631 (SEI 152037304)
+2026-11-18 16:54:53 | DEBUG   | 2010.01.0064008/2025-09   | docs_processo         | Documento 152037304 lido (2924 caracteres)
+2026-11-18 16:54:53 | INFO    | 2010.01.0064008/2025-09   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2631 (SEI 152037304)']
+2026-11-18 16:54:53 | INFO    | 2010.01.0064008/2025-09   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:55:47 | DEBUG   | 2010.01.0064008/2025-09   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (29 passagem(ns) nesta execução)
+2026-11-18 16:55:47 | INFO    | 2010.01.0064008/2025-09   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:55:47 | INFO    | 2010.01.0064782/2025-63   | __main__              | INÍCIO [30/31]
+2026-11-18 16:56:03 | INFO    | 2010.01.0064782/2025-63   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:56:03 | INFO    | 2010.01.0064782/2025-63   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:56:03 | DEBUG   | 2010.01.0064782/2025-63   | docs_processo         | Lendo documento Memorando 2743 (SEI 153945416)
+2026-11-18 16:56:04 | DEBUG   | 2010.01.0064782/2025-63   | docs_processo         | Documento 153945416 lido (3620 caracteres)
+2026-11-18 16:56:04 | INFO    | 2010.01.0064782/2025-63   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2743 (SEI 153945416)
+2026-11-18 16:56:04 | DEBUG   | 2010.01.0064782/2025-63   | docs_processo         | Lendo documento Memorando 634 (SEI 117410137)
+2026-11-18 16:56:04 | DEBUG   | 2010.01.0064782/2025-63   | docs_processo         | Documento 117410137 lido (1674 caracteres)
+2026-11-18 16:56:04 | DEBUG   | 2010.01.0064782/2025-63   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 634 (SEI 117410137)
+2026-11-18 16:56:04 | DEBUG   | 2010.01.0064782/2025-63   | docs_processo         | Lendo documento Memorando 2646 (SEI 152056116)
+2026-11-18 16:56:05 | DEBUG   | 2010.01.0064782/2025-63   | docs_processo         | Documento 152056116 lido (2987 caracteres)
+2026-11-18 16:56:05 | INFO    | 2010.01.0064782/2025-63   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2646 (SEI 152056116)']
+2026-11-18 16:56:05 | INFO    | 2010.01.0064782/2025-63   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:57:01 | DEBUG   | 2010.01.0064782/2025-63   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (30 passagem(ns) nesta execução)
+2026-11-18 16:57:01 | INFO    | 2010.01.0064782/2025-63   | __main__              | FIM (0h01m13s) | Próxima ação: -
+2026-11-18 16:57:01 | INFO    | 2010.01.0064377/2025-37   | __main__              | INÍCIO [31/31]
+2026-11-18 16:57:17 | INFO    | 2010.01.0064377/2025-37   | __main__              | Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está
+2026-11-18 16:57:17 | INFO    | 2010.01.0064377/2025-37   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12.1 - Encaminhado APIS: Todas as Infos']
+2026-11-18 16:57:17 | DEBUG   | 2010.01.0064377/2025-37   | docs_processo         | Lendo documento Memorando 2744 (SEI 153945467)
+2026-11-18 16:57:18 | DEBUG   | 2010.01.0064377/2025-37   | docs_processo         | Documento 153945467 lido (3626 caracteres)
+2026-11-18 16:57:18 | INFO    | 2010.01.0064377/2025-37   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12.1 - Encaminhado APIS: Todas as Infos": Memorando 2744 (SEI 153945467)
+2026-11-18 16:57:18 | DEBUG   | 2010.01.0064377/2025-37   | docs_processo         | Lendo documento Memorando 622 (SEI 117333355)
+2026-11-18 16:57:18 | DEBUG   | 2010.01.0064377/2025-37   | docs_processo         | Documento 117333355 lido (1334 caracteres)
+2026-11-18 16:57:18 | DEBUG   | 2010.01.0064377/2025-37   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 622 (SEI 117333355)
+2026-11-18 16:57:18 | DEBUG   | 2010.01.0064377/2025-37   | docs_processo         | Lendo documento Memorando 2652 (SEI 152065789)
+2026-11-18 16:57:18 | DEBUG   | 2010.01.0064377/2025-37   | docs_processo         | Documento 152065789 lido (2997 caracteres)
+2026-11-18 16:57:18 | INFO    | 2010.01.0064377/2025-37   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2652 (SEI 152065789)']
+2026-11-18 16:57:18 | INFO    | 2010.01.0064377/2025-37   | __main__              | prox_acao, marcadores e memorandos consistentes
+2026-11-18 16:58:12 | DEBUG   | 2010.01.0064377/2025-37   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (31 passagem(ns) nesta execução)
+2026-11-18 16:58:12 | INFO    | 2010.01.0064377/2025-37   | __main__              | FIM (0h01m11s) | Próxima ação: -
+2026-11-18 16:58:14 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-18 16:58:14 | INFO    | -                         | __main__              | Processos: 31 | Sem erro: 31 | Com erro: 0
+2026-11-18 16:58:14 | INFO    | -                         | __main__              |    31 | Marcadores verificados
+2026-11-18 16:58:14 | INFO    | -                         | __main__              | Duração total da execução: 0h37m08s
+2026-11-18 16:58:14 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

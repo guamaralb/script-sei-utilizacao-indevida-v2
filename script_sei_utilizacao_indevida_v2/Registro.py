@@ -727,9 +727,11 @@ class RegistroCorrigeEnvioDisa(RegistroBase):
     memos_apis_geacs_sei: list[str] = field(default_factory=list)
     modelo_memo_apis: str | None = None
 
-    # Memo(s) da GEACS à DISA (N Consta) na rodada, excluídos e não excluídos
+    # Memo(s) da GEACS à DISA (N Consta) na rodada: excluídos, cancelados (não
+    # puderam ser excluídos) e nem excluídos nem cancelados
     memos_disa_n_consta_sei: list[str] = field(default_factory=list)
     memos_disa_excluidos_sei: list[str] = field(default_factory=list)
+    memos_disa_cancelados_sei: list[str] = field(default_factory=list)
     memos_disa_nao_excluidos_sei: list[str] = field(default_factory=list)
 
     # Caso base DISA x MANTIS recalculado e relatórios do MANTIS citados no

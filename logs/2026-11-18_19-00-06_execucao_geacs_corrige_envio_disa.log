@@ -1,0 +1,239 @@
+2026-11-18 19:00:06 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (CORRIGE ENVIO DISA - MEMO À DISA (N CONSTA) TROCADO PELO MEMO DEPROC) =================
+2026-11-18 19:00:06 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-18_19-00-06_execucao_geacs_corrige_envio_disa.log
+2026-11-18 19:00:06 | INFO    | -                         | processos_a_processar | 7 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_corrige_envio_disa
+2026-11-18 19:00:06 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-18 19:00:06 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-18 19:00:06 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-18 19:00:06 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-18 19:00:06 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-18 19:00:07 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-18 19:00:07 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-18 19:00:08 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-18 19:00:08 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-18 19:00:08 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_propria-dependentes_nao_encontrados.xlsx
+2026-11-18 19:00:09 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 10497 linha(s) | 1315 matrícula(s) única(s)
+2026-11-18 19:00:09 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-18 19:00:37 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-18 19:00:56 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-18 19:00:56 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_credenciada-dependentes_nao_encontrados.xlsx
+2026-11-18 19:01:14 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 322450 linha(s) | 5923 matrícula(s) única(s)
+2026-11-18 19:01:18 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-18 19:01:18 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-18 19:01:19 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-18 19:01:24 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-18 19:01:24 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-18 19:01:24 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-18 19:01:24 | INFO    | 2010.01.0051100/2025-04   | __main__              | INÍCIO [1/7]
+2026-11-18 19:01:25 | INFO    | 2010.01.0051100/2025-04   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-18 19:01:27 | INFO    | 2010.01.0051100/2025-04   | marcadores_disponiveis | Marcadores cadastrados na unidade: 33
+2026-11-18 19:01:29 | INFO    | 2010.01.0051100/2025-04   | __main__              | Árvore: 27 documento(s)
+2026-11-18 19:01:29 | DEBUG   | 2010.01.0051100/2025-04   | docs_processo         | Lendo documento Memorando 72 (SEI 114938694)
+2026-11-18 19:01:29 | DEBUG   | 2010.01.0051100/2025-04   | docs_processo         | Documento 114938694 lido (1576 caracteres)
+2026-11-18 19:01:29 | DEBUG   | 2010.01.0051100/2025-04   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 72 (SEI 114938694)
+2026-11-18 19:01:29 | DEBUG   | 2010.01.0051100/2025-04   | docs_processo         | Lendo documento Memorando 1600 (SEI 147380703)
+2026-11-18 19:01:30 | DEBUG   | 2010.01.0051100/2025-04   | docs_processo         | Documento 147380703 lido (2723 caracteres)
+2026-11-18 19:01:30 | INFO    | 2010.01.0051100/2025-04   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1600 (SEI 147380703)']
+2026-11-18 19:01:30 | INFO    | 2010.01.0051100/2025-04   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3571674-6 | Período titular: 07/2019 a 06/2024 | Dependentes: 3575392; 3575393; 3607342 | Período variável p/ dependentes: não
+2026-11-18 19:01:30 | DEBUG   | 2010.01.0051100/2025-04   | docs_processo         | Lendo documento Memorando 2384 (SEI 153546029)
+2026-11-18 19:01:30 | DEBUG   | 2010.01.0051100/2025-04   | docs_processo         | Documento 153546029 lido (2957 caracteres)
+2026-11-18 19:01:30 | INFO    | 2010.01.0051100/2025-04   | __main__              | Memo(s) à DISA (não consta) na rodada: ['Memorando 2384 (SEI 153546029)']
+2026-11-18 19:01:30 | WARNING | 2010.01.0051100/2025-04   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 3607342
+2026-11-18 19:01:30 | WARNING | 2010.01.0051100/2025-04   | todas_infos           | Dependente(s) fora da base APIS e do MANTIS dos dependentes não encontrados: 3607342. Ignorado(s), como no geacs_inicial
+2026-11-18 19:01:30 | INFO    | 2010.01.0051100/2025-04   | mantis                | MANTIS rede própria | Titular 35716746: USOU (R$ 50.00) | Dependentes que usaram: - (R$ 0.00)
+2026-11-18 19:01:30 | INFO    | 2010.01.0051100/2025-04   | mantis                | MANTIS rede credenciada | Titular 35716746: USOU (R$ 1764.04) | Dependentes que usaram: ['3575392', '3575393'] (R$ 1237.09)
+2026-11-18 19:01:30 | INFO    | 2010.01.0051100/2025-04   | rede_propria          | Uso da rede própria (base DISA) | Titular 35716746: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['3575392', '3575393']
+2026-11-18 19:01:30 | INFO    | 2010.01.0051100/2025-04   | __main__              | Base DISA x MANTIS: DISA não, MANTIS RP sim, MANTIS RC sim
+2026-11-18 19:01:30 | INFO    | 2010.01.0051100/2025-04   | __main__              | Relatórios do MANTIS citados no memo DEPROC: RP ['153546005'] | RC ['153546010', '153546060']
+2026-11-18 19:01:41 | WARNING | 2010.01.0051100/2025-04   | __main__              | Memo à DISA não excluído: Memorando 2384 (SEI 153546029) (assinado, já enviado ou sem permissão?); será cancelado
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_corrige_envio_disa.py", line 218, in excluir_memos_disa
+    excluir_doc(driver)
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\documento.py", line 213, in excluir_doc
+    _gestao_doc.selecionar_excluir_doc(driver, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\gestao_doc.py", line 38, in selecionar_excluir_doc
+    img_excluir_doc: WebElement = WebDriverWait(driver, timeout).until(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((By.XPATH, "//img[@alt='Excluir']"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff7eb6fd655]
+	(No symbol) [0x7ff7eb5f4790]
+	(No symbol) [0x7ff7eb462fb3]
+	(No symbol) [0x7ff7ebca61e1]
+	(No symbol) [0x7ff7ebca643c]
+	(No symbol) [0x7ff7ebcd4337]
+	(No symbol) [0x7ff7eb496bf1]
+	(No symbol) [0x7ff7eb47c109]
+	(No symbol) [0x7ff7eb47d433]
+	(No symbol) [0x7ff7ebb97041]
+	(No symbol) [0x7ff7ebbb5c76]
+	(No symbol) [0x7ff7ebbac340]
+	(No symbol) [0x7ff7eb82c9be]
+	(No symbol) [0x7ff7eb602fa5]
+	(No symbol) [0x7ff7eb5fe2d4]
+	(No symbol) [0x7ff7eb5fe464]
+	(No symbol) [0x7ff7eb5e731c]
+	(No symbol) [0x7fffc03ecd87]
+	(No symbol) [0x7fffc1b0caec]
+
+2026-11-18 19:01:53 | WARNING | 2010.01.0051100/2025-04   | __main__              | Memo à DISA não cancelado: Memorando 2384 (SEI 153546029) (já cancelado ou sem permissão?)
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_corrige_envio_disa.py", line 197, in _cancelar_memo_disa
+    cancelar_doc(driver, MOTIVO_CANCELAMENTO)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\documento.py", line 202, in cancelar_doc
+    _gestao_doc.preencher_motivo_cancelamento(driver, motivo, timeout=timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\gestao_doc.py", line 29, in preencher_motivo_cancelamento
+    input_motivo: WebElement = WebDriverWait(driver, timeout).until(
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((By.ID, 'txaMotivo'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff7eb6fd655]
+	(No symbol) [0x7ff7eb5f4790]
+	(No symbol) [0x7ff7eb462fb3]
+	(No symbol) [0x7ff7ebca61e1]
+	(No symbol) [0x7ff7ebca643c]
+	(No symbol) [0x7ff7ebcd4337]
+	(No symbol) [0x7ff7eb496bf1]
+	(No symbol) [0x7ff7eb47c109]
+	(No symbol) [0x7ff7eb47d433]
+	(No symbol) [0x7ff7ebb97041]
+	(No symbol) [0x7ff7ebbb5c76]
+	(No symbol) [0x7ff7ebbac340]
+	(No symbol) [0x7ff7eb82c9be]
+	(No symbol) [0x7ff7eb602fa5]
+	(No symbol) [0x7ff7eb5fe2d4]
+	(No symbol) [0x7ff7eb5fe464]
+	(No symbol) [0x7ff7eb5e731c]
+	(No symbol) [0x7fffc03ecd87]
+	(No symbol) [0x7fffc1b0caec]
+
+2026-11-18 19:01:54 | INFO    | 2010.01.0051100/2025-04   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-18_19-00-06.xlsx
+2026-11-18 19:02:06 | ERROR   | 2010.01.0051100/2025-04   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 258, in _gravar_arquivo
+    df.to_excel(writer, sheet_name=aba, index=False)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\util\_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\core\generic.py", line 2439, in to_excel
+    formatter.write(
+    ~~~~~~~~~~~~~~~^
+        excel_writer,
+        ^^^^^^^^^^^^^
+    ...<6 lines>...
+        engine_kwargs=engine_kwargs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\formats\excel.py", line 952, in write
+    writer._write_cells(
+    ~~~~~~~~~~~~~~~~~~~^
+        formatted_cells,
+        ^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        freeze_panes=freeze_panes,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 490, in _write_cells
+    xcell.value, fmt = self._value_with_fmt(cell.val)
+                       ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1293, in _value_with_fmt
+    def _value_with_fmt(
+    
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 241, in _gravar
+    _gravar_arquivo(temporario, abas)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 255, in _gravar_arquivo
+    with pd.ExcelWriter(arquivo, engine='openpyxl', **modo) as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1353, in __exit__
+    self.close()
+    ~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1357, in close
+    self._save()
+    ~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 110, in _save
+    self.book.save(self._handles.handle)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\workbook\workbook.py", line 386, in save
+    save_workbook(self, filename)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 294, in save_workbook
+    writer.save()
+    ~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 275, in save
+    self.write_data()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 77, in write_data
+    self._write_worksheets()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 215, in _write_worksheets
+    self.write_worksheet(ws)
+    ~~~~~~~~~~~~~~~~~~~~^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 200, in write_worksheet
+    writer.write()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_writer.py", line 359, in write
+    self.write_rows()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_writer.py", line 125, in write_rows
+    self.write_row(xf, row, row_idx)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_writer.py", line 147, in write_row
+    write_cell(xf, self.ws, cell, cell.has_style)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\cell\_writer.py", line 47, in etree_write_cell
+    value, attributes = _set_attributes(cell, styled)
+                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\cell\_writer.py", line 39, in _set_attributes
+    if cell.hyperlink:
+       ^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\cell\cell.py", line 225, in hyperlink
+    @property
+    
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 343, in registrar
+    _gravar(self.arquivo, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 248, in _gravar
+    temporario.unlink(missing_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 746, in unlink
+    os.unlink(self)
+    ~~~~~~~~~^^^^^^
+PermissionError: [WinError 32] O arquivo já está sendo usado por outro processo: 'C:\\Users\\m755247\\Desktop\\REPOSITORIOS\\scripts\\sei\\script-sei-utilizacao-indevida-v2\\dados\\controle\\~gravando_controle_geral_de_processos.xlsx'
+2026-11-18 19:02:11 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=59636): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/6472edc59feb093b3a3d34b2bb1184d5
+2026-11-18 19:02:15 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=59636): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/6472edc59feb093b3a3d34b2bb1184d5
+2026-11-18 19:02:19 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=59636): Failed to establish a new connection: [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente")': /session/6472edc59feb093b3a3d34b2bb1184d5
+2026-11-18 19:02:23 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-18 19:02:23 | INFO    | -                         | __main__              | Processos: 1 | Sem erro: 0 | Com erro: 1
+2026-11-18 19:02:23 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051100/2025-04 | MemoDisaNaoExcluido: Memo(s) à DISA (não consta) não excluído(s) nem cancelado(s): 153546029; memo DEPROC não criado
+2026-11-18 19:02:23 | INFO    | -                         | __main__              | Duração total da execução: 0h02m17s
+2026-11-18 19:02:23 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

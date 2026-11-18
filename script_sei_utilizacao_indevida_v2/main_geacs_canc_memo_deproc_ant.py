@@ -29,7 +29,7 @@ from processos_a_processar import ler_processos_a_processar
 from rede_propria import ErroAvaliacao
 from Registro import RegistroCancMemoDeprocAnt, registrar_erro, registrar_sem_acesso
 from sei_automacao.documento import cancelar_doc
-from sei_automacao.exceptions import UnidadeSemAcessoException
+from sei_automacao.exceptions import AcaoIndisponivel, UnidadeSemAcessoException
 from sei_automacao.processo import acessar_processo, listar_documentos_arvore
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -99,7 +99,7 @@ def cancelar_memos_deproc_antigos(driver: webdriver.Remote, registro: RegistroCa
         selecionar_doc(driver, memo)
         try:
             cancelar_doc(driver, MOTIVO_CANCELAMENTO)
-        except TimeoutException:
+        except (AcaoIndisponivel, TimeoutException):
             # Já cancelado, assinado ou sem permissão: segue para os outros
             logger.warning(f'Opção "Cancelar Documento" indisponível: {_descrever(memo)}')
             sem_opcao.append(memo['numero_sei'])
