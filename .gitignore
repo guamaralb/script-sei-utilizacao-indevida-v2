@@ -140,3 +140,7 @@ downloads/
 
 # Arquivos temporários do Excel/Office (arquivo aberto)
 ~$*
+
+# Planilha de controle: trava da execução e cópia temporária da gravação
+dados/controle/~em_uso_*.lock
+dados/controle/~gravando_*

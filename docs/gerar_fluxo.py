@@ -1082,17 +1082,41 @@ col_verif_loop = col_loop(
     'da GEACS',
     '',
     'verificar_marcadores(linha_processo()) — coluna 2',
-    'Não altera a prox_acao (nem fluxo e erro dos outros fluxos): só script, ultima_passagem, data_execucao, as colunas de marcadores, '
-    'verificar_marcadores_acao_sugerida / _inconsistencia / _erro (antes das de marcadores, em amarelo) e verificar_marcadores_aberto_na_geacs',
+    'Só altera a prox_acao pela troca do No Bloco ou pelo memo do Aguarda assinado (nem fluxo e erro dos outros fluxos): script, ultima_passagem, data_execucao, '
+    'as colunas de marcadores, verificar_marcadores_acao_sugerida / _inconsistencia / _erro (antes das de marcadores, em amarelo), '
+    'verificar_marcadores_aberto_na_geacs, verificar_marcadores_memo_aguarda_assinado e, com troca, verificar_marcadores_marcador_trocado',
 )
 _erro_segue(col_verif_loop, 6)
 col_verif = Coluna(
     '2 · verificar_marcadores() · conferir_processo()',
-    'Lê os marcadores e confere a prox_acao da planilha de controle com eles e com os memorandos, sem nenhuma ação no SEI. Cada problema vai para '
+    'Lê os marcadores e confere a prox_acao da planilha de controle com eles e com os memorandos. Única ação no SEI: a troca do No Bloco assinado '
+    '(o fechado é reaberto e concluído de novo). Cada problema vai para '
     'verificar_marcadores_inconsistencia, com uma ação (AcaoSugerida) em verificar_marcadores_acao_sugerida',
     [
         F('listar_marcadores() · registrar_tags()', 'Marcadores do processo no SEI'),
-        F('tem_incluir_documento()', 'Só informativo (verificar_marcadores_aberto_na_geacs): o fechado no setor é lido como está, sem reabrir'),
+        F('tem_incluir_documento()', 'verificar_marcadores_aberto_na_geacs: o fechado no setor é lido como está; só é reaberto para trocar o marcador'),
+        P(
+            'trocar_no_bloco_assinado():<br>No Bloco com o memo da rodada<br>assinado por Gustavo, Bruna ou Danúbia?',
+            [
+                T('Só com marcadores consistentes e o novo marcador cadastrado (garantir_marcadores_no_sei; faltando: inconsistência)'),
+                F(
+                    'reabrir_processo_fechado()',
+                    'Processo fechado na GEACS: reabre antes da troca (com MANUAL: não reabre nem troca; não reabriu: inconsistência)',
+                ),
+                M('Aguarda (.1) ou, no 01.12, 01.12.1 - Encaminhado APIS: Todas as Infos (↻ remove o No Bloco)'),
+                T('prox_acao = a do novo estado (exceto DEPROC: ...); verificar_marcadores_marcador_trocado, marcadores_adicionados / _removidos'),
+                F('_concluir_de_novo() · concluir_processo()', 'Reaberto: conclui de novo, mesmo se a troca falhar. Não concluiu: erro (concluir à mão)'),
+            ],
+            rotulo='Sim (e segue)',
+        ),
+        P(
+            'conferir_memos_aguarda():<br>Aguarda com o memo assinado<br>por Gustavo, Bruna ou Danúbia?',
+            [
+                T('Planilha: memo_*_sei do memo e verificar_marcadores_memo_aguarda_assinado (marcador: nº SEI (signatário))'),
+                T('Aguarda é o único estado e marcadores consistentes: prox_acao = Aguardar resposta ao memo enviado (exceto se já for ela ou DEPROC: ...)'),
+            ],
+            rotulo='Sim (e segue)',
+        ),
         F(
             'colunas_tags() · demais_marcadores()',
             'Uma coluna tag_* por marcador válido na GEACS (TAGS_VALIDOS_GEACS, 30). Os outros (v2v:, 01.06.2 / 01.08.2 / 01.08.3, manuais, antigos) vão juntos para demais_marcadores',

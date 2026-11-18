@@ -1,4 +1,9 @@
+import os
+import subprocess
+import sys
 from datetime import datetime
+from pathlib import Path
+from types import SimpleNamespace
 
 import pandas as pd
 import planilha_controle
@@ -6,6 +11,7 @@ import processos_a_processar
 import pytest
 from openpyxl import load_workbook
 from planilha_controle import PlanilhaControleGeral
+from sessao_sei import sessao_encerrada
 
 
 @pytest.fixture
@@ -156,3 +162,37 @@ def test_le_a_aba_do_fluxo_em_processos_a_processar(tmp_path, monkeypatch):
     assert processos_a_processar.ler_processos_a_processar('deproc_calcula_copa') == []
     with pytest.raises(ValueError, match='Aba "geacs_adc_pdf_ant_man" não encontrada'):
         processos_a_processar.ler_processos_a_processar('geacs_adc_pdf_ant_man')
+
+
+def test_outra_execucao_nao_usa_a_planilha_travada(arquivo):
+    """Duas execuções gravando juntas corrompem a planilha (18/11/2026): a
+    segunda para antes do login."""
+    PlanilhaControleGeral('geacs_verificar_marcadores', 'exec1', arquivo).registrar(_passagem('P1', 9))
+    raiz = Path(planilha_controle.__file__).parent
+    codigo = (
+        'import sys; from pathlib import Path; '
+        'import planilha_controle as p\n'
+        'try:\n'
+        '    p.PlanilhaControleGeral("geacs_inicial", "exec2", Path(sys.argv[1]))\n'
+        'except p.PlanilhaEmUso as e:\n'
+        '    print(e); sys.exit(3)\n'
+    )
+    resultado = subprocess.run([sys.executable, '-c', codigo, str(arquivo)], cwd=raiz, capture_output=True, text=True, env={**os.environ, 'PYTHONPATH': str(raiz)}, check=False)
+    assert resultado.returncode == 3, resultado.stderr
+    assert 'geacs_verificar_marcadores' in resultado.stdout
+    # A execução que tem a trava continua gravando
+    PlanilhaControleGeral('geacs_verificar_marcadores', 'exec1', arquivo).registrar(_passagem('P2', 10))
+    assert list(_ler(arquivo)['processos']['num_processo']) == ['P1', 'P2']
+
+
+def test_gravacao_nao_deixa_copia_temporaria(arquivo):
+    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(_passagem('P1', 9))
+    assert [f.name for f in arquivo.parent.glob('~gravando_*')] == []
+
+
+def test_navegador_sem_resposta_encerra_a_execucao():
+    """Ctrl+C derruba o chromedriver junto com o navegador: os comandos
+    seguintes dão MaxRetryError, e o loop tem de parar."""
+    assert sessao_encerrada(SimpleNamespace(tipo_erro='MaxRetryError'))
+    assert sessao_encerrada(SimpleNamespace(tipo_erro='InvalidSessionIdException'))
+    assert not sessao_encerrada(SimpleNamespace(tipo_erro='TimeoutException'))

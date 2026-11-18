@@ -78,7 +78,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `planilhas_adc_pdf_ant_man.py` | Fluxo ADC PDF ANT MAN: acha os arquivos do processo em `dados/geacs_adc_pdf_ant_man/planilhas`, o documento na árvore e insere os PDFs (`inserir_pdfs_da_pasta`) |
 | `main_geacs_canc_memo_deproc_ant.py` | Fluxo GEACS CANC MEMO DEPROC ANT (`poetry run task run_geacs_canc_memo_deproc_ant`): cancela o memo DEPROC antigo da GEACS, sem alterar a `prox_acao` ([seção](#fluxo-geacs-canc-memo-deproc-ant)) |
 | `main_geacs_corrige_envio_disa.py` | Fluxo GEACS CORRIGE ENVIO DISA (`poetry run task run_geacs_corrige_envio_disa`), na unidade da GEACS: troca o memo à DISA "Validar (N Consta)" pelo memo DEPROC (exclui o memo à DISA, cria o DEPROC e deixa o `01.10.B - No Bloco DEPROC`) ([seção](#fluxo-geacs-corrige-envio-disa)) |
-| `main_geacs_verificar_marcadores.py` | Fluxo GEACS VERIFICAR MARCADORES (`poetry run task run_geacs_verificar_marcadores`): lê os marcadores e atualiza as colunas `tag_*` (uma por marcador válido) e `demais_marcadores`, e confere a `prox_acao` da planilha, sem alterá-la e sem ação no SEI ([seção](#fluxo-geacs-verificar-marcadores)) |
+| `main_geacs_verificar_marcadores.py` | Fluxo GEACS VERIFICAR MARCADORES (`poetry run task run_geacs_verificar_marcadores`): lê os marcadores e atualiza as colunas `tag_*` (uma por marcador válido) e `demais_marcadores`, troca o `No Bloco` cujo memo já está assinado pelo `Aguarda` / `Encaminhado` (`trocar_no_bloco_assinado`, única ação no SEI), atualiza a planilha pelo memo do `Aguarda` assinado (`conferir_memos_aguarda`) e confere a `prox_acao` da planilha ([seção](#fluxo-geacs-verificar-marcadores)) |
 | `conferencia_prox_acao.py` | Fluxo GEACS VERIFICAR MARCADORES: `conferir_processo()` confere a `prox_acao` da planilha com os marcadores (`conferir_prox_acao`), o caso base DISA × MANTIS, os memos e relatórios dos marcadores na árvore (`conferir_memo_do_marcador`) e a retomada (`conferir_retomada`) |
 | `main_geacs_todas_infos.py` | Fluxo GEACS TODAS INFOS (`poetry run task run_geacs_todas_infos`), na unidade da GEACS: depois do retorno da DEPROC (`01.10.1`), cria o memo à APIS com todas as informações e adiciona o `01.12` ([seção](#fluxo-geacs-todas-infos)) |
 | `todas_infos.py` | Fluxo GEACS TODAS INFOS: caminho (direto à DEPROC ou pela DISA), leitura do memo de resultado da DEPROC e dos PDFs do MANTIS (download e pypdf), recálculo nas bases DEPROC e MANTIS, conferência e linhas das tabelas do memo |
@@ -123,7 +123,9 @@ a API dela.
     também);
   - falha inesperada: logada com `logger.exception`.
 - Um erro em um processo **nunca** interrompe os demais. Exceção: navegador
-  fechado (`sessao_sei.sessao_encerrada`). O erro é registrado no processo em
+  fechado (`sessao_sei.sessao_encerrada`: `InvalidSessionIdException`,
+  `NoSuchWindowException` ou `MaxRetryError`, o chromedriver que não responde
+  mais, ex.: depois de um Ctrl+C). O erro é registrado no processo em
   andamento e o loop para com um aviso, sem gravar os restantes; resumo e
   `driver.quit()` continuam.
 - Todo motivo de falha no processamento é registrado como erro
@@ -1052,8 +1054,49 @@ unidade da GEACS, com os processos da aba `geacs_verificar_marcadores` de
 
 Para cada processo: abre o processo (unidade sem acesso: como nos outros
 fluxos), lê os marcadores (`listar_marcadores`) e, só quando alguma
-conferência precisa, a árvore e o texto dos memos. **Nenhuma ação no SEI**
-(não remove nem adiciona marcador) e **não reabre processos**: o fechado no
+conferência precisa, a árvore e o texto dos memos. A **única ação no SEI** é a
+troca do `No Bloco` assinado (abaixo), com a reabertura e a conclusão do
+processo fechado.
+
+**Logo no começo**, antes das conferências (depois de ler os marcadores e o
+`Incluir Documento`):
+
+1. **Troca do `No Bloco` assinado** (`trocar_no_bloco_assinado`): se o estado é
+   um `No Bloco` (o `prox_acao` é de "Assinar ...") e o memo dele na **rodada**
+   já está **assinado por Gustavo, Bruna ou Danúbia**, o script troca o
+   marcador pelo de assinado: o `Aguarda` (`.1`) ou, no `01.12`, o `01.12.1 -
+   Encaminhado` (**➕** com `tags.adicionar_tag`, que remove o `No Bloco`). A
+   `prox_acao` passa a ser a do novo estado (Aguardar resposta ao memo enviado;
+   no `01.12.1`, Memo à APIS (todas as informações) encaminhado), exceto se
+   começar com `DEPROC:`. Só com os marcadores consistentes e o marcador novo
+   cadastrado (`garantir_marcadores_no_sei`; faltando, inconsistência e nada
+   muda). **Processo fechado na GEACS** (sem `Incluir Documento`): é reaberto
+   (`reabrir_processo_fechado`), o marcador é trocado e o processo é
+   **concluído de novo** (`_concluir_de_novo`: `concluir_processo` da
+   `sei_automacao`), mesmo se a troca falhar (ex.: marcador não cadastrado).
+   Não reabriu: inconsistência, sem troca. Não concluiu de novo: erro
+   (`verificar_marcadores_erro`; concluir à mão), com a troca registrada. Com o
+   `MANUAL`, o fechado não é reaberto nem trocado.
+   Colunas: `verificar_marcadores_marcador_trocado` (`<No Bloco> -> <novo>: <nº
+   SEI> (<signatário>)`), `marcadores_adicionados` e `marcadores_removidos`
+   (só quando há troca; com reabertura, o texto termina com `(processo reaberto
+   e concluído de novo)`). Memo assinado por outra pessoa ou de pedido
+   anterior: não troca (a conferência 4 sugere trocar à mão).
+2. **Memo do `Aguarda` assinado** (`conferir_memos_aguarda`): para
+   cada marcador `Aguarda` (`AGUARDA_POR_NO_BLOCO`) do processo, procura o memo
+do marcador (o mais recente da GEACS com o assunto do memo) **assinado por
+Gustavo, Bruna ou Danúbia** (`PADRAO_ASSINATURA_MEMO_AGUARDA`). Achou: grava na
+planilha a coluna do memo (`memo_disa_sei`, `memo_deproc_sei`,
+`memo_apis_*_sei`) e `verificar_marcadores_memo_aguarda_assinado`
+(`<marcador>: <nº SEI> (<signatário>)`) e, se o `Aguarda` é o único estado e
+os marcadores estão consistentes, a `prox_acao` = Aguardar resposta ao memo
+enviado (exceto se já for ela ou começar com `DEPROC:`). Erro depois disso não
+desfaz a atualização. Sem o memo ou sem a assinatura, nada muda (a
+conferência 4 aponta o problema). A conferência 2 usa a `prox_acao`
+atualizada.
+
+Fora a troca do `No Bloco` (e a reabertura e conclusão do fechado para ela),
+**nenhuma ação no SEI** e **não reabre processos**: o fechado no
 setor é lido como está (há teste). O `Incluir Documento` é conferido só para
 informar (`tem_incluir_documento`, coluna `verificar_marcadores_aberto_na_geacs`;
 sem ele, o processo está fechado no setor ou só em outra unidade, e os fluxos
@@ -1131,9 +1174,11 @@ SEI, Trocar o No Bloco pelo marcador de assinado, Verificar manualmente):
    - `01.09.A.1` / `B.1` / `C.1 - Aguarda DISA` com documento de uma unidade `IPSEMG/DISA` depois
      do memo à DISA: Tratar a resposta da DISA (geacs_resp_disa, TODO).
 
-Na planilha de controle, **não altera a `prox_acao`** (nem `fluxo`,
-`tipo_erro`, `erro` e as outras colunas): na aba `processos`, só `script`,
-`ultima_passagem`, `data_execucao`, os marcadores e as duas colunas do fluxo:
+Na planilha de controle, **só altera a `prox_acao`** pela troca do `No Bloco`
+ou pelo memo do `Aguarda` assinado (acima; não altera `fluxo`, `tipo_erro`, `erro` e as outras colunas):
+na aba `processos`, só `script`, `ultima_passagem`, `data_execucao`, os
+marcadores, a coluna do memo e a `verificar_marcadores_memo_aguarda_assinado`
+(memo do `Aguarda`) e as duas colunas do fluxo:
 
 - `verificar_marcadores_inconsistencia`: as inconsistências encontradas,
   separadas por ` | ` (vazia se tudo condiz);
@@ -1654,7 +1699,17 @@ perca os processos já tratados.
   amarelo. Essas duas colunas ficam sempre logo antes das colunas de
   marcadores (`_ordenar_colunas`). Se a formatação falhar, a aba fica salva
   sem ela.
-- Gravação atômica: a planilha é gravada em `~gravando_<nome>.xlsx`, na mesma
+- **Uma execução por vez**: a `PlanilhaControleGeral` trava a planilha
+  (`~em_uso_<nome>.lock`, na mesma pasta; trava do sistema operacional, liberada
+  quando o processo termina, mesmo encerrado à força) do início ao fim da
+  execução. Outra execução, de qualquer fluxo, para antes do login com
+  `PlanilhaEmUso` (a mensagem diz o script, o pid e o início da que está
+  rodando). Em 18/11/2026, duas execuções do `geacs_verificar_marcadores` (uma
+  que seguiu depois do Ctrl+C, com o navegador fechado) gravaram juntas e
+  corromperam a planilha; ela foi refeita do backup e dos dois
+  `_NAO_INCORPORADO` (o arquivo corrompido ficou em
+  `backup/CORROMPIDO_controle_geral_de_processos_2026-11-18_13-30.xlsx`).
+- Gravação atômica: a planilha é gravada em `~gravando_<pid>_<nome>.xlsx`, na mesma
   pasta, e só então substitui a original (`os.replace`). Em 11/11/2026 o
   sistema operacional encerrou a execução do `geacs_verificar_marcadores` no
   meio de uma gravação e corrompeu o arquivo (as abas `processos` e
@@ -1691,6 +1746,11 @@ perca os processos já tratados.
   assinado (hoje: qualquer falha conta como não excluído, e a `prox_acao` pede
   para verificar o que fazer). **TODO**: validar o texto do memo DEPROC com a
   rede própria do MANTIS.
+- Fluxo GEACS VERIFICAR MARCADORES: confirmar no SEI real que
+  `concluir_processo` da `sei_automacao` conclui o processo reaberto para a
+  troca do marcador sem pedir confirmação (a função só clica no botão), e que
+  o processo volta a ficar sem `Incluir Documento`.
+
 - Fluxo GEACS CANC MEMO DEPROC ANT: confirmar no SEI real que `cancelar_doc`
   funciona com o memo selecionado na árvore e se o memo cancelado continua na
   árvore com o mesmo texto (numa nova passagem, ele seria encontrado de novo e

@@ -6,21 +6,27 @@ anterior, manuais, antigos).
 
 Confere também se a prox_acao registrada na planilha faz sentido com os
 marcadores e se os memorandos que os marcadores indicam estão na árvore
-(conferencia_prox_acao). Os problemas vão para a coluna
+(conferencia_prox_acao). Logo no começo, troca o "No Bloco" cujo memo da rodada
+já está assinado (Gustavo, Bruna ou Danúbia) pelo marcador de assinado
+("Aguarda" ou "Encaminhado"). Depois, para cada marcador "Aguarda", procura o
+memo do marcador assinado por Gustavo, Bruna ou Danúbia: achou, atualiza a
+planilha (coluna do memo, verificar_marcadores_memo_aguarda_assinado e, com os
+marcadores consistentes, a prox_acao). Os problemas vão para a coluna
 verificar_marcadores_inconsistencia, e o que fazer com o processo, para a
 verificar_marcadores_acao_sugerida. Registra se o processo está aberto na
 GEACS (verificar_marcadores_aberto_na_geacs), sem mexer nele.
 
 Para cada processo da aba geacs_verificar_marcadores de
 processos_a_processar.xlsx: abre o processo, lê os marcadores e, se preciso, a
-árvore e os memos. Nenhuma ação no SEI. Não altera a prox_acao
-(RegistroVerificarMarcadores).
+árvore e os memos. Única ação no SEI: a troca do "No Bloco" (processo fechado
+na GEACS é reaberto para a troca e concluído de novo). Só altera a prox_acao pela troca ou pelo memo do "Aguarda"
+assinado (RegistroVerificarMarcadores).
 """
 
 import logging
 from datetime import datetime
 
-from conferencia_prox_acao import conferir_processo
+from conferencia_prox_acao import ArvoreProcesso, conferir_memos_aguarda, conferir_processo, trocar_no_bloco_assinado
 from constantes import DIR_CONTROLE, DIR_INPUTS, DIR_LOG, UNIDADE_GEACS
 from log_config import (
     configurar_logging,
@@ -54,16 +60,22 @@ def verificar_marcadores(driver: webdriver.Remote, registro: RegistroVerificarMa
     planilha não lida)."""
     registrar_tags(registro, listar_marcadores(driver))
     registro.marcadores_lidos = True
-    # Só informativo: o processo fechado no setor é lido como está
+    # O processo fechado no setor é lido como está (só é reaberto, e
+    # concluído de novo, para trocar o marcador)
     registro.aberto_na_geacs = tem_incluir_documento(driver)
     if not registro.aberto_na_geacs:
         logger.info('Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está')
+    # Logo no começo: "No Bloco" com o memo assinado vira o marcador de
+    # assinado, e o memo de cada "Aguarda" assinado atualiza a planilha
+    arvore = ArvoreProcesso(driver)
+    trocar_no_bloco_assinado(driver, arvore, registro, linha_planilha)
+    conferir_memos_aguarda(arvore, registro, linha_planilha)
     validos = sorted(tag for tag in registro.marcadores_sei if tag in TAGS_VALIDOS_GEACS)
     demais = sorted(tag for tag in registro.marcadores_sei if tag not in TAGS_VALIDOS_GEACS)
     logger.info(f'Marcadores válidos: {validos or "nenhum"}')
     if demais:
         logger.info(f'Demais marcadores: {demais}')
-    conferir_processo(driver, registro, linha_planilha)
+    conferir_processo(driver, registro, linha_planilha, arvore)
     for problema in registro.inconsistencias:
         logger.warning(f'Inconsistência: {problema}')
     if not registro.inconsistencias:

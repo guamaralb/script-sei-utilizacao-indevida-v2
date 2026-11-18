@@ -1,0 +1,17 @@
+2026-11-18 16:07:55 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-18 16:07:55 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-18_16-07-55_execucao_geacs_verificar_marcadores.log
+2026-11-18 16:07:55 | INFO    | -                         | processos_a_processar | 197 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-18 16:08:00 | INFO    | -                         | sessao_sei            | Iniciando navegador oculto (sem janela) e login no SEI
+2026-11-18 16:08:00 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-18 16:08:00 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-18 16:08:25 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-18 16:08:25 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-18 16:08:47 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-18 16:08:47 | INFO    | 2010.01.0050804/2025-42   | __main__              | INÍCIO [1/197]
+2026-11-18 16:08:52 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57871): Failed to establish a new connection: [Errno 104] Connection reset by peer")': /session/831be599284c0b5991b74f3df0ce087b
+2026-11-18 16:08:52 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57871): Failed to establish a new connection: [Errno 111] Connection refused")': /session/831be599284c0b5991b74f3df0ce087b
+2026-11-18 16:08:52 | WARNING | -                         | urllib3.connectionpool | Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=57871): Failed to establish a new connection: [Errno 111] Connection refused")': /session/831be599284c0b5991b74f3df0ce087b
+2026-11-18 16:08:52 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-18 16:08:52 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-18 16:08:52 | INFO    | -                         | __main__              | Duração total da execução: 56.4s
+2026-11-18 16:08:52 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================
