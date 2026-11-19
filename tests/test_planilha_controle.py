@@ -263,6 +263,43 @@ def test_aba_historico_maior_que_o_csv_fica_na_planilha(arquivo):
     assert [h['prox_acao'] for h in _historico(arquivo)] == ['Z', 'B']
 
 
+def test_migracao_gravada_sem_nenhum_processo(arquivo):
+    """Execução sem processos (ex.: lista vazia) também deixa a planilha
+    migrada: a aba historico vai para o CSV e as colunas tag_*, para o nome do
+    marcador, logo na leitura. O backup é feito uma vez só."""
+    _planilha_com_aba_historico(arquivo, [_passagem('P1', 9, prox_acao='A', tag_processo_novo=True)])
+
+    controle = PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo)
+
+    livro = load_workbook(arquivo)
+    assert 'historico' not in livro.sheetnames
+    colunas = [c.value for c in livro['processos'][1]]
+    assert 'tag_processo_novo' not in colunas
+    assert 'v2: 01 - Tratado pelo Script' in colunas
+    assert [h['prox_acao'] for h in _historico(arquivo)] == ['A']
+
+    controle.registrar(_passagem('P1', 10, prox_acao='B'))
+    assert len(list(planilha_controle.DIR_BACKUP_CONTROLE.iterdir())) == 1
+    assert [h['prox_acao'] for h in _historico(arquivo)] == ['A', 'B']
+
+
+def test_planilha_ja_migrada_nao_e_regravada_na_leitura(arquivo):
+    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(_passagem('P1', 9, prox_acao='A'))
+    gravada = arquivo.stat().st_mtime_ns
+
+    PlanilhaControleGeral('geacs_inicial', 'exec2', arquivo)
+
+    assert arquivo.stat().st_mtime_ns == gravada
+
+
+def test_processos_da_planilha(arquivo):
+    controle = PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo)
+    for passagem in (_passagem('P2', 9), _passagem('P1', 9), _passagem('P2', 10)):
+        controle.registrar(passagem)
+
+    assert PlanilhaControleGeral('geacs_inicial', 'exec2', arquivo).processos_da_planilha() == ['P2', 'P1']
+
+
 def test_le_a_aba_do_fluxo_em_processos_a_processar(tmp_path, monkeypatch):
     arquivo = tmp_path / 'processos_a_processar.xlsx'
     with pd.ExcelWriter(arquivo) as writer:

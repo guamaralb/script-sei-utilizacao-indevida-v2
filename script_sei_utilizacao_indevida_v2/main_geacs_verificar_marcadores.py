@@ -1,8 +1,8 @@
 """Fluxo GEACS VERIFICAR MARCADORES (task run_geacs_verificar_marcadores), na
 unidade da GEACS: lê os marcadores de cada processo e atualiza as colunas de
-marcadores da planilha de controle: uma coluna tag_* por marcador válido na
-GEACS (tags.TAGS_VALIDOS_GEACS) e demais_marcadores com os outros (versão
-anterior, manuais, antigos).
+marcadores da planilha de controle: uma coluna por marcador válido na GEACS,
+com o nome dele (tags.COLUNAS_TAGS_GEACS), estado_atual e demais_marcadores
+com os outros (versão anterior, manuais, antigos).
 
 Confere também se a prox_acao registrada na planilha faz sentido com os
 marcadores e se os memorandos que os marcadores indicam estão na árvore
@@ -19,7 +19,8 @@ processos, script e ultima_passagem continuam os do último fluxo que agiu no
 processo: a passagem fica em verificar_marcadores_em (e no histórico).
 
 Para cada processo da aba geacs_verificar_marcadores de
-processos_a_processar.xlsx: abre o processo, lê os marcadores e, se preciso, a
+processos_a_processar.xlsx (aba vazia: todos os processos da planilha de
+controle geral): abre o processo, lê os marcadores e, se preciso, a
 árvore e os memos. Única ação no SEI: a troca do "No Bloco" (processo fechado
 na GEACS é reaberto para a troca e concluído de novo). Só altera a prox_acao pela troca ou pelo memo do "Aguarda"
 assinado (RegistroVerificarMarcadores).
@@ -122,11 +123,16 @@ def main():
         logger.info(f'Log: {ARQ_LOG}')
 
         processos = ler_processos_a_processar(SCRIPT)
-        total = len(processos)
 
         # script e ultima_passagem continuam os do último fluxo que agiu no
         # processo (a passagem fica em verificar_marcadores_em e no histórico)
         controle = PlanilhaControleGeral(SCRIPT, AGORA, colunas_so_historico=RegistroVerificarMarcadores.COLUNAS_SO_HISTORICO)
+        if not processos:
+            processos = controle.processos_da_planilha()
+            logger.info(f'Aba {SCRIPT} vazia: {len(processos)} processo(s) da planilha de controle geral (todos)')
+        total = len(processos)
+        if not processos:
+            return
         driver = abrir_sei(UNIDADE_GEACS)
 
         for i, num_processo in enumerate(processos, start=1):

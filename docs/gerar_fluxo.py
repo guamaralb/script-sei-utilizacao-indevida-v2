@@ -1091,10 +1091,11 @@ col_verif_loop = col_loop(
     'run_geacs_verificar_marcadores',
     'geacs_verificar_marcadores',
     'da GEACS',
-    '',
+    '. Aba vazia: todos os processos da planilha de controle geral (processos_da_planilha())',
     'verificar_marcadores(linha_processo()) — coluna 2',
-    'Só altera a prox_acao pela troca do No Bloco ou pelo memo do Aguarda assinado (nem fluxo e erro dos outros fluxos): script, ultima_passagem, data_execucao, '
-    'as colunas de marcadores, verificar_marcadores_acao_sugerida / _inconsistencia / _erro (antes das de marcadores, em amarelo), '
+    'Só altera a prox_acao pela troca do No Bloco ou pelo memo do Aguarda assinado (nem fluxo e erro dos outros fluxos). '
+    'script, ultima_passagem e data_execucao ficam os do último fluxo que agiu (a passagem vai para verificar_marcadores_em e o histórico em CSV). Grava '
+    'as colunas de marcadores (uma por marcador, estado_atual e demais_marcadores, no fim), verificar_marcadores_acao_sugerida / _inconsistencia / _erro (depois de erro, em amarelo), '
     'verificar_marcadores_aberto_na_geacs, verificar_marcadores_memo_aguarda_assinado e, com troca, verificar_marcadores_marcador_trocado',
 )
 _erro_segue(col_verif_loop, 6)

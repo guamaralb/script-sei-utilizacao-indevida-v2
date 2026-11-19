@@ -69,7 +69,9 @@ from tags import (
     COLUNA_POR_COLUNA_ANTIGA,
     COLUNAS_TAGS,
     COLUNAS_TAGS_VALIDOS,
+    TAGS_ESTADO_DEPROC,
     demais_marcadores,
+    descrever_estado,
     eh_coluna_tag,
 )
 
@@ -156,31 +158,56 @@ def _migrar_nomes(linha: dict) -> dict:
     return nova
 
 
+def _marcadores(texto) -> list[str] | None:
+    """Os marcadores de marcadores_finais (separados por ";"); None se vazia."""
+    if not isinstance(texto, str) or not texto.strip():
+        return None
+    return [tag.strip() for tag in texto.split(';')]
+
+
 def migrar_colunas_marcadores(linhas: list[dict]) -> list[dict]:
     """Renomeia as colunas tag_* dos marcadores válidos para o nome do marcador
     e remove as colunas de marcadores obsoletas. Os marcadores delas não se
     perdem: sem demais_marcadores, ela é calculada a partir de
-    marcadores_finais (todos os marcadores do processo no fim da passagem). As
-    outras colunas ficam como estão."""
+    marcadores_finais (todos os marcadores do processo no fim da passagem).
+    Sem estado_atual (estado_atual_deproc), ela também é calculada, de
+    marcadores_finais (marcadores_deproc_finais). As outras colunas ficam como
+    estão."""
     migradas = []
     for linha in linhas:
         nova = {coluna: valor for coluna, valor in _migrar_nomes(linha).items() if not _coluna_marcador_obsoleta(coluna)}
-        finais = linha.get('marcadores_finais')
-        if nova.get(COLUNA_DEMAIS_MARCADORES) is None and isinstance(finais, str) and finais.strip():
-            nova[COLUNA_DEMAIS_MARCADORES] = demais_marcadores([tag.strip() for tag in finais.split(';')]) or None
+        finais = _marcadores(linha.get('marcadores_finais'))
+        if finais is not None:
+            if nova.get(COLUNA_DEMAIS_MARCADORES) is None:
+                nova[COLUNA_DEMAIS_MARCADORES] = demais_marcadores(finais) or None
+            if nova.get(COLUNA_ESTADO_ATUAL) is None:
+                nova[COLUNA_ESTADO_ATUAL] = descrever_estado(finais)
+        finais_deproc = _marcadores(linha.get('marcadores_deproc_finais'))
+        if finais_deproc is not None and nova.get(COLUNA_ESTADO_ATUAL_DEPROC) is None:
+            nova[COLUNA_ESTADO_ATUAL_DEPROC] = descrever_estado(finais_deproc, TAGS_ESTADO_DEPROC)
         migradas.append(nova)
     return migradas
 
 
-def _ler(arquivo: Path) -> tuple[list[dict], list[dict] | None]:
-    """As linhas da aba processos e as da aba historico (None: a planilha não
-    tem mais a aba, que virou o CSV)."""
+def _tem_colunas_a_migrar(planilhas: dict[str, pd.DataFrame]) -> bool:
+    """A aba processos tem colunas que a migração renomeia ou remove."""
+    if _ABA_PROCESSOS not in planilhas:
+        return False
+    colunas = [str(coluna) for coluna in planilhas[_ABA_PROCESSOS].columns]
+    sem_estado = 'marcadores_finais' in colunas and COLUNA_ESTADO_ATUAL not in colunas
+    return sem_estado or any(coluna in COLUNA_POR_COLUNA_ANTIGA or _coluna_marcador_obsoleta(coluna) for coluna in colunas)
+
+
+def _ler(arquivo: Path) -> tuple[list[dict], list[dict] | None, bool]:
+    """As linhas da aba processos, as da aba historico (None: a planilha não
+    tem mais a aba, que virou o CSV) e se a aba processos tinha colunas a
+    migrar (migrar_colunas_marcadores)."""
     if not arquivo.exists():
         logger.info(f'Planilha de controle geral ainda não existe; será criada: {arquivo}')
-        return [], None
+        return [], None, False
     planilhas = pd.read_excel(arquivo, sheet_name=None, dtype=object)
     historico = migrar_colunas_marcadores(_ler_aba(planilhas, _ABA_HISTORICO)) if _ABA_HISTORICO in planilhas else None
-    return migrar_colunas_marcadores(_ler_aba(planilhas, _ABA_PROCESSOS)), historico
+    return migrar_colunas_marcadores(_ler_aba(planilhas, _ABA_PROCESSOS)), historico, _tem_colunas_a_migrar(planilhas)
 
 
 def _atualizar_processos(processos: list[dict], passagens: list[dict], so_historico: frozenset[str] = frozenset()) -> list[dict]:
@@ -588,38 +615,64 @@ class PlanilhaControleGeral:
         # de copiada para o CSV)
         self._remover: tuple[str, ...] = ()
         try:
-            self._processos, aba_historico = _ler(arquivo)
+            self._processos, aba_historico, colunas_a_migrar = _ler(arquivo)
             self._incorporar = True
         except Exception:
             logger.exception(f'Falha ao ler a planilha de controle geral: {arquivo}. Esta execução será salva à parte')
-            self._processos, aba_historico = [], None
+            self._processos, aba_historico, colunas_a_migrar = [], None, False
             self._incorporar = False
-        if aba_historico is not None:
-            self._migrar_aba_historico(aba_historico)
+        restaurados = self._migrar_aba_historico(aba_historico) if aba_historico is not None else 0
+        if colunas_a_migrar or self._remover or restaurados:
+            self._gravar_migracao()
 
-    def _migrar_aba_historico(self, linhas: list[dict]) -> None:
+    def _gravar_migracao(self) -> None:
+        """Grava logo a planilha migrada (colunas dos marcadores, aba historico
+        no CSV, script restaurado), sem esperar o primeiro processo: a
+        execução pode não ter nenhum. Se falhar, a migração vai na próxima
+        gravação."""
+        try:
+            _fazer_backup(self.arquivo, self.execucao)
+            self._backup_feito = True
+            _gravar(self.arquivo, {_ABA_PROCESSOS: self._processos}, self._remover)
+        except Exception:
+            logger.exception(f'Falha ao gravar a planilha de controle geral migrada: {self.arquivo}; a migração vai na próxima gravação')
+            return
+        self._remover = ()
+        logger.info(f'Planilha de controle geral migrada e gravada: {self.arquivo}')
+
+    def processos_da_planilha(self) -> list[str]:
+        """Todos os processos da aba processos, na ordem da planilha, sem
+        repetição ([] se ela não pôde ser lida)."""
+        if not self._incorporar:
+            return []
+        processos = (str(linha.get('num_processo')).strip() for linha in self._processos if linha.get('num_processo') is not None)
+        return list(dict.fromkeys(numero for numero in processos if numero))
+
+    def _migrar_aba_historico(self, linhas: list[dict]) -> int:
         """A aba historico (até 18/11/2026) vai para o CSV e sai da planilha.
         Se o CSV já tem pelo menos as linhas da aba, a cópia já foi feita (a
         execução anterior parou antes de gravar a planilha): só sai da
-        planilha. Com o CSV menor, a aba fica, para conferir à mão."""
+        planilha. Com o CSV menor, a aba fica, para conferir à mão. Devolve a
+        quantidade de processos com o script restaurado."""
         try:
             existentes = self.historico.quantidade()
             if existentes == 0:
                 if not self.historico.acrescentar(linhas):
-                    return
+                    return 0
                 logger.info(f'Aba "{_ABA_HISTORICO}" copiada para o histórico em CSV ({len(linhas)} passagem(ns)): {self.historico.arquivo}')
             elif existentes < len(linhas):
                 logger.warning(
                     f'A planilha ainda tem a aba "{_ABA_HISTORICO}" ({len(linhas)} linhas), maior que o histórico em CSV ({existentes} linhas): a aba fica na planilha; confira e apague-a à mão'
                 )
-                return
+                return 0
         except Exception:
             logger.exception(f'Falha ao copiar a aba "{_ABA_HISTORICO}" para o histórico em CSV; a aba fica na planilha')
-            return
+            return 0
         self._remover = (_ABA_HISTORICO,)
         restaurados = restaurar_ultimo_fluxo(self._processos, linhas)
         if restaurados:
             logger.info(f'script e ultima_passagem restaurados pelo histórico em {restaurados} processo(s) (estavam com os do verificar marcadores)')
+        return restaurados
 
     def linha_processo(self, num_processo) -> dict | None:
         """A linha do processo na aba "processos", com as passagens desta

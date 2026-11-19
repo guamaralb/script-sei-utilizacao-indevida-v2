@@ -5,6 +5,7 @@ de controle."""
 
 import textwrap
 from datetime import datetime
+from types import SimpleNamespace
 
 import conferencia_prox_acao
 import docs_processo
@@ -263,6 +264,8 @@ def test_migracao_renomeia_as_colunas_e_remove_as_obsoletas():
         tags.TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: False,
         f'DEPROC | {tags.TAG_DEPROC_TRATADO}': False,
         'demais_marcadores': f'PLANILHADO; {DISA_USOU_RP_ANTIGO}',
+        # Sem estado nos marcadores_finais
+        'estado_atual': None,
     }
     assert p2['demais_marcadores'] == 'MANUAL'
     assert p3 == {'num_processo': 'P3', 'canc_memo_deproc_ant_cancelado': True}
@@ -963,3 +966,55 @@ def test_no_bloco_assinado_mantem_prox_acao_da_deproc(monkeypatch):
 
     assert registro.marcadores_atuais == AGUARDA_DEPROC
     assert 'prox_acao' not in registro.to_dict()
+
+
+def test_aba_vazia_verifica_todos_os_processos_da_planilha(monkeypatch, tmp_path):
+    """Sem processos na aba geacs_verificar_marcadores, o fluxo verifica todos
+    os processos da planilha de controle geral."""
+    arquivo = tmp_path / 'controle.xlsx'
+    pd.DataFrame([{'num_processo': 'P1', 'prox_acao': 'A'}, {'num_processo': 'P2', 'prox_acao': 'B'}]).to_excel(arquivo, sheet_name='processos', index=False)
+    verificados = []
+
+    def processar(driver, num_processo, linha):
+        verificados.append((num_processo, linha['prox_acao']))
+        return RegistroVerificarMarcadores(num_processo=num_processo, data_execucao=fluxo.AGORA, fluxo=fluxo.FLUXO)
+
+    monkeypatch.setattr(fluxo, 'ARQ_LOG', tmp_path / 'log.log')
+    monkeypatch.setattr(fluxo, 'ler_processos_a_processar', lambda aba: [])
+    monkeypatch.setattr(fluxo, 'PlanilhaControleGeral', lambda *a, **k: PlanilhaControleGeral(*a, arquivo=arquivo, **k))
+    monkeypatch.setattr(fluxo, 'abrir_sei', lambda unidade: SimpleNamespace(quit=lambda: verificados.append('quit')))
+    monkeypatch.setattr(fluxo, '_processar_linha', processar)
+
+    fluxo.main()
+
+    assert verificados[:2] == [('P1', 'A'), ('P2', 'B')]
+    assert verificados[-1] == 'quit'
+
+
+def test_aba_e_planilha_vazias_nao_abrem_o_sei(monkeypatch, tmp_path):
+    monkeypatch.setattr(fluxo, 'ARQ_LOG', tmp_path / 'log.log')
+    monkeypatch.setattr(fluxo, 'ler_processos_a_processar', lambda aba: [])
+    monkeypatch.setattr(fluxo, 'PlanilhaControleGeral', lambda *a, **k: PlanilhaControleGeral(*a, arquivo=tmp_path / 'controle.xlsx', **k))
+    monkeypatch.setattr(fluxo, 'abrir_sei', lambda unidade: pytest.fail('sem processos, não abre o SEI'))
+
+    fluxo.main()
+
+
+def test_migracao_calcula_o_estado_atual_dos_marcadores_finais():
+    """Linhas de antes da coluna estado_atual (18/11/2026): o estado vem de
+    marcadores_finais, e o da DEPROC, de marcadores_deproc_finais."""
+    linha = {
+        'num_processo': 'PROC',
+        'marcadores_finais': f'{tags.TAG_PROCESSO_NOVO}; {tags.TAG_NO_BLOCO_APIS_SEM_USO}; PLANILHADO',
+        'marcadores_deproc_finais': f'{tags.TAG_DEPROC_TRATADO}; {tags.TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}',
+    }
+    sem_estado = {'num_processo': 'P2', 'marcadores_finais': tags.TAG_PROCESSO_NOVO}
+    ja_tem = {'num_processo': 'P3', 'marcadores_finais': tags.TAG_PROCESSO_NOVO, 'estado_atual': 'X'}
+
+    migrada, sem, tem = migrar_colunas_marcadores([linha, sem_estado, ja_tem])
+
+    assert migrada['estado_atual'] == tags.TAG_NO_BLOCO_APIS_SEM_USO
+    assert migrada['estado_atual_deproc'] == tags.TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA
+    assert migrada['demais_marcadores'] == 'PLANILHADO'
+    assert sem['estado_atual'] is None
+    assert tem['estado_atual'] == 'X'

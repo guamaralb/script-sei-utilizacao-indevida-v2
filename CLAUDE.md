@@ -1061,7 +1061,10 @@ sentido** com os marcadores e com os memorandos do processo.
 `poetry run task run_geacs_verificar_marcadores`
 (`main_geacs_verificar_marcadores.py` e `conferencia_prox_acao.py`), na
 unidade da GEACS, com os processos da aba `geacs_verificar_marcadores` de
-`dados/inputs/processos_a_processar.xlsx`.
+`dados/inputs/processos_a_processar.xlsx`. **Aba vazia: todos os processos da
+planilha de controle geral** (`PlanilhaControleGeral.processos_da_planilha`,
+na ordem da aba `processos`); planilha também vazia (ou não lida): nenhum
+processo, sem abrir o SEI.
 
 Para cada processo: abre o processo (unidade sem acesso: como nos outros
 fluxos), lê os marcadores (`listar_marcadores`) e, só quando alguma
@@ -1650,7 +1653,8 @@ coluna `num_sei` (um processo por linha; linhas vazias são ignoradas):
 | `deproc_excluir_docs` | `poetry run task run_deproc_excluir_docs` (`main_deproc_excluir_docs.py`) |
 
 Aba faltando ou sem a coluna `num_sei`: a execução para com erro antes do
-login. Aba vazia: nenhum processo. Outras abas (ex.: `AUX`) são ignoradas.
+login. Aba vazia: nenhum processo (exceto no `geacs_verificar_marcadores`,
+que verifica então todos os processos da planilha de controle geral). Outras abas (ex.: `AUX`) são ignoradas.
 
 ---
 
@@ -1691,11 +1695,14 @@ perca os processos já tratados.
   gravada. Até 18/11/2026 era a aba `historico`, regravada inteira a cada
   processo (6.599 linhas: cada gravação levava ~35 s; sem ela, ~4 s, e o
   arquivo foi de 3,9 MB para 0,5 MB). **Migração** (`_migrar_aba_historico`,
-  na leitura): com o CSV vazio, a aba é copiada para ele e sai da planilha na
-  primeira gravação (o backup da execução ainda a tem); com o CSV já tendo
+  na leitura): com o CSV vazio, a aba é copiada para ele e sai da planilha
+  (o backup da execução ainda a tem); com o CSV já tendo
   pelo menos as linhas da aba (cópia feita e a execução parou antes de
   gravar), só sai; com o CSV menor, a aba fica, com aviso no log, para
-  conferir à mão.
+  conferir à mão. A planilha migrada (aba `historico` no CSV, colunas dos
+  marcadores renomeadas, `script` restaurado) é **gravada logo na leitura**
+  (`_gravar_migracao`, com o backup da execução), mesmo que a execução não
+  tenha nenhum processo; se a gravação falhar, a migração vai na próxima.
 - Outras abas (ex.: `BUSCA`, `ERROS`, mantidas à mão) são preservadas: só
   `processos` é substituída. Sem a aba `BUSCA`, ela é criada vazia.
 - Aba `processos`: a 2ª coluna é `BUSCA`, com a fórmula
@@ -1725,8 +1732,9 @@ perca os processos já tratados.
   as colunas `tag_*` dos marcadores válidos são renomeadas para o nome do
   marcador (`tags.COLUNA_POR_COLUNA_ANTIGA`; com as duas, vale a atual), as de
   marcadores que não são mais válidos (e a antiga `verificar_marcadores`) são
-  removidas, e, sem `demais_marcadores`, ela é calculada de
-  `marcadores_finais`. As outras colunas ficam como estão. A planilha foi
+  removidas, e, sem `demais_marcadores` e `estado_atual`, elas são calculadas
+  de `marcadores_finais` (e a `estado_atual_deproc`, de
+  `marcadores_deproc_finais`). As outras colunas ficam como estão. A planilha foi
   migrada assim em 11/11/2026 (backup
   `controle_geral_de_processos_<data>_migracao_marcadores.xlsx`).
   **Não renomeie as colunas existentes** (por isso as da base APIS
