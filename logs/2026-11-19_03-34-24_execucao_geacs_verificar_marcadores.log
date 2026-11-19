@@ -1,0 +1,14 @@
+2026-11-19 03:34:24 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-19 03:34:24 | INFO    | -                         | __main__              | Log: /home/guamaralb/REPOSITORIOS/GEACS/script-sei-utilizacao-indevida-v2/logs/2026-11-19_03-34-24_execucao_geacs_verificar_marcadores.log
+2026-11-19 03:34:24 | INFO    | -                         | processos_a_processar | 0 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-19 03:34:29 | INFO    | -                         | planilha_controle     | script e ultima_passagem restaurados pelo histórico em 730 processo(s) (estavam com os do verificar marcadores)
+2026-11-19 03:34:29 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-19 03:34:29 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-19 03:34:32 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: /home/guamaralb/Downloads/SEI
+2026-11-19 03:34:38 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-19 03:34:38 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-19 03:34:38 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-19 03:34:38 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-19 03:34:38 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-19 03:34:38 | INFO    | -                         | __main__              | Duração total da execução: 14.6s
+2026-11-19 03:34:38 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================
