@@ -10,10 +10,12 @@ matrículas.
 """
 
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
+from constantes import BASES_DEPROC
 from mantis import Intervalo, interpretar_periodo
 from rede_propria import ErroAvaliacao, normalizar_matricula, sem_dv, separar_matriculas_dependentes
 
@@ -132,6 +134,20 @@ def carregar_base_deproc(arquivo: Path) -> pd.DataFrame:
     df['DATA_ATENDIMENTO'] = pd.to_datetime(df['DATA_ATENDIMENTO'], errors='coerce')
     logger.info(f'Base DEPROC carregada: {len(df)} linha(s), {df["SEI"].nunique()} processo(s) ({arquivo.name}, aba {ABA_BASE_DEPROC})')
     return df
+
+
+class BasesDeprocPorAno:
+    """Base DEPROC de cada ano (constantes.BASES_DEPROC), carregada na
+    primeira vez que um processo precisa dela."""
+
+    def __init__(self, carregar: Callable[[Path], pd.DataFrame] = carregar_base_deproc):
+        self._carregar = carregar
+        self._bases: dict[str, pd.DataFrame] = {}
+
+    def do_ano(self, ano: str) -> pd.DataFrame:
+        if ano not in self._bases:
+            self._bases[ano] = self._carregar(BASES_DEPROC[ano].arquivo)
+        return self._bases[ano]
 
 
 def formatar_matricula_com_dv(matricula: str) -> str:

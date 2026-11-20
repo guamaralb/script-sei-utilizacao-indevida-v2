@@ -1,0 +1,66 @@
+2026-11-19 13:27:52 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-19 13:27:52 | INFO    | -                         | __main__              | Log: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\logs\2026-11-19_13-27-52_execucao_geacs_inicial.log
+2026-11-19 13:27:52 | INFO    | -                         | processos_a_processar | 1 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_inicial
+2026-11-19 13:27:52 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-19 13:27:52 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-19 13:27:52 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-19 13:27:52 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-19 13:27:53 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-19 13:27:53 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-19 13:27:53 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-19 13:27:54 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-19 13:27:55 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-19 13:27:55 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_propria-dependentes_nao_encontrados.xlsx
+2026-11-19 13:27:56 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 10497 linha(s) | 1315 matrícula(s) única(s)
+2026-11-19 13:27:56 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-19 13:28:34 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-19 13:28:59 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-19 13:28:59 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_credenciada-dependentes_nao_encontrados.xlsx
+2026-11-19 13:29:24 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 322450 linha(s) | 5923 matrícula(s) única(s)
+2026-11-19 13:29:25 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-19 13:29:25 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-19 13:29:26 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-11-19 13:29:32 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-19 13:29:32 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-19 13:29:32 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-19 13:29:32 | INFO    | 2010.01.0080737/2024-58   | __main__              | INÍCIO [1/1]
+2026-11-19 13:29:48 | WARNING | 2010.01.0080737/2024-58   | __main__              | Processo fechado no setor (sem "Incluir Documento")
+2026-11-19 13:29:49 | INFO    | 2010.01.0080737/2024-58   | __main__              | Árvore: 10 documento(s) | GEACS: 2 documento(s), 1 memorando(s)
+2026-11-19 13:29:49 | INFO    | 2010.01.0080737/2024-58   | __main__              | Marcadores: ['Feito - DESATIVADO']
+2026-11-19 13:29:49 | DEBUG   | 2010.01.0080737/2024-58   | docs_processo         | Lendo documento Memorando 24 (SEI 105228979)
+2026-11-19 13:29:50 | DEBUG   | 2010.01.0080737/2024-58   | docs_processo         | Documento 105228979 lido (1772 caracteres)
+2026-11-19 13:29:50 | DEBUG   | 2010.01.0080737/2024-58   | docs_processo         | Lendo documento Memorando 2743 (SEI 152761092)
+2026-11-19 13:29:50 | DEBUG   | 2010.01.0080737/2024-58   | docs_processo         | Documento 152761092 lido (2994 caracteres)
+2026-11-19 13:29:50 | INFO    | 2010.01.0080737/2024-58   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2743 (SEI 152761092)']
+2026-11-19 13:29:50 | WARNING | 2010.01.0080737/2024-58   | processo_fechado      | Processo sem "Incluir Documento": reabrindo
+2026-11-19 13:29:57 | INFO    | 2010.01.0080737/2024-58   | processo_fechado      | Processo reaberto na unidade
+2026-11-19 13:29:57 | INFO    | 2010.01.0080737/2024-58   | __main__              | Classificação: processo sem o marcador NOVO - fluxo do início
+2026-11-19 13:30:00 | INFO    | 2010.01.0080737/2024-58   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-19 13:30:00 | DEBUG   | 2010.01.0080737/2024-58   | docs_processo         | Lendo documento Memorando 2743 (SEI 152761092)
+2026-11-19 13:30:02 | DEBUG   | 2010.01.0080737/2024-58   | docs_processo         | Documento 152761092 lido (2994 caracteres)
+2026-11-19 13:30:02 | INFO    | 2010.01.0080737/2024-58   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2743 (SEI 152761092)']
+2026-11-19 13:30:02 | INFO    | 2010.01.0080737/2024-58   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3371305 / 7 | Período titular: 01/07/2019 a 12/06/2024 | Dependentes: 1129238; 3529371 | Período variável p/ dependentes: não
+2026-11-19 13:30:02 | INFO    | 2010.01.0080737/2024-58   | rede_propria          | Uso da rede própria (base DISA) | Titular 33713057: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['1129238', '3529371']
+2026-11-19 13:30:05 | INFO    | 2010.01.0080737/2024-58   | marcadores_disponiveis | Marcadores cadastrados na unidade: 33
+2026-11-19 13:30:08 | INFO    | 2010.01.0080737/2024-58   | tags                  | Marcador adicionado: "v2: 01.06 - Avaliado Uso Rede Própria DISA"
+2026-11-19 13:30:08 | INFO    | 2010.01.0080737/2024-58   | mantis                | MANTIS rede própria | Titular 33713057: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-11-19 13:30:08 | INFO    | 2010.01.0080737/2024-58   | mantis                | MANTIS rede credenciada | Titular 33713057: USOU (R$ 2094.75) | Dependentes que usaram: ['1129238', '3529371'] (R$ 1577.06)
+2026-11-19 13:30:08 | INFO    | 2010.01.0080737/2024-58   | processar_novo        | Base DISA x MANTIS: DISA não, MANTIS RP não, MANTIS RC sim | RP no MANTIS e fora da base DISA: -
+2026-11-19 13:30:11 | INFO    | 2010.01.0080737/2024-58   | tags                  | Marcador adicionado: "v2: 01.08 - Avaliado Uso Rede Própria MANTIS"
+2026-11-19 13:30:13 | INFO    | 2010.01.0080737/2024-58   | tags                  | Marcador removido: "v2: 01.06 - Avaliado Uso Rede Própria DISA"
+2026-11-19 13:30:17 | DEBUG   | 2010.01.0080737/2024-58   | sei_automacao._internal.telas.documentos | Elemento ficou stale ao escolher o tipo de documento; tentando novamente
+2026-11-19 13:30:28 | INFO    | 2010.01.0080737/2024-58   | relatorios_mantis     | Relatório Rede Credenciada (Titular) anexado ao processo: Utilização Tit. RC - 33713057 - 20261119_133013 (154124470)
+2026-11-19 13:30:41 | INFO    | 2010.01.0080737/2024-58   | relatorios_mantis     | Relatório Rede Credenciada (Dependente(s)) anexado ao processo: Utilização Dep. RC - 33713057 - 20261119_133028 (154124482)
+2026-11-19 13:30:51 | INFO    | 2010.01.0080737/2024-58   | memos_sei             | Memo DEPROC criado
+2026-11-19 13:30:54 | INFO    | 2010.01.0080737/2024-58   | memos_sei             | Memo DEPROC inserido no bloco 7697744
+2026-11-19 13:30:57 | INFO    | 2010.01.0080737/2024-58   | tags                  | Marcador adicionado: "v2: 01.10.B - No Bloco DEPROC: Coparticipação"
+2026-11-19 13:30:59 | INFO    | 2010.01.0080737/2024-58   | tags                  | Marcador removido: "v2: 01.08 - Avaliado Uso Rede Própria MANTIS"
+2026-11-19 13:31:01 | INFO    | 2010.01.0080737/2024-58   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2758 (SEI 154124545)']
+2026-11-19 13:31:01 | INFO    | 2010.01.0080737/2024-58   | planilha_controle     | Backup da planilha de controle: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-19_13-27-52.xlsx
+2026-11-19 13:31:13 | DEBUG   | 2010.01.0080737/2024-58   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-19 13:31:13 | INFO    | 2010.01.0080737/2024-58   | __main__              | FIM (0h01m41s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-19 13:31:15 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-19 13:31:15 | INFO    | -                         | __main__              | Processos: 1 | Sem erro: 1 | Com erro: 0
+2026-11-19 13:31:15 | INFO    | -                         | __main__              |     1 | Assinar memo DEPROC e encaminhar
+2026-11-19 13:31:15 | INFO    | -                         | __main__              | Duração total da execução: 0h03m23s
+2026-11-19 13:31:15 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

@@ -47,6 +47,7 @@ from tests.sei_falso import (
     MEMO_APIS_NOVO_VELHO,
     MEMO_APIS_PERIODO_POR_DEPENDENTE,
     TITULAR,
+    DriverFalso,
     bases,
     curto,
 )
@@ -946,8 +947,9 @@ def test_navegador_fechado_registra_o_erro_do_processo_e_para_o_loop(monkeypatch
         def quit():
             return None
 
-    def processar(driver, num_processo, *args):
-        registro = RegistroMain(num_processo=num_processo, data_execucao='agora')
+    def processar(driver, num_processo, bases_uso, bases_mantis, ano):
+        assert ano == '2019'
+        registro = RegistroMain(num_processo=num_processo, data_execucao='agora', ano_processo=ano)
         if num_processo != 'P1':
             registrar_erro(registro, InvalidSessionIdException('invalid session id'))
         return registro
@@ -963,11 +965,36 @@ def test_navegador_fechado_registra_o_erro_do_processo_e_para_o_loop(monkeypatch
     for constante in ('DIR_DADOS', 'DIR_INPUTS', 'DIR_CONTROLE', 'DIR_LOG', 'DIR_UI_ANTIGAS_XLS', 'DIR_UTILIZACOES_MANTIS_PDF'):
         monkeypatch.setattr(main_geacs_inicial, constante, tmp_path)
 
-    main_geacs_inicial.main()
+    main_geacs_inicial.main(['-a', '2019'])
 
     assert gravados == [('P1', None), ('P2', 'InvalidSessionIdException')]
     # Lê a aba do fluxo em processos_a_processar.xlsx
     assert abas == ['geacs_inicial']
+
+
+def test_ano_obrigatorio_na_execucao(monkeypatch, capsys):
+    assert main_geacs_inicial.ler_argumentos(['-a', '2019']).ano == '2019'
+    assert main_geacs_inicial.ler_argumentos(['--ano', ' 2021 ']).ano == '2021'
+
+    for argv in ([], ['-a', '19'], ['-a', '20199'], ['-a', 'ano']):
+        with pytest.raises(SystemExit) as erro:
+            main_geacs_inicial.ler_argumentos(argv)
+        assert erro.value.code == 2
+    assert '-a' in capsys.readouterr().err
+
+    # Sem o ano, nada é feito (nem log, nem login)
+    monkeypatch.setattr(main_geacs_inicial, 'configurar_logging', lambda arquivo: pytest.fail('não deve criar o log'))
+    monkeypatch.setattr(main_geacs_inicial, 'abrir_sei', lambda *args, **kwargs: pytest.fail('não deve fazer login'))
+    with pytest.raises(SystemExit):
+        main_geacs_inicial.main([])
+
+
+def test_ano_gravado_em_toda_passagem(sei):
+    # Passagem que não chega à avaliação (memo no bloco): o ano é gravado
+    sei.tags = [TAG_PROCESSO_NOVO, TAG_MEMO_DEPROC_COPARTICIPACAO]
+    registro = main_geacs_inicial._processar_linha(DriverFalso(), 'PROC', bases(), None, '2020')
+    assert not registro.avaliou_processo
+    assert registro.to_dict()['ano_processo'] == '2020'
 
 
 def test_erro_inesperado_recarrega_a_pagina(sei, monkeypatch):

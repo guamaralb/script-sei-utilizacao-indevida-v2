@@ -10,14 +10,19 @@ estado de retomada), 01.02 (memo no bloco, aguarda assinatura) e 01.02.1
 a retomada é pelo nome do PDF e pelo assunto do memo, na rodada (depois do
 último memo da APIS destinado à GEACS).
 
-O ano dos processos é obrigatório na execução e escolhe a base DEPROC e a
-data de geração dela, citada no memo de resultado (constantes.BASES_DEPROC):
-poetry run task run_deproc_calcula_copa -a 2019
+O ano de cada processo escolhe a base DEPROC e a data de geração dela, citada
+no memo de resultado (constantes.BASES_DEPROC). Vem da planilha de controle
+(coluna ano_processo, gravada pelo geacs_inicial, ou ano_base_deproc, de uma
+apuração anterior). O -a só é exigido se algum processo da lista não tiver o
+ano na planilha, e vale só para esses:
+poetry run task run_deproc_calcula_copa [-a 2019]
 """
 
 import argparse
 import logging
 import re
+from collections.abc import Callable
+from dataclasses import dataclass
 from datetime import datetime
 
 import pandas as pd
@@ -35,7 +40,7 @@ from constantes import (
     UNIDADE_DEPROC,
     UNIDADE_GEACS,
 )
-from coparticipacao_deproc import MatriculasDivergentes, ResultadoDeproc, apurar_coparticipacao, carregar_base_deproc
+from coparticipacao_deproc import BasesDeprocPorAno, MatriculasDivergentes, ResultadoDeproc, apurar_coparticipacao, carregar_base_deproc
 from docs_processo import encontrar_memo_por_assunto
 from extrator_dados_ui import FormatoMemorandoInvalido
 from log_config import (
@@ -47,7 +52,7 @@ from log_config import (
 )
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from memos_sei import incluir_memo, registrar_numeros_memos
-from planilha_controle import PlanilhaControleGeral
+from planilha_controle import PlanilhaControleGeral, texto_celula
 from processar_novo import obter_dados_ui
 from processo_fechado import ProcessoFechadoNoSetor, tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
@@ -115,10 +120,7 @@ def _registrar_resultado(registro: RegistroDeproc, resultado: ResultadoDeproc) -
     registro.valor_total_em_aberto = resultado.totais.em_aberto
 
 
-def ler_argumentos(argv: list[str] | None = None) -> argparse.Namespace:
-    """Sem -a (ou com ano sem base cadastrada em BASES_DEPROC), o argparse
-    mostra o erro e encerra (código 2) antes do login e de qualquer ação no
-    SEI."""
+def _criar_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog='poetry run task run_deproc_calcula_copa',
         description='Fluxo DEPROC: apura a coparticipação, anexa o relatório e cria o memo de resultado à GEACS.',
@@ -126,12 +128,54 @@ def ler_argumentos(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         '-a',
         '--ano',
-        required=True,
         type=str.strip,
         choices=sorted(BASES_DEPROC),
-        help='ano dos processos: escolhe a base DEPROC e a data de geração dela, citada no memo de resultado (constantes.BASES_DEPROC)',
+        help=(
+            'ano dos processos sem ano na planilha de controle (colunas ano_processo e ano_base_deproc): escolhe a base DEPROC '
+            'e a data de geração dela, citada no memo de resultado (constantes.BASES_DEPROC). Obrigatório se algum processo não tiver o ano'
+        ),
     )
-    return parser.parse_args(argv)
+    return parser
+
+
+def ler_argumentos(argv: list[str] | None = None) -> argparse.Namespace:
+    """Com ano sem base cadastrada em BASES_DEPROC, o argparse mostra o erro
+    e encerra (código 2) antes do log, do login e de qualquer ação no SEI."""
+    return _criar_parser().parse_args(argv)
+
+
+def ano_na_planilha(linha_controle: dict | None) -> str:
+    """Ano do processo na planilha de controle: ano_processo (geacs_inicial)
+    ou, sem ela, ano_base_deproc (apuração anterior). '' se não houver."""
+    if not linha_controle:
+        return ''
+    return texto_celula(linha_controle.get('ano_processo')) or texto_celula(linha_controle.get('ano_base_deproc'))
+
+
+@dataclass(frozen=True)
+class AnoProcesso:
+    ano: str
+    # Veio do -a (a planilha não tinha): vai para a coluna ano_processo
+    do_argumento: bool = False
+
+
+def anos_dos_processos(processos: list, linha_processo: Callable[[str], dict | None], ano_argumento: str | None) -> tuple[dict[str, AnoProcesso], list[str]]:
+    """O ano de cada processo: o da planilha de controle ou, sem ele, o do
+    -a. Devolve também os processos sem ano (nem na planilha nem no -a). Com
+    o -a diferente do da planilha, vale o da planilha (aviso no log)."""
+    anos: dict[str, AnoProcesso] = {}
+    sem_ano: list[str] = []
+    for num_processo in processos:
+        ano = ano_na_planilha(linha_processo(num_processo))
+        if ano:
+            if ano_argumento and ano_argumento != ano:
+                logger.warning(f'{num_processo}: ano {ano} na planilha de controle, diferente do -a {ano_argumento}; usado o da planilha')
+            anos[num_processo] = AnoProcesso(ano)
+        elif ano_argumento:
+            anos[num_processo] = AnoProcesso(ano_argumento, do_argumento=True)
+        else:
+            sem_ano.append(num_processo)
+    return anos, sem_ano
 
 
 def _montar_memo(resultado: ResultadoDeproc, memo_deproc_geacs: DocArvore, doc_relatorio: str | None, data_geracao_base: str) -> MemoGeacsCalculoCopa:
@@ -165,7 +209,7 @@ def _conferir_marcadores(registro: RegistroDeproc, momento: str) -> None:
         raise
 
 
-def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: pd.DataFrame, data_geracao_base: str | None, ano: str | None = None) -> None:
+def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: pd.DataFrame | None, data_geracao_base: str | None, ano: str | None = None) -> None:
     registrar_tags(registro, listar_marcadores(driver))
     logger.info(f'Marcadores: {registro.marcadores_sei or "nenhum"}')
     _conferir_marcadores(registro, 'no início da passagem')
@@ -180,6 +224,10 @@ def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: p
         logger.info('Concluído: memo de resultado da DEPROC encaminhado à GEACS')
         registro.prox_acao = ProxAcao.DEPROC_MEMO_ENCAMINHADO
         return
+
+    # Ano sem base cadastrada: a base não pode ser usada (nenhuma ação no SEI)
+    if base is None:
+        raise ErroAvaliacao(f'Ano {ano} sem base DEPROC cadastrada em BASES_DEPROC (coluna ano_processo da planilha de controle)')
 
     # Na DEPROC, o processo precisa estar aberto na unidade (enviado pela
     # GEACS); não é reaberto
@@ -233,8 +281,18 @@ def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: p
     registro.prox_acao = ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO
 
 
-def _processar_linha(driver: webdriver.Remote, num_processo, base: pd.DataFrame, data_geracao_base: str | None, ano: str | None = None) -> RegistroDeproc:
+def _processar_linha(
+    driver: webdriver.Remote,
+    num_processo,
+    base: pd.DataFrame | None,
+    data_geracao_base: str | None,
+    ano: str | None = None,
+    ano_do_argumento: bool = False,
+) -> RegistroDeproc:
     registro = RegistroDeproc(num_processo=num_processo, data_execucao=AGORA, fluxo=FLUXO)
+    if ano_do_argumento:
+        # A planilha não tinha o ano: fica registrado para as próximas execuções
+        registro.ano_processo = ano
 
     try:
         acessar_processo(driver, num_processo)
@@ -257,10 +315,40 @@ def _processar_linha(driver: webdriver.Remote, num_processo, base: pd.DataFrame,
     return registro
 
 
+def _logar_anos(anos: dict[str, AnoProcesso]) -> None:
+    for ano in sorted({a.ano for a in anos.values()}):
+        quantidade = sum(a.ano == ano for a in anos.values())
+        base_ano = BASES_DEPROC.get(ano)
+        if base_ano is None:
+            logger.error(f'Ano {ano}: {quantidade} processo(s), sem base DEPROC cadastrada em BASES_DEPROC (não serão apurados)')
+        else:
+            logger.info(f'Ano {ano}: {quantidade} processo(s) | Base DEPROC: {base_ano.arquivo.name} | Data de geração: {base_ano.data_geracao}')
+
+
+def _anos_ou_encerrar(parser: argparse.ArgumentParser, processos: list, controle: PlanilhaControleGeral, ano_argumento: str | None) -> dict[str, AnoProcesso]:
+    """O ano de cada processo. Faltando o de algum (na planilha e no -a), o
+    argparse mostra o erro e encerra (código 2), antes do login."""
+    anos, sem_ano = anos_dos_processos(processos, controle.linha_processo, ano_argumento)
+    if sem_ano:
+        lista = ', '.join(map(str, sem_ano))
+        logger.error(f'{len(sem_ano)} processo(s) sem ano na planilha de controle (ano_processo / ano_base_deproc): {lista}')
+        parser.error(f'o argumento -a/--ano é obrigatório: {len(sem_ano)} processo(s) sem ano na planilha de controle ({lista})')
+    _logar_anos(anos)
+    return anos
+
+
+def _processar_com_ano(driver: webdriver.Remote, num_processo, bases: BasesDeprocPorAno, ano: AnoProcesso) -> RegistroDeproc:
+    """Ano sem base cadastrada: base None (erro no processo, sem ação no SEI)."""
+    base_ano = BASES_DEPROC.get(ano.ano)
+    base = bases.do_ano(ano.ano) if base_ano else None
+    data_geracao = base_ano.data_geracao if base_ano else None
+    return _processar_linha(driver, num_processo, base, data_geracao, ano.ano, ano.do_argumento)
+
+
 def main(argv: list[str] | None = None):
-    # Antes de tudo: sem o ano, nada é feito (nem login)
-    ano = ler_argumentos(argv).ano
-    base_ano = BASES_DEPROC[ano]
+    # Antes de tudo: com ano sem base cadastrada, nada é feito (nem log)
+    parser = _criar_parser()
+    ano_argumento = parser.parse_args(argv).ano
 
     for diretorio in [DIR_INPUTS, DIR_CONTROLE, DIR_LOG, DIR_FLUXO_DEPROC_PDF]:
         diretorio.mkdir(parents=True, exist_ok=True)
@@ -273,13 +361,15 @@ def main(argv: list[str] | None = None):
     try:
         logger.info(f'================= INÍCIO DA EXECUÇÃO ({FLUXO}) =================')
         logger.info(f'Log: {ARQ_LOG}')
-        logger.info(f'Ano dos processos: {ano} | Base DEPROC: {base_ano.arquivo.name} | Data de geração: {base_ano.data_geracao}')
+        logger.info(f'Ano informado (-a): {ano_argumento or "nenhum"}')
 
         processos = ler_processos_a_processar(SCRIPT)
         total = len(processos)
 
-        base = carregar_base_deproc(base_ano.arquivo)
         controle = PlanilhaControleGeral(SCRIPT, AGORA)
+        anos = _anos_ou_encerrar(parser, processos, controle, ano_argumento)
+
+        bases = BasesDeprocPorAno(carregar_base_deproc)
         driver = abrir_sei(UNIDADE_DEPROC)
 
         for i, num_processo in enumerate(processos, start=1):
@@ -287,7 +377,7 @@ def main(argv: list[str] | None = None):
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
 
-                registro = _processar_linha(driver, num_processo, base, base_ano.data_geracao, ano)
+                registro = _processar_com_ano(driver, num_processo, bases, anos[num_processo])
                 registros_processados.append(registro.to_dict())
                 controle.registrar(registros_processados[-1])
 

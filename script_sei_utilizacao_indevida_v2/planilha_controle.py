@@ -32,7 +32,10 @@ Formatação:
     - colunas dos marcadores (o nome inteiro do marcador, tags.COLUNAS_TAGS)
       no fim, na ordem da numeração, com largura fixa e o nome quebrado em
       até 3 linhas; estado_atual logo depois da prox_acao;
-    - linha com erro destacada em vermelho claro;
+    - linha com erro destacada em vermelho claro (o processo parado
+      aguardando resposta ao memo enviado não é erro);
+    - linha do processo concluído (memo à APIS com todas as informações
+      encaminhado) em cinza;
     - células de matrículas não encontradas destacadas em amarelo;
     - ação sugerida, inconsistência e erro do fluxo GEACS VERIFICAR
       MARCADORES em amarelo (com a prox_acao da linha), logo depois de erro.
@@ -62,6 +65,7 @@ import pandas as pd
 from constantes import ARQ_CONTROLE_GERAL, DIR_BACKUP_CONTROLE
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
+from Registro import ProxAcao
 from tags import (
     COLUNA_DEMAIS_MARCADORES,
     COLUNA_ESTADO_ATUAL,
@@ -98,6 +102,15 @@ CARACTERES_POR_LINHA_MARCADOR = 20
 _ALTURA_CABECALHO_MARCADORES = 48
 _PREENCHIMENTO_ERRO = PatternFill(fill_type='solid', start_color='FFF4CCCC', end_color='FFF4CCCC')
 _PREENCHIMENTO_NAO_ENCONTRADA = PatternFill(fill_type='solid', start_color='FFFFE599', end_color='FFFFE599')
+_PREENCHIMENTO_CONCLUIDO = PatternFill(fill_type='solid', start_color='FFD9D9D9', end_color='FFD9D9D9')
+
+# prox_acao de processo parado aguardando resposta: a coluna erro pode estar
+# preenchida (o geacs_inicial registra a parada como erro), mas não é erro, e a
+# linha não fica vermelha
+_PROX_ACOES_SEM_ERRO = frozenset({ProxAcao.AGUARDAR_RESPOSTA_MEMO})
+# prox_acao de processo concluído (memo à APIS com todas as informações
+# encaminhado): linha cinza, mesmo com erro de uma passagem anterior
+_PROX_ACOES_CONCLUIDO = frozenset({ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO})
 
 # Coluna de marcadores que não existe mais: os marcadores do processo ficam
 # nas colunas dos marcadores válidos (tags.COLUNAS_TAGS) e em demais_marcadores
@@ -128,6 +141,18 @@ _CODIFICACAO_CSV = 'utf-8-sig'
 # ---------------------------------------------------------------------------
 # Leitura e atualização
 # ---------------------------------------------------------------------------
+
+
+def texto_celula(valor) -> str:
+    """Valor de uma célula da planilha de controle como texto (2019.0 ->
+    '2019'; vazio ou NaN -> '')."""
+    if valor is None or (isinstance(valor, float) and pd.isna(valor)):
+        return ''
+    if isinstance(valor, float) and valor.is_integer():
+        return str(int(valor))
+    if isinstance(valor, datetime):
+        return valor.strftime('%d/%m/%Y')
+    return str(valor).strip()
 
 
 def _ler_aba(planilhas: dict[str, pd.DataFrame], aba: str) -> list[dict]:
@@ -227,6 +252,18 @@ def _atualizar_processos(processos: list[dict], passagens: list[dict], so_histor
 # ---------------------------------------------------------------------------
 
 
+def _preenchimento_linha(linha, idx_erro: int | None, idx_prox_acao: int | None) -> PatternFill | None:
+    """Cinza: processo concluído (memo à APIS com todas as informações
+    encaminhado). Vermelho: erro na passagem, exceto o processo parado
+    aguardando resposta ao memo enviado."""
+    prox_acao = linha[idx_prox_acao].value if idx_prox_acao is not None else None
+    if prox_acao in _PROX_ACOES_CONCLUIDO:
+        return _PREENCHIMENTO_CONCLUIDO
+    if idx_erro is not None and linha[idx_erro].value and prox_acao not in _PROX_ACOES_SEM_ERRO:
+        return _PREENCHIMENTO_ERRO
+    return None
+
+
 def _formatar(planilha, colunas: list[str]) -> None:
     planilha.freeze_panes = 'B2'
     planilha.auto_filter.ref = planilha.dimensions
@@ -253,9 +290,10 @@ def _formatar(planilha, colunas: list[str]) -> None:
     idx_prox_acao = colunas.index('prox_acao') if 'prox_acao' in colunas else None
 
     for linha in planilha.iter_rows(min_row=2):
-        if idx_erro is not None and linha[idx_erro].value:
+        preenchimento = _preenchimento_linha(linha, idx_erro, idx_prox_acao)
+        if preenchimento is not None:
             for celula in linha:
-                celula.fill = _PREENCHIMENTO_ERRO
+                celula.fill = preenchimento
         for idx in idx_nao_encontradas:
             if linha[idx].value:
                 linha[idx].fill = _PREENCHIMENTO_NAO_ENCONTRADA

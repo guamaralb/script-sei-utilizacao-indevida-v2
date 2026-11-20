@@ -1,4 +1,6 @@
+import argparse
 import logging
+import re
 from datetime import datetime
 
 from constantes import (
@@ -191,8 +193,8 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
     processar_novo(driver, registro, bases, bases_mantis)
 
 
-def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, bases_mantis: BasesMantis) -> RegistroMain:
-    registro = RegistroMain(num_processo=num_processo, data_execucao=AGORA)
+def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, bases_mantis: BasesMantis, ano: str | None = None) -> RegistroMain:
+    registro = RegistroMain(num_processo=num_processo, data_execucao=AGORA, ano_processo=ano)
 
     try:
         acessar_processo(driver, num_processo)
@@ -225,7 +227,34 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
     return registro
 
 
-def main():
+def _ano(texto: str) -> str:
+    ano = texto.strip()
+    if not re.fullmatch(r'(19|20)\d\d', ano):
+        raise argparse.ArgumentTypeError(f'ano inválido: {texto!r} (use AAAA, ex.: 2019)')
+    return ano
+
+
+def ler_argumentos(argv: list[str] | None = None) -> argparse.Namespace:
+    """Sem -a (ou com ano fora do formato AAAA), o argparse mostra o erro e
+    encerra (código 2) antes do log, do login e de qualquer ação no SEI."""
+    parser = argparse.ArgumentParser(
+        prog='poetry run task run_geacs_inicial',
+        description='Fluxo inicial da GEACS: lê o memo da APIS, confere as bases e cria os relatórios e o memo do caso.',
+    )
+    parser.add_argument(
+        '-a',
+        '--ano',
+        required=True,
+        type=_ano,
+        help='ano dos processos (AAAA): gravado na coluna ano_processo da planilha de controle; o deproc_calcula_copa escolhe por ele a base DEPROC',
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None):
+    # Antes de tudo: sem o ano, nada é feito (nem login)
+    ano = ler_argumentos(argv).ano
+
     for diretorio in [DIR_DADOS, DIR_INPUTS, DIR_CONTROLE, DIR_LOG, DIR_UI_ANTIGAS_XLS, DIR_UTILIZACOES_MANTIS_PDF]:
         diretorio.mkdir(parents=True, exist_ok=True)
     configurar_logging(ARQ_LOG)
@@ -237,6 +266,7 @@ def main():
     try:
         logger.info('================= INÍCIO DA EXECUÇÃO =================')
         logger.info(f'Log: {ARQ_LOG}')
+        logger.info(f'Ano dos processos: {ano}')
 
         processos = ler_processos_a_processar(SCRIPT)
         total = len(processos)
@@ -257,7 +287,7 @@ def main():
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
 
-                registro = _processar_linha(driver, num_processo, bases, bases_mantis)
+                registro = _processar_linha(driver, num_processo, bases, bases_mantis, ano)
                 registros_processados.append(registro.to_dict())
                 controle.registrar(registros_processados[-1])
 

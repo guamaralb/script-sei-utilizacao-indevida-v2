@@ -25,11 +25,8 @@ APIS: Todas as Infos e remove o 01.12.
 """
 
 import logging
-from collections.abc import Callable
 from datetime import datetime
-from pathlib import Path
 
-import pandas as pd
 from constantes import (
     ARQ_BASE_APIS,
     ARQ_MANTIS_REDE_CREDENCIADA,
@@ -46,7 +43,7 @@ from constantes import (
     NOME_SIGNATARIO_GERENCIA,
     UNIDADE_GEACS,
 )
-from coparticipacao_deproc import carregar_base_deproc
+from coparticipacao_deproc import BasesDeprocPorAno
 from extrator_dados_ui import FormatoMemorandoInvalido
 from log_config import (
     configurar_logging,
@@ -58,7 +55,7 @@ from log_config import (
 from mantis import BasesMantis, carregar_bases_mantis
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from memos_sei import incluir_memo, registrar_numeros_memos
-from planilha_controle import PlanilhaControleGeral
+from planilha_controle import PlanilhaControleGeral, texto_celula
 from processar_novo import obter_dados_ui
 from processo_fechado import ProcessoFechadoNoSetor, tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
@@ -100,32 +97,6 @@ class SemAnoBaseDeproc(ErroAvaliacao):
     ano_base_deproc da planilha de controle), ou ano sem base cadastrada."""
 
 
-class BasesDeprocPorAno:
-    """Base DEPROC de cada ano (constantes.BASES_DEPROC), carregada na
-    primeira vez que um processo precisa dela."""
-
-    def __init__(self, carregar: Callable[[Path], pd.DataFrame] = carregar_base_deproc):
-        self._carregar = carregar
-        self._bases: dict[str, pd.DataFrame] = {}
-
-    def do_ano(self, ano: str) -> pd.DataFrame:
-        if ano not in self._bases:
-            self._bases[ano] = self._carregar(BASES_DEPROC[ano].arquivo)
-        return self._bases[ano]
-
-
-def _texto_celula(valor) -> str:
-    """Valor de uma célula da planilha de controle como texto (2019.0 ->
-    '2019'; vazio ou NaN -> '')."""
-    if valor is None or (isinstance(valor, float) and pd.isna(valor)):
-        return ''
-    if isinstance(valor, float) and valor.is_integer():
-        return str(int(valor))
-    if isinstance(valor, datetime):
-        return valor.strftime('%d/%m/%Y')
-    return str(valor).strip()
-
-
 def ano_da_base_deproc(linha_controle: dict | None) -> str:
     """Ano da base DEPROC usada no deproc_calcula_copa, da coluna
     ano_base_deproc da linha do processo na planilha de controle.
@@ -135,12 +106,12 @@ def ano_da_base_deproc(linha_controle: dict | None) -> str:
     base tem essa data. Senão: SemAnoBaseDeproc."""
     if linha_controle is None:
         raise SemAnoBaseDeproc('Planilha de controle não lida: sem o ano da base DEPROC usada no deproc_calcula_copa (coluna ano_base_deproc)')
-    ano = _texto_celula(linha_controle.get('ano_base_deproc'))
+    ano = texto_celula(linha_controle.get('ano_base_deproc'))
     if ano:
         if ano not in BASES_DEPROC:
             raise SemAnoBaseDeproc(f'Ano da base DEPROC {ano} (coluna ano_base_deproc) sem base cadastrada em BASES_DEPROC')
         return ano
-    data = _texto_celula(linha_controle.get('data_geracao_base_deproc'))
+    data = texto_celula(linha_controle.get('data_geracao_base_deproc'))
     anos = [a for a, base in BASES_DEPROC.items() if base.data_geracao == data]
     if data and len(anos) == 1:
         logger.warning(f'Planilha de controle sem o ano da base DEPROC: usado {anos[0]}, o da base gerada em {data} (coluna data_geracao_base_deproc)')

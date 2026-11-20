@@ -1,0 +1,34 @@
+2026-11-19 11:46:44 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-19 11:46:44 | INFO    | -                         | __main__              | Log: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\logs\2026-11-19_11-46-44_execucao_geacs_verificar_marcadores.log
+2026-11-19 11:46:44 | INFO    | -                         | processos_a_processar | 55 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-19 11:46:45 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-19 11:46:45 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-19 11:46:58 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\guama\Downloads\SEI
+2026-11-19 11:47:00 | ERROR   | -                         | __main__              | Erro crítico na execução (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES)
+Traceback (most recent call last):
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_geacs_verificar_marcadores.py", line 136, in main
+    driver = abrir_sei(UNIDADE_GEACS)
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\sessao_sei.py", line 59, in abrir_sei
+    efetuar_login(driver, os.getenv('SEI_LOGIN'), os.getenv('SEI_SENHA'), os.getenv('SEI_ORGAO'))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\sei-automacao\src\sei_automacao\sessao.py", line 30, in efetuar_login
+    _login.preencher_e_enviar_login(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        driver, usuario, senha, orgao, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\sei-automacao\src\sei_automacao\_internal\telas\login.py", line 23, in preencher_e_enviar_login
+    input_usuario.send_keys(usuario)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 277, in send_keys
+    Command.SEND_KEYS_TO_ELEMENT, {"text": "".join(keys_to_typing(value)), "value": keys_to_typing(value)}
+                                                   ~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\common\utils.py", line 182, in keys_to_typing
+    characters.extend(val)
+    ~~~~~~~~~~~~~~~~~^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-11-19 11:47:00 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-19 11:47:00 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-19 11:47:00 | INFO    | -                         | __main__              | Duração total da execução: 15.9s
+2026-11-19 11:47:00 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

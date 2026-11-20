@@ -11,6 +11,7 @@ import processos_a_processar
 import pytest
 from openpyxl import load_workbook
 from planilha_controle import HistoricoCsv, PlanilhaControleGeral, arquivo_historico
+from Registro import ProxAcao
 from sessao_sei import sessao_encerrada
 
 
@@ -62,6 +63,22 @@ def test_nova_passagem_atualiza_linha_e_mantem_primeira_passagem(arquivo):
     # Coluna que a segunda passagem não grava é mantida
     assert str(linha['memo_disa_sei']) == '111'
     assert [h['prox_acao'] for h in _historico(arquivo)] == ['A', 'B']
+
+
+def test_cor_da_linha_erro_parado_e_concluido(arquivo):
+    controle = PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo)
+    controle.registrar(_passagem('ERRO', 9, prox_acao=ProxAcao.VERIFICAR_ERRO, tipo_erro='ErroAvaliacao', erro='falhou'))
+    controle.registrar(_passagem('PARADO', 10, prox_acao=ProxAcao.AGUARDAR_RESPOSTA_MEMO, tipo_erro='ErroAvaliacao', erro='Processamento parado: memo enviado'))
+    controle.registrar(_passagem('CONCLUIDO', 11, prox_acao=ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO, tipo_erro='ErroAvaliacao', erro='erro antigo'))
+    controle.registrar(_passagem('NO_BLOCO', 12, prox_acao=ProxAcao.ASSINAR_DEPROC))
+
+    processos = load_workbook(arquivo)['processos']
+    colunas = [c.value for c in processos[1]]
+    cor = {linha[0].value: linha[colunas.index('ultima_passagem')].fill for linha in processos.iter_rows(min_row=2)}
+    assert cor['ERRO'].start_color.rgb == 'FFF4CCCC'
+    assert cor['PARADO'].fill_type is None
+    assert cor['CONCLUIDO'].start_color.rgb == 'FFD9D9D9'
+    assert cor['NO_BLOCO'].fill_type is None
 
 
 def test_backup_uma_vez_por_execucao(arquivo):
