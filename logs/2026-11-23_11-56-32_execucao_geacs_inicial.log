@@ -1,0 +1,140 @@
+2026-11-23 11:56:32 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-23 11:56:32 | INFO    | -                         | __main__              | Log: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\logs\2026-11-23_11-56-32_execucao_geacs_inicial.log
+2026-11-23 11:56:32 | INFO    | -                         | __main__              | Ano dos processos: 2019
+2026-11-23 11:56:32 | INFO    | -                         | processos_a_processar | 13 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_inicial
+2026-11-23 11:56:32 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-23 11:56:33 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-23 11:56:33 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-23 11:56:33 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-23 11:56:33 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-23 11:56:33 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-23 11:56:33 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-23 11:56:35 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-23 11:56:36 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-23 11:56:36 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_propria-dependentes_nao_encontrados.xlsx
+2026-11-23 11:56:38 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 10497 linha(s) | 1315 matrícula(s) única(s)
+2026-11-23 11:56:38 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-23 11:57:28 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-23 11:58:00 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-23 11:58:00 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_credenciada-dependentes_nao_encontrados.xlsx
+2026-11-23 11:58:32 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 322450 linha(s) | 5923 matrícula(s) única(s)
+2026-11-23 11:58:33 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-23 11:58:33 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-23 11:58:43 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-11-23 11:58:49 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-23 11:58:49 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-23 11:58:49 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-23 11:58:49 | INFO    | 2010.01.0072514/2024-46   | __main__              | INÍCIO [1/13]
+2026-11-23 11:58:52 | INFO    | 2010.01.0072514/2024-46   | __main__              | Árvore: 16 documento(s) | GEACS: 7 documento(s), 3 memorando(s)
+2026-11-23 11:58:52 | INFO    | 2010.01.0072514/2024-46   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-23 11:58:52 | INFO    | 2010.01.0072514/2024-46   | planilha_controle     | Backup da planilha de controle: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-23_11-56-32.xlsx
+2026-11-23 11:59:01 | DEBUG   | 2010.01.0072514/2024-46   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-23 11:59:01 | WARNING | 2010.01.0072514/2024-46   | __main__              | FIM COM ERRO (12.0s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta))
+2026-11-23 11:59:01 | INFO    | 2010.01.0049460/2025-52   | __main__              | INÍCIO [2/13]
+2026-11-23 11:59:04 | INFO    | 2010.01.0049460/2025-52   | __main__              | Árvore: 13 documento(s) | GEACS: 7 documento(s), 2 memorando(s)
+2026-11-23 11:59:04 | INFO    | 2010.01.0049460/2025-52   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta)']
+2026-11-23 11:59:14 | DEBUG   | 2010.01.0049460/2025-52   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-23 11:59:14 | WARNING | 2010.01.0049460/2025-52   | __main__              | FIM COM ERRO (12.3s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta))
+2026-11-23 11:59:14 | INFO    | 2010.01.0049666/2025-19   | __main__              | INÍCIO [3/13]
+2026-11-23 11:59:16 | INFO    | 2010.01.0049666/2025-19   | __main__              | Árvore: 10 documento(s) | GEACS: 2 documento(s), 2 memorando(s)
+2026-11-23 11:59:16 | INFO    | 2010.01.0049666/2025-19   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.A.1 - Aguarda APIS: Formato Inválido']
+2026-11-23 11:59:25 | DEBUG   | 2010.01.0049666/2025-19   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-23 11:59:25 | WARNING | 2010.01.0049666/2025-19   | __main__              | FIM COM ERRO (11.5s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.A.1 - Aguarda APIS: Formato Inválido)
+2026-11-23 11:59:25 | INFO    | 2010.01.0051891/2025-84   | __main__              | INÍCIO [4/13]
+2026-11-23 11:59:27 | INFO    | 2010.01.0051891/2025-84   | __main__              | Árvore: 14 documento(s) | GEACS: 3 documento(s), 1 memorando(s)
+2026-11-23 11:59:27 | INFO    | 2010.01.0051891/2025-84   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS']
+2026-11-23 11:59:37 | DEBUG   | 2010.01.0051891/2025-84   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-23 11:59:37 | WARNING | 2010.01.0051891/2025-84   | __main__              | FIM COM ERRO (11.5s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS)
+2026-11-23 11:59:37 | INFO    | 2010.01.0051842/2025-49   | __main__              | INÍCIO [5/13]
+2026-11-23 11:59:39 | INFO    | 2010.01.0051842/2025-49   | __main__              | Árvore: 15 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-23 11:59:39 | INFO    | 2010.01.0051842/2025-49   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.A.1 - Aguarda APIS: Formato Inválido']
+2026-11-23 11:59:49 | DEBUG   | 2010.01.0051842/2025-49   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-23 11:59:49 | WARNING | 2010.01.0051842/2025-49   | __main__              | FIM COM ERRO (12.3s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.A.1 - Aguarda APIS: Formato Inválido)
+2026-11-23 11:59:49 | INFO    | 2010.01.0051732/2025-12   | __main__              | INÍCIO [6/13]
+2026-11-23 11:59:51 | INFO    | 2010.01.0051732/2025-12   | __main__              | Árvore: 8 documento(s) | GEACS: 1 documento(s), 1 memorando(s)
+2026-11-23 11:59:51 | INFO    | 2010.01.0051732/2025-12   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script']
+2026-11-23 11:59:51 | DEBUG   | 2010.01.0051732/2025-12   | __main__              | Processo já tratado pelo script: memos não analisados para o VELHO
+2026-11-23 11:59:51 | INFO    | 2010.01.0051732/2025-12   | __main__              | Fluxo: NOVO - do início
+2026-11-23 11:59:51 | DEBUG   | 2010.01.0051732/2025-12   | docs_processo         | Lendo documento Memorando 91 (SEI 115032972)
+2026-11-23 11:59:52 | DEBUG   | 2010.01.0051732/2025-12   | docs_processo         | Documento 115032972 lido (1426 caracteres)
+2026-11-23 11:59:52 | DEBUG   | 2010.01.0051732/2025-12   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 91 (SEI 115032972)
+2026-11-23 11:59:52 | DEBUG   | 2010.01.0051732/2025-12   | docs_processo         | Lendo documento Memorando 2706 (SEI 152711917)
+2026-11-23 11:59:53 | DEBUG   | 2010.01.0051732/2025-12   | docs_processo         | Documento 152711917 lido (3011 caracteres)
+2026-11-23 11:59:53 | INFO    | 2010.01.0051732/2025-12   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2706 (SEI 152711917)']
+2026-11-23 11:59:53 | INFO    | 2010.01.0051732/2025-12   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1778497-2 | Período titular: 01/08/2019 a 12/06/2024 | Dependentes: 1778499; 1778501 | Período variável p/ dependentes: não
+2026-11-23 11:59:53 | WARNING | 2010.01.0051732/2025-12   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 1778499, 1778501
+2026-11-23 11:59:53 | INFO    | 2010.01.0051732/2025-12   | processar_novo        | Dependente(s) fora da base APIS, procurados no MANTIS dos dependentes não encontrados: 1778501
+2026-11-23 11:59:53 | WARNING | 2010.01.0051732/2025-12   | processar_novo        | Dependente(s) fora da base APIS e do MANTIS dos dependentes não encontrados: 1778499. Ignorado(s) no restante do fluxo
+2026-11-23 11:59:53 | WARNING | 2010.01.0051732/2025-12   | rede_propria          | Não encontrado(s) na base APIS | dependente(s) 1778501
+2026-11-23 11:59:56 | INFO    | 2010.01.0051732/2025-12   | marcadores_disponiveis | Marcadores cadastrados na unidade: 33
+2026-11-23 12:00:00 | INFO    | 2010.01.0051732/2025-12   | tags                  | Marcador adicionado: "v2: 01.02.1 - Mat. N Encontradas Base APIS"
+2026-11-23 12:00:00 | INFO    | 2010.01.0051732/2025-12   | rede_propria          | Fora da base DISA (contam como não uso): ['1778501']
+2026-11-23 12:00:00 | INFO    | 2010.01.0051732/2025-12   | rede_propria          | Uso da rede própria (base DISA) | Titular 17784972: NÃO USOU | Dependentes que usaram: - | Dependentes que não usaram: ['1778501']
+2026-11-23 12:00:04 | INFO    | 2010.01.0051732/2025-12   | tags                  | Marcador adicionado: "v2: 01.06 - Avaliado Uso Rede Própria DISA"
+2026-11-23 12:00:04 | INFO    | 2010.01.0051732/2025-12   | mantis                | MANTIS rede própria | Titular 17784972: NÃO USOU (R$ 0.00) | Dependentes que usaram: - (R$ 0.00)
+2026-11-23 12:00:04 | INFO    | 2010.01.0051732/2025-12   | mantis                | MANTIS rede credenciada | Titular 17784972: USOU (R$ 50.00) | Dependentes que usaram: - (R$ 0.00)
+2026-11-23 12:00:04 | INFO    | 2010.01.0051732/2025-12   | processar_novo        | Base DISA x MANTIS: DISA não, MANTIS RP não, MANTIS RC sim | RP no MANTIS e fora da base DISA: -
+2026-11-23 12:00:08 | INFO    | 2010.01.0051732/2025-12   | tags                  | Marcador adicionado: "v2: 01.08 - Avaliado Uso Rede Própria MANTIS"
+2026-11-23 12:00:11 | INFO    | 2010.01.0051732/2025-12   | tags                  | Marcador removido: "v2: 01.06 - Avaliado Uso Rede Própria DISA"
+2026-11-23 12:00:27 | INFO    | 2010.01.0051732/2025-12   | relatorios_mantis     | Relatório Rede Credenciada (Titular) anexado ao processo: Utilização Tit. RC - 17784972 - 20261123_120011 (154246885)
+2026-11-23 12:00:41 | INFO    | 2010.01.0051732/2025-12   | memos_sei             | Memo DEPROC criado
+2026-11-23 12:00:45 | INFO    | 2010.01.0051732/2025-12   | memos_sei             | Memo DEPROC inserido no bloco 7697744
+2026-11-23 12:00:48 | INFO    | 2010.01.0051732/2025-12   | tags                  | Marcador adicionado: "v2: 01.10.B - No Bloco DEPROC: Coparticipação"
+2026-11-23 12:00:51 | INFO    | 2010.01.0051732/2025-12   | tags                  | Marcador removido: "v2: 01.08 - Avaliado Uso Rede Própria MANTIS"
+2026-11-23 12:00:52 | INFO    | 2010.01.0051732/2025-12   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 2805 (SEI 154246951)']
+2026-11-23 12:01:01 | DEBUG   | 2010.01.0051732/2025-12   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-23 12:01:01 | INFO    | 2010.01.0051732/2025-12   | __main__              | FIM (0h01m12s) | Próxima ação: Assinar memo DEPROC e encaminhar
+2026-11-23 12:01:01 | INFO    | 2010.01.0073946/2025-82   | __main__              | INÍCIO [7/13]
+2026-11-23 12:01:04 | INFO    | 2010.01.0073946/2025-82   | __main__              | Árvore: 16 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-23 12:01:04 | INFO    | 2010.01.0073946/2025-82   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.05.A.1 - Aguarda APIS: Formato Inválido']
+2026-11-23 12:01:13 | DEBUG   | 2010.01.0073946/2025-82   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-23 12:01:13 | WARNING | 2010.01.0073946/2025-82   | __main__              | FIM COM ERRO (12.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.A.1 - Aguarda APIS: Formato Inválido)
+2026-11-23 12:01:13 | INFO    | 2010.01.0080737/2024-58   | __main__              | INÍCIO [8/13]
+2026-11-23 12:01:16 | INFO    | 2010.01.0080737/2024-58   | __main__              | Árvore: 13 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-23 12:01:16 | INFO    | 2010.01.0080737/2024-58   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-23 12:01:25 | DEBUG   | 2010.01.0080737/2024-58   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-23 12:01:25 | WARNING | 2010.01.0080737/2024-58   | __main__              | FIM COM ERRO (11.5s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:01:25 | INFO    | 2010.01.0051835/2025-44   | __main__              | INÍCIO [9/13]
+2026-11-23 12:01:27 | INFO    | 2010.01.0051835/2025-44   | __main__              | Árvore: 11 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-23 12:01:27 | INFO    | 2010.01.0051835/2025-44   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-23 12:01:36 | DEBUG   | 2010.01.0051835/2025-44   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-23 12:01:36 | WARNING | 2010.01.0051835/2025-44   | __main__              | FIM COM ERRO (11.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:01:36 | INFO    | 2010.01.0051895/2025-73   | __main__              | INÍCIO [10/13]
+2026-11-23 12:01:52 | WARNING | 2010.01.0051895/2025-73   | __main__              | Processo fechado no setor (sem "Incluir Documento")
+2026-11-23 12:01:53 | INFO    | 2010.01.0051895/2025-73   | __main__              | Árvore: 11 documento(s) | GEACS: 4 documento(s), 3 memorando(s)
+2026-11-23 12:01:53 | INFO    | 2010.01.0051895/2025-73   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-23 12:02:02 | DEBUG   | 2010.01.0051895/2025-73   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-23 12:02:02 | WARNING | 2010.01.0051895/2025-73   | __main__              | FIM COM ERRO (26.4s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:02 | INFO    | 2010.01.0051981/2025-79   | __main__              | INÍCIO [11/13]
+2026-11-23 12:02:19 | WARNING | 2010.01.0051981/2025-79   | __main__              | Processo fechado no setor (sem "Incluir Documento")
+2026-11-23 12:02:19 | INFO    | 2010.01.0051981/2025-79   | __main__              | Árvore: 10 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-23 12:02:19 | INFO    | 2010.01.0051981/2025-79   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-23 12:02:28 | DEBUG   | 2010.01.0051981/2025-79   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-23 12:02:28 | WARNING | 2010.01.0051981/2025-79   | __main__              | FIM COM ERRO (25.9s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:28 | INFO    | 2010.01.0052679/2025-51   | __main__              | INÍCIO [12/13]
+2026-11-23 12:02:31 | INFO    | 2010.01.0052679/2025-51   | __main__              | Árvore: 10 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-23 12:02:31 | INFO    | 2010.01.0052679/2025-51   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-23 12:02:40 | DEBUG   | 2010.01.0052679/2025-51   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-23 12:02:40 | WARNING | 2010.01.0052679/2025-51   | __main__              | FIM COM ERRO (12.0s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:40 | INFO    | 2010.01.0082944/2024-27   | __main__              | INÍCIO [13/13]
+2026-11-23 12:02:43 | INFO    | 2010.01.0082944/2024-27   | __main__              | Árvore: 10 documento(s) | GEACS: 6 documento(s), 2 memorando(s)
+2026-11-23 12:02:43 | INFO    | 2010.01.0082944/2024-27   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-23 12:02:52 | DEBUG   | 2010.01.0082944/2024-27   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-23 12:02:52 | WARNING | 2010.01.0082944/2024-27   | __main__              | FIM COM ERRO (11.4s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | Processos: 13 | Sem erro: 1 | Com erro: 12
+2026-11-23 12:02:54 | INFO    | -                         | __main__              |     1 | Assinar memo DEPROC e encaminhar
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0072514/2024-46 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta))
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0049460/2025-52 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.09.C.1 - Aguarda DISA: Validar (N Consta))
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0049666/2025-19 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.A.1 - Aguarda APIS: Formato Inválido)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051891/2025-84 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.B.1 - Aguarda APIS: Sem Memo p/ GEACS)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051842/2025-49 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.A.1 - Aguarda APIS: Formato Inválido)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0073946/2025-82 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.05.A.1 - Aguarda APIS: Formato Inválido)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0080737/2024-58 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051835/2025-44 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051895/2025-73 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0051981/2025-79 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0052679/2025-51 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ERRO  | 2010.01.0082944/2024-27 | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | Duração total da execução: 0h06m21s
+2026-11-23 12:02:54 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

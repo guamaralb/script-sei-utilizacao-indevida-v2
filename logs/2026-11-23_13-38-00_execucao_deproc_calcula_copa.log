@@ -1,0 +1,9 @@
+2026-11-23 13:38:00 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC - COPARTICIPAÇÃO) =================
+2026-11-23 13:38:00 | INFO    | -                         | __main__              | Log: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\logs\2026-11-23_13-38-00_execucao_deproc_calcula_copa.log
+2026-11-23 13:38:00 | INFO    | -                         | __main__              | Ano informado (-a): nenhum
+2026-11-23 13:38:00 | INFO    | -                         | processos_a_processar | 35 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_calcula_copa
+2026-11-23 13:38:01 | ERROR   | -                         | __main__              | 17 processo(s) sem ano na planilha de controle (ano_processo / ano_base_deproc): 2010.01.0053690/2025-11, 2010.01.0051993/2025-46, 2010.01.0051100/2025-04, 2010.01.0062386/2025-56, 2010.01.0064740/2025-33, 2010.01.0063225/2025-04, 2010.01.0064360/2025-11, 2010.01.0064325/2025-83, 2010.01.0064260/2025-92, 2010.01.0063828/2025-19, 2010.01.0064763/2025-91, 2010.01.0061936/2025-81, 2010.01.0064477/2025-53, 2010.01.0063082/2025-82, 2010.01.0058474/2025-47, 2010.01.0058878/2025-03, 2010.01.0087869/2024-39
+2026-11-23 13:38:01 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-23 13:38:01 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-23 13:38:01 | INFO    | -                         | __main__              | Duração total da execução: 1.0s
+2026-11-23 13:38:01 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================
