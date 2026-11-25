@@ -53,6 +53,7 @@ class BaseDeproc:
 BASES_DEPROC: dict[str, BaseDeproc] = {
     '2019': BaseDeproc(DIR_FLUXO_DEPROC / 'copa-MANTIS11281-base_2019.xlsx', '06/11/2026'),
     '2020': BaseDeproc(DIR_FLUXO_DEPROC / 'copa-MANTIS11281-base_2020.xlsx', '16/11/2026'),
+    '2021': BaseDeproc(DIR_FLUXO_DEPROC / 'copa-MANTIS11281-base_2021.xlsx', '23/11/2026'),
 }
 
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'

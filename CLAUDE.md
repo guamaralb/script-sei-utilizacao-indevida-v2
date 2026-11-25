@@ -1415,6 +1415,7 @@ data da planilha; não está na planilha), citada no memo de resultado:
 |---|---|---|
 | `2019` | `copa-MANTIS11281-base_2019.xlsx` (antes `Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx`) | 06/11/2026 |
 | `2020` | `copa-MANTIS11281-base_2020.xlsx` | 16/11/2026 |
+| `2021` | `copa-MANTIS11281-base_2021.xlsx` | 23/11/2026 |
 
 Para um ano novo, coloque a planilha na pasta e acrescente a linha em
 `BASES_DEPROC`. `-a` com ano sem base cadastrada: o `argparse`

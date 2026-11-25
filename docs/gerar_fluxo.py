@@ -949,7 +949,7 @@ col_copa_loop = col_loop(
     'run_deproc_calcula_copa',
     'deproc_calcula_copa',
     'da DEPROC',
-    '. A base DEPROC de cada ano (BASES_DEPROC; 2019 e 2020: copa-MANTIS11281-base_2019 / _2020, aba Resultado, matrículas com DV) é carregada na primeira vez que um processo precisa dela',
+    '. A base DEPROC de cada ano (BASES_DEPROC; 2019, 2020 e 2021: copa-MANTIS11281-base_2019 / _2020 / _2021, aba Resultado, matrículas com DV) é carregada na primeira vez que um processo precisa dela',
     'processar_deproc() — coluna 2',
     'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, ano_processo (só o vindo do -a), marcadores_deproc_*, estado_atual_deproc e DEPROC | <marcador>. '
     'Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',

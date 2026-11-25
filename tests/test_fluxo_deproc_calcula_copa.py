@@ -419,7 +419,7 @@ def test_ano_opcional_na_execucao(capsys):
     assert '-a' in capsys.readouterr().err
 
 
-@pytest.mark.parametrize(('ano', 'arquivo', 'data'), [('2019', 'copa-MANTIS11281-base_2019.xlsx', '06/11/2026'), ('2020', 'copa-MANTIS11281-base_2020.xlsx', '16/11/2026')])
+@pytest.mark.parametrize(('ano', 'arquivo', 'data'), [('2019', 'copa-MANTIS11281-base_2019.xlsx', '06/11/2026'), ('2020', 'copa-MANTIS11281-base_2020.xlsx', '16/11/2026'), ('2021', 'copa-MANTIS11281-base_2021.xlsx', '23/11/2026')])
 def test_bases_cadastradas(ano, arquivo, data):
     base = main_deproc_calcula_copa.BASES_DEPROC[ano]
     assert base.arquivo.name == arquivo
