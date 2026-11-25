@@ -14,8 +14,9 @@ Para cada processo da aba geacs_todas_infos de processos_a_processar.xlsx:
    rodada). Pela DISA, para com erro: sem resposta da DISA, ou com resposta
    (leitura ainda não implementada, TODO);
 5. lê e recalcula os valores (todas_infos.apurar_todas_infos), com a base
-   DEPROC do ano usado no deproc_calcula_copa (coluna ano_base_deproc da
-   planilha de controle): divergência para o processo, sem criar o memo;
+   DEPROC usada no deproc_calcula_copa (colunas ano_base_deproc e
+   data_geracao_base_deproc da planilha de controle): divergência para o
+   processo, sem criar o memo;
 6. cria o memo à APIS, insere no bloco BLOCO_MEMO_APIS_TODAS_INFOS e adiciona
    o 01.12 - No Bloco APIS: Todas as Infos (remove o 01.10.1). Retomada: o
    memo já na rodada (pelo assunto) não é recriado.
@@ -34,7 +35,6 @@ from constantes import (
     ARQ_MANTIS_REDE_PROPRIA,
     ARQ_MANTIS_REDE_PROPRIA_DEPS_NAO_ENCONTRADOS,
     ARQ_USO_REDE_PROPRIA,
-    BASES_DEPROC,
     BLOCO_MEMO_APIS_TODAS_INFOS,
     CARGO_SIGNATARIO_GERENCIA,
     DIR_CONTROLE,
@@ -42,6 +42,8 @@ from constantes import (
     DIR_LOG,
     NOME_SIGNATARIO_GERENCIA,
     UNIDADE_GEACS,
+    BaseDeproc,
+    bases_deproc_na_pasta,
 )
 from coparticipacao_deproc import BasesDeprocPorAno
 from extrator_dados_ui import FormatoMemorandoInvalido
@@ -93,30 +95,49 @@ class SemAguardaDeproc(ErroAvaliacao):
 
 
 class SemAnoBaseDeproc(ErroAvaliacao):
-    """Sem o ano da base DEPROC usada no deproc_calcula_copa (coluna
-    ano_base_deproc da planilha de controle), ou ano sem base cadastrada."""
+    """Sem a base DEPROC usada no deproc_calcula_copa (colunas ano_base_deproc
+    e data_geracao_base_deproc da planilha de controle), ou sem o arquivo
+    dela na pasta."""
 
 
-def ano_da_base_deproc(linha_controle: dict | None) -> str:
-    """Ano da base DEPROC usada no deproc_calcula_copa, da coluna
-    ano_base_deproc da linha do processo na planilha de controle.
+def _unica_na_pasta(coluna: str, valor: str, escolher) -> BaseDeproc | None:
+    """A única base da pasta com o ano (ou a data) da coluna; None se nenhuma
+    ou mais de uma."""
+    bases = [b for b in bases_deproc_na_pasta() if escolher(b) == valor]
+    if len(bases) != 1:
+        return None
+    logger.warning(f'Planilha de controle só com {coluna} = {valor}: usada a base {bases[0]}, a única da pasta com esse valor')
+    return bases[0]
 
-    Processo apurado antes da coluna existir (sem o ano): o ano é o da base
-    cuja data de geração é a da coluna data_geracao_base_deproc, se só uma
-    base tem essa data. Senão: SemAnoBaseDeproc."""
+
+def base_deproc_da_planilha(linha_controle: dict | None) -> BaseDeproc:
+    """Base DEPROC usada no deproc_calcula_copa: o ano e a data de geração das
+    colunas ano_base_deproc e data_geracao_base_deproc da linha do processo na
+    planilha de controle (constantes.BaseDeproc).
+
+    Só com uma das duas (processo apurado antes da coluna ano_base_deproc
+    existir, só com a data): a única base da pasta com esse valor. Senão, ou
+    sem o arquivo da base: SemAnoBaseDeproc."""
     if linha_controle is None:
-        raise SemAnoBaseDeproc('Planilha de controle não lida: sem o ano da base DEPROC usada no deproc_calcula_copa (coluna ano_base_deproc)')
+        raise SemAnoBaseDeproc('Planilha de controle não lida: sem a base DEPROC usada no deproc_calcula_copa (colunas ano_base_deproc e data_geracao_base_deproc)')
     ano = texto_celula(linha_controle.get('ano_base_deproc'))
-    if ano:
-        if ano not in BASES_DEPROC:
-            raise SemAnoBaseDeproc(f'Ano da base DEPROC {ano} (coluna ano_base_deproc) sem base cadastrada em BASES_DEPROC')
-        return ano
     data = texto_celula(linha_controle.get('data_geracao_base_deproc'))
-    anos = [a for a, base in BASES_DEPROC.items() if base.data_geracao == data]
-    if data and len(anos) == 1:
-        logger.warning(f'Planilha de controle sem o ano da base DEPROC: usado {anos[0]}, o da base gerada em {data} (coluna data_geracao_base_deproc)')
-        return anos[0]
-    raise SemAnoBaseDeproc('Ano da base DEPROC não registrado na planilha de controle (coluna ano_base_deproc): rode o deproc_calcula_copa -a AAAA neste processo ou preencha a coluna')
+    if ano and data:
+        base = BaseDeproc(ano, data)
+    elif ano:
+        base = _unica_na_pasta('ano_base_deproc', ano, lambda b: b.ano)
+    elif data:
+        base = _unica_na_pasta('data_geracao_base_deproc', data, lambda b: b.data_geracao)
+    else:
+        base = None
+    if base is None:
+        raise SemAnoBaseDeproc(
+            'Base DEPROC (ano e data de geração) não registrada na planilha de controle (colunas ano_base_deproc e data_geracao_base_deproc): '
+            'rode o deproc_calcula_copa neste processo ou preencha as colunas'
+        )
+    if not base.existe():
+        raise SemAnoBaseDeproc(f'Base DEPROC {base.ano}, gerada em {base.data_geracao} (colunas ano_base_deproc e data_geracao_base_deproc), não encontrada: {base.arquivo.name}')
+    return base
 
 
 def _conferir_marcadores(registro: RegistroTodasInfos, momento: str) -> None:
@@ -152,10 +173,11 @@ def processar_todas_infos(
     if estado != TAG_AGUARDA_DEPROC_COPARTICIPACAO:
         raise SemAguardaDeproc(f'Processo sem o marcador "{TAG_AGUARDA_DEPROC_COPARTICIPACAO}" (estado atual: {estado or "nenhum"})')
 
-    # Base DEPROC do ano usado no deproc_calcula_copa (antes de ler o SEI)
-    registro.ano_base_deproc_todas_infos = ano_da_base_deproc(linha_controle)
-    base_deproc = bases_deproc.do_ano(registro.ano_base_deproc_todas_infos)
-    logger.info(f'Base DEPROC: {registro.ano_base_deproc_todas_infos} ({BASES_DEPROC[registro.ano_base_deproc_todas_infos].arquivo.name})')
+    # Base DEPROC usada no deproc_calcula_copa (antes de ler o SEI)
+    base_da_planilha = base_deproc_da_planilha(linha_controle)
+    registro.ano_base_deproc_todas_infos = base_da_planilha.ano
+    base_deproc = bases_deproc.da_base(base_da_planilha)
+    logger.info(f'Base DEPROC: {base_da_planilha}')
 
     if not tem_incluir_documento(driver):
         raise ProcessoFechadoNoSetor('Processo sem "Incluir Documento" na unidade da GEACS: nenhum memo criado (não reaberto)')
@@ -247,7 +269,8 @@ def main():
             ARQ_MANTIS_REDE_PROPRIA_DEPS_NAO_ENCONTRADOS,
             ARQ_MANTIS_REDE_CREDENCIADA_DEPS_NAO_ENCONTRADOS,
         )
-        # Carregadas quando um processo precisa (ano da coluna ano_base_deproc)
+        # Carregadas quando um processo precisa (colunas ano_base_deproc e
+        # data_geracao_base_deproc)
         bases_deproc = BasesDeprocPorAno()
 
         controle = PlanilhaControleGeral(SCRIPT, AGORA)

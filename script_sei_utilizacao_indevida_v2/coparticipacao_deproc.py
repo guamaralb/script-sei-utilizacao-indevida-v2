@@ -1,5 +1,5 @@
 """Fluxo DEPROC: apuração da coparticipação a partir da base do MANTIS
-(constantes.BASES_DEPROC, uma por ano; aba "Resultado"), uma linha por item atendido.
+(constantes.BaseDeproc, uma por ano e data de geração; aba "Resultado"), uma linha por item atendido.
 
 Para cada processo: as linhas com SEI = número do processo, conferidas com
 as matrículas do memo da APIS e filtradas pelo período de apuração de cada
@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
-from constantes import BASES_DEPROC
+from constantes import BaseDeproc
 from mantis import Intervalo, interpretar_periodo
 from rede_propria import ErroAvaliacao, normalizar_matricula, sem_dv, separar_matriculas_dependentes
 
@@ -137,17 +137,17 @@ def carregar_base_deproc(arquivo: Path) -> pd.DataFrame:
 
 
 class BasesDeprocPorAno:
-    """Base DEPROC de cada ano (constantes.BASES_DEPROC), carregada na
-    primeira vez que um processo precisa dela."""
+    """Base DEPROC de cada ano e data de geração (constantes.BaseDeproc),
+    carregada na primeira vez que um processo precisa dela."""
 
     def __init__(self, carregar: Callable[[Path], pd.DataFrame] = carregar_base_deproc):
         self._carregar = carregar
-        self._bases: dict[str, pd.DataFrame] = {}
+        self._bases: dict[BaseDeproc, pd.DataFrame] = {}
 
-    def do_ano(self, ano: str) -> pd.DataFrame:
-        if ano not in self._bases:
-            self._bases[ano] = self._carregar(BASES_DEPROC[ano].arquivo)
-        return self._bases[ano]
+    def da_base(self, base: BaseDeproc) -> pd.DataFrame:
+        if base not in self._bases:
+            self._bases[base] = self._carregar(base.arquivo)
+        return self._bases[base]
 
 
 def formatar_matricula_com_dv(matricula: str) -> str:

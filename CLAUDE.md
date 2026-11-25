@@ -53,7 +53,7 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `main_geacs_inicial.py` | Script principal, fluxo inicial (normal) da GEACS (`poetry run task run_geacs_inicial -a AAAA`; `ler_argumentos`: ano dos processos, coluna `ano_processo`): separação do VELHO (`_separar_velho`) e roteamento pelos marcadores (`_tratar`) |
+| `main_geacs_inicial.py` | Script principal, fluxo inicial (normal) da GEACS (`poetry run task run_geacs_inicial -a AAAA -d DD/MM/AAAA`; `ler_argumentos`: ano dos processos e data de geração da base DEPROC, colunas `ano_processo` e `data_geracao_base_processo`): separação do VELHO (`_separar_velho`) e roteamento pelos marcadores (`_tratar`) |
 | `processar_novo.py` | Fluxo dos processos não VELHOS (com retomada pelo marcador de estado); `obter_dados_ui()` lê o último memo da APIS destinado à GEACS; `_avaliar_mantis_e_criar_docs()` compara base DISA × MANTIS e escolhe o memo |
 | `relatorios_mantis.py` | `incluir_relatorios()`: gera os PDFs do MANTIS (titular e dependentes) e os anexa como documento externo, com retomada pelo nome na árvore |
 | `transformar_xls_em_pdf.py` | Monta o PDF do relatório de utilização (ReportLab) |
@@ -67,7 +67,8 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `matriculas_nao_encontradas.py` | Memo à APIS de matrículas não encontradas na base APIS (`incluir_memo_apis_mat_nao_encontradas`) |
 | `tags.py` | Todos os marcadores e grupos de estado, `registrar_tags()`, `adicionar_tag()` (troca o estado), `adicionar_tag_se_ausente()`, `remover_tag()`, `tem_tag()`, `estado_atual()`, `eh_velho_pelos_marcadores()` e `conferir_marcadores()`; colunas dos marcadores na planilha de controle (`COLUNAS_TAGS`, `colunas_tags()`, `colunas_tags_deproc()`, `descrever_estado()`, `eh_coluna_tag()`, `COLUNA_POR_COLUNA_ANTIGA`) |
 | `marcadores_disponiveis.py` | `garantir_marcadores_no_sei()`: confere, antes de criar memos, se os marcadores existem no SEI |
-| `constantes.py` | Unidades, blocos, signatária, caminhos fixos, data de corte do VELHO |
+| `constantes.py` | Unidades, blocos, signatária, caminhos fixos, data de corte do VELHO, `BaseDeproc` (arquivo da base DEPROC pelo ano e pela data de geração) e `bases_deproc_na_pasta()` |
+| `argumentos_base_deproc.py` | Argumentos `-a` (ano) e `-d` (data de geração da base DEPROC) do `geacs_inicial` e do `deproc_calcula_copa`: validação e `base_dos_argumentos()` (os dois juntos e o arquivo na pasta) |
 | `log_config.py` | Logging: processo atual em cada linha e resumo final |
 | `Registro.py` | `PROX_ACAO_POR_NO_BLOCO` e `PROX_ACAO_POR_CONCLUSAO` (prox_acao de cada estado em que o fluxo inicial para). Uma passagem de um processo (`RegistroBase`, `RegistroMain`, `RegistroAdcPdfAnt`, `RegistroDeproc`, `RegistroCancMemoDeprocAnt`, `RegistroResposta`, `RegistroDeprocExcluirDocs`, `RegistroVerificarMarcadores`): árvore, rodada, marcadores e resultado; `ProxAcao` e `registrar_erro()` |
 | `planilha_controle.py` | `PlanilhaControleGeral`: atualiza e formata a planilha de controle geral a cada processo (gravação atômica), com backup; `linha_processo()` (linha atual do processo, para a conferência da `prox_acao`); `HistoricoCsv` (histórico das passagens em CSV) e a migração da aba `historico` antiga |
@@ -84,9 +85,9 @@ desenhado em [`docs/fluxo.drawio`](docs/fluxo.drawio) (uma aba por fluxo:
 | `todas_infos.py` | Fluxo GEACS TODAS INFOS: caminho (direto à DEPROC ou pela DISA), leitura do memo de resultado da DEPROC e dos PDFs do MANTIS (download e pypdf), recálculo nas bases DEPROC e MANTIS, conferência e linhas das tabelas do memo |
 | `fluxo_resposta.py` | Base dos fluxos de resposta (**TODO**: não montados): `conferir_marcador_aguarda()`, `processar_linha()`, `executar()`, `FluxoNaoMontado` ([seção](#fluxos-de-resposta-todo)) |
 | `main_geacs_resp_apis.py`, `main_geacs_resp_disa.py`, `main_geacs_resp_deproc.py` | Fluxos de resposta da APIS, da DISA e da DEPROC (`poetry run task run_geacs_resp_apis`, `..._disa`, `..._deproc`): modelos com TODO em `tratar_resposta` |
-| `main_deproc_calcula_copa.py` | Fluxo DEPROC (`poetry run task run_deproc_calcula_copa [-a AAAA]`; ano de cada processo pela planilha de controle, `anos_dos_processos`), na unidade da DEPROC: memo DEPROC assinado, coparticipação, relatório e memo de resultado ([seção](#fluxo-deproc)) |
+| `main_deproc_calcula_copa.py` | Fluxo DEPROC (`poetry run task run_deproc_calcula_copa [-a AAAA -d DD/MM/AAAA]`; base de cada processo pela planilha de controle, `bases_dos_processos`), na unidade da DEPROC: memo DEPROC assinado, coparticipação, relatório e memo de resultado ([seção](#fluxo-deproc)) |
 | `main_deproc_excluir_docs.py` | Fluxo DEPROC EXCLUIR DOCS (`poetry run task run_deproc_excluir_docs`), na unidade da DEPROC: exclui os documentos da DEPROC gerados pelo `deproc_calcula_copa` (PDF pelo nome, memo pelo assunto) e remove os marcadores da DEPROC, sem alterar a `prox_acao` ([seção](#fluxo-deproc-excluir-docs)) |
-| `coparticipacao_deproc.py` | Fluxo DEPROC: carga da base DEPROC (aba `Resultado`; `BasesDeprocPorAno`: a de cada ano, carregada na primeira vez que um processo precisa dela, também no GEACS TODAS INFOS), conferência das matrículas, só as linhas com `VALOR_BASE_COPA` diferente de 0, filtro pelo período, colunas do relatório e totais (aba `DE-PARA`) |
+| `coparticipacao_deproc.py` | Fluxo DEPROC: carga da base DEPROC (aba `Resultado`; `BasesDeprocPorAno`: a de cada ano e data de geração, carregada na primeira vez que um processo precisa dela, também no GEACS TODAS INFOS), conferência das matrículas, só as linhas com `VALOR_BASE_COPA` diferente de 0, filtro pelo período, colunas do relatório e totais (aba `DE-PARA`) |
 | `relatorio_deproc.py` | Fluxo DEPROC: PDF da coparticipação e inclusão no processo, com retomada pelo nome |
 | `processos_a_processar.py` | `ler_processos_a_processar(aba)`: lista de processos de cada fluxo ([Entrada](#entrada)) |
 | `main_pdf_unico.py` | Utilitário avulso: gera um PDF a partir de um Excel |
@@ -642,15 +643,21 @@ processo (versão anterior `v2v: `, `01.06.2`/`01.08.2`/`01.08.3`, manuais como
 
 ### 1. Script principal (`main_geacs_inicial.py`)
 
-`poetry run task run_geacs_inicial -a 2019`. Na planilha de controle, `script` =
-`geacs_inicial` (as passagens antigas têm `geacs`).
+`poetry run task run_geacs_inicial -a 2019 -d 06/11/2026`. Na planilha de
+controle, `script` = `geacs_inicial` (as passagens antigas têm `geacs`).
 
-O `-a` (`--ano`) é o **ano dos processos** da execução, **obrigatório**: sem
-ele ou fora do formato `AAAA`, o `argparse` (`ler_argumentos`) mostra o erro e
-encerra antes do log, do login e de qualquer ação no SEI. Não precisa ter base
-DEPROC cadastrada. O ano vai para a coluna `ano_processo` da planilha de
-controle em **toda** passagem (inclusive as que param no roteamento), e o
-[fluxo DEPROC](#fluxo-deproc) escolhe por ele a base DEPROC do processo.
+O `-a` (`--ano`, **ano dos processos**, `AAAA`) e o `-d` (`--data`, **data de
+geração da planilha da base DEPROC**, `DD/MM/AAAA`) são **obrigatórios** e
+escolhem a base DEPROC dos processos (`constantes.BaseDeproc`; o ano e a data
+estão no nome do arquivo: `-a 2019 -d 06/11/2026` →
+`dados/fluxo_deproc/copa-MANTIS11281-base_2019-06_11_2026.xlsx`). Sem um dos
+dois, fora do formato (data inexistente também) ou sem o arquivo na pasta, o
+`argparse` (`ler_argumentos`, `argumentos_base_deproc.base_dos_argumentos`)
+mostra o erro (com as bases da pasta) e encerra antes do log, do login e de
+qualquer ação no SEI. O ano e a data vão para as colunas `ano_processo` e
+`data_geracao_base_processo` da planilha de controle em **toda** passagem
+(inclusive as que param no roteamento), e o [fluxo DEPROC](#fluxo-deproc)
+escolhe por elas a base DEPROC do processo. O `geacs_inicial` não lê a base.
 
 **Início**
 
@@ -1257,8 +1264,9 @@ DEPROC. `poetry run task run_geacs_todas_infos` (`main_geacs_todas_infos.py` e
 `todas_infos.py`), com os processos da aba `geacs_todas_infos` de
 `dados/inputs/processos_a_processar.xlsx`. Carrega as bases APIS, DISA e
 MANTIS, faz login e troca para a unidade da GEACS (`abrir_sei(UNIDADE_GEACS)`).
-A base DEPROC é a do **ano usado no `deproc_calcula_copa`** de cada processo
-(`BasesDeprocPorAno`: carregada na primeira vez que um processo precisa dela).
+A base DEPROC é a **usada no `deproc_calcula_copa`** de cada processo (ano e
+data de geração; `BasesDeprocPorAno`: carregada na primeira vez que um processo
+precisa dela).
 
 Dois caminhos (a ordem das perguntas é a do código):
 
@@ -1280,15 +1288,16 @@ Para cada processo:
    as informações) encaminhado (concluído). Nos dois, sem ler mais nada.
    **Sem o `01.10.B.1 - Aguarda DEPROC: Coparticipação`**: `SemAguardaDeproc`,
    sem ação.
-   **Ano da base DEPROC** (`ano_da_base_deproc`, coluna
-   `ano_base_deproc_todas_infos`): o da coluna `ano_base_deproc` da linha do
-   processo na planilha de controle, gravada pelo `deproc_calcula_copa`. Sem
-   ela (processo apurado antes da coluna existir), o ano da base cuja data de
-   geração é a da coluna `data_geracao_base_deproc`, se só uma base tem essa
-   data (com aviso no log; em 17/11/2026 os 108 processos com memo de resultado
-   da DEPROC tinham `06/11/2026`, isto é, 2019). Sem ano, ano sem base em
-   `BASES_DEPROC` ou planilha de controle não lida: `SemAnoBaseDeproc`, sem
-   ação.
+   **Base DEPROC** (`base_deproc_da_planilha`; o ano vai para a coluna
+   `ano_base_deproc_todas_infos`): o ano e a data das colunas `ano_base_deproc`
+   e `data_geracao_base_deproc` da linha do processo na planilha de controle,
+   gravadas pelo `deproc_calcula_copa` (`BaseDeproc`, o arquivo com os dois no
+   nome). Só com uma das duas (ex.: processo apurado antes da coluna
+   `ano_base_deproc` existir; em 25/11/2026, 128 processos só com
+   `06/11/2026`), a única base da pasta com esse ano ou essa data (com aviso no
+   log; `bases_deproc_na_pasta`). Sem as duas, com mais de uma base possível,
+   sem o arquivo na pasta ou planilha de controle não lida: `SemAnoBaseDeproc`,
+   sem ação.
 2. Sem `Incluir Documento`: `ProcessoFechadoNoSetor`, **não reabre**. Confere
    se o `01.12` está cadastrado (`garantir_marcadores_no_sei`).
 3. Lista a árvore e lê o último memo da APIS destinado à GEACS
@@ -1397,42 +1406,52 @@ inicial não são gravados (`RegistroResposta`). Há testes em
 
 ## Fluxo DEPROC
 
-`poetry run task run_deproc_calcula_copa [-a 2019]` (`main_deproc_calcula_copa.py`). O **ano
-de cada processo** (`anos_dos_processos`) vem da planilha de controle: coluna
-`ano_processo` (gravada pelo `geacs_inicial -a`) ou, sem ela, `ano_base_deproc`
-(de uma apuração anterior). O `-a` (`--ano`) só é **exigido** se algum processo
-da aba não tiver o ano na planilha (ou a planilha não puder ser lida): sem ele,
-o `argparse` lista esses processos e encerra (código 2) antes do login. Com o
-`-a`, ele vale só para os processos sem ano, e vai para a coluna `ano_processo`
-deles (`RegistroDeproc.ano_processo`; os que já têm o ano não a regravam). Com
-o `-a` diferente do ano da planilha, vale o da planilha (aviso no log). Cada
-ano cadastrado em
-`constantes.BASES_DEPROC` (`BaseDeproc`) tem a sua **planilha da base DEPROC**
-(em `dados/fluxo_deproc/`) e a **data de geração** dela (retorno do MANTIS ou
-data da planilha; não está na planilha), citada no memo de resultado:
+`poetry run task run_deproc_calcula_copa [-a 2019 -d 06/11/2026]`
+(`main_deproc_calcula_copa.py`). A **base DEPROC de cada processo**
+(`bases_dos_processos`) é escolhida pelo ano e pela **data de geração** da
+planilha (retorno do MANTIS ou data da planilha), que estão no nome do arquivo,
+em `dados/fluxo_deproc/` (`constantes.BaseDeproc`): `-a 2019 -d 06/11/2026` →
+`copa-MANTIS11281-base_2019-06_11_2026.xlsx`. A data é citada no memo de
+resultado. Na pasta (25/11/2026):
 
-| `-a` | Planilha | Data de geração |
+| `-a` | `-d` | Planilha |
 |---|---|---|
-| `2019` | `copa-MANTIS11281-base_2019.xlsx` (antes `Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx`) | 06/11/2026 |
-| `2020` | `copa-MANTIS11281-base_2020.xlsx` | 16/11/2026 |
-| `2021` | `copa-MANTIS11281-base_2021.xlsx` | 23/11/2026 |
+| `2019` | `06/11/2026` | `copa-MANTIS11281-base_2019-06_11_2026.xlsx` (antes `copa-MANTIS11281-base_2019.xlsx` e `Relatório Base 2 - MANTIS # 11281 - BASE 2019.xlsx`) |
+| `2019` | `24/11/2026` | `copa-MANTIS11281-base_2019-24_11_2026.xlsx` |
+| `2020` | `16/11/2026` | `copa-MANTIS11281-base_2020-16_11_2026.xlsx` |
+| `2020` | `24/11/2026` | `copa-MANTIS11281-base_2020-24_11_2026.xlsx` |
+| `2021` | `23/11/2026` | `copa-MANTIS11281-base_2021-23_11_2026.xlsx` |
 
-Para um ano novo, coloque a planilha na pasta e acrescente a linha em
-`BASES_DEPROC`. `-a` com ano sem base cadastrada: o `argparse`
-(`ler_argumentos`) mostra o erro e encerra antes do log, do login e de qualquer
-ação no SEI. Processo cujo ano da planilha não tem base: erro
-(`ErroAvaliacao`, depois de ler os marcadores e antes de qualquer ação no SEI;
-os de memo no bloco ou encaminhado seguem como sempre). Os anos, as planilhas e
-as datas vão para o log, e o ano e a data, para as colunas `ano_base_deproc` e
-`data_geracao_base_deproc`, **só na passagem que usa a base** (apuração da
-coparticipação): a que para antes (memo no bloco, encaminhado, erro antes da
-apuração) não as sobrescreve. O fluxo GEACS TODAS INFOS confere a coparticipação
-na base do ano dessa coluna. Roda **na unidade da DEPROC**
-(`alterar_unidade_sei(UNIDADE_DEPROC)`) e lê a aba `deproc_calcula_copa` de
-`dados/inputs/processos_a_processar.xlsx`. Carrega a base de cada ano uma vez,
-quando o primeiro processo dele precisa (`BasesDeprocPorAno`), aba
-`Resultado` (uma linha por item atendido, matrículas **com DV**). O fluxo GEACS
-TODAS INFOS usa a base do ano gravado em `ano_base_deproc`.
+Para uma base nova (outro ano ou nova geração), basta colocar a planilha na
+pasta com o ano e a data no nome; não há cadastro no código (até 25/11/2026,
+`BASES_DEPROC`).
+
+A base vem da planilha de controle (`base_na_planilha`): colunas `ano_processo`
+e `data_geracao_base_processo` (gravadas pelo `geacs_inicial -a -d`) ou, sem as
+duas, `ano_base_deproc` e `data_geracao_base_deproc` (de uma apuração anterior).
+O `-a` e o `-d` (sempre juntos) só são **exigidos** se algum processo da aba não
+tiver a base na planilha (ou a planilha não puder ser lida): sem eles, o
+`argparse` lista esses processos e encerra (código 2) antes do login. Com eles,
+valem só para os processos sem base, e vão para as colunas `ano_processo` e
+`data_geracao_base_processo` deles (`RegistroDeproc`; os que já têm a base não
+as regravam). Com a base da planilha diferente da dos argumentos, vale a da
+planilha (aviso no log). O processo só com o `ano_processo` (do `geacs_inicial`
+de antes do `-d`) usa o `-a` e o `-d` só se o `-a` for o mesmo ano; com outro,
+também encerra antes do login. `-a` ou `-d` fora do formato, só um dos dois ou
+sem o arquivo na pasta: o `argparse` (`ler_argumentos`) mostra o erro e encerra
+antes do log, do login e de qualquer ação no SEI. Processo cuja base da
+planilha não está na pasta: erro (`ErroAvaliacao`, depois de ler os marcadores
+e antes de qualquer ação no SEI; os de memo no bloco ou encaminhado seguem como
+sempre). As bases vão para o log, e o ano e a data, para as colunas
+`ano_base_deproc` e `data_geracao_base_deproc`, **só na passagem que usa a
+base** (apuração da coparticipação): a que para antes (memo no bloco,
+encaminhado, erro antes da apuração) não as sobrescreve. O fluxo GEACS TODAS
+INFOS confere a coparticipação na base dessas colunas. Roda **na unidade da
+DEPROC** (`alterar_unidade_sei(UNIDADE_DEPROC)`) e lê a aba
+`deproc_calcula_copa` de `dados/inputs/processos_a_processar.xlsx`. Carrega
+cada base uma vez, quando o primeiro processo dela precisa
+(`BasesDeprocPorAno`), aba `Resultado` (uma linha por item atendido, matrículas
+**com DV**).
 
 Usa os marcadores da unidade da DEPROC, como os da GEACS
 ([marcadores](#marcadores-tagspy)), com o mesmo prefixo `v2: ` (os
@@ -1491,8 +1510,8 @@ Para cada processo (erro: `prox_acao` = Verificar erro, sem ação no SEI):
      (valor 0); no relatório em PDF, as de valor 0 não aparecem (abaixo).
 6. Antes de qualquer documento, confere bloco (`BLOCO_MEMO_GEACS_CALCULO_COPA`,
    `7765003`), signatário (`NOME_SIGNATARIO_DEPROC`: Danúbia Lacerda Gomes de
-   Oliveira), texto do memo (`MemoGeacsCalculoCopa.TEXTO_DEFINIDO`) e data de
-   geração da base (a do ano `-a` da execução, citada no memo). Faltando algum: erro.
+   Oliveira) e texto do memo (`MemoGeacsCalculoCopa.TEXTO_DEFINIDO`). Faltando
+   algum: erro. A data de geração citada no memo é a da base do processo.
 7. **➕ `01`** e relatório em PDF (`relatorio_deproc.py`), só se houver
    coparticipação no período (`ResultadoDeproc.tem_coparticipacao`: algum
    atendimento e total apurado diferente de 0): documento externo `Coparticipação - <matrícula do titular> -
@@ -1657,7 +1676,7 @@ coluna `num_sei` (um processo por linha; linhas vazias são ignoradas):
 
 | Aba | Fluxo |
 |---|---|
-| `geacs_inicial` | `poetry run task run_geacs_inicial -a AAAA` (`main_geacs_inicial.py`) |
+| `geacs_inicial` | `poetry run task run_geacs_inicial -a AAAA -d DD/MM/AAAA` (`main_geacs_inicial.py`) |
 | `geacs_resp_apis` | `poetry run task run_geacs_resp_apis` (`main_geacs_resp_apis.py`; **TODO**: não montado) |
 | `geacs_resp_disa` | `poetry run task run_geacs_resp_disa` (`main_geacs_resp_disa.py`; **TODO**: não montado) |
 | `geacs_resp_deproc` | `poetry run task run_geacs_resp_deproc` (`main_geacs_resp_deproc.py`; **TODO**: não montado) |
@@ -1667,7 +1686,7 @@ coluna `num_sei` (um processo por linha; linhas vazias são ignoradas):
 | `geacs_corrige_envio_disa` | `poetry run task run_geacs_corrige_envio_disa` (`main_geacs_corrige_envio_disa.py`) |
 | `geacs_verificar_marcadores` | `poetry run task run_geacs_verificar_marcadores` (`main_geacs_verificar_marcadores.py`) |
 | `geacs_todas_infos` | `poetry run task run_geacs_todas_infos` (`main_geacs_todas_infos.py`) |
-| `deproc_calcula_copa` | `poetry run task run_deproc_calcula_copa [-a AAAA]` (`main_deproc_calcula_copa.py`; `-a` só se algum processo não tiver o ano na planilha de controle) |
+| `deproc_calcula_copa` | `poetry run task run_deproc_calcula_copa [-a AAAA -d DD/MM/AAAA]` (`main_deproc_calcula_copa.py`; `-a` e `-d` só se algum processo não tiver a base na planilha de controle) |
 | `deproc_excluir_docs` | `poetry run task run_deproc_excluir_docs` (`main_deproc_excluir_docs.py`) |
 
 Aba faltando ou sem a coluna `num_sei`: a execução para com erro antes do
@@ -1758,9 +1777,10 @@ perca os processos já tratados.
   **Não renomeie as colunas existentes** (por isso as da base APIS
   continuam com `base_geral`), exceto com migração na leitura, como a das
   colunas dos marcadores (18/11/2026).
-- `ano_processo`: ano dos processos (`geacs_inicial -a`, ou o `-a` do
-  `deproc_calcula_copa` para quem não tinha), usado pelo fluxo DEPROC para
-  escolher a base.
+- `ano_processo` e `data_geracao_base_processo`: ano dos processos e data de
+  geração da base DEPROC (`geacs_inicial -a -d`, ou o `-a -d` do
+  `deproc_calcula_copa` para quem não tinha), usados pelo fluxo DEPROC para
+  escolher a base. Antes de 25/11/2026 o `geacs_inicial` só gravava o ano.
 - Rastreabilidade: `processo_reaberto`, `velho`, `memos_velho_sei`, `memo_apis_sei`,
   `memos_apis_geacs_sei`, `modelo_memo_apis` (`periodo_por_dependente` ou
   `novo_novo`), `motivo_formato_invalido`,

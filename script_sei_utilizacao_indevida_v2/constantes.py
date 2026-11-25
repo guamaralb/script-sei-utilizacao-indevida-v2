@@ -1,5 +1,6 @@
 """Constantes do script."""
 
+import re
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -37,24 +38,45 @@ DIR_FLUXO_DEPROC = DIR_DADOS / 'fluxo_deproc'
 DIR_FLUXO_DEPROC_PDF = DIR_FLUXO_DEPROC / 'pdf'
 
 
+# Base DEPROC: uma planilha por ano dos processos e data de geração (retorno
+# do MANTIS ou data da planilha), as duas no nome do arquivo, em
+# DIR_FLUXO_DEPROC: copa-MANTIS11281-base_2019-06_11_2026.xlsx
+PREFIXO_ARQ_BASE_DEPROC = 'copa-MANTIS11281-base_'
+_PADRAO_ARQ_BASE_DEPROC = re.compile(rf'{re.escape(PREFIXO_ARQ_BASE_DEPROC)}(\d{{4}})-(\d\d)_(\d\d)_(\d{{4}})\.xlsx')
+
+
 @dataclass(frozen=True)
 class BaseDeproc:
-    """Base DEPROC de um ano: a planilha e a data de geração dela (retorno do
-    MANTIS ou data da planilha; não está na planilha), citada no memo de
-    resultado."""
+    """Base DEPROC de um ano (-a) e data de geração (-d, DD/MM/AAAA, citada no
+    memo de resultado). O arquivo sai das duas:
+    BaseDeproc('2019', '06/11/2026').arquivo ->
+    copa-MANTIS11281-base_2019-06_11_2026.xlsx."""
 
-    arquivo: Path
+    ano: str  # AAAA
     data_geracao: str  # DD/MM/AAAA
 
+    @property
+    def arquivo(self) -> Path:
+        return DIR_FLUXO_DEPROC / f'{PREFIXO_ARQ_BASE_DEPROC}{self.ano}-{self.data_geracao.replace("/", "_")}.xlsx'
 
-# Uma base por ano dos processos: poetry run task run_deproc_calcula_copa -a 2019.
-# Para um ano novo, acrescente a planilha (em DIR_FLUXO_DEPROC) e a data de
-# geração dela
-BASES_DEPROC: dict[str, BaseDeproc] = {
-    '2019': BaseDeproc(DIR_FLUXO_DEPROC / 'copa-MANTIS11281-base_2019.xlsx', '06/11/2026'),
-    '2020': BaseDeproc(DIR_FLUXO_DEPROC / 'copa-MANTIS11281-base_2020.xlsx', '16/11/2026'),
-    '2021': BaseDeproc(DIR_FLUXO_DEPROC / 'copa-MANTIS11281-base_2021.xlsx', '23/11/2026'),
-}
+    def existe(self) -> bool:
+        return self.arquivo.is_file()
+
+    def __str__(self) -> str:
+        return f'{self.ano} (gerada em {self.data_geracao}: {self.arquivo.name})'
+
+
+def bases_deproc_na_pasta() -> list[BaseDeproc]:
+    """As bases DEPROC em DIR_FLUXO_DEPROC, pelo nome do arquivo, em ordem."""
+    if not DIR_FLUXO_DEPROC.is_dir():
+        return []
+    bases = []
+    for arquivo in DIR_FLUXO_DEPROC.iterdir():
+        if correspondencia := _PADRAO_ARQ_BASE_DEPROC.fullmatch(arquivo.name):
+            ano, dia, mes, ano_data = correspondencia.groups()
+            bases.append(BaseDeproc(ano, f'{dia}/{mes}/{ano_data}'))
+    return sorted(bases, key=lambda b: (b.ano, b.data_geracao[6:], b.data_geracao[3:5], b.data_geracao[:2]))
+
 
 ARQ_USO_REDE_PROPRIA = DIR_INPUTS / 'beneficiarios_atendidos_rede_propria-2026_09_23.xlsx'
 # Base APIS: listagem de todos os beneficiários da demanda (a base DISA é

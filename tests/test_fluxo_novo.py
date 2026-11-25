@@ -7,6 +7,7 @@ from datetime import date
 import main_geacs_inicial
 import processar_novo
 import pytest
+from constantes import BaseDeproc
 from mantis import Atendimento, BaseMantis, BasesMantis
 from Registro import ProxAcao, RegistroMain, registrar_erro
 from relatorios_mantis import REDE_CREDENCIADA, inicio_nome_relatorio
@@ -947,9 +948,9 @@ def test_navegador_fechado_registra_o_erro_do_processo_e_para_o_loop(monkeypatch
         def quit():
             return None
 
-    def processar(driver, num_processo, bases_uso, bases_mantis, ano):
-        assert ano == '2019'
-        registro = RegistroMain(num_processo=num_processo, data_execucao='agora', ano_processo=ano)
+    def processar(driver, num_processo, bases_uso, bases_mantis, base_deproc):
+        assert base_deproc == BaseDeproc('2019', '06/11/2026')
+        registro = RegistroMain(num_processo=num_processo, data_execucao='agora', ano_processo=base_deproc.ano)
         if num_processo != 'P1':
             registrar_erro(registro, InvalidSessionIdException('invalid session id'))
         return registro
@@ -965,22 +966,37 @@ def test_navegador_fechado_registra_o_erro_do_processo_e_para_o_loop(monkeypatch
     for constante in ('DIR_DADOS', 'DIR_INPUTS', 'DIR_CONTROLE', 'DIR_LOG', 'DIR_UI_ANTIGAS_XLS', 'DIR_UTILIZACOES_MANTIS_PDF'):
         monkeypatch.setattr(main_geacs_inicial, constante, tmp_path)
 
-    main_geacs_inicial.main(['-a', '2019'])
+    main_geacs_inicial.main(['-a', '2019', '-d', '06/11/2026'])
 
     assert gravados == [('P1', None), ('P2', 'InvalidSessionIdException')]
     # Lê a aba do fluxo em processos_a_processar.xlsx
     assert abas == ['geacs_inicial']
 
 
-def test_ano_obrigatorio_na_execucao(monkeypatch, capsys):
-    assert main_geacs_inicial.ler_argumentos(['-a', '2019']).ano == '2019'
-    assert main_geacs_inicial.ler_argumentos(['--ano', ' 2021 ']).ano == '2021'
+def test_ano_e_data_obrigatorios_na_execucao(monkeypatch, capsys):
+    assert main_geacs_inicial.ler_argumentos(['-a', '2019', '-d', '06/11/2026']) == BaseDeproc('2019', '06/11/2026')
+    assert main_geacs_inicial.ler_argumentos(['--ano', ' 2021 ', '--data', ' 23/11/2026 ']) == BaseDeproc('2021', '23/11/2026')
+    assert main_geacs_inicial.ler_argumentos(['-a', '2021', '-d', '23/11/2026']).arquivo.name == 'copa-MANTIS11281-base_2021-23_11_2026.xlsx'
 
-    for argv in ([], ['-a', '19'], ['-a', '20199'], ['-a', 'ano']):
+    for argv in (
+        [],
+        ['-a', '2019'],
+        ['-d', '06/11/2026'],
+        ['-a', '19', '-d', '06/11/2026'],
+        ['-a', '20199', '-d', '06/11/2026'],
+        ['-a', 'ano', '-d', '06/11/2026'],
+        ['-a', '2019', '-d', '2026-11-06'],
+        ['-a', '2019', '-d', '32/11/2026'],
+        # Sem o arquivo da base na pasta
+        ['-a', '2019', '-d', '16/11/2026'],
+    ):
         with pytest.raises(SystemExit) as erro:
             main_geacs_inicial.ler_argumentos(argv)
         assert erro.value.code == 2
-    assert '-a' in capsys.readouterr().err
+    err = capsys.readouterr().err
+    assert '-a' in err
+    assert '-d' in err
+    assert 'base DEPROC não encontrada' in err
 
     # Sem o ano, nada é feito (nem log, nem login)
     monkeypatch.setattr(main_geacs_inicial, 'configurar_logging', lambda arquivo: pytest.fail('não deve criar o log'))
@@ -992,9 +1008,10 @@ def test_ano_obrigatorio_na_execucao(monkeypatch, capsys):
 def test_ano_gravado_em_toda_passagem(sei):
     # Passagem que não chega à avaliação (memo no bloco): o ano é gravado
     sei.tags = [TAG_PROCESSO_NOVO, TAG_MEMO_DEPROC_COPARTICIPACAO]
-    registro = main_geacs_inicial._processar_linha(DriverFalso(), 'PROC', bases(), None, '2020')
+    registro = main_geacs_inicial._processar_linha(DriverFalso(), 'PROC', bases(), None, BaseDeproc('2020', '16/11/2026'))
     assert not registro.avaliou_processo
     assert registro.to_dict()['ano_processo'] == '2020'
+    assert registro.to_dict()['data_geracao_base_processo'] == '16/11/2026'
 
 
 def test_erro_inesperado_recarrega_a_pagina(sei, monkeypatch):

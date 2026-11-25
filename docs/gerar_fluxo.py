@@ -248,13 +248,14 @@ def P(texto, lado, rotulo='Sim', segue='Não', largura=230):
 
 col_main = Coluna(
     '1 · main() e _processar_linha()',
-    'poetry run task run_geacs_inicial -a AAAA (ano dos processos, obrigatório: gravado em ano_processo, em toda passagem; o deproc_calcula_copa escolhe por ele a base DEPROC). '
+    'poetry run task run_geacs_inicial -a AAAA -d DD/MM/AAAA (ano dos processos e data de geração da base DEPROC, obrigatórios: gravados em ano_processo e data_geracao_base_processo, em toda passagem; '
+    'o deproc_calcula_copa escolhe por eles a base DEPROC, copa-MANTIS11281-base_AAAA-DD_MM_AAAA.xlsx). '
     'Carrega as bases, faz login e passa cada processo pelo fluxo. Um erro nunca interrompe os demais processos',
     [
         T('Início'),
         P(
-            'ler_argumentos():<br>sem -a AAAA?',
-            [E('argparse mostra o erro e encerra (código 2), antes do log, do login e de qualquer ação no SEI')],
+            'ler_argumentos():<br>sem -a e -d, fora do formato<br>ou sem o arquivo da base?',
+            [E('argparse mostra o erro (com as bases da pasta) e encerra (código 2), antes do log, do login e de qualquer ação no SEI')],
         ),
         F('configurar_logging()', 'Cria as pastas e o log da execução'),
         F('carregar_bases() · carregar_bases_mantis()', 'Lê a aba geacs_inicial de processos_a_processar.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
@@ -949,28 +950,28 @@ col_copa_loop = col_loop(
     'run_deproc_calcula_copa',
     'deproc_calcula_copa',
     'da DEPROC',
-    '. A base DEPROC de cada ano (BASES_DEPROC; 2019, 2020 e 2021: copa-MANTIS11281-base_2019 / _2020 / _2021, aba Resultado, matrículas com DV) é carregada na primeira vez que um processo precisa dela',
+    '. A base DEPROC de cada ano e data de geração (BaseDeproc: copa-MANTIS11281-base_AAAA-DD_MM_AAAA.xlsx em dados/fluxo_deproc, aba Resultado, matrículas com DV) é carregada na primeira vez que um processo precisa dela',
     'processar_deproc() — coluna 2',
-    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, ano_processo (só o vindo do -a), marcadores_deproc_*, estado_atual_deproc e DEPROC | <marcador>. '
+    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, ano_processo e data_geracao_base_processo (só os vindos do -a e do -d), marcadores_deproc_*, estado_atual_deproc e DEPROC | <marcador>. '
     'Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',
     argumentos=[
         P(
-            'ler_argumentos():<br>-a com ano sem base<br>em BASES_DEPROC?',
-            [E('argparse mostra o erro e encerra (código 2), antes do log, do login e de qualquer ação no SEI')],
+            'ler_argumentos():<br>só um de -a e -d, fora do formato<br>ou sem o arquivo da base?',
+            [E('argparse mostra o erro (com as bases da pasta) e encerra (código 2), antes do log, do login e de qualquer ação no SEI')],
         ),
     ],
     antes_do_login=[
         F(
-            'anos_dos_processos()',
-            'Ano de cada processo: ano_processo da planilha de controle (geacs_inicial) ou, sem ela, ano_base_deproc (apuração anterior). Sem os dois: o do -a (gravado em ano_processo). '
-            'Com o -a diferente do da planilha, vale o da planilha (aviso no log)',
+            'bases_dos_processos()',
+            'Base de cada processo: ano_processo e data_geracao_base_processo da planilha de controle (geacs_inicial) ou, sem eles, ano_base_deproc e data_geracao_base_deproc (apuração anterior). '
+            'Sem nenhum par: a do -a e do -d (gravados em ano_processo e data_geracao_base_processo). Com a do -a e -d diferente da da planilha, vale a da planilha (aviso no log)',
         ),
         P(
-            'Algum processo sem ano<br>(na planilha e no -a)?',
-            [E('-a obrigatório: argparse lista os processos sem ano e encerra (código 2), antes do login')],
+            'Algum processo sem base<br>(na planilha e no -a -d), ou só com<br>o ano_processo e -a de outro ano?',
+            [E('-a e -d obrigatórios: argparse lista os processos e encerra (código 2), antes do login')],
         ),
     ],
-    comando=' [-a AAAA] (ano dos processos sem ano na planilha de controle: obrigatório se algum não tiver)',
+    comando=' [-a AAAA -d DD/MM/AAAA] (base DEPROC dos processos sem a base na planilha de controle: obrigatórios se algum não tiver)',
 )
 _erro_segue(col_copa_loop, 10)
 col_copa = Coluna(
@@ -984,7 +985,7 @@ col_copa = Coluna(
             'Tem 01.02.1 - Encaminhado GEACS:<br>Memo Cálculo COPA (manual)?',
             [T('Concluído, sem ler mais nada<br>prox_acao = DEPROC: memo de resultado da coparticipação encaminhado à GEACS (concluído)')],
         ),
-        P('Ano do processo sem base<br>em BASES_DEPROC?', [E('<b>ErroAvaliacao</b>: sem ação no SEI')]),
+        P('Base do processo<br>fora da pasta?', [E('<b>ErroAvaliacao</b>: sem ação no SEI')]),
         P('Sem Incluir Documento?', [E('<b>ProcessoFechadoNoSetor</b>: não está aberto na DEPROC (não reabre)')]),
         F('garantir_marcadores_no_sei()', 'Os três que o script adiciona (TAGS_DEPROC): 01, 01.01 e 01.02'),
         F('listar_documentos_arvore() · obter_dados_ui()', 'Último memo da APIS destinado à GEACS (define a rodada). Sem memo ou formato inválido: erro'),
@@ -996,7 +997,7 @@ col_copa = Coluna(
         F(
             '_conferir_configuracao()',
             'Antes de qualquer documento: bloco BLOCO_MEMO_GEACS_CALCULO_COPA (7765003), signatário (Danúbia Lacerda Gomes de Oliveira), '
-            'texto do memo e data de geração da base (a do ano do processo, em BASES_DEPROC). Faltando: erro',
+            'texto do memo. Faltando: erro. O memo cita a data de geração da base do processo',
         ),
         M('01 - Tratado pelo Script<br><span style="font-weight:normal">se faltar</span>'),
         P(
@@ -1080,10 +1081,10 @@ col_todas = Coluna(
         P('Com o 01.12.1 - Encaminhado APIS: Todas as Infos?', [T('prox_acao = Memo à APIS (todas as informações) encaminhado (concluído)')]),
         P('Sem o 01.10.B.1 - Aguarda DEPROC: Coparticipação?', [E('<b>SemAguardaDeproc</b>: sem ação')]),
         F(
-            'ano_da_base_deproc()',
-            'Ano da coluna ano_base_deproc da planilha de controle (gravada pelo deproc_calcula_copa). Sem ela: o da base com a data de data_geracao_base_deproc. Carrega a base desse ano (BASES_DEPROC)',
+            'base_deproc_da_planilha()',
+            'Ano e data das colunas ano_base_deproc e data_geracao_base_deproc da planilha de controle (gravadas pelo deproc_calcula_copa). Só com uma das duas: a única base da pasta com esse valor. Carrega essa base (BaseDeproc)',
         ),
-        P('Sem o ano<br>(ou ano sem base)?', [E('<b>SemAnoBaseDeproc</b>: sem ação')]),
+        P('Sem a base<br>(ou fora da pasta)?', [E('<b>SemAnoBaseDeproc</b>: sem ação')]),
         P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é criado')]),
         F('garantir_marcadores_no_sei()', 'O 01.12 cadastrado na GEACS'),
         F('obter_dados_ui()', 'Último memo da APIS destinado à GEACS: define a rodada'),

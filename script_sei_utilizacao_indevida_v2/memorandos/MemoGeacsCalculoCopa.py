@@ -9,8 +9,8 @@ from script_sei_utilizacao_indevida_v2.memorandos.TextoPendente import verificar
 
 # Texto do modelo enviado pela GEACS (12/11/2026), em validação com a DEPROC.
 # A data de geração das bases (data_geracao_bases) é obrigatória: é
-# a da base do ano informado na execução (run_deproc_calcula_copa -a AAAA;
-# constantes.BASES_DEPROC)
+# a da base DEPROC do processo (-d do geacs_inicial ou do deproc_calcula_copa;
+# constantes.BaseDeproc)
 TEXTO_DEFINIDO = True
 
 # Não altere o assunto depois de criar memos: é por ele que o script os

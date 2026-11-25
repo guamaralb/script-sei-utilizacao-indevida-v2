@@ -1,0 +1,252 @@
+2026-11-25 11:30:31 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO =================
+2026-11-25 11:30:31 | INFO    | -                         | __main__              | Log: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\logs\2026-11-25_11-30-31_execucao_geacs_inicial.log
+2026-11-25 11:30:31 | INFO    | -                         | __main__              | Ano dos processos: 2019 | Base DEPROC: copa-MANTIS11281-base_2019-24_11_2026.xlsx
+2026-11-25 11:30:31 | INFO    | -                         | processos_a_processar | 5 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_inicial
+2026-11-25 11:30:31 | INFO    | -                         | rede_propria          | Carregando planilha de uso da rede própria: beneficiarios_atendidos_rede_propria-2026_09_23.xlsx
+2026-11-25 11:30:31 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s) | SIM: 1228 | NÃO: 3648 | resposta inválida: 0
+2026-11-25 11:30:32 | INFO    | -                         | rede_propria          | Aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s) | SIM: 1124 | NÃO: 3242 | resposta inválida: 0
+2026-11-25 11:30:32 | INFO    | -                         | rede_propria          | Carregando base APIS de beneficiários: planilha_da_galantini_com_listagem_de_todos_beneficiarios.xlsx
+2026-11-25 11:30:32 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-TITULARES" carregada | 4876 linha(s) | 4876 matrícula(s) única(s)
+2026-11-25 11:30:32 | INFO    | -                         | rede_propria          | Base APIS, aba "UI 2025 EX-DEPENDENTES" carregada | 4366 linha(s) | 4366 matrícula(s) única(s)
+2026-11-25 11:30:32 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria): utilizacao_MANTIS-rede_propria.xlsx
+2026-11-25 11:30:34 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 17354 linha(s) | 1372 matrícula(s) única(s)
+2026-11-25 11:30:35 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 11204 linha(s) | 1118 matrícula(s) única(s)
+2026-11-25 11:30:35 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede própria) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_propria-dependentes_nao_encontrados.xlsx
+2026-11-25 11:30:36 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 10497 linha(s) | 1315 matrícula(s) única(s)
+2026-11-25 11:30:36 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada): utilizacao_MANTIS-rede_credenciada.xlsx
+2026-11-25 11:31:25 | INFO    | -                         | mantis                | MANTIS, aba "TITULARES" carregada | 542357 linha(s) | 4864 matrícula(s) única(s)
+2026-11-25 11:32:05 | INFO    | -                         | mantis                | MANTIS, aba "DEPENDENTES" carregada | 318264 linha(s) | 4308 matrícula(s) única(s)
+2026-11-25 11:32:05 | INFO    | -                         | mantis                | Carregando base do MANTIS (rede credenciada) dos dependentes não encontrados na base APIS: utilizacao_MANTIS-rede_credenciada-dependentes_nao_encontrados.xlsx
+2026-11-25 11:32:37 | INFO    | -                         | mantis                | MANTIS (dependentes não encontrados), aba "DEPENDENTES" carregada | 322450 linha(s) | 5923 matrícula(s) única(s)
+2026-11-25 11:32:38 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-25 11:32:38 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-25 11:32:52 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\utilizacoes\antigas\xlsx
+2026-11-25 11:32:59 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-25 11:32:59 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-25 11:33:00 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-25 11:33:00 | INFO    | 2010.01.0080737/2024-58   | __main__              | INÍCIO [1/5]
+2026-11-25 11:33:16 | WARNING | 2010.01.0080737/2024-58   | __main__              | Processo fechado no setor (sem "Incluir Documento")
+2026-11-25 11:33:17 | INFO    | 2010.01.0080737/2024-58   | __main__              | Árvore: 13 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-25 11:33:17 | INFO    | 2010.01.0080737/2024-58   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-25 11:33:18 | INFO    | 2010.01.0080737/2024-58   | planilha_controle     | Backup da planilha de controle: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-25_11-30-31.xlsx
+2026-11-25 11:33:28 | DEBUG   | 2010.01.0080737/2024-58   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-25 11:33:28 | WARNING | 2010.01.0080737/2024-58   | __main__              | FIM COM ERRO (27.8s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-25 11:33:28 | INFO    | 2010.01.0051732/2025-12   | __main__              | INÍCIO [2/5]
+2026-11-25 11:33:44 | WARNING | 2010.01.0051732/2025-12   | __main__              | Processo fechado no setor (sem "Incluir Documento")
+2026-11-25 11:33:45 | INFO    | 2010.01.0051732/2025-12   | __main__              | Árvore: 10 documento(s) | GEACS: 3 documento(s), 2 memorando(s)
+2026-11-25 11:33:45 | INFO    | 2010.01.0051732/2025-12   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-25 11:33:55 | DEBUG   | 2010.01.0051732/2025-12   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-25 11:33:55 | WARNING | 2010.01.0051732/2025-12   | __main__              | FIM COM ERRO (27.3s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-25 11:33:55 | INFO    | 2010.01.0051835/2025-44   | __main__              | INÍCIO [3/5]
+2026-11-25 11:34:11 | WARNING | 2010.01.0051835/2025-44   | __main__              | Processo fechado no setor (sem "Incluir Documento")
+2026-11-25 11:34:12 | INFO    | 2010.01.0051835/2025-44   | __main__              | Árvore: 11 documento(s) | GEACS: 5 documento(s), 2 memorando(s)
+2026-11-25 11:34:12 | INFO    | 2010.01.0051835/2025-44   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-25 11:34:22 | DEBUG   | 2010.01.0051835/2025-44   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-25 11:34:22 | WARNING | 2010.01.0051835/2025-44   | __main__              | FIM COM ERRO (27.1s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-25 11:34:22 | INFO    | 2010.01.0052679/2025-51   | __main__              | INÍCIO [4/5]
+2026-11-25 11:34:38 | WARNING | 2010.01.0052679/2025-51   | __main__              | Processo fechado no setor (sem "Incluir Documento")
+2026-11-25 11:34:39 | INFO    | 2010.01.0052679/2025-51   | __main__              | Árvore: 10 documento(s) | GEACS: 4 documento(s), 2 memorando(s)
+2026-11-25 11:34:39 | INFO    | 2010.01.0052679/2025-51   | __main__              | Marcadores: ['v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-25 11:34:48 | DEBUG   | 2010.01.0052679/2025-51   | planilha_controle     | Planilha de controle geral salva: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-25 11:34:48 | WARNING | 2010.01.0052679/2025-51   | __main__              | FIM COM ERRO (26.2s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)
+2026-11-25 11:34:48 | INFO    | 2010.01.0082944/2024-27   | __main__              | INÍCIO [5/5]
+2026-11-25 11:35:05 | WARNING | 2010.01.0082944/2024-27   | __main__              | Processo fechado no setor (sem "Incluir Documento")
+2026-11-25 11:35:06 | INFO    | 2010.01.0082944/2024-27   | __main__              | Árvore: 10 documento(s) | GEACS: 6 documento(s), 2 memorando(s)
+2026-11-25 11:35:06 | INFO    | 2010.01.0082944/2024-27   | __main__              | Marcadores: ['v2: 01.02.1 - Mat. N Encontradas Base APIS', 'v2: 01 - Tratado pelo Script', 'v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação']
+2026-11-25 11:35:07 | ERROR   | 2010.01.0082944/2024-27   | planilha_controle     | Falha ao salvar a planilha de controle geral: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx
+Traceback (most recent call last):
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 382, in _gravar
+    _gravar_arquivo(temporario, abas, remover)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 398, in _gravar_arquivo
+    with pd.ExcelWriter(arquivo, engine='openpyxl', **modo) as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 75, in __init__
+    self._book = load_workbook(self._handles.handle, **engine_kwargs)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\reader\excel.py", line 348, in load_workbook
+    reader.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\reader\excel.py", line 303, in read
+    self.read_worksheets()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\reader\excel.py", line 237, in read_worksheets
+    ws_parser.bind_all()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 465, in bind_all
+    self.bind_cells()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 368, in bind_cells
+    for idx, row in self.parser.parse():
+                    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 167, in parse
+    row = self.parse_row(element)
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 303, in parse_row
+    cells = [self.parse_cell(el) for el in row]
+             ~~~~~~~~~~~~~~~^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 242, in parse_cell
+    value = Text.from_tree(child).content
+            ~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\descriptors\serialisable.py", line 103, in from_tree
+    return cls(**attrib)
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\cell\text.py", line 169, in __init__
+    self.rPh = rPh
+    ^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\descriptors\sequence.py", line 27, in __set__
+    seq = self.container(_convert(self.expected_type, value) for value in seq)
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\descriptors\sequence.py", line 27, in <genexpr>
+    seq = self.container(_convert(self.expected_type, value) for value in seq)
+    
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 742, in registrar
+    _gravar(self.arquivo, abas, self._remover)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 389, in _gravar
+    temporario.unlink(missing_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 1042, in unlink
+    os.unlink(self)
+    ~~~~~~~~~^^^^^^
+PermissionError: [WinError 32] O arquivo já está sendo usado por outro processo: 'C:\\Users\\guama\\REPOSITORIOS\\GEACS\\script-sei-utilizacao-indevida-v2\\dados\\controle\\~gravando_11184_controle_geral_de_processos.xlsx'
+2026-11-25 11:35:10 | ERROR   | 2010.01.0082944/2024-27   | planilha_controle     | Falha ao salvar a execução à parte: C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos_2026-11-25_11-30-31_NAO_INCORPORADO.xlsx
+Traceback (most recent call last):
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 382, in _gravar
+    _gravar_arquivo(temporario, abas, remover)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 398, in _gravar_arquivo
+    with pd.ExcelWriter(arquivo, engine='openpyxl', **modo) as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 75, in __init__
+    self._book = load_workbook(self._handles.handle, **engine_kwargs)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\reader\excel.py", line 348, in load_workbook
+    reader.read()
+    ~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\reader\excel.py", line 303, in read
+    self.read_worksheets()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\reader\excel.py", line 237, in read_worksheets
+    ws_parser.bind_all()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 465, in bind_all
+    self.bind_cells()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 368, in bind_cells
+    for idx, row in self.parser.parse():
+                    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 167, in parse
+    row = self.parse_row(element)
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 303, in parse_row
+    cells = [self.parse_cell(el) for el in row]
+             ~~~~~~~~~~~~~~~^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_reader.py", line 242, in parse_cell
+    value = Text.from_tree(child).content
+            ~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\descriptors\serialisable.py", line 103, in from_tree
+    return cls(**attrib)
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\cell\text.py", line 169, in __init__
+    self.rPh = rPh
+    ^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\descriptors\sequence.py", line 27, in __set__
+    seq = self.container(_convert(self.expected_type, value) for value in seq)
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\descriptors\sequence.py", line 27, in <genexpr>
+    seq = self.container(_convert(self.expected_type, value) for value in seq)
+    
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 742, in registrar
+    _gravar(self.arquivo, abas, self._remover)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 389, in _gravar
+    temporario.unlink(missing_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 1042, in unlink
+    os.unlink(self)
+    ~~~~~~~~~^^^^^^
+PermissionError: [WinError 32] O arquivo já está sendo usado por outro processo: 'C:\\Users\\guama\\REPOSITORIOS\\GEACS\\script-sei-utilizacao-indevida-v2\\dados\\controle\\~gravando_11184_controle_geral_de_processos.xlsx'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 407, in _gravar_arquivo
+    _formatar(writer.sheets[aba], list(df.columns))
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 296, in _formatar
+    celula.fill = preenchimento
+    ^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\styles\styleable.py", line 25, in __set__
+    instance._style = StyleArray()
+                      ~~~~~~~~~~^^
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 382, in _gravar
+    _gravar_arquivo(temporario, abas, remover)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 398, in _gravar_arquivo
+    with pd.ExcelWriter(arquivo, engine='openpyxl', **modo) as writer:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1353, in __exit__
+    self.close()
+    ~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_base.py", line 1357, in close
+    self._save()
+    ~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 110, in _save
+    self.book.save(self._handles.handle)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\workbook\workbook.py", line 386, in save
+    save_workbook(self, filename)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 294, in save_workbook
+    writer.save()
+    ~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 275, in save
+    self.write_data()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 77, in write_data
+    self._write_worksheets()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 215, in _write_worksheets
+    self.write_worksheet(ws)
+    ~~~~~~~~~~~~~~~~~~~~^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\writer\excel.py", line 200, in write_worksheet
+    writer.write()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_writer.py", line 359, in write
+    self.write_rows()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_writer.py", line 125, in write_rows
+    self.write_row(xf, row, row_idx)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\worksheet\_writer.py", line 147, in write_row
+    write_cell(xf, self.ws, cell, cell.has_style)
+                                  ^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\openpyxl\styles\styleable.py", line 146, in has_style
+    @property
+    
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 433, in _salvar_a_parte
+    _gravar(a_parte, abas)
+    ~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\guama\REPOSITORIOS\GEACS\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\planilha_controle.py", line 389, in _gravar
+    temporario.unlink(missing_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\guama\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 1042, in unlink
+    os.unlink(self)
+    ~~~~~~~~~^^^^^^
+PermissionError: [WinError 32] O arquivo já está sendo usado por outro processo: 'C:\\Users\\guama\\REPOSITORIOS\\GEACS\\script-sei-utilizacao-indevida-v2\\dados\\controle\\~gravando_11184_controle_geral_de_processos_2026-11-25_11-30-31_NAO_INCORPORADO.xlsx'
+2026-11-25 11:35:10 | WARNING | 2010.01.0082944/2024-27   | __main__              | FIM COM ERRO (22.0s) | ErroAvaliacao: Processamento parado: memo enviado, aguardando resposta (v2: 01.10.B.1 - Aguarda DEPROC: Coparticipação)

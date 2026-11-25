@@ -90,10 +90,10 @@ def sei(monkeypatch):
 
 def _passar(sei, base, bases_mantis=MANTIS_CREDENCIADA_TITULAR_USOU, linha_controle=None, carregadas=None):
     """base: a base DEPROC de qualquer ano; linha_controle: a linha do
-    processo na planilha de controle (padrão: ano 2019)."""
+    processo na planilha de controle (padrão: base de 2019)."""
     sei.memos_passagem = 0
     if linha_controle is None:
-        linha_controle = {'ano_base_deproc': '2019'}
+        linha_controle = {'ano_base_deproc': '2019', 'data_geracao_base_deproc': '06/11/2026'}
 
     def carregar(arquivo):
         if carregadas is not None:
@@ -143,11 +143,14 @@ def test_cria_memo_a_apis_com_todas_as_informacoes(sei, tmp_path):
 @pytest.mark.parametrize(
     ('linha_controle', 'arquivo'),
     [
-        ({'ano_base_deproc': '2020'}, 'copa-MANTIS11281-base_2020.xlsx'),
-        # Lido do Excel como número
-        ({'ano_base_deproc': 2019.0}, 'copa-MANTIS11281-base_2019.xlsx'),
-        # Apurado antes da coluna existir: pela data de geração da base
-        ({'ano_base_deproc': float('nan'), 'data_geracao_base_deproc': '16/11/2026'}, 'copa-MANTIS11281-base_2020.xlsx'),
+        ({'ano_base_deproc': '2020', 'data_geracao_base_deproc': '16/11/2026'}, 'copa-MANTIS11281-base_2020-16_11_2026.xlsx'),
+        # Ano lido do Excel como número
+        ({'ano_base_deproc': 2019.0, 'data_geracao_base_deproc': '06/11/2026'}, 'copa-MANTIS11281-base_2019-06_11_2026.xlsx'),
+        # Apurado antes da coluna ano_base_deproc existir: a única base da
+        # pasta com a data de geração
+        ({'ano_base_deproc': float('nan'), 'data_geracao_base_deproc': '16/11/2026'}, 'copa-MANTIS11281-base_2020-16_11_2026.xlsx'),
+        # Só o ano: a única base da pasta desse ano
+        ({'ano_base_deproc': '2021'}, 'copa-MANTIS11281-base_2021-23_11_2026.xlsx'),
     ],
 )
 def test_usa_a_base_deproc_do_ano_da_planilha_de_controle(sei, tmp_path, linha_controle, arquivo):
@@ -158,16 +161,18 @@ def test_usa_a_base_deproc_do_ano_da_planilha_de_controle(sei, tmp_path, linha_c
 
     assert registro.erro is None
     assert carregadas == [arquivo]
-    assert registro.ano_base_deproc_todas_infos == arquivo[-9:-5]
-    assert registro.to_dict()['ano_base_deproc_todas_infos'] == arquivo[-9:-5]
+    ano = arquivo.removeprefix('copa-MANTIS11281-base_')[:4]
+    assert registro.ano_base_deproc_todas_infos == ano
+    assert registro.to_dict()['ano_base_deproc_todas_infos'] == ano
 
 
 @pytest.mark.parametrize(
     ('linha_controle', 'mensagem'),
     [
-        ({}, 'não registrado na planilha de controle'),
-        ({'data_geracao_base_deproc': '01/01/2026'}, 'não registrado na planilha de controle'),
-        ({'ano_base_deproc': '2018'}, 'sem base cadastrada'),
+        ({}, 'não registrada na planilha de controle'),
+        ({'data_geracao_base_deproc': '01/01/2026'}, 'não registrada na planilha de controle'),
+        ({'ano_base_deproc': '2018'}, 'não registrada na planilha de controle'),
+        ({'ano_base_deproc': '2019', 'data_geracao_base_deproc': '07/11/2026'}, 'não encontrada: copa-MANTIS11281-base_2019-07_11_2026.xlsx'),
     ],
 )
 def test_sem_ano_da_base_deproc_para_sem_acao(sei, tmp_path, linha_controle, mensagem):
