@@ -1124,7 +1124,7 @@ col_verif_loop = col_loop(
     'Só altera a prox_acao pela troca do No Bloco ou pelo memo do Aguarda assinado (nem fluxo e erro dos outros fluxos). '
     'script, ultima_passagem e data_execucao ficam os do último fluxo que agiu (a passagem vai para verificar_marcadores_em e o histórico em CSV). Grava '
     'as colunas de marcadores (uma por marcador, estado_atual e demais_marcadores, no fim), verificar_marcadores_acao_sugerida / _inconsistencia / _erro (depois de erro, em amarelo), '
-    'verificar_marcadores_aberto_na_geacs, verificar_marcadores_memo_aguarda_assinado e, com troca, verificar_marcadores_marcador_trocado',
+    'verificar_marcadores_memo_aguarda_assinado e, com troca, verificar_marcadores_marcador_trocado e verificar_marcadores_aberto_na_geacs',
 )
 _erro_segue(col_verif_loop, 6)
 col_verif = Coluna(
@@ -1134,28 +1134,45 @@ col_verif = Coluna(
     'verificar_marcadores_inconsistencia, com uma ação (AcaoSugerida) em verificar_marcadores_acao_sugerida',
     [
         F('listar_marcadores() · registrar_tags()', 'Marcadores do processo no SEI'),
-        F('tem_incluir_documento()', 'verificar_marcadores_aberto_na_geacs: o fechado no setor é lido como está; só é reaberto para trocar o marcador'),
         P(
             'trocar_no_bloco_assinado():<br>No Bloco com o memo da rodada<br>assinado por Gustavo, Bruna ou Danúbia?',
             [
                 T('Só com marcadores consistentes e o novo marcador cadastrado (garantir_marcadores_no_sei; faltando: inconsistência)'),
+                F('tem_incluir_documento()', 'Só aqui se confere se o processo está aberto (nos outros, não perde tempo): verificar_marcadores_aberto_na_geacs'),
                 F(
                     'reabrir_processo_fechado()',
                     'Processo fechado na GEACS: reabre antes da troca (com MANUAL: não reabre nem troca; não reabriu: inconsistência)',
                 ),
                 M('Aguarda (.1) ou, no 01.12, 01.12.1 - Encaminhado APIS: Todas as Infos (↻ remove o No Bloco)'),
-                T('prox_acao = a do novo estado (exceto DEPROC: ...); verificar_marcadores_marcador_trocado, marcadores_adicionados / _removidos'),
+                T('prox_acao = a do novo estado: Aguardar retorno da APIS / DISA / DEPROC ou, no 01.12.1, concluído (exceto DEPROC: ...); verificar_marcadores_marcador_trocado, marcadores_adicionados / _removidos'),
                 F('_concluir_de_novo() · concluir_processo()', 'Reaberto: conclui de novo, mesmo se a troca falhar. Não concluiu: erro (concluir à mão)'),
             ],
             rotulo='Sim (e segue)',
         ),
         P(
-            'conferir_memos_aguarda():<br>Aguarda com o memo assinado<br>por Gustavo, Bruna ou Danúbia?',
+            'conferir_memos_aguarda():<br>Aguarda ou 01.12.1 - Encaminhado<br>sem o memo na árvore?',
             [
-                T('Planilha: memo_*_sei do memo e verificar_marcadores_memo_aguarda_assinado (marcador: nº SEI (signatário))'),
-                T('Aguarda é o único estado e marcadores consistentes: prox_acao = Aguardar resposta ao memo enviado (exceto se já for ela ou DEPROC: ...)'),
+                E(
+                    'Só estado e marcadores consistentes: erro MemoDoMarcadorNaoEncontrado (verificar_marcadores_erro), '
+                    'prox_acao = Verificar: criar o memo do marcador Aguarda / Encaminhado (memo não encontrado)'
+                ),
             ],
             rotulo='Sim (e segue)',
+        ),
+        P(
+            'Memo do marcador<br>não assinado?',
+            [
+                E(
+                    'Só estado e marcadores consistentes: erro MemoDoMarcadorNaoAssinado (verificar_marcadores_erro), '
+                    'prox_acao = Verificar: assinar o memo do marcador Aguarda / Encaminhado (memo não assinado)'
+                ),
+            ],
+            rotulo='Sim (e segue)',
+        ),
+        T('Memo assinado (qualquer signatário): memo_*_sei e verificar_marcadores_memo_aguarda_assinado (marcador: nº SEI (signatário))'),
+        T(
+            'Único estado e marcadores consistentes: prox_acao = Aguardar retorno da APIS / DISA / DEPROC ao memo enviado '
+            '(PROX_ACAO_POR_AGUARDA) ou, no 01.12.1, Memo à APIS (todas as informações) encaminhado (concluído); exceto se já for ela ou DEPROC: ...'
         ),
         F(
             'colunas_tags() · descrever_estado() · demais_marcadores()',
@@ -1208,7 +1225,8 @@ col_verif = Coluna(
         ),
         T(
             'Planilha: colunas dos marcadores, estado_atual, demais_marcadores, marcadores_finais, verificar_marcadores_em, verificar_marcadores_acao_sugerida (sem repetição), '
-            'verificar_marcadores_inconsistencia e verificar_marcadores_aberto_na_geacs (erro: verificar_marcadores_erro; sem ler os marcadores, as colunas deles ficam como estavam). '
+            'verificar_marcadores_inconsistencia e, na troca do No Bloco, verificar_marcadores_aberto_na_geacs '
+            '(erro: verificar_marcadores_erro; sem ler os marcadores, as colunas deles ficam como estavam). '
             'script e ultima_passagem: só no histórico (na aba processos, os do último fluxo que agiu)'
         ),
     ],

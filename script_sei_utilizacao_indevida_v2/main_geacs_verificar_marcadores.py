@@ -8,13 +8,15 @@ Confere também se a prox_acao registrada na planilha faz sentido com os
 marcadores e se os memorandos que os marcadores indicam estão na árvore
 (conferencia_prox_acao). Logo no começo, troca o "No Bloco" cujo memo da rodada
 já está assinado (Gustavo, Bruna ou Danúbia) pelo marcador de assinado
-("Aguarda" ou "Encaminhado"). Depois, para cada marcador "Aguarda", procura o
-memo do marcador assinado por Gustavo, Bruna ou Danúbia: achou, atualiza a
-planilha (coluna do memo, verificar_marcadores_memo_aguarda_assinado e, com os
-marcadores consistentes, a prox_acao). Os problemas vão para a coluna
+("Aguarda" ou "Encaminhado"). Depois, para cada marcador "Aguarda" ou
+"Encaminhado", confere o memo do marcador: assinado, atualiza a planilha
+(coluna do memo, verificar_marcadores_memo_aguarda_assinado e, com os
+marcadores consistentes, a prox_acao: Aguardar retorno da <unidade> ou
+concluído); sem o memo ou não assinado, erro e prox_acao = Verificar: criar /
+assinar o memo do marcador. Os problemas vão para a coluna
 verificar_marcadores_inconsistencia, e o que fazer com o processo, para a
-verificar_marcadores_acao_sugerida. Registra se o processo está aberto na
-GEACS (verificar_marcadores_aberto_na_geacs), sem mexer nele. Na aba
+verificar_marcadores_acao_sugerida. Não confere se o processo está aberto na
+GEACS, exceto na troca do "No Bloco" (verificar_marcadores_aberto_na_geacs). Na aba
 processos, script e ultima_passagem continuam os do último fluxo que agiu no
 processo: a passagem fica em verificar_marcadores_em (e no histórico).
 
@@ -22,8 +24,8 @@ Para cada processo da aba geacs_verificar_marcadores de
 processos_a_processar.xlsx (aba vazia: todos os processos da planilha de
 controle geral): abre o processo, lê os marcadores e, se preciso, a
 árvore e os memos. Única ação no SEI: a troca do "No Bloco" (processo fechado
-na GEACS é reaberto para a troca e concluído de novo). Só altera a prox_acao pela troca ou pelo memo do "Aguarda"
-assinado (RegistroVerificarMarcadores).
+na GEACS é reaberto para a troca e concluído de novo). Só altera a prox_acao pela troca ou pelo memo do "Aguarda" /
+"Encaminhado" (RegistroVerificarMarcadores).
 """
 
 import logging
@@ -39,7 +41,6 @@ from log_config import (
     log_resumo,
 )
 from planilha_controle import PlanilhaControleGeral
-from processo_fechado import tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
 from rede_propria import ErroAvaliacao
 from Registro import RegistroVerificarMarcadores, registrar_erro, registrar_sem_acesso
@@ -63,11 +64,8 @@ def verificar_marcadores(driver: webdriver.Remote, registro: RegistroVerificarMa
     planilha não lida)."""
     registrar_tags(registro, listar_marcadores(driver))
     registro.marcadores_lidos = True
-    # O processo fechado no setor é lido como está (só é reaberto, e
-    # concluído de novo, para trocar o marcador)
-    registro.aberto_na_geacs = tem_incluir_documento(driver)
-    if not registro.aberto_na_geacs:
-        logger.info('Processo sem "Incluir Documento" na GEACS (fechado no setor ou só em outra unidade); lido como está')
+    # Sem conferir se o processo está aberto (o "Incluir Documento" espera até
+    # 15 s no fechado): só a troca do "No Bloco" assinado confere, para reabrir
     # Logo no começo: "No Bloco" com o memo assinado vira o marcador de
     # assinado, e o memo de cada "Aguarda" assinado atualiza a planilha
     arvore = ArvoreProcesso(driver)

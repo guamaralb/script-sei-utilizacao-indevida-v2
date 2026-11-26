@@ -107,7 +107,7 @@ _PREENCHIMENTO_CONCLUIDO = PatternFill(fill_type='solid', start_color='FFD9D9D9'
 # prox_acao de processo parado aguardando resposta: a coluna erro pode estar
 # preenchida (o geacs_inicial registra a parada como erro), mas não é erro, e a
 # linha não fica vermelha
-_PROX_ACOES_SEM_ERRO = frozenset({ProxAcao.AGUARDAR_RESPOSTA_MEMO})
+_PROX_ACOES_SEM_ERRO = frozenset({ProxAcao.AGUARDAR_RESPOSTA_MEMO, ProxAcao.AGUARDAR_RETORNO_APIS, ProxAcao.AGUARDAR_RETORNO_DISA, ProxAcao.AGUARDAR_RETORNO_DEPROC})
 # prox_acao de processo concluído (memo à APIS com todas as informações
 # encaminhado): linha cinza, mesmo com erro de uma passagem anterior
 _PROX_ACOES_CONCLUIDO = frozenset({ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO})

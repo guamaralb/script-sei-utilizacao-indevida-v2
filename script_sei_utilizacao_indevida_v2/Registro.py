@@ -20,6 +20,9 @@ from tags import (
     TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO,
     TAG_NO_BLOCO_DISA_VALIDAR_CONSTA,
     TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA,
+    TAGS_AGUARDA_RESPOSTA_APIS,
+    TAGS_AGUARDA_RESPOSTA_DEPROC,
+    TAGS_AGUARDA_RESPOSTA_DISA,
     colunas_tags,
     colunas_tags_deproc,
     demais_marcadores,
@@ -60,6 +63,15 @@ class ProxAcao:
     ASSINAR_MEMO_APIS_TODAS_INFOS = 'Assinar memo à APIS (todas as informações) e encaminhar'
     MEMO_APIS_TODAS_INFOS_ENCAMINHADO = 'Memo à APIS (todas as informações) encaminhado (concluído)'
     AGUARDAR_RESPOSTA_MEMO = 'Aguardar resposta ao memo enviado (processo parado)'
+    # Fluxo GEACS VERIFICAR MARCADORES: "Aguarda" com o memo assinado (a
+    # unidade que deve responder)
+    AGUARDAR_RETORNO_APIS = 'Aguardar retorno da APIS ao memo enviado (processo parado)'
+    AGUARDAR_RETORNO_DISA = 'Aguardar retorno da DISA ao memo enviado (processo parado)'
+    AGUARDAR_RETORNO_DEPROC = 'Aguardar retorno da DEPROC ao memo enviado (processo parado)'
+    # Fluxo GEACS VERIFICAR MARCADORES: "Aguarda" / "Encaminhado" (manuais,
+    # depois da assinatura) sem o memo na árvore ou com o memo não assinado
+    VERIFICAR_CRIAR_MEMO_DO_MARCADOR = 'Verificar: criar o memo do marcador Aguarda / Encaminhado (memo não encontrado)'
+    VERIFICAR_ASSINAR_MEMO_DO_MARCADOR = 'Verificar: assinar o memo do marcador Aguarda / Encaminhado (memo não assinado)'
     # Fluxo GEACS CORRIGE ENVIO DISA: o memo à DISA (N Consta) não pôde ser
     # excluído (ex.: assinado); nada foi criado
     VERIFICAR_MEMO_DISA_NAO_EXCLUIDO = 'Verificar o que fazer: memo à DISA (não consta) não excluído'
@@ -102,6 +114,13 @@ PROX_ACAO_POR_CONCLUSAO = {
     TAG_MEMOS_DISA_DEPROC_COPARTICIPACAO: ProxAcao.ASSINAR_DISA_DEPROC,
     TAG_ENCAMINHADO_APIS_TODAS_INFOS: ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO,
 }
+# "Aguarda" com o memo assinado: a unidade que deve responder (fluxo GEACS
+# VERIFICAR MARCADORES; o geacs_inicial dá AGUARDAR_RESPOSTA_MEMO)
+PROX_ACAO_POR_AGUARDA = {
+    **dict.fromkeys(TAGS_AGUARDA_RESPOSTA_APIS, ProxAcao.AGUARDAR_RETORNO_APIS),
+    **dict.fromkeys(TAGS_AGUARDA_RESPOSTA_DISA, ProxAcao.AGUARDAR_RETORNO_DISA),
+    **dict.fromkeys(TAGS_AGUARDA_RESPOSTA_DEPROC, ProxAcao.AGUARDAR_RETORNO_DEPROC),
+}
 
 
 # Próximas ações definidas antes do erro que devem ser mantidas
@@ -121,6 +140,8 @@ PROX_ACOES_A_VERIFICAR = frozenset({
     ProxAcao.VERIFICAR_ACESSO_UNIDADE,
     ProxAcao.VERIFICAR_FORMATO_MEMO,
     ProxAcao.VERIFICAR_MEMO_DISA_NAO_EXCLUIDO,
+    ProxAcao.VERIFICAR_CRIAR_MEMO_DO_MARCADOR,
+    ProxAcao.VERIFICAR_ASSINAR_MEMO_DO_MARCADOR,
     ProxAcao.ADC_PDF_ANT_AUT_SEM_PLANILHAS,
     ProxAcao.ADC_PDF_ANT_MAN_SEM_PLANILHAS,
 })

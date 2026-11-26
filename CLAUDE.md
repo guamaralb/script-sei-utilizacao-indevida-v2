@@ -1086,19 +1086,22 @@ conferência precisa, a árvore e o texto dos memos. A **única ação no SEI** 
 troca do `No Bloco` assinado (abaixo), com a reabertura e a conclusão do
 processo fechado.
 
-**Logo no começo**, antes das conferências (depois de ler os marcadores e o
-`Incluir Documento`):
+**Logo no começo**, antes das conferências (depois de ler os marcadores):
 
 1. **Troca do `No Bloco` assinado** (`trocar_no_bloco_assinado`): se o estado é
    um `No Bloco` (o `prox_acao` é de "Assinar ...") e o memo dele na **rodada**
    já está **assinado por Gustavo, Bruna ou Danúbia**, o script troca o
    marcador pelo de assinado: o `Aguarda` (`.1`) ou, no `01.12`, o `01.12.1 -
    Encaminhado` (**➕** com `tags.adicionar_tag`, que remove o `No Bloco`). A
-   `prox_acao` passa a ser a do novo estado (Aguardar resposta ao memo enviado;
-   no `01.12.1`, Memo à APIS (todas as informações) encaminhado), exceto se
+   `prox_acao` passa a ser a do novo estado (Aguardar retorno da APIS / DISA /
+   DEPROC ao memo enviado; no `01.12.1`, Memo à APIS (todas as informações)
+   encaminhado), exceto se
    começar com `DEPROC:`. Só com os marcadores consistentes e o marcador novo
    cadastrado (`garantir_marcadores_no_sei`; faltando, inconsistência e nada
-   muda). **Processo fechado na GEACS** (sem `Incluir Documento`): é reaberto
+   muda). Só aqui o script confere se o processo está aberto (volta à tela do
+   processo e chama `tem_incluir_documento`, coluna
+   `verificar_marcadores_aberto_na_geacs`). **Processo fechado na GEACS** (sem
+   `Incluir Documento`): é reaberto
    (`reabrir_processo_fechado`), o marcador é trocado e o processo é
    **concluído de novo** (`_concluir_de_novo`: `concluir_processo` da
    `sei_automacao`), mesmo se a troca falhar (ex.: marcador não cadastrado).
@@ -1110,25 +1113,36 @@ processo fechado.
    (só quando há troca; com reabertura, o texto termina com `(processo reaberto
    e concluído de novo)`). Memo assinado por outra pessoa ou de pedido
    anterior: não troca (a conferência 4 sugere trocar à mão).
-2. **Memo do `Aguarda` assinado** (`conferir_memos_aguarda`): para
-   cada marcador `Aguarda` (`AGUARDA_POR_NO_BLOCO`) do processo, procura o memo
-do marcador (o mais recente da GEACS com o assunto do memo) **assinado por
-Gustavo, Bruna ou Danúbia** (`PADRAO_ASSINATURA_MEMO_AGUARDA`). Achou: grava na
-planilha a coluna do memo (`memo_disa_sei`, `memo_deproc_sei`,
-`memo_apis_*_sei`) e `verificar_marcadores_memo_aguarda_assinado`
-(`<marcador>: <nº SEI> (<signatário>)`) e, se o `Aguarda` é o único estado e
-os marcadores estão consistentes, a `prox_acao` = Aguardar resposta ao memo
-enviado (exceto se já for ela ou começar com `DEPROC:`). Erro depois disso não
-desfaz a atualização. Sem o memo ou sem a assinatura, nada muda (a
-conferência 4 aponta o problema). A conferência 2 usa a `prox_acao`
-atualizada.
+2. **Memo do `Aguarda` / `Encaminhado`** (`conferir_memos_aguarda`): para
+   cada marcador `Aguarda` (`AGUARDA_POR_NO_BLOCO`) e o `01.12.1 - Encaminhado
+   APIS` do processo, procura o memo do marcador (o mais recente da GEACS com o
+   assunto do memo) e confere se está **assinado** ("assinado eletronicamente
+   por", qualquer signatário; até 26/11/2026, só Gustavo, Bruna ou Danúbia).
+   - **Assinado**: grava na planilha a coluna do memo (`memo_disa_sei`,
+     `memo_deproc_sei`, `memo_apis_*_sei`) e
+     `verificar_marcadores_memo_aguarda_assinado` (`<marcador>: <nº SEI>
+     (<signatário>)`) e, se o marcador é o único estado e os marcadores estão
+     consistentes, a `prox_acao` = Aguardar retorno da APIS / DISA / DEPROC ao
+     memo enviado (`PROX_ACAO_POR_AGUARDA`, pelos `TAGS_AGUARDA_RESPOSTA_*`) ou,
+     no `01.12.1`, Memo à APIS (todas as informações) encaminhado (concluído),
+     exceto se já for ela ou começar com `DEPROC:`. O `geacs_inicial` continua
+     dando Aguardar resposta ao memo enviado; a conferência 2 aceita as duas.
+   - **Sem o memo** ou **não assinado** (marcador único estado, marcadores
+     consistentes): **erro** da passagem (`verificar_marcadores_erro`:
+     `MemoDoMarcadorNaoEncontrado` / `MemoDoMarcadorNaoAssinado`) e `prox_acao`
+     = Verificar: criar o memo do marcador Aguarda / Encaminhado (memo não
+     encontrado) / Verificar: assinar o memo do marcador ... (memo não
+     assinado) (em `PROX_ACOES_A_VERIFICAR`). A conferência 4 também aponta,
+     com a ação sugerida Criar o memo / Assinar o memo do marcador.
+
+   Erro depois disso não desfaz a atualização. A conferência 2 usa a
+   `prox_acao` atualizada.
 
 Fora a troca do `No Bloco` (e a reabertura e conclusão do fechado para ela),
 **nenhuma ação no SEI** e **não reabre processos**: o fechado no
-setor é lido como está (há teste). O `Incluir Documento` é conferido só para
-informar (`tem_incluir_documento`, coluna `verificar_marcadores_aberto_na_geacs`;
-sem ele, o processo está fechado no setor ou só em outra unidade, e os fluxos
-que criam documentos param com `ProcessoFechadoNoSetor`). A linha do processo vem da planilha lida
+setor é lido como está (há teste). Fora da troca, **não confere** se o
+processo está aberto (o `Incluir Documento` espera até 15 s no fechado; há
+teste). A linha do processo vem da planilha lida
 no início (`PlanilhaControleGeral.linha_processo`); se a planilha não pôde ser
 lida, a `prox_acao` não é conferida (só os memorandos).
 
@@ -1213,7 +1227,7 @@ pelo Encaminhado e rodar deproc_calcula_copa, Verificar manualmente):
      do memo à DISA: Tratar a resposta da DISA (geacs_resp_disa, TODO).
 
 Na planilha de controle, **só altera a `prox_acao`** pela troca do `No Bloco`
-ou pelo memo do `Aguarda` assinado (acima; não altera `fluxo`, `tipo_erro`, `erro` e as outras colunas):
+ou pelo memo do `Aguarda` / `Encaminhado` (acima; não altera `fluxo`, `tipo_erro`, `erro` e as outras colunas):
 na aba `processos`, só os marcadores, a coluna do memo e a
 `verificar_marcadores_memo_aguarda_assinado` (memo do `Aguarda`) e as colunas
 do fluxo. **`script`, `ultima_passagem` e `data_execucao` não são gravados na
@@ -1240,7 +1254,8 @@ Colunas:
   erro, e, preenchidas, em **amarelo**, junto com a célula `prox_acao` da
   linha;
 - `verificar_marcadores_aberto_na_geacs`: o processo tem `Incluir Documento`
-  na GEACS (sem ler os marcadores, fica como estava);
+  na GEACS, gravada só na troca do `No Bloco` assinado (nas outras passagens,
+  fica como estava);
 - uma coluna por marcador válido na GEACS, com o nome dele
   ([lista](#marcadores-tagspy)), verdadeira se o processo tem o marcador;
 - `estado_atual`: o marcador de estado do processo (mais de um, separados por
@@ -1850,8 +1865,8 @@ perca os processos já tratados.
   texto dos memos da GEACS (`ler_texto_doc`) traz "Documento assinado
   eletronicamente por ..." depois da assinatura (já é assim no memo DEPROC,
   lido pelo `deproc_calcula_copa`). Se um `No Bloco` com memo assinado não for
-  apontado, conferir esse texto. O `tem_incluir_documento` espera até 15 s
-  em cada processo fechado no setor.
+  apontado, conferir esse texto. O `tem_incluir_documento` (só na troca do
+  `No Bloco`) espera até 15 s no processo fechado no setor.
 - Fluxo GEACS CORRIGE ENVIO DISA: o cancelamento do memo assinado funcionou
   no SEI real em 18/11/2026 (7 processos). Confirmar que `excluir_doc` exclui o
   memo à DISA não assinado que está no bloco (no assinado, a `sei_automacao`
@@ -1938,7 +1953,11 @@ perca os processos já tratados.
   seleção falhar com "Documento não encontrado" (pastas fechadas depois de
   adicionar marcador ou reabrir) ou clique interceptado (documento no fim da
   árvore), a árvore é relida, o documento é centralizado no frame e há uma
-  nova tentativa. Confirmar no SEI real que o clique interceptado some.
+  nova tentativa. Em 26/11/2026 o clique interceptado continuava (69 cliques
+  interceptados em 77 processos do `geacs_verificar_marcadores`; 7 processos
+  com erro mesmo na nova tentativa: "not clickable at point (179, -74)", o link acima da área
+  visível do frame da árvore). Por isso a `sei_automacao` passou a clicar via
+  JavaScript (abaixo); confirmar no SEI real que o aviso e o erro sumiram.
   Documento sem conteúdo (`DocumentoSemConteudo` da `sei_automacao`, ex.:
   cancelado) é lido como texto vazio, sem nova tentativa.
 - `sei_automacao` (alterada em 18/11/2026, a pedido, nesta sessão): o
@@ -1948,7 +1967,10 @@ perca os processos já tratados.
   abertura das pastas da árvore espera a árvore recarregar. Confirmar no SEI
   real que a seleção de documentos não ficou mais lenta (se o SEI não
   recarregar a página ao clicar no documento já aberto, cada seleção espera o
-  `timeout`, 10 s).
+  `timeout`, 10 s). Em 26/11/2026 (a pedido): no `selecionar_doc_arvore`, o
+  clique interceptado (`ElementClickInterceptedException`) centraliza o link
+  (`scrollIntoView`) e clica via JavaScript (`_clicar_doc`, como em `menu.py`
+  e `unidade.py`), com a mesma espera do documento carregar.
 - Confirmar com um memorando real que `obter_conteudo_doc` devolve as
   linhas `Matrícula do dependente` e `Período de apuração do dependente`
   separadas (o período é lido até o fim da linha).
