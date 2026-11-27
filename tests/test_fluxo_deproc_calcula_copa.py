@@ -402,18 +402,8 @@ B2019 = BaseDeproc('2019', '06/11/2026')
 B2020 = BaseDeproc('2020', '16/11/2026')
 
 
-def test_ano_e_data_opcionais_na_execucao(capsys):
-    assert main_deproc_calcula_copa.ler_argumentos(['-a', '2019', '-d', '06/11/2026']) == B2019
-    assert main_deproc_calcula_copa.ler_argumentos(['--ano', '2019', '--data', '06/11/2026']) == B2019
-    # Sem os dois: a base vem da planilha de controle (conferida no main)
-    assert main_deproc_calcula_copa.ler_argumentos([]) is None
-
-    # Só um dos dois, fora do formato ou sem o arquivo da base na pasta
-    for argv in (['-a', '2019'], ['-d', '06/11/2026'], ['-a', '19', '-d', '06/11/2026'], ['-a', '2019', '-d', '6/11/2026'], ['-a', '2019', '-d', '31/02/2026'], ['-a', '2019', '-d', '07/11/2026']):
-        with pytest.raises(SystemExit) as erro:
-            main_deproc_calcula_copa.ler_argumentos(argv)
-        assert erro.value.code == 2
-    assert 'base DEPROC não encontrada' in capsys.readouterr().err
+def test_sem_argumentos():
+    assert not hasattr(main_deproc_calcula_copa, 'ler_argumentos')
 
 
 @pytest.mark.parametrize(('ano', 'data'), [('2019', '06/11/2026'), ('2020', '16/11/2026'), ('2021', '23/11/2026')])
@@ -421,7 +411,13 @@ def test_bases_na_pasta(ano, data):
     base = BaseDeproc(ano, data)
     assert base.arquivo.name == f'copa-MANTIS11281-base_{ano}-{data.replace("/", "_")}.xlsx'
     assert base.existe()
-    assert main_deproc_calcula_copa.ler_argumentos(['-a', ano, '-d', data]) == base
+    assert base in main_deproc_calcula_copa.bases_em_ordem_de_pesquisa()
+
+
+def test_ordem_de_pesquisa_da_mais_nova_do_ano_mais_novo(monkeypatch):
+    na_pasta = [BaseDeproc('2019', '06/11/2026'), BaseDeproc('2019', '24/11/2026'), BaseDeproc('2020', '16/11/2026'), BaseDeproc('2020', '24/11/2026'), BaseDeproc('2021', '23/11/2026')]
+    monkeypatch.setattr(main_deproc_calcula_copa, 'bases_deproc_na_pasta', lambda: list(na_pasta))
+    assert main_deproc_calcula_copa.bases_em_ordem_de_pesquisa() == na_pasta[::-1]
 
 
 @pytest.mark.parametrize(
@@ -448,28 +444,38 @@ def test_base_na_planilha(linha, base):
     assert main_deproc_calcula_copa.base_na_planilha(linha) == base
 
 
-def test_bases_dos_processos():
-    planilha = {
-        'P1': {'ano_processo': '2020', 'data_geracao_base_processo': '16/11/2026'},
-        'P2': {},
-        'P3': {'ano_base_deproc': '2019', 'data_geracao_base_deproc': '06/11/2026'},
-        # Só o ano: o -a precisa ser o mesmo
-        'P4': {'ano_processo': '2020'},
-    }
-    base_processo = main_deproc_calcula_copa.BaseProcesso
+B2021 = BaseDeproc('2021', '23/11/2026')
 
-    bases, sem_base = main_deproc_calcula_copa.bases_dos_processos(list(planilha), planilha.get, None)
-    assert sem_base == ['P2', 'P4']
-    assert bases == {'P1': base_processo(B2020), 'P3': base_processo(B2019)}
 
-    # O -a e o -d valem só para quem não tem a base; a da planilha prevalece
-    bases, sem_base = main_deproc_calcula_copa.bases_dos_processos(list(planilha), planilha.get, B2019)
-    assert sem_base == ['P4']
-    assert bases == {'P1': base_processo(B2020), 'P2': base_processo(B2019, do_argumento=True), 'P3': base_processo(B2019)}
+def _bases_falsas(com_o_processo: dict[BaseDeproc, list[str]]):
+    """BasesDeprocPorAno com a coluna SEI de cada base; guarda as carregadas."""
+    carregadas = []
 
-    bases, sem_base = main_deproc_calcula_copa.bases_dos_processos(list(planilha), planilha.get, B2020)
-    assert sem_base == []
-    assert bases['P4'] == base_processo(B2020, do_argumento=True)
+    def carregar(arquivo):
+        carregadas.append(arquivo)
+        base = next(b for b in com_o_processo if b.arquivo == arquivo)
+        return pd.DataFrame({'SEI': com_o_processo[base]})
+
+    return main_deproc_calcula_copa.BasesDeprocPorAno(carregar), carregadas
+
+
+def test_pesquisa_para_na_primeira_base_com_o_processo():
+    candidatas = [B2021, B2020, B2019]
+    bases, carregadas = _bases_falsas({B2021: ['OUTRO'], B2020: ['P1', 'P2'], B2019: ['P1']})
+
+    assert main_deproc_calcula_copa.pesquisar_base('P1', bases, candidatas) == B2020
+    assert carregadas == [B2021.arquivo, B2020.arquivo]
+    # Cada base é carregada uma vez só
+    assert main_deproc_calcula_copa.pesquisar_base(' P2 ', bases, candidatas) == B2020
+    assert carregadas == [B2021.arquivo, B2020.arquivo]
+
+
+def test_pesquisa_sem_o_processo_em_nenhuma_base():
+    bases, _ = _bases_falsas({B2021: ['OUTRO'], B2019: []})
+    with pytest.raises(main_deproc_calcula_copa.BaseDeprocNaoEncontrada, match='fora de todas as bases DEPROC da pasta'):
+        main_deproc_calcula_copa.pesquisar_base('P1', bases, [B2021, B2019])
+    with pytest.raises(main_deproc_calcula_copa.BaseDeprocNaoEncontrada, match='nenhuma base na pasta'):
+        main_deproc_calcula_copa.pesquisar_base('P1', bases, [])
 
 
 def _controle_falso(planilha: dict):
@@ -487,66 +493,76 @@ def _controle_falso(planilha: dict):
     return Controle
 
 
-def _rodar_main(monkeypatch, argv, planilha: dict):
-    """Roda o main com o SEI e a base simulados. Devolve as bases carregadas e
-    as chamadas de _processar_linha."""
+def _rodar_main(monkeypatch, planilha: dict, com_o_processo: dict[BaseDeproc, list[str]] | None = None):
+    """Roda o main com o SEI simulado e as bases B2021, B2020 e B2019 na pasta.
+    Devolve as bases carregadas, as chamadas de _processar_linha e os
+    registros gravados."""
     carregadas = []
     chamadas = []
+    gravados = []
+    com_o_processo = com_o_processo or {}
 
-    def processar_linha(driver, num_processo, base, base_deproc, do_argumento):
-        chamadas.append((num_processo, base, base_deproc.data_geracao, base_deproc.ano, do_argumento))
+    def carregar(arquivo):
+        carregadas.append(arquivo)
+        base = next((b for b in com_o_processo if b.arquivo == arquivo), None)
+        return pd.DataFrame({'SEI': com_o_processo.get(base, [])})
+
+    def processar_linha(driver, num_processo, base, base_deproc, pesquisada):
+        chamadas.append((num_processo, base_deproc.ano, base_deproc.data_geracao, pesquisada, base is not None))
         return main_deproc_calcula_copa.RegistroDeproc(num_processo=num_processo)
 
+    controle = _controle_falso(planilha)
+    controle.registrar = lambda self, linha: gravados.append(linha)
     monkeypatch.setattr(main_deproc_calcula_copa, 'configurar_logging', lambda arq: None)
     monkeypatch.setattr(main_deproc_calcula_copa, 'ler_processos_a_processar', lambda script: list(planilha))
-    monkeypatch.setattr(main_deproc_calcula_copa, 'carregar_base_deproc', lambda arquivo: carregadas.append(arquivo) or f'BASE {arquivo.name}')
-    monkeypatch.setattr(main_deproc_calcula_copa, 'PlanilhaControleGeral', _controle_falso(planilha))
+    monkeypatch.setattr(main_deproc_calcula_copa, 'carregar_base_deproc', carregar)
+    monkeypatch.setattr(main_deproc_calcula_copa, 'bases_em_ordem_de_pesquisa', lambda: [B2021, B2020, B2019])
+    monkeypatch.setattr(main_deproc_calcula_copa, 'PlanilhaControleGeral', controle)
     monkeypatch.setattr(main_deproc_calcula_copa, 'abrir_sei', lambda unidade: None)
     monkeypatch.setattr(main_deproc_calcula_copa, '_processar_linha', processar_linha)
-    main_deproc_calcula_copa.main(argv)
-    return carregadas, chamadas
+    main_deproc_calcula_copa.main()
+    return carregadas, chamadas, gravados
 
 
-def test_todos_com_base_na_planilha_dispensa_o_argumento(monkeypatch):
+def test_base_da_planilha_sem_pesquisa(monkeypatch):
     planilha = {
         'P1': {'ano_processo': '2019', 'data_geracao_base_processo': '06/11/2026'},
         'P2': {'ano_processo': 2020.0, 'data_geracao_base_processo': '16/11/2026'},
         'P3': {'ano_base_deproc': '2019', 'data_geracao_base_deproc': '06/11/2026'},
     }
-    carregadas, chamadas = _rodar_main(monkeypatch, [], planilha)
+    carregadas, chamadas, _ = _rodar_main(monkeypatch, planilha)
 
-    # Cada base carregada uma vez só
+    # Cada base carregada uma vez só, nenhuma pesquisa
     assert carregadas == [B2019.arquivo, B2020.arquivo]
-    base_2019, base_2020 = (f'BASE {b.arquivo.name}' for b in (B2019, B2020))
     assert chamadas == [
-        ('P1', base_2019, '06/11/2026', '2019', False),
-        ('P2', base_2020, '16/11/2026', '2020', False),
-        ('P3', base_2019, '06/11/2026', '2019', False),
+        ('P1', '2019', '06/11/2026', False, True),
+        ('P2', '2020', '16/11/2026', False, True),
+        ('P3', '2019', '06/11/2026', False, True),
     ]
 
 
-def test_base_do_argumento_so_para_quem_nao_tem(monkeypatch):
-    planilha = {'P1': {'ano_processo': '2020', 'data_geracao_base_processo': '16/11/2026'}, 'P2': {}}
-    _, chamadas = _rodar_main(monkeypatch, ['-a', '2019', '-d', '06/11/2026'], planilha)
-    assert [(c[0], c[3], c[4]) for c in chamadas] == [('P1', '2020', False), ('P2', '2019', True)]
+def test_processo_sem_base_na_planilha_e_pesquisado(monkeypatch):
+    # Só o ano não basta: pesquisa em todas, da mais nova para a mais velha
+    planilha = {'P1': {}, 'P2': {'ano_processo': '2019'}}
+    carregadas, chamadas, _ = _rodar_main(monkeypatch, planilha, {B2020: ['P1'], B2019: ['P1', 'P2']})
+
+    assert carregadas == [B2021.arquivo, B2020.arquivo, B2019.arquivo]
+    assert chamadas == [('P1', '2020', '16/11/2026', True, True), ('P2', '2019', '06/11/2026', True, True)]
+
+
+def test_processo_fora_de_todas_as_bases_e_erro_sem_acao_no_sei(monkeypatch):
+    _, chamadas, gravados = _rodar_main(monkeypatch, {'P1': {}}, {B2020: ['OUTRO']})
+
+    assert chamadas == []
+    assert gravados[0]['tipo_erro'] == 'BaseDeprocNaoEncontrada'
+    assert 'fora de todas as bases DEPROC da pasta' in gravados[0]['erro']
+    assert gravados[0]['prox_acao'] == main_deproc_calcula_copa.ProxAcao.VERIFICAR_ERRO
 
 
 def test_base_fora_da_pasta_nao_e_carregada(monkeypatch):
-    carregadas, chamadas = _rodar_main(monkeypatch, [], {'P1': {'ano_processo': '2015', 'data_geracao_base_processo': '01/01/2026'}})
+    carregadas, chamadas, _ = _rodar_main(monkeypatch, {'P1': {'ano_processo': '2015', 'data_geracao_base_processo': '01/01/2026'}})
     assert carregadas == []
-    assert chamadas == [('P1', None, '01/01/2026', '2015', False)]
-
-
-def test_processo_sem_base_exige_os_argumentos_antes_do_login(monkeypatch, capsys):
-    monkeypatch.setattr(main_deproc_calcula_copa, 'abrir_sei', lambda unidade: pytest.fail('não deve fazer login'))
-    monkeypatch.setattr(main_deproc_calcula_copa, 'configurar_logging', lambda arq: None)
-    monkeypatch.setattr(main_deproc_calcula_copa, 'ler_processos_a_processar', lambda script: ['P1', 'P2'])
-    planilha = {'P1': {'ano_processo': '2019', 'data_geracao_base_processo': '06/11/2026'}, 'P2': {'ano_processo': '2019'}}
-    monkeypatch.setattr(main_deproc_calcula_copa, 'PlanilhaControleGeral', _controle_falso(planilha))
-    with pytest.raises(SystemExit) as erro:
-        main_deproc_calcula_copa.main([])
-    assert erro.value.code == 2
-    assert '-a/--ano e -d/--data (da base DEPROC) são obrigatórios: 1 processo(s) sem a base na planilha de controle, ou com ano diferente do -a (P2)' in capsys.readouterr().err
+    assert chamadas == [('P1', '2015', '01/01/2026', False, False)]
 
 
 def test_base_fora_da_pasta_e_erro_sem_acao_no_sei(sei):
@@ -557,9 +573,9 @@ def test_base_fora_da_pasta_e_erro_sem_acao_no_sei(sei):
     assert sei.tags == []
 
 
-def test_base_do_argumento_gravada_na_planilha(sei, tmp_path):
+def test_base_pesquisada_gravada_na_planilha(sei, tmp_path):
     sei.memo_deproc_geacs()
-    linha = main_deproc_calcula_copa._processar_linha(DriverFalso(), PROCESSO, _base(tmp_path), B2019, do_argumento=True).to_dict()
+    linha = main_deproc_calcula_copa._processar_linha(DriverFalso(), PROCESSO, _base(tmp_path), B2019, pesquisada=True).to_dict()
     assert linha['ano_processo'] == '2019'
     assert linha['data_geracao_base_processo'] == '06/11/2026'
     # Base da planilha: as colunas não são regravadas
@@ -575,7 +591,7 @@ def test_ano_e_data_geracao_base_na_planilha(sei, tmp_path):
     assert linha['ano_base_deproc'] == '2020'
     assert linha['data_geracao_base_deproc'] == '16/11/2026'
 
-    # Nova passagem (memo no bloco, base não usada), com outro -a: não
+    # Nova passagem (memo no bloco, base não usada), com outra base: não
     # sobrescreve o ano usado na apuração (o GEACS TODAS INFOS confere nele)
     linha = _passar(sei, _base(tmp_path), '06/11/2026', '2019').to_dict()
     assert 'ano_base_deproc' not in linha

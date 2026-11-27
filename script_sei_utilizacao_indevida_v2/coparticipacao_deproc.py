@@ -304,6 +304,15 @@ def _beneficiarios(linhas: pd.DataFrame, no_periodo: pd.DataFrame, atendimentos:
     return tuple(sorted(beneficiarios, key=lambda b: b.categoria != TITULAR))
 
 
+def _linhas_do_processo(base: pd.DataFrame, num_processo: str) -> pd.DataFrame:
+    return base[base['SEI'] == str(num_processo).strip()]
+
+
+def processo_na_base(base: pd.DataFrame, num_processo: str) -> bool:
+    """O processo tem alguma linha na base DEPROC (coluna SEI)."""
+    return not _linhas_do_processo(base, num_processo).empty
+
+
 def apurar_coparticipacao(base: pd.DataFrame, num_processo: str, dados: DadosUI) -> ResultadoDeproc:
     """Linhas do processo na base DEPROC, conferidas com as matrículas do memo
     da APIS, só com VALOR_BASE_COPA diferente de 0 e filtradas pelo período
@@ -311,7 +320,7 @@ def apurar_coparticipacao(base: pd.DataFrame, num_processo: str, dados: DadosUI)
 
     Processo fora da base: ErroAvaliacao (a base pode não cobrir o processo).
     Matrícula divergente: MatriculasDivergentes."""
-    todas = base[base['SEI'] == str(num_processo).strip()]
+    todas = _linhas_do_processo(base, num_processo)
     if todas.empty:
         raise ErroAvaliacao('Processo não consta na base DEPROC (coluna SEI)')
 

@@ -1,8 +1,6 @@
-import argparse
 import logging
 from datetime import datetime
 
-from argumentos_base_deproc import adicionar_argumentos, base_dos_argumentos
 from constantes import (
     ARQ_BASE_APIS,
     ARQ_MANTIS_REDE_CREDENCIADA,
@@ -16,7 +14,6 @@ from constantes import (
     DIR_LOG,
     DIR_UTILIZACOES_MANTIS_PDF,
     UNIDADE_GEACS,
-    BaseDeproc,
 )
 from docs_processo import encontrar_memos_velho, obter_memos_apis_para_geacs
 from extrator_dados_ui import FormatoMemorandoInvalido
@@ -194,13 +191,8 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
     processar_novo(driver, registro, bases, bases_mantis)
 
 
-def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, bases_mantis: BasesMantis, base_deproc: BaseDeproc | None = None) -> RegistroMain:
-    registro = RegistroMain(
-        num_processo=num_processo,
-        data_execucao=AGORA,
-        ano_processo=base_deproc.ano if base_deproc else None,
-        data_geracao_base_processo=base_deproc.data_geracao if base_deproc else None,
-    )
+def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, bases_mantis: BasesMantis) -> RegistroMain:
+    registro = RegistroMain(num_processo=num_processo, data_execucao=AGORA)
 
     try:
         acessar_processo(driver, num_processo)
@@ -233,26 +225,7 @@ def _processar_linha(driver: webdriver.Remote, num_processo, bases: BasesUso, ba
     return registro
 
 
-def ler_argumentos(argv: list[str] | None = None) -> BaseDeproc:
-    """A base DEPROC dos processos (-a e -d). Sem um dos dois, fora do
-    formato ou sem o arquivo da base na pasta, o argparse mostra o erro e
-    encerra (código 2) antes do log, do login e de qualquer ação no SEI."""
-    parser = argparse.ArgumentParser(
-        prog='poetry run task run_geacs_inicial',
-        description='Fluxo inicial da GEACS: lê o memo da APIS, confere as bases e cria os relatórios e o memo do caso.',
-    )
-    adicionar_argumentos(
-        parser,
-        obrigatorios=True,
-        uso='gravado na coluna ano_processo da planilha de controle (e o -d, em data_geracao_base_processo); o deproc_calcula_copa escolhe por eles a base DEPROC',
-    )
-    return base_dos_argumentos(parser, parser.parse_args(argv))
-
-
-def main(argv: list[str] | None = None):
-    # Antes de tudo: sem o ano e a data da base, nada é feito (nem login)
-    base_deproc = ler_argumentos(argv)
-
+def main():
     for diretorio in [DIR_DADOS, DIR_INPUTS, DIR_CONTROLE, DIR_LOG, DIR_UI_ANTIGAS_XLS, DIR_UTILIZACOES_MANTIS_PDF]:
         diretorio.mkdir(parents=True, exist_ok=True)
     configurar_logging(ARQ_LOG)
@@ -264,7 +237,6 @@ def main(argv: list[str] | None = None):
     try:
         logger.info('================= INÍCIO DA EXECUÇÃO =================')
         logger.info(f'Log: {ARQ_LOG}')
-        logger.info(f'Ano dos processos: {base_deproc.ano} | Base DEPROC: {base_deproc.arquivo.name}')
 
         processos = ler_processos_a_processar(SCRIPT)
         total = len(processos)
@@ -285,7 +257,7 @@ def main(argv: list[str] | None = None):
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
 
-                registro = _processar_linha(driver, num_processo, bases, bases_mantis, base_deproc)
+                registro = _processar_linha(driver, num_processo, bases, bases_mantis)
                 registros_processados.append(registro.to_dict())
                 controle.registrar(registros_processados[-1])
 

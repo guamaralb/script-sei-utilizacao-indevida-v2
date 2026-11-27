@@ -146,11 +146,10 @@ def test_cria_memo_a_apis_com_todas_as_informacoes(sei, tmp_path):
         ({'ano_base_deproc': '2020', 'data_geracao_base_deproc': '16/11/2026'}, 'copa-MANTIS11281-base_2020-16_11_2026.xlsx'),
         # Ano lido do Excel como número
         ({'ano_base_deproc': 2019.0, 'data_geracao_base_deproc': '06/11/2026'}, 'copa-MANTIS11281-base_2019-06_11_2026.xlsx'),
-        # Apurado antes da coluna ano_base_deproc existir: a única base da
-        # pasta com a data de geração
-        ({'ano_base_deproc': float('nan'), 'data_geracao_base_deproc': '16/11/2026'}, 'copa-MANTIS11281-base_2020-16_11_2026.xlsx'),
-        # Só o ano: a única base da pasta desse ano
-        ({'ano_base_deproc': '2021'}, 'copa-MANTIS11281-base_2021-23_11_2026.xlsx'),
+        # Sem a base da apuração: a do processo (pesquisada pelo deproc_calcula_copa)
+        ({'ano_base_deproc': float('nan'), 'data_geracao_base_deproc': '16/11/2026', 'ano_processo': '2021', 'data_geracao_base_processo': '23/11/2026'}, 'copa-MANTIS11281-base_2021-23_11_2026.xlsx'),
+        # As duas: vale a da apuração
+        ({'ano_base_deproc': '2020', 'data_geracao_base_deproc': '16/11/2026', 'ano_processo': '2021', 'data_geracao_base_processo': '23/11/2026'}, 'copa-MANTIS11281-base_2020-16_11_2026.xlsx'),
     ],
 )
 def test_usa_a_base_deproc_do_ano_da_planilha_de_controle(sei, tmp_path, linha_controle, arquivo):
@@ -172,6 +171,9 @@ def test_usa_a_base_deproc_do_ano_da_planilha_de_controle(sei, tmp_path, linha_c
         ({}, 'não registrada na planilha de controle'),
         ({'data_geracao_base_deproc': '01/01/2026'}, 'não registrada na planilha de controle'),
         ({'ano_base_deproc': '2018'}, 'não registrada na planilha de controle'),
+        # Só o ano ou só a data: não procura a base na pasta
+        ({'ano_base_deproc': '2021'}, 'não registrada na planilha de controle'),
+        ({'data_geracao_base_deproc': '16/11/2026'}, 'não registrada na planilha de controle'),
         ({'ano_base_deproc': '2019', 'data_geracao_base_deproc': '07/11/2026'}, 'não encontrada: copa-MANTIS11281-base_2019-07_11_2026.xlsx'),
     ],
 )

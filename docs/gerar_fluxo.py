@@ -248,15 +248,10 @@ def P(texto, lado, rotulo='Sim', segue='Não', largura=230):
 
 col_main = Coluna(
     '1 · main() e _processar_linha()',
-    'poetry run task run_geacs_inicial -a AAAA -d DD/MM/AAAA (ano dos processos e data de geração da base DEPROC, obrigatórios: gravados em ano_processo e data_geracao_base_processo, em toda passagem; '
-    'o deproc_calcula_copa escolhe por eles a base DEPROC, copa-MANTIS11281-base_AAAA-DD_MM_AAAA.xlsx). '
+    'poetry run task run_geacs_inicial (sem argumentos; não usa a base DEPROC). '
     'Carrega as bases, faz login e passa cada processo pelo fluxo. Um erro nunca interrompe os demais processos',
     [
         T('Início'),
-        P(
-            'ler_argumentos():<br>sem -a e -d, fora do formato<br>ou sem o arquivo da base?',
-            [E('argparse mostra o erro (com as bases da pasta) e encerra (código 2), antes do log, do login e de qualquer ação no SEI')],
-        ),
         F('configurar_logging()', 'Cria as pastas e o log da execução'),
         F('carregar_bases() · carregar_bases_mantis()', 'Lê a aba geacs_inicial de processos_a_processar.xlsx, a base DISA, a base APIS e o MANTIS (rede própria e credenciada)'),
         F('PlanilhaControleGeral() · abrir_sei()', 'Lê a planilha de controle, faz login no SEI e troca para a unidade da GEACS (alterar_unidade_sei: trocar_unidade da sei_automacao)'),
@@ -952,32 +947,31 @@ col_copa_loop = col_loop(
     'da DEPROC',
     '. A base DEPROC de cada ano e data de geração (BaseDeproc: copa-MANTIS11281-base_AAAA-DD_MM_AAAA.xlsx em dados/fluxo_deproc, aba Resultado, matrículas com DV) é carregada na primeira vez que um processo precisa dela',
     'processar_deproc() — coluna 2',
-    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, ano_processo e data_geracao_base_processo (só os vindos do -a e do -d), marcadores_deproc_*, estado_atual_deproc e DEPROC | <marcador>. '
+    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, ano_processo e data_geracao_base_processo (só os da pesquisa nas bases), marcadores_deproc_*, estado_atual_deproc e DEPROC | <marcador>. '
     'Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',
-    argumentos=[
-        P(
-            'ler_argumentos():<br>só um de -a e -d, fora do formato<br>ou sem o arquivo da base?',
-            [E('argparse mostra o erro (com as bases da pasta) e encerra (código 2), antes do log, do login e de qualquer ação no SEI')],
-        ),
-    ],
-    antes_do_login=[
-        F(
-            'bases_dos_processos()',
-            'Base de cada processo: ano_processo e data_geracao_base_processo da planilha de controle (geacs_inicial) ou, sem eles, ano_base_deproc e data_geracao_base_deproc (apuração anterior). '
-            'Sem nenhum par: a do -a e do -d (gravados em ano_processo e data_geracao_base_processo). Com a do -a e -d diferente da da planilha, vale a da planilha (aviso no log)',
-        ),
-        P(
-            'Algum processo sem base<br>(na planilha e no -a -d), ou só com<br>o ano_processo e -a de outro ano?',
-            [E('-a e -d obrigatórios: argparse lista os processos e encerra (código 2), antes do login')],
-        ),
-    ],
-    comando=' [-a AAAA -d DD/MM/AAAA] (base DEPROC dos processos sem a base na planilha de controle: obrigatórios se algum não tiver)',
 )
-_erro_segue(col_copa_loop, 10)
+_erro_segue(col_copa_loop, 6)
 col_copa = Coluna(
     '2 · processar_deproc()',
     'Na unidade da DEPROC: apura a coparticipação, anexa o relatório e cria o MemoGeacsCalculoCopa (da DEPROC à GEACS). Marcadores da DEPROC (mesmo prefixo "v2: ")',
     [
+        F(
+            '_processar_com_base() · base_na_planilha()',
+            'Antes de abrir o processo (sem argumentos na execução). Base do processo na planilha de controle: ano_processo e data_geracao_base_processo ou, sem eles, '
+            'ano_base_deproc e data_geracao_base_deproc (apuração anterior)',
+        ),
+        P(
+            'Sem a base na planilha<br>(ano e data)?',
+            [
+                F(
+                    'pesquisar_base()',
+                    'Procura o processo (coluna SEI) em todas as bases da pasta, da mais nova do ano mais novo para a mais velha (cada base carregada uma vez). '
+                    'A primeira que o tem vai para ano_processo e data_geracao_base_processo',
+                ),
+                P('Em nenhuma base?', [E('<b>BaseDeprocNaoEncontrada</b>: sem ação no SEI (nem abre o processo)')]),
+            ],
+            rotulo='Sim (e segue)',
+        ),
         F('registrar_tags() · conferir_marcadores_deproc()', 'No máximo um estado, e estado só com o 01. De novo no fim da passagem'),
         P('Marcadores<br>inconsistentes?', [E('<b>MarcadoresInconsistentes</b>: prox_acao = Verificar marcadores inconsistentes')]),
         P('Tem 01.02 - No Bloco GEACS:<br>Memo Cálculo COPA?', [T('Sem ler mais nada<br>prox_acao = DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS')]),
@@ -1082,7 +1076,7 @@ col_todas = Coluna(
         P('Sem o 01.10.B.1 - Aguarda DEPROC: Coparticipação?', [E('<b>SemAguardaDeproc</b>: sem ação')]),
         F(
             'base_deproc_da_planilha()',
-            'Ano e data das colunas ano_base_deproc e data_geracao_base_deproc da planilha de controle (gravadas pelo deproc_calcula_copa). Só com uma das duas: a única base da pasta com esse valor. Carrega essa base (BaseDeproc)',
+            'Ano e data das colunas ano_base_deproc e data_geracao_base_deproc da planilha de controle (gravadas pelo deproc_calcula_copa) ou, sem elas, ano_processo e data_geracao_base_processo. Não procura nas bases da pasta. Carrega essa base (BaseDeproc)',
         ),
         P('Sem a base<br>(ou fora da pasta)?', [E('<b>SemAnoBaseDeproc</b>: sem ação')]),
         P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é criado')]),
@@ -1144,7 +1138,7 @@ col_verif = Coluna(
                     'Processo fechado na GEACS: reabre antes da troca (com MANUAL: não reabre nem troca; não reabriu: inconsistência)',
                 ),
                 M('Aguarda (.1) ou, no 01.12, 01.12.1 - Encaminhado APIS: Todas as Infos (↻ remove o No Bloco)'),
-                T('prox_acao = a do novo estado: Aguardar retorno da APIS / DISA / DEPROC ou, no 01.12.1, concluído (exceto DEPROC: ...); verificar_marcadores_marcador_trocado, marcadores_adicionados / _removidos'),
+                T('prox_acao = a do novo estado: Aguardar retorno da APIS / DISA / DEPROC ou, no 01.12.1, concluído (exceto DEPROC: ... com o 01.10.B.1); verificar_marcadores_marcador_trocado, marcadores_adicionados / _removidos'),
                 F('_concluir_de_novo() · concluir_processo()', 'Reaberto: conclui de novo, mesmo se a troca falhar. Não concluiu: erro (concluir à mão)'),
             ],
             rotulo='Sim (e segue)',
@@ -1154,7 +1148,7 @@ col_verif = Coluna(
             [
                 E(
                     'Só estado e marcadores consistentes: erro MemoDoMarcadorNaoEncontrado (verificar_marcadores_erro), '
-                    'prox_acao = Verificar: criar o memo do marcador Aguarda / Encaminhado (memo não encontrado)'
+                    'prox_acao = Verificar: criar o memo do marcador Aguarda / Encaminhado (memo não encontrado). No 01.12.1, só o erro: a prox_acao é a de concluído'
                 ),
             ],
             rotulo='Sim (e segue)',
@@ -1164,7 +1158,7 @@ col_verif = Coluna(
             [
                 E(
                     'Só estado e marcadores consistentes: erro MemoDoMarcadorNaoAssinado (verificar_marcadores_erro), '
-                    'prox_acao = Verificar: assinar o memo do marcador Aguarda / Encaminhado (memo não assinado)'
+                    'prox_acao = Verificar: assinar o memo do marcador Aguarda / Encaminhado (memo não assinado). No 01.12.1, só o erro: a prox_acao é a de concluído'
                 ),
             ],
             rotulo='Sim (e segue)',
@@ -1172,7 +1166,22 @@ col_verif = Coluna(
         T('Memo assinado (qualquer signatário): memo_*_sei e verificar_marcadores_memo_aguarda_assinado (marcador: nº SEI (signatário))'),
         T(
             'Único estado e marcadores consistentes: prox_acao = Aguardar retorno da APIS / DISA / DEPROC ao memo enviado '
-            '(PROX_ACAO_POR_AGUARDA) ou, no 01.12.1, Memo à APIS (todas as informações) encaminhado (concluído); exceto se já for ela ou DEPROC: ...'
+            '(PROX_ACAO_POR_AGUARDA); exceto se já for ela ou DEPROC: ... com o 01.10.B.1'
+        ),
+        P(
+            'atualizar_prox_acao_pela_situacao():<br>situação conhecida pelos marcadores<br>e pela árvore, prox_acao outra?',
+            [
+                T(
+                    'O próprio verificar corrige a prox_acao (em vez de sugerir rodar o geacs_inicial): 01.12.1 - Encaminhado APIS: Todas as Infos e demais conclusões: sempre '
+                    'a de concluído (Memo à APIS (todas as informações) encaminhado (concluído)), mesmo sobre Verificar erro ou DEPROC: ...; '
+                    'No Bloco com o memo da rodada não assinado: a de assinar o memo; VELHO: VELHO: não processado (com MANUAL: Fora do escopo); parada da versão anterior: Aguardar resposta'
+                ),
+                T(
+                    'Fora da conclusão, a prox_acao de erro de outro fluxo fica (Verificar erro, ...), exceto Verificar marcadores inconsistentes, as do memo do marcador e o acesso '
+                    'resolvido pela GEACS; a DEPROC: ... fica com o memo DEPROC na GEACS. Planilha não lida: nada muda'
+                ),
+            ],
+            rotulo='Sim (e segue)',
         ),
         F(
             'colunas_tags() · descrever_estado() · demais_marcadores()',

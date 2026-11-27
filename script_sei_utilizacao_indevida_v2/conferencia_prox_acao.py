@@ -41,10 +41,18 @@ cada marcador "Aguarda" ou "Encaminhado" do processo, procura o memo do
 marcador e confere a assinatura (qualquer signatário). Assinado: atualiza a
 planilha de controle com o número SEI do memo (coluna do memo e
 verificar_marcadores_memo_aguarda_assinado) e, com os marcadores consistentes,
-a prox_acao (Aguardar retorno da APIS / DISA / DEPROC, PROX_ACAO_POR_AGUARDA,
-ou, no "Encaminhado", a de concluído). Sem o memo ou não assinado: erro da
-passagem (verificar_marcadores_erro) e prox_acao = Verificar: criar / assinar
-o memo do marcador.
+a prox_acao (Aguardar retorno da APIS / DISA / DEPROC, PROX_ACAO_POR_AGUARDA).
+Sem o memo ou não assinado: erro da passagem (verificar_marcadores_erro) e
+prox_acao = Verificar: criar / assinar o memo do marcador. No "Encaminhado"
+(01.12.1, conclusão), a prox_acao é sempre a de concluído; sem o memo ou não
+assinado, só o erro da passagem.
+
+Por último (atualizar_prox_acao_pela_situacao), sempre que a situação do
+processo é conhecida pelos marcadores e pela árvore, o próprio verificar
+marcadores corrige a prox_acao, em vez de sugerir rodar o geacs_inicial:
+conclusão (sempre), "No Bloco" com o memo da rodada não assinado, VELHO e os
+de parada da versão anterior. A prox_acao de erro de outro fluxo (Verificar
+erro, ...) é mantida, exceto na conclusão.
 
 A árvore e os textos dos memos só são lidos quando alguma conferência
 precisa deles.
@@ -630,12 +638,20 @@ def trocar_no_bloco_assinado(driver: webdriver.Remote, arvore: ArvoreProcesso, r
 
 def _atualizar_prox_acao_pela_troca(registro: RegistroVerificarMarcadores, linha: dict | None, novo: str) -> None:
     """A prox_acao do novo estado: Aguardar retorno da <unidade> ou, no
-    "Encaminhado", a de concluído (exceto a da DEPROC, que diz mais)."""
+    "Encaminhado", a de concluído (exceto a da DEPROC com o memo DEPROC na
+    GEACS, que diz mais)."""
     atual = (linha or {}).get('prox_acao')
     esperada = _prox_acao_assinado(novo)
-    if atual != esperada and not (isinstance(atual, str) and atual.startswith(_PREFIXO_PROX_ACAO_DEPROC)):
+    if atual != esperada and not _mantem_prox_acao_deproc(atual, novo):
         registro.prox_acao_atualizada = esperada
         logger.info(f'Planilha: prox_acao "{atual or "(vazia)"}" -> "{esperada}" (marcador trocado)')
+
+
+def _mantem_prox_acao_deproc(atual, estado: str) -> bool:
+    """A prox_acao da DEPROC ("DEPROC: ...") diz mais que a do estado, mas só
+    enquanto o processo está com o memo DEPROC na GEACS (01.10.B / 01.10.B.1);
+    com outro estado (ex.: 01.12.1), está desatualizada."""
+    return isinstance(atual, str) and atual.startswith(_PREFIXO_PROX_ACAO_DEPROC) and estado in _ESTADOS_COM_A_DEPROC
 
 
 def _concluir_de_novo(driver: webdriver.Remote, registro: RegistroVerificarMarcadores) -> None:
@@ -670,10 +686,13 @@ def conferir_memos_aguarda(arvore: ArvoreProcesso, registro: RegistroVerificarMa
       memo_deproc_sei, ...) e em verificar_marcadores_memo_aguarda_assinado.
       Se o marcador é o único estado e os marcadores estão consistentes, a
       prox_acao passa a ser Aguardar retorno da <unidade> (PROX_ACAO_POR_AGUARDA)
-      ou, no "Encaminhado", a de concluído (exceto a da DEPROC, que diz mais).
+      (exceto a da DEPROC com o 01.10.B.1, que diz mais).
     - Sem o memo ou não assinado (marcador único estado, marcadores
       consistentes): erro da passagem (verificar_marcadores_erro) e prox_acao =
-      Verificar: criar o memo / assinar o memo."""
+      Verificar: criar o memo / assinar o memo.
+    - "Encaminhado" (01.12.1, conclusão): a prox_acao é sempre a de concluído
+      (atualizar_prox_acao_pela_situacao); sem o memo ou não assinado, só o
+      erro da passagem."""
     tags_assinado = [tag for tag in registro.marcadores_atuais if tag in _NO_BLOCO_POR_ASSINADO]
     if not tags_assinado:
         return
@@ -695,7 +714,8 @@ def conferir_memos_aguarda(arvore: ArvoreProcesso, registro: RegistroVerificarMa
             logger.warning(frase)
             if tag == estado_unico:
                 registro.tipo_erro, registro.erro = tipo, frase
-                if atual != prox_acao:
+                # Na conclusão, a prox_acao continua a de concluído
+                if tag not in PROX_ACAO_POR_CONCLUSAO and atual != prox_acao:
                     registro.prox_acao_atualizada = prox_acao
                     logger.info(f'Planilha: prox_acao "{atual or "(vazia)"}" -> "{prox_acao}"')
             continue
@@ -711,10 +731,78 @@ def conferir_memos_aguarda(arvore: ArvoreProcesso, registro: RegistroVerificarMa
         if tag != estado_unico:
             continue
         esperada = _prox_acao_assinado(tag)
-        if atual == esperada or (isinstance(atual, str) and atual.startswith(_PREFIXO_PROX_ACAO_DEPROC)):
+        if atual == esperada or _mantem_prox_acao_deproc(atual, tag):
             continue
         registro.prox_acao_atualizada = esperada
         logger.info(f'Planilha: prox_acao "{atual or "(vazia)"}" -> "{esperada}" (memo do "{_curto(tag)}" assinado)')
+
+
+# prox_acao de erro que o próprio verificar marcadores (ou a situação de hoje)
+# resolve: as dele, recalculadas a cada passagem, e a de marcadores
+# inconsistentes (só se chega aqui com eles consistentes)
+_PROX_ACOES_DE_ERRO_SUBSTITUIVEIS = frozenset({
+    ProxAcao.VERIFICAR_MARCADORES,
+    ProxAcao.VERIFICAR_CRIAR_MEMO_DO_MARCADOR,
+    ProxAcao.VERIFICAR_ASSINAR_MEMO_DO_MARCADOR,
+})
+
+
+def _prox_acao_pela_situacao(arvore: ArvoreProcesso, marcadores: list[str]) -> str | None:
+    """A prox_acao que a situação do processo determina (marcadores e árvore),
+    ou None se ela não é conhecida só por eles (sem estado, retomada, 01.00,
+    "No Bloco" sem o memo na rodada ou com ele assinado, "Aguarda", tratado em
+    conferir_memos_aguarda)."""
+    atuais = set(marcadores)
+    if not _marcadores_consistentes(marcadores):
+        return None
+    if TAG_PROCESSO_VELHO in atuais:
+        return ProxAcao.FORA_DO_ESCOPO if TAGS_TRATAMENTO_MANUAL & atuais else ProxAcao.VELHO_AGUARDAR_DEFINICAO
+    estado = next((tag for tag in TAGS_ESTADO_NOVO if tag in atuais), None)
+    if estado in PROX_ACAO_POR_CONCLUSAO:
+        return PROX_ACAO_POR_CONCLUSAO[estado]
+    if estado in TAGS_PARADA_NOVO and estado not in _NO_BLOCO_POR_ASSINADO:
+        # Parada da versão anterior (sem memo a conferir)
+        return ProxAcao.AGUARDAR_RESPOSTA_MEMO
+    if estado in PROX_ACAO_POR_NO_BLOCO:
+        memo = arvore.ultimo_memo_geacs(_MEMO_POR_NO_BLOCO[estado].padrao_assunto)
+        if memo is not None and arvore.indice(memo) >= arvore.inicio_rodada() and not arvore.assinado(memo):
+            return PROX_ACAO_POR_NO_BLOCO[estado]
+    return None
+
+
+def _pode_substituir(atual, estado: str | None, fluxo) -> bool:
+    """A prox_acao da planilha pode ser trocada pela da situação. A de erro de
+    outro fluxo fica (o erro está nas colunas tipo_erro e erro), exceto na
+    conclusão (o processo terminou) e a de acesso de uma passagem da GEACS (a
+    GEACS acabou de abrir o processo). A da DEPROC fica com o memo DEPROC na
+    GEACS."""
+    if estado in PROX_ACAO_POR_CONCLUSAO or atual in _PROX_ACOES_DE_ERRO_SUBSTITUIVEIS:
+        return True
+    if atual == ProxAcao.VERIFICAR_ACESSO_UNIDADE:
+        return bool(fluxo) and not _passagem_na_deproc(fluxo)
+    if atual in PROX_ACOES_A_VERIFICAR:
+        return False
+    return not _mantem_prox_acao_deproc(atual, estado)
+
+
+def atualizar_prox_acao_pela_situacao(arvore: ArvoreProcesso, registro: RegistroVerificarMarcadores, linha: dict | None) -> None:
+    """Depois da troca do "No Bloco" e dos memos do "Aguarda": se a situação do
+    processo determina a prox_acao (_prox_acao_pela_situacao) e a da planilha
+    é outra, o verificar marcadores a corrige (em vez de sugerir rodar o
+    geacs_inicial). Na conclusão (01.12.1), sempre a de concluído. Sem a
+    planilha (linha None), nada muda: a prox_acao atual não é conhecida."""
+    if linha is None:
+        return
+    estado = next((tag for tag in TAGS_ESTADO_NOVO if tag in registro.marcadores_atuais), None)
+    if registro.prox_acao_atualizada is not None and estado not in PROX_ACAO_POR_CONCLUSAO:
+        # Já atualizada pela troca do "No Bloco" ou pelo memo do "Aguarda"
+        return
+    esperada = _prox_acao_pela_situacao(arvore, registro.marcadores_atuais)
+    atual = registro.prox_acao_atualizada or linha.get('prox_acao')
+    if esperada is None or atual == esperada or not _pode_substituir(atual, estado, linha.get('fluxo')):
+        return
+    registro.prox_acao_atualizada = esperada
+    logger.info(f'Planilha: prox_acao "{atual or "(vazia)"}" -> "{esperada}" (situação do processo: {_curto(estado) if estado else "VELHO"})')
 
 
 # ---------------------------------------------------------------------------

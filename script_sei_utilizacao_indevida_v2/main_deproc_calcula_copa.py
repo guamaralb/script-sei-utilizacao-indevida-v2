@@ -13,22 +13,19 @@ a retomada é pelo nome do PDF e pelo assunto do memo, na rodada (depois do
 O ano de cada processo e a data de geração da planilha escolhem a base DEPROC
 (constantes.BaseDeproc: copa-MANTIS11281-base_2019-06_11_2026.xlsx); a data é
 citada no memo de resultado. Vêm da planilha de controle (colunas ano_processo
-e data_geracao_base_processo, gravadas pelo geacs_inicial, ou ano_base_deproc e
-data_geracao_base_deproc, de uma apuração anterior). O -a e o -d só são
-exigidos se algum processo da lista não tiver a base na planilha, e valem só
-para esses:
-poetry run task run_deproc_calcula_copa [-a 2019 -d 06/11/2026]
+e data_geracao_base_processo ou, sem elas, ano_base_deproc e
+data_geracao_base_deproc, de uma apuração anterior). Sem a base na planilha, o
+processo é procurado (coluna SEI) em todas as bases da pasta, da mais nova do
+ano mais novo para a mais velha (pesquisar_base): a primeira que o tem vai para
+as colunas ano_processo e data_geracao_base_processo. Em nenhuma: erro, sem
+ação no SEI. Sem argumentos: poetry run task run_deproc_calcula_copa
 """
 
-import argparse
 import logging
 import re
-from collections.abc import Callable
-from dataclasses import dataclass
 from datetime import datetime
 
 import pandas as pd
-from argumentos_base_deproc import adicionar_argumentos, base_dos_argumentos
 from constantes import (
     BLOCO_MEMO_GEACS_CALCULO_COPA,
     CARGO_SIGNATARIO_DEPROC,
@@ -42,8 +39,9 @@ from constantes import (
     UNIDADE_DEPROC,
     UNIDADE_GEACS,
     BaseDeproc,
+    bases_deproc_na_pasta,
 )
-from coparticipacao_deproc import BasesDeprocPorAno, MatriculasDivergentes, ResultadoDeproc, apurar_coparticipacao, carregar_base_deproc
+from coparticipacao_deproc import BasesDeprocPorAno, MatriculasDivergentes, ResultadoDeproc, apurar_coparticipacao, carregar_base_deproc, processo_na_base
 from docs_processo import encontrar_memo_por_assunto
 from extrator_dados_ui import FormatoMemorandoInvalido
 from log_config import (
@@ -123,28 +121,8 @@ def _registrar_resultado(registro: RegistroDeproc, resultado: ResultadoDeproc) -
     registro.valor_total_em_aberto = resultado.totais.em_aberto
 
 
-def _criar_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog='poetry run task run_deproc_calcula_copa',
-        description='Fluxo DEPROC: apura a coparticipação, anexa o relatório e cria o memo de resultado à GEACS.',
-    )
-    adicionar_argumentos(
-        parser,
-        obrigatorios=False,
-        uso=(
-            'com o -d, a base DEPROC dos processos sem a base na planilha de controle (colunas ano_processo e '
-            'data_geracao_base_processo, ou ano_base_deproc e data_geracao_base_deproc). Obrigatórios se algum processo não tiver a base'
-        ),
-    )
-    return parser
-
-
-def ler_argumentos(argv: list[str] | None = None) -> BaseDeproc | None:
-    """A base do -a e do -d (None sem os dois). Só um dos dois, fora do
-    formato ou sem o arquivo da base na pasta: o argparse mostra o erro e
-    encerra (código 2) antes do log, do login e de qualquer ação no SEI."""
-    parser = _criar_parser()
-    return base_dos_argumentos(parser, parser.parse_args(argv))
+class BaseDeprocNaoEncontrada(ErroAvaliacao):
+    """O processo não está em nenhuma base DEPROC da pasta (coluna SEI)."""
 
 
 def _par_na_linha(linha_controle: dict, coluna_ano: str, coluna_data: str) -> BaseDeproc | None:
@@ -154,46 +132,27 @@ def _par_na_linha(linha_controle: dict, coluna_ano: str, coluna_data: str) -> Ba
 
 def base_na_planilha(linha_controle: dict | None) -> BaseDeproc | None:
     """Base DEPROC do processo na planilha de controle: ano_processo e
-    data_geracao_base_processo (geacs_inicial) ou, sem os dois, ano_base_deproc
-    e data_geracao_base_deproc (apuração anterior). None se não houver."""
+    data_geracao_base_processo ou, sem os dois, ano_base_deproc e
+    data_geracao_base_deproc (apuração anterior). None se não houver."""
     if not linha_controle:
         return None
     return _par_na_linha(linha_controle, 'ano_processo', 'data_geracao_base_processo') or _par_na_linha(linha_controle, 'ano_base_deproc', 'data_geracao_base_deproc')
 
 
-@dataclass(frozen=True)
-class BaseProcesso:
-    base: BaseDeproc
-    # Veio do -a e do -d (a planilha não tinha): vão para as colunas
-    # ano_processo e data_geracao_base_processo
-    do_argumento: bool = False
+def bases_em_ordem_de_pesquisa() -> list[BaseDeproc]:
+    """As bases da pasta, da mais nova do ano mais novo para a mais velha."""
+    return list(reversed(bases_deproc_na_pasta()))
 
 
-def bases_dos_processos(processos: list, linha_processo: Callable[[str], dict | None], base_argumento: BaseDeproc | None) -> tuple[dict[str, BaseProcesso], list[str]]:
-    """A base DEPROC de cada processo: a da planilha de controle ou, sem ela,
-    a do -a e do -d. Devolve também os processos sem base: nem na planilha
-    nem nos argumentos, ou com o ano_processo da planilha (sem a data)
-    diferente do -a. Com o -a e o -d diferentes da base da planilha, vale a
-    da planilha (aviso no log)."""
-    bases: dict[str, BaseProcesso] = {}
-    sem_base: list[str] = []
-    for num_processo in processos:
-        linha = linha_processo(num_processo)
-        base = base_na_planilha(linha)
-        if base:
-            if base_argumento and base_argumento != base:
-                logger.warning(f'{num_processo}: base DEPROC {base} na planilha de controle, diferente da do -a e do -d ({base_argumento}); usada a da planilha')
-            bases[num_processo] = BaseProcesso(base)
-            continue
-        ano_planilha = texto_celula((linha or {}).get('ano_processo'))
-        if base_argumento and ano_planilha and ano_planilha != base_argumento.ano:
-            logger.warning(f'{num_processo}: ano {ano_planilha} na planilha de controle (sem a data de geração da base), diferente do -a {base_argumento.ano}')
-            sem_base.append(num_processo)
-        elif base_argumento:
-            bases[num_processo] = BaseProcesso(base_argumento, do_argumento=True)
-        else:
-            sem_base.append(num_processo)
-    return bases, sem_base
+def pesquisar_base(num_processo, bases: BasesDeprocPorAno, candidatas: list[BaseDeproc]) -> BaseDeproc:
+    """A primeira base (na ordem de candidatas) com o processo na coluna SEI.
+    Cada base é carregada uma vez só (BasesDeprocPorAno). Em nenhuma:
+    BaseDeprocNaoEncontrada."""
+    for base in candidatas:
+        if processo_na_base(bases.da_base(base), num_processo):
+            return base
+    pesquisadas = ', '.join(b.arquivo.name for b in candidatas) or 'nenhuma base na pasta'
+    raise BaseDeprocNaoEncontrada(f'Processo sem a base DEPROC na planilha de controle e fora de todas as bases DEPROC da pasta (coluna SEI): {pesquisadas}')
 
 
 def _montar_memo(resultado: ResultadoDeproc, memo_deproc_geacs: DocArvore, doc_relatorio: str | None, data_geracao_base: str) -> MemoGeacsCalculoCopa:
@@ -302,10 +261,10 @@ def _processar_linha(
     num_processo,
     base: pd.DataFrame | None,
     base_deproc: BaseDeproc,
-    do_argumento: bool = False,
+    pesquisada: bool = False,
 ) -> RegistroDeproc:
     registro = RegistroDeproc(num_processo=num_processo, data_execucao=AGORA, fluxo=FLUXO)
-    if do_argumento:
+    if pesquisada:
         # A planilha não tinha a base: fica registrada para as próximas execuções
         registro.ano_processo = base_deproc.ano
         registro.data_geracao_base_processo = base_deproc.data_geracao
@@ -331,39 +290,29 @@ def _processar_linha(
     return registro
 
 
-def _logar_bases(bases: dict[str, BaseProcesso]) -> None:
-    for base in sorted({b.base for b in bases.values()}, key=str):
-        quantidade = sum(b.base == base for b in bases.values())
-        if base.existe():
-            logger.info(f'Ano {base.ano}: {quantidade} processo(s) | Base DEPROC: {base.arquivo.name} | Data de geração: {base.data_geracao}')
-        else:
-            logger.error(f'Ano {base.ano}: {quantidade} processo(s), sem a base DEPROC {base.arquivo.name} na pasta (não serão apurados)')
+def _processar_com_base(driver: webdriver.Remote, num_processo, bases: BasesDeprocPorAno, linha_controle: dict | None) -> RegistroDeproc:
+    """A base do processo (planilha de controle ou pesquisa nas bases da pasta)
+    e a passagem. Sem base: erro, sem ação no SEI. Base da planilha sem o
+    arquivo na pasta: base None (erro no processo, sem ação no SEI)."""
+    base = base_na_planilha(linha_controle)
+    pesquisada = base is None
+    if pesquisada:
+        try:
+            base = pesquisar_base(num_processo, bases, bases_em_ordem_de_pesquisa())
+        except Exception as e:
+            registro = RegistroDeproc(num_processo=num_processo, data_execucao=AGORA, fluxo=FLUXO)
+            registrar_erro(registro, e)
+            if not isinstance(e, ErroAvaliacao):
+                logger.exception('Erro inesperado na pesquisa da base DEPROC')
+            return registro
+        logger.info(f'Base DEPROC encontrada pela pesquisa nas bases da pasta: {base}')
+    else:
+        logger.info(f'Base DEPROC da planilha de controle: {base}')
+    df = bases.da_base(base) if base.existe() else None
+    return _processar_linha(driver, num_processo, df, base, pesquisada)
 
 
-def _bases_ou_encerrar(parser: argparse.ArgumentParser, processos: list, controle: PlanilhaControleGeral, base_argumento: BaseDeproc | None) -> dict[str, BaseProcesso]:
-    """A base de cada processo. Faltando a de algum (na planilha e no -a e
-    -d), o argparse mostra o erro e encerra (código 2), antes do login."""
-    bases, sem_base = bases_dos_processos(processos, controle.linha_processo, base_argumento)
-    if sem_base:
-        lista = ', '.join(map(str, sem_base))
-        logger.error(f'{len(sem_base)} processo(s) sem a base DEPROC na planilha de controle (ano e data de geração), ou com ano diferente do -a: {lista}')
-        parser.error(f'os argumentos -a/--ano e -d/--data (da base DEPROC) são obrigatórios: {len(sem_base)} processo(s) sem a base na planilha de controle, ou com ano diferente do -a ({lista})')
-    _logar_bases(bases)
-    return bases
-
-
-def _processar_com_base(driver: webdriver.Remote, num_processo, bases: BasesDeprocPorAno, base: BaseProcesso) -> RegistroDeproc:
-    """Sem o arquivo da base na pasta: base None (erro no processo, sem ação no SEI)."""
-    df = bases.da_base(base.base) if base.base.existe() else None
-    return _processar_linha(driver, num_processo, df, base.base, base.do_argumento)
-
-
-def main(argv: list[str] | None = None):
-    # Antes de tudo: com -a ou -d inválido, ou sem o arquivo da base, nada é
-    # feito (nem log)
-    parser = _criar_parser()
-    base_argumento = base_dos_argumentos(parser, parser.parse_args(argv))
-
+def main():
     for diretorio in [DIR_INPUTS, DIR_CONTROLE, DIR_LOG, DIR_FLUXO_DEPROC_PDF]:
         diretorio.mkdir(parents=True, exist_ok=True)
     configurar_logging(ARQ_LOG)
@@ -375,14 +324,13 @@ def main(argv: list[str] | None = None):
     try:
         logger.info(f'================= INÍCIO DA EXECUÇÃO ({FLUXO}) =================')
         logger.info(f'Log: {ARQ_LOG}')
-        logger.info(f'Base informada (-a e -d): {base_argumento or "nenhuma"}')
+        logger.info(f'Bases DEPROC na pasta: {", ".join(b.arquivo.name for b in bases_em_ordem_de_pesquisa()) or "nenhuma"}')
 
         processos = ler_processos_a_processar(SCRIPT)
         total = len(processos)
 
         controle = PlanilhaControleGeral(SCRIPT, AGORA)
-        bases_processos = _bases_ou_encerrar(parser, processos, controle, base_argumento)
-
+        # Cada base é carregada na primeira vez que um processo precisa dela
         bases = BasesDeprocPorAno(carregar_base_deproc)
         driver = abrir_sei(UNIDADE_DEPROC)
 
@@ -391,7 +339,7 @@ def main(argv: list[str] | None = None):
                 t_ini = datetime.now()
                 logger.info(f'INÍCIO [{i}/{total}]')
 
-                registro = _processar_com_base(driver, num_processo, bases, bases_processos[num_processo])
+                registro = _processar_com_base(driver, num_processo, bases, controle.linha_processo(num_processo))
                 registros_processados.append(registro.to_dict())
                 controle.registrar(registros_processados[-1])
 

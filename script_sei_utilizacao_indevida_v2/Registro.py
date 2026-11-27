@@ -317,13 +317,6 @@ class RegistroBase:
 
 @dataclass
 class RegistroMain(RegistroBase):
-    # Ano dos processos (-a) e data de geração da planilha da base DEPROC
-    # (-d), informados na execução. Gravados em toda passagem: o
-    # deproc_calcula_copa escolhe por eles a base DEPROC do processo
-    # (constantes.BaseDeproc)
-    ano_processo: str | None = None
-    data_geracao_base_processo: str | None = None
-
     # Enviado à DISA e à DEPROC antes da avaliação da rede própria
     velho: bool | None = None
     # Memos da GEACS à DISA e à DEPROC que identificaram o VELHO (número SEI)
@@ -428,9 +421,6 @@ class RegistroMain(RegistroBase):
 # Colunas que só a avaliação (processar_novo) preenche: dados do memo da APIS,
 # bases APIS, DISA e MANTIS, relatórios e memos criados
 _COLUNAS_UI = frozenset({'matricula_titular', 'nome_titular', 'periodo_titular', 'matriculas_dependentes', 'tem_periodo_var_deps', 'periodos_por_dependente'})
-# Ano e data de geração da base DEPROC do processo (-a e -d): gravados em toda
-# passagem do geacs_inicial
-_COLUNAS_BASE_PROCESSO = frozenset({'ano_processo', 'data_geracao_base_processo'})
 # Preenchidas na separação do VELHO (no roteamento): gravadas só quando ela
 # identifica o VELHO
 _COLUNAS_VELHO = frozenset({'velho', 'memos_velho_sei'})
@@ -438,7 +428,7 @@ _COLUNAS_VELHO = frozenset({'velho', 'memos_velho_sei'})
 
 def _colunas_resultado_main() -> frozenset[str]:
     proprias = {campo.name for campo in fields(RegistroMain)} - {campo.name for campo in fields(RegistroBase)}
-    return frozenset(proprias - _COLUNAS_VELHO - _CAMPOS_INTERNOS - _COLUNAS_BASE_PROCESSO) | _CAMPOS_SO_FLUXO_PRINCIPAL | _COLUNAS_UI
+    return frozenset(proprias - _COLUNAS_VELHO - _CAMPOS_INTERNOS) | _CAMPOS_SO_FLUXO_PRINCIPAL | _COLUNAS_UI
 
 
 @dataclass
@@ -473,6 +463,8 @@ _COLUNAS_MARCADORES_DEPROC = {
 
 # Ano e data de geração da base DEPROC usada na apuração
 _COLUNAS_BASE_DEPROC = ('ano_base_deproc', 'data_geracao_base_deproc')
+# Ano e data de geração da base do processo (pesquisa nas bases da pasta)
+_COLUNAS_BASE_PROCESSO = ('ano_processo', 'data_geracao_base_processo')
 
 
 @dataclass
@@ -497,9 +489,9 @@ class RegistroDeproc(RegistroBase):
     # fluxo GEACS TODAS INFOS confere a coparticipação na mesma base
     ano_base_deproc: str | None = None
     data_geracao_base_deproc: str | None = None
-    # Ano e data de geração da base do processo (colunas do geacs_inicial):
-    # gravados só quando a planilha não os tinha e vieram do -a e do -d
-    # desta execução
+    # Ano e data de geração da base do processo: gravados só quando a
+    # planilha de controle não os tinha e a base foi encontrada pela pesquisa
+    # nas bases da pasta (main_deproc_calcula_copa.pesquisar_base)
     ano_processo: str | None = None
     data_geracao_base_processo: str | None = None
 

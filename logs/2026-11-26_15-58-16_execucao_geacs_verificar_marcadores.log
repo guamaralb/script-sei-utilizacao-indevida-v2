@@ -1,0 +1,36 @@
+2026-11-26 15:58:16 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (GEACS VERIFICAR MARCADORES - ATUALIZAR COLUNAS DE MARCADORES) =================
+2026-11-26 15:58:16 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-26_15-58-16_execucao_geacs_verificar_marcadores.log
+2026-11-26 15:58:16 | INFO    | -                         | processos_a_processar | 39 processo(s) lido(s) de processos_a_processar.xlsx, aba geacs_verificar_marcadores
+2026-11-26 15:58:18 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-26 15:58:18 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-26 15:58:19 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-26 15:58:24 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-26 15:58:24 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:58:24 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/GEACS - Utilização
+2026-11-26 15:58:24 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/39]
+2026-11-26 15:58:27 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 3098 (SEI 154627141)
+2026-11-26 15:58:28 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 154627141 lido (3156 caracteres)
+2026-11-26 15:58:28 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 2567 (SEI 151949102)
+2026-11-26 15:58:28 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 151949102 lido (2937 caracteres)
+2026-11-26 15:58:28 | INFO    | 2010.01.0082932/2024-60   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2567 (SEI 151949102)']
+2026-11-26 15:58:28 | INFO    | 2010.01.0082932/2024-60   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12 - No Bloco APIS: Todas as Infos']
+2026-11-26 15:58:28 | INFO    | 2010.01.0082932/2024-60   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12 - No Bloco APIS: Todas as Infos": Memorando 3098 (SEI 154627141)
+2026-11-26 15:58:28 | WARNING | 2010.01.0082932/2024-60   | __main__              | Inconsistência: Na planilha, a DEPROC continua com "01.02 - No Bloco GEACS: Memo Cálculo COPA", mas o memo de resultado da DEPROC já está assinado (GEACS em "01.12 - No Bloco APIS: Todas as Infos"): trocar na DEPROC pelo "01.02.1 - Encaminhado GEACS: Memo Cálculo COPA" e rodar o deproc_calcula_copa (atualiza a planilha)
+2026-11-26 15:58:28 | INFO    | 2010.01.0082932/2024-60   | __main__              | Ação sugerida: Trocar na DEPROC o No Bloco pelo Encaminhado e rodar deproc_calcula_copa
+2026-11-26 15:58:29 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-26_15-58-16.xlsx
+2026-11-26 15:58:38 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-26 15:58:38 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (13.3s) | Próxima ação: -
+2026-11-26 15:58:38 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [2/39]
+2026-11-26 15:58:40 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 3099 (SEI 154627329)
+2026-11-26 15:58:41 | DEBUG   | 2010.01.0071357/2024-51   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 15:58:42 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 154627329 lido (3151 caracteres)
+2026-11-26 15:58:42 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 1798 (SEI 148034263)
+2026-11-26 15:58:43 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 148034263 lido (2678 caracteres)
+2026-11-26 15:58:43 | INFO    | 2010.01.0071357/2024-51   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1798 (SEI 148034263)']
+2026-11-26 15:58:43 | INFO    | 2010.01.0071357/2024-51   | __main__              | Marcadores válidos: ['v2: 01 - Tratado pelo Script', 'v2: 01.12 - No Bloco APIS: Todas as Infos']
+2026-11-26 15:58:43 | INFO    | 2010.01.0071357/2024-51   | conferencia_prox_acao | Memo à APIS (todas as informações) do marcador "01.12 - No Bloco APIS: Todas as Infos": Memorando 3099 (SEI 154627329)
+2026-11-26 15:58:43 | WARNING | 2010.01.0071357/2024-51   | __main__              | Inconsistência: Na planilha, a DEPROC continua com "01.02 - No Bloco GEACS: Memo Cálculo COPA", mas o memo de resultado da DEPROC já está assinado (GEACS em "01.12 - No Bloco APIS: Todas as Infos"): trocar na DEPROC pelo "01.02.1 - Encaminhado GEACS: Memo Cálculo COPA" e rodar o deproc_calcula_copa (atualiza a planilha)
+2026-11-26 15:58:43 | INFO    | 2010.01.0071357/2024-51   | __main__              | Ação sugerida: Trocar na DEPROC o No Bloco pelo Encaminhado e rodar deproc_calcula_copa
+2026-11-26 15:58:51 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-26 15:58:51 | INFO    | 2010.01.0071357/2024-51   | __main__              | FIM (13.5s) | Próxima ação: -
+2026-11-26 15:58:51 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [3/39]

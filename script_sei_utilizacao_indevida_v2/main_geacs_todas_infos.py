@@ -15,8 +15,9 @@ Para cada processo da aba geacs_todas_infos de processos_a_processar.xlsx:
    (leitura ainda não implementada, TODO);
 5. lê e recalcula os valores (todas_infos.apurar_todas_infos), com a base
    DEPROC usada no deproc_calcula_copa (colunas ano_base_deproc e
-   data_geracao_base_deproc da planilha de controle): divergência para o
-   processo, sem criar o memo;
+   data_geracao_base_deproc da planilha de controle ou, sem elas, ano_processo
+   e data_geracao_base_processo): divergência para o processo, sem criar o
+   memo;
 6. cria o memo à APIS, insere no bloco BLOCO_MEMO_APIS_TODAS_INFOS e adiciona
    o 01.12 - No Bloco APIS: Todas as Infos (remove o 01.10.1). Retomada: o
    memo já na rodada (pelo assunto) não é recriado.
@@ -43,7 +44,6 @@ from constantes import (
     NOME_SIGNATARIO_GERENCIA,
     UNIDADE_GEACS,
     BaseDeproc,
-    bases_deproc_na_pasta,
 )
 from coparticipacao_deproc import BasesDeprocPorAno
 from extrator_dados_ui import FormatoMemorandoInvalido
@@ -95,45 +95,29 @@ class SemAguardaDeproc(ErroAvaliacao):
 
 
 class SemAnoBaseDeproc(ErroAvaliacao):
-    """Sem a base DEPROC usada no deproc_calcula_copa (colunas ano_base_deproc
-    e data_geracao_base_deproc da planilha de controle), ou sem o arquivo
+    """Sem a base DEPROC do processo na planilha de controle, ou sem o arquivo
     dela na pasta."""
 
 
-def _unica_na_pasta(coluna: str, valor: str, escolher) -> BaseDeproc | None:
-    """A única base da pasta com o ano (ou a data) da coluna; None se nenhuma
-    ou mais de uma."""
-    bases = [b for b in bases_deproc_na_pasta() if escolher(b) == valor]
-    if len(bases) != 1:
-        return None
-    logger.warning(f'Planilha de controle só com {coluna} = {valor}: usada a base {bases[0]}, a única da pasta com esse valor')
-    return bases[0]
+def _par_na_linha(linha_controle: dict, coluna_ano: str, coluna_data: str) -> BaseDeproc | None:
+    ano, data = texto_celula(linha_controle.get(coluna_ano)), texto_celula(linha_controle.get(coluna_data))
+    return BaseDeproc(ano, data) if ano and data else None
 
 
 def base_deproc_da_planilha(linha_controle: dict | None) -> BaseDeproc:
-    """Base DEPROC usada no deproc_calcula_copa: o ano e a data de geração das
-    colunas ano_base_deproc e data_geracao_base_deproc da linha do processo na
-    planilha de controle (constantes.BaseDeproc).
-
-    Só com uma das duas (processo apurado antes da coluna ano_base_deproc
-    existir, só com a data): a única base da pasta com esse valor. Senão, ou
-    sem o arquivo da base: SemAnoBaseDeproc."""
+    """Base DEPROC do processo na planilha de controle (constantes.BaseDeproc):
+    a usada no deproc_calcula_copa (colunas ano_base_deproc e
+    data_geracao_base_deproc) ou, sem as duas, a do processo (ano_processo e
+    data_geracao_base_processo, gravadas pelo deproc_calcula_copa ao achar o
+    processo numa base). Não procura nas bases da pasta: sem um par completo,
+    ou sem o arquivo da base, SemAnoBaseDeproc."""
     if linha_controle is None:
         raise SemAnoBaseDeproc('Planilha de controle não lida: sem a base DEPROC usada no deproc_calcula_copa (colunas ano_base_deproc e data_geracao_base_deproc)')
-    ano = texto_celula(linha_controle.get('ano_base_deproc'))
-    data = texto_celula(linha_controle.get('data_geracao_base_deproc'))
-    if ano and data:
-        base = BaseDeproc(ano, data)
-    elif ano:
-        base = _unica_na_pasta('ano_base_deproc', ano, lambda b: b.ano)
-    elif data:
-        base = _unica_na_pasta('data_geracao_base_deproc', data, lambda b: b.data_geracao)
-    else:
-        base = None
+    base = _par_na_linha(linha_controle, 'ano_base_deproc', 'data_geracao_base_deproc') or _par_na_linha(linha_controle, 'ano_processo', 'data_geracao_base_processo')
     if base is None:
         raise SemAnoBaseDeproc(
-            'Base DEPROC (ano e data de geração) não registrada na planilha de controle (colunas ano_base_deproc e data_geracao_base_deproc): '
-            'rode o deproc_calcula_copa neste processo ou preencha as colunas'
+            'Base DEPROC (ano e data de geração) não registrada na planilha de controle (colunas ano_base_deproc e data_geracao_base_deproc, '
+            'ou ano_processo e data_geracao_base_processo): rode o deproc_calcula_copa neste processo ou preencha as colunas'
         )
     if not base.existe():
         raise SemAnoBaseDeproc(f'Base DEPROC {base.ano}, gerada em {base.data_geracao} (colunas ano_base_deproc e data_geracao_base_deproc), não encontrada: {base.arquivo.name}')

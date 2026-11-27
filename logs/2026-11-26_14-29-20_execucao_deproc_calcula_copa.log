@@ -1,0 +1,57 @@
+2026-11-26 14:29:20 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC - COPARTICIPAÇÃO) =================
+2026-11-26 14:29:20 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-26_14-29-20_execucao_deproc_calcula_copa.log
+2026-11-26 14:29:20 | INFO    | -                         | __main__              | Bases DEPROC na pasta: copa-MANTIS11281-base_2021-23_11_2026.xlsx, copa-MANTIS11281-base_2020-24_11_2026.xlsx, copa-MANTIS11281-base_2020-16_11_2026.xlsx, copa-MANTIS11281-base_2019-24_11_2026.xlsx, copa-MANTIS11281-base_2019-06_11_2026.xlsx
+2026-11-26 14:29:20 | INFO    | -                         | processos_a_processar | 39 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_calcula_copa
+2026-11-26 14:29:21 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-26 14:29:21 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-26 14:29:22 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-26 14:31:22 | ERROR   | -                         | __main__              | Erro crítico na execução (DEPROC - COPARTICIPAÇÃO)
+Traceback (most recent call last):
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\main_deproc_calcula_copa.py", line 335, in main
+    driver = abrir_sei(UNIDADE_DEPROC)
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\script_sei_utilizacao_indevida_v2\sessao_sei.py", line 59, in abrir_sei
+    efetuar_login(driver, os.getenv('SEI_LOGIN'), os.getenv('SEI_SENHA'), os.getenv('SEI_ORGAO'))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\sessao.py", line 30, in efetuar_login
+    _login.preencher_e_enviar_login(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        driver, usuario, senha, orgao, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\sei-automacao\src\sei_automacao\_internal\telas\login.py", line 19, in preencher_e_enviar_login
+    input_usuario: WebElement = WebDriverWait(driver, timeout).until(
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        EC.element_to_be_clickable((By.ID, 'txtUsuario'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	(No symbol) [0x7ff69c0a0f05]
+	(No symbol) [0x7ff69bfa1db0]
+	(No symbol) [0x7ff69be23433]
+	(No symbol) [0x7ff69c665ff1]
+	(No symbol) [0x7ff69c66624c]
+	(No symbol) [0x7ff69c694647]
+	(No symbol) [0x7ff69be55b01]
+	(No symbol) [0x7ff69be3bea1]
+	(No symbol) [0x7ff69be3d1d3]
+	(No symbol) [0x7ff69c540f4f]
+	(No symbol) [0x7ff69c567678]
+	(No symbol) [0x7ff69c55af68]
+	(No symbol) [0x7ff69c1be62e]
+	(No symbol) [0x7ff69bfb16f3]
+	(No symbol) [0x7ff69bfac304]
+	(No symbol) [0x7ff69bfac494]
+	(No symbol) [0x7ff69bf9509c]
+	(No symbol) [0x7ff81a9dcd87]
+	(No symbol) [0x7ff81ae6caec]
+
+2026-11-26 14:31:22 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-26 14:31:22 | INFO    | -                         | __main__              | Processos: 0 | Sem erro: 0 | Com erro: 0
+2026-11-26 14:31:22 | INFO    | -                         | __main__              | Duração total da execução: 0h02m01s
+2026-11-26 14:31:22 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================

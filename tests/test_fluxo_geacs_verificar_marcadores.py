@@ -366,10 +366,20 @@ def test_tudo_consistente(monkeypatch):
     assert registro.to_dict()['verificar_marcadores_erro'] is None
 
 
-def test_prox_acao_de_outro_memo(monkeypatch):
+def test_prox_acao_de_outro_memo_e_corrigida_pela_arvore(monkeypatch):
+    # No Bloco com o memo da rodada não assinado: o verificar corrige a prox_acao
     registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA})
 
-    assert _inconsistencia(registro) == (
+    assert registro.to_dict()['prox_acao'] == ProxAcao.ASSINAR_DEPROC
+    assert _inconsistencia(registro) is None
+
+
+def test_prox_acao_de_outro_memo_sem_o_memo_na_arvore(monkeypatch):
+    # Sem o memo na árvore a situação não é conhecida: só a inconsistência
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, None, {'prox_acao': ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA})
+
+    assert 'prox_acao' not in registro.to_dict()
+    assert _inconsistencia(registro).startswith(
         f'prox_acao "{ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA}" não condiz com o marcador "01.10.B - No Bloco DEPROC: Coparticipação"; '
         f'esperada: "{ProxAcao.ASSINAR_DEPROC}" (rodar o geacs_inicial atualiza a prox_acao)'
     )
@@ -393,7 +403,10 @@ def test_aguarda_aceita_a_prox_acao_generica_e_a_da_unidade(prox_acao):
 
 def test_prox_acao_vazia_com_estado(monkeypatch):
     registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {})
+    assert registro.to_dict()['prox_acao'] == ProxAcao.ASSINAR_DEPROC
+    assert _inconsistencia(registro) is None
 
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, None, {})
     assert _inconsistencia(registro).startswith('prox_acao "(vazia)" não condiz')
 
 
@@ -419,7 +432,8 @@ def test_prox_acoes_aceitas_com_o_estado(monkeypatch, prox_acao):
         ([], ProxAcao.ASSINAR_DEPROC, False),
         ([tags.TAG_PROCESSO_VELHO], ProxAcao.VELHO_AGUARDAR_DEFINICAO, True),
         ([tags.TAG_PROCESSO_VELHO, tags.TAG_MANUAL], ProxAcao.FORA_DO_ESCOPO, True),
-        ([tags.TAG_PROCESSO_VELHO], ProxAcao.ASSINAR_DEPROC, False),
+        # VELHO: corrigida pelo marcador
+        ([tags.TAG_PROCESSO_VELHO], ProxAcao.ASSINAR_DEPROC, True),
         ([tags.TAG_PROCESSO_NOVO], ProxAcao.ASSINAR_DEPROC, False),
         ([tags.TAG_PROCESSO_NOVO], ProxAcao.VERIFICAR_ERRO, True),
         ([tags.TAG_PROCESSO_NOVO, tags.TAG_AGUARDA_FLUXO_NORMAL], ProxAcao.ADC_PDF_ANT_MAN_AGUARDA_FLUXO_NORMAL, True),
@@ -444,7 +458,11 @@ def test_marcadores_inconsistentes(monkeypatch):
 
 def test_verificar_marcadores_com_marcadores_ja_corrigidos(monkeypatch):
     registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.VERIFICAR_MARCADORES})
+    assert registro.to_dict()['prox_acao'] == ProxAcao.ASSINAR_DEPROC
+    assert _inconsistencia(registro) is None
 
+    # Sem o memo na árvore: só a inconsistência
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, None, {'prox_acao': ProxAcao.VERIFICAR_MARCADORES})
     assert 'mas os marcadores estão consistentes' in _inconsistencia(registro)
 
 
@@ -580,7 +598,8 @@ def test_ordem_e_formato_das_colunas_da_planilha(monkeypatch, tmp_path):
     linha = controle.linha_processo('PROC')
     assert linha['prox_acao'] == ProxAcao.ASSINAR_MEMO_DISA_VALIDAR_CONSTA
     assert controle.linha_processo('OUTRO') == {}
-    controle.registrar(_passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), linha).to_dict())
+    # Sem o memo na árvore: a prox_acao não é corrigida (fica a inconsistência)
+    controle.registrar(_passar(monkeypatch, NO_BLOCO_DEPROC, None, linha).to_dict())
 
     assert not list(tmp_path.glob('~gravando_*'))
     processos = load_workbook(arquivo)['processos']
@@ -628,12 +647,17 @@ def test_toda_prox_acao_de_verificar_vale_com_qualquer_marcador():
 )
 def test_verificar_acesso_resolvido_pela_geacs(monkeypatch, fluxo_planilha, consistente):
     linha = {'prox_acao': ProxAcao.VERIFICAR_ACESSO_UNIDADE, 'fluxo': fluxo_planilha}
-    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), linha)
+    # Sem o memo na árvore: a prox_acao não é corrigida
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, None, linha)
 
-    assert (_inconsistencia(registro) is None) is consistente
+    assert ('o acesso foi resolvido' not in (_inconsistencia(registro) or '')) is consistente
     if not consistente:
-        assert 'o acesso foi resolvido' in _inconsistencia(registro)
-        assert _acao(registro) == AcaoSugerida.RODAR_INICIAL
+        assert _acao(registro).startswith(AcaoSugerida.RODAR_INICIAL)
+
+    # Com o memo da rodada não assinado, a do acesso resolvido é corrigida
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), linha)
+    assert _inconsistencia(registro) is None
+    assert registro.to_dict().get('prox_acao') == (None if consistente else ProxAcao.ASSINAR_DEPROC)
 
 
 def test_prox_acao_da_deproc_so_com_o_memo_deproc(monkeypatch):
@@ -644,8 +668,14 @@ def test_prox_acao_da_deproc_so_com_o_memo_deproc(monkeypatch):
     sei.novo_processo()
     sei.memo_geacs(ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES)
     registro = _passar(monkeypatch, [tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_APIS_TODAS_INFOS], sei, linha)
+    # Desatualizada com o 01.12: corrigida pelo memo da rodada não assinado
+    assert registro.to_dict()['prox_acao'] == ProxAcao.ASSINAR_MEMO_APIS_TODAS_INFOS
+    assert _inconsistencia(registro) is None
+
+    # Sem o memo na árvore: só a inconsistência
+    registro = _passar(monkeypatch, [tags.TAG_PROCESSO_NOVO, tags.TAG_NO_BLOCO_APIS_TODAS_INFOS], None, linha)
     assert f'esperada: "{ProxAcao.ASSINAR_MEMO_APIS_TODAS_INFOS}"' in _inconsistencia(registro)
-    assert _acao(registro) == AcaoSugerida.RODAR_INICIAL
+    assert _acao(registro).startswith(AcaoSugerida.RODAR_INICIAL)
 
 
 def test_no_bloco_com_memo_ja_assinado(monkeypatch):
@@ -819,18 +849,50 @@ def test_memo_assinado_da_a_prox_acao_da_unidade_ou_concluido(monkeypatch, marca
     assert dados['verificar_marcadores_erro'] is None
 
 
-@pytest.mark.parametrize(('assinado', 'prox_acao'), [(False, ProxAcao.VERIFICAR_ASSINAR_MEMO_DO_MARCADOR), (None, ProxAcao.VERIFICAR_CRIAR_MEMO_DO_MARCADOR)])
-def test_encaminhado_apis_sem_memo_assinado_e_erro(monkeypatch, assinado, prox_acao):
+@pytest.mark.parametrize(('assinado', 'tipo_erro'), [(False, 'MemoDoMarcadorNaoAssinado'), (None, 'MemoDoMarcadorNaoEncontrado')])
+@pytest.mark.parametrize('prox_acao', [ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO, ProxAcao.VERIFICAR_CRIAR_MEMO_DO_MARCADOR, ProxAcao.VERIFICAR_ERRO])
+def test_encaminhado_apis_sem_memo_assinado_e_erro_mas_concluido(monkeypatch, assinado, tipo_erro, prox_acao):
     sei = SEIFalso()
     sei.novo_processo()
     if assinado is not None:
         sei.memo_geacs(ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES, assinado=assinado)
     marcadores = [tags.TAG_PROCESSO_NOVO, tags.TAG_ENCAMINHADO_APIS_TODAS_INFOS]
-    registro = _passar(monkeypatch, marcadores, sei, {'prox_acao': ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO})
+    registro = _passar(monkeypatch, marcadores, sei, {'prox_acao': prox_acao})
 
     dados = registro.to_dict()
-    assert dados['prox_acao'] == prox_acao
-    assert dados['verificar_marcadores_erro'] is not None
+    # Com o Encaminhado, a prox_acao é sempre a de concluído
+    assert dados.get('prox_acao', prox_acao) == ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO
+    assert dados['verificar_marcadores_erro'].startswith(f'{tipo_erro}: ')
+
+
+@pytest.mark.parametrize(
+    'prox_acao',
+    [None, ProxAcao.VERIFICAR_ERRO, ProxAcao.ASSINAR_MEMO_APIS_TODAS_INFOS, ProxAcao.DEPROC_MEMO_ENCAMINHADO, ProxAcao.VERIFICAR_MARCADORES, ProxAcao.ADC_PDF_ANT_AUT_ESTADO_MANTIDO],
+)
+def test_encaminhado_apis_sempre_da_a_prox_acao_de_concluido(monkeypatch, prox_acao):
+    sei = SEIFalso()
+    sei.novo_processo()
+    sei.memo_geacs(ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES, assinado=True, signatario=GUSTAVO)
+    registro = _passar(monkeypatch, [tags.TAG_PROCESSO_NOVO, tags.TAG_ENCAMINHADO_APIS_TODAS_INFOS], sei, {'prox_acao': prox_acao})
+
+    dados = registro.to_dict()
+    assert dados['prox_acao'] == ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO
+    assert dados['verificar_marcadores_erro'] is None
+    assert _inconsistencia(registro) is None
+
+
+def test_prox_acao_de_erro_de_outro_fluxo_fica(monkeypatch):
+    # Verificar erro (ex.: falha do geacs_todas_infos) não é escondida
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.VERIFICAR_ERRO})
+    assert 'prox_acao' not in registro.to_dict()
+    # A da DEPROC fica com o memo DEPROC na GEACS
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), {'prox_acao': ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO})
+    assert 'prox_acao' not in registro.to_dict()
+
+
+def test_sem_planilha_a_prox_acao_pela_situacao_nao_muda(monkeypatch):
+    registro = _passar(monkeypatch, NO_BLOCO_DEPROC, _processo_deproc(), None)
+    assert 'prox_acao' not in registro.to_dict()
 
 
 @pytest.mark.parametrize('prox_acao', [ProxAcao.AGUARDAR_RETORNO_DEPROC, 'DEPROC: assinar memo de resultado'])

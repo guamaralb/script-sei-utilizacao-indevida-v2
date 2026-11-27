@@ -24,14 +24,15 @@ Para cada processo da aba geacs_verificar_marcadores de
 processos_a_processar.xlsx (aba vazia: todos os processos da planilha de
 controle geral): abre o processo, lê os marcadores e, se preciso, a
 árvore e os memos. Única ação no SEI: a troca do "No Bloco" (processo fechado
-na GEACS é reaberto para a troca e concluído de novo). Só altera a prox_acao pela troca ou pelo memo do "Aguarda" /
-"Encaminhado" (RegistroVerificarMarcadores).
+na GEACS é reaberto para a troca e concluído de novo). Só altera a prox_acao pela troca, pelo memo do "Aguarda" /
+"Encaminhado" ou pela situação do processo (marcadores e árvore; no 01.12.1,
+sempre a de concluído) (RegistroVerificarMarcadores).
 """
 
 import logging
 from datetime import datetime
 
-from conferencia_prox_acao import ArvoreProcesso, conferir_memos_aguarda, conferir_processo, trocar_no_bloco_assinado
+from conferencia_prox_acao import ArvoreProcesso, atualizar_prox_acao_pela_situacao, conferir_memos_aguarda, conferir_processo, trocar_no_bloco_assinado
 from constantes import DIR_CONTROLE, DIR_INPUTS, DIR_LOG, UNIDADE_GEACS
 from log_config import (
     configurar_logging,
@@ -71,6 +72,9 @@ def verificar_marcadores(driver: webdriver.Remote, registro: RegistroVerificarMa
     arvore = ArvoreProcesso(driver)
     trocar_no_bloco_assinado(driver, arvore, registro, linha_planilha)
     conferir_memos_aguarda(arvore, registro, linha_planilha)
+    # Situação conhecida pelos marcadores e pela árvore: o próprio verificar
+    # corrige a prox_acao (na conclusão, sempre a de concluído)
+    atualizar_prox_acao_pela_situacao(arvore, registro, linha_planilha)
     validos = sorted(tag for tag in registro.marcadores_sei if tag in TAGS_VALIDOS_GEACS)
     demais = sorted(tag for tag in registro.marcadores_sei if tag not in TAGS_VALIDOS_GEACS)
     logger.info(f'Marcadores válidos: {validos or "nenhum"}')

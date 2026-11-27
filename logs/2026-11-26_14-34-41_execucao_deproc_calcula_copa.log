@@ -1,0 +1,1085 @@
+2026-11-26 14:34:41 | INFO    | -                         | __main__              | ================= INÍCIO DA EXECUÇÃO (DEPROC - COPARTICIPAÇÃO) =================
+2026-11-26 14:34:41 | INFO    | -                         | __main__              | Log: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\logs\2026-11-26_14-34-41_execucao_deproc_calcula_copa.log
+2026-11-26 14:34:41 | INFO    | -                         | __main__              | Bases DEPROC na pasta: copa-MANTIS11281-base_2021-23_11_2026.xlsx, copa-MANTIS11281-base_2020-24_11_2026.xlsx, copa-MANTIS11281-base_2020-16_11_2026.xlsx, copa-MANTIS11281-base_2019-24_11_2026.xlsx, copa-MANTIS11281-base_2019-06_11_2026.xlsx
+2026-11-26 14:34:41 | INFO    | -                         | processos_a_processar | 39 processo(s) lido(s) de processos_a_processar.xlsx, aba deproc_calcula_copa
+2026-11-26 14:34:42 | INFO    | -                         | sessao_sei            | Iniciando navegador e login no SEI
+2026-11-26 14:34:42 | INFO    | -                         | sei_automacao.navegador | Iniciando Google Chrome...
+2026-11-26 14:34:43 | INFO    | -                         | sei_automacao.navegador | Navegador iniciado. Downloads em: C:\Users\m755247\Downloads\SEI
+2026-11-26 14:34:49 | INFO    | -                         | sessao_sei            | Login no SEI efetuado
+2026-11-26 14:34:49 | INFO    | -                         | sessao_sei            | Trocando para a unidade IPSEMG/DEPROC-Utilização
+2026-11-26 14:34:49 | INFO    | -                         | sessao_sei            | Unidade do SEI: IPSEMG/DEPROC-Utilização
+2026-11-26 14:34:49 | INFO    | 2010.01.0082932/2024-60   | __main__              | INÍCIO [1/39]
+2026-11-26 14:34:50 | INFO    | 2010.01.0082932/2024-60   | coparticipacao_deproc | Base DEPROC carregada: 10231 linha(s), 142 processo(s) (copa-MANTIS11281-base_2021-23_11_2026.xlsx, aba Resultado)
+2026-11-26 14:34:51 | INFO    | 2010.01.0082932/2024-60   | coparticipacao_deproc | Base DEPROC carregada: 4395 linha(s), 28 processo(s) (copa-MANTIS11281-base_2020-24_11_2026.xlsx, aba Resultado)
+2026-11-26 14:34:59 | INFO    | 2010.01.0082932/2024-60   | coparticipacao_deproc | Base DEPROC carregada: 35658 linha(s), 380 processo(s) (copa-MANTIS11281-base_2020-16_11_2026.xlsx, aba Resultado)
+2026-11-26 14:34:59 | INFO    | 2010.01.0082932/2024-60   | coparticipacao_deproc | Base DEPROC carregada: 311 linha(s), 5 processo(s) (copa-MANTIS11281-base_2019-24_11_2026.xlsx, aba Resultado)
+2026-11-26 14:35:02 | INFO    | 2010.01.0082932/2024-60   | coparticipacao_deproc | Base DEPROC carregada: 20498 linha(s), 195 processo(s) (copa-MANTIS11281-base_2019-06_11_2026.xlsx, aba Resultado)
+2026-11-26 14:35:02 | INFO    | 2010.01.0082932/2024-60   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:35:03 | INFO    | 2010.01.0082932/2024-60   | __main__              | Marcadores: nenhum
+2026-11-26 14:35:07 | INFO    | 2010.01.0082932/2024-60   | marcadores_disponiveis | Marcadores cadastrados na unidade: 6
+2026-11-26 14:35:07 | INFO    | 2010.01.0082932/2024-60   | __main__              | Árvore: 18 documento(s)
+2026-11-26 14:35:07 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 2567 (SEI 151949102)
+2026-11-26 14:35:08 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 151949102 lido (2937 caracteres)
+2026-11-26 14:35:08 | INFO    | 2010.01.0082932/2024-60   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2567 (SEI 151949102)']
+2026-11-26 14:35:08 | INFO    | 2010.01.0082932/2024-60   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3803868 / 4 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:35:08 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:35:08 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Lendo documento Memorando 2080 (SEI 153207988)
+2026-11-26 14:35:09 | DEBUG   | 2010.01.0082932/2024-60   | docs_processo         | Documento 153207988 lido (2446 caracteres)
+2026-11-26 14:35:09 | INFO    | 2010.01.0082932/2024-60   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2080 (SEI 153207988)
+2026-11-26 14:35:09 | INFO    | 2010.01.0082932/2024-60   | __main__              | Memo DEPROC da GEACS assinado: 153207988
+2026-11-26 14:35:09 | INFO    | 2010.01.0082932/2024-60   | coparticipacao_deproc | Base DEPROC: 33 linha(s) do processo, 2 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 31 atendimento(s) | Coparticipação R$ 151.12 | Descontado R$ 73.62 | Em aberto R$ 77.50
+2026-11-26 14:35:11 | INFO    | 2010.01.0082932/2024-60   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:35:26 | INFO    | 2010.01.0082932/2024-60   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 38038684 - 20261126_143511 (154616386)
+2026-11-26 14:35:29 | INFO    | 2010.01.0082932/2024-60   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:35:40 | INFO    | 2010.01.0082932/2024-60   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:35:43 | INFO    | 2010.01.0082932/2024-60   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:35:46 | INFO    | 2010.01.0082932/2024-60   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:35:49 | INFO    | 2010.01.0082932/2024-60   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:35:50 | INFO    | 2010.01.0082932/2024-60   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 464 (SEI 154616402)']
+2026-11-26 14:35:50 | INFO    | 2010.01.0082932/2024-60   | planilha_controle     | Backup da planilha de controle: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\backup\controle_geral_de_processos_2026-11-26_14-34-41.xlsx
+2026-11-26 14:35:54 | DEBUG   | 2010.01.0082932/2024-60   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (1 passagem(ns) nesta execução)
+2026-11-26 14:35:54 | INFO    | 2010.01.0082932/2024-60   | __main__              | FIM (0h01m05s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:35:54 | INFO    | 2010.01.0071357/2024-51   | __main__              | INÍCIO [2/39]
+2026-11-26 14:35:54 | INFO    | 2010.01.0071357/2024-51   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:35:55 | INFO    | 2010.01.0071357/2024-51   | __main__              | Marcadores: nenhum
+2026-11-26 14:35:56 | INFO    | 2010.01.0071357/2024-51   | __main__              | Árvore: 20 documento(s)
+2026-11-26 14:35:56 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 1798 (SEI 148034263)
+2026-11-26 14:35:57 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 148034263 lido (2678 caracteres)
+2026-11-26 14:35:57 | INFO    | 2010.01.0071357/2024-51   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1798 (SEI 148034263)']
+2026-11-26 14:35:57 | INFO    | 2010.01.0071357/2024-51   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2395781-6 | Período titular: 01/04/2019 a12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:35:57 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:35:57 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Lendo documento Memorando 2251 (SEI 153316095)
+2026-11-26 14:35:58 | DEBUG   | 2010.01.0071357/2024-51   | docs_processo         | Documento 153316095 lido (2443 caracteres)
+2026-11-26 14:35:58 | INFO    | 2010.01.0071357/2024-51   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2251 (SEI 153316095)
+2026-11-26 14:35:58 | INFO    | 2010.01.0071357/2024-51   | __main__              | Memo DEPROC da GEACS assinado: 153316095
+2026-11-26 14:35:58 | INFO    | 2010.01.0071357/2024-51   | coparticipacao_deproc | Base DEPROC: 1 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 1 atendimento(s) | Coparticipação R$ 5.10 | Descontado R$ 0.00 | Em aberto R$ 5.10
+2026-11-26 14:36:00 | INFO    | 2010.01.0071357/2024-51   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:36:13 | INFO    | 2010.01.0071357/2024-51   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 23957816 - 20261126_143600 (154616512)
+2026-11-26 14:36:16 | INFO    | 2010.01.0071357/2024-51   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:36:27 | INFO    | 2010.01.0071357/2024-51   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:36:29 | INFO    | 2010.01.0071357/2024-51   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:36:32 | INFO    | 2010.01.0071357/2024-51   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:36:34 | INFO    | 2010.01.0071357/2024-51   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:36:36 | INFO    | 2010.01.0071357/2024-51   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 465 (SEI 154616468)']
+2026-11-26 14:36:40 | DEBUG   | 2010.01.0071357/2024-51   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (2 passagem(ns) nesta execução)
+2026-11-26 14:36:40 | INFO    | 2010.01.0071357/2024-51   | __main__              | FIM (46.5s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:36:40 | INFO    | 2010.01.0072062/2024-28   | __main__              | INÍCIO [3/39]
+2026-11-26 14:36:40 | INFO    | 2010.01.0072062/2024-28   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:36:41 | INFO    | 2010.01.0072062/2024-28   | __main__              | Marcadores: nenhum
+2026-11-26 14:36:44 | INFO    | 2010.01.0072062/2024-28   | __main__              | Árvore: 32 documento(s)
+2026-11-26 14:36:44 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 44 (SEI 114761013)
+2026-11-26 14:36:45 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 114761013 lido (1667 caracteres)
+2026-11-26 14:36:45 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 44 (SEI 114761013)
+2026-11-26 14:36:45 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 1610 (SEI 147432858)
+2026-11-26 14:36:45 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 147432858 lido (2593 caracteres)
+2026-11-26 14:36:45 | INFO    | 2010.01.0072062/2024-28   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1610 (SEI 147432858)']
+2026-11-26 14:36:45 | INFO    | 2010.01.0072062/2024-28   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3631854-0 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 3643414 | Período variável p/ dependentes: não
+2026-11-26 14:36:45 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:36:45 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Lendo documento Memorando 2084 (SEI 153208938)
+2026-11-26 14:36:46 | DEBUG   | 2010.01.0072062/2024-28   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:36:47 | DEBUG   | 2010.01.0072062/2024-28   | docs_processo         | Documento 153208938 lido (2555 caracteres)
+2026-11-26 14:36:47 | INFO    | 2010.01.0072062/2024-28   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2084 (SEI 153208938)
+2026-11-26 14:36:47 | INFO    | 2010.01.0072062/2024-28   | __main__              | Memo DEPROC da GEACS assinado: 153208938
+2026-11-26 14:36:47 | INFO    | 2010.01.0072062/2024-28   | coparticipacao_deproc | Base DEPROC: 6 linha(s) do processo, 2 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 4 atendimento(s) | Coparticipação R$ 9.26 | Descontado R$ 0.00 | Em aberto R$ 9.26
+2026-11-26 14:36:50 | INFO    | 2010.01.0072062/2024-28   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:37:03 | INFO    | 2010.01.0072062/2024-28   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 36318540 - 20261126_143650 (154616681)
+2026-11-26 14:37:05 | INFO    | 2010.01.0072062/2024-28   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:37:15 | INFO    | 2010.01.0072062/2024-28   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:37:18 | INFO    | 2010.01.0072062/2024-28   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:37:21 | INFO    | 2010.01.0072062/2024-28   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:37:24 | INFO    | 2010.01.0072062/2024-28   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:37:26 | INFO    | 2010.01.0072062/2024-28   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 466 (SEI 154616663)']
+2026-11-26 14:37:30 | DEBUG   | 2010.01.0072062/2024-28   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (3 passagem(ns) nesta execução)
+2026-11-26 14:37:30 | INFO    | 2010.01.0072062/2024-28   | __main__              | FIM (49.7s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:37:30 | INFO    | 2010.01.0071467/2024-88   | __main__              | INÍCIO [4/39]
+2026-11-26 14:37:30 | INFO    | 2010.01.0071467/2024-88   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:37:31 | INFO    | 2010.01.0071467/2024-88   | __main__              | Marcadores: nenhum
+2026-11-26 14:37:34 | INFO    | 2010.01.0071467/2024-88   | __main__              | Árvore: 31 documento(s)
+2026-11-26 14:37:34 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 53 (SEI 114830412)
+2026-11-26 14:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 114830412 lido (1595 caracteres)
+2026-11-26 14:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 53 (SEI 114830412)
+2026-11-26 14:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 1589 (SEI 147338560)
+2026-11-26 14:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 147338560 lido (2734 caracteres)
+2026-11-26 14:37:35 | INFO    | 2010.01.0071467/2024-88   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1589 (SEI 147338560)']
+2026-11-26 14:37:35 | INFO    | 2010.01.0071467/2024-88   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3542998-4 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 3558833; 3558844; 3562699 | Período variável p/ dependentes: não
+2026-11-26 14:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:37:35 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Lendo documento Memorando 2086 (SEI 153209585)
+2026-11-26 14:37:36 | DEBUG   | 2010.01.0071467/2024-88   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:37:37 | DEBUG   | 2010.01.0071467/2024-88   | docs_processo         | Documento 153209585 lido (2575 caracteres)
+2026-11-26 14:37:37 | INFO    | 2010.01.0071467/2024-88   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2086 (SEI 153209585)
+2026-11-26 14:37:37 | INFO    | 2010.01.0071467/2024-88   | __main__              | Memo DEPROC da GEACS assinado: 153209585
+2026-11-26 14:37:37 | INFO    | 2010.01.0071467/2024-88   | coparticipacao_deproc | Base DEPROC: 78 linha(s) do processo, 3 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 75 atendimento(s) | Coparticipação R$ 316.00 | Descontado R$ 0.00 | Em aberto R$ 316.00
+2026-11-26 14:37:40 | INFO    | 2010.01.0071467/2024-88   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:37:54 | INFO    | 2010.01.0071467/2024-88   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35429984 - 20261126_143740 (154616807)
+2026-11-26 14:37:57 | INFO    | 2010.01.0071467/2024-88   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:38:06 | INFO    | 2010.01.0071467/2024-88   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:38:09 | INFO    | 2010.01.0071467/2024-88   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:38:12 | INFO    | 2010.01.0071467/2024-88   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:38:14 | INFO    | 2010.01.0071467/2024-88   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:38:16 | INFO    | 2010.01.0071467/2024-88   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 467 (SEI 154616819)']
+2026-11-26 14:38:20 | DEBUG   | 2010.01.0071467/2024-88   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (4 passagem(ns) nesta execução)
+2026-11-26 14:38:20 | INFO    | 2010.01.0071467/2024-88   | __main__              | FIM (50.1s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:38:20 | INFO    | 2010.01.0071348/2024-03   | __main__              | INÍCIO [5/39]
+2026-11-26 14:38:20 | INFO    | 2010.01.0071348/2024-03   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:38:21 | INFO    | 2010.01.0071348/2024-03   | __main__              | Marcadores: nenhum
+2026-11-26 14:38:23 | INFO    | 2010.01.0071348/2024-03   | __main__              | Árvore: 21 documento(s)
+2026-11-26 14:38:23 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Lendo documento Memorando 1980 (SEI 148874019)
+2026-11-26 14:38:24 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Documento 148874019 lido (2717 caracteres)
+2026-11-26 14:38:24 | INFO    | 2010.01.0071348/2024-03   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1980 (SEI 148874019)']
+2026-11-26 14:38:24 | INFO    | 2010.01.0071348/2024-03   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1741136-0 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 1845086 | Período variável p/ dependentes: não
+2026-11-26 14:38:24 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:38:24 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Lendo documento Memorando 2091 (SEI 153210800)
+2026-11-26 14:38:25 | DEBUG   | 2010.01.0071348/2024-03   | docs_processo         | Documento 153210800 lido (2555 caracteres)
+2026-11-26 14:38:25 | INFO    | 2010.01.0071348/2024-03   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2091 (SEI 153210800)
+2026-11-26 14:38:25 | INFO    | 2010.01.0071348/2024-03   | __main__              | Memo DEPROC da GEACS assinado: 153210800
+2026-11-26 14:38:25 | INFO    | 2010.01.0071348/2024-03   | coparticipacao_deproc | Base DEPROC: 81 linha(s) do processo, 1 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 80 atendimento(s) | Coparticipação R$ 499.48 | Descontado R$ 0.00 | Em aberto R$ 499.48
+2026-11-26 14:38:27 | INFO    | 2010.01.0071348/2024-03   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:38:42 | INFO    | 2010.01.0071348/2024-03   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 17411360 - 20261126_143827 (154616944)
+2026-11-26 14:38:46 | INFO    | 2010.01.0071348/2024-03   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:38:57 | INFO    | 2010.01.0071348/2024-03   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:38:59 | INFO    | 2010.01.0071348/2024-03   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:39:02 | INFO    | 2010.01.0071348/2024-03   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:39:05 | INFO    | 2010.01.0071348/2024-03   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:39:07 | INFO    | 2010.01.0071348/2024-03   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 468 (SEI 154617018)']
+2026-11-26 14:39:17 | DEBUG   | 2010.01.0071348/2024-03   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (5 passagem(ns) nesta execução)
+2026-11-26 14:39:17 | INFO    | 2010.01.0071348/2024-03   | __main__              | FIM (56.2s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:39:17 | INFO    | 2010.01.0072057/2024-66   | __main__              | INÍCIO [6/39]
+2026-11-26 14:39:17 | INFO    | 2010.01.0072057/2024-66   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:39:18 | INFO    | 2010.01.0072057/2024-66   | __main__              | Marcadores: nenhum
+2026-11-26 14:39:21 | INFO    | 2010.01.0072057/2024-66   | __main__              | Árvore: 31 documento(s)
+2026-11-26 14:39:21 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 45 (SEI 114762240)
+2026-11-26 14:39:22 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 114762240 lido (1543 caracteres)
+2026-11-26 14:39:22 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 45 (SEI 114762240)
+2026-11-26 14:39:22 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 1626 (SEI 147489399)
+2026-11-26 14:39:23 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 147489399 lido (2498 caracteres)
+2026-11-26 14:39:23 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1626 (SEI 147489399)
+2026-11-26 14:39:23 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 2450 (SEI 151127831)
+2026-11-26 14:39:24 | DEBUG   | 2010.01.0072057/2024-66   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:39:25 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 151127831 lido (2589 caracteres)
+2026-11-26 14:39:25 | INFO    | 2010.01.0072057/2024-66   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2450 (SEI 151127831)']
+2026-11-26 14:39:25 | INFO    | 2010.01.0072057/2024-66   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3713817-1 | Período titular: 01/05/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:39:25 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:39:25 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Lendo documento Memorando 2252 (SEI 153316241)
+2026-11-26 14:39:26 | DEBUG   | 2010.01.0072057/2024-66   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:39:26 | DEBUG   | 2010.01.0072057/2024-66   | docs_processo         | Documento 153316241 lido (2444 caracteres)
+2026-11-26 14:39:26 | INFO    | 2010.01.0072057/2024-66   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2252 (SEI 153316241)
+2026-11-26 14:39:26 | INFO    | 2010.01.0072057/2024-66   | __main__              | Memo DEPROC da GEACS assinado: 153316241
+2026-11-26 14:39:26 | INFO    | 2010.01.0072057/2024-66   | coparticipacao_deproc | Base DEPROC: 5 linha(s) do processo, 3 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 2 atendimento(s) | Coparticipação R$ 17.00 | Descontado R$ 0.00 | Em aberto R$ 17.00
+2026-11-26 14:39:29 | INFO    | 2010.01.0072057/2024-66   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:39:43 | INFO    | 2010.01.0072057/2024-66   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 37138171 - 20261126_143929 (154617192)
+2026-11-26 14:39:46 | INFO    | 2010.01.0072057/2024-66   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:39:56 | INFO    | 2010.01.0072057/2024-66   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:39:59 | INFO    | 2010.01.0072057/2024-66   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:40:02 | INFO    | 2010.01.0072057/2024-66   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:40:04 | INFO    | 2010.01.0072057/2024-66   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:40:07 | INFO    | 2010.01.0072057/2024-66   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 469 (SEI 154617227)']
+2026-11-26 14:40:16 | DEBUG   | 2010.01.0072057/2024-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (6 passagem(ns) nesta execução)
+2026-11-26 14:40:16 | INFO    | 2010.01.0072057/2024-66   | __main__              | FIM (59.4s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:40:16 | INFO    | 2010.01.0050885/2025-86   | __main__              | INÍCIO [7/39]
+2026-11-26 14:40:16 | INFO    | 2010.01.0050885/2025-86   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:40:17 | INFO    | 2010.01.0050885/2025-86   | __main__              | Marcadores: nenhum
+2026-11-26 14:40:19 | INFO    | 2010.01.0050885/2025-86   | __main__              | Árvore: 23 documento(s)
+2026-11-26 14:40:19 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Lendo documento Memorando 66 (SEI 114896125)
+2026-11-26 14:40:21 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Documento 114896125 lido (1466 caracteres)
+2026-11-26 14:40:21 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 66 (SEI 114896125)
+2026-11-26 14:40:21 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Lendo documento Memorando 1604 (SEI 147402159)
+2026-11-26 14:40:22 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Documento 147402159 lido (2675 caracteres)
+2026-11-26 14:40:22 | INFO    | 2010.01.0050885/2025-86   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1604 (SEI 147402159)']
+2026-11-26 14:40:22 | INFO    | 2010.01.0050885/2025-86   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3712763-2 | Período titular: 05/2019 a 06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:40:22 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:40:22 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Lendo documento Memorando 2097 (SEI 153212486)
+2026-11-26 14:40:23 | DEBUG   | 2010.01.0050885/2025-86   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:40:23 | DEBUG   | 2010.01.0050885/2025-86   | docs_processo         | Documento 153212486 lido (2438 caracteres)
+2026-11-26 14:40:23 | INFO    | 2010.01.0050885/2025-86   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2097 (SEI 153212486)
+2026-11-26 14:40:23 | INFO    | 2010.01.0050885/2025-86   | __main__              | Memo DEPROC da GEACS assinado: 153212486
+2026-11-26 14:40:23 | INFO    | 2010.01.0050885/2025-86   | coparticipacao_deproc | Base DEPROC: 3 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 3 atendimento(s) | Coparticipação R$ 3.15 | Descontado R$ 0.00 | Em aberto R$ 3.15
+2026-11-26 14:40:26 | INFO    | 2010.01.0050885/2025-86   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:40:39 | INFO    | 2010.01.0050885/2025-86   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 37127632 - 20261126_144026 (154617392)
+2026-11-26 14:40:42 | INFO    | 2010.01.0050885/2025-86   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:40:53 | INFO    | 2010.01.0050885/2025-86   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:40:56 | INFO    | 2010.01.0050885/2025-86   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:40:59 | INFO    | 2010.01.0050885/2025-86   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:41:01 | INFO    | 2010.01.0050885/2025-86   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:41:03 | INFO    | 2010.01.0050885/2025-86   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 470 (SEI 154617413)']
+2026-11-26 14:41:12 | DEBUG   | 2010.01.0050885/2025-86   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (7 passagem(ns) nesta execução)
+2026-11-26 14:41:12 | INFO    | 2010.01.0050885/2025-86   | __main__              | FIM (56.2s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:41:12 | INFO    | 2010.01.0072060/2024-82   | __main__              | INÍCIO [8/39]
+2026-11-26 14:41:12 | INFO    | 2010.01.0072060/2024-82   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:41:13 | INFO    | 2010.01.0072060/2024-82   | __main__              | Marcadores: nenhum
+2026-11-26 14:41:16 | INFO    | 2010.01.0072060/2024-82   | __main__              | Árvore: 24 documento(s)
+2026-11-26 14:41:16 | DEBUG   | 2010.01.0072060/2024-82   | docs_processo         | Lendo documento Memorando 1719 (SEI 121256112)
+2026-11-26 14:41:16 | DEBUG   | 2010.01.0072060/2024-82   | docs_processo         | Documento 121256112 lido (2150 caracteres)
+2026-11-26 14:41:16 | DEBUG   | 2010.01.0072060/2024-82   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1719 (SEI 121256112)
+2026-11-26 14:41:16 | DEBUG   | 2010.01.0072060/2024-82   | docs_processo         | Lendo documento Memorando 2451 (SEI 151172682)
+2026-11-26 14:41:17 | DEBUG   | 2010.01.0072060/2024-82   | docs_processo         | Documento 151172682 lido (2828 caracteres)
+2026-11-26 14:41:17 | INFO    | 2010.01.0072060/2024-82   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2451 (SEI 151172682)']
+2026-11-26 14:41:17 | INFO    | 2010.01.0072060/2024-82   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3710928-6 | Período titular: 01/04/2019 a 12/06/2024 | Dependentes: 3930128 | Período variável p/ dependentes: não
+2026-11-26 14:41:17 | DEBUG   | 2010.01.0072060/2024-82   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:41:17 | DEBUG   | 2010.01.0072060/2024-82   | docs_processo         | Lendo documento Memorando 2255 (SEI 153316631)
+2026-11-26 14:41:18 | DEBUG   | 2010.01.0072060/2024-82   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:41:19 | DEBUG   | 2010.01.0072060/2024-82   | docs_processo         | Documento 153316631 lido (2557 caracteres)
+2026-11-26 14:41:19 | INFO    | 2010.01.0072060/2024-82   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2255 (SEI 153316631)
+2026-11-26 14:41:19 | INFO    | 2010.01.0072060/2024-82   | __main__              | Memo DEPROC da GEACS assinado: 153316631
+2026-11-26 14:41:19 | INFO    | 2010.01.0072060/2024-82   | coparticipacao_deproc | Base DEPROC: 227 linha(s) do processo, 14 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 213 atendimento(s) | Coparticipação R$ 622.59 | Descontado R$ 0.00 | Em aberto R$ 622.59
+2026-11-26 14:41:21 | INFO    | 2010.01.0072060/2024-82   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:41:34 | INFO    | 2010.01.0072060/2024-82   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 37109286 - 20261126_144121 (154617525)
+2026-11-26 14:41:37 | INFO    | 2010.01.0072060/2024-82   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:41:48 | INFO    | 2010.01.0072060/2024-82   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:41:51 | INFO    | 2010.01.0072060/2024-82   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:41:53 | INFO    | 2010.01.0072060/2024-82   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:41:56 | INFO    | 2010.01.0072060/2024-82   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:41:58 | INFO    | 2010.01.0072060/2024-82   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 471 (SEI 154617629)']
+2026-11-26 14:42:09 | DEBUG   | 2010.01.0072060/2024-82   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (8 passagem(ns) nesta execução)
+2026-11-26 14:42:09 | INFO    | 2010.01.0072060/2024-82   | __main__              | FIM (57.2s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:42:09 | INFO    | 2010.01.0050869/2025-33   | __main__              | INÍCIO [9/39]
+2026-11-26 14:42:09 | INFO    | 2010.01.0050869/2025-33   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:42:10 | INFO    | 2010.01.0050869/2025-33   | __main__              | Marcadores: nenhum
+2026-11-26 14:42:13 | INFO    | 2010.01.0050869/2025-33   | __main__              | Árvore: 21 documento(s)
+2026-11-26 14:42:13 | DEBUG   | 2010.01.0050869/2025-33   | docs_processo         | Lendo documento Memorando 65 (SEI 114893992)
+2026-11-26 14:42:13 | DEBUG   | 2010.01.0050869/2025-33   | docs_processo         | Documento 114893992 lido (1583 caracteres)
+2026-11-26 14:42:13 | DEBUG   | 2010.01.0050869/2025-33   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 65 (SEI 114893992)
+2026-11-26 14:42:13 | DEBUG   | 2010.01.0050869/2025-33   | docs_processo         | Lendo documento Memorando 1603 (SEI 147397450)
+2026-11-26 14:42:14 | DEBUG   | 2010.01.0050869/2025-33   | docs_processo         | Documento 147397450 lido (2679 caracteres)
+2026-11-26 14:42:14 | INFO    | 2010.01.0050869/2025-33   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1603 (SEI 147397450)']
+2026-11-26 14:42:14 | INFO    | 2010.01.0050869/2025-33   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1358523-1 | Período titular: 05/2019 a 06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:42:14 | DEBUG   | 2010.01.0050869/2025-33   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:42:14 | DEBUG   | 2010.01.0050869/2025-33   | docs_processo         | Lendo documento Memorando 2096 (SEI 153212146)
+2026-11-26 14:42:15 | DEBUG   | 2010.01.0050869/2025-33   | docs_processo         | Documento 153212146 lido (2438 caracteres)
+2026-11-26 14:42:15 | INFO    | 2010.01.0050869/2025-33   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2096 (SEI 153212146)
+2026-11-26 14:42:15 | INFO    | 2010.01.0050869/2025-33   | __main__              | Memo DEPROC da GEACS assinado: 153212146
+2026-11-26 14:42:15 | INFO    | 2010.01.0050869/2025-33   | coparticipacao_deproc | Base DEPROC: 13 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 13 atendimento(s) | Coparticipação R$ 15.15 | Descontado R$ 0.00 | Em aberto R$ 15.15
+2026-11-26 14:42:18 | INFO    | 2010.01.0050869/2025-33   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:42:30 | INFO    | 2010.01.0050869/2025-33   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 13585231 - 20261126_144218 (154617796)
+2026-11-26 14:42:33 | INFO    | 2010.01.0050869/2025-33   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:42:43 | INFO    | 2010.01.0050869/2025-33   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:42:46 | INFO    | 2010.01.0050869/2025-33   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:42:48 | INFO    | 2010.01.0050869/2025-33   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:42:50 | INFO    | 2010.01.0050869/2025-33   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:42:52 | INFO    | 2010.01.0050869/2025-33   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 472 (SEI 154617762)']
+2026-11-26 14:43:02 | DEBUG   | 2010.01.0050869/2025-33   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (9 passagem(ns) nesta execução)
+2026-11-26 14:43:02 | INFO    | 2010.01.0050869/2025-33   | __main__              | FIM (52.5s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:43:02 | INFO    | 2010.01.0049499/2025-66   | __main__              | INÍCIO [10/39]
+2026-11-26 14:43:02 | INFO    | 2010.01.0049499/2025-66   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:43:03 | INFO    | 2010.01.0049499/2025-66   | __main__              | Marcadores: nenhum
+2026-11-26 14:43:05 | INFO    | 2010.01.0049499/2025-66   | __main__              | Árvore: 26 documento(s)
+2026-11-26 14:43:05 | DEBUG   | 2010.01.0049499/2025-66   | docs_processo         | Lendo documento Memorando 20 (SEI 114675242)
+2026-11-26 14:43:06 | DEBUG   | 2010.01.0049499/2025-66   | docs_processo         | Documento 114675242 lido (1313 caracteres)
+2026-11-26 14:43:06 | DEBUG   | 2010.01.0049499/2025-66   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 20 (SEI 114675242)
+2026-11-26 14:43:06 | DEBUG   | 2010.01.0049499/2025-66   | docs_processo         | Lendo documento Memorando 1611 (SEI 147433096)
+2026-11-26 14:43:07 | DEBUG   | 2010.01.0049499/2025-66   | docs_processo         | Documento 147433096 lido (2596 caracteres)
+2026-11-26 14:43:07 | INFO    | 2010.01.0049499/2025-66   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1611 (SEI 147433096)']
+2026-11-26 14:43:07 | INFO    | 2010.01.0049499/2025-66   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1304287-4 | Período titular: 01/05/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:43:07 | DEBUG   | 2010.01.0049499/2025-66   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:43:07 | DEBUG   | 2010.01.0049499/2025-66   | docs_processo         | Lendo documento Memorando 2104 (SEI 153214120)
+2026-11-26 14:43:08 | DEBUG   | 2010.01.0049499/2025-66   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:43:09 | DEBUG   | 2010.01.0049499/2025-66   | docs_processo         | Documento 153214120 lido (2446 caracteres)
+2026-11-26 14:43:09 | INFO    | 2010.01.0049499/2025-66   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2104 (SEI 153214120)
+2026-11-26 14:43:09 | INFO    | 2010.01.0049499/2025-66   | __main__              | Memo DEPROC da GEACS assinado: 153214120
+2026-11-26 14:43:09 | INFO    | 2010.01.0049499/2025-66   | coparticipacao_deproc | Base DEPROC: 254 linha(s) do processo, 2 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 252 atendimento(s) | Coparticipação R$ 1185.98 | Descontado R$ 0.00 | Em aberto R$ 1185.98
+2026-11-26 14:43:11 | INFO    | 2010.01.0049499/2025-66   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:43:25 | INFO    | 2010.01.0049499/2025-66   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 13042874 - 20261126_144311 (154617952)
+2026-11-26 14:43:27 | INFO    | 2010.01.0049499/2025-66   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:43:37 | INFO    | 2010.01.0049499/2025-66   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:43:40 | INFO    | 2010.01.0049499/2025-66   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:43:42 | INFO    | 2010.01.0049499/2025-66   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:43:44 | INFO    | 2010.01.0049499/2025-66   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:43:46 | INFO    | 2010.01.0049499/2025-66   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 473 (SEI 154617963)']
+2026-11-26 14:43:55 | DEBUG   | 2010.01.0049499/2025-66   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (10 passagem(ns) nesta execução)
+2026-11-26 14:43:55 | INFO    | 2010.01.0049499/2025-66   | __main__              | FIM (53.6s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:43:55 | INFO    | 2010.01.0072597/2024-36   | __main__              | INÍCIO [11/39]
+2026-11-26 14:43:55 | INFO    | 2010.01.0072597/2024-36   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:43:56 | INFO    | 2010.01.0072597/2024-36   | __main__              | Marcadores: nenhum
+2026-11-26 14:43:59 | INFO    | 2010.01.0072597/2024-36   | __main__              | Árvore: 25 documento(s)
+2026-11-26 14:43:59 | DEBUG   | 2010.01.0072597/2024-36   | docs_processo         | Lendo documento Memorando 84 (SEI 114986390)
+2026-11-26 14:44:00 | DEBUG   | 2010.01.0072597/2024-36   | docs_processo         | Documento 114986390 lido (1548 caracteres)
+2026-11-26 14:44:00 | DEBUG   | 2010.01.0072597/2024-36   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 84 (SEI 114986390)
+2026-11-26 14:44:00 | DEBUG   | 2010.01.0072597/2024-36   | docs_processo         | Lendo documento Memorando 1613 (SEI 147433284)
+2026-11-26 14:44:00 | DEBUG   | 2010.01.0072597/2024-36   | docs_processo         | Documento 147433284 lido (2590 caracteres)
+2026-11-26 14:44:00 | INFO    | 2010.01.0072597/2024-36   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1613 (SEI 147433284)']
+2026-11-26 14:44:00 | INFO    | 2010.01.0072597/2024-36   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3565455-4 | Período titular: 01/06/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:44:00 | DEBUG   | 2010.01.0072597/2024-36   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:44:00 | DEBUG   | 2010.01.0072597/2024-36   | docs_processo         | Lendo documento Memorando 2125 (SEI 153218981)
+2026-11-26 14:44:01 | DEBUG   | 2010.01.0072597/2024-36   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:44:02 | DEBUG   | 2010.01.0072597/2024-36   | docs_processo         | Documento 153218981 lido (2444 caracteres)
+2026-11-26 14:44:02 | INFO    | 2010.01.0072597/2024-36   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2125 (SEI 153218981)
+2026-11-26 14:44:02 | INFO    | 2010.01.0072597/2024-36   | __main__              | Memo DEPROC da GEACS assinado: 153218981
+2026-11-26 14:44:02 | INFO    | 2010.01.0072597/2024-36   | coparticipacao_deproc | Base DEPROC: 11 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 11 atendimento(s) | Coparticipação R$ 38.50 | Descontado R$ 0.00 | Em aberto R$ 38.50
+2026-11-26 14:44:05 | INFO    | 2010.01.0072597/2024-36   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:44:18 | INFO    | 2010.01.0072597/2024-36   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35654554 - 20261126_144405 (154618186)
+2026-11-26 14:44:20 | INFO    | 2010.01.0072597/2024-36   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:44:31 | INFO    | 2010.01.0072597/2024-36   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:44:34 | INFO    | 2010.01.0072597/2024-36   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:44:37 | INFO    | 2010.01.0072597/2024-36   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:44:39 | INFO    | 2010.01.0072597/2024-36   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:44:41 | INFO    | 2010.01.0072597/2024-36   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 474 (SEI 154618157)']
+2026-11-26 14:44:51 | DEBUG   | 2010.01.0072597/2024-36   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (11 passagem(ns) nesta execução)
+2026-11-26 14:44:51 | INFO    | 2010.01.0072597/2024-36   | __main__              | FIM (55.1s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:44:51 | INFO    | 2010.01.0083386/2024-24   | __main__              | INÍCIO [12/39]
+2026-11-26 14:44:51 | INFO    | 2010.01.0083386/2024-24   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:44:52 | INFO    | 2010.01.0083386/2024-24   | __main__              | Marcadores: nenhum
+2026-11-26 14:44:54 | INFO    | 2010.01.0083386/2024-24   | __main__              | Árvore: 25 documento(s)
+2026-11-26 14:44:54 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Lendo documento Memorando 639 (SEI 143308229)
+2026-11-26 14:44:55 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Documento 143308229 lido (2597 caracteres)
+2026-11-26 14:44:55 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 639 (SEI 143308229)
+2026-11-26 14:44:55 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Lendo documento Memorando 1097 (SEI 145093372)
+2026-11-26 14:44:56 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Documento 145093372 lido (1879 caracteres)
+2026-11-26 14:44:56 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1097 (SEI 145093372)
+2026-11-26 14:44:56 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Lendo documento Memorando 2728 (SEI 152736584)
+2026-11-26 14:44:56 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Documento 152736584 lido (2998 caracteres)
+2026-11-26 14:44:56 | INFO    | 2010.01.0083386/2024-24   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2728 (SEI 152736584)']
+2026-11-26 14:44:56 | INFO    | 2010.01.0083386/2024-24   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3464734 / 1 | Período titular: 01/06/2019 a 12/06/2024 | Dependentes: 3339985; 3651042; 3651043 | Período variável p/ dependentes: não
+2026-11-26 14:44:56 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:44:56 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Lendo documento Memorando 2127 (SEI 153219501)
+2026-11-26 14:44:57 | DEBUG   | 2010.01.0083386/2024-24   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:44:58 | DEBUG   | 2010.01.0083386/2024-24   | docs_processo         | Documento 153219501 lido (2575 caracteres)
+2026-11-26 14:44:58 | INFO    | 2010.01.0083386/2024-24   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2127 (SEI 153219501)
+2026-11-26 14:44:58 | INFO    | 2010.01.0083386/2024-24   | __main__              | Memo DEPROC da GEACS assinado: 153219501
+2026-11-26 14:44:58 | INFO    | 2010.01.0083386/2024-24   | coparticipacao_deproc | Base DEPROC: 180 linha(s) do processo, 19 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 161 atendimento(s) | Coparticipação R$ 1160.74 | Descontado R$ 0.00 | Em aberto R$ 1160.74
+2026-11-26 14:45:01 | INFO    | 2010.01.0083386/2024-24   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:45:13 | INFO    | 2010.01.0083386/2024-24   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 34647341 - 20261126_144501 (154618338)
+2026-11-26 14:45:16 | INFO    | 2010.01.0083386/2024-24   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:45:28 | INFO    | 2010.01.0083386/2024-24   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:45:31 | INFO    | 2010.01.0083386/2024-24   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:45:34 | INFO    | 2010.01.0083386/2024-24   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:45:36 | INFO    | 2010.01.0083386/2024-24   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:45:38 | INFO    | 2010.01.0083386/2024-24   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 475 (SEI 154618401)']
+2026-11-26 14:45:42 | DEBUG   | 2010.01.0083386/2024-24   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (12 passagem(ns) nesta execução)
+2026-11-26 14:45:42 | INFO    | 2010.01.0083386/2024-24   | __main__              | FIM (51.7s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:45:42 | INFO    | 2010.01.0049614/2025-65   | __main__              | INÍCIO [13/39]
+2026-11-26 14:45:42 | INFO    | 2010.01.0049614/2025-65   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:45:43 | INFO    | 2010.01.0049614/2025-65   | __main__              | Marcadores: nenhum
+2026-11-26 14:45:44 | INFO    | 2010.01.0049614/2025-65   | __main__              | Árvore: 20 documento(s)
+2026-11-26 14:45:44 | DEBUG   | 2010.01.0049614/2025-65   | docs_processo         | Lendo documento Memorando 29 (SEI 114691670)
+2026-11-26 14:45:45 | DEBUG   | 2010.01.0049614/2025-65   | docs_processo         | Documento 114691670 lido (1367 caracteres)
+2026-11-26 14:45:45 | DEBUG   | 2010.01.0049614/2025-65   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 29 (SEI 114691670)
+2026-11-26 14:45:45 | DEBUG   | 2010.01.0049614/2025-65   | docs_processo         | Lendo documento Memorando 1991 (SEI 148968654)
+2026-11-26 14:45:46 | DEBUG   | 2010.01.0049614/2025-65   | docs_processo         | Documento 148968654 lido (2666 caracteres)
+2026-11-26 14:45:46 | INFO    | 2010.01.0049614/2025-65   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1991 (SEI 148968654)']
+2026-11-26 14:45:46 | INFO    | 2010.01.0049614/2025-65   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3557134-9 | Período titular: 01/06/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:45:46 | DEBUG   | 2010.01.0049614/2025-65   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:45:46 | DEBUG   | 2010.01.0049614/2025-65   | docs_processo         | Lendo documento Memorando 2130 (SEI 153220264)
+2026-11-26 14:45:47 | DEBUG   | 2010.01.0049614/2025-65   | docs_processo         | Documento 153220264 lido (2444 caracteres)
+2026-11-26 14:45:47 | INFO    | 2010.01.0049614/2025-65   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2130 (SEI 153220264)
+2026-11-26 14:45:47 | INFO    | 2010.01.0049614/2025-65   | __main__              | Memo DEPROC da GEACS assinado: 153220264
+2026-11-26 14:45:47 | INFO    | 2010.01.0049614/2025-65   | coparticipacao_deproc | Base DEPROC: 11 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 11 atendimento(s) | Coparticipação R$ 38.50 | Descontado R$ 0.00 | Em aberto R$ 38.50
+2026-11-26 14:45:49 | INFO    | 2010.01.0049614/2025-65   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:46:01 | INFO    | 2010.01.0049614/2025-65   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35571349 - 20261126_144549 (154618539)
+2026-11-26 14:46:04 | INFO    | 2010.01.0049614/2025-65   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:46:14 | INFO    | 2010.01.0049614/2025-65   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:46:17 | INFO    | 2010.01.0049614/2025-65   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:46:20 | INFO    | 2010.01.0049614/2025-65   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:46:22 | INFO    | 2010.01.0049614/2025-65   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:46:24 | INFO    | 2010.01.0049614/2025-65   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 476 (SEI 154618595)']
+2026-11-26 14:46:28 | DEBUG   | 2010.01.0049614/2025-65   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (13 passagem(ns) nesta execução)
+2026-11-26 14:46:28 | INFO    | 2010.01.0049614/2025-65   | __main__              | FIM (45.6s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:46:28 | INFO    | 2010.01.0083410/2024-55   | __main__              | INÍCIO [14/39]
+2026-11-26 14:46:28 | INFO    | 2010.01.0083410/2024-55   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:46:29 | INFO    | 2010.01.0083410/2024-55   | __main__              | Marcadores: nenhum
+2026-11-26 14:46:31 | INFO    | 2010.01.0083410/2024-55   | __main__              | Árvore: 22 documento(s)
+2026-11-26 14:46:31 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Lendo documento Memorando 289 (SEI 134412854)
+2026-11-26 14:46:32 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Documento 134412854 lido (2355 caracteres)
+2026-11-26 14:46:32 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 289 (SEI 134412854)
+2026-11-26 14:46:32 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Lendo documento Memorando 606 (SEI 143299291)
+2026-11-26 14:46:33 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Documento 143299291 lido (2956 caracteres)
+2026-11-26 14:46:33 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 606 (SEI 143299291)
+2026-11-26 14:46:33 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Lendo documento Memorando 2730 (SEI 152738621)
+2026-11-26 14:46:33 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Documento 152738621 lido (2976 caracteres)
+2026-11-26 14:46:33 | INFO    | 2010.01.0083410/2024-55   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2730 (SEI 152738621)']
+2026-11-26 14:46:33 | INFO    | 2010.01.0083410/2024-55   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3186552 / 6 | Período titular: 01/06/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:46:33 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:46:33 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Lendo documento Memorando 2132 (SEI 153220852)
+2026-11-26 14:46:34 | DEBUG   | 2010.01.0083410/2024-55   | docs_processo         | Documento 153220852 lido (2446 caracteres)
+2026-11-26 14:46:34 | INFO    | 2010.01.0083410/2024-55   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2132 (SEI 153220852)
+2026-11-26 14:46:34 | INFO    | 2010.01.0083410/2024-55   | __main__              | Memo DEPROC da GEACS assinado: 153220852
+2026-11-26 14:46:34 | INFO    | 2010.01.0083410/2024-55   | coparticipacao_deproc | Base DEPROC: 37 linha(s) do processo, 2 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 35 atendimento(s) | Coparticipação R$ 204.00 | Descontado R$ 0.00 | Em aberto R$ 204.00
+2026-11-26 14:46:37 | INFO    | 2010.01.0083410/2024-55   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:46:49 | INFO    | 2010.01.0083410/2024-55   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 31865526 - 20261126_144637 (154618705)
+2026-11-26 14:46:51 | INFO    | 2010.01.0083410/2024-55   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:47:01 | INFO    | 2010.01.0083410/2024-55   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:47:04 | INFO    | 2010.01.0083410/2024-55   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:47:07 | INFO    | 2010.01.0083410/2024-55   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:47:09 | INFO    | 2010.01.0083410/2024-55   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:47:11 | INFO    | 2010.01.0083410/2024-55   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 477 (SEI 154618720)']
+2026-11-26 14:47:16 | DEBUG   | 2010.01.0083410/2024-55   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (14 passagem(ns) nesta execução)
+2026-11-26 14:47:16 | INFO    | 2010.01.0083410/2024-55   | __main__              | FIM (47.7s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:47:16 | INFO    | 2010.01.0072617/2024-78   | __main__              | INÍCIO [15/39]
+2026-11-26 14:47:16 | INFO    | 2010.01.0072617/2024-78   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:47:16 | INFO    | 2010.01.0072617/2024-78   | __main__              | Marcadores: nenhum
+2026-11-26 14:47:19 | INFO    | 2010.01.0072617/2024-78   | __main__              | Árvore: 29 documento(s)
+2026-11-26 14:47:19 | DEBUG   | 2010.01.0072617/2024-78   | docs_processo         | Lendo documento Memorando 81 (SEI 114977901)
+2026-11-26 14:47:20 | DEBUG   | 2010.01.0072617/2024-78   | docs_processo         | Documento 114977901 lido (1663 caracteres)
+2026-11-26 14:47:20 | DEBUG   | 2010.01.0072617/2024-78   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 81 (SEI 114977901)
+2026-11-26 14:47:20 | DEBUG   | 2010.01.0072617/2024-78   | docs_processo         | Lendo documento Memorando 2012 (SEI 149125416)
+2026-11-26 14:47:20 | DEBUG   | 2010.01.0072617/2024-78   | docs_processo         | Documento 149125416 lido (2601 caracteres)
+2026-11-26 14:47:20 | INFO    | 2010.01.0072617/2024-78   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2012 (SEI 149125416)']
+2026-11-26 14:47:20 | INFO    | 2010.01.0072617/2024-78   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 35653949 | Período titular: 01/06/2019 a 12/06/2024 | Dependentes: 3575699; 3575702 | Período variável p/ dependentes: não
+2026-11-26 14:47:20 | DEBUG   | 2010.01.0072617/2024-78   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:47:20 | DEBUG   | 2010.01.0072617/2024-78   | docs_processo         | Lendo documento Memorando 2135 (SEI 153221493)
+2026-11-26 14:47:21 | DEBUG   | 2010.01.0072617/2024-78   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:47:22 | DEBUG   | 2010.01.0072617/2024-78   | docs_processo         | Documento 153221493 lido (2563 caracteres)
+2026-11-26 14:47:22 | INFO    | 2010.01.0072617/2024-78   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2135 (SEI 153221493)
+2026-11-26 14:47:22 | INFO    | 2010.01.0072617/2024-78   | __main__              | Memo DEPROC da GEACS assinado: 153221493
+2026-11-26 14:47:22 | INFO    | 2010.01.0072617/2024-78   | coparticipacao_deproc | Base DEPROC: 34 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 34 atendimento(s) | Coparticipação R$ 134.00 | Descontado R$ 0.00 | Em aberto R$ 134.00
+2026-11-26 14:47:25 | INFO    | 2010.01.0072617/2024-78   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:47:37 | INFO    | 2010.01.0072617/2024-78   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35653949 - 20261126_144725 (154618898)
+2026-11-26 14:47:39 | INFO    | 2010.01.0072617/2024-78   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:47:49 | INFO    | 2010.01.0072617/2024-78   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:47:52 | INFO    | 2010.01.0072617/2024-78   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:47:55 | INFO    | 2010.01.0072617/2024-78   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:47:57 | INFO    | 2010.01.0072617/2024-78   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:47:59 | INFO    | 2010.01.0072617/2024-78   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 478 (SEI 154618874)']
+2026-11-26 14:48:03 | DEBUG   | 2010.01.0072617/2024-78   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (15 passagem(ns) nesta execução)
+2026-11-26 14:48:03 | INFO    | 2010.01.0072617/2024-78   | __main__              | FIM (47.5s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:48:03 | INFO    | 2010.01.0051109/2025-52   | __main__              | INÍCIO [16/39]
+2026-11-26 14:48:03 | INFO    | 2010.01.0051109/2025-52   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:48:04 | INFO    | 2010.01.0051109/2025-52   | __main__              | Marcadores: nenhum
+2026-11-26 14:48:06 | INFO    | 2010.01.0051109/2025-52   | __main__              | Árvore: 25 documento(s)
+2026-11-26 14:48:06 | DEBUG   | 2010.01.0051109/2025-52   | docs_processo         | Lendo documento Memorando 75 (SEI 114939752)
+2026-11-26 14:48:07 | DEBUG   | 2010.01.0051109/2025-52   | docs_processo         | Documento 114939752 lido (1587 caracteres)
+2026-11-26 14:48:07 | DEBUG   | 2010.01.0051109/2025-52   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 75 (SEI 114939752)
+2026-11-26 14:48:07 | DEBUG   | 2010.01.0051109/2025-52   | docs_processo         | Lendo documento Memorando 1710 (SEI 147735948)
+2026-11-26 14:48:08 | DEBUG   | 2010.01.0051109/2025-52   | docs_processo         | Documento 147735948 lido (2730 caracteres)
+2026-11-26 14:48:08 | INFO    | 2010.01.0051109/2025-52   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1710 (SEI 147735948)']
+2026-11-26 14:48:08 | INFO    | 2010.01.0051109/2025-52   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3605671-5 | Período titular: 07/2019 a 06/2024 | Dependentes: 3608795; 3608811; 3743044 | Período variável p/ dependentes: não
+2026-11-26 14:48:08 | DEBUG   | 2010.01.0051109/2025-52   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:48:08 | DEBUG   | 2010.01.0051109/2025-52   | docs_processo         | Lendo documento Memorando 2142 (SEI 153223001)
+2026-11-26 14:48:09 | DEBUG   | 2010.01.0051109/2025-52   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:48:10 | DEBUG   | 2010.01.0051109/2025-52   | docs_processo         | Documento 153223001 lido (2561 caracteres)
+2026-11-26 14:48:10 | INFO    | 2010.01.0051109/2025-52   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2142 (SEI 153223001)
+2026-11-26 14:48:10 | INFO    | 2010.01.0051109/2025-52   | __main__              | Memo DEPROC da GEACS assinado: 153223001
+2026-11-26 14:48:10 | INFO    | 2010.01.0051109/2025-52   | coparticipacao_deproc | Base DEPROC: 351 linha(s) do processo, 25 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 326 atendimento(s) | Coparticipação R$ 1980.19 | Descontado R$ 0.00 | Em aberto R$ 1980.19
+2026-11-26 14:48:12 | INFO    | 2010.01.0051109/2025-52   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:48:25 | INFO    | 2010.01.0051109/2025-52   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 36056715 - 20261126_144812 (154619040)
+2026-11-26 14:48:27 | INFO    | 2010.01.0051109/2025-52   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:48:38 | INFO    | 2010.01.0051109/2025-52   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:48:41 | INFO    | 2010.01.0051109/2025-52   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:48:44 | INFO    | 2010.01.0051109/2025-52   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:48:46 | INFO    | 2010.01.0051109/2025-52   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:48:48 | INFO    | 2010.01.0051109/2025-52   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 479 (SEI 154619060)']
+2026-11-26 14:48:52 | DEBUG   | 2010.01.0051109/2025-52   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (16 passagem(ns) nesta execução)
+2026-11-26 14:48:52 | INFO    | 2010.01.0051109/2025-52   | __main__              | FIM (49.0s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:48:52 | INFO    | 2010.01.0082961/2024-53   | __main__              | INÍCIO [17/39]
+2026-11-26 14:48:52 | INFO    | 2010.01.0082961/2024-53   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:48:53 | INFO    | 2010.01.0082961/2024-53   | __main__              | Marcadores: nenhum
+2026-11-26 14:48:54 | INFO    | 2010.01.0082961/2024-53   | __main__              | Árvore: 18 documento(s)
+2026-11-26 14:48:54 | DEBUG   | 2010.01.0082961/2024-53   | docs_processo         | Lendo documento Memorando 2471 (SEI 151395109)
+2026-11-26 14:48:55 | DEBUG   | 2010.01.0082961/2024-53   | docs_processo         | Documento 151395109 lido (2669 caracteres)
+2026-11-26 14:48:55 | INFO    | 2010.01.0082961/2024-53   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2471 (SEI 151395109)']
+2026-11-26 14:48:55 | INFO    | 2010.01.0082961/2024-53   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1852066 -9 | Período titular: 01/07/2019 a 12/06/2024. | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:48:55 | DEBUG   | 2010.01.0082961/2024-53   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:48:55 | DEBUG   | 2010.01.0082961/2024-53   | docs_processo         | Lendo documento Memorando 2144 (SEI 153223383)
+2026-11-26 14:48:56 | DEBUG   | 2010.01.0082961/2024-53   | docs_processo         | Documento 153223383 lido (2446 caracteres)
+2026-11-26 14:48:56 | INFO    | 2010.01.0082961/2024-53   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2144 (SEI 153223383)
+2026-11-26 14:48:56 | INFO    | 2010.01.0082961/2024-53   | __main__              | Memo DEPROC da GEACS assinado: 153223383
+2026-11-26 14:48:56 | INFO    | 2010.01.0082961/2024-53   | coparticipacao_deproc | Base DEPROC: 2 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 2 atendimento(s) | Coparticipação R$ 3.15 | Descontado R$ 0.00 | Em aberto R$ 3.15
+2026-11-26 14:48:58 | INFO    | 2010.01.0082961/2024-53   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:49:11 | INFO    | 2010.01.0082961/2024-53   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 18520669 - 20261126_144858 (154619231)
+2026-11-26 14:49:13 | INFO    | 2010.01.0082961/2024-53   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:49:23 | INFO    | 2010.01.0082961/2024-53   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:49:26 | INFO    | 2010.01.0082961/2024-53   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:49:28 | INFO    | 2010.01.0082961/2024-53   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:49:30 | INFO    | 2010.01.0082961/2024-53   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:49:32 | INFO    | 2010.01.0082961/2024-53   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 480 (SEI 154619254)']
+2026-11-26 14:49:36 | DEBUG   | 2010.01.0082961/2024-53   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (17 passagem(ns) nesta execução)
+2026-11-26 14:49:36 | INFO    | 2010.01.0082961/2024-53   | __main__              | FIM (43.5s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:49:36 | INFO    | 2010.01.0051170/2025-54   | __main__              | INÍCIO [18/39]
+2026-11-26 14:49:36 | INFO    | 2010.01.0051170/2025-54   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:49:36 | INFO    | 2010.01.0051170/2025-54   | __main__              | Marcadores: nenhum
+2026-11-26 14:49:39 | INFO    | 2010.01.0051170/2025-54   | __main__              | Árvore: 21 documento(s)
+2026-11-26 14:49:39 | DEBUG   | 2010.01.0051170/2025-54   | docs_processo         | Lendo documento Memorando 78 (SEI 114958546)
+2026-11-26 14:49:39 | DEBUG   | 2010.01.0051170/2025-54   | docs_processo         | Documento 114958546 lido (1461 caracteres)
+2026-11-26 14:49:39 | DEBUG   | 2010.01.0051170/2025-54   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 78 (SEI 114958546)
+2026-11-26 14:49:39 | DEBUG   | 2010.01.0051170/2025-54   | docs_processo         | Lendo documento Memorando 2475 (SEI 151429806)
+2026-11-26 14:49:40 | DEBUG   | 2010.01.0051170/2025-54   | docs_processo         | Documento 151429806 lido (2671 caracteres)
+2026-11-26 14:49:40 | INFO    | 2010.01.0051170/2025-54   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2475 (SEI 151429806)']
+2026-11-26 14:49:40 | INFO    | 2010.01.0051170/2025-54   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3505762-9 | Período titular: 01/07/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:49:40 | DEBUG   | 2010.01.0051170/2025-54   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:49:40 | DEBUG   | 2010.01.0051170/2025-54   | docs_processo         | Lendo documento Memorando 2147 (SEI 153223930)
+2026-11-26 14:49:41 | DEBUG   | 2010.01.0051170/2025-54   | docs_processo         | Documento 153223930 lido (2444 caracteres)
+2026-11-26 14:49:41 | INFO    | 2010.01.0051170/2025-54   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2147 (SEI 153223930)
+2026-11-26 14:49:41 | INFO    | 2010.01.0051170/2025-54   | __main__              | Memo DEPROC da GEACS assinado: 153223930
+2026-11-26 14:49:41 | INFO    | 2010.01.0051170/2025-54   | coparticipacao_deproc | Base DEPROC: 9 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 9 atendimento(s) | Coparticipação R$ 16.05 | Descontado R$ 0.00 | Em aberto R$ 16.05
+2026-11-26 14:49:44 | INFO    | 2010.01.0051170/2025-54   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:49:56 | INFO    | 2010.01.0051170/2025-54   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35057629 - 20261126_144944 (154619480)
+2026-11-26 14:49:58 | INFO    | 2010.01.0051170/2025-54   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:50:08 | INFO    | 2010.01.0051170/2025-54   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:50:11 | INFO    | 2010.01.0051170/2025-54   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:50:14 | INFO    | 2010.01.0051170/2025-54   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:50:16 | INFO    | 2010.01.0051170/2025-54   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:50:18 | INFO    | 2010.01.0051170/2025-54   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 481 (SEI 154619492)']
+2026-11-26 14:50:22 | DEBUG   | 2010.01.0051170/2025-54   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (18 passagem(ns) nesta execução)
+2026-11-26 14:50:22 | INFO    | 2010.01.0051170/2025-54   | __main__              | FIM (46.5s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:50:22 | INFO    | 2010.01.0051912/2025-02   | __main__              | INÍCIO [19/39]
+2026-11-26 14:50:22 | INFO    | 2010.01.0051912/2025-02   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:50:23 | INFO    | 2010.01.0051912/2025-02   | __main__              | Marcadores: nenhum
+2026-11-26 14:50:25 | INFO    | 2010.01.0051912/2025-02   | __main__              | Árvore: 22 documento(s)
+2026-11-26 14:50:25 | DEBUG   | 2010.01.0051912/2025-02   | docs_processo         | Lendo documento Memorando 119 (SEI 115062596)
+2026-11-26 14:50:26 | DEBUG   | 2010.01.0051912/2025-02   | docs_processo         | Documento 115062596 lido (1365 caracteres)
+2026-11-26 14:50:26 | DEBUG   | 2010.01.0051912/2025-02   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 119 (SEI 115062596)
+2026-11-26 14:50:26 | DEBUG   | 2010.01.0051912/2025-02   | docs_processo         | Lendo documento Memorando 1630 (SEI 147493448)
+2026-11-26 14:50:27 | DEBUG   | 2010.01.0051912/2025-02   | docs_processo         | Documento 147493448 lido (2591 caracteres)
+2026-11-26 14:50:27 | INFO    | 2010.01.0051912/2025-02   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1630 (SEI 147493448)']
+2026-11-26 14:50:27 | INFO    | 2010.01.0051912/2025-02   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3906724-6 | Período titular: 01/08/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:50:27 | DEBUG   | 2010.01.0051912/2025-02   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:50:27 | DEBUG   | 2010.01.0051912/2025-02   | docs_processo         | Lendo documento Memorando 2162 (SEI 153227233)
+2026-11-26 14:50:28 | DEBUG   | 2010.01.0051912/2025-02   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:50:28 | DEBUG   | 2010.01.0051912/2025-02   | docs_processo         | Documento 153227233 lido (2444 caracteres)
+2026-11-26 14:50:28 | INFO    | 2010.01.0051912/2025-02   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2162 (SEI 153227233)
+2026-11-26 14:50:28 | INFO    | 2010.01.0051912/2025-02   | __main__              | Memo DEPROC da GEACS assinado: 153227233
+2026-11-26 14:50:28 | INFO    | 2010.01.0051912/2025-02   | coparticipacao_deproc | Base DEPROC: 1 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 1 atendimento(s) | Coparticipação R$ 3.50 | Descontado R$ 0.00 | Em aberto R$ 3.50
+2026-11-26 14:50:30 | INFO    | 2010.01.0051912/2025-02   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:50:45 | INFO    | 2010.01.0051912/2025-02   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 39067246 - 20261126_145030 (154619621)
+2026-11-26 14:50:48 | INFO    | 2010.01.0051912/2025-02   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:50:58 | INFO    | 2010.01.0051912/2025-02   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:51:01 | INFO    | 2010.01.0051912/2025-02   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:51:04 | INFO    | 2010.01.0051912/2025-02   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:51:06 | INFO    | 2010.01.0051912/2025-02   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:51:08 | INFO    | 2010.01.0051912/2025-02   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 482 (SEI 154619651)']
+2026-11-26 14:51:12 | DEBUG   | 2010.01.0051912/2025-02   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (19 passagem(ns) nesta execução)
+2026-11-26 14:51:12 | INFO    | 2010.01.0051912/2025-02   | __main__              | FIM (49.7s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:51:12 | INFO    | 2010.01.0051909/2025-83   | __main__              | INÍCIO [20/39]
+2026-11-26 14:51:12 | INFO    | 2010.01.0051909/2025-83   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:51:13 | INFO    | 2010.01.0051909/2025-83   | __main__              | Marcadores: nenhum
+2026-11-26 14:51:15 | INFO    | 2010.01.0051909/2025-83   | __main__              | Árvore: 25 documento(s)
+2026-11-26 14:51:15 | DEBUG   | 2010.01.0051909/2025-83   | docs_processo         | Lendo documento Memorando 118 (SEI 115062245)
+2026-11-26 14:51:16 | DEBUG   | 2010.01.0051909/2025-83   | docs_processo         | Documento 115062245 lido (1581 caracteres)
+2026-11-26 14:51:16 | DEBUG   | 2010.01.0051909/2025-83   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 118 (SEI 115062245)
+2026-11-26 14:51:16 | DEBUG   | 2010.01.0051909/2025-83   | docs_processo         | Lendo documento Memorando 2481 (SEI 151509249)
+2026-11-26 14:51:17 | DEBUG   | 2010.01.0051909/2025-83   | docs_processo         | Documento 151509249 lido (2734 caracteres)
+2026-11-26 14:51:17 | INFO    | 2010.01.0051909/2025-83   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2481 (SEI 151509249)']
+2026-11-26 14:51:17 | INFO    | 2010.01.0051909/2025-83   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3573616- 0 | Período titular: 01/09/2019 a 12/06/2024. | Dependentes: 3608680; 3608683; 3739531; 3879656 | Período variável p/ dependentes: não
+2026-11-26 14:51:17 | DEBUG   | 2010.01.0051909/2025-83   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:51:17 | DEBUG   | 2010.01.0051909/2025-83   | docs_processo         | Lendo documento Memorando 2175 (SEI 153230272)
+2026-11-26 14:51:18 | DEBUG   | 2010.01.0051909/2025-83   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:51:18 | DEBUG   | 2010.01.0051909/2025-83   | docs_processo         | Documento 153230272 lido (2585 caracteres)
+2026-11-26 14:51:18 | INFO    | 2010.01.0051909/2025-83   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2175 (SEI 153230272)
+2026-11-26 14:51:18 | INFO    | 2010.01.0051909/2025-83   | __main__              | Memo DEPROC da GEACS assinado: 153230272
+2026-11-26 14:51:18 | INFO    | 2010.01.0051909/2025-83   | coparticipacao_deproc | Base DEPROC: 204 linha(s) do processo, 14 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 190 atendimento(s) | Coparticipação R$ 1692.58 | Descontado R$ 0.00 | Em aberto R$ 1692.58
+2026-11-26 14:51:21 | INFO    | 2010.01.0051909/2025-83   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:51:34 | INFO    | 2010.01.0051909/2025-83   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35736160 - 20261126_145121 (154619829)
+2026-11-26 14:51:37 | INFO    | 2010.01.0051909/2025-83   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:51:47 | INFO    | 2010.01.0051909/2025-83   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:51:50 | INFO    | 2010.01.0051909/2025-83   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:51:53 | INFO    | 2010.01.0051909/2025-83   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:51:55 | INFO    | 2010.01.0051909/2025-83   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:51:58 | INFO    | 2010.01.0051909/2025-83   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 483 (SEI 154619850)']
+2026-11-26 14:52:02 | DEBUG   | 2010.01.0051909/2025-83   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (20 passagem(ns) nesta execução)
+2026-11-26 14:52:02 | INFO    | 2010.01.0051909/2025-83   | __main__              | FIM (50.0s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:52:02 | INFO    | 2010.01.0052658/2025-36   | __main__              | INÍCIO [21/39]
+2026-11-26 14:52:02 | INFO    | 2010.01.0052658/2025-36   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:52:03 | INFO    | 2010.01.0052658/2025-36   | __main__              | Marcadores: nenhum
+2026-11-26 14:52:05 | INFO    | 2010.01.0052658/2025-36   | __main__              | Árvore: 23 documento(s)
+2026-11-26 14:52:05 | DEBUG   | 2010.01.0052658/2025-36   | docs_processo         | Lendo documento Memorando 138 (SEI 115170147)
+2026-11-26 14:52:06 | DEBUG   | 2010.01.0052658/2025-36   | docs_processo         | Documento 115170147 lido (1580 caracteres)
+2026-11-26 14:52:06 | DEBUG   | 2010.01.0052658/2025-36   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 138 (SEI 115170147)
+2026-11-26 14:52:06 | DEBUG   | 2010.01.0052658/2025-36   | docs_processo         | Lendo documento Memorando 2485 (SEI 151528206)
+2026-11-26 14:52:07 | DEBUG   | 2010.01.0052658/2025-36   | docs_processo         | Documento 151528206 lido (2722 caracteres)
+2026-11-26 14:52:07 | INFO    | 2010.01.0052658/2025-36   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2485 (SEI 151528206)']
+2026-11-26 14:52:07 | INFO    | 2010.01.0052658/2025-36   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3402217 -1 | Período titular: 01/09/2019 a 12/06/2024. | Dependentes: 3412683; 3412686; 3412687 | Período variável p/ dependentes: não
+2026-11-26 14:52:07 | DEBUG   | 2010.01.0052658/2025-36   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:52:07 | DEBUG   | 2010.01.0052658/2025-36   | docs_processo         | Lendo documento Memorando 2178 (SEI 153231011)
+2026-11-26 14:52:08 | DEBUG   | 2010.01.0052658/2025-36   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:52:09 | DEBUG   | 2010.01.0052658/2025-36   | docs_processo         | Documento 153231011 lido (2576 caracteres)
+2026-11-26 14:52:09 | INFO    | 2010.01.0052658/2025-36   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2178 (SEI 153231011)
+2026-11-26 14:52:09 | INFO    | 2010.01.0052658/2025-36   | __main__              | Memo DEPROC da GEACS assinado: 153231011
+2026-11-26 14:52:09 | INFO    | 2010.01.0052658/2025-36   | coparticipacao_deproc | Base DEPROC: 30 linha(s) do processo, 1 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 29 atendimento(s) | Coparticipação R$ 53.70 | Descontado R$ 0.00 | Em aberto R$ 53.70
+2026-11-26 14:52:11 | INFO    | 2010.01.0052658/2025-36   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:52:25 | INFO    | 2010.01.0052658/2025-36   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 34022171 - 20261126_145211 (154620005)
+2026-11-26 14:52:28 | INFO    | 2010.01.0052658/2025-36   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:52:40 | INFO    | 2010.01.0052658/2025-36   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:52:44 | INFO    | 2010.01.0052658/2025-36   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:52:47 | INFO    | 2010.01.0052658/2025-36   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:52:51 | INFO    | 2010.01.0052658/2025-36   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:52:53 | INFO    | 2010.01.0052658/2025-36   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 484 (SEI 154620053)']
+2026-11-26 14:52:57 | DEBUG   | 2010.01.0052658/2025-36   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (21 passagem(ns) nesta execução)
+2026-11-26 14:52:57 | INFO    | 2010.01.0052658/2025-36   | __main__              | FIM (55.0s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:52:57 | INFO    | 2010.01.0080722/2024-75   | __main__              | INÍCIO [22/39]
+2026-11-26 14:52:57 | INFO    | 2010.01.0080722/2024-75   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:52:58 | INFO    | 2010.01.0080722/2024-75   | __main__              | Marcadores: nenhum
+2026-11-26 14:52:59 | INFO    | 2010.01.0080722/2024-75   | __main__              | Árvore: 19 documento(s)
+2026-11-26 14:52:59 | DEBUG   | 2010.01.0080722/2024-75   | docs_processo         | Lendo documento Memorando 2488 (SEI 151533702)
+2026-11-26 14:53:00 | DEBUG   | 2010.01.0080722/2024-75   | docs_processo         | Documento 151533702 lido (2695 caracteres)
+2026-11-26 14:53:00 | INFO    | 2010.01.0080722/2024-75   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2488 (SEI 151533702)']
+2026-11-26 14:53:00 | INFO    | 2010.01.0080722/2024-75   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3572555 -9 | Período titular: 01/09/2019 a 12/06/2024. | Dependentes: 3593913 | Período variável p/ dependentes: não
+2026-11-26 14:53:00 | DEBUG   | 2010.01.0080722/2024-75   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:53:00 | DEBUG   | 2010.01.0080722/2024-75   | docs_processo         | Lendo documento Memorando 2180 (SEI 153231669)
+2026-11-26 14:53:01 | DEBUG   | 2010.01.0080722/2024-75   | docs_processo         | Documento 153231669 lido (2556 caracteres)
+2026-11-26 14:53:01 | INFO    | 2010.01.0080722/2024-75   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2180 (SEI 153231669)
+2026-11-26 14:53:01 | INFO    | 2010.01.0080722/2024-75   | __main__              | Memo DEPROC da GEACS assinado: 153231669
+2026-11-26 14:53:01 | INFO    | 2010.01.0080722/2024-75   | coparticipacao_deproc | Base DEPROC: 17 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 17 atendimento(s) | Coparticipação R$ 114.50 | Descontado R$ 0.00 | Em aberto R$ 114.50
+2026-11-26 14:53:05 | INFO    | 2010.01.0080722/2024-75   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:53:16 | INFO    | 2010.01.0080722/2024-75   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35725559 - 20261126_145305 (154620218)
+2026-11-26 14:53:19 | INFO    | 2010.01.0080722/2024-75   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:53:29 | INFO    | 2010.01.0080722/2024-75   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:53:32 | INFO    | 2010.01.0080722/2024-75   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:53:35 | INFO    | 2010.01.0080722/2024-75   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:53:37 | INFO    | 2010.01.0080722/2024-75   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:53:39 | INFO    | 2010.01.0080722/2024-75   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 485 (SEI 154620339)']
+2026-11-26 14:53:43 | DEBUG   | 2010.01.0080722/2024-75   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (22 passagem(ns) nesta execução)
+2026-11-26 14:53:43 | INFO    | 2010.01.0080722/2024-75   | __main__              | FIM (46.6s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:53:43 | INFO    | 2010.01.0080747/2024-79   | __main__              | INÍCIO [23/39]
+2026-11-26 14:53:43 | INFO    | 2010.01.0080747/2024-79   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:53:45 | INFO    | 2010.01.0080747/2024-79   | __main__              | Marcadores: nenhum
+2026-11-26 14:53:45 | INFO    | 2010.01.0080747/2024-79   | __main__              | Árvore: 19 documento(s)
+2026-11-26 14:53:45 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Lendo documento Memorando 440 (SEI 141184811)
+2026-11-26 14:53:46 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Documento 141184811 lido (1885 caracteres)
+2026-11-26 14:53:46 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 440 (SEI 141184811)
+2026-11-26 14:53:46 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Lendo documento Memorando 1227 (SEI 145569323)
+2026-11-26 14:53:47 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Documento 145569323 lido (2089 caracteres)
+2026-11-26 14:53:47 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Lendo documento Memorando 2745 (SEI 152765355)
+2026-11-26 14:53:48 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Documento 152765355 lido (2991 caracteres)
+2026-11-26 14:53:48 | INFO    | 2010.01.0080747/2024-79   | docs_processo         | 3 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1227 (SEI 145569323)', 'Memorando 2745 (SEI 152765355)']
+2026-11-26 14:53:48 | INFO    | 2010.01.0080747/2024-79   | processar_novo        | 2 memorandos da APIS destinados à GEACS: usado o último (152765355)
+2026-11-26 14:53:48 | INFO    | 2010.01.0080747/2024-79   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3353415 / 2 | Período titular: 01/09/2019 a 12/06/2024 | Dependentes: 3898902 | Período variável p/ dependentes: não
+2026-11-26 14:53:48 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:53:48 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Lendo documento Memorando 2181 (SEI 153232133)
+2026-11-26 14:53:48 | DEBUG   | 2010.01.0080747/2024-79   | docs_processo         | Documento 153232133 lido (2559 caracteres)
+2026-11-26 14:53:48 | INFO    | 2010.01.0080747/2024-79   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2181 (SEI 153232133)
+2026-11-26 14:53:48 | INFO    | 2010.01.0080747/2024-79   | __main__              | Memo DEPROC da GEACS assinado: 153232133
+2026-11-26 14:53:48 | INFO    | 2010.01.0080747/2024-79   | coparticipacao_deproc | Base DEPROC: 222 linha(s) do processo, 17 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 205 atendimento(s) | Coparticipação R$ 1857.67 | Descontado R$ 0.00 | Em aberto R$ 1857.67
+2026-11-26 14:53:51 | INFO    | 2010.01.0080747/2024-79   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:54:04 | INFO    | 2010.01.0080747/2024-79   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 33534152 - 20261126_145351 (154620400)
+2026-11-26 14:54:09 | INFO    | 2010.01.0080747/2024-79   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:54:21 | INFO    | 2010.01.0080747/2024-79   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:54:25 | INFO    | 2010.01.0080747/2024-79   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:54:28 | INFO    | 2010.01.0080747/2024-79   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:54:31 | INFO    | 2010.01.0080747/2024-79   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:54:33 | INFO    | 2010.01.0080747/2024-79   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 486 (SEI 154620488)']
+2026-11-26 14:54:37 | DEBUG   | 2010.01.0080747/2024-79   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (23 passagem(ns) nesta execução)
+2026-11-26 14:54:37 | INFO    | 2010.01.0080747/2024-79   | __main__              | FIM (53.9s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:54:37 | INFO    | 2010.01.0052971/2025-24   | __main__              | INÍCIO [24/39]
+2026-11-26 14:54:37 | INFO    | 2010.01.0052971/2025-24   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:54:38 | INFO    | 2010.01.0052971/2025-24   | __main__              | Marcadores: nenhum
+2026-11-26 14:54:41 | INFO    | 2010.01.0052971/2025-24   | __main__              | Árvore: 24 documento(s)
+2026-11-26 14:54:41 | DEBUG   | 2010.01.0052971/2025-24   | docs_processo         | Lendo documento Memorando 159 (SEI 115213851)
+2026-11-26 14:54:41 | DEBUG   | 2010.01.0052971/2025-24   | docs_processo         | Documento 115213851 lido (1369 caracteres)
+2026-11-26 14:54:41 | DEBUG   | 2010.01.0052971/2025-24   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 159 (SEI 115213851)
+2026-11-26 14:54:41 | DEBUG   | 2010.01.0052971/2025-24   | docs_processo         | Lendo documento Memorando 1799 (SEI 148035143)
+2026-11-26 14:54:42 | DEBUG   | 2010.01.0052971/2025-24   | docs_processo         | Documento 148035143 lido (2592 caracteres)
+2026-11-26 14:54:42 | INFO    | 2010.01.0052971/2025-24   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1799 (SEI 148035143)']
+2026-11-26 14:54:42 | INFO    | 2010.01.0052971/2025-24   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3198999-3 | Período titular: 01/10/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:54:42 | DEBUG   | 2010.01.0052971/2025-24   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:54:42 | DEBUG   | 2010.01.0052971/2025-24   | docs_processo         | Lendo documento Memorando 2244 (SEI 153281478)
+2026-11-26 14:54:43 | DEBUG   | 2010.01.0052971/2025-24   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:54:44 | DEBUG   | 2010.01.0052971/2025-24   | docs_processo         | Documento 153281478 lido (2446 caracteres)
+2026-11-26 14:54:44 | INFO    | 2010.01.0052971/2025-24   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2244 (SEI 153281478)
+2026-11-26 14:54:44 | INFO    | 2010.01.0052971/2025-24   | __main__              | Memo DEPROC da GEACS assinado: 153281478
+2026-11-26 14:54:44 | INFO    | 2010.01.0052971/2025-24   | coparticipacao_deproc | Base DEPROC: 9 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 9 atendimento(s) | Coparticipação R$ 18.00 | Descontado R$ 0.00 | Em aberto R$ 18.00
+2026-11-26 14:54:47 | INFO    | 2010.01.0052971/2025-24   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:55:00 | INFO    | 2010.01.0052971/2025-24   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 31989993 - 20261126_145447 (154620685)
+2026-11-26 14:55:03 | INFO    | 2010.01.0052971/2025-24   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:55:14 | INFO    | 2010.01.0052971/2025-24   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:55:17 | INFO    | 2010.01.0052971/2025-24   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:55:20 | INFO    | 2010.01.0052971/2025-24   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:55:23 | INFO    | 2010.01.0052971/2025-24   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:55:24 | INFO    | 2010.01.0052971/2025-24   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 487 (SEI 154620738)']
+2026-11-26 14:55:28 | DEBUG   | 2010.01.0052971/2025-24   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (24 passagem(ns) nesta execução)
+2026-11-26 14:55:28 | INFO    | 2010.01.0052971/2025-24   | __main__              | FIM (51.1s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:55:28 | INFO    | 2010.01.0052493/2025-29   | __main__              | INÍCIO [25/39]
+2026-11-26 14:55:28 | INFO    | 2010.01.0052493/2025-29   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:55:29 | INFO    | 2010.01.0052493/2025-29   | __main__              | Marcadores: nenhum
+2026-11-26 14:55:32 | INFO    | 2010.01.0052493/2025-29   | __main__              | Árvore: 24 documento(s)
+2026-11-26 14:55:32 | DEBUG   | 2010.01.0052493/2025-29   | docs_processo         | Lendo documento Memorando 134 (SEI 115141566)
+2026-11-26 14:55:32 | DEBUG   | 2010.01.0052493/2025-29   | docs_processo         | Documento 115141566 lido (1430 caracteres)
+2026-11-26 14:55:32 | DEBUG   | 2010.01.0052493/2025-29   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 134 (SEI 115141566)
+2026-11-26 14:55:32 | DEBUG   | 2010.01.0052493/2025-29   | docs_processo         | Lendo documento Memorando 1994 (SEI 148973418)
+2026-11-26 14:55:33 | DEBUG   | 2010.01.0052493/2025-29   | docs_processo         | Documento 148973418 lido (2717 caracteres)
+2026-11-26 14:55:33 | INFO    | 2010.01.0052493/2025-29   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1994 (SEI 148973418)']
+2026-11-26 14:55:33 | INFO    | 2010.01.0052493/2025-29   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2269168-5 | Período titular: 01/10/2019 a 12/06/2024 | Dependentes: 3603830 | Período variável p/ dependentes: não
+2026-11-26 14:55:33 | DEBUG   | 2010.01.0052493/2025-29   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:55:33 | DEBUG   | 2010.01.0052493/2025-29   | docs_processo         | Lendo documento Memorando 2247 (SEI 153281913)
+2026-11-26 14:55:34 | DEBUG   | 2010.01.0052493/2025-29   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:55:35 | DEBUG   | 2010.01.0052493/2025-29   | docs_processo         | Documento 153281913 lido (2555 caracteres)
+2026-11-26 14:55:35 | INFO    | 2010.01.0052493/2025-29   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2247 (SEI 153281913)
+2026-11-26 14:55:35 | INFO    | 2010.01.0052493/2025-29   | __main__              | Memo DEPROC da GEACS assinado: 153281913
+2026-11-26 14:55:35 | INFO    | 2010.01.0052493/2025-29   | coparticipacao_deproc | Base DEPROC: 18 linha(s) do processo, 1 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 17 atendimento(s) | Coparticipação R$ 30.56 | Descontado R$ 0.00 | Em aberto R$ 30.56
+2026-11-26 14:55:39 | INFO    | 2010.01.0052493/2025-29   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:55:52 | INFO    | 2010.01.0052493/2025-29   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 22691685 - 20261126_145539 (154620870)
+2026-11-26 14:55:55 | INFO    | 2010.01.0052493/2025-29   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:56:04 | INFO    | 2010.01.0052493/2025-29   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:56:07 | INFO    | 2010.01.0052493/2025-29   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:56:10 | INFO    | 2010.01.0052493/2025-29   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:56:11 | INFO    | 2010.01.0052493/2025-29   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:56:14 | INFO    | 2010.01.0052493/2025-29   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 488 (SEI 154620936)']
+2026-11-26 14:56:18 | DEBUG   | 2010.01.0052493/2025-29   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (25 passagem(ns) nesta execução)
+2026-11-26 14:56:18 | INFO    | 2010.01.0052493/2025-29   | __main__              | FIM (49.5s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:56:18 | INFO    | 2010.01.0083246/2024-21   | __main__              | INÍCIO [26/39]
+2026-11-26 14:56:18 | INFO    | 2010.01.0083246/2024-21   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:56:19 | INFO    | 2010.01.0083246/2024-21   | __main__              | Marcadores: nenhum
+2026-11-26 14:56:21 | INFO    | 2010.01.0083246/2024-21   | __main__              | Árvore: 23 documento(s)
+2026-11-26 14:56:21 | DEBUG   | 2010.01.0083246/2024-21   | docs_processo         | Lendo documento Memorando 2017 (SEI 149198583)
+2026-11-26 14:56:22 | DEBUG   | 2010.01.0083246/2024-21   | docs_processo         | Documento 149198583 lido (2585 caracteres)
+2026-11-26 14:56:22 | INFO    | 2010.01.0083246/2024-21   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2017 (SEI 149198583)']
+2026-11-26 14:56:22 | INFO    | 2010.01.0083246/2024-21   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1282379-1 | Período titular: 01/10/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:56:22 | DEBUG   | 2010.01.0083246/2024-21   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:56:22 | DEBUG   | 2010.01.0083246/2024-21   | docs_processo         | Lendo documento Memorando 2191 (SEI 153234443)
+2026-11-26 14:56:23 | DEBUG   | 2010.01.0083246/2024-21   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:56:24 | DEBUG   | 2010.01.0083246/2024-21   | docs_processo         | Documento 153234443 lido (2442 caracteres)
+2026-11-26 14:56:24 | INFO    | 2010.01.0083246/2024-21   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2191 (SEI 153234443)
+2026-11-26 14:56:24 | INFO    | 2010.01.0083246/2024-21   | __main__              | Memo DEPROC da GEACS assinado: 153234443
+2026-11-26 14:56:24 | INFO    | 2010.01.0083246/2024-21   | coparticipacao_deproc | Base DEPROC: 213 linha(s) do processo, 11 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 202 atendimento(s) | Coparticipação R$ 342.26 | Descontado R$ 0.00 | Em aberto R$ 342.26
+2026-11-26 14:56:26 | INFO    | 2010.01.0083246/2024-21   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:56:39 | INFO    | 2010.01.0083246/2024-21   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 12823791 - 20261126_145626 (154621085)
+2026-11-26 14:56:42 | INFO    | 2010.01.0083246/2024-21   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:56:53 | INFO    | 2010.01.0083246/2024-21   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:56:56 | INFO    | 2010.01.0083246/2024-21   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:56:59 | INFO    | 2010.01.0083246/2024-21   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:57:01 | INFO    | 2010.01.0083246/2024-21   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:57:04 | INFO    | 2010.01.0083246/2024-21   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 489 (SEI 154621146)']
+2026-11-26 14:57:08 | DEBUG   | 2010.01.0083246/2024-21   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (26 passagem(ns) nesta execução)
+2026-11-26 14:57:08 | INFO    | 2010.01.0083246/2024-21   | __main__              | FIM (49.8s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:57:08 | INFO    | 2010.01.0083278/2024-30   | __main__              | INÍCIO [27/39]
+2026-11-26 14:57:08 | INFO    | 2010.01.0083278/2024-30   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:57:09 | INFO    | 2010.01.0083278/2024-30   | __main__              | Marcadores: nenhum
+2026-11-26 14:57:11 | INFO    | 2010.01.0083278/2024-30   | __main__              | Árvore: 24 documento(s)
+2026-11-26 14:57:11 | DEBUG   | 2010.01.0083278/2024-30   | docs_processo         | Lendo documento Memorando 2477 (SEI 151457643)
+2026-11-26 14:57:12 | DEBUG   | 2010.01.0083278/2024-30   | docs_processo         | Documento 151457643 lido (2751 caracteres)
+2026-11-26 14:57:12 | INFO    | 2010.01.0083278/2024-30   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2477 (SEI 151457643)']
+2026-11-26 14:57:12 | INFO    | 2010.01.0083278/2024-30   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2007746 / 7 | Período titular: 01/10/2019 a 12/06/2024 | Dependentes: 3896698 | Período variável p/ dependentes: não
+2026-11-26 14:57:12 | DEBUG   | 2010.01.0083278/2024-30   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:57:12 | DEBUG   | 2010.01.0083278/2024-30   | docs_processo         | Lendo documento Memorando 2192 (SEI 153234889)
+2026-11-26 14:57:13 | DEBUG   | 2010.01.0083278/2024-30   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:57:13 | DEBUG   | 2010.01.0083278/2024-30   | docs_processo         | Documento 153234889 lido (2559 caracteres)
+2026-11-26 14:57:13 | INFO    | 2010.01.0083278/2024-30   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2192 (SEI 153234889)
+2026-11-26 14:57:13 | INFO    | 2010.01.0083278/2024-30   | __main__              | Memo DEPROC da GEACS assinado: 153234889
+2026-11-26 14:57:13 | INFO    | 2010.01.0083278/2024-30   | coparticipacao_deproc | Base DEPROC: 3 linha(s) do processo, 2 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 1 atendimento(s) | Coparticipação R$ 5.50 | Descontado R$ 0.00 | Em aberto R$ 5.50
+2026-11-26 14:57:16 | INFO    | 2010.01.0083278/2024-30   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:57:29 | INFO    | 2010.01.0083278/2024-30   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 20077467 - 20261126_145716 (154621265)
+2026-11-26 14:57:31 | INFO    | 2010.01.0083278/2024-30   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:57:42 | INFO    | 2010.01.0083278/2024-30   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:57:45 | INFO    | 2010.01.0083278/2024-30   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:57:48 | INFO    | 2010.01.0083278/2024-30   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:57:50 | INFO    | 2010.01.0083278/2024-30   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:57:52 | INFO    | 2010.01.0083278/2024-30   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 490 (SEI 154621299)']
+2026-11-26 14:57:57 | DEBUG   | 2010.01.0083278/2024-30   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (27 passagem(ns) nesta execução)
+2026-11-26 14:57:57 | INFO    | 2010.01.0083278/2024-30   | __main__              | FIM (49.0s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:57:57 | INFO    | 2010.01.0082972/2024-47   | __main__              | INÍCIO [28/39]
+2026-11-26 14:57:57 | INFO    | 2010.01.0082972/2024-47   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:57:58 | INFO    | 2010.01.0082972/2024-47   | __main__              | Marcadores: nenhum
+2026-11-26 14:58:00 | INFO    | 2010.01.0082972/2024-47   | __main__              | Árvore: 22 documento(s)
+2026-11-26 14:58:00 | DEBUG   | 2010.01.0082972/2024-47   | docs_processo         | Lendo documento Memorando 2478 (SEI 151462499)
+2026-11-26 14:58:01 | DEBUG   | 2010.01.0082972/2024-47   | docs_processo         | Documento 151462499 lido (2591 caracteres)
+2026-11-26 14:58:01 | INFO    | 2010.01.0082972/2024-47   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2478 (SEI 151462499)']
+2026-11-26 14:58:01 | INFO    | 2010.01.0082972/2024-47   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3520718 / 3 | Período titular: 01/10/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:58:01 | DEBUG   | 2010.01.0082972/2024-47   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:58:01 | DEBUG   | 2010.01.0082972/2024-47   | docs_processo         | Lendo documento Memorando 2193 (SEI 153235193)
+2026-11-26 14:58:01 | DEBUG   | 2010.01.0082972/2024-47   | docs_processo         | Documento 153235193 lido (2446 caracteres)
+2026-11-26 14:58:01 | INFO    | 2010.01.0082972/2024-47   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2193 (SEI 153235193)
+2026-11-26 14:58:01 | INFO    | 2010.01.0082972/2024-47   | __main__              | Memo DEPROC da GEACS assinado: 153235193
+2026-11-26 14:58:01 | INFO    | 2010.01.0082972/2024-47   | coparticipacao_deproc | Base DEPROC: 5 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 5 atendimento(s) | Coparticipação R$ 16.80 | Descontado R$ 0.00 | Em aberto R$ 16.80
+2026-11-26 14:58:04 | INFO    | 2010.01.0082972/2024-47   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:58:16 | INFO    | 2010.01.0082972/2024-47   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35207183 - 20261126_145804 (154621462)
+2026-11-26 14:58:19 | INFO    | 2010.01.0082972/2024-47   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:58:29 | INFO    | 2010.01.0082972/2024-47   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:58:32 | INFO    | 2010.01.0082972/2024-47   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:58:34 | INFO    | 2010.01.0082972/2024-47   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:58:37 | INFO    | 2010.01.0082972/2024-47   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:58:39 | INFO    | 2010.01.0082972/2024-47   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 491 (SEI 154621494)']
+2026-11-26 14:58:43 | DEBUG   | 2010.01.0082972/2024-47   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (28 passagem(ns) nesta execução)
+2026-11-26 14:58:43 | INFO    | 2010.01.0082972/2024-47   | __main__              | FIM (46.1s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:58:43 | INFO    | 2010.01.0052963/2025-46   | __main__              | INÍCIO [29/39]
+2026-11-26 14:58:43 | INFO    | 2010.01.0052963/2025-46   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:58:44 | INFO    | 2010.01.0052963/2025-46   | __main__              | Marcadores: nenhum
+2026-11-26 14:58:46 | INFO    | 2010.01.0052963/2025-46   | __main__              | Árvore: 27 documento(s)
+2026-11-26 14:58:46 | DEBUG   | 2010.01.0052963/2025-46   | docs_processo         | Lendo documento Memorando 158 (SEI 115212092)
+2026-11-26 14:58:47 | DEBUG   | 2010.01.0052963/2025-46   | docs_processo         | Documento 115212092 lido (1674 caracteres)
+2026-11-26 14:58:47 | DEBUG   | 2010.01.0052963/2025-46   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 158 (SEI 115212092)
+2026-11-26 14:58:47 | DEBUG   | 2010.01.0052963/2025-46   | docs_processo         | Lendo documento Memorando 1620 (SEI 147466226)
+2026-11-26 14:58:48 | DEBUG   | 2010.01.0052963/2025-46   | docs_processo         | Documento 147466226 lido (2710 caracteres)
+2026-11-26 14:58:48 | INFO    | 2010.01.0052963/2025-46   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1620 (SEI 147466226)']
+2026-11-26 14:58:48 | INFO    | 2010.01.0052963/2025-46   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1849085-9 | Período titular: 11/2019 A 06/2024 | Dependentes: 3365177 | Período variável p/ dependentes: não
+2026-11-26 14:58:48 | DEBUG   | 2010.01.0052963/2025-46   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:58:48 | DEBUG   | 2010.01.0052963/2025-46   | docs_processo         | Lendo documento Memorando 2264 (SEI 153317618)
+2026-11-26 14:58:49 | DEBUG   | 2010.01.0052963/2025-46   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 14:58:49 | DEBUG   | 2010.01.0052963/2025-46   | docs_processo         | Documento 153317618 lido (2545 caracteres)
+2026-11-26 14:58:49 | INFO    | 2010.01.0052963/2025-46   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2264 (SEI 153317618)
+2026-11-26 14:58:49 | INFO    | 2010.01.0052963/2025-46   | __main__              | Memo DEPROC da GEACS assinado: 153317618
+2026-11-26 14:58:49 | INFO    | 2010.01.0052963/2025-46   | coparticipacao_deproc | Base DEPROC: 26 linha(s) do processo, 1 com VALOR_BASE_COPA 0 (ignoradas), 3 fora do período | 22 atendimento(s) | Coparticipação R$ 27.60 | Descontado R$ 0.00 | Em aberto R$ 27.60
+2026-11-26 14:58:52 | INFO    | 2010.01.0052963/2025-46   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:59:05 | INFO    | 2010.01.0052963/2025-46   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 18490859 - 20261126_145852 (154621689)
+2026-11-26 14:59:07 | INFO    | 2010.01.0052963/2025-46   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:59:18 | INFO    | 2010.01.0052963/2025-46   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 14:59:21 | INFO    | 2010.01.0052963/2025-46   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 14:59:24 | INFO    | 2010.01.0052963/2025-46   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 14:59:26 | INFO    | 2010.01.0052963/2025-46   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 14:59:28 | INFO    | 2010.01.0052963/2025-46   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 492 (SEI 154621735)']
+2026-11-26 14:59:38 | DEBUG   | 2010.01.0052963/2025-46   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (29 passagem(ns) nesta execução)
+2026-11-26 14:59:38 | INFO    | 2010.01.0052963/2025-46   | __main__              | FIM (55.1s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 14:59:38 | INFO    | 2010.01.0052753/2025-90   | __main__              | INÍCIO [30/39]
+2026-11-26 14:59:38 | INFO    | 2010.01.0052753/2025-90   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 14:59:39 | INFO    | 2010.01.0052753/2025-90   | __main__              | Marcadores: nenhum
+2026-11-26 14:59:40 | INFO    | 2010.01.0052753/2025-90   | __main__              | Árvore: 18 documento(s)
+2026-11-26 14:59:40 | DEBUG   | 2010.01.0052753/2025-90   | docs_processo         | Lendo documento Memorando 148 (SEI 115183966)
+2026-11-26 14:59:41 | DEBUG   | 2010.01.0052753/2025-90   | docs_processo         | Documento 115183966 lido (1461 caracteres)
+2026-11-26 14:59:41 | DEBUG   | 2010.01.0052753/2025-90   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 148 (SEI 115183966)
+2026-11-26 14:59:41 | DEBUG   | 2010.01.0052753/2025-90   | docs_processo         | Lendo documento Memorando 2516 (SEI 151746038)
+2026-11-26 14:59:42 | DEBUG   | 2010.01.0052753/2025-90   | docs_processo         | Documento 151746038 lido (2667 caracteres)
+2026-11-26 14:59:42 | INFO    | 2010.01.0052753/2025-90   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2516 (SEI 151746038)']
+2026-11-26 14:59:42 | INFO    | 2010.01.0052753/2025-90   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2318194-0 | Período titular: 01/11/2019 a 12/06/2024. | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 14:59:42 | DEBUG   | 2010.01.0052753/2025-90   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 14:59:42 | DEBUG   | 2010.01.0052753/2025-90   | docs_processo         | Lendo documento Memorando 2205 (SEI 153237835)
+2026-11-26 14:59:43 | DEBUG   | 2010.01.0052753/2025-90   | docs_processo         | Documento 153237835 lido (2445 caracteres)
+2026-11-26 14:59:43 | INFO    | 2010.01.0052753/2025-90   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2205 (SEI 153237835)
+2026-11-26 14:59:43 | INFO    | 2010.01.0052753/2025-90   | __main__              | Memo DEPROC da GEACS assinado: 153237835
+2026-11-26 14:59:43 | INFO    | 2010.01.0052753/2025-90   | coparticipacao_deproc | Base DEPROC: 89 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 89 atendimento(s) | Coparticipação R$ 146.47 | Descontado R$ 0.00 | Em aberto R$ 146.47
+2026-11-26 14:59:46 | INFO    | 2010.01.0052753/2025-90   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 14:59:57 | INFO    | 2010.01.0052753/2025-90   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 23181940 - 20261126_145946 (154621904)
+2026-11-26 15:00:00 | INFO    | 2010.01.0052753/2025-90   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:00:12 | INFO    | 2010.01.0052753/2025-90   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:00:15 | INFO    | 2010.01.0052753/2025-90   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:00:18 | INFO    | 2010.01.0052753/2025-90   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:00:21 | INFO    | 2010.01.0052753/2025-90   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:00:23 | INFO    | 2010.01.0052753/2025-90   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 493 (SEI 154621923)']
+2026-11-26 15:00:32 | DEBUG   | 2010.01.0052753/2025-90   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (30 passagem(ns) nesta execução)
+2026-11-26 15:00:32 | INFO    | 2010.01.0052753/2025-90   | __main__              | FIM (54.0s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:00:32 | INFO    | 2010.01.0052732/2025-75   | __main__              | INÍCIO [31/39]
+2026-11-26 15:00:32 | INFO    | 2010.01.0052732/2025-75   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:00:33 | INFO    | 2010.01.0052732/2025-75   | __main__              | Marcadores: nenhum
+2026-11-26 15:00:34 | INFO    | 2010.01.0052732/2025-75   | __main__              | Árvore: 18 documento(s)
+2026-11-26 15:00:34 | DEBUG   | 2010.01.0052732/2025-75   | docs_processo         | Lendo documento Memorando 146 (SEI 115180844)
+2026-11-26 15:00:35 | DEBUG   | 2010.01.0052732/2025-75   | docs_processo         | Documento 115180844 lido (1563 caracteres)
+2026-11-26 15:00:35 | DEBUG   | 2010.01.0052732/2025-75   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 146 (SEI 115180844)
+2026-11-26 15:00:35 | DEBUG   | 2010.01.0052732/2025-75   | docs_processo         | Lendo documento Memorando 2517 (SEI 151801223)
+2026-11-26 15:00:36 | DEBUG   | 2010.01.0052732/2025-75   | docs_processo         | Documento 151801223 lido (2689 caracteres)
+2026-11-26 15:00:36 | INFO    | 2010.01.0052732/2025-75   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2517 (SEI 151801223)']
+2026-11-26 15:00:36 | INFO    | 2010.01.0052732/2025-75   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3542285-8 | Período titular: 01/11/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 15:00:36 | DEBUG   | 2010.01.0052732/2025-75   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:00:36 | DEBUG   | 2010.01.0052732/2025-75   | docs_processo         | Lendo documento Memorando 2206 (SEI 153238177)
+2026-11-26 15:00:37 | DEBUG   | 2010.01.0052732/2025-75   | docs_processo         | Documento 153238177 lido (2448 caracteres)
+2026-11-26 15:00:37 | INFO    | 2010.01.0052732/2025-75   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2206 (SEI 153238177)
+2026-11-26 15:00:37 | INFO    | 2010.01.0052732/2025-75   | __main__              | Memo DEPROC da GEACS assinado: 153238177
+2026-11-26 15:00:37 | INFO    | 2010.01.0052732/2025-75   | coparticipacao_deproc | Base DEPROC: 238 linha(s) do processo, 18 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 220 atendimento(s) | Coparticipação R$ 613.97 | Descontado R$ 0.00 | Em aberto R$ 613.97
+2026-11-26 15:00:40 | INFO    | 2010.01.0052732/2025-75   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:00:52 | INFO    | 2010.01.0052732/2025-75   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35422858 - 20261126_150040 (154622106)
+2026-11-26 15:00:55 | INFO    | 2010.01.0052732/2025-75   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:01:07 | INFO    | 2010.01.0052732/2025-75   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:01:10 | INFO    | 2010.01.0052732/2025-75   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:01:13 | INFO    | 2010.01.0052732/2025-75   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:01:16 | INFO    | 2010.01.0052732/2025-75   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:01:17 | INFO    | 2010.01.0052732/2025-75   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 494 (SEI 154622140)']
+2026-11-26 15:01:26 | DEBUG   | 2010.01.0052732/2025-75   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (31 passagem(ns) nesta execução)
+2026-11-26 15:01:26 | INFO    | 2010.01.0052732/2025-75   | __main__              | FIM (54.5s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:01:26 | INFO    | 2010.01.0052919/2025-70   | __main__              | INÍCIO [32/39]
+2026-11-26 15:01:26 | INFO    | 2010.01.0052919/2025-70   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:01:27 | INFO    | 2010.01.0052919/2025-70   | __main__              | Marcadores: nenhum
+2026-11-26 15:01:29 | INFO    | 2010.01.0052919/2025-70   | __main__              | Árvore: 19 documento(s)
+2026-11-26 15:01:29 | DEBUG   | 2010.01.0052919/2025-70   | docs_processo         | Lendo documento Memorando 152 (SEI 115205902)
+2026-11-26 15:01:30 | DEBUG   | 2010.01.0052919/2025-70   | docs_processo         | Documento 115205902 lido (1465 caracteres)
+2026-11-26 15:01:30 | DEBUG   | 2010.01.0052919/2025-70   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 152 (SEI 115205902)
+2026-11-26 15:01:30 | DEBUG   | 2010.01.0052919/2025-70   | docs_processo         | Lendo documento Memorando 2518 (SEI 151804149)
+2026-11-26 15:01:31 | DEBUG   | 2010.01.0052919/2025-70   | docs_processo         | Documento 151804149 lido (2675 caracteres)
+2026-11-26 15:01:31 | INFO    | 2010.01.0052919/2025-70   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2518 (SEI 151804149)']
+2026-11-26 15:01:31 | INFO    | 2010.01.0052919/2025-70   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3253331- 4 | Período titular: 01/11/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 15:01:31 | DEBUG   | 2010.01.0052919/2025-70   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:01:31 | DEBUG   | 2010.01.0052919/2025-70   | docs_processo         | Lendo documento Memorando 2207 (SEI 153238422)
+2026-11-26 15:01:31 | DEBUG   | 2010.01.0052919/2025-70   | docs_processo         | Documento 153238422 lido (2445 caracteres)
+2026-11-26 15:01:31 | INFO    | 2010.01.0052919/2025-70   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2207 (SEI 153238422)
+2026-11-26 15:01:31 | INFO    | 2010.01.0052919/2025-70   | __main__              | Memo DEPROC da GEACS assinado: 153238422
+2026-11-26 15:01:31 | INFO    | 2010.01.0052919/2025-70   | coparticipacao_deproc | Base DEPROC: 36 linha(s) do processo, 3 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 33 atendimento(s) | Coparticipação R$ 128.82 | Descontado R$ 0.00 | Em aberto R$ 128.82
+2026-11-26 15:01:34 | INFO    | 2010.01.0052919/2025-70   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:01:47 | INFO    | 2010.01.0052919/2025-70   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 32533314 - 20261126_150134 (154622303)
+2026-11-26 15:01:50 | INFO    | 2010.01.0052919/2025-70   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:02:01 | INFO    | 2010.01.0052919/2025-70   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:02:04 | INFO    | 2010.01.0052919/2025-70   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:02:09 | INFO    | 2010.01.0052919/2025-70   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:02:11 | INFO    | 2010.01.0052919/2025-70   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:02:14 | INFO    | 2010.01.0052919/2025-70   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 495 (SEI 154622320)']
+2026-11-26 15:02:24 | DEBUG   | 2010.01.0052919/2025-70   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (32 passagem(ns) nesta execução)
+2026-11-26 15:02:24 | INFO    | 2010.01.0052919/2025-70   | __main__              | FIM (57.2s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:02:24 | INFO    | 2010.01.0083194/2024-67   | __main__              | INÍCIO [33/39]
+2026-11-26 15:02:24 | INFO    | 2010.01.0083194/2024-67   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:02:24 | INFO    | 2010.01.0083194/2024-67   | __main__              | Marcadores: nenhum
+2026-11-26 15:02:27 | INFO    | 2010.01.0083194/2024-67   | __main__              | Árvore: 23 documento(s)
+2026-11-26 15:02:27 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Lendo documento Memorando 37 (SEI 130573716)
+2026-11-26 15:02:28 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Documento 130573716 lido (1789 caracteres)
+2026-11-26 15:02:28 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 37 (SEI 130573716)
+2026-11-26 15:02:28 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Lendo documento Memorando 590 (SEI 143293897)
+2026-11-26 15:02:29 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Documento 143293897 lido (2614 caracteres)
+2026-11-26 15:02:29 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 590 (SEI 143293897)
+2026-11-26 15:02:29 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Lendo documento Memorando 1092 (SEI 145087248)
+2026-11-26 15:02:30 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Documento 145087248 lido (1879 caracteres)
+2026-11-26 15:02:30 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 1092 (SEI 145087248)
+2026-11-26 15:02:30 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Lendo documento Memorando 2723 (SEI 152733428)
+2026-11-26 15:02:31 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Documento 152733428 lido (3022 caracteres)
+2026-11-26 15:02:31 | INFO    | 2010.01.0083194/2024-67   | docs_processo         | 4 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2723 (SEI 152733428)']
+2026-11-26 15:02:31 | INFO    | 2010.01.0083194/2024-67   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3079813-2 | Período titular: 01/11/2019 a 12/06/2024 | Dependentes: 3079816; 3090369; 3112049 | Período variável p/ dependentes: não
+2026-11-26 15:02:31 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:02:31 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Lendo documento Memorando 2209 (SEI 153238989)
+2026-11-26 15:02:32 | DEBUG   | 2010.01.0083194/2024-67   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 15:02:33 | DEBUG   | 2010.01.0083194/2024-67   | docs_processo         | Documento 153238989 lido (2573 caracteres)
+2026-11-26 15:02:33 | INFO    | 2010.01.0083194/2024-67   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2209 (SEI 153238989)
+2026-11-26 15:02:33 | INFO    | 2010.01.0083194/2024-67   | __main__              | Memo DEPROC da GEACS assinado: 153238989
+2026-11-26 15:02:33 | INFO    | 2010.01.0083194/2024-67   | coparticipacao_deproc | Base DEPROC: 589 linha(s) do processo, 25 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 564 atendimento(s) | Coparticipação R$ 1500.91 | Descontado R$ 0.00 | Em aberto R$ 1500.91
+2026-11-26 15:02:36 | INFO    | 2010.01.0083194/2024-67   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:02:49 | INFO    | 2010.01.0083194/2024-67   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 30798132 - 20261126_150236 (154622524)
+2026-11-26 15:02:52 | INFO    | 2010.01.0083194/2024-67   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:03:03 | INFO    | 2010.01.0083194/2024-67   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:03:06 | INFO    | 2010.01.0083194/2024-67   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:03:09 | INFO    | 2010.01.0083194/2024-67   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:03:12 | INFO    | 2010.01.0083194/2024-67   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:03:14 | INFO    | 2010.01.0083194/2024-67   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 496 (SEI 154622557)']
+2026-11-26 15:03:23 | DEBUG   | 2010.01.0083194/2024-67   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (33 passagem(ns) nesta execução)
+2026-11-26 15:03:23 | INFO    | 2010.01.0083194/2024-67   | __main__              | FIM (59.9s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:03:23 | INFO    | 2010.01.0053150/2025-41   | __main__              | INÍCIO [34/39]
+2026-11-26 15:03:23 | INFO    | 2010.01.0053150/2025-41   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:03:24 | INFO    | 2010.01.0053150/2025-41   | __main__              | Marcadores: nenhum
+2026-11-26 15:03:27 | INFO    | 2010.01.0053150/2025-41   | __main__              | Árvore: 22 documento(s)
+2026-11-26 15:03:27 | DEBUG   | 2010.01.0053150/2025-41   | docs_processo         | Lendo documento Memorando 168 (SEI 115241876)
+2026-11-26 15:03:28 | DEBUG   | 2010.01.0053150/2025-41   | docs_processo         | Documento 115241876 lido (1465 caracteres)
+2026-11-26 15:03:28 | DEBUG   | 2010.01.0053150/2025-41   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 168 (SEI 115241876)
+2026-11-26 15:03:28 | DEBUG   | 2010.01.0053150/2025-41   | docs_processo         | Lendo documento Memorando 1749 (SEI 147841116)
+2026-11-26 15:03:29 | DEBUG   | 2010.01.0053150/2025-41   | docs_processo         | Documento 147841116 lido (2682 caracteres)
+2026-11-26 15:03:29 | INFO    | 2010.01.0053150/2025-41   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1749 (SEI 147841116)']
+2026-11-26 15:03:29 | INFO    | 2010.01.0053150/2025-41   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3221261-5 | Período titular: 01/12/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 15:03:29 | DEBUG   | 2010.01.0053150/2025-41   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:03:29 | DEBUG   | 2010.01.0053150/2025-41   | docs_processo         | Lendo documento Memorando 2218 (SEI 153240674)
+2026-11-26 15:03:30 | DEBUG   | 2010.01.0053150/2025-41   | docs_processo         | Documento 153240674 lido (2444 caracteres)
+2026-11-26 15:03:30 | INFO    | 2010.01.0053150/2025-41   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2218 (SEI 153240674)
+2026-11-26 15:03:30 | INFO    | 2010.01.0053150/2025-41   | __main__              | Memo DEPROC da GEACS assinado: 153240674
+2026-11-26 15:03:30 | INFO    | 2010.01.0053150/2025-41   | coparticipacao_deproc | Base DEPROC: 95 linha(s) do processo, 81 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 14 atendimento(s) | Coparticipação R$ 16.20 | Descontado R$ 0.00 | Em aberto R$ 16.20
+2026-11-26 15:03:32 | INFO    | 2010.01.0053150/2025-41   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:03:46 | INFO    | 2010.01.0053150/2025-41   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 32212615 - 20261126_150332 (154622737)
+2026-11-26 15:03:49 | INFO    | 2010.01.0053150/2025-41   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:04:01 | INFO    | 2010.01.0053150/2025-41   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:04:04 | INFO    | 2010.01.0053150/2025-41   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:04:06 | INFO    | 2010.01.0053150/2025-41   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:04:08 | INFO    | 2010.01.0053150/2025-41   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:04:11 | INFO    | 2010.01.0053150/2025-41   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 497 (SEI 154622780)']
+2026-11-26 15:04:20 | DEBUG   | 2010.01.0053150/2025-41   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (34 passagem(ns) nesta execução)
+2026-11-26 15:04:20 | INFO    | 2010.01.0053150/2025-41   | __main__              | FIM (56.8s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:04:20 | INFO    | 2010.01.0083656/2024-09   | __main__              | INÍCIO [35/39]
+2026-11-26 15:04:20 | INFO    | 2010.01.0083656/2024-09   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:04:22 | INFO    | 2010.01.0083656/2024-09   | __main__              | Marcadores: nenhum
+2026-11-26 15:04:23 | INFO    | 2010.01.0083656/2024-09   | __main__              | Árvore: 17 documento(s)
+2026-11-26 15:04:23 | DEBUG   | 2010.01.0083656/2024-09   | docs_processo         | Lendo documento Memorando 2524 (SEI 151835742)
+2026-11-26 15:04:24 | DEBUG   | 2010.01.0083656/2024-09   | docs_processo         | Documento 151835742 lido (2782 caracteres)
+2026-11-26 15:04:24 | INFO    | 2010.01.0083656/2024-09   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2524 (SEI 151835742)']
+2026-11-26 15:04:24 | INFO    | 2010.01.0083656/2024-09   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2382526 / 0 | Período titular: 01/12/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 15:04:24 | DEBUG   | 2010.01.0083656/2024-09   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:04:24 | DEBUG   | 2010.01.0083656/2024-09   | docs_processo         | Lendo documento Memorando 2219 (SEI 153240868)
+2026-11-26 15:04:24 | DEBUG   | 2010.01.0083656/2024-09   | docs_processo         | Documento 153240868 lido (2446 caracteres)
+2026-11-26 15:04:24 | INFO    | 2010.01.0083656/2024-09   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2219 (SEI 153240868)
+2026-11-26 15:04:24 | INFO    | 2010.01.0083656/2024-09   | __main__              | Memo DEPROC da GEACS assinado: 153240868
+2026-11-26 15:04:24 | INFO    | 2010.01.0083656/2024-09   | coparticipacao_deproc | Base DEPROC: 507 linha(s) do processo, 96 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 411 atendimento(s) | Coparticipação R$ 727.84 | Descontado R$ 0.00 | Em aberto R$ 727.84
+2026-11-26 15:04:27 | INFO    | 2010.01.0083656/2024-09   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:04:40 | INFO    | 2010.01.0083656/2024-09   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 23825260 - 20261126_150427 (154622938)
+2026-11-26 15:04:43 | INFO    | 2010.01.0083656/2024-09   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:04:54 | INFO    | 2010.01.0083656/2024-09   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:04:57 | INFO    | 2010.01.0083656/2024-09   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:05:00 | INFO    | 2010.01.0083656/2024-09   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:05:02 | INFO    | 2010.01.0083656/2024-09   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:05:03 | INFO    | 2010.01.0083656/2024-09   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 498 (SEI 154622985)']
+2026-11-26 15:05:13 | DEBUG   | 2010.01.0083656/2024-09   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (35 passagem(ns) nesta execução)
+2026-11-26 15:05:13 | INFO    | 2010.01.0083656/2024-09   | __main__              | FIM (52.4s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:05:13 | INFO    | 2010.01.0053701/2025-05   | __main__              | INÍCIO [36/39]
+2026-11-26 15:05:13 | INFO    | 2010.01.0053701/2025-05   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:05:14 | INFO    | 2010.01.0053701/2025-05   | __main__              | Marcadores: nenhum
+2026-11-26 15:05:16 | INFO    | 2010.01.0053701/2025-05   | __main__              | Árvore: 24 documento(s)
+2026-11-26 15:05:16 | DEBUG   | 2010.01.0053701/2025-05   | docs_processo         | Lendo documento Memorando 213 (SEI 115338021)
+2026-11-26 15:05:17 | DEBUG   | 2010.01.0053701/2025-05   | docs_processo         | Documento 115338021 lido (1357 caracteres)
+2026-11-26 15:05:17 | DEBUG   | 2010.01.0053701/2025-05   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 213 (SEI 115338021)
+2026-11-26 15:05:17 | DEBUG   | 2010.01.0053701/2025-05   | docs_processo         | Lendo documento Memorando 1894 (SEI 148438308)
+2026-11-26 15:05:18 | DEBUG   | 2010.01.0053701/2025-05   | docs_processo         | Documento 148438308 lido (2586 caracteres)
+2026-11-26 15:05:18 | INFO    | 2010.01.0053701/2025-05   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 1894 (SEI 148438308)']
+2026-11-26 15:05:18 | INFO    | 2010.01.0053701/2025-05   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 2009548-1 | Período titular: 01/12/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 15:05:18 | DEBUG   | 2010.01.0053701/2025-05   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:05:18 | DEBUG   | 2010.01.0053701/2025-05   | docs_processo         | Lendo documento Memorando 2228 (SEI 153242900)
+2026-11-26 15:05:19 | DEBUG   | 2010.01.0053701/2025-05   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 15:05:19 | DEBUG   | 2010.01.0053701/2025-05   | docs_processo         | Documento 153242900 lido (2442 caracteres)
+2026-11-26 15:05:19 | INFO    | 2010.01.0053701/2025-05   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2228 (SEI 153242900)
+2026-11-26 15:05:19 | INFO    | 2010.01.0053701/2025-05   | __main__              | Memo DEPROC da GEACS assinado: 153242900
+2026-11-26 15:05:19 | INFO    | 2010.01.0053701/2025-05   | coparticipacao_deproc | Base DEPROC: 7 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 7 atendimento(s) | Coparticipação R$ 20.85 | Descontado R$ 0.00 | Em aberto R$ 20.85
+2026-11-26 15:05:22 | INFO    | 2010.01.0053701/2025-05   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:05:36 | INFO    | 2010.01.0053701/2025-05   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 20095481 - 20261126_150522 (154623142)
+2026-11-26 15:05:39 | INFO    | 2010.01.0053701/2025-05   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:05:50 | INFO    | 2010.01.0053701/2025-05   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:05:53 | INFO    | 2010.01.0053701/2025-05   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:05:55 | INFO    | 2010.01.0053701/2025-05   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:05:57 | INFO    | 2010.01.0053701/2025-05   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:06:00 | INFO    | 2010.01.0053701/2025-05   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 499 (SEI 154623159)']
+2026-11-26 15:06:09 | DEBUG   | 2010.01.0053701/2025-05   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (36 passagem(ns) nesta execução)
+2026-11-26 15:06:09 | INFO    | 2010.01.0053701/2025-05   | __main__              | FIM (56.6s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:06:09 | INFO    | 2010.01.0053648/2025-78   | __main__              | INÍCIO [37/39]
+2026-11-26 15:06:09 | INFO    | 2010.01.0053648/2025-78   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:06:10 | INFO    | 2010.01.0053648/2025-78   | __main__              | Marcadores: nenhum
+2026-11-26 15:06:13 | INFO    | 2010.01.0053648/2025-78   | __main__              | Árvore: 27 documento(s)
+2026-11-26 15:06:13 | DEBUG   | 2010.01.0053648/2025-78   | docs_processo         | Lendo documento Memorando 202 (SEI 115331465)
+2026-11-26 15:06:14 | DEBUG   | 2010.01.0053648/2025-78   | docs_processo         | Documento 115331465 lido (1442 caracteres)
+2026-11-26 15:06:14 | DEBUG   | 2010.01.0053648/2025-78   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 202 (SEI 115331465)
+2026-11-26 15:06:14 | DEBUG   | 2010.01.0053648/2025-78   | docs_processo         | Lendo documento Memorando 2019 (SEI 149201290)
+2026-11-26 15:06:15 | DEBUG   | 2010.01.0053648/2025-78   | docs_processo         | Documento 149201290 lido (2613 caracteres)
+2026-11-26 15:06:15 | INFO    | 2010.01.0053648/2025-78   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2019 (SEI 149201290)']
+2026-11-26 15:06:15 | INFO    | 2010.01.0053648/2025-78   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3287522/3 | Período titular: 01/12/2019 a 12/06/2024 | Dependentes: 3271431; 3287523 | Período variável p/ dependentes: não
+2026-11-26 15:06:15 | DEBUG   | 2010.01.0053648/2025-78   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:06:15 | DEBUG   | 2010.01.0053648/2025-78   | docs_processo         | Lendo documento Memorando 2233 (SEI 153243814)
+2026-11-26 15:06:16 | DEBUG   | 2010.01.0053648/2025-78   | sei_automacao._internal.telas.arvore | Clique no documento da árvore interceptado: centraliza e clica via JavaScript
+2026-11-26 15:06:17 | DEBUG   | 2010.01.0053648/2025-78   | docs_processo         | Documento 153243814 lido (2566 caracteres)
+2026-11-26 15:06:17 | INFO    | 2010.01.0053648/2025-78   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2233 (SEI 153243814)
+2026-11-26 15:06:17 | INFO    | 2010.01.0053648/2025-78   | __main__              | Memo DEPROC da GEACS assinado: 153243814
+2026-11-26 15:06:17 | INFO    | 2010.01.0053648/2025-78   | coparticipacao_deproc | Base DEPROC: 56 linha(s) do processo, 4 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 52 atendimento(s) | Coparticipação R$ 174.25 | Descontado R$ 0.00 | Em aberto R$ 174.25
+2026-11-26 15:06:19 | INFO    | 2010.01.0053648/2025-78   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:06:33 | INFO    | 2010.01.0053648/2025-78   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 32875223 - 20261126_150619 (154623311)
+2026-11-26 15:06:37 | INFO    | 2010.01.0053648/2025-78   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:06:47 | INFO    | 2010.01.0053648/2025-78   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:06:51 | INFO    | 2010.01.0053648/2025-78   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:06:53 | INFO    | 2010.01.0053648/2025-78   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:06:55 | INFO    | 2010.01.0053648/2025-78   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:06:58 | INFO    | 2010.01.0053648/2025-78   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 500 (SEI 154623381)']
+2026-11-26 15:07:07 | DEBUG   | 2010.01.0053648/2025-78   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (37 passagem(ns) nesta execução)
+2026-11-26 15:07:07 | INFO    | 2010.01.0053648/2025-78   | __main__              | FIM (58.0s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:07:07 | INFO    | 2010.01.0083670/2024-19   | __main__              | INÍCIO [38/39]
+2026-11-26 15:07:07 | INFO    | 2010.01.0083670/2024-19   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:07:09 | INFO    | 2010.01.0083670/2024-19   | __main__              | Marcadores: nenhum
+2026-11-26 15:07:11 | INFO    | 2010.01.0083670/2024-19   | __main__              | Árvore: 22 documento(s)
+2026-11-26 15:07:11 | DEBUG   | 2010.01.0083670/2024-19   | docs_processo         | Lendo documento Memorando 2487 (SEI 151533210)
+2026-11-26 15:07:12 | DEBUG   | 2010.01.0083670/2024-19   | docs_processo         | Documento 151533210 lido (2605 caracteres)
+2026-11-26 15:07:12 | INFO    | 2010.01.0083670/2024-19   | docs_processo         | 1 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2487 (SEI 151533210)']
+2026-11-26 15:07:12 | INFO    | 2010.01.0083670/2024-19   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 3597526 / 1 | Período titular: 01/12/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 15:07:12 | DEBUG   | 2010.01.0083670/2024-19   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:07:12 | DEBUG   | 2010.01.0083670/2024-19   | docs_processo         | Lendo documento Memorando 2236 (SEI 153244317)
+2026-11-26 15:07:13 | DEBUG   | 2010.01.0083670/2024-19   | docs_processo         | Documento 153244317 lido (2448 caracteres)
+2026-11-26 15:07:13 | INFO    | 2010.01.0083670/2024-19   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2236 (SEI 153244317)
+2026-11-26 15:07:13 | INFO    | 2010.01.0083670/2024-19   | __main__              | Memo DEPROC da GEACS assinado: 153244317
+2026-11-26 15:07:13 | INFO    | 2010.01.0083670/2024-19   | coparticipacao_deproc | Base DEPROC: 5 linha(s) do processo, 1 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 4 atendimento(s) | Coparticipação R$ 29.00 | Descontado R$ 0.00 | Em aberto R$ 29.00
+2026-11-26 15:07:16 | INFO    | 2010.01.0083670/2024-19   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:07:30 | INFO    | 2010.01.0083670/2024-19   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 35975261 - 20261126_150716 (154623537)
+2026-11-26 15:07:33 | INFO    | 2010.01.0083670/2024-19   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:07:44 | INFO    | 2010.01.0083670/2024-19   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:07:47 | INFO    | 2010.01.0083670/2024-19   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:07:50 | INFO    | 2010.01.0083670/2024-19   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:07:52 | INFO    | 2010.01.0083670/2024-19   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:07:55 | INFO    | 2010.01.0083670/2024-19   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 501 (SEI 154623583)']
+2026-11-26 15:08:04 | DEBUG   | 2010.01.0083670/2024-19   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (38 passagem(ns) nesta execução)
+2026-11-26 15:08:04 | INFO    | 2010.01.0083670/2024-19   | __main__              | FIM (57.2s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:08:04 | INFO    | 2010.01.0053702/2025-75   | __main__              | INÍCIO [39/39]
+2026-11-26 15:08:04 | INFO    | 2010.01.0053702/2025-75   | __main__              | Base DEPROC encontrada pela pesquisa nas bases da pasta: 2019 (gerada em 06/11/2026: copa-MANTIS11281-base_2019-06_11_2026.xlsx)
+2026-11-26 15:08:05 | INFO    | 2010.01.0053702/2025-75   | __main__              | Marcadores: nenhum
+2026-11-26 15:08:08 | INFO    | 2010.01.0053702/2025-75   | __main__              | Árvore: 21 documento(s)
+2026-11-26 15:08:08 | DEBUG   | 2010.01.0053702/2025-75   | docs_processo         | Lendo documento Memorando 211 (SEI 115336992)
+2026-11-26 15:08:09 | DEBUG   | 2010.01.0053702/2025-75   | docs_processo         | Documento 115336992 lido (1318 caracteres)
+2026-11-26 15:08:09 | DEBUG   | 2010.01.0053702/2025-75   | docs_processo         | Memorando da APIS não destinado à GEACS: Memorando 211 (SEI 115336992)
+2026-11-26 15:08:09 | DEBUG   | 2010.01.0053702/2025-75   | docs_processo         | Lendo documento Memorando 2407 (SEI 150566405)
+2026-11-26 15:08:10 | DEBUG   | 2010.01.0053702/2025-75   | docs_processo         | Documento 150566405 lido (2594 caracteres)
+2026-11-26 15:08:10 | INFO    | 2010.01.0053702/2025-75   | docs_processo         | 2 memorando(s) da APIS na árvore; destinado(s) à GEACS: ['Memorando 2407 (SEI 150566405)']
+2026-11-26 15:08:10 | INFO    | 2010.01.0053702/2025-75   | processar_novo        | Instruções da APIS extraídas (modelo novo_novo) | Titular: 1324546-5 | Período titular: 01/12/2019 a 12/06/2024 | Dependentes: - | Período variável p/ dependentes: não
+2026-11-26 15:08:10 | DEBUG   | 2010.01.0053702/2025-75   | docs_processo         | Procurando memo DEPROC (da GEACS) em 1 memorando(s) da unidade IPSEMG/GEACS - Utilização
+2026-11-26 15:08:10 | DEBUG   | 2010.01.0053702/2025-75   | docs_processo         | Lendo documento Memorando 2239 (SEI 153244815)
+2026-11-26 15:08:11 | DEBUG   | 2010.01.0053702/2025-75   | docs_processo         | Documento 153244815 lido (2444 caracteres)
+2026-11-26 15:08:11 | INFO    | 2010.01.0053702/2025-75   | docs_processo         | Memo DEPROC (da GEACS) encontrado: Memorando 2239 (SEI 153244815)
+2026-11-26 15:08:11 | INFO    | 2010.01.0053702/2025-75   | __main__              | Memo DEPROC da GEACS assinado: 153244815
+2026-11-26 15:08:11 | INFO    | 2010.01.0053702/2025-75   | coparticipacao_deproc | Base DEPROC: 2 linha(s) do processo, 0 com VALOR_BASE_COPA 0 (ignoradas), 0 fora do período | 2 atendimento(s) | Coparticipação R$ 5.10 | Descontado R$ 5.10 | Em aberto R$ 0.00
+2026-11-26 15:08:15 | INFO    | 2010.01.0053702/2025-75   | tags                  | Marcador adicionado: "v2: 01 - Tratado pelo Script"
+2026-11-26 15:08:28 | INFO    | 2010.01.0053702/2025-75   | relatorio_deproc      | Relatório de coparticipação anexado ao processo: Coparticipação - 13245465 - 20261126_150815 (154623675)
+2026-11-26 15:08:31 | INFO    | 2010.01.0053702/2025-75   | tags                  | Marcador adicionado: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:08:43 | INFO    | 2010.01.0053702/2025-75   | memos_sei             | Memo de resultado da DEPROC criado
+2026-11-26 15:08:46 | INFO    | 2010.01.0053702/2025-75   | memos_sei             | Memo de resultado da DEPROC inserido no bloco 7765003
+2026-11-26 15:08:48 | INFO    | 2010.01.0053702/2025-75   | tags                  | Marcador adicionado: "v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA"
+2026-11-26 15:08:50 | INFO    | 2010.01.0053702/2025-75   | tags                  | Marcador removido: "v2: 01.01 - Relatório Copart. Anexado"
+2026-11-26 15:08:53 | INFO    | 2010.01.0053702/2025-75   | docs_processo         | Memo(s) criado(s) na árvore: ['Memorando 502 (SEI 154623769)']
+2026-11-26 15:09:02 | DEBUG   | 2010.01.0053702/2025-75   | planilha_controle     | Planilha de controle geral salva: C:\Users\m755247\Desktop\REPOSITORIOS\scripts\sei\script-sei-utilizacao-indevida-v2\dados\controle\controle_geral_de_processos.xlsx (39 passagem(ns) nesta execução)
+2026-11-26 15:09:02 | INFO    | 2010.01.0053702/2025-75   | __main__              | FIM (57.5s) | Próxima ação: DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:09:04 | INFO    | -                         | __main__              | ------------------------ RESUMO ------------------------
+2026-11-26 15:09:04 | INFO    | -                         | __main__              | Processos: 39 | Sem erro: 39 | Com erro: 0
+2026-11-26 15:09:04 | INFO    | -                         | __main__              |    39 | DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS
+2026-11-26 15:09:04 | INFO    | -                         | __main__              | Duração total da execução: 0h34m22s
+2026-11-26 15:09:04 | INFO    | -                         | __main__              | ================== FIM DA EXECUÇÃO ==================
