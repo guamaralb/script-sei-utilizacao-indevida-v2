@@ -314,8 +314,8 @@ col_tratar = Coluna(
             '01.10.A.1 - Aguarda APIS: Sem Uso (todos manuais)<br>'
             'versão anterior: 01.08.1 - Memo DISA Validar Usos MANTIS, 01.09 - Memo DISA Uso Rede Própria',
             [
-                E(
-                    '<b>Erro</b>: parado aguardando resposta ao memo<br>prox_acao = Aguardar resposta ao memo enviado<br><span style="font-weight:normal">resposta: run_geacs_resp_apis / _disa / _deproc (TODO)</span>'
+                T(
+                    '<b>Parado</b> aguardando resposta ao memo (não é erro: tipo_erro e erro vazios)<br>prox_acao = Aguardar resposta ao memo enviado<br>resposta: run_geacs_resp_apis / _disa / _deproc (TODO)'
                 )
             ],
             largura=LARGURA_PRINCIPAL,
@@ -947,7 +947,7 @@ col_copa_loop = col_loop(
     'da DEPROC',
     '. A base DEPROC de cada ano e data de geração (BaseDeproc: copa-MANTIS11281-base_AAAA-DD_MM_AAAA.xlsx em dados/fluxo_deproc, aba Resultado, matrículas com DV) é carregada na primeira vez que um processo precisa dela',
     'processar_deproc() — coluna 2',
-    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_base_deproc, data_geracao_base_deproc, ano_processo e data_geracao_base_processo (só os da pesquisa nas bases), marcadores_deproc_*, estado_atual_deproc e DEPROC | <marcador>. '
+    'Linha do processo: script, fluxo (DEPROC - COPARTICIPAÇÃO), prox_acao, erro, ano_processo e data_geracao_base_processo (da pesquisa nas bases e da apuração), marcadores_deproc_pre_fluxo / _pos_fluxo e estado_atual_deproc. '
     'Os marcadores da GEACS e os resultados do fluxo inicial ficam como estão',
 )
 _erro_segue(col_copa_loop, 6)
@@ -957,8 +957,8 @@ col_copa = Coluna(
     [
         F(
             '_processar_com_base() · base_na_planilha()',
-            'Antes de abrir o processo (sem argumentos na execução). Base do processo na planilha de controle: ano_processo e data_geracao_base_processo ou, sem eles, '
-            'ano_base_deproc e data_geracao_base_deproc (apuração anterior)',
+            'Antes de abrir o processo (sem argumentos na execução). Base do processo na planilha de controle: ano_processo e data_geracao_base_processo '
+            '(a única coluna de ano; até 27/11/2026 havia também ano_base_deproc e data_geracao_base_deproc, levadas a elas na leitura da planilha)',
         ),
         P(
             'Sem a base na planilha<br>(ano e data)?',
@@ -1062,7 +1062,7 @@ col_todas_loop = col_loop(
     'da GEACS',
     ' e carrega as bases APIS, DISA e MANTIS (a DEPROC, por ano, quando um processo precisa)',
     'processar_todas_infos() — coluna 2',
-    'Linha do processo: script, fluxo e prox_acao; colunas memo_calculo_copa_*, ano_base_deproc_todas_infos, caminho_todas_infos, valores_todas_infos, divergencias_todas_infos e memo_apis_todas_infos_*. Os resultados do fluxo inicial ficam como estão',
+    'Linha do processo: script, fluxo e prox_acao; colunas valor_total_*_todas_infos, valores_todas_infos e divergencias_todas_infos (memo_calculo_copa_*, caminho_todas_infos e memo_apis_todas_infos_*: só no histórico). Os resultados do fluxo inicial ficam como estão',
 )
 _erro_segue(col_todas_loop, 6)
 col_todas = Coluna(
@@ -1076,7 +1076,7 @@ col_todas = Coluna(
         P('Sem o 01.10.B.1 - Aguarda DEPROC: Coparticipação?', [E('<b>SemAguardaDeproc</b>: sem ação')]),
         F(
             'base_deproc_da_planilha()',
-            'Ano e data das colunas ano_base_deproc e data_geracao_base_deproc da planilha de controle (gravadas pelo deproc_calcula_copa) ou, sem elas, ano_processo e data_geracao_base_processo. Não procura nas bases da pasta. Carrega essa base (BaseDeproc)',
+            'Ano e data das colunas ano_processo e data_geracao_base_processo da planilha de controle (gravadas pelo deproc_calcula_copa). Não procura nas bases da pasta. Carrega essa base (BaseDeproc)',
         ),
         P('Sem a base<br>(ou fora da pasta)?', [E('<b>SemAnoBaseDeproc</b>: sem ação')]),
         P('Sem Incluir Documento<br>(fechado no setor)?', [E('<b>ProcessoFechadoNoSetor</b>: não reabre, nada é criado')]),
@@ -1109,92 +1109,92 @@ col_todas = Coluna(
 )
 
 # GEACS VERIFICAR MARCADORES
+_PREFIXO_VERIFICAR = 'VERIFICAR MARCADORES: '
 col_verif_loop = col_loop(
     'run_geacs_verificar_marcadores',
     'geacs_verificar_marcadores',
     'da GEACS',
     '. Aba vazia: todos os processos da planilha de controle geral (processos_da_planilha())',
     'verificar_marcadores(linha_processo()) — coluna 2',
-    'Só altera a prox_acao pela troca do No Bloco ou pelo memo do Aguarda assinado (nem fluxo e erro dos outros fluxos). '
-    'script, ultima_passagem e data_execucao ficam os do último fluxo que agiu (a passagem vai para verificar_marcadores_em e o histórico em CSV). Grava '
-    'as colunas de marcadores (uma por marcador, estado_atual e demais_marcadores, no fim), verificar_marcadores_acao_sugerida / _inconsistencia / _erro (depois de erro, em amarelo), '
-    'verificar_marcadores_memo_aguarda_assinado e, com troca, verificar_marcadores_marcador_trocado e verificar_marcadores_aberto_na_geacs',
+    f'prox_acao (o que fazer, com o prefixo "{_PREFIXO_VERIFICAR}", ou a da situação), tipo_erro e erro (inconsistências e erros, com o mesmo prefixo; aguardando resposta ou concluído: vazios), '
+    'marcadores_pre_fluxo / _pos_fluxo e estado_atual. script, ultima_passagem e data_execucao ficam os do último fluxo que agiu (a passagem vai para verificar_marcadores_em e o histórico em CSV)',
 )
+col_verif_loop.itens[4] = P(
+    'acessar_processo():<br>unidade sem acesso?',
+    [E(f'registrar_sem_acesso(): prox_acao = {_PREFIXO_VERIFICAR}Verificar acesso da GEACS ao processo, sem ação no SEI')],
+)
+col_verif_loop.itens[6] = E(f'<b>Erro levantado?</b><br><font face="Courier New">registrar_erro()</font>: tipo_erro / erro com o prefixo, prox_acao = {_PREFIXO_VERIFICAR}Verificar erro. Inesperado: + traceback e recarrega a página')
+_indice_resumo = next(i for i, item in enumerate(col_verif_loop.itens) if 'log_resumo' in item.texto)
+col_verif_loop.itens[_indice_resumo:_indice_resumo] = [
+    S('<b>Depois de todos na GEACS</b> (navegador não fechado)'),
+    F(
+        '_verificar_deproc() · passa_pela_deproc()',
+        'Os que já deveriam estar ou ter passado pela DEPROC: GEACS em 01.10.B.1 - Aguarda DEPROC, 01.12 ou 01.12.1 (marcadores lidos ou, sem eles, estado_atual da planilha), '
+        'ou com marcadores da DEPROC na planilha (estado_atual_deproc / marcadores_deproc_pos_fluxo)',
+    ),
+    P('Nenhum?', [T('Fim da verificação na DEPROC')], rotulo='Sim'),
+    F('alterar_unidade_sei(UNIDADE_DEPROC)', 'Troca para a unidade da DEPROC (uma vez)'),
+    S('<b>Para cada selecionado</b>'),
+    IR('verificar_na_deproc() — coluna 3'),
+    F('controle.registrar()', 'Grava de novo a linha (e o histórico), agora com as colunas da DEPROC'),
+    P('Navegador fechado?', [T('Para o loop')]),
+]
 _erro_segue(col_verif_loop, 6)
 col_verif = Coluna(
     '2 · verificar_marcadores() · conferir_processo()',
-    'Lê os marcadores e confere a prox_acao da planilha de controle com eles e com os memorandos. Única ação no SEI: a troca do No Bloco assinado '
-    '(o fechado é reaberto e concluído de novo). Cada problema vai para '
-    'verificar_marcadores_inconsistencia, com uma ação (AcaoSugerida) em verificar_marcadores_acao_sugerida',
+    'Na GEACS: lê os marcadores e confere a prox_acao da planilha de controle com eles e com os memorandos. Única ação no SEI: a troca do No Bloco assinado '
+    '(o fechado é reaberto e concluído de novo). Cada problema vai para o erro (tipo_erro Inconsistencia), com o prefixo, '
+    f'e a ação (AcaoSugerida), para a prox_acao: "{_PREFIXO_VERIFICAR}<ações>" (várias, separadas por " | ")',
     [
         F('listar_marcadores() · registrar_tags()', 'Marcadores do processo no SEI'),
         P(
             'trocar_no_bloco_assinado():<br>No Bloco com o memo da rodada<br>assinado por Gustavo, Bruna ou Danúbia?',
             [
                 T('Só com marcadores consistentes e o novo marcador cadastrado (garantir_marcadores_no_sei; faltando: inconsistência)'),
-                F('tem_incluir_documento()', 'Só aqui se confere se o processo está aberto (nos outros, não perde tempo): verificar_marcadores_aberto_na_geacs'),
+                F('tem_incluir_documento()', 'Só aqui se confere se o processo está aberto (nos outros, não perde tempo)'),
                 F(
                     'reabrir_processo_fechado()',
                     'Processo fechado na GEACS: reabre antes da troca (com MANUAL: não reabre nem troca; não reabriu: inconsistência)',
                 ),
                 M('Aguarda (.1) ou, no 01.12, 01.12.1 - Encaminhado APIS: Todas as Infos (↻ remove o No Bloco)'),
-                T('prox_acao = a do novo estado: Aguardar retorno da APIS / DISA / DEPROC ou, no 01.12.1, concluído (exceto DEPROC: ... com o 01.10.B.1); verificar_marcadores_marcador_trocado, marcadores_adicionados / _removidos'),
+                T('prox_acao = a do novo estado: Aguardar retorno da APIS / DISA / DEPROC ou, no 01.12.1, concluído (exceto DEPROC: ... com o 01.10.B.1)'),
                 F('_concluir_de_novo() · concluir_processo()', 'Reaberto: conclui de novo, mesmo se a troca falhar. Não concluiu: erro (concluir à mão)'),
             ],
             rotulo='Sim (e segue)',
         ),
         P(
-            'conferir_memos_aguarda():<br>Aguarda ou 01.12.1 - Encaminhado<br>sem o memo na árvore?',
+            'conferir_memos_aguarda():<br>Aguarda ou 01.12.1 - Encaminhado<br>com o memo assinado?',
             [
-                E(
-                    'Só estado e marcadores consistentes: erro MemoDoMarcadorNaoEncontrado (verificar_marcadores_erro), '
-                    'prox_acao = Verificar: criar o memo do marcador Aguarda / Encaminhado (memo não encontrado). No 01.12.1, só o erro: a prox_acao é a de concluído'
+                T(
+                    'Qualquer signatário. Único estado e marcadores consistentes: prox_acao = Aguardar retorno da APIS / DISA / DEPROC ao memo enviado '
+                    '(PROX_ACAO_POR_AGUARDA); exceto se já for ela ou DEPROC: ... com o 01.10.B.1. Sem o memo ou não assinado: a conferência do memo do marcador aponta'
                 ),
             ],
             rotulo='Sim (e segue)',
-        ),
-        P(
-            'Memo do marcador<br>não assinado?',
-            [
-                E(
-                    'Só estado e marcadores consistentes: erro MemoDoMarcadorNaoAssinado (verificar_marcadores_erro), '
-                    'prox_acao = Verificar: assinar o memo do marcador Aguarda / Encaminhado (memo não assinado). No 01.12.1, só o erro: a prox_acao é a de concluído'
-                ),
-            ],
-            rotulo='Sim (e segue)',
-        ),
-        T('Memo assinado (qualquer signatário): memo_*_sei e verificar_marcadores_memo_aguarda_assinado (marcador: nº SEI (signatário))'),
-        T(
-            'Único estado e marcadores consistentes: prox_acao = Aguardar retorno da APIS / DISA / DEPROC ao memo enviado '
-            '(PROX_ACAO_POR_AGUARDA); exceto se já for ela ou DEPROC: ... com o 01.10.B.1'
         ),
         P(
             'atualizar_prox_acao_pela_situacao():<br>situação conhecida pelos marcadores<br>e pela árvore, prox_acao outra?',
             [
                 T(
-                    'O próprio verificar corrige a prox_acao (em vez de sugerir rodar o geacs_inicial): 01.12.1 - Encaminhado APIS: Todas as Infos e demais conclusões: sempre '
-                    'a de concluído (Memo à APIS (todas as informações) encaminhado (concluído)), mesmo sobre Verificar erro ou DEPROC: ...; '
+                    'O próprio verificar corrige a prox_acao: 01.12.1 - Encaminhado APIS: Todas as Infos e demais conclusões: sempre '
+                    'a de concluído, mesmo sobre Verificar erro, DEPROC: ... ou uma ação a fazer (o problema fica no erro); '
                     'No Bloco com o memo da rodada não assinado: a de assinar o memo; VELHO: VELHO: não processado (com MANUAL: Fora do escopo); parada da versão anterior: Aguardar resposta'
                 ),
                 T(
-                    'Fora da conclusão, a prox_acao de erro de outro fluxo fica (Verificar erro, ...), exceto Verificar marcadores inconsistentes, as do memo do marcador e o acesso '
-                    'resolvido pela GEACS; a DEPROC: ... fica com o memo DEPROC na GEACS. Planilha não lida: nada muda'
+                    'Fora da conclusão, a prox_acao de erro de outro fluxo fica (Verificar erro, ...), exceto Verificar marcadores inconsistentes, as do memo do marcador, o acesso '
+                    f'resolvido pela GEACS e a "{_PREFIXO_VERIFICAR}..." de uma passagem anterior; a DEPROC: ... fica com o memo DEPROC na GEACS. Planilha não lida: nada muda'
                 ),
             ],
             rotulo='Sim (e segue)',
         ),
-        F(
-            'colunas_tags() · descrever_estado() · demais_marcadores()',
-            'Uma coluna por marcador válido na GEACS (TAGS_VALIDOS_GEACS, 32), com o nome do marcador, no fim da planilha; estado_atual. Os outros (v2v:, 01.06.2 / 01.08.2 / 01.08.3, manuais, antigos) vão juntos para demais_marcadores',
-        ),
         P('Planilha de controle<br>não lida?', [T('A prox_acao não é conferida (só os memorandos)')], rotulo='Sim (e segue)'),
-        P('conferir_marcadores():<br>combinação impossível?', [E('Inconsistência: os problemas (prox_acao esperada: Verificar marcadores inconsistentes)')], rotulo='Sim (e segue)'),
+        P('conferir_marcadores():<br>combinação impossível?', [E('Inconsistência: os problemas (prox_acao esperada: Verificar marcadores inconsistentes). Ação: Corrigir marcadores no SEI')], rotulo='Sim (e segue)'),
         P(
             'conferir_prox_acao():<br>prox_acao não é a do estado?',
             [
                 E(
                     'Inconsistência: prox_acao esperada (No Bloco: assinar; Aguarda: aguardar resposta; 00: VELHO; 01.00: ADC aguarda; sem estado: vazia ou erro). '
-                    'Sempre aceitas: as de erro (PROX_ACOES_A_VERIFICAR), ADC estado mantido'
+                    f'Sempre aceitas: as de erro (PROX_ACOES_A_VERIFICAR), ADC estado mantido e a "{_PREFIXO_VERIFICAR}..." (recalculada)'
                 ),
                 E('Verificar acesso de uma passagem da GEACS: a GEACS abriu o processo, o acesso foi resolvido (Rodar geacs_inicial)'),
                 E('DEPROC: ... só com o 01.10 / 01.10.1 da DEPROC'),
@@ -1207,37 +1207,56 @@ col_verif = Coluna(
                 F('conferir_caso_disa_mantis()', 'caso_disa_mantis da planilha (se preenchido) é o do memo'),
                 F(
                     'conferir_memo_do_marcador()',
-                    'Memo pelo assunto na árvore (No Bloco: na rodada); relatórios RP / RC que ele cita antes dele; memo_*_sei da planilha na árvore; No Bloco Sem Memo com memo da APIS para a GEACS',
+                    'Memo pelo assunto na árvore (No Bloco: na rodada; Aguarda / Encaminhado sem ele: Criar o memo do marcador); relatórios RP / RC que ele cita antes dele; '
+                    'No Bloco Sem Memo com memo da APIS para a GEACS',
                 ),
                 F(
                     '_conferir_assinatura()',
-                    'No Bloco com memo assinado: trocar pelo Aguarda / Encaminhado. Aguarda / 01.12.1 com memo não assinado: verificar manualmente',
+                    'No Bloco com memo assinado: trocar pelo Aguarda / Encaminhado. Aguarda / 01.12.1 com memo não assinado: Assinar o memo do marcador',
                 ),
             ],
             rotulo='Sim (e segue)',
         ),
         P('Retomada<br>(01.06, 01.08)?', [F('conferir_retomada()', 'Memo do fluxo na rodada sem o marcador (o geacs_inicial o reaproveita)')], rotulo='Sim (e segue)'),
-        P(
-            'Planilha com o 01.02 - No Bloco<br>GEACS da DEPROC e memo de<br>resultado da DEPROC assinado?',
-            [
-                E(
-                    'conferir_marcador_deproc(): GEACS em 01.12 / 01.12.1, ou em 01.10.B.1 com o memo assinado na rodada. '
-                    'Trocar na DEPROC o No Bloco pelo Encaminhado e rodar deproc_calcula_copa'
-                )
-            ],
-            rotulo='Sim (e segue)',
-        ),
         F(
             'sugestoes_de_fluxo()',
-            'Só a ação sugerida: N Consta → Rodar geacs_corrige_envio_disa; 01.10.1 com memo de resultado da DEPROC assinado na rodada → Rodar geacs_todas_infos; '
-            '01.09.1 com documento da DISA depois do memo → Tratar a resposta da DISA',
+            'Só a ação: N Consta → Rodar geacs_corrige_envio_disa; 01.10.1 com memo de resultado da DEPROC assinado na rodada → Rodar geacs_todas_infos '
+            '(fica registrado para a coluna 3); 01.09.1 com documento da DISA depois do memo → Tratar a resposta da DISA',
         ),
         T(
-            'Planilha: colunas dos marcadores, estado_atual, demais_marcadores, marcadores_finais, verificar_marcadores_em, verificar_marcadores_acao_sugerida (sem repetição), '
-            'verificar_marcadores_inconsistencia e, na troca do No Bloco, verificar_marcadores_aberto_na_geacs '
-            '(erro: verificar_marcadores_erro; sem ler os marcadores, as colunas deles ficam como estavam). '
-            'script e ultima_passagem: só no histórico (na aba processos, os do último fluxo que agiu)'
+            f'prox_acao_final(): conclusão → a de concluído; com ações → "{_PREFIXO_VERIFICAR}<ações>"; senão a da situação; senão, no lugar da "{_PREFIXO_VERIFICAR}..." '
+            'de uma passagem anterior, a que o geacs_inicial daria. Sem problemas: tipo_erro / erro vazios no aguardando resposta, no concluído, no erro anterior do verificar '
+            'e no erro resolvido; senão os dos outros fluxos ficam'
         ),
+    ],
+)
+col_verif_deproc = Coluna(
+    '3 · verificar_na_deproc() · conferir_deproc()',
+    'Na unidade da DEPROC, depois de todos os processos na GEACS. Só lê os marcadores (nenhuma ação no SEI). Os problemas vão para o erro com "DEPROC: " (além do prefixo)',
+    [
+        P(
+            'acessar_processo():<br>DEPROC sem acesso?',
+            [E(f'Erro da DEPROC (erros_deproc); prox_acao = {_PREFIXO_VERIFICAR}Verificar acesso da DEPROC ao processo')],
+        ),
+        F('listar_marcadores()', 'marcadores_deproc_pre_fluxo = marcadores_deproc_pos_fluxo e estado_atual_deproc'),
+        P('conferir_marcadores_deproc():<br>combinação impossível?', [E('Inconsistência. Ação: Corrigir marcadores da DEPROC no SEI')]),
+        P(
+            'GEACS em 01.12 / 01.12.1<br>(memo de resultado assinado)?',
+            [
+                E('DEPROC em 01.02 - No Bloco GEACS: Memo Cálculo COPA: trocar na DEPROC pelo 01.02.1 - Encaminhado GEACS: Memo Cálculo COPA'),
+                E('DEPROC sem estado ou em 01.01: verificar manualmente (esperado: 01.02.1)'),
+            ],
+        ),
+        P(
+            'GEACS em 01.10.B.1 -<br>Aguarda DEPROC?',
+            [
+                T('DEPROC sem estado ou em 01.01 (retomada): ação Rodar deproc_calcula_copa'),
+                T('DEPROC em 01.02 e memo de resultado não assinado na rodada: prox_acao = DEPROC: assinar memo de resultado da coparticipação e encaminhar à GEACS'),
+                E('DEPROC em 01.02 e memo de resultado assinado: trocar na DEPROC o No Bloco pelo Encaminhado'),
+                E('DEPROC em 01.02.1 sem o memo de resultado assinado na rodada da GEACS: verificar manualmente'),
+            ],
+        ),
+        T('Erro inesperado: erros_deproc, prox_acao = VERIFICAR MARCADORES: Verificar erro, recarrega a página'),
     ],
 )
 
@@ -1350,8 +1369,9 @@ abas = [
         'geacs-verificar-marcadores',
         'geacs_verificar_marcadores',
         'run_geacs_verificar_marcadores · Verificar os marcadores (main_geacs_verificar_marcadores.py)',
-        f'Na unidade da GEACS. Não altera a prox_acao: atualiza as colunas de marcadores (uma por marcador, estado_atual e demais_marcadores) e confere a prox_acao com os marcadores e os memorandos. {LEIA}',
-        [col_verif_loop, col_verif],
+        f'Na unidade da GEACS e depois na da DEPROC. Atualiza as colunas de marcadores (antes e depois da passagem, GEACS e DEPROC), confere a prox_acao com os marcadores e os memorandos '
+        f'e grava o que fazer na prox_acao, e os problemas em tipo_erro e erro, com o prefixo "VERIFICAR MARCADORES: ". {LEIA}',
+        [col_verif_loop, col_verif, col_verif_deproc],
     ),
     pagina(
         'geacs-todas-infos',

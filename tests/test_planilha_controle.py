@@ -50,7 +50,7 @@ def test_grava_a_cada_processo(arquivo):
 
 
 def test_nova_passagem_atualiza_linha_e_mantem_primeira_passagem(arquivo):
-    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(_passagem('P1', 9, prox_acao='A', memo_disa_sei='111'))
+    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(_passagem('P1', 9, prox_acao='A', caso_disa_mantis='111'))
     PlanilhaControleGeral('correcao_rede_propria', 'exec2', arquivo).registrar(_passagem('P1', 15, prox_acao='B'))
 
     abas = _ler(arquivo)
@@ -61,7 +61,7 @@ def test_nova_passagem_atualiza_linha_e_mantem_primeira_passagem(arquivo):
     assert linha['prox_acao'] == 'B'
     assert linha['script'] == 'correcao_rede_propria'
     # Coluna que a segunda passagem não grava é mantida
-    assert str(linha['memo_disa_sei']) == '111'
+    assert str(linha['caso_disa_mantis']) == '111'
     assert [h['prox_acao'] for h in _historico(arquivo)] == ['A', 'B']
 
 
@@ -230,7 +230,8 @@ def test_aba_historico_antiga_vai_para_o_csv(arquivo):
     assert 'historico' not in load_workbook(arquivo).sheetnames
     historico = _historico(arquivo)
     assert [h['prox_acao'] for h in historico] == ['X', 'A', 'B']
-    assert historico[0]['v2: 01 - Tratado pelo Script'] == 'VERDADEIRO'
+    # O histórico vai inteiro para o CSV, com as colunas que tinha
+    assert historico[0]['tag_processo_novo'] == 'VERDADEIRO'
     # Backup da planilha com a aba, antes de tirá-la
     assert 'historico' in load_workbook(next(planilha_controle.DIR_BACKUP_CONTROLE.iterdir())).sheetnames
 
@@ -282,9 +283,9 @@ def test_aba_historico_maior_que_o_csv_fica_na_planilha(arquivo):
 
 def test_migracao_gravada_sem_nenhum_processo(arquivo):
     """Execução sem processos (ex.: lista vazia) também deixa a planilha
-    migrada: a aba historico vai para o CSV e as colunas tag_*, para o nome do
-    marcador, logo na leitura. O backup é feito uma vez só."""
-    _planilha_com_aba_historico(arquivo, [_passagem('P1', 9, prox_acao='A', tag_processo_novo=True)])
+    migrada: a aba historico vai para o CSV e as colunas dos marcadores saem
+    da aba processos, logo na leitura. O backup é feito uma vez só."""
+    _planilha_com_aba_historico(arquivo, [_passagem('P1', 9, prox_acao='A', tag_processo_novo=True, marcadores_finais='v2: 01 - Tratado pelo Script')])
 
     controle = PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo)
 
@@ -292,7 +293,9 @@ def test_migracao_gravada_sem_nenhum_processo(arquivo):
     assert 'historico' not in livro.sheetnames
     colunas = [c.value for c in livro['processos'][1]]
     assert 'tag_processo_novo' not in colunas
-    assert 'v2: 01 - Tratado pelo Script' in colunas
+    assert 'v2: 01 - Tratado pelo Script' not in colunas
+    assert 'marcadores_finais' not in colunas
+    assert 'marcadores_pos_fluxo' in colunas
     assert [h['prox_acao'] for h in _historico(arquivo)] == ['A']
 
     controle.registrar(_passagem('P1', 10, prox_acao='B'))
@@ -362,3 +365,81 @@ def test_navegador_sem_resposta_encerra_a_execucao():
     assert sessao_encerrada(SimpleNamespace(tipo_erro='MaxRetryError'))
     assert sessao_encerrada(SimpleNamespace(tipo_erro='InvalidSessionIdException'))
     assert not sessao_encerrada(SimpleNamespace(tipo_erro='TimeoutException'))
+
+
+def test_migracao_das_colunas_de_27_11_2026():
+    """Colunas renomeadas (marcadores antes e depois da passagem), uma só
+    coluna de ano da base DEPROC e as colunas que ficam só no histórico fora
+    da aba processos."""
+    linhas = [
+        {
+            'num_processo': 'P1',
+            'prox_acao': 'A',
+            'tit_usou': True,
+            'marcadores_sei': 'v2: 01 - Tratado pelo Script',
+            'marcadores_finais': 'v2: 01 - Tratado pelo Script; v2: 01.10.B - No Bloco DEPROC: Coparticipação; PLANILHADO',
+            'marcadores_deproc_sei': None,
+            'marcadores_deproc_finais': 'v2: 01 - Tratado pelo Script; v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA',
+            'ano_base_deproc': 2019.0,
+            'data_geracao_base_deproc': '06/11/2026',
+            'memo_deproc_sei': '123',
+            'demais_marcadores': 'PLANILHADO',
+            'v2: 01 - Tratado pelo Script': True,
+            'DEPROC | v2: 01 - Tratado pelo Script': True,
+            'tag_processo_novo': True,
+            'verificar_marcadores_acao_sugerida': 'Rodar geacs_inicial',
+            'verificar_marcadores_em': datetime(2026, 11, 26, 9),
+        },
+        # Com o ano da base do processo: fica o dele
+        {'num_processo': 'P2', 'ano_processo': '2020', 'data_geracao_base_processo': '16/11/2026', 'ano_base_deproc': '2019', 'data_geracao_base_deproc': '06/11/2026'},
+        # Com a coluna nova e a antiga: vale a nova
+        {'num_processo': 'P3', 'marcadores_finais': 'X', 'marcadores_pos_fluxo': 'Y'},
+    ]
+    p1, p2, p3 = planilha_controle.migrar_colunas(linhas)
+
+    assert p1 == {
+        'num_processo': 'P1',
+        'prox_acao': 'A',
+        'tit_usou': True,
+        'marcadores_pre_fluxo': 'v2: 01 - Tratado pelo Script',
+        'marcadores_pos_fluxo': 'v2: 01 - Tratado pelo Script; v2: 01.10.B - No Bloco DEPROC: Coparticipação; PLANILHADO',
+        'marcadores_deproc_pre_fluxo': None,
+        'marcadores_deproc_pos_fluxo': 'v2: 01 - Tratado pelo Script; v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA',
+        'ano_processo': '2019',
+        'data_geracao_base_processo': '06/11/2026',
+        'verificar_marcadores_em': datetime(2026, 11, 26, 9),
+        'estado_atual': 'v2: 01.10.B - No Bloco DEPROC: Coparticipação',
+        'estado_atual_deproc': 'v2: 01.02 - No Bloco GEACS: Memo Cálculo COPA',
+    }
+    assert p2 == {'num_processo': 'P2', 'ano_processo': '2020', 'data_geracao_base_processo': '16/11/2026'}
+    assert p3['marcadores_pos_fluxo'] == 'Y'
+    assert 'marcadores_finais' not in p3
+
+
+def test_colunas_fora_da_aba_processos_ficam_no_historico(arquivo):
+    PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo).registrar(
+        _passagem('P1', 9, prox_acao='A', memo_deproc_sei='123', marcadores_adicionados='M', ano_processo='2019', tit_usou=True, data_geracao_base_processo='06/11/2026')
+    )
+
+    colunas = list(_ler(arquivo)['processos'].columns)
+    assert 'memo_deproc_sei' not in colunas
+    assert 'marcadores_adicionados' not in colunas
+    # A data da base logo depois do ano
+    assert colunas[colunas.index('ano_processo') + 1] == 'data_geracao_base_processo'
+    historico = _historico(arquivo)
+    assert historico[0]['memo_deproc_sei'] == '123'
+    assert historico[0]['marcadores_adicionados'] == 'M'
+
+
+def test_celulas_do_verificar_marcadores_em_amarelo(arquivo):
+    controle = PlanilhaControleGeral('geacs_inicial', 'exec1', arquivo)
+    controle.registrar(_passagem('P1', 9, prox_acao='VERIFICAR MARCADORES: Rodar geacs_inicial', tipo_erro='VERIFICAR MARCADORES: Inconsistencia', erro='VERIFICAR MARCADORES: x'))
+    controle.registrar(_passagem('P2', 9, prox_acao='A'))
+
+    processos = load_workbook(arquivo)['processos']
+    colunas = [c.value for c in processos[1]]
+    p1, p2 = (dict(zip(colunas, linha, strict=True)) for linha in processos.iter_rows(min_row=2))
+    assert p1['prox_acao'].fill.start_color.rgb == 'FFFFE599'
+    assert p1['tipo_erro'].fill.start_color.rgb == 'FFFFE599'
+    assert p1['erro'].fill.start_color.rgb == 'FFFFE599'
+    assert p2['prox_acao'].fill.fill_type is None

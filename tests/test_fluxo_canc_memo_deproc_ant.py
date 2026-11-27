@@ -176,12 +176,14 @@ def test_planilha_de_controle_mantem_prox_acao_fluxo_e_erro_dos_outros_fluxos(se
     linha = {cabecalho.value: valor.value for cabecalho, valor in zip(processos[1], processos[2], strict=True)}
     assert linha['prox_acao'] == 'Assinar memo DEPROC e encaminhar'
     assert linha['fluxo'] == 'NOVO'
-    # Coluna antiga (tag_processo_novo) migrada para o nome do marcador
-    assert linha[tags.TAG_PROCESSO_NOVO] is True
+    # As colunas de cada marcador e as do fluxo ficam só no histórico
     assert 'tag_processo_novo' not in linha
+    assert tags.TAG_PROCESSO_NOVO not in linha
+    assert 'canc_memo_deproc_ant_cancelado' not in linha
     assert linha['script'] == fluxo.SCRIPT
-    assert linha['canc_memo_deproc_ant_cancelado'] is True
-    assert linha['canc_memo_deproc_ant_em'] is not None
+    historico = PlanilhaControleGeral(fluxo.SCRIPT, 'exec3', arquivo).historico.ler()
+    assert historico[-1]['canc_memo_deproc_ant_cancelado'] == 'VERDADEIRO'
+    assert historico[-1]['canc_memo_deproc_ant_em']
     resumo = [tuple(c.value for c in r) for r in load_workbook(arquivo)['resumo'].iter_rows()]
     assert ('Assinar memo DEPROC e encaminhar', 1) in resumo
 

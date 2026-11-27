@@ -4,10 +4,10 @@ memorandos e relatórios que os marcadores indicam estão na árvore. A única
 ação no SEI é a troca do "No Bloco" pelo marcador de assinado
 (trocar_no_bloco_assinado).
 
-Cada problema vira uma frase em registro.inconsistencias (coluna
-verificar_marcadores_inconsistencia) e uma ação curta em
-registro.acoes_sugeridas (coluna verificar_marcadores_acao_sugerida, valores
-de AcaoSugerida). Conferências:
+Cada problema vira uma frase em registro.inconsistencias (coluna erro, com o
+prefixo "VERIFICAR MARCADORES: ") e uma ação curta em registro.acoes_sugeridas
+(valores de AcaoSugerida; vão para a prox_acao, com o mesmo prefixo).
+Conferências:
 
 1. combinação de marcadores (tags.conferir_marcadores, as mesmas regras do
    fluxo inicial);
@@ -15,19 +15,19 @@ de AcaoSugerida). Conferências:
    erro (Registro.PROX_ACOES_A_VERIFICAR) valem com qualquer marcador, exceto
    "Verificar acesso" de uma passagem da GEACS (a GEACS acabou de abrir o
    processo); as da DEPROC ("DEPROC: ..."), só com o 01.10 / 01.10.1 da DEPROC;
+   a de uma passagem anterior do verificar ("VERIFICAR MARCADORES: ...") é
+   recalculada;
 3. caso base DISA x MANTIS da planilha x marcador do memo (se preenchido);
 4. memo do marcador "No Bloco" / "Aguarda" / "Encaminhado" (01.12.1) na
    árvore (pelo assunto), na rodada (só "No Bloco"), com os relatórios do
-   MANTIS que ele cita antes dele, o número SEI da planilha na árvore e a
-   assinatura ("No Bloco" com o memo assinado: falta trocar o marcador;
-   "Aguarda" / "Encaminhado" com o memo não assinado);
+   MANTIS que ele cita antes dele e a assinatura ("No Bloco" com o memo
+   assinado: falta trocar o marcador; "Aguarda" / "Encaminhado" com o memo não
+   assinado);
 5. "No Bloco APIS: Sem Memo" com memo da APIS destinado à GEACS na árvore;
 6. retomada (01.06 / 01.08) com memo do fluxo já na rodada, sem o marcador;
-7. marcadores da DEPROC na planilha (conferir_marcador_deproc): o "01.02 - No
-   Bloco GEACS" da DEPROC com o memo de resultado da DEPROC já assinado (a
-   GEACS em 01.12 / 01.12.1, ou em "Aguarda DEPROC" com o memo assinado na
-   rodada). Os marcadores da DEPROC só são lidos na unidade da DEPROC: a
-   planilha tem os da última passagem do deproc_calcula_copa.
+7. na unidade da DEPROC (conferir_deproc, depois de todos os processos na
+   GEACS; só os que já deveriam estar ou ter passado pela DEPROC,
+   passa_pela_deproc): os marcadores da DEPROC com o estado da GEACS.
 
 Além dos problemas, sugere o próximo fluxo (sugestoes_de_fluxo, só a ação):
 estado N Consta (geacs_corrige_envio_disa), "Aguarda DEPROC" com o memo de
@@ -38,14 +38,10 @@ Antes de tudo (trocar_no_bloco_assinado), o "No Bloco" cujo memo da rodada já
 está assinado por Gustavo, Bruna ou Danúbia é trocado pelo marcador de assinado
 ("Aguarda" ou, no 01.12, "Encaminhado"). Depois (conferir_memos_aguarda), para
 cada marcador "Aguarda" ou "Encaminhado" do processo, procura o memo do
-marcador e confere a assinatura (qualquer signatário). Assinado: atualiza a
-planilha de controle com o número SEI do memo (coluna do memo e
-verificar_marcadores_memo_aguarda_assinado) e, com os marcadores consistentes,
-a prox_acao (Aguardar retorno da APIS / DISA / DEPROC, PROX_ACAO_POR_AGUARDA).
-Sem o memo ou não assinado: erro da passagem (verificar_marcadores_erro) e
-prox_acao = Verificar: criar / assinar o memo do marcador. No "Encaminhado"
-(01.12.1, conclusão), a prox_acao é sempre a de concluído; sem o memo ou não
-assinado, só o erro da passagem.
+marcador e confere a assinatura (qualquer signatário). Assinado, com os
+marcadores consistentes: a prox_acao passa a ser Aguardar retorno da APIS /
+DISA / DEPROC (PROX_ACAO_POR_AGUARDA). Sem o memo ou não assinado, a
+conferência 4 aponta.
 
 Por último (atualizar_prox_acao_pela_situacao), sempre que a situação do
 processo é conhecida pelos marcadores e pela árvore, o próprio verificar
@@ -69,7 +65,7 @@ from docs_processo import filtrar_memos_geacs, filtrar_memos_unidade, ler_texto_
 from marcadores_disponiveis import garantir_marcadores_no_sei
 from processo_fechado import ProcessoFechadoNoSetor, reabrir_processo_fechado, tem_incluir_documento
 from rede_propria import ErroAvaliacao
-from Registro import PROX_ACAO_POR_AGUARDA, PROX_ACAO_POR_CONCLUSAO, PROX_ACAO_POR_NO_BLOCO, PROX_ACOES_A_VERIFICAR, ProxAcao, RegistroVerificarMarcadores
+from Registro import PREFIXO_VERIFICAR_MARCADORES, PROX_ACAO_POR_AGUARDA, PROX_ACAO_POR_CONCLUSAO, PROX_ACAO_POR_NO_BLOCO, PROX_ACOES_A_VERIFICAR, ProxAcao, RegistroVerificarMarcadores
 from sei_automacao.processo import acessar_processo, concluir_processo, listar_documentos_arvore
 from selenium import webdriver
 from tags import (
@@ -81,6 +77,7 @@ from tags import (
     TAG_AGUARDA_FLUXO_NORMAL,
     TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA,
     TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA,
+    TAG_DEPROC_RELATORIO_ANEXADO,
     TAG_ENCAMINHADO_APIS_TODAS_INFOS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
@@ -95,14 +92,15 @@ from tags import (
     TAG_PROCESSO_NOVO,
     TAG_PROCESSO_VELHO,
     TAGS_AGUARDA_RESPOSTA_DISA,
+    TAGS_ESTADO_DEPROC,
     TAGS_ESTADO_NOVO,
     TAGS_PARADA_NOVO,
     TAGS_RETOMADA_NOVO,
     TAGS_TRATAMENTO_MANUAL,
     MarcadoresInconsistentes,
     adicionar_tag,
-    coluna_tag_deproc,
     conferir_marcadores,
+    conferir_marcadores_deproc,
 )
 
 from script_sei_utilizacao_indevida_v2.memorandos.MemoApisComTodasAsInformacoes import PADRAO_ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES
@@ -123,24 +121,31 @@ logger = logging.getLogger(__name__)
 
 
 class AcaoSugerida:
-    """Valores da coluna verificar_marcadores_acao_sugerida: o que fazer com
-    o processo (para filtrar e montar as abas de processos_a_processar)."""
+    """O que fazer com o processo: vai para a prox_acao, com o prefixo
+    Registro.PREFIXO_VERIFICAR_MARCADORES ("VERIFICAR MARCADORES: Rodar
+    geacs_inicial"; várias, separadas por " | "), para filtrar e montar as abas
+    de processos_a_processar."""
 
     RODAR_INICIAL = 'Rodar geacs_inicial'
     RODAR_TODAS_INFOS = 'Rodar geacs_todas_infos'
     RODAR_CORRIGE_ENVIO_DISA = 'Rodar geacs_corrige_envio_disa'
+    RODAR_DEPROC_CALCULA_COPA = 'Rodar deproc_calcula_copa'
     TRATAR_RESPOSTA_DISA = 'Tratar a resposta da DISA (geacs_resp_disa, TODO)'
     TROCAR_MARCADOR_ASSINADO = 'Trocar o No Bloco pelo marcador de assinado (memo já assinado)'
     CRIAR_MEMO = 'Criar o memo do marcador (Aguarda / Encaminhado sem o memo)'
     ASSINAR_MEMO = 'Assinar o memo do marcador (Aguarda / Encaminhado com o memo não assinado)'
-    TROCAR_MARCADOR_DEPROC = 'Trocar na DEPROC o No Bloco pelo Encaminhado e rodar deproc_calcula_copa'
+    TROCAR_MARCADOR_DEPROC = 'Trocar na DEPROC o No Bloco pelo Encaminhado (memo de resultado já assinado)'
     CORRIGIR_MARCADORES = 'Corrigir marcadores no SEI'
+    CORRIGIR_MARCADORES_DEPROC = 'Corrigir marcadores da DEPROC no SEI'
+    VERIFICAR_ACESSO_GEACS = 'Verificar acesso da GEACS ao processo'
+    VERIFICAR_ACESSO_DEPROC = 'Verificar acesso da DEPROC ao processo'
+    VERIFICAR_ERRO = 'Verificar erro'
     VERIFICAR_MANUALMENTE = 'Verificar manualmente'
 
 
 class Problema(NamedTuple):
-    """Uma inconsistência: a frase (coluna verificar_marcadores_inconsistencia)
-    e a ação sugerida (verificar_marcadores_acao_sugerida)."""
+    """Uma inconsistência: a frase (coluna erro, com o tipo_erro
+    Registro.TIPO_INCONSISTENCIA) e a ação sugerida (prox_acao)."""
 
     frase: str
     acao: str
@@ -152,8 +157,6 @@ class MemoDoMarcador:
 
     descricao: str
     padrao_assunto: re.Pattern
-    # Coluna da planilha de controle com o número SEI do memo
-    coluna_sei: str
     # Relatórios do MANTIS (RP / RC) que o memo cita, anexados antes dele
     redes_relatorios: tuple[str, ...] = ()
     # Casos base DISA x MANTIS possíveis (coluna caso_disa_mantis), cada um
@@ -165,18 +168,16 @@ class MemoDoMarcador:
 
 
 _MEMO_POR_NO_BLOCO = {
-    TAG_MEMO_APIS_SEM_MEMO: MemoDoMarcador('à APIS (sem memorando para a GEACS)', PADRAO_ASSUNTO_MEMO_APIS_SEM_MEMO, 'memo_apis_sem_memo_sei'),
-    TAG_MEMO_APIS_FORMATO_INVALIDO: MemoDoMarcador('à APIS (formato inválido)', PADRAO_ASSUNTO_MEMO_APIS_FORMATO_INVALIDO, 'memo_apis_formato_invalido_sei'),
-    TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS: MemoDoMarcador('à APIS (matrículas não encontradas)', PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS, 'memo_apis_mat_nao_encontradas_sei'),
-    TAG_MEMO_APIS_PERIODO_DEPENDENTES: MemoDoMarcador('à APIS (período dos dependentes)', PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES, 'memo_apis_periodo_deps_sei'),
-    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: MemoDoMarcador('à DISA (validar e complementar)', PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA, 'memo_disa_sei', ('RP',), (('sim', 'sim', None),)),
-    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA: MemoDoMarcador('à DISA (validar; não consta)', PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, 'memo_disa_sei', ('RP',), (('não', 'sim', None),)),
-    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: MemoDoMarcador('à DISA (sem MANTIS: solicita relatório)', PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, 'memo_disa_sei', (), (('sim', 'não', None),)),
-    TAG_MEMO_DEPROC_COPARTICIPACAO: MemoDoMarcador(
-        'DEPROC (coparticipação)', PADRAO_ASSUNTO_MEMO_DEPROC, 'memo_deproc_sei', casos=(('não', 'sim', None), ('não', 'não', 'sim')), relatorios_pelo_caso=True
-    ),
-    TAG_NO_BLOCO_APIS_SEM_USO: MemoDoMarcador('à APIS (nenhum uso nas bases)', PADRAO_ASSUNTO_MEMO_APIS_SEM_USO, 'memo_apis_sem_uso_sei', (), (('não', 'não', 'não'),)),
-    TAG_NO_BLOCO_APIS_TODAS_INFOS: MemoDoMarcador('à APIS (todas as informações)', PADRAO_ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES, 'memo_apis_todas_infos_sei'),
+    TAG_MEMO_APIS_SEM_MEMO: MemoDoMarcador('à APIS (sem memorando para a GEACS)', PADRAO_ASSUNTO_MEMO_APIS_SEM_MEMO),
+    TAG_MEMO_APIS_FORMATO_INVALIDO: MemoDoMarcador('à APIS (formato inválido)', PADRAO_ASSUNTO_MEMO_APIS_FORMATO_INVALIDO),
+    TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS: MemoDoMarcador('à APIS (matrículas não encontradas)', PADRAO_ASSUNTO_MEMO_MAT_NAO_ENCONTRADAS),
+    TAG_MEMO_APIS_PERIODO_DEPENDENTES: MemoDoMarcador('à APIS (período dos dependentes)', PADRAO_ASSUNTO_MEMO_APIS_PERIODO_DEPENDENTES),
+    TAG_NO_BLOCO_DISA_VALIDAR_CONSTA: MemoDoMarcador('à DISA (validar e complementar)', PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_CONSTA, ('RP',), (('sim', 'sim', None),)),
+    TAG_NO_BLOCO_DISA_VALIDAR_NAO_CONSTA: MemoDoMarcador('à DISA (validar; não consta)', PADRAO_ASSUNTO_MEMO_DISA_VALIDAR_NAO_CONSTA, ('RP',), (('não', 'sim', None),)),
+    TAG_NO_BLOCO_DISA_SEM_MANTIS_RELATORIO: MemoDoMarcador('à DISA (sem MANTIS: solicita relatório)', PADRAO_ASSUNTO_MEMO_DISA_SEM_MANTIS_RELATORIO, (), (('sim', 'não', None),)),
+    TAG_MEMO_DEPROC_COPARTICIPACAO: MemoDoMarcador('DEPROC (coparticipação)', PADRAO_ASSUNTO_MEMO_DEPROC, casos=(('não', 'sim', None), ('não', 'não', 'sim')), relatorios_pelo_caso=True),
+    TAG_NO_BLOCO_APIS_SEM_USO: MemoDoMarcador('à APIS (nenhum uso nas bases)', PADRAO_ASSUNTO_MEMO_APIS_SEM_USO, (), (('não', 'não', 'não'),)),
+    TAG_NO_BLOCO_APIS_TODAS_INFOS: MemoDoMarcador('à APIS (todas as informações)', PADRAO_ASSUNTO_MEMO_APIS_COM_TODAS_AS_INFORMACOES),
 }
 # Marcador manual depois da assinatura (o "Aguarda" e, no retorno final à
 # APIS, o "Encaminhado"), que indica o mesmo memo do seu "No Bloco"
@@ -216,16 +217,6 @@ def _curto(tag: str) -> str:
     return tag.removeprefix(PREFIXO).removeprefix(PREFIXO_VELHO)
 
 
-def _numero_sei(valor) -> str | None:
-    """Número SEI lido da planilha (texto ou número)."""
-    if valor is None:
-        return None
-    if isinstance(valor, float) and valor.is_integer():
-        valor = int(valor)
-    texto = str(valor).strip()
-    return texto or None
-
-
 # ---------------------------------------------------------------------------
 # prox_acao x marcadores
 # ---------------------------------------------------------------------------
@@ -258,6 +249,22 @@ def _esperadas(marcadores: set[str], estado: str | None) -> tuple[tuple[str | No
     return (ProxAcao.VERIFICAR_ERRO, *_PROX_ACOES_ESTADO_MANTIDO), f'{descricao} (estado intermediário: a última passagem não terminou)', False
 
 
+def _do_verificar(prox_acao) -> bool:
+    """prox_acao de uma passagem anterior do verificar marcadores ("VERIFICAR
+    MARCADORES: ...")."""
+    return str(prox_acao or '').startswith(PREFIXO_VERIFICAR_MARCADORES)
+
+
+def prox_acao_esperada(marcadores: list[str]) -> str | None:
+    """A prox_acao que o geacs_inicial daria a estes marcadores (inconsistentes:
+    Verificar marcadores inconsistentes)."""
+    if not _marcadores_consistentes(marcadores):
+        return ProxAcao.VERIFICAR_MARCADORES
+    atuais = set(marcadores)
+    esperadas, _, _ = _esperadas(atuais, next((tag for tag in TAGS_ESTADO_NOVO if tag in atuais), None))
+    return esperadas[0]
+
+
 def _passagem_na_deproc(fluxo) -> bool:
     """A última passagem que gravou a prox_acao foi na unidade da DEPROC
     (coluna fluxo: "DEPROC - ...")."""
@@ -266,8 +273,9 @@ def _passagem_na_deproc(fluxo) -> bool:
 
 def _aceita_com_o_estado(prox_acao: str | None, estado: str | None) -> bool:
     """As de erro valem com qualquer marcador (o erro está nas colunas
-    tipo_erro e erro); as da DEPROC, com o memo DEPROC na GEACS."""
-    if prox_acao in PROX_ACOES_A_VERIFICAR:
+    tipo_erro e erro); as da DEPROC, com o memo DEPROC na GEACS. A de uma
+    passagem anterior do verificar é recalculada nesta."""
+    if prox_acao in PROX_ACOES_A_VERIFICAR or _do_verificar(prox_acao):
         return True
     return prox_acao is not None and prox_acao.startswith(_PREFIXO_PROX_ACAO_DEPROC) and estado in _ESTADOS_COM_A_DEPROC
 
@@ -280,8 +288,9 @@ def conferir_prox_acao(prox_acao: str | None, marcadores: list[str], fluxo: str 
     try:
         conferir_marcadores(SimpleNamespace(marcadores_atuais=list(marcadores)))
     except MarcadoresInconsistentes as e:
-        # Sem estado único não há prox_acao esperada
-        if prox_acao == ProxAcao.VERIFICAR_MARCADORES:
+        # Sem estado único não há prox_acao esperada (a de uma passagem
+        # anterior do verificar é recalculada)
+        if prox_acao == ProxAcao.VERIFICAR_MARCADORES or _do_verificar(prox_acao):
             return [Problema(str(e), AcaoSugerida.CORRIGIR_MARCADORES)]
         return [Problema(f'{e} (prox_acao "{prox_acao or "(vazia)"}"; esperada: "{ProxAcao.VERIFICAR_MARCADORES}")', AcaoSugerida.CORRIGIR_MARCADORES)]
 
@@ -450,10 +459,6 @@ def conferir_memo_do_marcador(arvore: ArvoreProcesso, estado: str, linha: dict) 
             problemas.append(Problema(f'memo {memo.descricao} ({numero}) sem relatório RP ou RC do MANTIS antes dele na rodada', manual))
         problemas += _conferir_assinatura(arvore, estado, memo, encontrado)
 
-    numero_planilha = _numero_sei(linha.get(memo.coluna_sei))
-    if numero_planilha is not None and all(doc['numero_sei'] != numero_planilha for doc in arvore.docs):
-        problemas.append(Problema(f'{memo.coluna_sei} = {numero_planilha} na planilha, mas o documento não está na árvore', manual))
-
     if no_bloco == TAG_MEMO_APIS_SEM_MEMO and not depois_da_assinatura and arvore.memos_apis_para_geacs:
         ultimo = arvore.memos_apis_para_geacs[-1]
         frase = f'marcador "{_curto(estado)}", mas o processo tem memo da APIS destinado à GEACS ({ultimo["numero_sei"]}): o memo à APIS (sem memorando) não é mais necessário'
@@ -509,45 +514,19 @@ def _resposta_disa(arvore: ArvoreProcesso, estado: str) -> dict | None:
     return next((doc for doc in reversed(depois) if doc['unidade'].upper().startswith(PREFIXO_UNIDADE_DISA)), None)
 
 
-_COLUNA_DEPROC_NO_BLOCO = coluna_tag_deproc(TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)
-# Estados da GEACS em que o memo de resultado da DEPROC já foi assinado (o
-# geacs_todas_infos só cria o memo à APIS com ele assinado)
-_ESTADOS_DEPOIS_DO_MEMO_DEPROC_ASSINADO = (TAG_NO_BLOCO_APIS_TODAS_INFOS, TAG_ENCAMINHADO_APIS_TODAS_INFOS)
-
-
-def _verdadeiro(valor) -> bool:
-    """Célula booleana da planilha (True, ou o texto, se veio de um CSV)."""
-    return valor is True or str(valor).strip().lower() in {'true', 'verdadeiro', '1'}
-
-
-def conferir_marcador_deproc(arvore: ArvoreProcesso, estado: str, linha: dict) -> list[Problema]:
-    """Na planilha, a DEPROC continua com o "01.02 - No Bloco GEACS", mas o
-    memo de resultado dela já foi assinado: quem assinou não trocou o marcador
-    na DEPROC pelo 01.02.1 (ou o deproc_calcula_copa não rodou depois). Os
-    marcadores da DEPROC só são lidos na unidade da DEPROC."""
-    if not _verdadeiro(linha.get(_COLUNA_DEPROC_NO_BLOCO)):
-        return []
-    if estado not in _ESTADOS_DEPOIS_DO_MEMO_DEPROC_ASSINADO and (estado != TAG_AGUARDA_DEPROC_COPARTICIPACAO or _memo_resultado_deproc_assinado(arvore) is None):
-        return []
-    return [
-        Problema(
-            f'Na planilha, a DEPROC continua com "{_curto(TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)}", mas o memo de resultado da DEPROC já está assinado '
-            f'(GEACS em "{_curto(estado)}"): trocar na DEPROC pelo "{_curto(TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA)}" e rodar o deproc_calcula_copa '
-            f'(atualiza a planilha)',
-            AcaoSugerida.TROCAR_MARCADOR_DEPROC,
-        )
-    ]
-
-
-def sugestoes_de_fluxo(arvore: ArvoreProcesso, estado: str) -> list[str]:
+def sugestoes_de_fluxo(arvore: ArvoreProcesso, estado: str, registro: RegistroVerificarMarcadores | None = None) -> list[str]:
     """O próximo fluxo do processo, quando ele já pode seguir (não é
-    inconsistência: só a ação sugerida)."""
+    inconsistência: só a ação sugerida). Com o "Aguarda DEPROC", registra no
+    registro se o memo de resultado da DEPROC está assinado na rodada (usado
+    na verificação na DEPROC, conferir_deproc)."""
     acoes = []
     if estado in _ESTADOS_N_CONSTA:
         logger.info('Memo à DISA "Validar (N Consta)": pela regra atual, o processo vai direto à DEPROC (geacs_corrige_envio_disa)')
         acoes.append(AcaoSugerida.RODAR_CORRIGE_ENVIO_DISA)
     if estado == TAG_AGUARDA_DEPROC_COPARTICIPACAO:
         memo = _memo_resultado_deproc_assinado(arvore)
+        if registro is not None:
+            registro.memo_resultado_deproc_assinado = memo is not None
         if memo is not None:
             logger.info(f'Memo de resultado da DEPROC assinado na rodada ({_descrever(memo)}): pronto para o geacs_todas_infos')
             acoes.append(AcaoSugerida.RODAR_TODAS_INFOS)
@@ -682,17 +661,16 @@ def conferir_memos_aguarda(arvore: ArvoreProcesso, registro: RegistroVerificarMa
     marcador (o mais recente da GEACS com o assunto do memo) e confere se está
     assinado (por qualquer pessoa).
 
-    - Assinado: registra o número SEI na coluna do memo (memo_disa_sei,
-      memo_deproc_sei, ...) e em verificar_marcadores_memo_aguarda_assinado.
-      Se o marcador é o único estado e os marcadores estão consistentes, a
-      prox_acao passa a ser Aguardar retorno da <unidade> (PROX_ACAO_POR_AGUARDA)
-      (exceto a da DEPROC com o 01.10.B.1, que diz mais).
-    - Sem o memo ou não assinado (marcador único estado, marcadores
-      consistentes): erro da passagem (verificar_marcadores_erro) e prox_acao =
-      Verificar: criar o memo / assinar o memo.
+    - Assinado: registra o memo (histórico,
+      verificar_marcadores_memo_aguarda_assinado). Se o marcador é o único
+      estado e os marcadores estão consistentes, a prox_acao passa a ser
+      Aguardar retorno da <unidade> (PROX_ACAO_POR_AGUARDA) (exceto a da DEPROC
+      com o 01.10.B.1, que diz mais).
+    - Sem o memo ou não assinado: só o log. A conferência do memo do marcador
+      (conferir_memo_do_marcador) registra a inconsistência, com a ação Criar /
+      Assinar o memo do marcador.
     - "Encaminhado" (01.12.1, conclusão): a prox_acao é sempre a de concluído
-      (atualizar_prox_acao_pela_situacao); sem o memo ou não assinado, só o
-      erro da passagem."""
+      (RegistroVerificarMarcadores.prox_acao_final)."""
     tags_assinado = [tag for tag in registro.marcadores_atuais if tag in _NO_BLOCO_POR_ASSINADO]
     if not tags_assinado:
         return
@@ -705,28 +683,13 @@ def conferir_memos_aguarda(arvore: ArvoreProcesso, registro: RegistroVerificarMa
         encontrado = arvore.ultimo_memo_geacs(memo.padrao_assunto)
         signatario = None if encontrado is None else arvore.signatario(encontrado) or arvore.signatario_qualquer(encontrado)
         if signatario is None:
-            if encontrado is None:
-                frase = f'Marcador "{_curto(tag)}" sem o memo {memo.descricao} na árvore: criar o memo'
-                tipo, prox_acao = 'MemoDoMarcadorNaoEncontrado', ProxAcao.VERIFICAR_CRIAR_MEMO_DO_MARCADOR
-            else:
-                frase = f'Marcador "{_curto(tag)}" com o memo {memo.descricao} ({_descrever(encontrado)}) não assinado: assinar o memo'
-                tipo, prox_acao = 'MemoDoMarcadorNaoAssinado', ProxAcao.VERIFICAR_ASSINAR_MEMO_DO_MARCADOR
-            logger.warning(frase)
-            if tag == estado_unico:
-                registro.tipo_erro, registro.erro = tipo, frase
-                # Na conclusão, a prox_acao continua a de concluído
-                if tag not in PROX_ACAO_POR_CONCLUSAO and atual != prox_acao:
-                    registro.prox_acao_atualizada = prox_acao
-                    logger.info(f'Planilha: prox_acao "{atual or "(vazia)"}" -> "{prox_acao}"')
+            situacao = 'sem o memo na árvore' if encontrado is None else f'com o memo {_descrever(encontrado)} não assinado'
+            logger.warning(f'Marcador "{_curto(tag)}" {situacao} ({memo.descricao})')
             continue
 
         numero = encontrado['numero_sei']
         logger.info(f'Memo {memo.descricao} do marcador "{_curto(tag)}" assinado por {signatario}: {_descrever(encontrado)}')
         registro.memos_aguarda_assinados.append(f'{_curto(tag)}: {numero} ({signatario})')
-        anterior = _numero_sei((linha or {}).get(memo.coluna_sei))
-        if anterior != numero:
-            logger.info(f'Planilha: {memo.coluna_sei} = {numero} (antes: {anterior or "vazia"})')
-        registro.colunas_memo_aguarda[memo.coluna_sei] = numero
 
         if tag != estado_unico:
             continue
@@ -776,7 +739,7 @@ def _pode_substituir(atual, estado: str | None, fluxo) -> bool:
     conclusão (o processo terminou) e a de acesso de uma passagem da GEACS (a
     GEACS acabou de abrir o processo). A da DEPROC fica com o memo DEPROC na
     GEACS."""
-    if estado in PROX_ACAO_POR_CONCLUSAO or atual in _PROX_ACOES_DE_ERRO_SUBSTITUIVEIS:
+    if estado in PROX_ACAO_POR_CONCLUSAO or atual in _PROX_ACOES_DE_ERRO_SUBSTITUIVEIS or _do_verificar(atual):
         return True
     if atual == ProxAcao.VERIFICAR_ACESSO_UNIDADE:
         return bool(fluxo) and not _passagem_na_deproc(fluxo)
@@ -825,6 +788,7 @@ def conferir_processo(driver: webdriver.Remote, registro: RegistroVerificarMarca
         linha = {**linha, 'prox_acao': registro.prox_acao_atualizada}
     marcadores = registro.marcadores_atuais
     atuais = set(marcadores)
+    registro.prox_acao_esperada = prox_acao_esperada(marcadores)
     if linha is None:
         logger.warning('Planilha de controle não lida: a prox_acao não é conferida')
     else:
@@ -843,6 +807,88 @@ def conferir_processo(driver: webdriver.Remote, registro: RegistroVerificarMarca
         _registrar(registro, conferir_memo_do_marcador(arvore, estado, linha or {}))
     elif estado in TAGS_RETOMADA_NOVO:
         _registrar(registro, conferir_retomada(arvore, estado))
-    if linha is not None:
-        _registrar(registro, conferir_marcador_deproc(arvore, estado, linha))
-    registro.acoes_sugeridas += sugestoes_de_fluxo(arvore, estado)
+    registro.acoes_sugeridas += sugestoes_de_fluxo(arvore, estado, registro)
+
+
+# ---------------------------------------------------------------------------
+# Verificação na unidade da DEPROC
+# ---------------------------------------------------------------------------
+
+# Estados da GEACS em que o processo já deveria estar ou ter passado pela
+# DEPROC: memo DEPROC assinado e encaminhado (Aguarda DEPROC) e retorno final
+# à APIS, que só é criado com o memo de resultado da DEPROC assinado
+ESTADOS_GEACS_COM_A_DEPROC = (TAG_AGUARDA_DEPROC_COPARTICIPACAO, TAG_NO_BLOCO_APIS_TODAS_INFOS, TAG_ENCAMINHADO_APIS_TODAS_INFOS)
+_ESTADOS_GEACS_DEPOIS_DA_DEPROC = (TAG_NO_BLOCO_APIS_TODAS_INFOS, TAG_ENCAMINHADO_APIS_TODAS_INFOS)
+
+
+def passa_pela_deproc(registro: RegistroVerificarMarcadores, linha: dict | None) -> bool:
+    """O processo já deveria estar ou ter passado pela DEPROC: algum estado de
+    ESTADOS_GEACS_COM_A_DEPROC nos marcadores da GEACS (os lidos nesta
+    passagem ou, sem eles, o estado_atual da planilha) ou os marcadores da
+    DEPROC registrados na planilha (uma passagem anterior pela DEPROC)."""
+    linha = linha or {}
+    if registro.marcadores_lidos:
+        estados = set(registro.marcadores_atuais)
+    else:
+        estados = {tag.strip() for tag in str(linha.get('estado_atual') or '').split(';')}
+    if estados & set(ESTADOS_GEACS_COM_A_DEPROC):
+        return True
+    return any(linha.get(coluna) for coluna in ('estado_atual_deproc', 'marcadores_deproc_pos_fluxo'))
+
+
+def _problema_deproc(frase: str, acao: str) -> Problema:
+    return Problema(f'DEPROC: {frase}', acao)
+
+
+def conferir_deproc(registro: RegistroVerificarMarcadores) -> None:
+    """Confere os marcadores lidos na unidade da DEPROC (registro.
+    marcadores_deproc) com o estado da GEACS. Nenhuma ação no SEI.
+
+    - combinação dos marcadores da DEPROC (tags.conferir_marcadores_deproc);
+    - GEACS no retorno final à APIS (01.12 / 01.12.1): o memo de resultado da
+      DEPROC já foi assinado, a DEPROC deveria estar no 01.02.1 (Encaminhado);
+    - GEACS em "Aguarda DEPROC": sem estado (ou no 01.01, retomada), rodar o
+      deproc_calcula_copa; no 01.02 (No Bloco), com o memo de resultado
+      assinado, trocar o marcador na DEPROC, e, sem ele, a prox_acao é a da
+      DEPROC (assinar o memo de resultado); no 01.02.1 sem o memo de resultado
+      assinado na rodada da GEACS, verificar manualmente."""
+    try:
+        conferir_marcadores_deproc(SimpleNamespace(marcadores_atuais=list(registro.marcadores_deproc)))
+    except MarcadoresInconsistentes as e:
+        _registrar(registro, [_problema_deproc(str(e), AcaoSugerida.CORRIGIR_MARCADORES_DEPROC)])
+        return
+    estado_deproc = next((tag for tag in TAGS_ESTADO_DEPROC if tag in registro.marcadores_deproc), None)
+    logger.info(f'Marcadores na DEPROC: {registro.marcadores_deproc or "nenhum"}')
+    estados = [tag for tag in TAGS_ESTADO_NOVO if tag in registro.marcadores_atuais]
+    if len(estados) != 1 or not _marcadores_consistentes(registro.marcadores_atuais):
+        return
+    estado = estados[0]
+    na_deproc = f'"{_curto(estado_deproc)}"' if estado_deproc else 'sem marcador de estado'
+    no_bloco_deproc = _curto(TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)
+    encaminhado_deproc = _curto(TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA)
+
+    if estado in _ESTADOS_GEACS_DEPOIS_DA_DEPROC:
+        if estado_deproc == TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA:
+            frase = f'GEACS em "{_curto(estado)}" (memo de resultado da DEPROC já assinado), mas a DEPROC continua com "{no_bloco_deproc}": trocar pelo "{encaminhado_deproc}"'
+            _registrar(registro, [_problema_deproc(frase, AcaoSugerida.TROCAR_MARCADOR_DEPROC)])
+        elif estado_deproc != TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA:
+            frase = f'GEACS em "{_curto(estado)}" (memo de resultado da DEPROC já assinado), mas a DEPROC está {na_deproc} (esperado: "{encaminhado_deproc}")'
+            _registrar(registro, [_problema_deproc(frase, AcaoSugerida.VERIFICAR_MANUALMENTE)])
+        return
+
+    if estado != TAG_AGUARDA_DEPROC_COPARTICIPACAO:
+        return
+    assinado = registro.memo_resultado_deproc_assinado
+    if estado_deproc in {None, TAG_DEPROC_RELATORIO_ANEXADO}:
+        logger.info(f'GEACS aguarda a DEPROC e a DEPROC está {na_deproc}: rodar o deproc_calcula_copa')
+        registro.acoes_sugeridas.append(AcaoSugerida.RODAR_DEPROC_CALCULA_COPA)
+    elif estado_deproc == TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA:
+        if assinado:
+            frase = f'memo de resultado da DEPROC assinado na rodada, mas a DEPROC continua com "{no_bloco_deproc}": trocar pelo "{encaminhado_deproc}"'
+            _registrar(registro, [_problema_deproc(frase, AcaoSugerida.TROCAR_MARCADOR_DEPROC)])
+        elif assinado is False and registro.prox_acao_atualizada != ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO:
+            logger.info(f'Memo de resultado da DEPROC no bloco: prox_acao "{ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO}"')
+            registro.prox_acao_atualizada = ProxAcao.DEPROC_ASSINAR_MEMO_RESULTADO
+    elif assinado is False:
+        frase = f'a DEPROC está com "{encaminhado_deproc}", mas a GEACS não tem o memo de resultado da DEPROC assinado na rodada'
+        _registrar(registro, [_problema_deproc(frase, AcaoSugerida.VERIFICAR_MANUALMENTE)])

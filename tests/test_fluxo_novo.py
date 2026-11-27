@@ -116,6 +116,9 @@ def test_nenhum_uso_memo_a_apis_sem_deproc(sei):
     sei.tags = [TAG_AGUARDA_APIS_SEM_USO if t == TAG_NO_BLOCO_APIS_SEM_USO else t for t in sei.tags]
     registro = sei.passar(bases(tit_usou=False))
     assert registro.prox_acao == ProxAcao.AGUARDAR_RESPOSTA_MEMO
+    # Aguardando resposta não é erro
+    assert registro.tipo_erro is None
+    assert registro.erro is None
 
 
 def test_disa_nao_mantis_rp_sim_vai_direto_a_deproc_com_rp_e_rc(sei):
@@ -228,11 +231,13 @@ def test_passagem_sem_avaliacao_mantem_os_resultados_na_planilha(sei):
 
     assert primeira['caso_disa_mantis'] == 'DISA não, MANTIS RP não, MANTIS RC sim'
     assert primeira['memo_deproc_sei']
+    assert not primeira['marcadores_pre_fluxo']
     assert not set(_COLUNAS_RESULTADO) & set(segunda)
     assert 'velho' not in segunda
     assert 'processo_reaberto' not in segunda
     assert segunda['prox_acao'] == ProxAcao.ASSINAR_DEPROC
-    assert segunda[TAG_MEMO_DEPROC_COPARTICIPACAO] is True
+    assert TAG_MEMO_DEPROC_COPARTICIPACAO in segunda['marcadores_pre_fluxo']
+    assert segunda['marcadores_pos_fluxo'] == segunda['marcadores_pre_fluxo']
     assert segunda['estado_atual'] == TAG_MEMO_DEPROC_COPARTICIPACAO
 
     # A planilha de controle atualiza a linha do processo com a passagem

@@ -426,13 +426,9 @@ def test_ordem_de_pesquisa_da_mais_nova_do_ano_mais_novo(monkeypatch):
         ({'ano_processo': '2020', 'data_geracao_base_processo': '16/11/2026'}, B2020),
         # Ano lido do Excel como número
         ({'ano_processo': 2020.0, 'data_geracao_base_processo': '16/11/2026'}, B2020),
-        # Sem a base do geacs_inicial: a usada numa apuração anterior
-        ({'ano_base_deproc': 2019, 'data_geracao_base_deproc': '06/11/2026'}, B2019),
-        ({'ano_processo': '2019', 'ano_base_deproc': 2019, 'data_geracao_base_deproc': '06/11/2026'}, B2019),
-        (
-            {'ano_processo': '2020', 'data_geracao_base_processo': '16/11/2026', 'ano_base_deproc': '2019', 'data_geracao_base_deproc': '06/11/2026'},
-            B2020,
-        ),
+        # As colunas antigas (até 27/11/2026) não são lidas: a leitura da
+        # planilha as leva para ano_processo e data_geracao_base_processo
+        ({'ano_base_deproc': 2019, 'data_geracao_base_deproc': '06/11/2026'}, None),
         # Só o ano (geacs_inicial antes do -d): sem base
         ({'ano_processo': '2020'}, None),
         ({'ano_processo': None}, None),
@@ -528,7 +524,7 @@ def test_base_da_planilha_sem_pesquisa(monkeypatch):
     planilha = {
         'P1': {'ano_processo': '2019', 'data_geracao_base_processo': '06/11/2026'},
         'P2': {'ano_processo': 2020.0, 'data_geracao_base_processo': '16/11/2026'},
-        'P3': {'ano_base_deproc': '2019', 'data_geracao_base_deproc': '06/11/2026'},
+        'P3': {'ano_processo': '2019', 'data_geracao_base_processo': '06/11/2026'},
     }
     carregadas, chamadas, _ = _rodar_main(monkeypatch, planilha)
 
@@ -588,21 +584,23 @@ def test_ano_e_data_geracao_base_na_planilha(sei, tmp_path):
     sei.memo_deproc_geacs()
     registro = _passar(sei, _base(tmp_path), '16/11/2026', '2020')
     linha = registro.to_dict()
-    assert linha['ano_base_deproc'] == '2020'
-    assert linha['data_geracao_base_deproc'] == '16/11/2026'
+    # A base usada na apuração vai para a única coluna de ano
+    assert linha['ano_processo'] == '2020'
+    assert linha['data_geracao_base_processo'] == '16/11/2026'
+    assert 'ano_base_deproc' not in linha
 
     # Nova passagem (memo no bloco, base não usada), com outra base: não
     # sobrescreve o ano usado na apuração (o GEACS TODAS INFOS confere nele)
     linha = _passar(sei, _base(tmp_path), '06/11/2026', '2019').to_dict()
-    assert 'ano_base_deproc' not in linha
-    assert 'data_geracao_base_deproc' not in linha
+    assert 'ano_processo' not in linha
+    assert 'data_geracao_base_processo' not in linha
 
 
 def test_erro_antes_da_apuracao_nao_grava_o_ano(sei, tmp_path):
     # Sem o memo DEPROC da GEACS: para antes de usar a base
     registro = _passar(sei, _base(tmp_path), '06/11/2026', '2019')
     assert registro.erro
-    assert 'ano_base_deproc' not in registro.to_dict()
+    assert 'ano_processo' not in registro.to_dict()
 
 
 def test_processo_fechado_na_deproc_nao_e_reaberto(sei, tmp_path):
@@ -620,20 +618,15 @@ def test_planilha_de_controle_com_colunas_dos_marcadores_da_deproc(sei, tmp_path
 
     # Os marcadores da GEACS (outra unidade) ficam como estão na planilha
     assert [c for c in colunas if c.startswith(('DEPROC | ', 'marcadores_', 'estado_atual', 'v2: ', 'tag_')) or c == 'demais_marcadores'] == [
-        'marcadores_deproc_sei',
         'marcadores_deproc_adicionados',
         'marcadores_deproc_removidos',
-        'marcadores_deproc_finais',
-        f'DEPROC | {TAG_DEPROC_TRATADO}',
-        f'DEPROC | {TAG_DEPROC_RELATORIO_ANEXADO}',
-        f'DEPROC | {TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}',
-        f'DEPROC | {TAG_DEPROC_ENCAMINHADO_MEMO_CALCULO_COPA}',
+        'marcadores_deproc_pre_fluxo',
+        'marcadores_deproc_pos_fluxo',
         'estado_atual_deproc',
     ]
-    assert colunas[f'DEPROC | {TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}'] is True
-    assert colunas[f'DEPROC | {TAG_DEPROC_RELATORIO_ANEXADO}'] is False
     assert colunas['estado_atual_deproc'] == TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA
-    assert colunas['marcadores_deproc_finais'] == f'{TAG_DEPROC_TRATADO}; {TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}'
+    assert not colunas['marcadores_deproc_pre_fluxo']
+    assert colunas['marcadores_deproc_pos_fluxo'] == f'{TAG_DEPROC_TRATADO}; {TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA}'
     assert 'processo_reaberto' not in colunas
     assert colunas['memo_apis_sei'] is not None
     assert colunas['valor_total_coparticipacao'] == 22.0

@@ -155,11 +155,12 @@ def _tratar(driver: webdriver.Remote, registro: RegistroMain, bases: BasesUso, b
         return
 
     if estado in TAGS_PARADA_NOVO:
-        # TODO: definir o processamento na próxima execução (depois da
-        # resposta da APIS ou da DISA ao memo enviado)
+        # Não é erro (tipo_erro e erro vazios): a resposta é tratada nos
+        # fluxos de resposta (TODO)
+        logger.info(f'Fluxo: memo enviado, aguardando resposta ("{estado}")')
         registro.fluxo = 'parado (aguardando resposta ao memo)'
         registro.prox_acao = ProxAcao.AGUARDAR_RESPOSTA_MEMO
-        raise ErroAvaliacao(f'Processamento parado: memo enviado, aguardando resposta ({estado})')
+        return
 
     if estado in PROX_ACAO_POR_CONCLUSAO:
         logger.info(f'Fluxo: concluído ("{estado}")')

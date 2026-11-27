@@ -206,8 +206,11 @@ def test_planilha_de_controle_so_grava_a_coluna_propria(arvore, tmp_path):
     assert linha['prox_acao'] == 'Assinar'
     assert linha['fluxo'] == 'DEPROC - COPARTICIPAÇÃO'
     assert linha['erro'] == 'erro antigo'
-    assert '2 excluído(s)' in linha['deproc_excluir_docs']
+    # O resultado da passagem fica só no histórico
+    assert 'deproc_excluir_docs' not in linha
     assert linha['script'] == fluxo.SCRIPT
+    historico = PlanilhaControleGeral(fluxo.SCRIPT, 'exec3', arquivo).historico.ler()
+    assert '2 excluído(s)' in historico[-1]['deproc_excluir_docs']
 
 
 def test_arvore_atrasada_nao_conta_como_nao_excluido(arvore):
@@ -248,9 +251,8 @@ def test_remove_os_marcadores_da_deproc_depois_de_excluir(arvore):
     assert arvore.marcadores == [OUTRO_MARCADOR]
     dados = registro.to_dict()
     assert 'marcador(es) removido(s)' in dados['deproc_excluir_docs']
-    assert dados['marcadores_deproc_finais'] == OUTRO_MARCADOR
-    assert dados[tags.coluna_tag_deproc(TAG_DEPROC_TRATADO)] is False
-    assert dados[tags.coluna_tag_deproc(TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA)] is False
+    assert dados['marcadores_deproc_pos_fluxo'] == OUTRO_MARCADOR
+    assert dados['estado_atual_deproc'] is None
     assert dados['estado_atual_deproc'] is None
 
 
@@ -297,7 +299,7 @@ def test_documento_gerado_que_ficou_mantem_os_marcadores(arvore, preparar):
     assert arvore.marcadores_lidos == 0
     assert arvore.marcadores == [TAG_DEPROC_TRATADO, TAG_DEPROC_NO_BLOCO_MEMO_CALCULO_COPA]
     # Sem ler os marcadores, as colunas deles ficam como estavam na planilha
-    assert 'marcadores_deproc_finais' not in registro.to_dict()
+    assert 'marcadores_deproc_pos_fluxo' not in registro.to_dict()
 
 
 def test_processo_fechado_nao_remove_marcadores(arvore):

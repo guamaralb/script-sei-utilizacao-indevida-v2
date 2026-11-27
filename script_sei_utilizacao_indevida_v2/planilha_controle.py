@@ -6,7 +6,8 @@ coluna "script" distingue as passagens antigas do script de correção
     - aba "processos": uma linha por processo, com a última passagem pelo
       fluxo. As colunas que o script grava são sobrescritas (o processo é
       reavaliado a cada passagem); as demais e primeira_passagem são
-      mantidas;
+      mantidas. Os detalhes de cada passagem (COLUNAS_FORA_DA_ABA_PROCESSOS e
+      as colunas de cada marcador) ficam só no histórico;
     - histórico: uma linha por passagem, acrescentada a um CSV ao lado da
       planilha (controle_geral_de_processos_historico.csv, HistoricoCsv). Até
       18/11/2026 era a aba "historico", regravada inteira a cada processo; na
@@ -29,16 +30,16 @@ manualmente.
 Formatação:
     - cabeçalho congelado e com filtro;
     - largura das colunas ajustada ao conteúdo;
-    - colunas dos marcadores (o nome inteiro do marcador, tags.COLUNAS_TAGS)
-      no fim, na ordem da numeração, com largura fixa e o nome quebrado em
-      até 3 linhas; estado_atual logo depois da prox_acao;
+    - estado_atual (e estado_atual_deproc) logo depois da prox_acao,
+      data_geracao_base_processo logo depois de ano_processo e, no fim, os
+      marcadores antes e depois da passagem (GEACS e DEPROC);
     - linha com erro destacada em vermelho claro (o processo parado
       aguardando resposta ao memo enviado não é erro);
     - linha do processo concluído (memo à APIS com todas as informações
       encaminhado) em cinza;
     - células de matrículas não encontradas destacadas em amarelo;
-    - ação sugerida, inconsistência e erro do fluxo GEACS VERIFICAR
-      MARCADORES em amarelo (com a prox_acao da linha), logo depois de erro.
+    - prox_acao, tipo_erro e erro do fluxo GEACS VERIFICAR MARCADORES (prefixo
+      "VERIFICAR MARCADORES: ") em amarelo.
 
 A gravação é atômica: o arquivo é gravado em uma cópia temporária, que só
 então substitui a planilha. Uma interrupção no meio da gravação (ex.:
@@ -65,16 +66,21 @@ import pandas as pd
 from constantes import ARQ_CONTROLE_GERAL, DIR_BACKUP_CONTROLE
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
-from Registro import ProxAcao
+from Registro import (
+    COLUNA_MARCADORES_DEPROC_POS_FLUXO,
+    COLUNA_MARCADORES_DEPROC_PRE_FLUXO,
+    COLUNA_MARCADORES_POS_FLUXO,
+    COLUNA_MARCADORES_PRE_FLUXO,
+    COLUNAS_BASE_PROCESSO,
+    PREFIXO_VERIFICAR_MARCADORES,
+    PROX_ACOES_AGUARDANDO,
+    ProxAcao,
+)
 from tags import (
     COLUNA_DEMAIS_MARCADORES,
     COLUNA_ESTADO_ATUAL,
     COLUNA_ESTADO_ATUAL_DEPROC,
-    COLUNA_POR_COLUNA_ANTIGA,
-    COLUNAS_TAGS,
-    COLUNAS_TAGS_VALIDOS,
     TAGS_ESTADO_DEPROC,
-    demais_marcadores,
     descrever_estado,
     eh_coluna_tag,
 )
@@ -94,27 +100,13 @@ _COLUNAS_INICIAIS_PROCESSOS = ('num_processo', _COLUNA_BUSCA, _COLUNA_ERROS_MANU
 _BACKUPS_MANTIDOS = 30
 
 _LARGURA_MAXIMA = 60
-# Colunas dos marcadores: o nome mais longo ("DEPROC | v2: 01.02.1 -
-# Encaminhado GEACS: Memo Cálculo COPA") cabe em 3 linhas de 20 caracteres
-# (há teste); a folga é do negrito
-_LARGURA_COLUNA_MARCADOR = 22
-CARACTERES_POR_LINHA_MARCADOR = 20
-_ALTURA_CABECALHO_MARCADORES = 48
 _PREENCHIMENTO_ERRO = PatternFill(fill_type='solid', start_color='FFF4CCCC', end_color='FFF4CCCC')
-_PREENCHIMENTO_NAO_ENCONTRADA = PatternFill(fill_type='solid', start_color='FFFFE599', end_color='FFFFE599')
+_PREENCHIMENTO_AMARELO = PatternFill(fill_type='solid', start_color='FFFFE599', end_color='FFFFE599')
 _PREENCHIMENTO_CONCLUIDO = PatternFill(fill_type='solid', start_color='FFD9D9D9', end_color='FFD9D9D9')
 
-# prox_acao de processo parado aguardando resposta: a coluna erro pode estar
-# preenchida (o geacs_inicial registra a parada como erro), mas não é erro, e a
-# linha não fica vermelha
-_PROX_ACOES_SEM_ERRO = frozenset({ProxAcao.AGUARDAR_RESPOSTA_MEMO, ProxAcao.AGUARDAR_RETORNO_APIS, ProxAcao.AGUARDAR_RETORNO_DISA, ProxAcao.AGUARDAR_RETORNO_DEPROC})
 # prox_acao de processo concluído (memo à APIS com todas as informações
 # encaminhado): linha cinza, mesmo com erro de uma passagem anterior
 _PROX_ACOES_CONCLUIDO = frozenset({ProxAcao.MEMO_APIS_TODAS_INFOS_ENCAMINHADO})
-
-# Coluna de marcadores que não existe mais: os marcadores do processo ficam
-# nas colunas dos marcadores válidos (tags.COLUNAS_TAGS) e em demais_marcadores
-_COLUNAS_MARCADORES_OBSOLETAS = frozenset({'verificar_marcadores'})
 
 _COLUNAS_NAO_ENCONTRADAS = (
     'titular_nao_encontrado_base_geral',
@@ -122,15 +114,120 @@ _COLUNAS_NAO_ENCONTRADAS = (
     'deps_nao_encontrados_ignorados',
 )
 
-# Fluxo GEACS VERIFICAR MARCADORES: ação sugerida, inconsistência encontrada
-# (prox_acao, marcadores e memorandos) e erro da passagem. Ficam logo depois
-# de "erro" e, preenchidas, em amarelo (com a prox_acao da linha)
-COLUNA_VERIFICAR_ACAO_SUGERIDA = 'verificar_marcadores_acao_sugerida'
-COLUNA_VERIFICAR_INCONSISTENCIA = 'verificar_marcadores_inconsistencia'
-COLUNA_VERIFICAR_ERRO = 'verificar_marcadores_erro'
-_COLUNAS_VERIFICAR = (COLUNA_VERIFICAR_ACAO_SUGERIDA, COLUNA_VERIFICAR_INCONSISTENCIA, COLUNA_VERIFICAR_ERRO)
+# Fluxo GEACS VERIFICAR MARCADORES: célula com o prefixo "VERIFICAR
+# MARCADORES: " em amarelo
+_COLUNAS_VERIFICAR = ('prox_acao', 'tipo_erro', 'erro')
 # Logo depois da prox_acao
 _COLUNAS_ESTADO = (COLUNA_ESTADO_ATUAL, COLUNA_ESTADO_ATUAL_DEPROC)
+# No fim: os marcadores antes e depois da passagem, da GEACS e da DEPROC
+_COLUNAS_MARCADORES = (COLUNA_MARCADORES_PRE_FLUXO, COLUNA_MARCADORES_POS_FLUXO, COLUNA_MARCADORES_DEPROC_PRE_FLUXO, COLUNA_MARCADORES_DEPROC_POS_FLUXO)
+_ANO_PROCESSO, _DATA_BASE_PROCESSO = COLUNAS_BASE_PROCESSO
+
+# Renomeadas em 27/11/2026 (na leitura; com as duas, vale a atual)
+_COLUNA_POR_COLUNA_ANTIGA = {
+    'marcadores_sei': COLUNA_MARCADORES_PRE_FLUXO,
+    'marcadores_finais': COLUNA_MARCADORES_POS_FLUXO,
+    'marcadores_deproc_sei': COLUNA_MARCADORES_DEPROC_PRE_FLUXO,
+    'marcadores_deproc_finais': COLUNA_MARCADORES_DEPROC_POS_FLUXO,
+}
+# Base DEPROC usada na apuração (até 27/11/2026): sem ano_processo e
+# data_geracao_base_processo, vai para elas na leitura
+_COLUNAS_BASE_DEPROC_ANTIGAS = ('ano_base_deproc', 'data_geracao_base_deproc')
+
+# Colunas que não vão para a aba processos (desde 27/11/2026): detalhes de
+# cada passagem, que ficam só no histórico em CSV. Na leitura, saem da aba
+# (com as colunas de cada marcador, tags.eh_coluna_tag)
+COLUNAS_FORA_DA_ABA_PROCESSOS = frozenset({
+    # Árvore, marcadores da passagem e processo reaberto
+    'qnt_docs_geacs_na_arvore',
+    'qnt_memos_geacs_na_arvore',
+    'marcadores_adicionados',
+    'marcadores_removidos',
+    'processo_reaberto',
+    COLUNA_DEMAIS_MARCADORES,
+    *_COLUNA_POR_COLUNA_ANTIGA,
+    # ADC PDF ANT AUT / MAN
+    'planilhas_sei',
+    'pdfs_incluidos',
+    'pdfs_na_arvore',
+    'pdfs_antigos_a_excluir',
+    # Memo da APIS, VELHO e memos e relatórios do fluxo inicial
+    'memos_velho_sei',
+    'ult_memo_obtido',
+    'conteudo_ult_memo_obtido',
+    'memo_apis_sei',
+    'memos_apis_geacs_sei',
+    'modelo_memo_apis',
+    'motivo_formato_invalido',
+    *(
+        f'{memo}_{sufixo}'
+        for memo in ('memo_apis_mat_nao_encontradas', 'memo_apis_sem_memo', 'memo_apis_formato_invalido', 'memo_apis_periodo_deps', 'memo_apis_sem_uso', 'memo_disa', 'memo_deproc')
+        for sufixo in ('criado', 'inserido_bloco', 'na_arvore', 'sei')
+    ),
+    'relatorios_incluidos',
+    'relatorios_na_arvore',
+    # DEPROC EXCLUIR DOCS e GEACS CANC MEMO DEPROC ANT
+    'deproc_excluir_docs',
+    'canc_memo_deproc_ant_tipo_erro',
+    'canc_memo_deproc_ant_erro',
+    'canc_memo_deproc_ant_em',
+    'canc_memo_deproc_ant_cancelado',
+    'canc_memo_deproc_ant_sei',
+    'canc_memo_deproc_ant_nome',
+    'canc_memo_deproc_ant_nao_cancelados',
+    # DEPROC
+    'marcadores_deproc_adicionados',
+    'marcadores_deproc_removidos',
+    'memo_deproc_geacs_sei',
+    'memo_deproc_assinado',
+    'linhas_base_deproc',
+    'linhas_fora_periodo_deproc',
+    'linhas_base_copa_zero_deproc',
+    'atendimentos_deproc',
+    'relatorio_deproc_incluido',
+    'relatorio_deproc_na_arvore',
+    'relatorio_deproc_sei',
+    'memo_deproc_resultado_criado',
+    'memo_deproc_resultado_inserido_bloco',
+    'memo_deproc_resultado_na_arvore',
+    'memo_deproc_resultado_sei',
+    *_COLUNAS_BASE_DEPROC_ANTIGAS,
+    # GEACS TODAS INFOS
+    'ano_base_deproc_todas_infos',
+    'caminho_todas_infos',
+    'memo_disa_geacs_sei',
+    'resposta_disa_sei',
+    'memo_calculo_copa_sei',
+    'memo_calculo_copa_assinado',
+    'doc_coparticipacao_sei',
+    'relatorios_rc_sei',
+    'memo_apis_todas_infos_criado',
+    'memo_apis_todas_infos_inserido_bloco',
+    'memo_apis_todas_infos_na_arvore',
+    'memo_apis_todas_infos_sei',
+    # GEACS CORRIGE ENVIO DISA
+    'memos_disa_n_consta_sei',
+    'memos_disa_excluidos_sei',
+    'memos_disa_cancelados_sei',
+    'memos_disa_nao_excluidos_sei',
+    'corrige_envio_disa',
+    # GEACS VERIFICAR MARCADORES (a ação sugerida vai para a prox_acao, e a
+    # inconsistência e o erro, para tipo_erro e erro)
+    'verificar_marcadores',
+    'verificar_marcadores_acao_sugerida',
+    'verificar_marcadores_inconsistencia',
+    'verificar_marcadores_erro',
+    'verificar_marcadores_aberto_na_geacs',
+    'verificar_marcadores_memo_aguarda_assinado',
+    'verificar_marcadores_marcador_trocado',
+})
+
+
+def fora_da_aba_processos(coluna) -> bool:
+    """A coluna fica só no histórico (COLUNAS_FORA_DA_ABA_PROCESSOS e as
+    colunas de cada marcador)."""
+    return coluna in COLUNAS_FORA_DA_ABA_PROCESSOS or eh_coluna_tag(str(coluna))
+
 
 # Histórico (uma linha por passagem): CSV ao lado da planilha. Separador ";"
 # e UTF-8 com BOM, para o Excel em português abrir direto
@@ -162,55 +259,42 @@ def _ler_aba(planilhas: dict[str, pd.DataFrame], aba: str) -> list[dict]:
     return df.to_dict('records')
 
 
-def _coluna_marcador_obsoleta(coluna) -> bool:
-    """Coluna tag_* de marcador que não é mais válido (o marcador vai para
-    demais_marcadores) ou coluna de marcadores que não existe mais."""
-    coluna = str(coluna)
-    return (eh_coluna_tag(coluna) and coluna not in COLUNAS_TAGS_VALIDOS) or coluna in _COLUNAS_MARCADORES_OBSOLETAS
-
-
-def _migrar_nomes(linha: dict) -> dict:
-    """Colunas tag_* dos marcadores válidos -> o nome do marcador (até
-    18/11/2026 tinham nomes curtos, alguns diferentes do marcador). Com as
-    duas na linha, vale a atual."""
-    nova = {}
-    for coluna, valor in linha.items():
-        atual = COLUNA_POR_COLUNA_ANTIGA.get(coluna)
-        if atual is None:
-            nova[coluna] = valor
-        elif atual not in linha:
-            nova[atual] = valor
-    return nova
-
-
-def _marcadores(texto) -> list[str] | None:
-    """Os marcadores de marcadores_finais (separados por ";"); None se vazia."""
+def marcadores_da_coluna(texto) -> list[str] | None:
+    """Os marcadores de uma coluna de marcadores (separados por ";"); None se
+    vazia."""
     if not isinstance(texto, str) or not texto.strip():
         return None
     return [tag.strip() for tag in texto.split(';')]
 
 
-def migrar_colunas_marcadores(linhas: list[dict]) -> list[dict]:
-    """Renomeia as colunas tag_* dos marcadores válidos para o nome do marcador
-    e remove as colunas de marcadores obsoletas. Os marcadores delas não se
-    perdem: sem demais_marcadores, ela é calculada a partir de
-    marcadores_finais (todos os marcadores do processo no fim da passagem).
-    Sem estado_atual (estado_atual_deproc), ela também é calculada, de
-    marcadores_finais (marcadores_deproc_finais). As outras colunas ficam como
-    estão."""
+def migrar_colunas(linhas: list[dict]) -> list[dict]:
+    """Aba processos de antes de 27/11/2026: marcadores_sei / marcadores_finais
+    (e as da DEPROC) viram marcadores_pre_fluxo / marcadores_pos_fluxo (com as
+    duas, vale a atual); sem ano_processo e data_geracao_base_processo, elas
+    recebem ano_base_deproc e data_geracao_base_deproc (a base usada na
+    apuração); sem estado_atual (estado_atual_deproc), ela é calculada dos
+    marcadores depois da passagem; e saem as colunas que ficam só no histórico
+    (fora_da_aba_processos). As outras colunas ficam como estão."""
     migradas = []
     for linha in linhas:
-        nova = {coluna: valor for coluna, valor in _migrar_nomes(linha).items() if not _coluna_marcador_obsoleta(coluna)}
-        finais = _marcadores(linha.get('marcadores_finais'))
-        if finais is not None:
-            if nova.get(COLUNA_DEMAIS_MARCADORES) is None:
-                nova[COLUNA_DEMAIS_MARCADORES] = demais_marcadores(finais) or None
-            if nova.get(COLUNA_ESTADO_ATUAL) is None:
-                nova[COLUNA_ESTADO_ATUAL] = descrever_estado(finais)
-        finais_deproc = _marcadores(linha.get('marcadores_deproc_finais'))
-        if finais_deproc is not None and nova.get(COLUNA_ESTADO_ATUAL_DEPROC) is None:
-            nova[COLUNA_ESTADO_ATUAL_DEPROC] = descrever_estado(finais_deproc, TAGS_ESTADO_DEPROC)
-        migradas.append(nova)
+        nova = {}
+        for coluna, valor in linha.items():
+            atual = _COLUNA_POR_COLUNA_ANTIGA.get(coluna)
+            if atual is None:
+                nova.setdefault(coluna, valor)
+            elif linha.get(atual) is None:
+                nova[atual] = valor
+        if not all(texto_celula(nova.get(coluna)) for coluna in COLUNAS_BASE_PROCESSO):
+            antigas = [texto_celula(nova.get(coluna)) for coluna in _COLUNAS_BASE_DEPROC_ANTIGAS]
+            if all(antigas):
+                nova.update(zip(COLUNAS_BASE_PROCESSO, antigas, strict=True))
+        pos_fluxo = marcadores_da_coluna(nova.get(COLUNA_MARCADORES_POS_FLUXO))
+        if pos_fluxo is not None and nova.get(COLUNA_ESTADO_ATUAL) is None:
+            nova[COLUNA_ESTADO_ATUAL] = descrever_estado(pos_fluxo)
+        pos_fluxo_deproc = marcadores_da_coluna(nova.get(COLUNA_MARCADORES_DEPROC_POS_FLUXO))
+        if pos_fluxo_deproc is not None and nova.get(COLUNA_ESTADO_ATUAL_DEPROC) is None:
+            nova[COLUNA_ESTADO_ATUAL_DEPROC] = descrever_estado(pos_fluxo_deproc, TAGS_ESTADO_DEPROC)
+        migradas.append({coluna: valor for coluna, valor in nova.items() if not fora_da_aba_processos(coluna)})
     return migradas
 
 
@@ -219,30 +303,31 @@ def _tem_colunas_a_migrar(planilhas: dict[str, pd.DataFrame]) -> bool:
     if _ABA_PROCESSOS not in planilhas:
         return False
     colunas = [str(coluna) for coluna in planilhas[_ABA_PROCESSOS].columns]
-    sem_estado = 'marcadores_finais' in colunas and COLUNA_ESTADO_ATUAL not in colunas
-    return sem_estado or any(coluna in COLUNA_POR_COLUNA_ANTIGA or _coluna_marcador_obsoleta(coluna) for coluna in colunas)
+    return any(coluna in _COLUNA_POR_COLUNA_ANTIGA or fora_da_aba_processos(coluna) for coluna in colunas)
 
 
 def _ler(arquivo: Path) -> tuple[list[dict], list[dict] | None, bool]:
     """As linhas da aba processos, as da aba historico (None: a planilha não
     tem mais a aba, que virou o CSV) e se a aba processos tinha colunas a
-    migrar (migrar_colunas_marcadores)."""
+    migrar (migrar_colunas)."""
     if not arquivo.exists():
         logger.info(f'Planilha de controle geral ainda não existe; será criada: {arquivo}')
         return [], None, False
     planilhas = pd.read_excel(arquivo, sheet_name=None, dtype=object)
-    historico = migrar_colunas_marcadores(_ler_aba(planilhas, _ABA_HISTORICO)) if _ABA_HISTORICO in planilhas else None
-    return migrar_colunas_marcadores(_ler_aba(planilhas, _ABA_PROCESSOS)), historico, _tem_colunas_a_migrar(planilhas)
+    # O histórico vai inteiro para o CSV (todas as colunas)
+    historico = _ler_aba(planilhas, _ABA_HISTORICO) if _ABA_HISTORICO in planilhas else None
+    return migrar_colunas(_ler_aba(planilhas, _ABA_PROCESSOS)), historico, _tem_colunas_a_migrar(planilhas)
 
 
 def _atualizar_processos(processos: list[dict], passagens: list[dict], so_historico: frozenset[str] = frozenset()) -> list[dict]:
     """so_historico: colunas das passagens que não vão para a aba processos
-    (ex.: script e ultima_passagem do verificar marcadores)."""
+    (ex.: script e ultima_passagem do verificar marcadores), além das de
+    COLUNAS_FORA_DA_ABA_PROCESSOS."""
     por_processo = {str(linha['num_processo']).strip(): dict(linha) for linha in processos}
     for passagem in passagens:
         linha = por_processo.setdefault(str(passagem['num_processo']).strip(), {})
         primeira = linha.get('primeira_passagem') or passagem['ultima_passagem']
-        linha.update({coluna: valor for coluna, valor in passagem.items() if coluna not in so_historico})
+        linha.update({coluna: valor for coluna, valor in passagem.items() if coluna not in so_historico and not fora_da_aba_processos(coluna)})
         linha['primeira_passagem'] = primeira
     return list(por_processo.values())
 
@@ -259,7 +344,7 @@ def _preenchimento_linha(linha, idx_erro: int | None, idx_prox_acao: int | None)
     prox_acao = linha[idx_prox_acao].value if idx_prox_acao is not None else None
     if prox_acao in _PROX_ACOES_CONCLUIDO:
         return _PREENCHIMENTO_CONCLUIDO
-    if idx_erro is not None and linha[idx_erro].value and prox_acao not in _PROX_ACOES_SEM_ERRO:
+    if idx_erro is not None and linha[idx_erro].value and prox_acao not in PROX_ACOES_AGUARDANDO:
         return _PREENCHIMENTO_ERRO
     return None
 
@@ -273,16 +358,9 @@ def _formatar(planilha, colunas: list[str]) -> None:
 
     for indice, coluna in enumerate(colunas, start=1):
         letra = get_column_letter(indice)
-        if eh_coluna_tag(coluna):
-            # Largura fixa e o nome do marcador quebrado em até 3 linhas
-            planilha.column_dimensions[letra].width = _LARGURA_COLUNA_MARCADOR
-            planilha.cell(row=1, column=indice).alignment = Alignment(wrap_text=True, vertical='top')
-            continue
         valores = [str(c.value) for c in planilha[letra] if c.value is not None]
         largura = max((len(v) for v in valores), default=len(coluna))
         planilha.column_dimensions[letra].width = min(largura + 2, _LARGURA_MAXIMA)
-    if any(eh_coluna_tag(coluna) for coluna in colunas):
-        planilha.row_dimensions[1].height = _ALTURA_CABECALHO_MARCADORES
 
     idx_erro = colunas.index('erro') if 'erro' in colunas else None
     idx_nao_encontradas = [colunas.index(c) for c in _COLUNAS_NAO_ENCONTRADAS if c in colunas]
@@ -296,12 +374,10 @@ def _formatar(planilha, colunas: list[str]) -> None:
                 celula.fill = preenchimento
         for idx in idx_nao_encontradas:
             if linha[idx].value:
-                linha[idx].fill = _PREENCHIMENTO_NAO_ENCONTRADA
-        verificar = [idx for idx in idx_verificar if linha[idx].value]
-        if verificar and idx_prox_acao is not None:
-            verificar.append(idx_prox_acao)
-        for idx in verificar:
-            linha[idx].fill = _PREENCHIMENTO_NAO_ENCONTRADA
+                linha[idx].fill = _PREENCHIMENTO_AMARELO
+        for idx in idx_verificar:
+            if str(linha[idx].value or '').startswith(PREFIXO_VERIFICAR_MARCADORES):
+                linha[idx].fill = _PREENCHIMENTO_AMARELO
 
 
 def _inserir_depois(colunas: list[str], ancora: str, novas: list[str]) -> list[str]:
@@ -310,17 +386,15 @@ def _inserir_depois(colunas: list[str], ancora: str, novas: list[str]) -> list[s
 
 
 def _ordenar_colunas(colunas: list[str]) -> list[str]:
-    """estado_atual (e estado_atual_deproc) logo depois da prox_acao; as do
-    fluxo GEACS VERIFICAR MARCADORES logo depois de erro; no fim,
-    demais_marcadores e as colunas dos marcadores, na ordem de
-    tags.COLUNAS_TAGS (as antigas que sobrarem, depois)."""
-    marcadores = [c for c in COLUNAS_TAGS if c in colunas] + [c for c in colunas if eh_coluna_tag(c) and c not in COLUNAS_TAGS_VALIDOS]
-    fim = [COLUNA_DEMAIS_MARCADORES] * (COLUNA_DEMAIS_MARCADORES in colunas) + marcadores
+    """estado_atual (e estado_atual_deproc) logo depois da prox_acao;
+    data_geracao_base_processo logo depois de ano_processo; no fim, os
+    marcadores antes e depois da passagem (GEACS e DEPROC)."""
+    fim = [c for c in _COLUNAS_MARCADORES if c in colunas]
     estados = [c for c in _COLUNAS_ESTADO if c in colunas]
-    verificar = [c for c in _COLUNAS_VERIFICAR if c in colunas]
-    resto = [c for c in colunas if c not in {*fim, *estados, *verificar}]
+    data_base = [_DATA_BASE_PROCESSO] * (_DATA_BASE_PROCESSO in colunas)
+    resto = [c for c in colunas if c not in {*fim, *estados, *data_base}]
     resto = _inserir_depois(resto, 'prox_acao', estados)
-    resto = _inserir_depois(resto, 'erro', verificar)
+    resto = _inserir_depois(resto, _ANO_PROCESSO, data_base)
     return resto + fim
 
 

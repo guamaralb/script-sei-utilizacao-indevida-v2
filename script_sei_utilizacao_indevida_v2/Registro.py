@@ -6,8 +6,8 @@ from typing import ClassVar
 
 from docs_processo import filtrar_docs_geacs, filtrar_memos_geacs
 from tags import (
-    COLUNA_DEMAIS_MARCADORES,
     COLUNA_ESTADO_ATUAL,
+    COLUNA_ESTADO_ATUAL_DEPROC,
     TAG_ENCAMINHADO_APIS_TODAS_INFOS,
     TAG_MEMO_APIS_FORMATO_INVALIDO,
     TAG_MEMO_APIS_MAT_NAO_ENCONTRADAS,
@@ -23,17 +23,19 @@ from tags import (
     TAGS_AGUARDA_RESPOSTA_APIS,
     TAGS_AGUARDA_RESPOSTA_DEPROC,
     TAGS_AGUARDA_RESPOSTA_DISA,
-    colunas_tags,
-    colunas_tags_deproc,
-    demais_marcadores,
+    TAGS_ESTADO_DEPROC,
     descrever_estado,
-    eh_coluna_tag,
 )
 
 from script_sei_utilizacao_indevida_v2.memorandos.DadosUI import DadosUI
 from script_sei_utilizacao_indevida_v2.memorandos.DocArvore import DocArvore
 
 logger = logging.getLogger(__name__)
+
+
+# Fluxo GEACS VERIFICAR MARCADORES: prefixo da prox_acao (o que fazer com o
+# processo), do tipo_erro e do erro (inconsistências e erros da passagem)
+PREFIXO_VERIFICAR_MARCADORES = 'VERIFICAR MARCADORES: '
 
 
 class ProxAcao:
@@ -147,7 +149,7 @@ PROX_ACOES_A_VERIFICAR = frozenset({
 })
 
 
-def _mensagem_erro(erro: Exception) -> str:
+def mensagem_erro(erro: Exception) -> str:
     """Mensagem curta para a planilha. Erros do Selenium trazem o
     stacktrace do chromedriver no texto; fica só a primeira linha útil ou,
     sem mensagem, a função do script/biblioteca em que o erro ocorreu."""
@@ -166,7 +168,7 @@ def _mensagem_erro(erro: Exception) -> str:
 
 def registrar_erro(registro, erro: Exception) -> None:
     registro.tipo_erro = type(erro).__name__
-    registro.erro = _mensagem_erro(erro)
+    registro.erro = mensagem_erro(erro)
     if registro.prox_acao not in _PROX_ACOES_DE_ERRO:
         registro.prox_acao = ProxAcao.VERIFICAR_ERRO
 
@@ -204,11 +206,17 @@ _CAMPOS_INTERNOS = frozenset({
     'acoes_sugeridas',
     'aberto_na_geacs',
     'memos_aguarda_assinados',
-    'colunas_memo_aguarda',
     'prox_acao_atualizada',
     'marcadores_trocados',
     'concluido_de_novo',
     'avaliou_processo',
+    'prox_acao_planilha',
+    'erro_planilha',
+    'prox_acao_esperada',
+    'memo_resultado_deproc_assinado',
+    'marcadores_deproc',
+    'marcadores_deproc_lidos',
+    'erros_deproc',
 })
 
 # Resultados do fluxo principal: o ADC PDF ANT AUT não os avalia e não pode apagá-los da
@@ -227,13 +235,31 @@ _CAMPOS_SO_FLUXO_PRINCIPAL = frozenset({
 })
 
 
-def _colunas_marcadores_geacs(marcadores: list[str]) -> dict:
-    """estado_atual, demais_marcadores e uma coluna por marcador válido na
-    GEACS."""
+# Marcadores do processo antes e depois da passagem (GEACS e DEPROC). Até
+# 27/11/2026: marcadores_sei / marcadores_finais (e marcadores_deproc_sei /
+# marcadores_deproc_finais), com uma coluna por marcador e demais_marcadores
+COLUNA_MARCADORES_PRE_FLUXO = 'marcadores_pre_fluxo'
+COLUNA_MARCADORES_POS_FLUXO = 'marcadores_pos_fluxo'
+COLUNA_MARCADORES_DEPROC_PRE_FLUXO = 'marcadores_deproc_pre_fluxo'
+COLUNA_MARCADORES_DEPROC_POS_FLUXO = 'marcadores_deproc_pos_fluxo'
+
+
+def colunas_marcadores_geacs(pre_fluxo: list[str], pos_fluxo: list[str]) -> dict:
+    """marcadores_pre_fluxo, marcadores_pos_fluxo e estado_atual."""
     return {
-        COLUNA_ESTADO_ATUAL: descrever_estado(marcadores),
-        COLUNA_DEMAIS_MARCADORES: demais_marcadores(marcadores) or None,
-        **colunas_tags(marcadores),
+        COLUNA_MARCADORES_PRE_FLUXO: _juntar(pre_fluxo),
+        COLUNA_MARCADORES_POS_FLUXO: _juntar(pos_fluxo),
+        COLUNA_ESTADO_ATUAL: descrever_estado(pos_fluxo),
+    }
+
+
+def colunas_marcadores_deproc(pre_fluxo: list[str], pos_fluxo: list[str]) -> dict:
+    """marcadores_deproc_pre_fluxo, marcadores_deproc_pos_fluxo e
+    estado_atual_deproc."""
+    return {
+        COLUNA_MARCADORES_DEPROC_PRE_FLUXO: _juntar(pre_fluxo),
+        COLUNA_MARCADORES_DEPROC_POS_FLUXO: _juntar(pos_fluxo),
+        COLUNA_ESTADO_ATUAL_DEPROC: descrever_estado(pos_fluxo, TAGS_ESTADO_DEPROC),
     }
 
 
@@ -306,12 +332,11 @@ class RegistroBase:
     def to_dict(self) -> dict:
         dados = {}
         for campo in fields(self):
-            if campo.name in _CAMPOS_INTERNOS:
+            if campo.name in _CAMPOS_INTERNOS or campo.name == 'marcadores_sei':
                 continue
             valor = getattr(self, campo.name)
             dados[campo.name] = _juntar(valor) if isinstance(valor, list) else valor
-        dados['marcadores_finais'] = _juntar(self.marcadores_atuais)
-        dados.update(_colunas_marcadores_geacs(self.marcadores_atuais))
+        dados.update(colunas_marcadores_geacs(self.marcadores_sei, self.marcadores_atuais))
         return dados
 
 
@@ -452,19 +477,20 @@ class RegistroAdcPdfAnt(RegistroBase):
 # dos outros fluxos ficam como estão
 _CAMPOS_FORA_DEPROC = _CAMPOS_SO_FLUXO_PRINCIPAL | {'processo_reaberto'}
 # Os marcadores lidos na unidade da DEPROC não são os da GEACS: vão para
-# colunas próprias (marcadores_deproc_* e tag_deproc_*), sem apagar as da GEACS
+# colunas próprias (marcadores_deproc_*), sem apagar as da GEACS
 _COLUNAS_MARCADORES_DEPROC = {
-    'marcadores_sei': 'marcadores_deproc_sei',
     'marcadores_adicionados': 'marcadores_deproc_adicionados',
     'marcadores_removidos': 'marcadores_deproc_removidos',
-    'marcadores_finais': 'marcadores_deproc_finais',
 }
+# Colunas dos marcadores da GEACS (RegistroBase.to_dict), que os fluxos que
+# não leem os marcadores da GEACS não gravam
+_COLUNAS_MARCADORES_GEACS = frozenset({COLUNA_MARCADORES_PRE_FLUXO, COLUNA_MARCADORES_POS_FLUXO, COLUNA_ESTADO_ATUAL})
 
 
-# Ano e data de geração da base DEPROC usada na apuração
-_COLUNAS_BASE_DEPROC = ('ano_base_deproc', 'data_geracao_base_deproc')
-# Ano e data de geração da base do processo (pesquisa nas bases da pasta)
-_COLUNAS_BASE_PROCESSO = ('ano_processo', 'data_geracao_base_processo')
+# Ano e data de geração da base DEPROC do processo: a única coluna de ano (até
+# 27/11/2026 havia também ano_base_deproc e data_geracao_base_deproc, da base
+# usada na apuração, que é sempre a do processo)
+COLUNAS_BASE_PROCESSO = ('ano_processo', 'data_geracao_base_processo')
 
 
 @dataclass
@@ -482,16 +508,12 @@ class RegistroDeproc(RegistroBase):
     memo_deproc_geacs_sei: str | None = None
     memo_deproc_assinado: bool | None = None
 
-    # Ano e data de geração da base DEPROC usada (constantes.BaseDeproc; a
-    # data é citada no memo). Preenchidos só quando a base
-    # é usada na apuração: a passagem que não apura (memo no bloco,
-    # encaminhado, erro antes) não sobrescreve o ano da base usada antes. O
-    # fluxo GEACS TODAS INFOS confere a coparticipação na mesma base
-    ano_base_deproc: str | None = None
-    data_geracao_base_deproc: str | None = None
-    # Ano e data de geração da base do processo: gravados só quando a
-    # planilha de controle não os tinha e a base foi encontrada pela pesquisa
-    # nas bases da pasta (main_deproc_calcula_copa.pesquisar_base)
+    # Ano e data de geração da base DEPROC do processo (constantes.BaseDeproc;
+    # a data é citada no memo): gravados quando a base é encontrada pela
+    # pesquisa nas bases da pasta (main_deproc_calcula_copa.pesquisar_base) e
+    # quando é usada na apuração. A passagem sem a base (memo no bloco,
+    # encaminhado, erro antes) não os apaga. O fluxo GEACS TODAS INFOS confere
+    # a coparticipação na mesma base
     ano_processo: str | None = None
     data_geracao_base_processo: str | None = None
 
@@ -524,32 +546,30 @@ class RegistroDeproc(RegistroBase):
     dados_ui: DadosUI | None = None
 
     def to_dict(self) -> dict:
-        # Os marcadores da GEACS (colunas dos marcadores, estado_atual e
-        # demais_marcadores) são de outra unidade
-        dados = {
-            _COLUNAS_MARCADORES_DEPROC.get(coluna, coluna): valor
-            for coluna, valor in super().to_dict().items()
-            if coluna not in _CAMPOS_FORA_DEPROC and not eh_coluna_tag(coluna) and coluna not in {COLUNA_DEMAIS_MARCADORES, COLUNA_ESTADO_ATUAL}
-        }
-        # Sem apuração nesta passagem: mantém o ano e a data da base usada antes
-        for coluna in (*_COLUNAS_BASE_DEPROC, *_COLUNAS_BASE_PROCESSO):
+        # Os marcadores da GEACS (marcadores_pre_fluxo, marcadores_pos_fluxo e
+        # estado_atual) são de outra unidade
+        dados = {_COLUNAS_MARCADORES_DEPROC.get(coluna, coluna): valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_FORA_DEPROC and coluna not in _COLUNAS_MARCADORES_GEACS}
+        # Sem a base nesta passagem: mantém o ano e a data gravados antes
+        for coluna in COLUNAS_BASE_PROCESSO:
             if dados.get(coluna) is None:
                 dados.pop(coluna, None)
-        dados.update(colunas_tags_deproc(self.marcadores_atuais))
+        dados.update(colunas_marcadores_deproc(self.marcadores_sei, self.marcadores_atuais))
         return dados
 
 
 # Colunas que o fluxo de cancelar o memo DEPROC antigo não grava na linha do
 # processo: a prox_acao, o fluxo e os marcadores são dos outros fluxos
-_CAMPOS_FORA_CANC_MEMO_DEPROC_ANT = _CAMPOS_SO_FLUXO_PRINCIPAL | {
-    'prox_acao',
-    'fluxo',
-    'processo_reaberto',
-    'marcadores_sei',
-    'marcadores_adicionados',
-    'marcadores_removidos',
-    'marcadores_finais',
-}
+_CAMPOS_FORA_CANC_MEMO_DEPROC_ANT = (
+    _CAMPOS_SO_FLUXO_PRINCIPAL
+    | _COLUNAS_MARCADORES_GEACS
+    | {
+        'prox_acao',
+        'fluxo',
+        'processo_reaberto',
+        'marcadores_adicionados',
+        'marcadores_removidos',
+    }
+)
 # O erro deste fluxo vai para colunas próprias, sem apagar o dos outros
 _COLUNAS_ERRO_CANC_MEMO_DEPROC_ANT = {'tipo_erro': 'canc_memo_deproc_ant_tipo_erro', 'erro': 'canc_memo_deproc_ant_erro'}
 
@@ -573,11 +593,7 @@ class RegistroCancMemoDeprocAnt(RegistroBase):
         self.canc_memo_deproc_ant_em = self.ultima_passagem
 
     def to_dict(self) -> dict:
-        return {
-            _COLUNAS_ERRO_CANC_MEMO_DEPROC_ANT.get(coluna, coluna): valor
-            for coluna, valor in super().to_dict().items()
-            if coluna not in _CAMPOS_FORA_CANC_MEMO_DEPROC_ANT and not eh_coluna_tag(coluna) and coluna not in {COLUNA_DEMAIS_MARCADORES, COLUNA_ESTADO_ATUAL}
-        }
+        return {_COLUNAS_ERRO_CANC_MEMO_DEPROC_ANT.get(coluna, coluna): valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_FORA_CANC_MEMO_DEPROC_ANT}
 
     def para_log(self) -> dict:
         """Linha do resumo do log (com erro e próxima ação)."""
@@ -643,13 +659,11 @@ class RegistroDeprocExcluirDocs(RegistroBase):
         }
 
     def _colunas_marcadores_deproc(self) -> dict:
-        """As mesmas colunas de marcadores do fluxo DEPROC (marcadores_deproc_*
-        e tag_deproc_*), para não ficarem com os marcadores removidos."""
+        """As mesmas colunas de marcadores do fluxo DEPROC, para não ficarem
+        com os marcadores removidos."""
         return {
-            'marcadores_deproc_sei': _juntar(self.marcadores_sei),
             'marcadores_deproc_removidos': _juntar(self.marcadores_removidos),
-            'marcadores_deproc_finais': _juntar(self.marcadores_atuais),
-            **colunas_tags_deproc(self.marcadores_atuais),
+            **colunas_marcadores_deproc(self.marcadores_sei, self.marcadores_atuais),
         }
 
     def para_log(self) -> dict:
@@ -671,10 +685,6 @@ class RegistroTodasInfos(RegistroBase):
     memo_apis_sei: str | None = None
     memos_apis_geacs_sei: list[str] = field(default_factory=list)
     modelo_memo_apis: str | None = None
-
-    # Ano da base DEPROC usada na conferência da coparticipação: o da coluna
-    # ano_base_deproc, gravada pelo deproc_calcula_copa
-    ano_base_deproc_todas_infos: str | None = None
 
     # Caminho do processo: "DEPROC" (direto) ou "DISA" (passou pela DISA
     # antes); memo da GEACS à DISA e resposta da DISA na rodada
@@ -714,24 +724,42 @@ class RegistroTodasInfos(RegistroBase):
         return {coluna: valor for coluna, valor in super().to_dict().items() if coluna not in _CAMPOS_SO_FLUXO_PRINCIPAL | {'processo_reaberto'}}
 
 
+# prox_acao do processo parado, aguardando a resposta ao memo enviado: não é
+# erro (tipo_erro e erro vazios na planilha de controle, linha sem vermelho)
+PROX_ACOES_AGUARDANDO = frozenset({ProxAcao.AGUARDAR_RESPOSTA_MEMO, ProxAcao.AGUARDAR_RETORNO_APIS, ProxAcao.AGUARDAR_RETORNO_DISA, ProxAcao.AGUARDAR_RETORNO_DEPROC})
+# prox_acao de erro que o fluxo GEACS VERIFICAR MARCADORES pode resolver (o
+# erro da passagem anterior sai junto)
+_PROX_ACOES_DE_ERRO_RESOLVIVEIS = PROX_ACOES_A_VERIFICAR | {ProxAcao.VERIFICAR_MARCADORES}
+# tipo_erro das inconsistências encontradas pelo verificar marcadores
+TIPO_INCONSISTENCIA = 'Inconsistencia'
+
+
 @dataclass
 class RegistroVerificarMarcadores(RegistroBase):
     """Uma passagem pelo fluxo de verificar os marcadores
-    (main_geacs_verificar_marcadores.py). Na planilha de controle, grava só os
-    marcadores (uma coluna por marcador válido na GEACS, estado_atual,
-    demais_marcadores e marcadores_finais), a data da passagem
+    (main_geacs_verificar_marcadores.py), na GEACS e, para os processos que já
+    deveriam estar ou ter passado pela DEPROC, na DEPROC.
+
+    Na planilha de controle, grava os marcadores (marcadores_pre_fluxo,
+    marcadores_pos_fluxo e estado_atual; da DEPROC, marcadores_deproc_pre_fluxo,
+    marcadores_deproc_pos_fluxo e estado_atual_deproc), a data da passagem
     (verificar_marcadores_em; script e ultima_passagem só vão para o
-    histórico), as inconsistências encontradas
-    (verificar_marcadores_inconsistencia) e o erro da passagem
-    (verificar_marcadores_erro), as ações sugeridas
-    (verificar_marcadores_acao_sugerida) e se o processo está aberto na GEACS
-    (verificar_marcadores_aberto_na_geacs). Não grava fluxo, tipo_erro e erro.
-    A prox_acao e a coluna do memo (memo_*_sei) só são gravadas quando o memo
-    de um marcador "Aguarda" está assinado (conferir_memos_aguarda; coluna
-    verificar_marcadores_memo_aguarda_assinado) ou quando o "No Bloco" é
-    trocado pelo marcador de assinado (trocar_no_bloco_assinado; colunas
-    verificar_marcadores_marcador_trocado, marcadores_adicionados e
-    marcadores_removidos)."""
+    histórico), a prox_acao e o erro:
+
+    - prox_acao (prox_acao_final): o que fazer com o processo, com o prefixo
+      PREFIXO_VERIFICAR_MARCADORES ("VERIFICAR MARCADORES: Rodar
+      geacs_todas_infos"), ou a da situação do processo (troca do "No Bloco",
+      memo do "Aguarda" assinado, marcadores e árvore). Na conclusão, sempre a
+      de concluído;
+    - tipo_erro e erro: as inconsistências e os erros da passagem (GEACS e
+      DEPROC), com o mesmo prefixo. Sem eles, o erro de outro fluxo fica,
+      exceto no processo aguardando resposta ou concluído, no erro de uma
+      passagem anterior do verificar e no erro resolvido (a prox_acao de erro
+      trocada pela da situação): aí tipo_erro e erro ficam vazios.
+
+    Não grava fluxo. Os outros campos (memos dos "Aguarda" assinados, troca do
+    "No Bloco", aberto na GEACS) vão só para o histórico
+    (planilha_controle.COLUNAS_FORA_DA_ABA_PROCESSOS)."""
 
     # Internos (ver _CAMPOS_INTERNOS)
     marcadores_lidos: bool = False
@@ -745,22 +773,80 @@ class RegistroVerificarMarcadores(RegistroBase):
     # Memos dos marcadores "Aguarda" assinados (conferencia_prox_acao.
     # conferir_memos_aguarda): "<marcador>: <nº SEI> (<signatário>)"
     memos_aguarda_assinados: list[str] = field(default_factory=list)
-    # Coluna do memo na planilha (memo_disa_sei, memo_deproc_sei, ...) ->
-    # número SEI do memo assinado
-    colunas_memo_aguarda: dict[str, str] = field(default_factory=dict)
-    # prox_acao atualizada pelo memo do "Aguarda" assinado (None: a da
-    # planilha fica como está). Separada da prox_acao, que registrar_erro altera
+    # prox_acao atualizada pela situação do processo (None: a da planilha fica
+    # como está). Separada da prox_acao, que registrar_erro altera
     prox_acao_atualizada: str | None = None
     # "No Bloco" trocado pelo marcador de assinado (conferencia_prox_acao.
     # trocar_no_bloco_assinado): "<No Bloco> -> <novo>: <nº SEI> (<signatário>)"
     marcadores_trocados: list[str] = field(default_factory=list)
     # Processo fechado reaberto para a troca e concluído de novo
     concluido_de_novo: bool = False
+    # prox_acao e erro da planilha antes da passagem (carregar_planilha)
+    prox_acao_planilha: str | None = None
+    erro_planilha: str | None = None
+    # A prox_acao que o geacs_inicial daria aos marcadores: substitui a
+    # "VERIFICAR MARCADORES: ..." de uma passagem anterior, se nada mais a
+    # define nesta
+    prox_acao_esperada: str | None = None
+    # Memo de resultado da DEPROC assinado na rodada (só com o "Aguarda
+    # DEPROC"; None: não conferido)
+    memo_resultado_deproc_assinado: bool | None = None
+    # Marcadores lidos na unidade da DEPROC e erros da passagem por ela
+    # (tipo, mensagem)
+    marcadores_deproc: list[str] = field(default_factory=list)
+    marcadores_deproc_lidos: bool = False
+    erros_deproc: list[tuple[str, str]] = field(default_factory=list)
 
     # Colunas que a passagem grava só no histórico: na aba processos, script,
     # ultima_passagem e data_execucao continuam os do último fluxo que agiu
     # no processo (a passagem do verificar fica em verificar_marcadores_em)
     COLUNAS_SO_HISTORICO: ClassVar[frozenset[str]] = frozenset({'script', 'ultima_passagem', 'data_execucao'})
+
+    def carregar_planilha(self, linha: dict | None) -> None:
+        """A prox_acao e o erro da linha do processo (None: planilha não
+        lida)."""
+        if linha:
+            self.prox_acao_planilha = linha.get('prox_acao') or None
+            self.erro_planilha = linha.get('erro') or None
+
+    def _estado_conclusao(self) -> str | None:
+        estado = descrever_estado(self.marcadores_atuais) if self.marcadores_lidos else None
+        return estado if estado in PROX_ACAO_POR_CONCLUSAO else None
+
+    def prox_acao_final(self) -> tuple[bool, str | None]:
+        """(se grava, a prox_acao). Na conclusão, a de concluído; com ação a
+        fazer, "VERIFICAR MARCADORES: <ações>"; senão, a da situação do
+        processo, ou a esperada no lugar da "VERIFICAR MARCADORES: ..." de uma
+        passagem anterior. Sem nenhuma delas, a da planilha fica."""
+        conclusao = self._estado_conclusao()
+        if conclusao is not None:
+            return True, PROX_ACAO_POR_CONCLUSAO[conclusao]
+        acoes = list(dict.fromkeys(self.acoes_sugeridas))
+        if acoes:
+            return True, PREFIXO_VERIFICAR_MARCADORES + ' | '.join(acoes)
+        if self.prox_acao_atualizada is not None:
+            return True, self.prox_acao_atualizada
+        if str(self.prox_acao_planilha or '').startswith(PREFIXO_VERIFICAR_MARCADORES):
+            return True, self.prox_acao_esperada
+        return False, None
+
+    def erros(self) -> list[tuple[str, str]]:
+        """Os erros (GEACS e DEPROC) e as inconsistências da passagem: (tipo,
+        mensagem)."""
+        erros = [(self.tipo_erro, self.erro)] if self.erro is not None else []
+        return [*erros, *self.erros_deproc, *((TIPO_INCONSISTENCIA, frase) for frase in self.inconsistencias)]
+
+    def _limpa_erro(self, grava: bool, prox_acao: str | None) -> bool:
+        """Sem erro nesta passagem: tipo_erro e erro da planilha saem no
+        processo aguardando resposta ou concluído (agora ou na planilha: o
+        geacs_inicial registrava a parada como erro), no erro de uma passagem
+        anterior do verificar e no erro resolvido (prox_acao de erro trocada)."""
+        final = prox_acao if grava else self.prox_acao_planilha
+        if final in PROX_ACOES_AGUARDANDO or final in PROX_ACAO_POR_CONCLUSAO.values() or self.prox_acao_planilha in PROX_ACOES_AGUARDANDO:
+            return True
+        if str(self.erro_planilha or '').startswith(PREFIXO_VERIFICAR_MARCADORES):
+            return True
+        return grava and self.prox_acao_planilha in _PROX_ACOES_DE_ERRO_RESOLVIVEIS and final not in _PROX_ACOES_DE_ERRO_RESOLVIVEIS
 
     def to_dict(self) -> dict:
         dados = {
@@ -770,33 +856,43 @@ class RegistroVerificarMarcadores(RegistroBase):
             'ultima_passagem': self.ultima_passagem,
             'data_execucao': self.data_execucao,
             'verificar_marcadores_em': self.ultima_passagem,
-            'verificar_marcadores_acao_sugerida': ' | '.join(dict.fromkeys(self.acoes_sugeridas)) or None,
-            'verificar_marcadores_inconsistencia': ' | '.join(self.inconsistencias) or None,
-            'verificar_marcadores_erro': f'{self.tipo_erro}: {self.erro}' if self.erro is not None else None,
         }
+        grava, prox_acao = self.prox_acao_final()
+        if grava:
+            dados['prox_acao'] = prox_acao
+        erros = self.erros()
+        if erros:
+            dados['tipo_erro'] = PREFIXO_VERIFICAR_MARCADORES + ', '.join(dict.fromkeys(tipo for tipo, _ in erros))
+            dados['erro'] = PREFIXO_VERIFICAR_MARCADORES + ' | '.join(mensagem for _, mensagem in erros)
+        elif self._limpa_erro(grava, prox_acao):
+            dados['tipo_erro'] = dados['erro'] = None
+        # Só no histórico (fora da aba processos)
         if self.aberto_na_geacs is not None:
             dados['verificar_marcadores_aberto_na_geacs'] = self.aberto_na_geacs
-        # Só com os marcadores lidos (senão a coluna fica como está)
-        if self.marcadores_lidos:
-            dados['verificar_marcadores_memo_aguarda_assinado'] = ' | '.join(self.memos_aguarda_assinados) or None
-            dados['verificar_marcadores_marcador_trocado'] = ' | '.join(self.marcadores_trocados) or None
-        # Só com a troca do "No Bloco" (senão ficam as dos outros fluxos)
+        if self.memos_aguarda_assinados:
+            dados['verificar_marcadores_memo_aguarda_assinado'] = ' | '.join(self.memos_aguarda_assinados)
         if self.marcadores_trocados:
+            dados['verificar_marcadores_marcador_trocado'] = ' | '.join(self.marcadores_trocados)
             dados['marcadores_adicionados'] = _juntar(self.marcadores_adicionados)
             dados['marcadores_removidos'] = _juntar(self.marcadores_removidos)
-        dados.update(self.colunas_memo_aguarda)
-        if self.prox_acao_atualizada is not None:
-            dados['prox_acao'] = self.prox_acao_atualizada
         # Sem conseguir ler os marcadores, as colunas deles ficam como estão
         if self.marcadores_lidos:
-            dados['marcadores_finais'] = _juntar(self.marcadores_atuais)
-            dados.update(_colunas_marcadores_geacs(self.marcadores_atuais))
+            dados.update(colunas_marcadores_geacs(self.marcadores_sei, self.marcadores_atuais))
+        if self.marcadores_deproc_lidos:
+            # Na DEPROC, o verificar não mexe nos marcadores
+            dados.update(colunas_marcadores_deproc(self.marcadores_deproc, self.marcadores_deproc))
         return dados
 
     def para_log(self) -> dict:
         """Linha do resumo do log (com erro e próxima ação)."""
-        acao = f'{len(self.inconsistencias)} inconsistência(s) encontrada(s)' if self.inconsistencias else 'Marcadores verificados'
-        return {'num_processo': self.num_processo, 'tipo_erro': self.tipo_erro, 'erro': self.erro, 'prox_acao': acao}
+        erros = self.erros()
+        _, prox_acao = self.prox_acao_final()
+        return {
+            'num_processo': self.num_processo,
+            'tipo_erro': ', '.join(dict.fromkeys(tipo for tipo, _ in erros)) or None,
+            'erro': ' | '.join(mensagem for _, mensagem in erros) or None,
+            'prox_acao': prox_acao or 'Marcadores verificados',
+        }
 
 
 @dataclass

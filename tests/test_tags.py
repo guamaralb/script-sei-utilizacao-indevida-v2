@@ -51,13 +51,16 @@ def test_mais_de_um_estado_e_erro(registro):
         tags.estado_atual(registro, tags.TAGS_ESTADO_NOVO)
 
 
-def test_colunas_tags_refletem_marcadores_finais(registro):
+def test_colunas_dos_marcadores_antes_e_depois_da_passagem(registro):
     tags.adicionar_tag(None, registro, tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS)
     dados = registro.to_dict()
 
-    assert dados[tags.TAG_PROCESSO_NOVO] is True
-    assert dados[tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA] is False
-    assert dados[tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS] is True
+    assert dados['marcadores_pre_fluxo'] == f'{tags.TAG_PROCESSO_NOVO}; {tags.TAG_AVALIADO_USO_REDE_PROPRIA_DISA}'
+    assert dados['marcadores_pos_fluxo'] == f'{tags.TAG_PROCESSO_NOVO}; {tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS}'
+    # Sem uma coluna por marcador
+    assert tags.TAG_PROCESSO_NOVO not in dados
+    assert 'marcadores_sei' not in dados
+    assert 'marcadores_finais' not in dados
     assert dados['estado_atual'] == tags.TAG_AVALIADO_USO_REDE_PROPRIA_MANTIS
     assert 'tds_docs' not in dados
 

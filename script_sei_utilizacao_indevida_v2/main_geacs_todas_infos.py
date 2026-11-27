@@ -14,9 +14,8 @@ Para cada processo da aba geacs_todas_infos de processos_a_processar.xlsx:
    rodada). Pela DISA, para com erro: sem resposta da DISA, ou com resposta
    (leitura ainda não implementada, TODO);
 5. lê e recalcula os valores (todas_infos.apurar_todas_infos), com a base
-   DEPROC usada no deproc_calcula_copa (colunas ano_base_deproc e
-   data_geracao_base_deproc da planilha de controle ou, sem elas, ano_processo
-   e data_geracao_base_processo): divergência para o processo, sem criar o
+   DEPROC usada no deproc_calcula_copa (colunas ano_processo e
+   data_geracao_base_processo da planilha de controle): divergência para o processo, sem criar o
    memo;
 6. cria o memo à APIS, insere no bloco BLOCO_MEMO_APIS_TODAS_INFOS e adiciona
    o 01.12 - No Bloco APIS: Todas as Infos (remove o 01.10.1). Retomada: o
@@ -62,7 +61,7 @@ from processar_novo import obter_dados_ui
 from processo_fechado import ProcessoFechadoNoSetor, tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
 from rede_propria import BasesUso, ErroAvaliacao, carregar_bases
-from Registro import PROX_ACAO_POR_CONCLUSAO, PROX_ACAO_POR_NO_BLOCO, ProxAcao, RegistroTodasInfos, registrar_erro, registrar_sem_acesso
+from Registro import COLUNAS_BASE_PROCESSO, PROX_ACAO_POR_CONCLUSAO, PROX_ACAO_POR_NO_BLOCO, ProxAcao, RegistroTodasInfos, registrar_erro, registrar_sem_acesso
 from sei_automacao.exceptions import UnidadeSemAcessoException
 from sei_automacao.processo import acessar_processo, listar_documentos_arvore, listar_marcadores
 from selenium import webdriver
@@ -106,21 +105,20 @@ def _par_na_linha(linha_controle: dict, coluna_ano: str, coluna_data: str) -> Ba
 
 def base_deproc_da_planilha(linha_controle: dict | None) -> BaseDeproc:
     """Base DEPROC do processo na planilha de controle (constantes.BaseDeproc):
-    a usada no deproc_calcula_copa (colunas ano_base_deproc e
-    data_geracao_base_deproc) ou, sem as duas, a do processo (ano_processo e
-    data_geracao_base_processo, gravadas pelo deproc_calcula_copa ao achar o
-    processo numa base). Não procura nas bases da pasta: sem um par completo,
-    ou sem o arquivo da base, SemAnoBaseDeproc."""
+    colunas ano_processo e data_geracao_base_processo, gravadas pelo
+    deproc_calcula_copa (a base em que ele achou o processo e que usou na
+    apuração). Não procura nas bases da pasta: sem as duas, ou sem o arquivo
+    da base, SemAnoBaseDeproc."""
     if linha_controle is None:
-        raise SemAnoBaseDeproc('Planilha de controle não lida: sem a base DEPROC usada no deproc_calcula_copa (colunas ano_base_deproc e data_geracao_base_deproc)')
-    base = _par_na_linha(linha_controle, 'ano_base_deproc', 'data_geracao_base_deproc') or _par_na_linha(linha_controle, 'ano_processo', 'data_geracao_base_processo')
+        raise SemAnoBaseDeproc('Planilha de controle não lida: sem a base DEPROC usada no deproc_calcula_copa (colunas ano_processo e data_geracao_base_processo)')
+    base = _par_na_linha(linha_controle, *COLUNAS_BASE_PROCESSO)
     if base is None:
         raise SemAnoBaseDeproc(
-            'Base DEPROC (ano e data de geração) não registrada na planilha de controle (colunas ano_base_deproc e data_geracao_base_deproc, '
-            'ou ano_processo e data_geracao_base_processo): rode o deproc_calcula_copa neste processo ou preencha as colunas'
+            'Base DEPROC (ano e data de geração) não registrada na planilha de controle (colunas ano_processo e data_geracao_base_processo): '
+            'rode o deproc_calcula_copa neste processo ou preencha as colunas'
         )
     if not base.existe():
-        raise SemAnoBaseDeproc(f'Base DEPROC {base.ano}, gerada em {base.data_geracao} (colunas ano_base_deproc e data_geracao_base_deproc), não encontrada: {base.arquivo.name}')
+        raise SemAnoBaseDeproc(f'Base DEPROC {base.ano}, gerada em {base.data_geracao} (colunas ano_processo e data_geracao_base_processo), não encontrada: {base.arquivo.name}')
     return base
 
 
@@ -159,7 +157,6 @@ def processar_todas_infos(
 
     # Base DEPROC usada no deproc_calcula_copa (antes de ler o SEI)
     base_da_planilha = base_deproc_da_planilha(linha_controle)
-    registro.ano_base_deproc_todas_infos = base_da_planilha.ano
     base_deproc = bases_deproc.da_base(base_da_planilha)
     logger.info(f'Base DEPROC: {base_da_planilha}')
 
@@ -253,8 +250,8 @@ def main():
             ARQ_MANTIS_REDE_PROPRIA_DEPS_NAO_ENCONTRADOS,
             ARQ_MANTIS_REDE_CREDENCIADA_DEPS_NAO_ENCONTRADOS,
         )
-        # Carregadas quando um processo precisa (colunas ano_base_deproc e
-        # data_geracao_base_deproc)
+        # Carregadas quando um processo precisa (colunas ano_processo e
+        # data_geracao_base_processo)
         bases_deproc = BasesDeprocPorAno()
 
         controle = PlanilhaControleGeral(SCRIPT, AGORA)

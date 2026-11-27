@@ -13,8 +13,7 @@ a retomada é pelo nome do PDF e pelo assunto do memo, na rodada (depois do
 O ano de cada processo e a data de geração da planilha escolhem a base DEPROC
 (constantes.BaseDeproc: copa-MANTIS11281-base_2019-06_11_2026.xlsx); a data é
 citada no memo de resultado. Vêm da planilha de controle (colunas ano_processo
-e data_geracao_base_processo ou, sem elas, ano_base_deproc e
-data_geracao_base_deproc, de uma apuração anterior). Sem a base na planilha, o
+e data_geracao_base_processo, a única coluna de ano). Sem a base na planilha, o
 processo é procurado (coluna SEI) em todas as bases da pasta, da mais nova do
 ano mais novo para a mais velha (pesquisar_base): a primeira que o tem vai para
 as colunas ano_processo e data_geracao_base_processo. Em nenhuma: erro, sem
@@ -58,7 +57,7 @@ from processar_novo import obter_dados_ui
 from processo_fechado import ProcessoFechadoNoSetor, tem_incluir_documento
 from processos_a_processar import ler_processos_a_processar
 from rede_propria import ErroAvaliacao
-from Registro import ProxAcao, RegistroDeproc, registrar_erro, registrar_sem_acesso
+from Registro import COLUNAS_BASE_PROCESSO, ProxAcao, RegistroDeproc, registrar_erro, registrar_sem_acesso
 from relatorio_deproc import incluir_relatorio_deproc
 from sei_automacao.exceptions import UnidadeSemAcessoException
 from sei_automacao.processo import acessar_processo, listar_documentos_arvore, listar_marcadores
@@ -132,11 +131,12 @@ def _par_na_linha(linha_controle: dict, coluna_ano: str, coluna_data: str) -> Ba
 
 def base_na_planilha(linha_controle: dict | None) -> BaseDeproc | None:
     """Base DEPROC do processo na planilha de controle: ano_processo e
-    data_geracao_base_processo ou, sem os dois, ano_base_deproc e
-    data_geracao_base_deproc (apuração anterior). None se não houver."""
+    data_geracao_base_processo (até 27/11/2026 havia também ano_base_deproc e
+    data_geracao_base_deproc, levadas a elas na leitura da planilha). None se
+    não houver."""
     if not linha_controle:
         return None
-    return _par_na_linha(linha_controle, 'ano_processo', 'data_geracao_base_processo') or _par_na_linha(linha_controle, 'ano_base_deproc', 'data_geracao_base_deproc')
+    return _par_na_linha(linha_controle, *COLUNAS_BASE_PROCESSO)
 
 
 def bases_em_ordem_de_pesquisa() -> list[BaseDeproc]:
@@ -224,9 +224,9 @@ def processar_deproc(driver: webdriver.Remote, registro: RegistroDeproc, base: p
         raise
     _registrar_resultado(registro, resultado)
     # A base foi usada: o fluxo GEACS TODAS INFOS confere a coparticipação
-    # na mesma base (colunas ano_base_deproc e data_geracao_base_deproc)
-    registro.ano_base_deproc = base_deproc.ano
-    registro.data_geracao_base_deproc = base_deproc.data_geracao
+    # na mesma base (colunas ano_processo e data_geracao_base_processo)
+    registro.ano_processo = base_deproc.ano
+    registro.data_geracao_base_processo = base_deproc.data_geracao
 
     # Memo montado antes do relatório só para conferir texto, bloco e
     # signatário: nada é anexado se o memo não puder ser criado
